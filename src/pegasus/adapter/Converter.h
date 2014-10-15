@@ -37,6 +37,13 @@ CIMPLE_NAMESPACE_BEGIN
 
 typedef Pegasus::Array<Pegasus::CIMKeyBinding> Key_Bindings;
 
+struct Extended_Meta_Class
+{
+    // Cache this so that it does not have to be recreated.
+    Pegasus::CIMName name;
+    Pegasus::CIMName* names;
+};
+
 class CIMPLE_HIDE Converter
 {
 public:
@@ -45,6 +52,7 @@ public:
 	const Pegasus::String& host_name,
 	const Pegasus::CIMNamespaceName& name_space,
 	const cimple::Instance* cimple_instance,
+        const cimple::Extended_Meta_Class* emc,
 	Pegasus::CIMInstance& pegasus_instance);
 
     static int to_cimple_instance(
@@ -61,6 +69,7 @@ public:
 	const Pegasus::String& host_name,
 	const Pegasus::CIMNamespaceName& name_space,
 	const cimple::Instance* cimple_key,
+        const cimple::Extended_Meta_Class* emc,
 	Pegasus::CIMObjectPath& object_path);
 
     static int to_cimple_method(
@@ -73,6 +82,7 @@ public:
 	const Pegasus::String& host_name,
 	const Pegasus::CIMNamespaceName& name_space,
 	const cimple::Instance* meth,
+        const cimple::Extended_Meta_Class* emc,
 	Pegasus::Array<Pegasus::CIMParamValue>& out_params,
 	Pegasus::CIMValue& return_value);
 

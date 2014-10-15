@@ -37,6 +37,8 @@ struct Instance_Enumerator_Rep;
 
 struct CIMPLE_CIMPLE_LINKAGE Thread_Context
 {
+    Thread_Context();
+
     virtual ~Thread_Context();
 
     virtual Thread_Context* thread_create_hook(void* arg) = 0;

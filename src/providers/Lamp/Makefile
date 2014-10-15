@@ -8,6 +8,7 @@ INCLUDES += -I../repository -I$(TOP)/src/CMPI/cmpi \
 
 SOURCES = Lamp_Provider.cpp LampLink_Provider.cpp LampIndic_Provider.cpp module.cpp
 
+#LIBRARIES = cimple cmplrep
 LIBRARIES = cimple cmplrep
 
 LIBRARIES += cimplecmpiadap
@@ -17,7 +18,7 @@ include $(TOP)/mak/rules.mak
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 reg:
-	regmod -c -s $(SHARED_LIBRARY_TARGET)
+	regmod -n root/cimv2 -c -s $(SHARED_LIBRARY_TARGET)
 
 genclass:
 

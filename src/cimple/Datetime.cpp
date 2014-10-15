@@ -145,7 +145,8 @@ void Datetime::set_interval(
 	minutes * MIN +
 	seconds * SEC +
 	microseconds;
-    _offset = CIMPLE_SINT32_MAX;
+    _offset = 0;
+    _is_timestamp = 0;
 }
 
 void Datetime::get_timestamp(
@@ -201,6 +202,7 @@ void Datetime::set_timestamp(
     time_t t = mktime(&tm);
     _usec = uint64(t) * uint64(1000000) + microseconds;
     _offset = utc;
+    _is_timestamp = 1;
 }
 
 void Datetime::print(FILE* os, bool prettify) const
@@ -234,16 +236,16 @@ Datetime Datetime::now()
 
 bool Datetime::set(const char* str)
 {
-    CIMPLE_ASSERT(strlen(str) == 25);
-
+    if (strlen(str) != 25)
+        return false;
 
     char sign = str[21];
 
     if (sign == ':')
     {
-	// ddddddddhhmmss.mmmmmm:000
-
 	// It's an interval:
+
+	// ddddddddhhmmss.mmmmmm:000
 
 	uint32 days;
 	uint32 hours;
@@ -274,10 +276,13 @@ bool Datetime::set(const char* str)
 
 	set_interval(days, hours, minutes, seconds, microseconds);
 
+        _is_timestamp = 0;
 	return true;
     }
     else if (sign == '+' || sign == '-')
     {
+        // It's a timestamp.
+
 	// yyyymmddhhmmss.mmmmmmsutc
 
 	uint32 year;
@@ -320,6 +325,7 @@ bool Datetime::set(const char* str)
 	    year, month, day, hours, minutes, seconds, microseconds,
 	    (sign == '+') ? utc : -sint32(utc));
 
+        _is_timestamp = 1;
 	return true;
     }
 

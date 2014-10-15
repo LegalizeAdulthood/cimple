@@ -185,4 +185,3 @@ size_t Ref<T>::count() const
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Ref_h */
-

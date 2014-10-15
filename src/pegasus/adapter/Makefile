@@ -2,7 +2,7 @@ ROOT = $(PEGASUS_ROOT)
 DIR = cimple/adapater
 include $(ROOT)/mak/config.mak
 
-LIBRARY = cimplepegadap
+LIBRARY = $(CIMPLE_LIBRARY_PREFIX)cimplepegadap$(CIMPLE_LIBRARY_SUFFIX)
 
 LOCAL_DEFINES = -DPEGASUS_INTERNALONLY
 
@@ -18,7 +18,7 @@ LIBRARIES = \
     pegprovider \
     pegconfig \
     pegcommon \
-    cimple
+    $(CIMPLE_LIBRARY_PREFIX)cimple$(CIMPLE_LIBRARY_SUFFIX)
 
 INCLUDES += 
 

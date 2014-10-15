@@ -42,8 +42,6 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-static const char _INDICATIONS_NAMESPACE[] = "root/cimv2";
-
 //------------------------------------------------------------------------------
 //
 // CMPI_Adapter::CMPI_Adapter()
@@ -113,6 +111,17 @@ CMPI_Adapter::CMPI_Adapter(
     // Save meta-class:
 
     get_meta_class(_mc);
+
+    // Obtain PG_ProviderCapabilities for this provider.
+
+#if 0
+    char path[1024];
+
+    sprintf(path, 
+        "PG_ProviderCapabilities."
+        "CapabilityID=\"1\","
+        "ProviderModuleName=\"\","
+#endif
 }
 
 //------------------------------------------------------------------------------
@@ -738,8 +747,9 @@ CMPIStatus CMPI_Adapter::indicationCleanup(
 {
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
     CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
 
+    // Do not lock the mutex since we are deleting adapter, which owns the
+    // mutex.
     return _cleanup((CMPI_Adapter*)mi->hdl, context, terminating);
 }
 
@@ -791,6 +801,26 @@ CMPIStatus CMPI_Adapter::activateFilter(
     const CMPIObjectPath* class_path, 
     CMPIBoolean first)
 {
+    TRACE;
+
+    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
+    Auto_Mutex auto_lock(adapter->_lock);
+    const char* ns = name_space(class_path);
+
+    if (ns)
+    {
+        // Create entry or update existing entry.
+
+        Name_Space_Entry entry(ns, 1);
+
+        size_t pos = adapter->_name_spaces.find(entry);
+
+        if (pos == size_t(-1))
+            adapter->_name_spaces.append(entry);
+        else
+            adapter->_name_spaces[pos].count++;
+    }
+
     CMReturn(CMPI_RC_OK);
 }
 
@@ -804,10 +834,33 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
     CMPIIndicationMI* mi, 
     const CMPIContext* context,
     const CMPISelectExp* select_expr, 
-    const  char* name_space,
+    const char* indication_type,
     const CMPIObjectPath* class_path, 
     CMPIBoolean last)
 {
+    TRACE;
+
+    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
+    Auto_Mutex auto_lock(adapter->_lock);
+    const char* ns = name_space(class_path);
+
+    if (ns)
+    {
+        // Create entry or update existing entry.
+
+        Name_Space_Entry entry(ns, 1);
+
+        size_t pos = adapter->_name_spaces.find(entry);
+
+        if (pos != size_t(-1))
+        {
+            if (adapter->_name_spaces[pos].count == 1)
+                adapter->_name_spaces.remove(pos);
+            else
+                adapter->_name_spaces[pos].count--;
+        }
+    }
+
     CMReturn(CMPI_RC_OK);
 }
 
@@ -825,36 +878,44 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
     // deliver a single indication.
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)client_data;
+    Auto_Mutex auto_lock(adapter->_lock);
 
     // If this is the final call, just return.
 
     if (cimple_inst == 0)
 	return false;
 
-    // Convert CIMPLE instance to CMPI instance:
+    // Do once for each CIM namespace:
 
-    CMPIInstance* cmpi_inst = 0;
-
-    CMPIrc rc = make_cmpi_instance(adapter->broker, 
-	cimple_inst, _INDICATIONS_NAMESPACE, 0, cmpi_inst); 
-
-    // Deliver the indication (we cannot do anything about failures).
-
-    if (rc == CMPI_RC_OK)
+    for (size_t i = 0; i < adapter->_name_spaces.size(); i++)
     {
-	// ATTN: get thread context for this thread somehow!
+        String name_space = adapter->_name_spaces[i].name;
 
-	// Deliver the indication:
+        // Convert CIMPLE instance to CMPI instance:
 
-	CMPI_Thread_Context* thread_context = 
-	    (CMPI_Thread_Context*)Thread_Context::top();
-	assert(thread_context != 0);
+        CMPIInstance* cmpi_inst = 0;
 
-	CBDeliverIndication(
-	    thread_context->cmpi_broker(),
-	    thread_context->cmpi_context(),
-	    _INDICATIONS_NAMESPACE, 
-	    cmpi_inst);
+        CMPIrc rc = make_cmpi_instance(adapter->broker, 
+            cimple_inst, name_space.c_str(), 0, cmpi_inst); 
+
+        // Deliver the indication (we cannot do anything about failures).
+
+        if (rc == CMPI_RC_OK)
+        {
+            // ATTN: get thread context for this thread somehow!
+
+            // Deliver the indication:
+
+            CMPI_Thread_Context* thread_context = 
+                (CMPI_Thread_Context*)Thread_Context::top();
+            assert(thread_context != 0);
+
+            CBDeliverIndication(
+                thread_context->cmpi_broker(),
+                thread_context->cmpi_context(),
+                name_space.c_str(),
+                cmpi_inst);
+        }
     }
 
     // Keep them coming!

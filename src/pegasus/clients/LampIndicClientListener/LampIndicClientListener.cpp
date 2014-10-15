@@ -11,10 +11,10 @@ PEGASUS_USING_STD;
 
 const String FILTER_CLASS = "CIM_IndicationFilter";
 const String HANDLER_CLASS = "CIM_IndicationHandlerCIMXML";
-const String SUBSCRIPTION_CLASS = "CIM_IndicationSubscription";
 const String QUERY = "SELECT * FROM LampIndic";
 const String DESTINATION = "http://localhost:9999/LampIndicListener";
 const String NAMESPACE = "root/cimv2";
+const String SOURCE_NAMESPACE = "root/cimv2";
 
 class LampIndicConsumer : public CIMIndicationConsumer
 {
@@ -44,6 +44,8 @@ void LampIndicConsumer::consumeIndication(
     // cout << ident << endl;
     assert(ident == "HELLO" || ident == "GOODBYE");
 
+    printf("Consume indication...\n");
+
     if (++_count == 5)
 	_success = true;
 }
@@ -60,7 +62,7 @@ static CIMObjectPath _createFilter(CIMClient& client)
     inst.addProperty(CIMProperty("Name", String("LampIndicFilter")));
     inst.addProperty(CIMProperty("Query", QUERY));
     inst.addProperty(CIMProperty("QueryLanguage", String("WQL")));
-    inst.addProperty(CIMProperty("SourceNamespace", String(NAMESPACE)));
+    inst.addProperty(CIMProperty("SourceNamespace", String(SOURCE_NAMESPACE)));
 
     return client.createInstance(NAMESPACE, inst);
 }
@@ -85,9 +87,10 @@ static CIMObjectPath _createSubscription(
     const CIMObjectPath& filter,
     const CIMObjectPath& handler)
 {
-    CIMInstance inst(SUBSCRIPTION_CLASS);
+    CIMInstance inst("CIM_IndicationSubscription");
     inst.addProperty(CIMProperty("Filter", filter, 0, FILTER_CLASS));
     inst.addProperty(CIMProperty("Handler", handler, 0, HANDLER_CLASS));
+    inst.addProperty(CIMProperty("OnFatalErrorPolicy", Uint16(4)));
 
     return client.createInstance(NAMESPACE, inst);
 }
@@ -164,7 +167,6 @@ static void _invokeMethod(CIMClient& client, const char* classname)
     // printf("result: %u\n", result);
 }
 
-
 int main(int argc, char ** argv)
 {
     CIMClient client;
@@ -184,42 +186,72 @@ int main(int argc, char ** argv)
 
 	client.connectLocal();
 
+        // Create filter.
+
 	CIMObjectPath filter = _getFilterName(client);
-	// cout << "FILTER[" << filter.toString() << "]\n" << endl;
+
+        // Create handler.
 
 	CIMObjectPath handler = _getHandlerName(client);
-	// cout << "HANDLER[" << handler.toString() << "]\n" << endl;
+
+        // Delete old subscription if any.
+
+        try
+        {
+            Array<CIMKeyBinding> bindings;
+            bindings.append(CIMKeyBinding("Filter", filter));
+            bindings.append(CIMKeyBinding("Handler", handler));
+            CIMObjectPath cop("CIM_IndicationSubscription");
+            cop.setKeyBindings(bindings);
+            client.deleteInstance(NAMESPACE, cop);
+        }
+        catch (Exception& e)
+        {
+            // Ignore:
+        }
+
+        // Create new subscription.
+
+        CIMObjectPath subscriptionObjectPath;
 
 	try 
 	{
-	    _createSubscription(client, filter, handler);
+            subscriptionObjectPath = 
+                _createSubscription(client, filter, handler);
 	}
 	catch (Exception& e)
 	{
-	    // cerr << "Warning: " << e.getMessage() << endl;
+	    cerr << "Subscription already exists: " << e.getMessage() << endl;
 	}
 
 	// Send the method:
 
-#if 1
 	for (int i = 0; i < 5; i++)
-	{
-#if 0
-	    _invokeMethod(client, "DerivedIndication");
-	    System::sleep(1);
-#endif
 	    _invokeMethod(client, "LampIndic");
-	}
-#endif
 
 	System::sleep(5);
 	assert(_success == true);
 
 	printf("+++++ passed all tests\n");
 
+        try
+        {
+            client.deleteInstance(NAMESPACE, subscriptionObjectPath);
+        }
+        catch (Exception& e)
+        {
+            cerr << "Error: failed to delete subscription: " << e.getMessage();
+            cerr << endl;
+        }
+        catch (...)
+        {
+            cerr << "Error: oops" << endl;
+        }
+
 	listener.stop();
 	listener.removeConsumer(consumer);
 	delete consumer;
+
     }
     catch(Exception& e)
     {

@@ -32,19 +32,20 @@
 CIMPLE_NAMESPACE_BEGIN
 
 /** This class represents either a timestamp or an interval (as specified by 
-    the CIM Infrastructure Specification). It encapsulates two members: usec
-    and offset. The meaning of these depends on whether it represents a 
-    timestamp or an interval.
+    the CIM Infrastructure Specification). It encapsulates three members: usec
+    offset, and is_timestamp. The meaning of these depends on whether it 
+    represents a timestamp or an interval.
 
     For timestamps, usec is the number of microseconds transpired since
     the epoch (January 1970, 00:00:00) in local time and offset is the 
-    number of minutes the time is offset from GMT.
+    number of minutes the time is offset from GMT, and is_timestamp is 1.
 
     For intervals, usec is the number of microseconds in the interval and
-    offset is CIMPLE_SINT32_MAX.
+    offset is zero, and is_timestamp is 0.
 
-    The is_interval() method is used to determine whether the Datetime
-    represents a timestamp or an interval.
+    The is_timestamp() method returns true if the object represents an
+    timestamp. The is_interval() method returns true if the object represents 
+    an interval.
 
     The Datetime::now() method constructs a timestamp with the current 
     time. For example,
@@ -60,7 +61,7 @@ CIMPLE_NAMESPACE_BEGIN
 
     This class does not represent time as individual time components
     (i.e., years, months, hours, minutes). Instead time is represented
-    by a larger integer that holds the number of microseconds. This makes 
+    by a 64-bit integer that holds the number of microseconds. This makes 
     it easier to find the difference between two times and to compare them.
 */
 struct CIMPLE_CIMPLE_LINKAGE Datetime
@@ -107,8 +108,7 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
     */
     bool set(const char* str);
 
-    /** Sets object to represet the zero interval (same as 
-        Datetime(0, CIMPLE_SINT32_MAX).
+    /** Sets object to represet the zero interval.
     */
     void clear();
 
@@ -156,13 +156,11 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
 	uint32 microseconds,
 	sint32 utc);
 
-    /** Returns true if this object represents an interval (i.e.,
-	offset is CIMPLE_SINT32_MAX).
+    /** Returns true if this object represents an interval.
     */
     bool is_interval() const;
 
-    /** Returns true if this object represents a timestamp (i.e.,
-	offset is not CIMPLE_SINT32_MAX).
+    /** Returns true if this object represents a timestamp.
     */
     bool is_timestamp() const;
 
@@ -221,31 +219,34 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
 
 private:
 
-    // Microseconds since the epoch if timestamp. Otherwise, this is the
-    // microseconds elapsed since an arbitrary time.
+    // Microseconds since the epoch if timestamp. Otherwise, microseconds 
+    // elapsed since an arbitrary time (interval)..
     uint64 _usec;
 
     // For timestamps, this field is the UTC offset in minutes. For intervals,
-    // the field is equal to CIMPLE_SINT32_MAX.
+    // the field is always zero.
     sint32 _offset;
+
+    // Non-zero (1) if timestamp. Otherwise, zero.
+    uint32 _is_timestamp;
 };
 
-inline Datetime::Datetime() : _usec(0), _offset(CIMPLE_SINT32_MAX) 
-{ 
+inline Datetime::Datetime() : _usec(0), _offset(0), _is_timestamp(0)
+{
 }
 
-inline Datetime::Datetime(const Datetime& x) 
-    : _usec(x._usec), _offset(x._offset)
+inline Datetime::Datetime(const Datetime& x) : 
+    _usec(x._usec), _offset(x._offset), _is_timestamp(x._is_timestamp)
 {
 }
 
 inline Datetime::Datetime(uint64 usec, sint32 offset)
-    : _usec(usec), _offset(offset)
+    : _usec(usec), _offset(offset), _is_timestamp(1)
 {
 }
 
-inline Datetime::Datetime(uint64 usec)
-    : _usec(usec), _offset(CIMPLE_SINT32_MAX)
+inline Datetime::Datetime(uint64 usec) : 
+    _usec(usec), _offset(0), _is_timestamp(0)
 {
 }
 
@@ -253,6 +254,8 @@ inline Datetime& Datetime::operator=(const Datetime& x)
 {
     _usec = x._usec;
     _offset = x._offset;
+    _is_timestamp = x._is_timestamp;
+
     return *this;
 }
 
@@ -260,28 +263,31 @@ inline void Datetime::set(uint64 usec, sint32 offset)
 {
     _usec = usec;
     _offset = offset;
+    _is_timestamp = 1;
 }
 
 inline void Datetime::set(uint64 usec)
 {
     _usec = usec;
-    _offset = CIMPLE_SINT32_MAX;
+    _offset = 0;
+    _is_timestamp = 0;
 }
 
 inline void Datetime::clear()
 {
     _usec = 0;
-    _offset = CIMPLE_SINT32_MAX;
+    _offset = 0;
+    _is_timestamp = 0;
 }
 
 inline bool Datetime::is_interval() const
 {
-    return _offset == CIMPLE_SINT32_MAX;
+    return _is_timestamp == 0;
 }
 
 inline bool Datetime::is_timestamp() const
 {
-    return _offset != CIMPLE_SINT32_MAX;
+    return _is_timestamp == 1;
 }
 
 inline uint64 Datetime::usec() const 
@@ -306,7 +312,10 @@ inline void Datetime::offset(sint32 offset)
 
 inline bool operator==(const Datetime& x, const Datetime& y)
 {
-    return x.usec() == y.usec() && x.offset() == y.offset();
+    return 
+        x.usec() == y.usec() && 
+        x.offset() == y.offset() &&
+        x.is_timestamp() == y.is_timestamp();
 }
 
 inline void clear(Datetime& x) 

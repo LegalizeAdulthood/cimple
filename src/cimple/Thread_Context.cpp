@@ -30,6 +30,10 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+Thread_Context::Thread_Context()
+{
+}
+
 Thread_Context::~Thread_Context()
 {
 }

@@ -41,6 +41,9 @@
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
+    (A) Implement namespace handling for indication providers in Pegasus
+        adapter (see CMPI implementation).
+
     (A) Consider removing Meta_Feature_Local.
 
     (A) Remove encodings and dispatcher from CIMPLE (unused now that there is
@@ -73,6 +76,11 @@
     B B-priorities
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+    (B) Optimize conversion of CIMPLE instance to Pegasus instance during
+        enumerate by creating the Pegasus instance once. Also consider
+        bypassing the duplicate property check since the CIMPLE instance is
+        known to be correct.
 
     (B) Implement array reference counting (refs member already present).
 

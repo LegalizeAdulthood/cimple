@@ -9,6 +9,8 @@
 #include <sys/utime.h>
 #include <fcntl.h>
 
+#pragma warning(disable : 4996)
+
 const char* arg0;
 
 void echo_command(int argc, char** argv)

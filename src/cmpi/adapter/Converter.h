@@ -35,23 +35,29 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+inline const char* char_ptr(const CMPIString* str)
+{
+    const char* s = CMGetCharsPtr(str, NULL);
+    return s ? s : "";
+}
+
 void set_cmpi_error(const CMPIStatus &status);
 
 void set_cmpi_error(const CMPIrc &rc, const char* msg);
 
 inline const char* name_space(const CMPIObjectPath* op)
 {
-    return CMGetCharsPtr(CMGetNameSpace(op, NULL), NULL);
+    return char_ptr(CMGetNameSpace(op, NULL));
 }
 
 inline const char* class_name(const CMPIObjectPath* op)
 {
-    return CMGetCharsPtr(CMGetClassName(op, NULL), NULL);
+    return char_ptr(CMGetClassName(op, NULL));
 }
 
 inline const char* host_name(const CMPIObjectPath* op)
 {
-    return CMGetCharsPtr(CMGetHostname(op, NULL), NULL);
+    return char_ptr(CMGetHostname(op, NULL));
 }
 
 CMPIrc make_cimple_reference(

@@ -200,7 +200,7 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
     Pegasus::CIMObjectPath cim_object_path;
 
     if (Converter::to_pegasus_object_path(
-	Pegasus::String(), name_space, model, cim_object_path) != 0)
+	Pegasus::String(), name_space, model, 0, cim_object_path) != 0)
     {
 	return Ref<Instance>();
     }
@@ -253,7 +253,7 @@ int Pegasus_Thread_Context::create_instance(
     Pegasus::CIMInstance cim_instance;
 
     if (Converter::to_pegasus_instance(
-	Pegasus::String(), name_space, instance, cim_instance) != 0)
+	Pegasus::String(), name_space, instance, 0, cim_instance) != 0)
     {
 	return Ref<Instance>();
     }
@@ -291,7 +291,7 @@ int Pegasus_Thread_Context::delete_instance(
     Pegasus::CIMObjectPath cim_object_path;
 
     if (Converter::to_pegasus_object_path(
-	Pegasus::String(), name_space, model, cim_object_path) != 0)
+	Pegasus::String(), name_space, model, 0, cim_object_path) != 0)
     {
 	return Ref<Instance>();
     }
@@ -329,7 +329,7 @@ int Pegasus_Thread_Context::modify_instance(
     Pegasus::CIMInstance cim_instance;
 
     if (Converter::to_pegasus_instance(
-	Pegasus::String(), name_space, instance, cim_instance) != 0)
+	Pegasus::String(), name_space, instance, 0, cim_instance) != 0)
     {
 	return Ref<Instance>();
     }

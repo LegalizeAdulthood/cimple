@@ -7,9 +7,7 @@ STATIC_LIBRARY = cimple_s
 SOURCES = \
     TSD.cpp \
     Thread_Context.cpp \
-    Ref.cpp \
     cimom.cpp \
-    Atomic_Counter.cpp \
     Cond.cpp \
     Error.cpp \
     version.cpp \
@@ -18,20 +16,15 @@ SOURCES = \
     Thread.cpp \
     Auto_Mutex.cpp \
     Provider_Handle.cpp \
-    Array.cpp \
     Array_Impl.cpp \
-    Atomic.cpp \
     cimple.cpp \
     config.cpp \
     Datetime.cpp \
     Instance.cpp \
     Instance_Map.cpp \
     Meta_Class.cpp \
-    Meta_Feature.cpp \
     Meta_Method.cpp \
     Meta_Property.cpp \
-    Meta_Reference.cpp \
-    Provider.cpp \
     Registration.cpp \
     String.cpp \
     Strings.cpp \

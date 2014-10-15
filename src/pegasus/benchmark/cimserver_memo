@@ -1,0 +1,3 @@
+#!/bin/sh
+export LD_PRELOAD=/home/mbrasher/inova/src/utils/memo/libmemo.so
+cimserver daemon=false

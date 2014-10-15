@@ -80,9 +80,9 @@ regress:
 ##
 ##==============================================================================
 
-VERSION=0.99.22-beta
-TAG=cimple_0_99_22_beta
-PRIOR_TAG=cimple_0_99_20_beta
+VERSION=0.99.32-beta
+TAG=cimple_0_99_32_beta
+PRIOR_TAG=cimple_0_99_22_beta
 
 ##------------------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ release:
 	$(MAKE) distclean > /dev/null
 	cvs tag -F $(TAG)
 	- cvs diff -r $(PRIOR_TAG) > $(PREFIX)/$(DIFF_FILE)
-	( cd ..; tar zcf $(PREFIX)/$(TARBALL) cimple )
+	( cd ..; tar zcvf $(PREFIX)/$(TARBALL) cimple )
 	cp doc/$(RELEASE_NOTES) $(PREFIX)/
-	@ echo "Created $(PACKAGE)..."
+	@ echo done
 

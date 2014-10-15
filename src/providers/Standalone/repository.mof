@@ -1,0 +1,6 @@
+
+class Standalone
+{
+    [key] uint32 key;
+};
+

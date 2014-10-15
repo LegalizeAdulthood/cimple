@@ -25,39 +25,50 @@
 */
 
 #include "Mutex.h"
+#include "Magic.h"
 #include <pthread.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
+struct MutexRep
+{
+    Magic<0x482A8C83> magic;
+    pthread_mutex_t mutex;
+};
+
 Mutex::Mutex(bool recursive)
 {
-    assert(sizeof(_rep) >= sizeof(pthread_mutex_t));
+    new(_rep) MutexRep();
 
     if (recursive)
     {
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init(&attr);
 	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
-	pthread_mutex_init((pthread_mutex_t*)_rep, &attr);
+	pthread_mutex_init(&((MutexRep*)_rep)->mutex, &attr);
 	pthread_mutexattr_destroy(&attr);
     }
     else
-	pthread_mutex_init((pthread_mutex_t*)_rep, NULL);
+	pthread_mutex_init(&((MutexRep*)_rep)->mutex, NULL);
 }
 
 Mutex::~Mutex()
 {
-    pthread_mutex_destroy((pthread_mutex_t*)_rep);
+    CIMPLE_ASSERT(((MutexRep*)_rep)->magic);
+    pthread_mutex_destroy(&((MutexRep*)_rep)->mutex);
+    ((MutexRep*)_rep)->~MutexRep();
 }
 
 void Mutex::lock()
 {
-    pthread_mutex_lock((pthread_mutex_t*)_rep);
+    CIMPLE_ASSERT(((MutexRep*)_rep)->magic);
+    pthread_mutex_lock(&((MutexRep*)_rep)->mutex);
 }
 
 void Mutex::unlock()
 {
-    pthread_mutex_unlock((pthread_mutex_t*)_rep);
+    CIMPLE_ASSERT(((MutexRep*)_rep)->magic);
+    pthread_mutex_unlock(&((MutexRep*)_rep)->mutex);
 }
 
 CIMPLE_NAMESPACE_END

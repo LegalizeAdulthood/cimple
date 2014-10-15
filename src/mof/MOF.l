@@ -9,7 +9,7 @@
 #define YY_NEVER_INTERACTIVE 1
 
 /*
- * These are created an pushed on a stack when include pragmas are
+ * These are created and pushed on a stack when include pragmas are
  * encountered. And popped when the included file EOF is encountered.
  */
 struct MOF_State

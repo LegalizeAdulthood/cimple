@@ -10,6 +10,8 @@
 #include <cstdarg>
 #include <vector>
 #include <cstdio>
+#include <dirent.h>
+#include <unistd.h>
 #include <cimple/cimple.h>
 #include <cimple/Provider_Handle.h>
 #include <util/util.h>
@@ -39,7 +41,6 @@ void check_class_compatibility(
     CIMClass& c);
 
 CIMRepository_Mode g_repository_mode;
-string g_pegasus_home;
 string g_pegasus_repository_dir;
 void* g_handle = 0;
 
@@ -60,6 +61,7 @@ bool unregister_opt = false;
 bool indirect_opt = false;
 Array<String> providing_namespaces;
 bool absolute_opt = false;
+string repository_opt;
 
 //------------------------------------------------------------------------------
 //
@@ -171,72 +173,6 @@ void print(CIMInstance& inst)
 
 //------------------------------------------------------------------------------
 //
-// validate_paths()
-//
-//------------------------------------------------------------------------------
-
-void validate_paths(const string& pegasus_home)
-{
-    struct Node
-    {
-	const char* path;
-	bool is_dir;
-    };
-
-    static const Node paths[] = 
-    {
-	// FIX: remove root#cimv2 checks:
-	{ "", true },
-	{ "repository", true },
-#if 0
-	// Not everybody creates a root/cimv2 namespace.
-	{ "repository/root#cimv2", true },
-	{ "repository/root#cimv2/instances", true },
-	{ "repository/root#cimv2/classes", true },
-	{ "repository/root#cimv2/qualifiers", true },
-#endif
-	{ "repository/root#PG_InterOp", true },
-	{ "repository/root#PG_InterOp/instances", true },
-	{ "repository/root#PG_InterOp/classes", true },
-	{ "repository/root#PG_InterOp/qualifiers", true },
-	{ "repository/root", true },
-	{ "repository/root/instances", true },
-	{ "repository/root/classes", true },
-	{ "repository/root/qualifiers", true },
-	{ "bin", true },
-#ifdef CIMPLE_WINDOWS
-	{ "bin/cimserver.exe", false },
-	{ "bin/pegcommon.dll", false },
-	{ "bin/pegrepository.dll", false },
-	{ "bin/pegprovider.dll", false },
-#else
-	{ "bin/cimserver", false },
-	{ "lib/libpegcommon.so", false },
-	{ "lib/libpegprovider.so", false },
-#endif
-	{ "lib", true },
-    };
-    const size_t num_paths = sizeof(paths) / sizeof(paths[0]);
-
-    for (size_t i = 0; i < num_paths; i++)
-    {
-	string tmp = pegasus_home + paths[i].path;
-
-	if (paths[i].is_dir)
-	{
-	    if (!is_dir(tmp.c_str()))
-		err("Missing directory: %s\n", tmp.c_str());
-	}
-	else
-	{
-	    if (!exists(tmp.c_str()))
-		err("Missing file: %s\n", tmp.c_str());
-	}
-    }
-}
-
-//------------------------------------------------------------------------------
-//
 // load_file()
 //
 //------------------------------------------------------------------------------
@@ -260,43 +196,125 @@ int load_file(const char* path, string& s)
 
 //------------------------------------------------------------------------------
 //
-// check_pegasus_environment()
+// check_repository()
 //
 //------------------------------------------------------------------------------
 
-void check_pegasus_environment(string& pegasus_home)
+void check_repository(string& repository_directory)
 {
-    // Check PEGASUS_HOME environment variable.
+    // If not already defined, resolve repository directory location using
+    // PEGASUS_HOME.
 
-    char* tmp = getenv("PEGASUS_HOME");
-
-    if (!tmp)
-	err("PEGASUS_HOME environment variable not defined");
-
-    pegasus_home = tmp;
-
-    if (pegasus_home.size() == 0)
-	err("PEGASUS_HOME environment variable is empty");
-
-    // Flip backslashes to forward slashes (to accomodate Windows).
-
-    for (size_t i = 0; i < pegasus_home.size(); i++)
+    if (repository_directory.size() == 0)
     {
-	if (pegasus_home[i] == '\\')
-	    pegasus_home[i] = '/';
+        string pegasus_home;
+
+        // Check PEGASUS_HOME environment variable.
+
+        char* tmp = getenv("PEGASUS_HOME");
+
+        if (!tmp)
+        {
+            err(
+                "Cannot resolve location of the Pegasus repository. Either "
+                "define the PEGASUS_HOME environment variable or use the -r "
+                "option to specify the repository directory path.");
+        }
+
+        pegasus_home = tmp;
+
+        if (pegasus_home.size() == 0)
+        {
+            err("PEGASUS_HOME environment variable is empty. It is needed "
+                "to determine the location of the Pegasus repository "
+                "directory. Either set PEGASUS_HOME correctly or use the -r "
+                "option to specify the locaiton of the Pegasus repository "
+                "directory. ");
+        }
+
+        // Flip backslashes to forward slashes (to accomodate Windows).
+
+        for (size_t i = 0; i < pegasus_home.size(); i++)
+        {
+            if (pegasus_home[i] == '\\')
+                pegasus_home[i] = '/';
+        }
+
+        // Define repository directory.
+
+        repository_directory = pegasus_home + "/repository";
     }
 
-    // Disallow relative paths.
+    // Check that all subdirectories under the repository directory contains
+    // the standard subdirectories (i.e., classes, instances, qualifiers).
 
-    if (!is_absolute(pegasus_home.c_str()))
-	err("PEGASUS_HOME environment variable must denote an absolute path");
+    DIR* dir = opendir(repository_directory.c_str());
+    size_t num_found = 0;
 
-    if (pegasus_home[pegasus_home.size()-1] != '/')
-	pegasus_home += '/';
+    if (!dir)
+    {
+        err("The repository directory deduced from the PEGASUS_HOME "
+            "environment variable or given by the -r option does not "
+            "exist: %s\n", repository_directory.c_str());
+    }
 
-    // Validate known paths to directories and files.
+    const char MSG[] = 
+        "The repository directory deduced from the PEGASUS_HOME environment "
+        "variable or given by the -r option (%s) appears to be an invalid "
+        "Pegasus repository. All subdirectories of a Pegasus repository "
+        "directory are required to have three standard subdirectories: "
+        "classes, instances, and qualifiers. One of these standard directories "
+        "is missing or inaccessible. Further, there must be at least one "
+        "directory with the standard subdirectories.";
+            
+    for (dirent* ent = readdir(dir); ent; ent = readdir(dir))
+    {
+        string name = ent->d_name;
 
-    validate_paths(pegasus_home);
+        // Skip special directories.
+
+        if (name == "." || name == "..")
+            continue;
+
+        // Build full path name.
+
+        string path = repository_directory + string("/") + name;
+
+        // Skip non-directories:
+
+        struct stat st;
+
+        if (stat(path.c_str(), &st) != 0)
+            continue;
+
+        if (!S_ISDIR(st.st_mode))
+            continue;
+
+        // Be sure that this directory contains these subdirectories:
+        //     "classes"
+        //     "instances"
+        //     "qualifiers"
+
+        string classes_dir = path + string("/classes");
+        string instances_dir = path + string("/instances");
+        string qualifiers_dir = path + string("/qualifiers");
+
+        if (!is_dir(classes_dir.c_str()))
+            err(MSG, repository_directory.c_str());
+
+        if (!is_dir(instances_dir.c_str()))
+            err(MSG, repository_directory.c_str());
+
+        if (!is_dir(qualifiers_dir.c_str()))
+            err(MSG, repository_directory.c_str());
+
+        num_found++;
+    }
+
+    if (num_found == 0)
+        err(MSG, repository_directory.c_str());
+
+    closedir(dir);
 }
 
 //------------------------------------------------------------------------------
@@ -360,47 +378,20 @@ cimple::Registration* load_module(
 
     const cimple::Meta_Repository* repository = 0;
     cimple::Get_Repository_Status status = handle.get_repository(repository);
+
+    if (repository == 0)
+    {
+        err("Provider is missing meta class repository. This probably means "
+            "the -r option was not used when the provider class was generated "
+            "with genclass. Try \"genclass -r <class-name>\" and remember to "
+            "link in the repository.cpp that it generates.");
+    }
+
     meta_classes = repository->meta_classes;
+
     num_meta_classes = repository->num_meta_classes;
 
     return reg;
-}
-
-//------------------------------------------------------------------------------
-//
-// copy_library()
-//
-//------------------------------------------------------------------------------
-
-void copy_library(
-    const char* path)
-{
-    // Open input file.
-
-    FILE* in = fopen(path, "rb");
-
-    if (!in)
-	err("cannot open %s for read", path);
-
-    // Open destination file.
-
-    string to_path = g_pegasus_home + string("/lib/") + base_name(path);
-
-    if (verbose_opt)
-	printf("=== Copy provider (%s to %s)\n", path, to_path.c_str());
-
-    FILE* out = fopen(to_path.c_str(), "wb");
-
-    if (!out)
-	err("cannot open %s for write", to_path.c_str());
-
-    // Copy one file to the other.
-
-    for (int c; (c = fgetc(in)) != EOF; )
-	fputc(c, out);
-
-    fclose(in);
-    fclose(out);
 }
 
 //------------------------------------------------------------------------------
@@ -731,7 +722,7 @@ void uninstall_classes(
 
 	    for (size_t j = 0; j < providing_namespaces.size(); j++)
 	    {
-		delete_class(repository, providing_namespaces[j], tmp);
+		delete_class(repository, providing_namespaces[Uint32(j)], tmp);
 	    }
 	}
     }
@@ -1553,7 +1544,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "bdcvhn:uisa")) != -1)
+    while ((opt = getopt(argc, argv, "r:bdcvhn:uisa")) != -1)
     {
 	switch (opt)
 	{
@@ -1575,6 +1566,16 @@ int main(int argc, char** argv)
 
 	    case 'n':
 		providing_namespaces.append(optarg);
+		break;
+
+	    case 'r':
+                repository_opt = optarg;
+
+                if (!is_dir(repository_opt.c_str()))
+                {
+                    err("the directory given by -r does not exist: %s\n",
+                        repository_opt.c_str());
+                }
 		break;
 
 	    case 'a':
@@ -1641,8 +1642,8 @@ int main(int argc, char** argv)
 
     // Validate the Pegasus environment.
 
-    check_pegasus_environment(g_pegasus_home);
-    g_pegasus_repository_dir = g_pegasus_home + string("/repository/");
+    g_pegasus_repository_dir = repository_opt;
+    check_repository(g_pegasus_repository_dir);
 
     // Get class dependency list:
     static vector<string> class_deps;
@@ -1673,7 +1674,7 @@ int main(int argc, char** argv)
 	    {
 		// Create provided class.
 
-		validate_class(providing_namespaces[i], p->meta_class);
+		validate_class(providing_namespaces[Uint32(i)], p->meta_class);
 	    }
 	}
 
@@ -1701,17 +1702,10 @@ int main(int argc, char** argv)
                         "utility.", class_name);
                 }
 
-                validate_class(providing_namespaces[i], mc);
+                validate_class(providing_namespaces[Uint32(i)], mc);
             }
         }
     }
-
-    // Step #4: copy library to Pegasus library directory.
-
-// File already in Pegasus library directory.
-#if 0
-    copy_library(lib_path);
-#endif
 
     // Step #5: find short form of library name.
 

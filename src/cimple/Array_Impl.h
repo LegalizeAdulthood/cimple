@@ -234,7 +234,7 @@ template<> struct __Array_Traits_Factory<void*> :
 
 struct Instance;
 
-template<> struct __Array_Traits_Factory<struct Instance*> : 
+template<> struct __Array_Traits_Factory<Instance*> : 
     public __Array_Traits_Factory_Raw<void*> { };
 
 //==============================================================================

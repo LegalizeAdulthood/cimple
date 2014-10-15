@@ -1,0 +1,4 @@
+
+class Benchmark1 : CIM_Card
+{
+};

@@ -26,6 +26,7 @@
 
 #include <cassert>
 #include <cimple/Datetime.h>
+#include <cimple/Time.h>
 
 using namespace cimple;
 
@@ -77,7 +78,7 @@ int main(int arc, char** argv)
     {
 	Datetime dt1 = Datetime::now();
 	assert(dt1.is_timestamp());
-	sleep(1);
+	Time::sleep(1000 * 1000);
 	Datetime dt2 = Datetime::now();
 	assert(dt2.is_timestamp());
 	Datetime diff(dt2.usec() - dt1.usec());

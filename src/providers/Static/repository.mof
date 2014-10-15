@@ -1,0 +1,6 @@
+
+class Static
+{
+    [key] uint32 key;
+};
+

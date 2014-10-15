@@ -39,6 +39,9 @@
 // forcing value to bool 'true' or 'false'
 #pragma warning ( disable : 4800 )
 
+// conversion from <type1> to <type2>: possible loss of data.
+#pragma warning ( disable : 4244 )
+
 #define CIMPLE_WINDOWS
 #define CIMPLE_UINT64 unsigned __int64
 #define CIMPLE_SINT64 signed __int64

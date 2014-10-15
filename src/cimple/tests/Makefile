@@ -12,9 +12,10 @@ DIRS = \
     join \
     model_path \
     cast \
-    class
+    class \
+    static
 
-BROKEN_TESTS = \
-    datetime \
+XDIRS = \
+    datetime
 
 include $(TOP)/mak/rules.mak

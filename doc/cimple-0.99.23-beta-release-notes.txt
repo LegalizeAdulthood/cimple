@@ -1,0 +1,22 @@
+                        Version 0.99.23 Release Notes
+                        =============================
+
+    1.  Changed CIMDatetime class so that the zero-interval is the default
+        (rather than the 1970 epoch).
+
+    2.  Fixed unload error in CMPI provider (was accessing a mutex that had
+        already been destructed).
+
+    3.  Eliminated use of faulty CMGetCharPtr macro in CMPI adapter.
+
+    4.  Optimized performance of Pegasus adapter.
+
+    5.  Added -r (repository) option to regmod to override use of the
+        use PEGASUS_HOME environment variable for locating the Pegasus
+        repository.
+
+    6.  Improved Pegasus repository validation logic in regmod.
+
+    7.  Reworked logic in regmod that validates the Pegasus directory
+        structure so that regmod works better in production environment.
+

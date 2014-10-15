@@ -5,10 +5,11 @@ Where:
     -i : delete indirect classes (when -u and -c present)
     -s : create subclasses of provided class (or delete them when -u present)
     -v : verbose mode
-    -n : provider namespace (may occur multiple times)
+    -n namespace : provider namespace (may occur multiple times)
     -d : dump the MOF registration instances to standard output
     -b : use binary repository mode
     -u : unregister the module
+    -r path : Pegasus repository directory
     -h : print this help text
 
 Synopsis:

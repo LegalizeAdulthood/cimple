@@ -45,7 +45,11 @@ public:
 
 private:
 
-    char _rep[64];
+    union
+    {
+        double alignemnt;
+        char _rep[128];
+    };
     friend class Cond;
 };
 

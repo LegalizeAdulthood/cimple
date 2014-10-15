@@ -9,8 +9,8 @@ PROGRAM = regmod
 SOURCES = main.cpp
 
 LIBRARIES = \
-    cimpleutil \
-    cimple \
+    $(CIMPLE_LIBRARY_PREFIX)cimpleutil$(CIMPLE_LIBRARY_SUFFIX) \
+    $(CIMPLE_LIBRARY_PREFIX)cimple$(CIMPLE_LIBRARY_SUFFIX) \
     pegprovider \
     pegrepository \
     pegconfig \

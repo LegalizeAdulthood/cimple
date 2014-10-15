@@ -39,6 +39,7 @@ public:
     static const uint64 MSEC;
     static const uint64 SEC;
     
+    // Returns microseconds elapsed since POSIX epoch (1970).
     static uint64 now();
 
     static void sleep(uint64 timeout_usec);

@@ -26,6 +26,7 @@
 
 #include <cassert>
 #include <cimple/Mutex.h>
+#include <pthread.h>
 
 using namespace cimple;
 

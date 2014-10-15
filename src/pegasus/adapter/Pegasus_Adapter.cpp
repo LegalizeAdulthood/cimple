@@ -67,10 +67,26 @@ Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
     TRACE;
     CIMPLE_ASSERT(_provider != 0);
     _provider->get_meta_class(_mc);
+
+    // Create an extended meta-meta class that maintains additional information
+    // to speed conversion between Pegasus and CIMPLE objects.
+
+    _emc = new Extended_Meta_Class;
+    _emc->name = Pegasus::CIMName(_mc->name);
+
+    _emc->names = new Pegasus::CIMName[_mc->num_meta_features];
+
+    for (size_t i = 0; i < _mc->num_meta_features; i++)
+    {
+        _emc->names[i] =
+            Pegasus::CIMName(_mc->meta_features[i]->name);
+    }
 }
 
 Pegasus_Adapter::~Pegasus_Adapter()
 {
+    delete [] _emc->names;
+    delete _emc;
     TRACE;
 }
 
@@ -136,7 +152,7 @@ void Pegasus_Adapter::getInstance(
     Pegasus::CIMInstance pi;
 
     if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
-	objectPath.getNameSpace(), inst, pi) != 0)
+	objectPath.getNameSpace(), inst, _emc, pi) != 0)
     {
 	_throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -152,6 +168,7 @@ struct Enum_Instance_Data
 {
     Pegasus::InstanceResponseHandler* handler;
     Pegasus::CIMNamespaceName name_space;
+    const Extended_Meta_Class* emc;
 };
 
 static bool _enum_instances_proc(
@@ -168,8 +185,8 @@ static bool _enum_instances_proc(
     Enum_Instance_Data* data = (Enum_Instance_Data*)client_data;
     Pegasus::CIMInstance pi;
 
-    if (Converter::to_pegasus_instance(
-	Pegasus::System::getHostName(), data->name_space, instance, pi) != 0)
+    if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
+        data->name_space, instance, data->emc, pi) != 0)
     {
 	// ATTN: what do we do here?
 	return false;
@@ -210,6 +227,7 @@ void Pegasus_Adapter::enumerateInstances(
     Enum_Instance_Data data;
     data.handler = &handler;
     data.name_space = objectPath.getNameSpace();
+    data.emc = _emc;
 
     Enum_Instances_Status status = _provider->enum_instances(
 	model, _enum_instances_proc, &data);
@@ -224,6 +242,7 @@ struct Handle_Enumerate_Instance_Names_Data
     Pegasus::ObjectPathResponseHandler* handler;
     Pegasus::CIMNamespaceName name_space;
     bool error;
+    const Extended_Meta_Class* emc;
 };
 
 static bool _enum_instance_names_proc(
@@ -249,8 +268,8 @@ static bool _enum_instance_names_proc(
 
     Pegasus::CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(
-	Pegasus::System::getHostName(), data->name_space, instance, op) != 0)
+    if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
+           data->name_space, instance, data->emc, op) != 0)
     {
 	data->error = true;
 	return false;
@@ -287,6 +306,7 @@ void Pegasus_Adapter::enumerateInstanceNames(
     data.handler = &handler;
     data.name_space = objectPath.getNameSpace();
     data.error = false;
+    data.emc = _emc;
 
     Enum_Instances_Status status = _provider->enum_instances(
 	model, _enum_instance_names_proc, &data);
@@ -333,8 +353,8 @@ void Pegasus_Adapter::createInstance(
 
     Pegasus::CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(
-	Pegasus::System::getHostName(), objectPath.getNameSpace(), ci, op) != 0)
+    if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
+        objectPath.getNameSpace(), ci, _emc, op) != 0)
     {
 	_throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -452,7 +472,7 @@ void Pegasus_Adapter::invokeMethod(
     Pegasus::CIMValue return_value;
 
     if (Converter::to_pegasus_method(Pegasus::System::getHostName(), 
-	objectPath.getNameSpace(), meth, out_params, return_value) != 0)
+	objectPath.getNameSpace(), meth, _emc, out_params, return_value) != 0)
     {
 	_throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -481,6 +501,7 @@ struct Handle_Associators_Request_Data
     const Pegasus::CIMPropertyList& propertyList;
     Pegasus::ObjectResponseHandler& handler;
     bool error;
+    const Extended_Meta_Class* emc;
 
     Handle_Associators_Request_Data(
 	Pegasus::CIMOMHandle* handle_,
@@ -489,7 +510,8 @@ struct Handle_Associators_Request_Data
 	Pegasus::Boolean includeQualifiers_,
 	Pegasus::Boolean includeClassOrigin_,
 	const Pegasus::CIMPropertyList& propertyList_,
-	Pegasus::ObjectResponseHandler& handler_)
+	Pegasus::ObjectResponseHandler& handler_,
+        const Extended_Meta_Class* emc_)
 	: 
 	handle(handle_),
 	context(context_),
@@ -498,7 +520,8 @@ struct Handle_Associators_Request_Data
 	includeClassOrigin(includeClassOrigin_),
 	propertyList(propertyList_),
 	handler(handler_),
-	error(false)
+	error(false),
+        emc(emc_)
     {
     }
 };
@@ -521,7 +544,8 @@ static bool _enum_associator_proc(
     Pegasus::CIMObjectPath objectPath;
 
     if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
-	data->objectPath.getNameSpace(), associator_name, objectPath) != 0)
+	data->objectPath.getNameSpace(), associator_name, data->emc, 
+        objectPath)!= 0)
     {
 	data->error = true;
 	return false;
@@ -600,7 +624,8 @@ void Pegasus_Adapter::associators(
 	includeQualifiers,
 	includeClassOrigin,
 	propertyList,
-	handler);
+	handler,
+        _emc);
 
     Enum_Associator_Names_Status status = 
 	_provider->enum_associator_names(
@@ -624,6 +649,7 @@ struct Handle_Associator_Names_Request_Data
     Pegasus::ObjectPathResponseHandler* handler;
     Pegasus::CIMObjectPath objectPath;
     bool error;
+    Extended_Meta_Class* emc;
 };
 
 static bool _enum_associator_names_proc(
@@ -646,7 +672,7 @@ static bool _enum_associator_names_proc(
     Pegasus::CIMObjectPath op;
 
     if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
-	data->objectPath.getNameSpace(), assoc_name, op) != 0)
+	data->objectPath.getNameSpace(), assoc_name, data->emc, op) != 0)
     {
 	data->error = true;
 	return false;
@@ -700,6 +726,7 @@ void Pegasus_Adapter::associatorNames(
     data.handler = &handler;
     data.objectPath = objectPath;
     data.error = false;
+    data.emc = _emc;
 
     Enum_Associator_Names_Status status = 
 	_provider->enum_associator_names(
@@ -723,14 +750,18 @@ struct Handle_References_Request_Data
     Pegasus::ObjectResponseHandler& handler;
     const Pegasus::CIMObjectPath& objectPath;
     bool error;
+    const Extended_Meta_Class* emc;
 
     Handle_References_Request_Data(
 	Pegasus::ObjectResponseHandler& handler_,
-	const Pegasus::CIMObjectPath& objectPath_)
+	const Pegasus::CIMObjectPath& objectPath_,
+        const Extended_Meta_Class* emc_)
 	:
 	handler(handler_),
 	objectPath(objectPath_),
-	error(false)
+	error(false),
+        emc(emc_)
+
     {
     }
 };
@@ -757,7 +788,7 @@ static bool _enumerate_references_proc(
     Pegasus::CIMInstance pi;
 
     if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
-	data->objectPath.getNameSpace(), reference, pi) != 0)
+	data->objectPath.getNameSpace(), reference, data->emc, pi) != 0)
     {
 	data->error = true;
 	return false;
@@ -816,7 +847,7 @@ void Pegasus_Adapter::references(
 
     handler.processing();
 
-    Handle_References_Request_Data data(handler, objectPath);
+    Handle_References_Request_Data data(handler, objectPath, _emc);
 
     Enum_References_Status status = _provider->enum_references(
 	ck, 
@@ -838,14 +869,17 @@ struct Handle_Reference_Names_Request_Data
     Pegasus::ObjectPathResponseHandler& handler;
     const Pegasus::CIMObjectPath& objectPath;
     bool error;
+    const Extended_Meta_Class* emc;
 
     Handle_Reference_Names_Request_Data(
 	Pegasus::ObjectPathResponseHandler& handler_,
-	const Pegasus::CIMObjectPath& objectPath_)
+	const Pegasus::CIMObjectPath& objectPath_,
+        const Extended_Meta_Class* emc_)
 	:
 	handler(handler_),
 	objectPath(objectPath_),
-	error(false)
+	error(false),
+        emc(emc_)
     {
     }
 };
@@ -872,7 +906,7 @@ static bool _enumerate_reference_names_proc(
     Pegasus::CIMObjectPath op;
 
     if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
-	data->objectPath.getNameSpace(), reference, op) != 0)
+	data->objectPath.getNameSpace(), reference, data->emc, op) != 0)
     {
 	data->error = true;
 	return false;
@@ -927,7 +961,7 @@ void Pegasus_Adapter::referenceNames(
 
     handler.processing();
 
-    Handle_Reference_Names_Request_Data data(handler, objectPath);
+    Handle_Reference_Names_Request_Data data(handler, objectPath, _emc);
 
     Enum_References_Status status = _provider->enum_references(
 	ck, 
@@ -950,6 +984,7 @@ struct Indication_Proc_Data
 {
     Pegasus::IndicationResponseHandler* handler;
     Pegasus::CIMNamespaceName name_space;
+    const Extended_Meta_Class* emc;
 };
 
 static bool _indication_proc(Instance* indication, void* client_data)
@@ -969,7 +1004,7 @@ static bool _indication_proc(Instance* indication, void* client_data)
     Pegasus::CIMInstance pegasus_indication;
 
     if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
-	data->name_space, indication, pegasus_indication) != 0)
+	data->name_space, indication, data->emc, pegasus_indication) != 0)
 	return false;
 
     // Build an object path for this indication.
@@ -1007,6 +1042,7 @@ void Pegasus_Adapter::enableIndications(
 	Indication_Proc_Data* data = new Indication_Proc_Data;
 	data->handler = _handler;
 	data->name_space = INDICATION_NAMESPACE;
+	data->emc = _emc;
 	_provider->enable_indications(_indication_proc, data);
     }
 
@@ -1036,6 +1072,21 @@ void Pegasus_Adapter::createSubscription(
     const Pegasus::CIMPropertyList& propertyList,
     const Pegasus::Uint16 repeatNotificationPolicy)
 {
+    try
+    {
+        // ATTN: save namespace and use it to determine which namespace
+        // to deliver events on.
+
+        Pegasus::SubscriptionFilterQueryContainer c =
+            context.get(Pegasus::SubscriptionFilterQueryContainer::NAME);
+
+        // c.getSourceNameSpace()
+    }
+    catch (...)
+    {
+        // Ignore.
+    }
+
     // Nothing to do!
 }
 

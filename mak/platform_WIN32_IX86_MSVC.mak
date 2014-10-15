@@ -119,9 +119,19 @@ PWD = $(MUT) pwd
 
 #LINK_FLAGS += -L$(LIB_DIR)
 
+LINK_FLAGS += -nologo -dll
+
 ifdef CIMPLE_DEBUG
   LINK_FLAGS += -debug
 endif
+
+##==============================================================================
+##
+## LIB_FLAGS
+##
+##==============================================================================
+
+LIB_FLAGS += -nologo
 
 ##==============================================================================
 ##
@@ -178,7 +188,8 @@ _full_libs = $(addsuffix .lib,$(addprefix $(LIB_DIR)/,$(1)))
 ##==============================================================================
 
 ifndef POSIX_MAKEFILE
-  _FULL_POSIX_LIB = $(LIB_DIR)/posix.lib
+  _FULL_POSIX_LIB = \
+    $(LIB_DIR)/$(CIMPLE_LIBRARY_PREFIX)posix$(CIMPLE_LIBRARY_SUFFIX).lib
 endif
 
 ##==============================================================================
@@ -187,15 +198,15 @@ endif
 ##
 ##==============================================================================
 
-_SYS_LIBS = ws2_32.lib advapi32.lib netapi32.lib
+_SYS_LIBS = ws2_32.lib advapi32.lib netapi32.lib 
 
-make_shlib = link -nologo -dll $(LINK_FLAGS) \
+make_shlib = link $(LINK_FLAGS) \
     -out:$(call shared_library_target,$(1)) \
     -implib:$(call static_library_target,$(1)) \
     $(2) \
     $(call _full_libs,$(3)) \
     $(_FULL_POSIX_LIB) \
-    $(_SYS_LIBS) $(NL)
+    $(_SYS_LIBS) $(EXTRA_SYS_LIBS) $(NL)
 
 ##==============================================================================
 ##
@@ -214,7 +225,7 @@ shlib_clean_targets = \
 ##
 ##==============================================================================
 
-make_lib = lib -nologo $(LINK_FLAGS) -out:$(1) $(2)
+make_lib = lib $(LIB_FLAGS) -out:$(1) $(2)
 
 ##==============================================================================
 ##

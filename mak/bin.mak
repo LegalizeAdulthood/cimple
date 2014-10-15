@@ -1,7 +1,7 @@
 BINARY_TARGET = $(call bin_target,$(BINARY))
 
 $(BINARY_TARGET): $(OBJECTS) $(BIN_DIR)/target
-	$(call make_bin,$(BINARY),$(OBJECTS),$(LIBRARIES))
+	$(call make_bin,$(BINARY),$(OBJECTS),$(_LIBRARIES))
 
 size:
 	$(SIZE) $(BINARY_TARGET)

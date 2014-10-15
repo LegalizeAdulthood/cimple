@@ -35,10 +35,42 @@
 #include <cimple/Provider_Handle.h>
 #include <cimple/Mutex.h>
 #include <cimple/Thread.h>
-#include "linkage.h"
 #include "CMPI_Thread_Context.h"
 
 CIMPLE_NAMESPACE_BEGIN
+
+struct Name_Space_Entry
+{
+    String name;
+    size_t count;
+
+    Name_Space_Entry() : count(0)
+    {
+    }
+
+    Name_Space_Entry(const Name_Space_Entry& x) : name(x.name), count(x.count)
+    {
+    }
+
+    Name_Space_Entry(const String& n, size_t c) : name(n), count(c)
+    {
+    }
+
+    Name_Space_Entry& operator=(const Name_Space_Entry& x)
+    {
+        if (this != &x)
+        {
+            name = x.name;
+            count = x.count;
+        }
+        return *this;
+    }
+};
+
+bool operator==(const Name_Space_Entry& x, const Name_Space_Entry& y)
+{
+    return x.name == y.name;
+}
 
 class CMPI_Adapter : public Provider_Handle
 {
@@ -153,7 +185,7 @@ public:
 	CMPIIndicationMI* mi, 
 	const CMPIContext* context,
 	const CMPISelectExp* select_expr, 
-	const  char* name_space,
+	const  char* indication_type,
 	const CMPIObjectPath* class_path, 
 	CMPIBoolean last);
 
@@ -227,7 +259,9 @@ public:
     static const Meta_Class* find_meta_class_callback(
 	const char* class_name, void* client_data);
 
-private:
+    // List of namespaces there are currently subscriptions for (and a count
+    // of the number of such active subscriptions on that namespace).
+    Array<Name_Space_Entry> _name_spaces;
 
     const Meta_Class* _mc;
 

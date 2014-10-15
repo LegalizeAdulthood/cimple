@@ -1,0 +1,27 @@
+instance of PG_ProviderModule
+{
+    Name = "Benchmark2_Module";
+    Vendor = "Pegasus";
+    Version = "2.0.0";
+    InterfaceType = "C++Default";
+    InterfaceVersion = "2.0.0";
+    Location = "Benchmark2Provider";
+};
+
+instance of PG_Provider
+{
+    Name = "Benchmark2_Provider";
+    ProviderModuleName = "Benchmark2_Module";
+};
+
+instance of PG_ProviderCapabilities
+{
+    CapabilityID = "1";
+    ProviderModuleName = "Benchmark2_Module";
+    ProviderName = "Benchmark2_Provider";
+    ClassName = "Benchmark2";
+    Namespaces = {"root/cimv2"};
+    ProviderType = {2, 5};
+    supportedProperties = NULL;
+    supportedMethods = NULL;
+};
