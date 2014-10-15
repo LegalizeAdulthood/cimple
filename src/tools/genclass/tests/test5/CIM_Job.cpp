@@ -338,6 +338,7 @@ const Meta_Class CIM_Job::static_meta_class =
     &CIM_LogicalElement::static_meta_class,
     0,
     0x0BC3279B,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

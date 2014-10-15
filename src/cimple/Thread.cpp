@@ -26,46 +26,53 @@
 
 #include <cassert>
 #include "Thread.h"
+#include "Thread_Context.h"
 #include <pthread.h>
 
 CIMPLE_NAMESPACE_BEGIN
-
-//==============================================================================
-//
-// Thread hooks
-//
-//==============================================================================
-
-void* (*thread_create_hook)(void*);
-void* (*thread_start_hook)(void*);
-void* (*thread_exit_hook)(void*);
 
 struct Arg
 {
     Thread_Proc proc;
     void* arg;
-    void* create_hook_return_value;
+    Thread_Context* context;
 };
 
 static void* _thread_proc(void* arg_)
 {
-    Arg* arg = (Arg*)arg_;
+    Thread_Proc proc = ((Arg*)arg_)->proc;
+    Thread_Context* context = ((Arg*)arg_)->context;
+    void* arg = ((Arg*)arg_)->arg;
+    delete (Arg*)arg_;
 
-    void* start_hook_return_value;
+    // Push context if any.
 
-    if (thread_start_hook)
+    if (context)
+	Thread_Context::push(context);
+
+    // Invoke start hook.
+
+    if (context)
+	context->thread_start_hook();
+
+    // Invoke thread routine.
+
+    void* return_value = proc(arg);
+
+    // Invoke exit hook.
+
+    if (context)
+	context->thread_exit_hook();
+
+    // Pop context.
+
+    assert(context == Thread_Context::top());
+
+    if (context)
     {
-	start_hook_return_value = 
-	    (*thread_start_hook)(arg->create_hook_return_value);
+	Thread_Context::pop();
+	delete context;
     }
-    else
-	start_hook_return_value = 0;
-
-    void* return_value = arg->proc(arg->arg);
-    delete arg;
-
-    if (thread_exit_hook)
-	(*thread_exit_hook)(start_hook_return_value);
 
     return return_value;
 }
@@ -94,11 +101,25 @@ Thread& Thread::operator=(const Thread& x)
 }
 
 int _create(
-    Thread& thread, Thread_Proc user_proc, void* user_arg, bool detached)
+    Thread& thread, Thread_Proc user_proc, void* arg_, bool detached)
 {
+    // Create arg object.
+
     Arg* arg = new Arg;
+    memset(arg, 0, sizeof(Arg));
     arg->proc = user_proc;
-    arg->arg = user_arg;
+    arg->arg = arg_;
+
+    // Call create hook.
+
+    Thread_Context* context = Thread_Context::top();
+
+    if (context)
+	arg->context = context->thread_create_hook(arg_);
+    else
+	arg->context = 0;
+
+    // Create the thread.
 
     pthread_attr_t attr;
     pthread_attr_init(&attr);
@@ -108,36 +129,41 @@ int _create(
     else
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
-    if (thread_create_hook)
-	arg->create_hook_return_value = (*thread_create_hook)(user_arg);
-    else
-	arg->create_hook_return_value = 0;
-
     int status = pthread_create(
 	(pthread_t*)&thread, &attr, _thread_proc, arg);
 
     pthread_attr_destroy(&attr);
 
+    // Clean up if thread create failed.
+
     if (status != 0)
+    {
+	delete context;
 	delete arg;
+    }
 
     return status;
 }
 
 int Thread::create_joinable(
-    Thread& thread, Thread_Proc user_proc, void* user_arg)
+    Thread& thread, Thread_Proc user_proc, void* arg)
 {
-    return _create(thread, user_proc, user_arg, false);
+    return _create(thread, user_proc, arg, false);
 }
 
 int Thread::create_detached(
-    Thread& thread, Thread_Proc user_proc, void* user_arg)
+    Thread& thread, Thread_Proc user_proc, void* arg)
 {
-    return _create(thread, user_proc, user_arg, true);
+    return _create(thread, user_proc, arg, true);
 }
 
 void Thread::exit(void* return_value)
 {
+    Thread_Context* context = Thread_Context::top();
+
+    if (context)
+	context->thread_exit_hook();
+
     pthread_exit(return_value);
 }
 

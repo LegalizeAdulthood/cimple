@@ -13,6 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
+extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+
 extern CIMPLE_HIDE const Meta_Property _Person_ssn;
 
 const Meta_Property _Person_ssn =
@@ -63,6 +65,7 @@ const Meta_Class Person::static_meta_class =
     0,
     1,
     0xFD25E1F3,
+    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
 };
 
 CIMPLE_NAMESPACE_END

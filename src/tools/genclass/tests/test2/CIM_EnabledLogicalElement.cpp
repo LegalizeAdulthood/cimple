@@ -165,6 +165,7 @@ const Meta_Class CIM_EnabledLogicalElement::static_meta_class =
     &CIM_LogicalElement::static_meta_class,
     0,
     0xBDDFE92D,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_Indication_h
-#define _CIM_Indication_h
+#ifndef _cimple_CIM_Indication_h
+#define _cimple_CIM_Indication_h
 
 #include <cimple/cimple.h>
 
@@ -26,4 +26,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_Indication_h */
+#endif /* _cimple_CIM_Indication_h */

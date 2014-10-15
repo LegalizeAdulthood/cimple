@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Test2_h
-#define _Test2_h
+#ifndef _cimple_Test2_h
+#define _cimple_Test2_h
 
 #include <cimple/cimple.h>
 #include "Test1.h"
@@ -20,12 +20,12 @@ public:
     Property<boolean> ref_field1;
     Property<sint8> ref_field2;
     Property<String> ref_field3;
-    Test1* ref1;
-    Test1* ref2;
+    CIMPLE_REF(Test1,ref1);
+    CIMPLE_REF(Test1,ref2);
 
     CIMPLE_CLASS(Test2)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Test2_h */
+#endif /* _cimple_Test2_h */

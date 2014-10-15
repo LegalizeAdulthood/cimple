@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _User_h
-#define _User_h
+#ifndef _cimple_User_h
+#define _cimple_User_h
 
 #include <cimple/cimple.h>
 
@@ -28,4 +28,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _User_h */
+#endif /* _cimple_User_h */

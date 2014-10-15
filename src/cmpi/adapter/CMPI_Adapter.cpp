@@ -32,7 +32,7 @@
 #include <cimple/Mutex.h>
 #include <cimple/Auto_Mutex.h>
 #include "Converter.h"
-#include "Thread_State.h"
+#include "CMPI_Thread_Context.h"
 
 #if 0
 # define TRACE printf("===== %s(%d): %s()\n", __FILE__, __LINE__, __FUNCTION__)
@@ -136,6 +136,8 @@ CMPI_Adapter::CMPI_Adapter(
 {
     TRACE;
 
+    CMPI_Thread_Context_Pusher pusher(broker_, context);
+
 #ifdef ENABLE_TIMER_PROC
     _stop_timer_thread = false;
 #endif /* ENABLE_TIMER_PROC */
@@ -186,10 +188,6 @@ CMPI_Adapter::CMPI_Adapter(
 
     load();
 
-    // Push thread state. This will also install the thread hooks.
-
-    Thread_State::push(broker, context);
-
 #ifdef ENABLE_TIMER_PROC
 
     // Create a scheduler on first invocation.
@@ -228,7 +226,11 @@ CMPI_Adapter::~CMPI_Adapter()
 {
     TRACE;
 
-    // Invoke provider unload() method:
+/*
+ATTN: cannot get a context here:
+    CMPI_Thread_Context_Pusher pusher(broker_, cmpi_context);
+*/
+
 
     unload();
 
@@ -247,6 +249,10 @@ CMPI_Adapter::~CMPI_Adapter()
     // Null this out so that next time cimple_cmpi_adapter() is called, it
     // will find a null adapter.
     _adapter_back_pointer = 0;
+
+#if 0
+    Thread_Context::pop();
+#endif
 }
 
 //------------------------------------------------------------------------------
@@ -289,7 +295,7 @@ namespace enum_instance_names
 	if (!cimple_inst)
 	    return false;
 
-	Destroyer<Instance> cimple_inst_d(cimple_inst);
+	Ref<Instance> cimple_inst_d(cimple_inst);
 
 	// Ignore if an error was already encountered.
 
@@ -323,7 +329,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Convert to CIMPLE reference:
@@ -336,7 +342,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
 
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     // Nullify non-key properties (this is a reference).
 
@@ -389,7 +395,7 @@ namespace enum_instances
 	void* client_data)
     {
 	Data* data = (Data*)client_data;
-	Destroyer<Instance> destroyer(cimple_inst);
+	Ref<Instance> destroyer(cimple_inst);
 
 	if (!cimple_inst)
 	    return false;
@@ -432,7 +438,7 @@ CMPIStatus CMPI_Adapter::enumInstances(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Convert to CIMPLE reference:
@@ -441,7 +447,7 @@ CMPIStatus CMPI_Adapter::enumInstances(
     Instance* cimple_ref = 0;
     
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -488,7 +494,7 @@ CMPIStatus CMPI_Adapter::getInstance(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Convert to CIMPLE reference:
@@ -499,7 +505,7 @@ CMPIStatus CMPI_Adapter::getInstance(
     Instance* cimple_ref = 0;
     
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -561,7 +567,7 @@ CMPIStatus CMPI_Adapter::createInstance(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Create CIMPLE instance:
@@ -574,7 +580,7 @@ CMPIStatus CMPI_Adapter::createInstance(
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
 
-    Destroyer<Instance> cmpi_inst_d(cimple_inst);
+    Ref<Instance> cmpi_inst_d(cimple_inst);
 
     // Invoke the provider:
 
@@ -615,7 +621,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Create CIMPLE instance:
@@ -628,7 +634,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
 
-    Destroyer<Instance> cmpi_inst_d(cimple_inst);
+    Ref<Instance> cmpi_inst_d(cimple_inst);
 
     // Invoke the provider:
 
@@ -667,7 +673,7 @@ CMPIStatus CMPI_Adapter::deleteInstance(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Convert to CIMPLE reference:
@@ -677,7 +683,7 @@ CMPIStatus CMPI_Adapter::deleteInstance(
     
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
 
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -752,7 +758,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Find CIMPLE method object:
@@ -781,7 +787,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
 
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     // Create the method:
 
@@ -791,7 +797,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
 
-    Destroyer<Instance> cimple_meth_d(cimple_meth);
+    Ref<Instance> cimple_meth_d(cimple_meth);
 
     // Invoke the provider:
 
@@ -841,7 +847,7 @@ CMPIStatus CMPI_Adapter::indicationCleanup(
     CMPIBoolean terminating)
 {
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     return _cleanup((CMPI_Adapter*)mi->hdl, context, terminating);
@@ -950,11 +956,13 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 
 	// Deliver the indication:
 
-	Thread_State* thread_context = Thread_State::get();
+	CMPI_Thread_Context* thread_context = 
+	    (CMPI_Thread_Context*)Thread_Context::top();
+	assert(thread_context != 0);
 
 	CBDeliverIndication(
-	    adapter->broker, 
-	    thread_context->context,
+	    thread_context->cmpi_broker(),
+	    thread_context->cmpi_context(),
 	    _INDICATIONS_NAMESPACE, 
 	    cmpi_inst);
     }
@@ -970,7 +978,7 @@ void CMPI_Adapter::enableIndications(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Ignore request if indications already enabled.
@@ -1008,7 +1016,7 @@ void CMPI_Adapter::disableIndications(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Ignore if indications are not enabled.
@@ -1127,7 +1135,7 @@ CMPIStatus CMPI_Adapter::associators(
     const char* result_role = result_role_ ? result_role_ : "";
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->_mc->name) == 0);
@@ -1143,7 +1151,7 @@ CMPIStatus CMPI_Adapter::associators(
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -1231,7 +1239,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
     const char* result_role = result_role_ ? result_role_ : "";
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->_mc->name) == 0);
@@ -1247,7 +1255,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -1298,7 +1306,7 @@ namespace references
 	if (!cimple_inst)
 	    return false;
 
-	Destroyer<Instance> cimple_inst_d(cimple_inst);
+	Ref<Instance> cimple_inst_d(cimple_inst);
 
 	// Ignore errors on prior call.
 
@@ -1342,7 +1350,7 @@ CMPIStatus CMPI_Adapter::references(
     const char* role = role_ ? role_ : "";
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     // Lookup meta class for cmpi_op (not the same as the provider class).
@@ -1358,7 +1366,7 @@ CMPIStatus CMPI_Adapter::references(
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -1424,7 +1432,7 @@ namespace reference_names
 	if (!cimple_inst)
 	    return false;
 
-	Destroyer<Instance> cimple_inst_d(cimple_inst);
+	Ref<Instance> cimple_inst_d(cimple_inst);
 
 	// Ignore errors on prior call.
 
@@ -1464,7 +1472,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
     TRACE;
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Thread_State::push(adapter->broker, context);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
     Auto_Mutex auto_lock(adapter->_lock);
 
     const char* result_class = result_class_ ? result_class_ : "";
@@ -1483,7 +1491,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
-    Destroyer<Instance> cimple_ref_d(cimple_ref);
+    Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -1546,12 +1554,10 @@ CMPIStatus CMPI_Adapter::_cleanup(
 
 const Meta_Class* CMPI_Adapter::_find_meta_class(const char* class_name)
 {
-    const Meta_Class* const* meta_classes = 0;
-    size_t num_meta_classes = 0;
+    const Meta_Repository* meta_repository;
+    get_repository(meta_repository);
 
-    get_repository(meta_classes, num_meta_classes);
-
-    return find_meta_class(meta_classes, num_meta_classes, class_name);
+    return find_meta_class(meta_repository, class_name);
 }
 
 CIMPLE_NAMESPACE_END
@@ -1587,8 +1593,6 @@ extern "C" CIMPLE_EXPORT int cimple_cmpi_adapter(
     }
     else
     {
-	Thread_State::push(broker, context);
-
         adapter = new CMPI_Adapter(
 	    broker, context, provider_name, registration, adapter);
     }

@@ -4,6 +4,11 @@ include $(TOP)/mak/config.mak
 SH_LIBRARY = cimple
 
 SOURCES = \
+    Enc.cpp \
+    Buffer.cpp \
+    Thread_Context.cpp \
+    Ref.cpp \
+    cimom.cpp \
     Atomic_Counter.cpp \
     Cond.cpp \
     Cond_Queue.cpp \
@@ -22,7 +27,6 @@ SOURCES = \
     cimple.cpp \
     config.cpp \
     Datetime.cpp \
-    Destroyer.cpp \
     Instance.cpp \
     Instance_IO.cpp \
     Instance_Map.cpp \

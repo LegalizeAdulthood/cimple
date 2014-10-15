@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _ComputerSystemDiskDrive_h
-#define _ComputerSystemDiskDrive_h
+#ifndef _cimple_ComputerSystemDiskDrive_h
+#define _cimple_ComputerSystemDiskDrive_h
 
 #include <cimple/cimple.h>
 #include "CIM_SystemDevice.h"
@@ -18,8 +18,8 @@ class CIMPLE_LINKAGE ComputerSystemDiskDrive : public Instance
 {
 public:
     // CIM_Component features:
-    ComputerSystem* GroupComponent;
-    DiskDrive* PartComponent;
+    CIMPLE_REF(ComputerSystem,GroupComponent);
+    CIMPLE_REF(DiskDrive,PartComponent);
 
     // CIM_SystemComponent features:
 
@@ -32,4 +32,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _ComputerSystemDiskDrive_h */
+#endif /* _cimple_ComputerSystemDiskDrive_h */

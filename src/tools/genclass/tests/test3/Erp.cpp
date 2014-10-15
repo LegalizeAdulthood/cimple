@@ -75,6 +75,7 @@ const Meta_Class Erp::static_meta_class =
     0,
     1,
     0x308E8173,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

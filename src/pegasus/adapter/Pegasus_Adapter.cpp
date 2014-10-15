@@ -5,6 +5,7 @@
 #include "Pegasus_Adapter.h"
 #include "Converter.h"
 #include "CStr.h"
+#include "Pegasus_Thread_Context.h"
 
 #if 0
 # define TRACE CIMPLE_TRACE
@@ -60,7 +61,8 @@ static void _check(int cimple_error)
 
 Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
     _provider(provider), 
-    _handler(0)
+    _handler(0),
+    _cimom_handle(0)
 {
     TRACE;
     CIMPLE_ASSERT(_provider != 0);
@@ -75,6 +77,12 @@ Pegasus_Adapter::~Pegasus_Adapter()
 void Pegasus_Adapter::initialize(Pegasus::CIMOMHandle& handle)
 {
     TRACE;
+
+    _cimom_handle = &handle;
+
+    Pegasus::OperationContext context;
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     _handle = &handle;
     _provider->load();
 }
@@ -82,6 +90,10 @@ void Pegasus_Adapter::initialize(Pegasus::CIMOMHandle& handle)
 void Pegasus_Adapter::terminate(void)
 {
     TRACE;
+
+    Pegasus::OperationContext context;
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     _provider->unload();
 }
 
@@ -95,6 +107,8 @@ void Pegasus_Adapter::getInstance(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Create key.
 
     Instance* model = 0;
@@ -102,7 +116,7 @@ void Pegasus_Adapter::getInstance(
     if (Converter::to_cimple_key(objectPath.getKeyBindings(), _mc, model) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
-    Destroyer<Instance> model_d(model);
+    Ref<Instance> model_d(model);
 
     // Mark properties mentioned in property list as non-null.
 
@@ -113,7 +127,7 @@ void Pegasus_Adapter::getInstance(
 
     Instance* inst = 0;
     Get_Instance_Status status = _provider->get_instance(model, inst);
-    Destroyer<Instance> inst_d(inst);
+    Ref<Instance> inst_d(inst);
 
     _check(status);
 
@@ -150,7 +164,7 @@ static bool _enum_instances_proc(
     if (!instance)
 	return false;
 
-    Destroyer<Instance> instance_d(instance);
+    Ref<Instance> instance_d(instance);
     Enum_Instance_Data* data = (Enum_Instance_Data*)client_data;
     Pegasus::CIMInstance pi;
 
@@ -177,10 +191,12 @@ void Pegasus_Adapter::enumerateInstances(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Create the model.
 
     Instance* model = create(_mc);
-    Destroyer<Instance> model_d(model);
+    Ref<Instance> model_d(model);
     nullify_properties(model);
 
     // Validate properties that appear in the property list.
@@ -227,7 +243,7 @@ static bool _enum_instance_names_proc(
     if (!instance || data->error)
 	return false;
 
-    Destroyer<Instance> instance_d(instance);
+    Ref<Instance> instance_d(instance);
 
     // Convert to pegasus object path:
 
@@ -255,10 +271,12 @@ void Pegasus_Adapter::enumerateInstanceNames(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Create the model (nullify non-key properties).
 
     Instance* model = create(_mc);
-    Destroyer<Instance> model_d(model);
+    Ref<Instance> model_d(model);
     nullify_non_keys(model);
 
     // Invoke the provider.
@@ -289,6 +307,8 @@ void Pegasus_Adapter::createInstance(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Convert the Pegasus instance to a CIMPLE instance.
 
     Instance* ci = 0;
@@ -296,7 +316,7 @@ void Pegasus_Adapter::createInstance(
     if (Converter::to_cimple_instance(instance, _mc, ci) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
-    Destroyer<Instance> ci_d(ci);
+    Ref<Instance> ci_d(ci);
 
     // Be sure that all the key fields are non-null:
 
@@ -334,6 +354,8 @@ void Pegasus_Adapter::modifyInstance(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Convert the Pegasus instance to a CIMPLE instance.
 
     Instance* ci = 0;
@@ -341,7 +363,7 @@ void Pegasus_Adapter::modifyInstance(
     if (Converter::to_cimple_instance(instance, _mc, ci) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
-    Destroyer<Instance> ci_d(ci);
+    Ref<Instance> ci_d(ci);
 
     // Marks properties mentioned in property list as non-null.
 
@@ -367,6 +389,8 @@ void Pegasus_Adapter::deleteInstance(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Create CIMPLE instance (initialize key properties).
 
     Instance* ci = 0;
@@ -374,7 +398,7 @@ void Pegasus_Adapter::deleteInstance(
     if (Converter::to_cimple_key(objectPath.getKeyBindings(), _mc, ci) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
-    Destroyer<Instance> ci_d(ci);
+    Ref<Instance> ci_d(ci);
 
     // Invoke provider.
 
@@ -397,6 +421,8 @@ void Pegasus_Adapter::invokeMethod(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Convert instance name to CIMPLE reference.
 
     Instance* ref = 0;
@@ -404,7 +430,7 @@ void Pegasus_Adapter::invokeMethod(
     if (Converter::to_cimple_key(objectPath.getKeyBindings(), _mc, ref) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
-    Destroyer<Instance> ref_d(ref);
+    Ref<Instance> ref_d(ref);
 
     // Convert to a CIMPLE method:
 
@@ -541,6 +567,8 @@ void Pegasus_Adapter::associators(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Get association meta class.
 
     const Meta_Class* assoc_mc = _mc;
@@ -559,7 +587,7 @@ void Pegasus_Adapter::associators(
 	_throw(Pegasus::CIM_ERR_FAILED);
     }
 
-    Destroyer<Instance> ck_d(ck);
+    Ref<Instance> ck_d(ck);
 
     // Invoke the provider.
 
@@ -643,6 +671,8 @@ void Pegasus_Adapter::associatorNames(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Get association meta class.
 
     const Meta_Class* assoc_mc = _mc;
@@ -662,7 +692,7 @@ void Pegasus_Adapter::associatorNames(
 	_throw(Pegasus::CIM_ERR_FAILED);
     }
 
-    Destroyer<Instance> ck_d(ck);
+    Ref<Instance> ck_d(ck);
 
     // Invoke provider.
 
@@ -720,7 +750,7 @@ static bool _enumerate_references_proc(
     if (!reference || data->error)
 	return false;
 
-    Destroyer<Instance> reference_d(reference);
+    Ref<Instance> reference_d(reference);
 
     // Convert to pegasus instance:
 
@@ -751,6 +781,8 @@ void Pegasus_Adapter::references(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Get association meta class.
 
     const Meta_Class* assoc_mc = _mc;
@@ -772,13 +804,13 @@ void Pegasus_Adapter::references(
 	_throw(Pegasus::CIM_ERR_INVALID_CLASS);
     }
 
-    Destroyer<Instance> ck_d(ck);
+    Ref<Instance> ck_d(ck);
 
     // Create model:
 
     Instance* model = create(assoc_mc);
     nullify_non_keys(model);
-    Destroyer<Instance> model_d(model);
+    Ref<Instance> model_d(model);
 
     // Invoke provider.
 
@@ -833,7 +865,7 @@ static bool _enumerate_reference_names_proc(
     if (!reference || data->error)
 	return false;
 
-    Destroyer<Instance> reference_d(reference);
+    Ref<Instance> reference_d(reference);
 
     // Convert to pegasus instance:
 
@@ -861,6 +893,8 @@ void Pegasus_Adapter::referenceNames(
 {
     TRACE;
 
+    Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
+
     // Get association meta class.
 
     const Meta_Class* assoc_mc = _mc;
@@ -882,7 +916,7 @@ void Pegasus_Adapter::referenceNames(
 	_throw(Pegasus::CIM_ERR_FAILED);
     }
 
-    Destroyer<Instance> ck_d(ck);
+    Ref<Instance> ck_d(ck);
 
     // Create the model.
 
@@ -1029,15 +1063,17 @@ const Meta_Class* Pegasus_Adapter::find_meta_class(
     CStr tmp(objectPath.getClassName());
     const char* class_name = (const char*)tmp;
 
-    // Invoke cimple_repository() entry point to obtain meta-class array.
+    // Invoke provider to get the meta-repository.
 
-    const Meta_Class* const* meta_classes;
-    size_t num_meta_classes;
-    _provider->get_repository(meta_classes, num_meta_classes);
+    const Meta_Repository* repository = 0;
+    _provider->get_repository(repository);
+
+    if (!repository)
+	return 0;
 
     // Find the class.
 
-    return cimple::find_meta_class(meta_classes, num_meta_classes, class_name);
+    return cimple::find_meta_class(repository, class_name);
 }
 
 CIMPLE_NAMESPACE_END

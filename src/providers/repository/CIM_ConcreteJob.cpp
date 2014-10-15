@@ -13,6 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
+extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+
 extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
 
 extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
@@ -217,6 +219,7 @@ const Meta_Class CIM_ConcreteJob::static_meta_class =
     &CIM_Job::static_meta_class,
     1,
     0xBA4DC394,
+    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
 };
 
 CIMPLE_NAMESPACE_END

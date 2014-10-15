@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _ComputerSystem_h
-#define _ComputerSystem_h
+#ifndef _cimple_ComputerSystem_h
+#define _cimple_ComputerSystem_h
 
 #include <cimple/cimple.h>
 #include "CIM_ComputerSystem.h"
@@ -62,4 +62,4 @@ typedef CIM_ComputerSystem_SetPowerState_method ComputerSystem_SetPowerState_met
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _ComputerSystem_h */
+#endif /* _cimple_ComputerSystem_h */

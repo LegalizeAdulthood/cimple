@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_DatabaseAdministrator_h
-#define _CIM_DatabaseAdministrator_h
+#ifndef _cimple_CIM_DatabaseAdministrator_h
+#define _cimple_CIM_DatabaseAdministrator_h
 
 #include <cimple/cimple.h>
 #include "CIM_Dependency.h"
@@ -18,8 +18,8 @@ class CIM_DatabaseAdministrator : public Instance
 {
 public:
     // CIM_Dependency features:
-    CIM_CommonDatabase* Antecedent;
-    CIM_UserEntity* Dependent;
+    CIMPLE_REF(CIM_CommonDatabase,Antecedent);
+    CIMPLE_REF(CIM_UserEntity,Dependent);
 
     // CIM_DatabaseAdministrator features:
 
@@ -28,4 +28,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_DatabaseAdministrator_h */
+#endif /* _cimple_CIM_DatabaseAdministrator_h */

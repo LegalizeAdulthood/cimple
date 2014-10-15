@@ -228,6 +228,9 @@ private:
 	the field is equal to CIMPLE_SINT32_MAX.
     */
     sint32 _offset;
+
+    // Pad to make sizeof(Datetime) exactly 16.
+    uint32 _padding;
 };
 
 inline Datetime::Datetime() : _usec(0), _offset(CIMPLE_SINT32_MAX) 

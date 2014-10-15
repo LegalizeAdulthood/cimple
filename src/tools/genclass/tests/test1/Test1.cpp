@@ -531,6 +531,7 @@ const Meta_Class Test1::static_meta_class =
     0,
     3,
     0x88CF2035,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

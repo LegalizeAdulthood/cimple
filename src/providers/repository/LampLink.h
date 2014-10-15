@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _LampLink_h
-#define _LampLink_h
+#ifndef _cimple_LampLink_h
+#define _cimple_LampLink_h
 
 #include <cimple/cimple.h>
 #include "Lamp.h"
@@ -17,12 +17,12 @@ class CIMPLE_LINKAGE LampLink : public Instance
 {
 public:
     // LampLink features:
-    Lamp* left;
-    Lamp* right;
+    CIMPLE_REF(Lamp,left);
+    CIMPLE_REF(Lamp,right);
 
     CIMPLE_CLASS(LampLink)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _LampLink_h */
+#endif /* _cimple_LampLink_h */

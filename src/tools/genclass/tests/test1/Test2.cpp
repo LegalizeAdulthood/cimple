@@ -85,6 +85,7 @@ const Meta_Class Test2::static_meta_class =
     0,
     0,
     0xDC8273B9,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

@@ -13,6 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
+extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+
 extern CIMPLE_HIDE const Meta_Property _Lamp_model;
 
 const Meta_Property _Lamp_model =
@@ -120,6 +122,7 @@ const Meta_Class Lamp::static_meta_class =
     0,
     1,
     0x1AC5D1C7,
+    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
 };
 
 CIMPLE_NAMESPACE_END

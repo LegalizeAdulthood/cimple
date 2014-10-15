@@ -17,7 +17,7 @@ include $(TOP)/mak/rules.mak
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c -s $(TARGET)
 
 genclass:
 

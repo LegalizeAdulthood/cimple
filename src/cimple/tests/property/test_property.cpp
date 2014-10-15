@@ -80,8 +80,6 @@ int main(int argc, char** argv)
 
     // printf("f: %d %d %d\n", f()[0], f()[1], f()[2]);
 
-    // printf("+++++ passed all tests\n");
-
     const Array_String& v = d.value;
     assert(v.size() == 3);
     assert(v[0] == "Red");
@@ -90,6 +88,43 @@ int main(int argc, char** argv)
     d.value.clear();
     d.null = true;
     assert(d.value.size() == 0);
+
+    assert(sizeof(uint8) == 1);
+    assert(sizeof(sint8) == 1);
+    assert(sizeof(uint16) == 2);
+    assert(sizeof(sint16) == 2);
+    assert(sizeof(uint32) == 4);
+    assert(sizeof(sint32) == 4);
+    assert(sizeof(uint64) == 8);
+    assert(sizeof(sint64) == 8);
+    assert(sizeof(real32) == 4);
+    assert(sizeof(real64) == 8);
+    assert(sizeof(String) == 8);
+    assert(sizeof(Datetime) == 16);
+
+    assert(sizeof(Property<boolean>) == 8);
+    assert(sizeof(Property<uint8>) == 8);
+    assert(sizeof(Property<uint16>) == 8);
+    assert(sizeof(Property<uint32>) == 8);
+    assert(sizeof(Property<uint64>) == 16);
+    assert(sizeof(Property<real32>) == 8);
+    assert(sizeof(Property<real64>) == 16);
+    assert(sizeof(Property<char16>) == 8);
+    assert(sizeof(Property<String>) == 16);
+    assert(sizeof(Property<Datetime>) == 24);
+
+    assert(sizeof(Property<Array_boolean>) == 16);
+    assert(sizeof(Property<Array_uint8>) == 16);
+    assert(sizeof(Property<Array_uint16>) == 16);
+    assert(sizeof(Property<Array_uint32>) == 16);
+    assert(sizeof(Property<Array_uint64>) == 16);
+    assert(sizeof(Property<Array_real32>) == 16);
+    assert(sizeof(Property<Array_real64>) == 16);
+    assert(sizeof(Property<Array_char16>) == 16);
+    assert(sizeof(Property<Array_String>) == 16);
+    assert(sizeof(Property<Array_Datetime>) == 16);
+
+    assert(sizeof(Instance) == 24);
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 

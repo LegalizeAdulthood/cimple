@@ -39,5 +39,10 @@
 #include "Instance_Map.h"
 #include "Provider.h"
 #include "Registration.h"
+#include "cimom.h"
+#include "Ref.h"
+#include "Thread.h"
+#include "Time.h"
+#include "Atomic_Counter.h"
 
 #endif /* _cimple_h */

@@ -29,6 +29,8 @@
 
 #include <string>
 #include "crc.h"
+#include "UUID.h"
+#include "MAC.h"
 #include "linkage.h"
 
 CIMPLEUTIL_LINKAGE 

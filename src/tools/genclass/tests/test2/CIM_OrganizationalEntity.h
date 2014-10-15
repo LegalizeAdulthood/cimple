@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_OrganizationalEntity_h
-#define _CIM_OrganizationalEntity_h
+#ifndef _cimple_CIM_OrganizationalEntity_h
+#define _cimple_CIM_OrganizationalEntity_h
 
 #include <cimple/cimple.h>
 #include "CIM_ManagedElement.h"
@@ -27,4 +27,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_OrganizationalEntity_h */
+#endif /* _cimple_CIM_OrganizationalEntity_h */

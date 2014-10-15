@@ -50,6 +50,8 @@ const char* arg0;
 static FILE* _os = 0;
 bool linkage_opt = false;
 bool enum_opt = false;
+bool gen_repository_opt = false;
+string meta_repository_name;
 
 char data_type_tag(int data_type)
 {
@@ -473,7 +475,7 @@ void gen_feature_decls(
 	if (prop)
 	{
 	    if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-		out("    Instance* %s;\n", prop->name);
+		out("    CIMPLE_REF(Instance,%s);\n", prop->name);
 	    else
 		gen_property_decl(prop);
 
@@ -501,7 +503,8 @@ void gen_feature_decls(
 
 		    if (qref)
 		    {
-			out("    %s* %s;\n", qref->class_name, qref->name);
+			out("    CIMPLE_REF(%s,%s);\n", 
+			    qref->class_name, qref->name);
 			found = true;
 			break;
 		    }
@@ -574,7 +577,7 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
 
 void gen_param_ref_decl(const MOF_Parameter* param)
 {
-    out("    %s* %s;\n", param->ref_name, param->name);
+    out("    CIMPLE_REF(%s,%s);\n", param->ref_name, param->name);
 }
 
 void gen_param_prop_decl(
@@ -701,8 +704,8 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
     gen_comment_block();
     nl();
 
-    out("#ifndef _%s_h\n", class_decl->name);
-    out("#define _%s_h\n", class_decl->name);
+    out("#ifndef _cimple_%s_h\n", class_decl->name);
+    out("#define _cimple_%s_h\n", class_decl->name);
     nl();
 
     out("#include <cimple/cimple.h>\n");
@@ -725,7 +728,7 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
     out("CIMPLE_NAMESPACE_END\n");
     nl();
 
-    out("#endif /* _%s_h */\n", class_decl->name);
+    out("#endif /* _cimple_%s_h */\n", class_decl->name);
 }
 
 void gen_property_def(
@@ -1258,6 +1261,15 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
 	out("    0x%08X,\n", crc);
     }
 
+    // meta_repository:
+
+    {
+	if (gen_repository_opt)
+	    out("    &%s,\n", meta_repository_name.c_str());
+	else
+	    out("    0,\n");
+    }
+
     out("};\n");
     nl();
 }
@@ -1284,6 +1296,12 @@ void gen_source_file(const MOF_Class_Decl* class_decl)
 
     out("using namespace cimple;\n");
     nl();
+
+    if (gen_repository_opt)
+    {
+	out("extern const Meta_Repository %s;\n", meta_repository_name.c_str());
+	nl();
+    }
 
     // Generate class meta data.
 
@@ -1491,10 +1509,12 @@ void gen_repository_header_file(const vector<string>& classes)
     out("CIMPLE_NAMESPACE_BEGIN\n");
     nl();
 
+#if 0
     out("CIMPLE_ENTRY_POINT void cimple_repository(\n");
     out("    const Meta_Class* const*& meta_classes,\n");
     out("    size_t& num_meta_classes);\n");
     nl();
+#endif
 
     out("CIMPLE_NAMESPACE_END\n");
     nl();
@@ -1526,6 +1546,7 @@ void gen_repository_source_file(const vector<string>& classes)
     out("CIMPLE_ARRAY_SIZE(_meta_classes);\n");
     nl();
 
+#if 0
     out("CIMPLE_ENTRY_POINT void cimple_repository(\n");
     out("    const Meta_Class* const*& meta_classes,\n");
     out("    size_t& num_meta_classes)\n");
@@ -1534,7 +1555,17 @@ void gen_repository_source_file(const vector<string>& classes)
     out("   num_meta_classes = _num_meta_classes; \n");
     out("}\n");
     nl();
+#endif
 
+    out("extern const Meta_Repository %s;\n", meta_repository_name.c_str());
+    nl();
+
+    out("const Meta_Repository %s =\n", meta_repository_name.c_str());
+    out("{\n");
+    out("    _meta_classes,\n");
+    out("    _num_meta_classes,\n");
+    out("};\n");
+    nl();
 
     out("CIMPLE_NAMESPACE_END\n");
 }
@@ -1574,9 +1605,7 @@ void gen_repository(const vector<string>& classes)
     // Generate source:
 
     {
-	//
 	// Open the file.
-	//
 
 	const char FILENAME[] = "repository.cpp";
 
@@ -1586,21 +1615,12 @@ void gen_repository(const vector<string>& classes)
 	    exit(1);
 	}
 
-	//
 	// Generate file.
-	//
 
 	gen_repository_source_file(classes);
-
-	//
-	// Generate entry point: cimple_repository()
-	//
-
 	printf("Created %s\n", FILENAME);
 
-	//
 	// Close the file.
-	//
 
 	fclose(_os);
     }
@@ -1620,8 +1640,6 @@ int main(int argc, char** argv)
     MOF_include_paths[MOF_num_include_paths++] = ".";
 
     // Process command-line options.
-
-    bool gen_repository_opt = false;
 
     for (int opt; (opt = getopt(argc, argv, "I:M:hrvle")) != -1; )
     {
@@ -1683,6 +1701,17 @@ int main(int argc, char** argv)
 		err("invalid option: %c; try -h for help", opt);
 		break;
 	}
+    }
+
+    // Build meta-repository symbol name:
+
+    if (gen_repository_opt)
+    {
+	cimple::UUID uuid;
+	cimple::create_uuid(uuid);
+	char uuid_str[CIMPLE_UUID_STRING_SIZE];
+	cimple::uuid_to_string(uuid, uuid_str);
+	meta_repository_name = string("__meta_repository_") + string(uuid_str);
     }
 
     // We expect at least one argument.

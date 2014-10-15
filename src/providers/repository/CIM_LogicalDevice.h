@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_LogicalDevice_h
-#define _CIM_LogicalDevice_h
+#ifndef _cimple_CIM_LogicalDevice_h
+#define _cimple_CIM_LogicalDevice_h
 
 #include <cimple/cimple.h>
 #include "CIM_EnabledLogicalElement.h"
@@ -116,4 +116,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_LogicalDevice_h */
+#endif /* _cimple_CIM_LogicalDevice_h */

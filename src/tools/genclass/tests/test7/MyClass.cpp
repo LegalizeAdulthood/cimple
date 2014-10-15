@@ -15,11 +15,28 @@ using namespace cimple;
 
 extern CIMPLE_HIDE const Meta_Property _YourClass_str1;
 
-extern CIMPLE_HIDE const Meta_Property _YourClass_str2;
+extern CIMPLE_HIDE const Meta_Property _MyClass_str2;
+
+const Meta_Property _MyClass_str2 =
+{
+    CIMPLE_FLAG_PROPERTY,
+    "str2",
+    STRING,
+    0,
+    CIMPLE_OFF(MyClass,str2)
+};
 
 extern CIMPLE_HIDE const Meta_Reference _YourClass_obj1;
 
-extern CIMPLE_HIDE const Meta_Reference _YourClass_obj2;
+extern CIMPLE_HIDE const Meta_Reference _MyClass_obj2;
+
+const Meta_Reference _MyClass_obj2 =
+{
+    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
+    "obj2",
+    &Instance_meta_class,
+    CIMPLE_OFF(MyClass,obj2)
+};
 
 extern CIMPLE_HIDE const Meta_Property _MyClass_str3;
 
@@ -45,9 +62,9 @@ const Meta_Reference _MyClass_obj3 =
 static Meta_Feature* _MyClass_meta_features[] =
 {
     (Meta_Feature*)&_YourClass_str1,
-    (Meta_Feature*)&_YourClass_str2,
+    (Meta_Feature*)&_MyClass_str2,
     (Meta_Feature*)&_YourClass_obj1,
-    (Meta_Feature*)&_YourClass_obj2,
+    (Meta_Feature*)&_MyClass_obj2,
     (Meta_Feature*)&_MyClass_str3,
     (Meta_Feature*)&_MyClass_obj3,
 };
@@ -62,6 +79,7 @@ const Meta_Class MyClass::static_meta_class =
     &YourClass::static_meta_class,
     0,
     0x37C63A9B,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

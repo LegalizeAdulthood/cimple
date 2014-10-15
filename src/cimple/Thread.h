@@ -60,12 +60,7 @@ public:
 private:
 
     char _rep[16];
-
 };
-
-extern CIMPLE_LIBCIMPLE_LINKAGE void* (*thread_create_hook)(void*);
-extern CIMPLE_LIBCIMPLE_LINKAGE void* (*thread_start_hook)(void*);
-extern CIMPLE_LIBCIMPLE_LINKAGE void* (*thread_exit_hook)(void*);
 
 CIMPLE_NAMESPACE_END
 

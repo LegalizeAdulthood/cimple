@@ -54,6 +54,16 @@ struct Meta_Class
 
     // 32-bit CRC over entire class:
     uint32 crc;
+
+    // Backpointer to meta-repository (given any class, all other classes in
+    // the same meta-repository can be obtained).
+    const struct Meta_Repository* meta_repository;
+};
+
+struct Meta_Repository
+{
+    const Meta_Class* const* meta_classes;
+    size_t num_meta_classes;
 };
 
 CIMPLE_LIBCIMPLE_LINKAGE
@@ -81,16 +91,23 @@ size_t count_keys(const Meta_Class* mc);
 CIMPLE_LIBCIMPLE_LINKAGE
 extern Meta_Class Instance_meta_class;
 
-typedef void (*Repository_Proc)(const Meta_Class* const*&, size_t&);
+CIMPLE_LIBCIMPLE_LINKAGE
+bool is_local_feature(const Meta_Class* mc, const Meta_Feature* mf);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+bool is_subclass(
+    const Meta_Class* super_class, 
+    const Meta_Class* sub_class);
 
 CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Class* find_meta_class(
-    const Meta_Class* const*meta_classes, 
-    size_t num_meta_classes,
+    const Meta_Repository* meta_repository,
     const char* class_name);
 
 CIMPLE_LIBCIMPLE_LINKAGE
-bool is_local_feature(const Meta_Class* mc, const Meta_Feature* mf);
+const Meta_Class* find_meta_class(
+    const Meta_Class* source_meta_class,
+    const char* class_name);
 
 CIMPLE_NAMESPACE_END
 

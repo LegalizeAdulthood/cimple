@@ -17,7 +17,6 @@ SOURCES = \
     Files.cpp \
     Module.cpp \
     Module_IO.cpp \
-    Repository.cpp \
     State.cpp \
     Status.cpp
 

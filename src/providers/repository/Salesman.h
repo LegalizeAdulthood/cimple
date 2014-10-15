@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Salesman_h
-#define _Salesman_h
+#ifndef _cimple_Salesman_h
+#define _cimple_Salesman_h
 
 #include <cimple/cimple.h>
 #include "Person.h"
@@ -28,4 +28,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Salesman_h */
+#endif /* _cimple_Salesman_h */

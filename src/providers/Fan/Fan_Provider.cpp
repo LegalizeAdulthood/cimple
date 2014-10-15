@@ -88,7 +88,15 @@ Delete_Instance_Status Fan_Provider::delete_instance(
 Modify_Instance_Status Fan_Provider::modify_instance(
     const Fan* instance)
 {
-    return MODIFY_INSTANCE_UNSUPPORTED;
+    Fan* fan = _map.lookup(instance);
+
+    if (fan)
+    {
+	copy(fan, instance);
+	return MODIFY_INSTANCE_OK;
+    }
+
+    return MODIFY_INSTANCE_NOT_FOUND;
 }
 
 Invoke_Method_Status Fan_Provider::SetSpeed(

@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CCC_h
-#define _CCC_h
+#ifndef _cimple_CCC_h
+#define _cimple_CCC_h
 
 #include <cimple/cimple.h>
 #include "BBB.h"
@@ -36,4 +36,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CCC_h */
+#endif /* _cimple_CCC_h */

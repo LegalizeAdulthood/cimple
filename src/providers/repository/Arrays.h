@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Arrays_h
-#define _Arrays_h
+#ifndef _cimple_Arrays_h
+#define _cimple_Arrays_h
 
 #include <cimple/cimple.h>
 
@@ -23,4 +23,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Arrays_h */
+#endif /* _cimple_Arrays_h */

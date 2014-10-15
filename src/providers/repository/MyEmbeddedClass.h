@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _MyEmbeddedClass_h
-#define _MyEmbeddedClass_h
+#ifndef _cimple_MyEmbeddedClass_h
+#define _cimple_MyEmbeddedClass_h
 
 #include <cimple/cimple.h>
 
@@ -22,4 +22,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _MyEmbeddedClass_h */
+#endif /* _cimple_MyEmbeddedClass_h */

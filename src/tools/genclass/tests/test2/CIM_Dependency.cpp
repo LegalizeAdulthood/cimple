@@ -49,6 +49,7 @@ const Meta_Class CIM_Dependency::static_meta_class =
     0,
     2,
     0xFE53221F,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

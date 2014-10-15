@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_EnabledLogicalElement_h
-#define _CIM_EnabledLogicalElement_h
+#ifndef _cimple_CIM_EnabledLogicalElement_h
+#define _cimple_CIM_EnabledLogicalElement_h
 
 #include <cimple/cimple.h>
 #include "CIM_LogicalElement.h"
@@ -44,7 +44,7 @@ class CIMPLE_LINKAGE CIM_EnabledLogicalElement_RequestStateChange_method : publi
 {
 public:
     Property<uint16> RequestedState;
-    CIM_ConcreteJob* Job;
+    CIMPLE_REF(CIM_ConcreteJob,Job);
     Property<Datetime> TimeoutPeriod;
     Property<uint32> return_value;
     CIMPLE_METHOD(CIM_EnabledLogicalElement_RequestStateChange_method)
@@ -52,4 +52,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_EnabledLogicalElement_h */
+#endif /* _cimple_CIM_EnabledLogicalElement_h */

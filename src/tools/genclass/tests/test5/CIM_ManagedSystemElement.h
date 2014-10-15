@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_ManagedSystemElement_h
-#define _CIM_ManagedSystemElement_h
+#ifndef _cimple_CIM_ManagedSystemElement_h
+#define _cimple_CIM_ManagedSystemElement_h
 
 #include <cimple/cimple.h>
 #include "CIM_ManagedElement.h"
@@ -32,4 +32,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_ManagedSystemElement_h */
+#endif /* _cimple_CIM_ManagedSystemElement_h */

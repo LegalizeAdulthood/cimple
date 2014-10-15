@@ -127,6 +127,7 @@ const Meta_Class CIM_CommonDatabase::static_meta_class =
     &CIM_EnabledLogicalElement::static_meta_class,
     1,
     0x8A85F4E2,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

@@ -36,6 +36,7 @@ const Meta_Class CIM_OrganizationalEntity::static_meta_class =
     &CIM_ManagedElement::static_meta_class,
     0,
     0x4540D7DA,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

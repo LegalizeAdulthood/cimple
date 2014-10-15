@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _UnixUser_h
-#define _UnixUser_h
+#ifndef _cimple_UnixUser_h
+#define _cimple_UnixUser_h
 
 #include <cimple/cimple.h>
 
@@ -28,4 +28,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _UnixUser_h */
+#endif /* _cimple_UnixUser_h */

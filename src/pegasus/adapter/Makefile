@@ -5,6 +5,7 @@ include $(ROOT)/mak/config.mak
 LIBRARY = cimplepegadap
 
 SOURCES = \
+    Pegasus_Thread_Context.cpp \
     Pegasus_Adapter.cpp \
     Converter.cpp \
     CStr.cpp

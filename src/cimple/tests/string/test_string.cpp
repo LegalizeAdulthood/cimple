@@ -453,6 +453,8 @@ int main(int argc, char** argv)
 	v.remove(0, 1);
 	v.remove(0, 1);
 
+	assert(sizeof(String) == 8);
+
 	printf("+++++ passed all tests (%s)\n", argv[0]);
     }
 

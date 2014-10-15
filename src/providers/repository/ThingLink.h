@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _ThingLink_h
-#define _ThingLink_h
+#ifndef _cimple_ThingLink_h
+#define _cimple_ThingLink_h
 
 #include <cimple/cimple.h>
 #include "Thing.h"
@@ -17,12 +17,12 @@ class CIMPLE_LINKAGE ThingLink : public Instance
 {
 public:
     // ThingLink features:
-    Thing* left;
-    Thing* right;
+    CIMPLE_REF(Thing,left);
+    CIMPLE_REF(Thing,right);
 
     CIMPLE_CLASS(ThingLink)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _ThingLink_h */
+#endif /* _cimple_ThingLink_h */

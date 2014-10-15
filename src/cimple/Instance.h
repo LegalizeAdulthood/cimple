@@ -30,10 +30,11 @@
 #include "config.h"
 #include "Meta_Class.h"
 #include "Array.h"
-#include "Destroyer.h"
 #include "Atomic.h"
+#include "Buffer.h"
 
 #define CIMPLE_MAX_REFERENCES_PER_CLASS 16
+#define CIMPLE_REF(CLASS,NAME) union { uint64 _padding##NAME; CLASS* NAME; }
 
 #define CIMPLE_CLASS(CLASS) \
     public: \
@@ -82,12 +83,24 @@ CIMPLE_NAMESPACE_BEGIN
 struct Meta_Property;
 
 /** Base class for all generated CIM classes and CIM method objects.
+    Note: sizeof(Instance) == 24 on all platforms.
 */
 struct Instance
 {
     uint32 magic;
-    Atomic refs;
-    const Meta_Class* meta_class;
+    uint32 __padding1;
+
+    union
+    {
+	uint64 __padding2;
+	Atomic refs;
+    };
+
+    union
+    {
+	uint64 __padding3;
+	const Meta_Class* meta_class;
+    };
 };
 
 /** Creates an instance from the given meta class. For each property, the 
@@ -123,7 +136,7 @@ Instance* key_clone(const Instance* instance);
 /** Print this instance to the standard output device.
 */
 CIMPLE_LIBCIMPLE_LINKAGE
-void print(const Instance* instance);
+void print(const Instance* instance, bool keys_only = false);
 
 CIMPLE_LIBCIMPLE_LINKAGE
 void __set_null_flags(
@@ -320,6 +333,33 @@ void unref(const Instance* instance);
 
 CIMPLE_LIBCIMPLE_LINKAGE
 int filter_properties(Instance* instance, const char* const* properties);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+void pack_instance(Buffer& out, const Instance* inst, bool keys_only = false);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+int unpack_instance(
+    const Buffer& in, 
+    size_t& pos, 
+    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
+    void* client_data,
+    Instance*& inst);
+
+// This class parses a CIM model path of the following form.
+//
+//     MyClass.key1=value1,key2=value2
+//
+// It returns a pointer to the newly formed instance. The class that appears
+// in the model path must be obtainable (directly or indirectly) from the 
+// source_meta_class. Note that all classes within a repository are reachable
+// from any given class in that repository since each class has a back pointer
+// to an array of all other classes, which is only true if the -r option was
+// passed to genclass when the source class was generated.
+//
+CIMPLE_LIBCIMPLE_LINKAGE
+Instance* __model_path_to_instance(
+    const Meta_Class* source_meta_class, 
+    const char* path);
 
 CIMPLE_NAMESPACE_END
 

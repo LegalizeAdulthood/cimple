@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_MediaAccessDevice_h
-#define _CIM_MediaAccessDevice_h
+#ifndef _cimple_CIM_MediaAccessDevice_h
+#define _cimple_CIM_MediaAccessDevice_h
 
 #include <cimple/cimple.h>
 #include "CIM_LogicalDevice.h"
@@ -109,4 +109,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_MediaAccessDevice_h */
+#endif /* _cimple_CIM_MediaAccessDevice_h */

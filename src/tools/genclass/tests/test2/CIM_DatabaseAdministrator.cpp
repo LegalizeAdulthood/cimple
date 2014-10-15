@@ -49,6 +49,7 @@ const Meta_Class CIM_DatabaseAdministrator::static_meta_class =
     &CIM_Dependency::static_meta_class,
     2,
     0xEF2153FB,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

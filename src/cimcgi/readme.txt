@@ -1,3 +1,8 @@
+NOTE: CIM-CGI is broken in this release. It will be restored in a subsequent
+release. The problem is that it depends on having a cimple_repository()
+entry point, which has been eliminated for now. A way of defining such
+an entry point as part of a meta-repository and associating it with a CIM-CGI
+module will solve this problem.
 
 SYNOPSIS:
 =========

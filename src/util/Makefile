@@ -6,6 +6,8 @@ SH_LIBRARY = cimpleutil
 SOURCES = \
     util.cpp \
     crc.cpp \
+    MAC.cpp \
+    UUID.cpp
 
 LIBRARIES =
 

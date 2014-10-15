@@ -48,6 +48,7 @@ const Meta_Class D::static_meta_class =
     &C::static_meta_class,
     0,
     0x40E298B8,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

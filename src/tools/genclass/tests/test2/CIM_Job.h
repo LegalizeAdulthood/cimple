@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_Job_h
-#define _CIM_Job_h
+#ifndef _cimple_CIM_Job_h
+#define _cimple_CIM_Job_h
 
 #include <cimple/cimple.h>
 #include "CIM_LogicalElement.h"
@@ -65,4 +65,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_Job_h */
+#endif /* _cimple_CIM_Job_h */

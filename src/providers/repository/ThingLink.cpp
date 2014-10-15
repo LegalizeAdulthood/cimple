@@ -13,6 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
+extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+
 extern CIMPLE_HIDE const Meta_Reference _ThingLink_left;
 
 const Meta_Reference _ThingLink_left =
@@ -49,6 +51,7 @@ const Meta_Class ThingLink::static_meta_class =
     0,
     2,
     0x32F93684,
+    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
 };
 
 CIMPLE_NAMESPACE_END

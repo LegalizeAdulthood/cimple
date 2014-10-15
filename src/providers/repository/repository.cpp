@@ -51,6 +51,9 @@ static const Meta_Class* _meta_classes[] =
     &Lamp::static_meta_class,
     &LampLink::static_meta_class,
     &LampIndic::static_meta_class,
+    &LampIndicA::static_meta_class,
+    &LampIndicB::static_meta_class,
+    &LampIndicC::static_meta_class,
     &XYZ_Lamp::static_meta_class,
     &XYZ_LampLink::static_meta_class,
     &XYZ_LampIndic::static_meta_class,
@@ -58,12 +61,12 @@ static const Meta_Class* _meta_classes[] =
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);
 
-CIMPLE_ENTRY_POINT void cimple_repository(
-    const Meta_Class* const*& meta_classes,
-    size_t& num_meta_classes)
+extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+
+const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D =
 {
-   meta_classes = _meta_classes; 
-   num_meta_classes = _num_meta_classes; 
-}
+    _meta_classes,
+    _num_meta_classes,
+};
 
 CIMPLE_NAMESPACE_END

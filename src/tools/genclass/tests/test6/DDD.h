@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _DDD_h
-#define _DDD_h
+#ifndef _cimple_DDD_h
+#define _cimple_DDD_h
 
 #include <cimple/cimple.h>
 #include "CCC.h"
@@ -40,4 +40,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _DDD_h */
+#endif /* _cimple_DDD_h */

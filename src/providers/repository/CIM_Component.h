@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_Component_h
-#define _CIM_Component_h
+#ifndef _cimple_CIM_Component_h
+#define _cimple_CIM_Component_h
 
 #include <cimple/cimple.h>
 #include "CIM_ManagedElement.h"
@@ -17,12 +17,12 @@ class CIMPLE_LINKAGE CIM_Component : public Instance
 {
 public:
     // CIM_Component features:
-    CIM_ManagedElement* GroupComponent;
-    CIM_ManagedElement* PartComponent;
+    CIMPLE_REF(CIM_ManagedElement,GroupComponent);
+    CIMPLE_REF(CIM_ManagedElement,PartComponent);
 
     CIMPLE_CLASS(CIM_Component)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_Component_h */
+#endif /* _cimple_CIM_Component_h */

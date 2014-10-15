@@ -53,6 +53,8 @@ public:
 
 private:
     Instance_Map<Person> _map;
+    Thread _thread;
+    Atomic_Counter _stop;
 };
 
 CIMPLE_NAMESPACE_END

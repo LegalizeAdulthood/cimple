@@ -30,7 +30,6 @@
 #include <cimple/Raw_Array.h>
 #include "Envelope.h"
 #include "Module.h"
-#include "Repository.h"
 #include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -44,8 +43,7 @@ public:
 
     /** Creates a new cache by scanning the given directory for modules
 	and repositories. This causes every library to be loaded (whether 
-	it has the cimple_module() or cimple_repository() entry points or
-	not).
+	it has a cimple_module() or not).
 	@param path directory containing the providers or repositories.
 	@return pointer to a new cache or null on error.
     */
@@ -83,13 +81,10 @@ private:
     ~Cache();
 
     int _add_module(void* handle, Module_Proc module_proc);
-    int _add_repository(void* handle, Repository_Proc repository_proc);
     int _add_meta_class(const Meta_Class* meta_class);
 
     Raw_Array<Module*> _modules;
-    Raw_Array<Repository*> _repositories;
     Raw_Array<Envelope*> _envelopes;
-    Raw_Array<const Meta_Class*> _meta_classes;
 };
 
 inline size_t Cache::num_modules() const

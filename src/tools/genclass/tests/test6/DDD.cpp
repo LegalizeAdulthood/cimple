@@ -84,6 +84,7 @@ const Meta_Class DDD::static_meta_class =
     &CCC::static_meta_class,
     2,
     0x0D139C11,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

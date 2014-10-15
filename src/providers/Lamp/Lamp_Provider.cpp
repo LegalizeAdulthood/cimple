@@ -1,4 +1,5 @@
 #include "Lamp_Provider.h"
+#include "Fan.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -7,6 +8,76 @@ CIMPLE_NAMESPACE_BEGIN
 #else
 # define TRACE
 #endif
+
+static void _test_cimom_ops()
+{
+    Ref<Fan> fan(Fan::create());
+    Instance_Enumerator e;
+
+    printf("===== cimom::enum_instances()\n");
+    
+    if (cimom::enum_instances("root/cimv2", fan, e) == 0)
+    {
+	for (; e; e++)
+	    print(e());
+    }
+
+    printf("===== cimom::get_instance()\n");
+
+    {
+	Ref<Fan> keys(Fan::create());
+	keys->DeviceID.value = "FAN01";
+	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys);
+	print(inst);
+    }
+
+    printf("===== cimom::modify_instance()\n");
+
+    {
+	Ref<Fan> inst(Fan::create());
+
+	inst->DeviceID.value = "FAN01";
+	inst->Speed.value = 1111;
+	inst->DesiredSpeed.value = 1111;
+	int result = cimom::modify_instance("root/cimv2", inst);
+
+	if (result != 0)
+	    printf("failed\n");
+    }
+
+    printf("===== cimom::get_instance()\n");
+
+    {
+	Ref<Fan> keys(Fan::create());
+	keys->DeviceID.value = "FAN01";
+	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys);
+	print(inst);
+    }
+
+    printf("===== cimom::delete_instance()\n");
+
+    {
+	Ref<Fan> key(Fan::create());
+	key->DesiredSpeed.value = 1111;
+	int result = cimom::delete_instance("root/cimv2", key);
+
+	if (result != 0)
+	    printf("cimom::delete_instance() failed\n");
+    }
+
+    printf("===== cimom::get_instance()\n");
+
+    {
+	Ref<Fan> keys(Fan::create());
+	keys->DeviceID.value = "FAN01";
+	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys);
+
+	if (inst)
+	    print(inst);
+	else
+	    printf("cimom::get_instance() failed\n");
+    }
+}
 
 Lamp_Provider::Lamp_Provider()
 {
@@ -58,6 +129,7 @@ Get_Instance_Status Lamp_Provider::get_instance(
     Lamp*& instance)
 {
     TRACE;
+
     return _map.get_instance(model, instance);
 }
 

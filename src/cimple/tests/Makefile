@@ -4,14 +4,16 @@ include $(TOP)/mak/config.mak
 DIRS = \
     mutex \
     cond_queue \
-    vla \
+    array \
     string \
     property \
     meta \
-    cast \
     sizes \
+    cast \
     time \
-    join
+    join \
+    encoding \
+    model_path
 
 BROKEN_TESTS = \
     datetime \

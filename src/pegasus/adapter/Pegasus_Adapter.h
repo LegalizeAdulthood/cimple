@@ -147,6 +147,7 @@ private:
     Pegasus::IndicationResponseHandler* _handler;
     Pegasus::AtomicInt _handler_refs;
     const Meta_Class* _mc;
+    Pegasus::CIMOMHandle* _cimom_handle;
 };
 
 CIMPLE_NAMESPACE_END

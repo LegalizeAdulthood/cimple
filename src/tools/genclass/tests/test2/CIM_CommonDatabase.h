@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_CommonDatabase_h
-#define _CIM_CommonDatabase_h
+#ifndef _cimple_CIM_CommonDatabase_h
+#define _cimple_CIM_CommonDatabase_h
 
 #include <cimple/cimple.h>
 #include "CIM_EnabledLogicalElement.h"
@@ -50,4 +50,4 @@ typedef CIM_EnabledLogicalElement_RequestStateChange_method CIM_CommonDatabase_R
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_CommonDatabase_h */
+#endif /* _cimple_CIM_CommonDatabase_h */

@@ -41,6 +41,10 @@ struct Property
 {
     T value;
     uint8 null;
+
+private:
+    // Pad up to the next multiple of 8 bytes.
+    uint8 __padding[(((sizeof(T) + 1) + 7) & ~7) - (sizeof(T) + 1)];
 };
 
 CIMPLE_NAMESPACE_END

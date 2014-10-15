@@ -813,6 +813,9 @@ CMPIrc make_cmpi_instance(
 
     cmpi_inst = CMNewInstance(broker, cmpi_op, NULL);
 
+    if (!cmpi_inst)
+	RETURN(CMPI_RC_ERR_FAILED);
+
     // ATTN: check that the properties that CMPI added to the object,
     // are compatible with the ones in the meta-data.
 
@@ -834,6 +837,7 @@ CMPIrc make_cmpi_instance(
 		CMPIValue value;
 		CMPIType type;
 		_to_cmpi_value(broker, mp, prop, value, type);
+
 		CMSetProperty(cmpi_inst, mp->name, &value, type);
 	    }
 	}
@@ -873,7 +877,7 @@ CMPIrc make_cimple_instance(
     // Create the instance:
 
     Instance* cimple_inst = create(mc);
-    Destroyer<Instance> cimple_inst_d(cimple_inst);
+    Ref<Instance> cimple_inst_d(cimple_inst);
 
     // For each property of the CMPI instance.
 
@@ -930,7 +934,7 @@ CMPIrc make_method(
 
     Instance* meth = create(mm);
     nullify_properties(meth);
-    Destroyer<Instance> meth_d(meth);
+    Ref<Instance> meth_d(meth);
 
     for (size_t i = 0, n = CMGetArgCount(in, NULL); i < n; i++)
     {

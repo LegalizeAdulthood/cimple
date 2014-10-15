@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _LinuxComputerSystem_h
-#define _LinuxComputerSystem_h
+#ifndef _cimple_LinuxComputerSystem_h
+#define _cimple_LinuxComputerSystem_h
 
 #include <cimple/cimple.h>
 #include "CIM_ComputerSystem.h"
@@ -62,4 +62,4 @@ typedef CIM_ComputerSystem_SetPowerState_method LinuxComputerSystem_SetPowerStat
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _LinuxComputerSystem_h */
+#endif /* _cimple_LinuxComputerSystem_h */

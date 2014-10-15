@@ -1,6 +1,90 @@
 #include "Person_Provider.h"
+#include "Fan.h"
 
 CIMPLE_NAMESPACE_BEGIN
+
+static void _test_cimom_ops()
+{
+    Ref<Fan> fan(Fan::create());
+    Instance_Enumerator e;
+
+    printf("===== cimom::enum_instances()\n");
+    
+    if (cimom::enum_instances("root/cimv2", fan, e) == 0)
+    {
+	for (; e; e++)
+	    print(e());
+    }
+
+    printf("===== cimom::get_instance()\n");
+
+    {
+	Ref<Fan> keys(Fan::create());
+	keys->DeviceID.value = "FAN01";
+	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys);
+	print(inst);
+    }
+
+    printf("===== cimom::modify_instance()\n");
+
+    {
+	Ref<Fan> inst(Fan::create());
+
+	inst->DeviceID.value = "FAN01";
+	inst->Speed.value = 1111;
+	inst->DesiredSpeed.value = 1111;
+	int result = cimom::modify_instance("root/cimv2", inst);
+
+	if (result != 0)
+	    printf("failed\n");
+    }
+
+    printf("===== cimom::get_instance()\n");
+
+    {
+	Ref<Fan> keys(Fan::create());
+	keys->DeviceID.value = "FAN01";
+	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys);
+	print(inst);
+    }
+
+    printf("===== cimom::delete_instance()\n");
+
+    {
+	Ref<Fan> key(Fan::create());
+	key->DesiredSpeed.value = 1111;
+	int result = cimom::delete_instance("root/cimv2", key);
+
+	if (result != 0)
+	    printf("cimom::delete_instance() failed\n");
+    }
+
+    printf("===== cimom::get_instance()\n");
+
+    {
+	Ref<Fan> keys(Fan::create());
+	keys->DeviceID.value = "FAN01";
+	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys);
+
+	if (inst)
+	    print(inst);
+	else
+	    printf("cimom::get_instance() failed\n");
+    }
+}
+
+static void* _thread_proc(void* arg)
+{
+    Atomic_Counter& stop = *((Atomic_Counter*)arg);
+
+    while (stop.get() == 0)
+    {
+	Time::sleep(Time::SEC);
+	_test_cimom_ops();
+    }
+
+    return 0;
+}
 
 Person_Provider::Person_Provider()
 {
@@ -12,6 +96,10 @@ Person_Provider::~Person_Provider()
 
 Load_Status Person_Provider::load()
 {
+#if USE_THREAD
+    Thread::create_joinable(_thread, _thread_proc, &_stop);
+#endif
+
     {
 	Person* instance = Person::create();
 	instance->ssn.value = 1;
@@ -49,7 +137,14 @@ Load_Status Person_Provider::load()
 
 Unload_Status Person_Provider::unload()
 {
+#if USE_THREAD
+    _stop.inc();
+    void* value_ptr = 0;
+    Thread::join(_thread, value_ptr);
+#endif
+
     _map.clear();
+
     return UNLOAD_OK;
 }
 

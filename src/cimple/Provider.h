@@ -327,12 +327,6 @@ typedef int (*Provider_Proc)(
     void* arg6,
     void* arg7);
 
-/** Every provider must resolve this symbol.
-*/
-extern "C" CIMPLE_EXPORT void cimple_repository(
-    const Meta_Class* const*& meta_classes,
-    size_t& num_meta_classes);
-
 /** Operations common to all provider types (i.e., instance providers and
     association providers).
 */
@@ -395,12 +389,13 @@ public:
 
 	    case OPERATION_GET_REPOSITORY:
 	    {
-		const Meta_Class* const** meta_classes = 
-		    (const Meta_Class* const**)arg0;
+		const Meta_Repository*& meta_repository = 
+		    *((const Meta_Repository**)arg0);
 
-		size_t* num_meta_classes = (size_t*)arg1;
+		const Meta_Class* mc = (Meta_Class*)&CLASS::static_meta_class;
 
-		cimple_repository(*meta_classes, *num_meta_classes);
+		meta_repository = mc->meta_repository;
+
 		return GET_REPOSITORY_OK;
 	    }
 

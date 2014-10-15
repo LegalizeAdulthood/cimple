@@ -39,6 +39,7 @@ const Meta_Class BBB::static_meta_class =
     0,
     0,
     0x0F3721B9,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

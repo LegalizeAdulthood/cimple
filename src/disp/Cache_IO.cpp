@@ -34,11 +34,6 @@ void Cache::dump() const
 
     for (size_t i = 0; i < _modules.size(); i++)
 	_modules[i]->dump();
-
-    // Print the classes.
-
-    for (size_t i = 0; i < _meta_classes.size(); i++)
-	printf("class: %s\n", _meta_classes[i]->name);
 }
 
 CIMPLE_NAMESPACE_END

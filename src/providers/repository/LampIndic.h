@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _LampIndic_h
-#define _LampIndic_h
+#ifndef _cimple_LampIndic_h
+#define _cimple_LampIndic_h
 
 #include <cimple/cimple.h>
 #include "CIM_Indication.h"
@@ -37,4 +37,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _LampIndic_h */
+#endif /* _cimple_LampIndic_h */

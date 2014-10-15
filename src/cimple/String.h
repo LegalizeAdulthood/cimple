@@ -105,6 +105,8 @@ public:
 
     bool equali(const char* s, size_t n) const;
 
+    size_t find(char c) const;
+
     /** Returns true if the given string is a prefix of this string.
     */
     bool is_prefix(const char* s, size_t n) const;
@@ -135,7 +137,13 @@ private:
     void _reserve(size_t n);
 
     static Rep _empty;
-    Rep* _rep;
+
+    union
+    {
+	// Pad to make sizeof(String) exactly 8 bytes.
+	uint64 padding;
+	Rep* _rep;
+    };
 };
 
 inline void String::_ref(const String::Rep* rep)

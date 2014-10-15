@@ -2,6 +2,9 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "LampIndic_Provider.h"
+#include <LampIndicA.h>
+#include <LampIndicB.h>
+#include <LampIndicC.h>
 
 #if 0
 # define TRACE CIMPLE_TRACE
@@ -21,10 +24,16 @@ static void _send_indication(
 
     if (handler)
     {
-	LampIndic* indic = LampIndic::create();
+	LampIndicA* indic = LampIndicA::create();
 	indic->IndicationIdentifier.value = "GOODBYE";
 	indic->IndicationIdentifier.null = false;
-	handler->handle(indic);
+	indic->message.value = "Same old message";
+	indic->message.null = false;
+
+	LampIndic* tmp = cast<LampIndic*>(indic);
+	// print(tmp);
+
+	handler->handle(cast<LampIndic*>(indic));
     }
 }
 

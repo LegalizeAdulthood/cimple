@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _YourClass_h
-#define _YourClass_h
+#ifndef _cimple_YourClass_h
+#define _cimple_YourClass_h
 
 #include <cimple/cimple.h>
 
@@ -17,12 +17,12 @@ public:
     // YourClass features:
     Property<String> str1;
     Property<String> str2;
-    Instance* obj1;
-    Instance* obj2;
+    CIMPLE_REF(Instance,obj1);
+    CIMPLE_REF(Instance,obj2);
 
     CIMPLE_CLASS(YourClass)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _YourClass_h */
+#endif /* _cimple_YourClass_h */

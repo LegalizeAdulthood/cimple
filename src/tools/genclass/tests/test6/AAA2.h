@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _AAA2_h
-#define _AAA2_h
+#ifndef _cimple_AAA2_h
+#define _cimple_AAA2_h
 
 #include <cimple/cimple.h>
 #include "AAA.h"
@@ -16,8 +16,8 @@ class AAA2 : public Instance
 {
 public:
     // AAA features:
-    CCC* left;
-    DDD* right;
+    CIMPLE_REF(CCC,left);
+    CIMPLE_REF(DDD,right);
 
     // AAA2 features:
     Property<uint32> aaa;
@@ -29,4 +29,4 @@ typedef AAA_fool_method AAA2_fool_method;
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _AAA2_h */
+#endif /* _cimple_AAA2_h */

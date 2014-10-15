@@ -93,8 +93,7 @@ public:
 	void* client_data);
 
     Get_Repository_Status get_repository(
-        const Meta_Class* const*& meta_classes,
-	size_t& num_meta_classes);
+        const Meta_Repository*& meta_repository);
 
 protected:
 
@@ -203,12 +202,11 @@ inline Disable_Indications_Status Provider_Handle::disable_indications()
 }
 
 inline Get_Repository_Status Provider_Handle::get_repository(
-    const Meta_Class* const*& meta_classes,
-    size_t& num_meta_classes)
+    const Meta_Repository*& meta_repository)
 {
     return (Get_Repository_Status)_proc(_registration,
 	OPERATION_GET_REPOSITORY, 
-	(void*)&meta_classes, (void*)&num_meta_classes, 0, 0, 0, 0, 0, 0);
+	(void*)&meta_repository, 0, 0, 0, 0, 0, 0, 0);
 }
 
 CIMPLE_NAMESPACE_END

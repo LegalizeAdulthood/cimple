@@ -7,6 +7,11 @@
 
 using namespace cimple;
 
+/*
+ATTN: cimcgi broken for now since it depends on cimple_repository() entry
+point.
+*/
+
 // Extend this class so we can squeeze in some client data.
 struct CIMCGI_Registration : public Registration
 {

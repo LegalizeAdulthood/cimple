@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _B_h
-#define _B_h
+#ifndef _cimple_B_h
+#define _cimple_B_h
 
 #include <cimple/cimple.h>
 #include "A.h"
@@ -26,4 +26,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _B_h */
+#endif /* _cimple_B_h */

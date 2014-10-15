@@ -64,5 +64,6 @@ inline int vsnprintf(char* str, size_t size, const char* format, va_list ap)
 
 typedef __int32 ssize_t;
 
+#define CIMPLE_BIG_ENDIAN
 
 #endif /* _cimple_WIN32_IX86_MSVC_h */

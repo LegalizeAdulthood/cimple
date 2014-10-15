@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_SystemDevice_h
-#define _CIM_SystemDevice_h
+#ifndef _cimple_CIM_SystemDevice_h
+#define _cimple_CIM_SystemDevice_h
 
 #include <cimple/cimple.h>
 #include "CIM_SystemComponent.h"
@@ -18,8 +18,8 @@ class CIMPLE_LINKAGE CIM_SystemDevice : public Instance
 {
 public:
     // CIM_Component features:
-    CIM_System* GroupComponent;
-    CIM_LogicalDevice* PartComponent;
+    CIMPLE_REF(CIM_System,GroupComponent);
+    CIMPLE_REF(CIM_LogicalDevice,PartComponent);
 
     // CIM_SystemComponent features:
 
@@ -30,4 +30,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_SystemDevice_h */
+#endif /* _cimple_CIM_SystemDevice_h */

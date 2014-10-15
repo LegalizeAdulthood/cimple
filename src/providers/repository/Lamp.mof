@@ -21,3 +21,21 @@ class LampIndic : CIM_Indication
     string message;
     [Static] uint32 DeliverIndications();
 };
+
+[Indication]
+class LampIndicA : LampIndic
+{
+    string messageA;
+};
+
+[Indication]
+class LampIndicB : LampIndic
+{
+    string messageB;
+};
+
+[Indication]
+class LampIndicC : LampIndic
+{
+    string messageC;
+};

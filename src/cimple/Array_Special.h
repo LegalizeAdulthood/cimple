@@ -50,37 +50,37 @@ public:
 
     void clear()
     {
-	remove(0, _size);
+	remove(0, _rep->size);
     }
 
     size_t size() const 
     { 
-	return _size; 
+	return _rep->size; 
     }
 
     size_t capacity() const 
     { 
-	return _cap; 
+	return _rep->cap; 
     }
 
     const CIMPLE_T* data() const 
     { 
-	return (CIMPLE_T*)_data; 
+	return (CIMPLE_T*)_rep->data; 
     }
 
     CIMPLE_T* data() 
     { 
-	return (CIMPLE_T*)_data; 
+	return (CIMPLE_T*)_rep->data; 
     }
 
     CIMPLE_T& operator[](size_t pos) 
     { 
-	return ((CIMPLE_T*)_data)[pos]; 
+	return ((CIMPLE_T*)_rep->data)[pos]; 
     }
 
     const CIMPLE_T& operator[](size_t pos) const 
     { 
-	return ((CIMPLE_T*)_data)[pos]; 
+	return ((CIMPLE_T*)_rep->data)[pos]; 
     }
 
     void resize(size_t size) 

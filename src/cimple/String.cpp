@@ -231,6 +231,12 @@ void String::set(size_t i, char c)
     _rep->data[i] = c;
 }
 
+size_t String::find(char c) const
+{
+    char* p = strchr(_rep->data, c);
+    return p ? (p - _rep->data) : size_t(-1);
+}
+
 CIMPLE_NAMESPACE_END
 
 /* 

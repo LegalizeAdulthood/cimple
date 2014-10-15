@@ -21,7 +21,16 @@ extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
 
 extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
+extern CIMPLE_HIDE const Meta_Property _CIM_System_Name;
+
+const Meta_Property _CIM_System_Name =
+{
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    "Name",
+    STRING,
+    0,
+    CIMPLE_OFF(CIM_System,Name)
+};
 
 extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
@@ -100,7 +109,7 @@ static Meta_Feature* _CIM_System_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedElement_Description,
     (Meta_Feature*)&_CIM_ManagedElement_ElementName,
     (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)&_CIM_System_Name,
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
@@ -127,6 +136,7 @@ const Meta_Class CIM_System::static_meta_class =
     &CIM_EnabledLogicalElement::static_meta_class,
     2,
     0x99E12464,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

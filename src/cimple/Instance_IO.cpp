@@ -133,8 +133,8 @@ struct IO
 	printf("{ ");
 
 	Array_Base* base = (Array_Base*)ptr;
-	const char* data = base->_data;
-	size_t size = base->_size;
+	const char* data = base->_rep->data;
+	size_t size = base->_rep->size;
 
 	for (size_t i = 0; i < size; i++)
 	{
@@ -183,7 +183,8 @@ struct IO
 	printf(";\n");
     }
 
-    static void _print_aux(const Instance* inst, const char* name, size_t level)
+    static void _print_aux(
+	const Instance* inst, const char* name, size_t level, bool keys_only)
     {
 	CIMPLE_ASSERT(inst != 0);
 	CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
@@ -200,6 +201,9 @@ struct IO
 	for (size_t i = 0; i < mc->num_meta_features; i++)
 	{
 	    uint32 flags = mc->meta_features[i]->flags;
+
+	    if (keys_only && !(flags & CIMPLE_FLAG_KEY))
+		continue;
 
 	    // Skip non-keys if we are not at the top level.
 
@@ -225,7 +229,7 @@ struct IO
 		Instance* tmp = *((Instance**)((uint8*)inst + mr->offset));
 
 		if (tmp)
-		    _print_aux(tmp, mr->name, level);
+		    _print_aux(tmp, mr->name, level, keys_only);
 		else
 		    iprintf(level, "%s %s = null;\n", 
 			mr->meta_class->name, mr->name);
@@ -238,9 +242,9 @@ struct IO
     }
 };
 
-void print(const Instance* inst)
+void print(const Instance* inst, bool keys_only)
 {
-    IO::_print_aux(inst, 0, 0);
+    IO::_print_aux(inst, 0, 0, keys_only);
 }
 
 CIMPLE_NAMESPACE_END

@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Lamp_h
-#define _Lamp_h
+#ifndef _cimple_Lamp_h
+#define _cimple_Lamp_h
 
 #include <cimple/cimple.h>
 
@@ -34,4 +34,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Lamp_h */
+#endif /* _cimple_Lamp_h */

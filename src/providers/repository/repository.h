@@ -48,15 +48,14 @@
 #include "Lamp.h"
 #include "LampLink.h"
 #include "LampIndic.h"
+#include "LampIndicA.h"
+#include "LampIndicB.h"
+#include "LampIndicC.h"
 #include "XYZ_Lamp.h"
 #include "XYZ_LampLink.h"
 #include "XYZ_LampIndic.h"
 
 CIMPLE_NAMESPACE_BEGIN
-
-CIMPLE_ENTRY_POINT void cimple_repository(
-    const Meta_Class* const*& meta_classes,
-    size_t& num_meta_classes);
 
 CIMPLE_NAMESPACE_END
 

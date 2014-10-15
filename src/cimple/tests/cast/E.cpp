@@ -39,6 +39,7 @@ const Meta_Class E::static_meta_class =
     0,
     0,
     0x40B42E8F,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

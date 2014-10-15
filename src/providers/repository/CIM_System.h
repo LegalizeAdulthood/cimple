@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_System_h
-#define _CIM_System_h
+#ifndef _cimple_CIM_System_h
+#define _cimple_CIM_System_h
 
 #include <cimple/cimple.h>
 #include "CIM_EnabledLogicalElement.h"
@@ -50,4 +50,4 @@ typedef CIM_EnabledLogicalElement_RequestStateChange_method CIM_System_RequestSt
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_System_h */
+#endif /* _cimple_CIM_System_h */

@@ -58,37 +58,37 @@ public:
 
     void clear()
     {
-	remove(0, _size);
+	remove(0, _rep->size);
     }
 
     size_t size() const 
     { 
-	return _size; 
+	return _rep->size; 
     }
 
     size_t capacity() const 
     { 
-	return _cap; 
+	return _rep->cap; 
     }
 
     const T* data() const 
     { 
-	return (T*)_data; 
+	return (T*)_rep->data; 
     }
 
     T* data() 
     { 
-	return (T*)_data; 
+	return (T*)_rep->data; 
     }
 
     T& operator[](size_t pos) 
     { 
-	return ((T*)_data)[pos]; 
+	return ((T*)_rep->data)[pos]; 
     }
 
     const T& operator[](size_t pos) const 
     { 
-	return ((T*)_data)[pos]; 
+	return ((T*)_rep->data)[pos]; 
     }
 
     void resize(size_t size) 

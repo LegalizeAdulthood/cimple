@@ -63,6 +63,7 @@ const Meta_Class CIM_ManagedElement::static_meta_class =
     0,
     0,
     0x5B2A3886,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

@@ -21,7 +21,16 @@ extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
 
 extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
+extern CIMPLE_HIDE const Meta_Property _CIM_ConcreteJob_Name;
+
+const Meta_Property _CIM_ConcreteJob_Name =
+{
+    CIMPLE_FLAG_PROPERTY,
+    "Name",
+    STRING,
+    0,
+    CIMPLE_OFF(CIM_ConcreteJob,Name)
+};
 
 extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
@@ -165,7 +174,7 @@ static Meta_Feature* _CIM_ConcreteJob_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedElement_Description,
     (Meta_Feature*)&_CIM_ManagedElement_ElementName,
     (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)&_CIM_ConcreteJob_Name,
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
@@ -208,6 +217,7 @@ const Meta_Class CIM_ConcreteJob::static_meta_class =
     &CIM_Job::static_meta_class,
     1,
     0xBA4DC394,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

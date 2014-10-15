@@ -1,0 +1,9 @@
+
+05-18-2006: 
+    cimom::enum_instances() (CMPI only, no Windows port)
+
+05-18-2006: 
+    Ref<> class
+
+05-25-2006:
+    Implemented backpointers from meta-classes to the meta-repository.

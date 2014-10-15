@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Link2_h
-#define _Link2_h
+#ifndef _cimple_Link2_h
+#define _cimple_Link2_h
 
 #include <cimple/cimple.h>
 #include "Person2.h"
@@ -17,12 +17,12 @@ class CIMPLE_LINKAGE Link2 : public Instance
 {
 public:
     // Link2 features:
-    Person2* parent;
-    Person2* child;
+    CIMPLE_REF(Person2,parent);
+    CIMPLE_REF(Person2,child);
 
     CIMPLE_CLASS(Link2)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Link2_h */
+#endif /* _cimple_Link2_h */

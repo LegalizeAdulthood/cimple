@@ -44,9 +44,6 @@ Cache::~Cache()
 {
     for (size_t i = 0; i < _modules.size(); i++)
 	delete _modules[i];
-
-    for (size_t i = 0; i < _repositories.size(); i++)
-	delete _repositories[i];
 }
 
 static bool _is_lib_name(const String& name)
@@ -89,8 +86,6 @@ Cache* Cache::create(const char* lib_dir)
 	if (!_is_lib_name(name.c_str()))
 	    continue;
 
-printf("[%s]\n", name.c_str());
-
 	// Load the library.
 
 	String path(lib_dir, "/", name.c_str());
@@ -121,24 +116,6 @@ printf("[%s]\n", name.c_str());
 	    }
 	    continue;
 	}
-
-	// Load cimple_repository() entry point (since it was not a module).
-
-	Repository_Proc repository_proc = 
-	    (Repository_Proc)dlsym(handle, "cimple_repository");
-
-	if (repository_proc)
-	{
-	    if (cache->_add_repository(handle, repository_proc) != 0)
-	    {
-		delete cache;
-		closedir(dir);
-		return 0;
-	    }
-	    continue;
-	}
-
-	// It was neither a module nor a repository (so just ignore it).
 
 	dlclose(handle);
     }
@@ -180,12 +157,20 @@ Envelope* Cache::get_provider_by_name(const char* provider_name)
 
 const Meta_Class* Cache::get_meta_class(const char* class_name) const
 {
-    for (size_t i = 0; i < _meta_classes.size(); i++)
+    for (size_t i = 0; i < _modules.size(); i++)
     {
-	const Meta_Class* mc = _meta_classes[i];
+	const Meta_Class* mc = _modules[i]->registration()->meta_class;
 
 	if (strcasecmp(class_name, mc->name) == 0)
 	    return mc;
+
+	if (mc->meta_repository)
+	{
+	    mc = find_meta_class(mc->meta_repository, class_name);
+
+	    if (mc)
+		return mc;
+	}
     }
 
     // Not found!
@@ -221,70 +206,12 @@ int Cache::_add_module(void* handle, Module_Proc module_proc)
 	    }
 	}
 
-	// Add class to list:
-
-	if (_add_meta_class(mc) != 0)
-	{
-	    delete module;
-	    return -1;
-	}
-
-	_meta_classes.append(mc);
 	_envelopes.append(env);
     }
 
     // Add module to the list:
 
     _modules.append(module);
-    return 0;
-}
-
-int Cache::_add_repository(void* handle, Repository_Proc repository_proc)
-{
-    Repository* repository = new Repository(handle, repository_proc);
-
-    // Add all the classes in this repository to the master list:
-
-    const Meta_Class* const* meta_classes = repository->meta_classes();
-    size_t num_meta_classes = repository->num_meta_classes();
-
-    for (size_t i = 0; i < num_meta_classes; i++)
-    {
-	if (_add_meta_class(meta_classes[i]) == -1)
-	{
-	    delete repository;
-	    return -1;
-	}
-    }
-
-    // Add repository to the list:
-
-    _repositories.append(repository);
-    return 0;
-}
-
-int Cache::_add_meta_class(const Meta_Class* meta_class)
-{
-    // See if it conflicts with an existing class:
-
-    for (size_t i = 0; i < _meta_classes.size(); i++)
-    {
-	const Meta_Class* mc = _meta_classes[i];
-
-	if (strcasecmp(mc->name, meta_class->name) == 0)
-	{
-	    if (mc->crc == meta_class->crc)
-		return 0;
-
-	    CIMPLE_ERROR(("conflicting CRC on class %s", mc->name));
-	    return -1;
-	}
-    }
-
-    // Add the class to the array:
-
-    _meta_classes.append(meta_class);
-
     return 0;
 }
 

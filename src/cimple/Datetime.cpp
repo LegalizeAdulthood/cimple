@@ -200,7 +200,8 @@ Datetime Datetime::now()
 
     struct timezone tz;
 
-    memset(&tv, 0, sizeof(tz));
+    memset(&tv, 0, sizeof(tv));
+    memset(&tz, 0, sizeof(tz));
 
     if (gettimeofday(&tv, &tz) != 0)
 	return Datetime(0);

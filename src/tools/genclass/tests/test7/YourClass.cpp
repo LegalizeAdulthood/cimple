@@ -73,6 +73,7 @@ const Meta_Class YourClass::static_meta_class =
     0,
     0,
     0xF4FB8560,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

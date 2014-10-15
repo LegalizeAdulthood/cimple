@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _AAA_h
-#define _AAA_h
+#ifndef _cimple_AAA_h
+#define _cimple_AAA_h
 
 #include <cimple/cimple.h>
 #include "CCC.h"
@@ -18,8 +18,8 @@ class AAA : public Instance
 {
 public:
     // AAA features:
-    CCC* left;
-    DDD* right;
+    CIMPLE_REF(CCC,left);
+    CIMPLE_REF(DDD,right);
 
     CIMPLE_CLASS(AAA)
 };
@@ -27,11 +27,11 @@ public:
 class AAA_fool_method : public Instance
 {
 public:
-    CCC* c;
+    CIMPLE_REF(CCC,c);
     Property<uint32> return_value;
     CIMPLE_METHOD(AAA_fool_method)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _AAA_h */
+#endif /* _cimple_AAA_h */

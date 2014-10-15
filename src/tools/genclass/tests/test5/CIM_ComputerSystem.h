@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_ComputerSystem_h
-#define _CIM_ComputerSystem_h
+#ifndef _cimple_CIM_ComputerSystem_h
+#define _cimple_CIM_ComputerSystem_h
 
 #include <cimple/cimple.h>
 #include "CIM_System.h"
@@ -67,4 +67,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_ComputerSystem_h */
+#endif /* _cimple_CIM_ComputerSystem_h */

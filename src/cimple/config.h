@@ -178,6 +178,12 @@ typedef float real32;
 typedef double real64;
 typedef uint16 char16;
 
+#ifdef CIMPLE_LITTLE_ENDIAN
+# define CIMPLE_IF_LITTLE_ENDIAN(BLOCK) BLOCK
+#else
+# define CIMPLE_IF_LITTLE_ENDIAN(BLOCK) /* empty */
+#endif
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_config_h */

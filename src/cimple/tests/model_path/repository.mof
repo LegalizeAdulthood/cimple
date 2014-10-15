@@ -1,0 +1,17 @@
+class Part
+{
+    [Key] boolean key1;
+    [Key] uint64 key2;
+    [Key] string key3;
+    boolean prop1;
+    uint64 prop2;
+    string prop3;
+};
+
+[Association]
+class Glue
+{
+    [Key] Part ref left;
+    [Key] Part ref right;
+    string message;
+};

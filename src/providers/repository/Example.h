@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Example_h
-#define _Example_h
+#ifndef _cimple_Example_h
+#define _cimple_Example_h
 
 #include <cimple/cimple.h>
 #include "House.h"
@@ -69,11 +69,11 @@ public:
 class CIMPLE_LINKAGE Example_foo5_method : public Instance
 {
 public:
-    House* house;
+    CIMPLE_REF(House,house);
     Property<String> return_value;
     CIMPLE_METHOD(Example_foo5_method)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Example_h */
+#endif /* _cimple_Example_h */

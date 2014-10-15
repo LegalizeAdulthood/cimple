@@ -24,6 +24,9 @@
 using namespace std;
 using namespace Pegasus;
 
+static const cimple::Meta_Class* const* _meta_classes = 0;
+static size_t _num_meta_classes = 0;
+
 void create_class(
     CIMRepository& rep, 
     const String& ns,
@@ -48,6 +51,7 @@ void* g_handle = 0;
 
 bool class_opt = false;
 bool verbose_opt = false;
+bool subclass_opt = false;
 bool dump_opt = false;
 bool help_opt = false;
 bool cmpi_opt = false;
@@ -300,7 +304,10 @@ void check_pegasus_environment(string& pegasus_home)
 //
 //------------------------------------------------------------------------------
 
-cimple::Registration* load_module(const string& path)
+cimple::Registration* load_module(
+    const string& path,
+    const cimple::Meta_Class* const*& meta_classes,
+    size_t& num_meta_classes)
 {
     // Open library:
 
@@ -344,7 +351,18 @@ cimple::Registration* load_module(const string& path)
 
     // Call proc:
 
-    return module_proc();
+    cimple::Registration* reg = module_proc();
+
+    // Get the repository
+
+    cimple::Provider_Handle handle(reg);
+
+    const cimple::Meta_Repository* repository = 0;
+    cimple::Get_Repository_Status status = handle.get_repository(repository);
+    meta_classes = repository->meta_classes;
+    num_meta_classes = repository->num_meta_classes;
+
+    return reg;
 }
 
 //------------------------------------------------------------------------------
@@ -1209,8 +1227,7 @@ void add_method(
 	{
 	    const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
 
-	    if (!class_exists(ns, rep, mr->meta_class->name))
-		create_class(rep, ns, mr->meta_class);
+	    create_class(rep, ns, mr->meta_class);
 
 	    CIMParameter param(
 		mr->name, CIMTYPE_REFERENCE, false, 0, mr->meta_class->name);
@@ -1239,6 +1256,9 @@ void create_class(
     const String& ns,
     const cimple::Meta_Class* mc)
 {
+    if (class_exists(ns, rep, mc->name))
+	return;
+
     if (verbose_opt)
 	printf("=== Creating class in Pegasus repository (%s)\n", mc->name);
 
@@ -1248,10 +1268,7 @@ void create_class(
     // Create superclass if necessary.
 
     if (mc->super_meta_class)
-    {
-	if (!class_exists(ns, rep, mc->super_meta_class->name))
-	    create_class(rep, ns, mc->super_meta_class);
-    }
+	create_class(rep, ns, mc->super_meta_class);
 
     // Now create the class itself.
 
@@ -1333,8 +1350,7 @@ void create_class(
 
 		c.addProperty(p);
 
-		if (!class_exists(ns, rep, mr->meta_class->name))
-		    create_class(rep, ns, mr->meta_class);
+		create_class(rep, ns, mr->meta_class);
 	    }
 	}
 
@@ -1398,8 +1414,20 @@ void validate_class(
 
 	if (class_opt)
 	{
-	    if (!class_exists(ns, repository, meta_class->name))
-		create_class(repository, ns, meta_class);
+	    // Create provided class.
+
+	    create_class(repository, ns, meta_class);
+
+	    // Create subclasses if requested.
+
+	    if (subclass_opt)
+	    {
+		for (size_t i = 0; i < _num_meta_classes; i++)
+		{
+		    if (cimple::is_subclass(meta_class, _meta_classes[i]))
+			create_class(repository, ns, _meta_classes[i]);
+		}
+	    }
 	}
 
 	// Be sure the class exists.
@@ -1449,10 +1477,14 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "bdcvhn:ui")) != -1)
+    while ((opt = getopt(argc, argv, "bdcvhn:uis")) != -1)
     {
 	switch (opt)
 	{
+	    case 's':
+		subclass_opt = true;
+		break;
+
 	    case 'c':
 		class_opt = true;
 		break;
@@ -1534,7 +1566,13 @@ int main(int argc, char** argv)
 
     // Get information from provider.
 
-    cimple::Registration* module = load_module(lib_path);
+    cimple::Registration* module = load_module(
+	lib_path, _meta_classes, _num_meta_classes);
+
+#if 0
+    for (size_t i = 0; i < num_meta_classes; i++)
+	printf("class[%s]\n", meta_classes[i]->name);
+#endif
 
     // If no modules in this library.
 
@@ -1548,7 +1586,12 @@ int main(int argc, char** argv)
 	for (cimple::Registration* p = module; p; p = p->next)
 	{
 	    for (size_t i = 0; i < providing_namespaces.size(); i++)
+	    {
+		// Create provided class.
+
 		validate_class(providing_namespaces[i], p->meta_class);
+	    }
+
 	}
     }
 

@@ -41,6 +41,18 @@ struct Instance;
 struct Meta_Class;
 struct Meta_Property;
 
+struct Array_Base_Rep
+{
+    Ctor_Proc ctor;
+    Dtor_Proc dtor;
+    size_t esize;
+    char* data;
+    size_t size;
+    size_t cap;
+};
+
+class Array_Base;
+
 class CIMPLE_LIBCIMPLE_LINKAGE Array_Base
 {
 public:
@@ -49,12 +61,12 @@ public:
 
     size_t size() const 
     {
-	return _size; 
+	return _rep->size; 
     }
 
     const void* get_raw(size_t i) const
     {
-	return _data + (_esize * i);
+	return _rep->data + (_rep->esize * i);
     }
 
     void append_raw(const void* data, size_t size)
@@ -112,13 +124,12 @@ protected:
     void _construct(size_t esize, 
 	Ctor_Proc ctor, Dtor_Proc dtor, const void* data, size_t size);
 
-    size_t _esize;
-    Ctor_Proc _ctor;
-    Dtor_Proc _dtor;
-
-    char* _data;
-    size_t _size;
-    size_t _cap;
+    union
+    {
+	// Pad to make sizeof(Array_Base) exactly 8 bytes.
+	uint64 padding;
+	Array_Base_Rep* _rep;
+    };
 
     friend void __construct(const Meta_Class*, Instance*);
     friend void __destruct(Instance* instance);
@@ -132,11 +143,17 @@ protected:
     friend void _random_property_initialize(const Meta_Property*, void*);
     friend class Facade;
 
-    friend bool __equal(const Array_Base&, const Array_Base&);
-    friend bool __equal(const Array_Base&, const Array_Base&, Equal_Proc);
+/*
+ATTN: get rid of all these friends and use Array_Friend
+*/
+
+    friend struct Array_Friend;
 };
 
+CIMPLE_LIBCIMPLE_LINKAGE
 bool __equal(const Array_Base& x, const Array_Base& y);
+
+CIMPLE_LIBCIMPLE_LINKAGE
 bool __equal(const Array_Base& x, const Array_Base& y, Equal_Proc equal);
 
 template<class T>
@@ -164,32 +181,32 @@ public:
 
     void clear()
     {
-	remove(0, _size);
+	remove(0, _rep->size);
     }
 
     size_t capacity() const 
     { 
-	return _cap; 
+	return _rep->cap; 
     }
 
     const T* data() const 
     { 
-	return (T*)_data; 
+	return (T*)_rep->data; 
     }
 
     T* data() 
     { 
-	return (T*)_data; 
+	return (T*)_rep->data; 
     }
 
     T& operator[](size_t pos) 
     { 
-	return ((T*)_data)[pos]; 
+	return ((T*)_rep->data)[pos]; 
     }
 
     const T& operator[](size_t pos) const 
     { 
-	return ((T*)_data)[pos]; 
+	return ((T*)_rep->data)[pos]; 
     }
 
 #if 0
@@ -283,19 +300,19 @@ struct Equal
 };
 
 template<>
-struct Equal<String>
+struct CIMPLE_LIBCIMPLE_LINKAGE Equal<String>
 {
     static bool proc(const void* x, const void* y);
 };
 
 template<>
-struct Equal<real32>
+struct CIMPLE_LIBCIMPLE_LINKAGE Equal<real32>
 {
     static bool proc(const void* x, const void* y);
 };
 
 template<>
-struct Equal<real64>
+struct CIMPLE_LIBCIMPLE_LINKAGE Equal<real64>
 {
     static bool proc(const void* x, const void* y);
 };

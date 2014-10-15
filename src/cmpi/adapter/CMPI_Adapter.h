@@ -37,6 +37,7 @@
 #include <cimple/Mutex.h>
 #include <cimple/Thread.h>
 #include "linkage.h"
+#include "CMPI_Thread_Context.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

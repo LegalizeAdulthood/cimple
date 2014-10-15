@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _DerivedIndication_h
-#define _DerivedIndication_h
+#ifndef _cimple_DerivedIndication_h
+#define _cimple_DerivedIndication_h
 
 #include <cimple/cimple.h>
 #include "MyIndication.h"
@@ -23,7 +23,7 @@ public:
     Property<String> OtherSeverity;
 
     // MyIndication features:
-    Instance* object;
+    CIMPLE_REF(Instance,object);
 
     // DerivedIndication features:
 
@@ -34,4 +34,4 @@ typedef MyIndication_DeliverIndications_method DerivedIndication_DeliverIndicati
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _DerivedIndication_h */
+#endif /* _cimple_DerivedIndication_h */

@@ -19,14 +19,29 @@
     A
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
+    (A) Remove timer() method from providers (use threading instead).
+
+    (A) Remove encoding algorithms.
+
+    (A)	Link all meta-classes to repository meta-class array.
+
+    (AA) Should instances have null properties when created.
+
+    (A) Make it so that every meta-class has a pointer to the global
+	meta-class array (use a UUID?).
+
+    (A) Rework linkage to use default hidden.
+
+    (A) Revist Instance APIs to see if Ref<Instance> is better.
+
+    (A) Implement cimom interface.
+
+    (A) Fix crash on provider unload.
+
     (A) Resolve bug with Pegasus adapter which occurs in response to asking
 	for a non existent instance with CLI gi.
 
     (A) Properly handle property lists in adapter.
-
-    (A) Remove timer() method from providers (use threading instead).
-
-    (A) Implement reference-counted handle for CIMPLE instances.
 
     (A) Consolidate standard CIM error codes with provider error codes.
 
@@ -65,6 +80,10 @@
     B B-priorities
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+    (B) Add error reporting for the cimom interface.
+
+    (B) Test property list filtering.
 
     (B) Make generation of property enum tags (corresponding to 
 	values/valuemap qualifiers) the default for genclass (rather than 
@@ -136,3 +155,8 @@
 
     (C) Consolidate the error scheme (Error.h, Status.h, etc.).
 
+    ============================================================================
+    Done
+    ============================================================================
+
+    (A) Implement reference-counted handle for CIMPLE instances.

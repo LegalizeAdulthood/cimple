@@ -13,6 +13,7 @@ DIRS = \
     genprov/tests \
     testprov \
     apriori \
-    cwhat
+    cwhat \
+    cgenuuid
 
 include $(TOP)/mak/dir.mak

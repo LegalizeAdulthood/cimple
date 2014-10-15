@@ -33,23 +33,23 @@ CIMPLE_NAMESPACE_BEGIN
 
 void Array_Base::_destroy(char* data, size_t size)
 {
-    if (_dtor)
+    if (_rep->dtor)
     {
-	for (size_t i = 0; i < size; i++, data += _esize)
-	    _dtor(data);
+	for (size_t i = 0; i < size; i++, data += _rep->esize)
+	    _rep->dtor(data);
     }
 }
 
 void Array_Base::_copy(char* p, const char* q, size_t size)
 {
-    size_t nbytes = size * _esize;
+    size_t nbytes = size * _rep->esize;
 
-    if (_ctor)
+    if (_rep->ctor)
     {
 	const char* end = p + nbytes;
 
-	for (; p != end; p += _esize, q += _esize)
-	    _ctor(p, q);
+	for (; p != end; p += _rep->esize, q += _rep->esize)
+	    _rep->ctor(p, q);
     }
     else
 	memcpy(p, q, nbytes);
@@ -57,14 +57,14 @@ void Array_Base::_copy(char* p, const char* q, size_t size)
 
 void Array_Base::_fill(char* p, size_t size, const void* elem)
 {
-    size_t nbytes = size * _esize;
+    size_t nbytes = size * _rep->esize;
 
-    if (_ctor)
+    if (_rep->ctor)
     {
 	const char* end = p + nbytes;
 
-	for (; p != end; p += _esize)
-	    _ctor(p, elem);
+	for (; p != end; p += _rep->esize)
+	    _rep->ctor(p, elem);
     }
     else
 	memset(p, 0, nbytes);
@@ -72,50 +72,54 @@ void Array_Base::_fill(char* p, size_t size, const void* elem)
 
 void Array_Base::_assign_no_release(const char* data, size_t size)
 {
-    _size = size;
-    _cap = size;
-    _data = 0;
+    _rep->size = size;
+    _rep->cap = size;
+    _rep->data = 0;
 
-    if (_size)
+    if (_rep->size)
     {
-	_data = (char*)malloc(_cap * _esize);
-	_copy(_data, data, size);
+	_rep->data = (char*)malloc(_rep->cap * _rep->esize);
+	_copy(_rep->data, data, size);
 	return;
     }
 }
 
 void Array_Base::_release()
 {
-    _destroy(_data, _size);
-    free(_data);
+    _destroy(_rep->data, _rep->size);
+    free(_rep->data);
 }
 
 void Array_Base::_construct(
     size_t esize, Ctor_Proc ctor, Dtor_Proc dtor, const void* data, size_t size)
 {
-    _esize = esize;
-    _ctor = ctor;
-    _dtor = dtor;
+    _rep = new Array_Base_Rep;
+    _rep->ctor = ctor;
+    _rep->dtor = dtor;
+    _rep->esize = esize;
     _assign_no_release((char*)data, size);
 }
 
-Array_Base::Array_Base(size_t esize) : _esize(esize)
+Array_Base::Array_Base(size_t esize)
 {
-    memset(this, 0, sizeof(*this));
-    _esize = esize;
+    _rep = new Array_Base_Rep;
+    memset(_rep, 0, sizeof(Array_Base_Rep));
+    _rep->esize = esize;
 }
 
 Array_Base::Array_Base(size_t esize, Ctor_Proc ctor, Dtor_Proc dtor)
 {
-    memset(this, 0, sizeof(*this));
-    _esize = esize;
-    _ctor = ctor;
-    _dtor = dtor;
+    _rep = new Array_Base_Rep;
+    memset(_rep, 0, sizeof(Array_Base_Rep));
+    _rep->esize = esize;
+    _rep->ctor = ctor;
+    _rep->dtor = dtor;
 }
 
 Array_Base::Array_Base(const Array_Base& x)
 {
-    _construct(x._esize, x._ctor, x._dtor, x._data, x._size);
+    _construct(
+	x._rep->esize, x._rep->ctor, x._rep->dtor, x._rep->data, x._rep->size);
 }
 
 Array_Base::Array_Base(size_t esize, const void* data, size_t size)
@@ -132,11 +136,12 @@ Array_Base::Array_Base(
 Array_Base::~Array_Base()
 {
     _release();
+    delete _rep;
 }
 
 void Array_Base::reserve(size_t cap)
 {
-    if (cap > _cap)
+    if (cap > _rep->cap)
     {
 	const size_t GROWTH_FACTOR = 1;
 	size_t r = GROWTH_FACTOR;
@@ -144,30 +149,30 @@ void Array_Base::reserve(size_t cap)
 	while (r < cap)
 	    r <<= 1;
 
-	_cap = cap;
-	_data = (char*)realloc(_data, _cap * _esize);
+	_rep->cap = cap;
+	_rep->data = (char*)realloc(_rep->data, _rep->cap * _rep->esize);
     }
 }
 
 void Array_Base::_resize(size_t size, const void* elem)
 {
-    ssize_t diff = size - _size;
+    ssize_t diff = size - _rep->size;
 
     if (diff > 0)
     {
 	reserve(size);
-	_fill(_data + (_size * _esize), diff, elem);
+	_fill(_rep->data + (_rep->size * _rep->esize), diff, elem);
     }
     else if (diff < 0)
-	_destroy(_data + (size * _esize), -diff);
+	_destroy(_rep->data + (size * _rep->esize), -diff);
 
-    _size = size;
+    _rep->size = size;
 }
 
 void Array_Base::_assign(const Array_Base& x)
 {
     _release();
-    _assign_no_release(x._data, x._size);
+    _assign_no_release(x._rep->data, x._rep->size);
 }
 
 void Array_Base::_assign(const void* data, size_t size)
@@ -178,34 +183,34 @@ void Array_Base::_assign(const void* data, size_t size)
 
 void Array_Base::_swap(Array_Base& x)
 {
-    char* tdata = _data;
-    size_t tsize = _size;
-    size_t tcap = _cap;
+    char* tdata = _rep->data;
+    size_t tsize = _rep->size;
+    size_t tcap = _rep->cap;
 
-    _data = x._data;
-    _size = x._size;
-    _cap = x._cap;
+    _rep->data = x._rep->data;
+    _rep->size = x._rep->size;
+    _rep->cap = x._rep->cap;
 
-    x._data = tdata;
-    x._size = tsize;
-    x._cap = tcap;
+    x._rep->data = tdata;
+    x._rep->size = tsize;
+    x._rep->cap = tcap;
 }
 
 void Array_Base::_insert(size_t pos, const void* data, size_t size)
 {
-    // assert(pos > _size);
+    // assert(pos > _rep->size);
     // assert(size != (size_t)-1);
 
-    reserve(_size + size);
-    char* ptr = (char*)(_data + pos * _esize);
-    memmove(_data + (pos + size) * _esize, ptr, (_size - pos) * _esize);
+    reserve(_rep->size + size);
+    char* ptr = (char*)(_rep->data + pos * _rep->esize);
+    memmove(_rep->data + (pos + size) * _rep->esize, ptr, (_rep->size - pos) * _rep->esize);
     _copy(ptr, (char*)data, size);
-    _size += size;
+    _rep->size += size;
 }
 
 void Array_Base::_append(const void* data, size_t size)
 {
-    _insert(_size, data, size);
+    _insert(_rep->size, data, size);
 }
 
 void Array_Base::_prepend(const void* data, size_t size)
@@ -215,38 +220,52 @@ void Array_Base::_prepend(const void* data, size_t size)
 
 void Array_Base::_remove(size_t pos, size_t size)
 {
-    // assert(pos + size <= _size);
+    // assert(pos + size <= _rep->size);
 
-    char* ptr = _data + pos * _esize;
+    char* ptr = _rep->data + pos * _rep->esize;
     _destroy(ptr, size);
     memmove(ptr, 
-	_data + (pos + size) * _esize, 
-	(_size - (pos + size)) * _esize);
-    _size -= size;
+	_rep->data + (pos + size) * _rep->esize, 
+	(_rep->size - (pos + size)) * _rep->esize);
+    _rep->size -= size;
 }
+
+struct Array_Friend
+{
+    static bool equal(const Array_Base& x, const Array_Base& y)
+    {
+	return x._rep->size == y._rep->size && memcmp(
+	    x._rep->data, y._rep->data, x._rep->size * x._rep->esize) == 0;
+    }
+
+    static bool equal(
+	const Array_Base& x, const Array_Base& y, Equal_Proc equal)
+    {
+	if (x._rep->size != y._rep->size)
+	    return false;
+
+	const char* p = x._rep->data;
+	const char* q = y._rep->data;
+	size_t esize = x._rep->esize;
+
+	for (size_t n = x._rep->size; n--; p += esize, q += esize)
+	{
+	    if (!equal(p, q))
+		return false;
+	}
+
+	return true;
+    }
+};
 
 bool __equal(const Array_Base& x, const Array_Base& y)
 {
-    return x._size == y._size && 
-	memcmp(x._data, y._data, x._size * x._esize) == 0;
+    return Array_Friend::equal(x, y);
 }
 
 bool __equal(const Array_Base& x, const Array_Base& y, Equal_Proc equal)
 {
-    if (x._size != y._size)
-	return false;
-
-    const char* p = x._data;
-    const char* q = y._data;
-    size_t esize = x._esize;
-
-    for (size_t n = x._size; n--; p += esize, q += esize)
-    {
-	if (!equal(p, q))
-	    return false;
-    }
-
-    return true;
+    return Array_Friend::equal(x, y, equal);
 }
 
 bool Equal<String>::proc(const void* x, const void* y)

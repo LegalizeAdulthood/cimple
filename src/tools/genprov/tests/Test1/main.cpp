@@ -31,9 +31,3 @@ int main(int argc, char** argv)
     printf("+++++ passed all tests (%s)\n", argv[0]);
     return 0;
 }
-
-extern "C" CIMPLE_EXPORT void cimple_repository(
-    const cimple::Meta_Class* const*& meta_classes,
-    size_t& num_meta_classes)
-{
-}

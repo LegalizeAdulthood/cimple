@@ -27,6 +27,9 @@ CLASSES = \
     Lamp \
     LampLink \
     LampIndic \
+    LampIndicA \
+    LampIndicB \
+    LampIndicC \
     XYZ_Lamp \
     XYZ_LampLink \
     XYZ_LampIndic
@@ -73,6 +76,9 @@ SOURCES = \
     Lamp.cpp \
     LampLink.cpp \
     LampIndic.cpp \
+    LampIndicA.cpp \
+    LampIndicB.cpp \
+    LampIndicC.cpp \
     XYZ_Lamp.cpp \
     XYZ_LampLink.cpp \
     XYZ_LampIndic.cpp

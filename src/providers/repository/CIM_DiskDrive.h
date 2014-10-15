@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _CIM_DiskDrive_h
-#define _CIM_DiskDrive_h
+#ifndef _cimple_CIM_DiskDrive_h
+#define _cimple_CIM_DiskDrive_h
 
 #include <cimple/cimple.h>
 #include "CIM_MediaAccessDevice.h"
@@ -105,4 +105,4 @@ typedef CIM_MediaAccessDevice_LockMedia_method CIM_DiskDrive_LockMedia_method;
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _CIM_DiskDrive_h */
+#endif /* _cimple_CIM_DiskDrive_h */

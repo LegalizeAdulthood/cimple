@@ -1,0 +1,30 @@
+class Everything
+{
+    boolean a;
+    uint8 b;
+    uint16 c;
+    uint32 d;
+    uint64 e;
+    real32 f;
+    real64 g;
+    char16 h;
+    string i;
+    datetime j;
+    string k;
+    uint32 l;
+    boolean m;
+
+    boolean aa[];
+    uint8 bb[];
+    uint16 cc[];
+    uint32 dd[];
+    uint64 ee[];
+    real32 ff[];
+    real64 gg[];
+    char16 hh[];
+    string ii[];
+    datetime jj[];
+    string kk[];
+    uint32 ll[];
+    boolean mm[];
+};

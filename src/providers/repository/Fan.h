@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Fan_h
-#define _Fan_h
+#ifndef _cimple_Fan_h
+#define _cimple_Fan_h
 
 #include <cimple/cimple.h>
 
@@ -32,4 +32,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Fan_h */
+#endif /* _cimple_Fan_h */

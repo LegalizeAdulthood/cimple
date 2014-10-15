@@ -99,6 +99,7 @@ const Meta_Class CCC::static_meta_class =
     &BBB::static_meta_class,
     2,
     0x3EA79480,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

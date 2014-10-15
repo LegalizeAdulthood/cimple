@@ -83,6 +83,7 @@ const Meta_Class AAA::static_meta_class =
     0,
     2,
     0x40EE457B,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

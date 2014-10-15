@@ -25,7 +25,6 @@
 */
 
 #include <cassert>
-#include <unistd.h>
 #include <cimple/Datetime.h>
 
 using namespace cimple;

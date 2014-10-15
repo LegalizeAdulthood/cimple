@@ -46,4 +46,8 @@
 
 #define CIMPLE_EXPORT
 
+#define CIMPLE_LITTLE_ENDIAN
+
+#define CIMPLE_HAVE_DEV_RANDOM
+
 #endif /* _cimple_platform_LINUX_PPC_GNU_h */

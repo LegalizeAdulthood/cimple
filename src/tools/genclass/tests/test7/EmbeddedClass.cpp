@@ -39,6 +39,7 @@ const Meta_Class EmbeddedClass::static_meta_class =
     0,
     0,
     0xC580D23F,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

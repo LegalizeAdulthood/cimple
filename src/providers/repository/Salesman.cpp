@@ -13,6 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
+extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+
 extern CIMPLE_HIDE const Meta_Property _Person_ssn;
 
 extern CIMPLE_HIDE const Meta_Property _Person_first;
@@ -48,6 +50,7 @@ const Meta_Class Salesman::static_meta_class =
     &Person::static_meta_class,
     1,
     0x7EA2FB5C,
+    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
 };
 
 CIMPLE_NAMESPACE_END

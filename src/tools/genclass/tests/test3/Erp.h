@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Erp_h
-#define _Erp_h
+#ifndef _cimple_Erp_h
+#define _cimple_Erp_h
 
 #include <cimple/cimple.h>
 
@@ -25,4 +25,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Erp_h */
+#endif /* _cimple_Erp_h */

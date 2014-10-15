@@ -13,6 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
+extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+
 extern CIMPLE_HIDE const Meta_Reference _CIM_SystemComponent_GroupComponent;
 
 const Meta_Reference _CIM_SystemComponent_GroupComponent =
@@ -49,6 +51,7 @@ const Meta_Class CIM_SystemComponent::static_meta_class =
     &CIM_Component::static_meta_class,
     2,
     0xB30B108B,
+    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
 };
 
 CIMPLE_NAMESPACE_END
