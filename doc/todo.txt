@@ -30,9 +30,8 @@
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
-    (A) Avoid redundant packing of meta-clases in pack_meta_class(). Use 
-	a free pointer list or something like that (put list at end of
-	meta-class?).
+    (A) Remove encodings and dispatcher from CIMPLE (unused now that there is
+	no provider manager).
 
     (A) Add option to pack_meta_class() to avoid packing of super classes
 	hierarchy or visa versa (e.g., include_super_classes).

@@ -14,9 +14,9 @@ tests:
 	@ $(BIN_DIR)/test_genprov1
 
 Test1_Provider.cpp:
-	genprov  -f Test1
+	$(BIN_DIR)/genprov  -f Test1
 
 Test1.cpp:
-	genclass Test1
+	$(BIN_DIR)/genclass Test1
 
 genclass:

@@ -97,8 +97,7 @@ Create_Instance_Status Person2_Provider::create_instance(
 Delete_Instance_Status Person2_Provider::delete_instance(
     const Person2* instance)
 {
-    return DELETE_INSTANCE_OK;
-    //return DELETE_INSTANCE_UNSUPPORTED;
+    return DELETE_INSTANCE_UNSUPPORTED;
 }
 
 Modify_Instance_Status Person2_Provider::modify_instance(

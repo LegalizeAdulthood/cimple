@@ -70,7 +70,10 @@ Cache* Cache::create(const char* lib_dir)
     DIR* dir = opendir(lib_dir);
 
     if (!dir)
+    {
+	CIMPLE_ERROR(("cannot access directory: %s", lib_dir));
 	return 0;
+    }
 
     // ATTN: readdir not thread safe!
 
@@ -93,6 +96,12 @@ Cache* Cache::create(const char* lib_dir)
 	void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_GLOBAL);
 
 	if (!handle)
+	    continue;
+
+/*
+ATTN: remove this?
+*/
+#if 0
 	{
 	    CIMPLE_ERROR((
 		"failed to load : \"%s\": %s", path.c_str(), dlerror()));
@@ -101,6 +110,7 @@ Cache* Cache::create(const char* lib_dir)
 	    delete cache;
 	    return 0;
 	}
+#endif
 
 	// Load cimple_module() entry point:
 
@@ -112,6 +122,7 @@ Cache* Cache::create(const char* lib_dir)
 	    {
 		delete cache;
 		closedir(dir);
+		CIMPLE_ERROR(("failed"));
 		return 0;
 	    }
 	    continue;

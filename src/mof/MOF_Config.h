@@ -54,7 +54,13 @@
    typedef signed __int64 MOF_sint64;
 #else
 #  define MOF_PRINTF_ATTR(A1, A2) __attribute__ ((format (printf, A1, A2)))
-#  define MOF_LINKAGE __attribute__((visibility("default")))
+
+#  if (__GNUC__ >= 4)
+#    define MOF_LINKAGE __attribute__((visibility("default")))
+#  else
+#    define MOF_LINKAGE /* empty */
+#  endif
+
    typedef unsigned long long MOF_uint64;
    typedef long long MOF_sint64;
 #endif

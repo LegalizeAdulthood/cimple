@@ -30,15 +30,15 @@ tests:
 	@ $(BIN_DIR)/test_genprov2
 
 Test2_Provider.cpp:
-	genprov  -f Test2
+	$(BIN_DIR)/genprov  -f Test2
 
 Test2.cpp:
-	genclass Test2
+	$(BIN_DIR)/genclass Test2
 
 Test2Link_Provider.cpp:
-	genprov  -f Test2Link
+	$(BIN_DIR)/genprov  -f Test2Link
 
 Test2Link.cpp:
-	genclass Test2Link
+	$(BIN_DIR)/genclass Test2Link
 
 genclass:

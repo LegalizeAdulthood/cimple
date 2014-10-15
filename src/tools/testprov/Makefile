@@ -14,6 +14,9 @@ else
 endif
 
 tests:
+	$(BINARY_TARGET) $(SHLIB) Person2 $(TO_DEV_NULL)
+	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) Person2)"
+ifdef PEGASUS_HOME
 	$(BINARY_TARGET) $(SHLIB) Person $(TO_DEV_NULL)
 	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) Person)"
 	$(BINARY_TARGET) $(SHLIB) Link $(TO_DEV_NULL)
@@ -28,6 +31,7 @@ ifdef CIMPLE_UNIX
 endif
 	$(BINARY_TARGET) $(SHLIB) LinuxComputerSystem $(TO_DEV_NULL)
 	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) LinuxComputerSystem)"
+endif
 
 CLEAN += .dev.null
 
