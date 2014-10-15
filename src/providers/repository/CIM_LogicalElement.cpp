@@ -13,23 +13,23 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property _CIM_ManagedSystemElement_Name;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property _CIM_ManagedSystemElement_Status;
 
 static Meta_Feature* _CIM_LogicalElement_meta_features[] =
 {
@@ -53,7 +53,7 @@ const Meta_Class CIM_LogicalElement::static_meta_class =
     &CIM_ManagedSystemElement::static_meta_class,
     0,
     0xE3ABB7C2,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

@@ -14,23 +14,21 @@ public:
 
     XYZ_LampIndic_Provider();
 
-    CIMPLE_HIDE ~XYZ_LampIndic_Provider();
+    ~XYZ_LampIndic_Provider();
 
-    CIMPLE_HIDE Load_Status load();
+    Load_Status load();
 
-    CIMPLE_HIDE Unload_Status unload();
+    Unload_Status unload();
 
-    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
-
-    CIMPLE_HIDE Enable_Indications_Status enable_indications(
+    Enable_Indications_Status enable_indications(
 	Indication_Handler<XYZ_LampIndic>* indication_handler);
 
-    CIMPLE_HIDE Disable_Indications_Status disable_indications();
+    Disable_Indications_Status disable_indications();
 
-    CIMPLE_HIDE Invoke_Method_Status DeliverIndications(
+    Invoke_Method_Status DeliverIndications(
         Property<uint32>& return_value);
 
-    static CIMPLE_HIDE int proc(
+    static int proc(
 	const Registration* registration,
 	int operation, 
 	void* arg0, 

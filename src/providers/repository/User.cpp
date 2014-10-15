@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _User_name;
+extern const Meta_Property _User_name;
 
 const Meta_Property _User_name =
 {
@@ -26,7 +26,7 @@ const Meta_Property _User_name =
     CIMPLE_OFF(User,name)
 };
 
-extern CIMPLE_HIDE const Meta_Property _User_password;
+extern const Meta_Property _User_password;
 
 const Meta_Property _User_password =
 {
@@ -37,7 +37,7 @@ const Meta_Property _User_password =
     CIMPLE_OFF(User,password)
 };
 
-extern CIMPLE_HIDE const Meta_Property _User_uid;
+extern const Meta_Property _User_uid;
 
 const Meta_Property _User_uid =
 {
@@ -48,7 +48,7 @@ const Meta_Property _User_uid =
     CIMPLE_OFF(User,uid)
 };
 
-extern CIMPLE_HIDE const Meta_Property _User_gid;
+extern const Meta_Property _User_gid;
 
 const Meta_Property _User_gid =
 {
@@ -59,7 +59,7 @@ const Meta_Property _User_gid =
     CIMPLE_OFF(User,gid)
 };
 
-extern CIMPLE_HIDE const Meta_Property _User_fullName;
+extern const Meta_Property _User_fullName;
 
 const Meta_Property _User_fullName =
 {
@@ -70,7 +70,7 @@ const Meta_Property _User_fullName =
     CIMPLE_OFF(User,fullName)
 };
 
-extern CIMPLE_HIDE const Meta_Property _User_homeDir;
+extern const Meta_Property _User_homeDir;
 
 const Meta_Property _User_homeDir =
 {
@@ -81,7 +81,7 @@ const Meta_Property _User_homeDir =
     CIMPLE_OFF(User,homeDir)
 };
 
-extern CIMPLE_HIDE const Meta_Property _User_shellProgram;
+extern const Meta_Property _User_shellProgram;
 
 const Meta_Property _User_shellProgram =
 {
@@ -113,7 +113,7 @@ const Meta_Class User::static_meta_class =
     0,
     1,
     0x559C9FCB,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

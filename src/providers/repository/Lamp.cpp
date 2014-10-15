@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _Lamp_model;
+extern const Meta_Property _Lamp_model;
 
 const Meta_Property _Lamp_model =
 {
@@ -26,7 +26,7 @@ const Meta_Property _Lamp_model =
     CIMPLE_OFF(Lamp,model)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Lamp_vendor;
+extern const Meta_Property _Lamp_vendor;
 
 const Meta_Property _Lamp_vendor =
 {
@@ -37,7 +37,7 @@ const Meta_Property _Lamp_vendor =
     CIMPLE_OFF(Lamp,vendor)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Lamp_wattage;
+extern const Meta_Property _Lamp_wattage;
 
 const Meta_Property _Lamp_wattage =
 {
@@ -48,7 +48,7 @@ const Meta_Property _Lamp_wattage =
     CIMPLE_OFF(Lamp,wattage)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Lamp_color;
+extern const Meta_Property _Lamp_color;
 
 const Meta_Property _Lamp_color =
 {
@@ -122,7 +122,7 @@ const Meta_Class Lamp::static_meta_class =
     0,
     1,
     0x1AC5D1C7,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

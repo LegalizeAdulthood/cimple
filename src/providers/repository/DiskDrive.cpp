@@ -13,113 +13,113 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property _CIM_ManagedSystemElement_Name;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property _CIM_ManagedSystemElement_Status;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_SystemCreationClassName;
+extern const Meta_Property _CIM_LogicalDevice_SystemCreationClassName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_SystemName;
+extern const Meta_Property _CIM_LogicalDevice_SystemName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_CreationClassName;
+extern const Meta_Property _CIM_LogicalDevice_CreationClassName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_DeviceID;
+extern const Meta_Property _CIM_LogicalDevice_DeviceID;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_PowerManagementSupported;
+extern const Meta_Property _CIM_LogicalDevice_PowerManagementSupported;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_PowerManagementCapabilities;
+extern const Meta_Property _CIM_LogicalDevice_PowerManagementCapabilities;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_Availability;
+extern const Meta_Property _CIM_LogicalDevice_Availability;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_StatusInfo;
+extern const Meta_Property _CIM_LogicalDevice_StatusInfo;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_LastErrorCode;
+extern const Meta_Property _CIM_LogicalDevice_LastErrorCode;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_ErrorDescription;
+extern const Meta_Property _CIM_LogicalDevice_ErrorDescription;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_ErrorCleared;
+extern const Meta_Property _CIM_LogicalDevice_ErrorCleared;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_OtherIdentifyingInfo;
+extern const Meta_Property _CIM_LogicalDevice_OtherIdentifyingInfo;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_PowerOnHours;
+extern const Meta_Property _CIM_LogicalDevice_PowerOnHours;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_TotalPowerOnHours;
+extern const Meta_Property _CIM_LogicalDevice_TotalPowerOnHours;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_IdentifyingDescriptions;
+extern const Meta_Property _CIM_LogicalDevice_IdentifyingDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_AdditionalAvailability;
+extern const Meta_Property _CIM_LogicalDevice_AdditionalAvailability;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_MaxQuiesceTime;
+extern const Meta_Property _CIM_LogicalDevice_MaxQuiesceTime;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_Capabilities;
+extern const Meta_Property _CIM_MediaAccessDevice_Capabilities;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_CapabilityDescriptions;
+extern const Meta_Property _CIM_MediaAccessDevice_CapabilityDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_ErrorMethodology;
+extern const Meta_Property _CIM_MediaAccessDevice_ErrorMethodology;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_CompressionMethod;
+extern const Meta_Property _CIM_MediaAccessDevice_CompressionMethod;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_NumberOfMediaSupported;
+extern const Meta_Property _CIM_MediaAccessDevice_NumberOfMediaSupported;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_MaxMediaSize;
+extern const Meta_Property _CIM_MediaAccessDevice_MaxMediaSize;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_DefaultBlockSize;
+extern const Meta_Property _CIM_MediaAccessDevice_DefaultBlockSize;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_MaxBlockSize;
+extern const Meta_Property _CIM_MediaAccessDevice_MaxBlockSize;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_MinBlockSize;
+extern const Meta_Property _CIM_MediaAccessDevice_MinBlockSize;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_NeedsCleaning;
+extern const Meta_Property _CIM_MediaAccessDevice_NeedsCleaning;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_MediaIsLocked;
+extern const Meta_Property _CIM_MediaAccessDevice_MediaIsLocked;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_Security;
+extern const Meta_Property _CIM_MediaAccessDevice_Security;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_LastCleaned;
+extern const Meta_Property _CIM_MediaAccessDevice_LastCleaned;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_MaxAccessTime;
+extern const Meta_Property _CIM_MediaAccessDevice_MaxAccessTime;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_UncompressedDataRate;
+extern const Meta_Property _CIM_MediaAccessDevice_UncompressedDataRate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_LoadTime;
+extern const Meta_Property _CIM_MediaAccessDevice_LoadTime;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_UnloadTime;
+extern const Meta_Property _CIM_MediaAccessDevice_UnloadTime;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_MountCount;
+extern const Meta_Property _CIM_MediaAccessDevice_MountCount;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_TimeOfLastMount;
+extern const Meta_Property _CIM_MediaAccessDevice_TimeOfLastMount;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_TotalMountTime;
+extern const Meta_Property _CIM_MediaAccessDevice_TotalMountTime;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_UnitsDescription;
+extern const Meta_Property _CIM_MediaAccessDevice_UnitsDescription;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_MaxUnitsBeforeCleaning;
+extern const Meta_Property _CIM_MediaAccessDevice_MaxUnitsBeforeCleaning;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_MediaAccessDevice_UnitsUsed;
+extern const Meta_Property _CIM_MediaAccessDevice_UnitsUsed;
 
 static Meta_Feature* _DiskDrive_meta_features[] =
 {
@@ -197,7 +197,7 @@ const Meta_Class DiskDrive::static_meta_class =
     &CIM_DiskDrive::static_meta_class,
     4,
     0x46EE00ED,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

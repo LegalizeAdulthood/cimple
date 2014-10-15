@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Reference _AAA_left;
+extern const Meta_Reference _AAA_left;
 
 const Meta_Reference _AAA_left =
 {
@@ -23,7 +23,7 @@ const Meta_Reference _AAA_left =
     CIMPLE_OFF(AAA,left)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _AAA_right;
+extern const Meta_Reference _AAA_right;
 
 const Meta_Reference _AAA_right =
 {

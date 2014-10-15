@@ -13,7 +13,6 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
 extern const Meta_Property _OtherClass_key;
 
 const Meta_Property _OtherClass_key =
@@ -25,7 +24,6 @@ const Meta_Property _OtherClass_key =
     CIMPLE_OFF(OtherClass,key)
 };
 
-CIMPLE_HIDE
 extern const Meta_Property _OtherClass_num;
 
 const Meta_Property _OtherClass_num =
@@ -53,6 +51,7 @@ const Meta_Class OtherClass::static_meta_class =
     0,
     1,
     0xA69A6950,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

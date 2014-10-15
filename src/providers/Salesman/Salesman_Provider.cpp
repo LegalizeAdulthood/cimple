@@ -20,11 +20,6 @@ Unload_Status Salesman_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status Salesman_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status Salesman_Provider::get_instance(
     const Salesman* model,
     Salesman*& instance)

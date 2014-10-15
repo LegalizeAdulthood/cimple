@@ -230,9 +230,6 @@ static int _provider_proc(
 	case OPERATION_UNLOAD:
 	    return UNLOAD_OK;
 
-	case OPERATION_TIMER:
-	    return TIMER_CANCEL;
-
 	case OPERATION_GET_REPOSITORY:
 	{
 	    const Meta_Class* const** meta_classes = 

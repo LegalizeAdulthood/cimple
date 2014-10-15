@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _OtherClass_h
-#define _OtherClass_h
+#ifndef _cimple_OtherClass_h
+#define _cimple_OtherClass_h
 
 #include <cimple/cimple.h>
 
@@ -14,11 +14,13 @@ CIMPLE_NAMESPACE_BEGIN
 class OtherClass : public Instance
 {
 public:
+    // OtherClass features:
     Property<String> key;
     Property<uint32> num;
+
     CIMPLE_CLASS(OtherClass)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _OtherClass_h */
+#endif /* _cimple_OtherClass_h */

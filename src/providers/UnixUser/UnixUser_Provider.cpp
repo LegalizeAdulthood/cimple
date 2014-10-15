@@ -24,11 +24,6 @@ Unload_Status UnixUser_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status UnixUser_Provider::timer(uint64& timeout)
-{
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status UnixUser_Provider::get_instance(
     const UnixUser* model,
     UnixUser*& instance)

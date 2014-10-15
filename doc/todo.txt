@@ -5,7 +5,17 @@
     ?
     ????????????????????????????????????????????????????????????????????????????
 
-    (?) How should the CGI provider find its provider scripts.
+    (A-?) Should we remove the timer() operation?
+
+    (A-?) Should instances have null properties when created?
+
+    (A-?) Should regmod -s (subclasses) be the default?
+
+    (B-?) Should providers and meta-classes reside in CIMPLE namespace?
+
+    (B-?) Should "CLI an Person.ssn=99" error out if non-existent.
+
+    (C-?) How should the CGI provider find its provider scripts?
 
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
     N
@@ -13,67 +23,24 @@
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
+    (A) Implement binary compatible for the provider interfaces (and clean up).
+
+    (A) Work through ATTNs.
+
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     A
     A A-priorities
     A
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-    (A) Remove timer() method from providers (use threading instead).
-
-    (A) Remove encoding algorithms.
-
-    (A)	Link all meta-classes to repository meta-class array.
-
-    (AA) Should instances have null properties when created.
-
-    (A) Make it so that every meta-class has a pointer to the global
-	meta-class array (use a UUID?).
-
-    (A) Rework linkage to use default hidden.
-
     (A) Revist Instance APIs to see if Ref<Instance> is better.
-
-    (A) Implement cimom interface.
-
-    (A) Fix crash on provider unload.
 
     (A) Resolve bug with Pegasus adapter which occurs in response to asking
 	for a non existent instance with CLI gi.
 
-    (A) Properly handle property lists in adapter.
-
-    (A) Consolidate standard CIM error codes with provider error codes.
-
-    (A) Remove providers and meta-class data from CIMPLE namespace.
-
-    (A) Enhance regmod to interact with CIMOM rather than repository
-	directly.
-
-    (A) Consider versioning of providers.
-
-    (A) Test whole property-list filtering scheme throughout CIMPLE. Be sure
-	to clear properties that the CIMOM did not ask for.
-
-    (A) Lifecycle indications are broken on CMPI because embedded instance
-	properties are of type string. Handle conversion from CIMPLE to CMPI 
-	embedded instances.
-
-    (A) Extend CIMPLE threading to provider developers.
-
-    (A) Test associator-names for case in which actual referent is a subclass
-	of the class of the reference property.
-
-    (A) Test with SFCB (Small-Footprint CIM Broker)
-
-    (A) Test CMPI versioning.
-
-    (A) Modify Array_Base to use an opaque representation (needed to support
-	binary compatibility in the future).
+    (A) Fix lifecycle indications in the CMPI adapter.
 
     (A) Implement inter-provider communication.
-
-    (A) Implement binary compatibility of the provider interface.
 
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
     B
@@ -81,47 +48,43 @@
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 
-    (B) Add error reporting for the cimom interface.
+    (B) Logging and tracing.
 
-    (B) Test property list filtering.
+    (B) Add error reporting (for the cimom interface and elsewhere).
 
-    (B) Make generation of property enum tags (corresponding to 
-	values/valuemap qualifiers) the default for genclass (rather than 
-	requiring the -e option).
-
-    (B) Finish CIMCGI work (enhance error messages and handle array
-	properties).
-
-    (B) Implement default property initializers (as defined in MOF class).
-
-    (B) Cache instances for some period to reduce provider overhead. Provider
-	would set timeout during registration or loading.
-
-    (B) Add -u option to regmod (-u means unregister provider).
-
-    (B) Handle conflicts between CIM schema versions (should regmod check
-	for CIM schema version compatibility?).
-
-    (B) Improve error reporting in CMPI adapter (include error description).
-
-    (B) Work through ATTNs.
-
-    (B) Should "CLI an Person.ssn=99" for non-existent Person produce an error?
-	(Karl).
-
-    (B) Implement CIM error.
-
-    (B) WMI Adapter
-
-    (B) Implement embeddedobject for parameters and methods.
+    (B) Fully implement property-list filtering.
 
     (B) Revisit provider reentrancy (i.e., thread safety, synchronization).
+
+    (B) Implement automatic lifecycle indication generation.
 
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
     C
     C C priorities
     C
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+    (C) Handle conflicts between CIM schema versions (should regmod check
+	for CIM schema version compatibility?).
+
+    (C) Improve error reporting in CMPI adapter (include error description).
+
+    (C) Implement default property initializers (as defined in MOF class).
+
+    (C) Implement embeddedobject for parameters and methods.
+
+    (C) Implement WMI Adapter
+
+    (C) Finish CIMCGI work (enhance error messages and handle array properties).
+
+    (C) Modify values/valuemap enum tags so that they are true enums and not
+	just integers.
+
+    (C) Validate CIMPLE/CMPI providers with SFCB (Small-Footprint CIM Broker)
+
+    (C) Consider versioning of providers.
+
+    (C) Enhance regmod to interact with CIMOM rather than repository directly.
 
     (C) Move random_initialize() function out of cimple runtime.
 

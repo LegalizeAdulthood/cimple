@@ -3,7 +3,6 @@ include $(TOP)/mak/config.mak
 
 DIRS = \
     mutex \
-    cond_queue \
     array \
     string \
     property \
@@ -13,7 +12,8 @@ DIRS = \
     time \
     join \
     encoding \
-    model_path
+    model_path \
+    class
 
 BROKEN_TESTS = \
     datetime \

@@ -47,32 +47,32 @@ public:
 	@param path directory containing the providers or repositories.
 	@return pointer to a new cache or null on error.
     */
-    static CIMPLE_HIDE Cache* create(const char* path);
+    static Cache* create(const char* path);
 
     /** Find a provider with the given class name.
     */
-    CIMPLE_HIDE Envelope* get_provider_by_class(const char* class_name);
+    Envelope* get_provider_by_class(const char* class_name);
 
     /** Find a provider with the given provider name.
     */
-    CIMPLE_HIDE Envelope* get_provider_by_name(const char* provider_name);
+    Envelope* get_provider_by_name(const char* provider_name);
 
     /** Get meta class.
     */
-    CIMPLE_HIDE const Meta_Class* get_meta_class(const char* class_name) const;
+    const Meta_Class* get_meta_class(const char* class_name) const;
 
     /** Get number of modules in cache.
     */
-    CIMPLE_HIDE size_t num_modules() const;
+    size_t num_modules() const;
 
     /** Get number of providers.
     */
-    CIMPLE_HIDE size_t num_providers() const;
+    size_t num_providers() const;
 
     /** Get the i-th provider. */
-    CIMPLE_HIDE Envelope* get_provider(size_t i);
+    Envelope* get_provider(size_t i);
 
-    CIMPLE_HIDE void dump() const;
+    void dump() const;
 
 private:
 

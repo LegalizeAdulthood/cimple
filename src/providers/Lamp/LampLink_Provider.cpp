@@ -31,12 +31,6 @@ Unload_Status LampLink_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status LampLink_Provider::timer(uint64& timeout_msec)
-{
-    TRACE;
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status LampLink_Provider::get_instance(
     const LampLink* model,
     LampLink*& instance)

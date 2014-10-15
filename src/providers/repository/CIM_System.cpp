@@ -13,17 +13,17 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_Name;
+extern const Meta_Property _CIM_System_Name;
 
 const Meta_Property _CIM_System_Name =
 {
@@ -34,23 +34,23 @@ const Meta_Property _CIM_System_Name =
     CIMPLE_OFF(CIM_System,Name)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property _CIM_ManagedSystemElement_Status;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_CreationClassName;
+extern const Meta_Property _CIM_System_CreationClassName;
 
 const Meta_Property _CIM_System_CreationClassName =
 {
@@ -61,7 +61,7 @@ const Meta_Property _CIM_System_CreationClassName =
     CIMPLE_OFF(CIM_System,CreationClassName)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_NameFormat;
+extern const Meta_Property _CIM_System_NameFormat;
 
 const Meta_Property _CIM_System_NameFormat =
 {
@@ -72,7 +72,7 @@ const Meta_Property _CIM_System_NameFormat =
     CIMPLE_OFF(CIM_System,NameFormat)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_PrimaryOwnerName;
+extern const Meta_Property _CIM_System_PrimaryOwnerName;
 
 const Meta_Property _CIM_System_PrimaryOwnerName =
 {
@@ -83,7 +83,7 @@ const Meta_Property _CIM_System_PrimaryOwnerName =
     CIMPLE_OFF(CIM_System,PrimaryOwnerName)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_PrimaryOwnerContact;
+extern const Meta_Property _CIM_System_PrimaryOwnerContact;
 
 const Meta_Property _CIM_System_PrimaryOwnerContact =
 {
@@ -94,7 +94,7 @@ const Meta_Property _CIM_System_PrimaryOwnerContact =
     CIMPLE_OFF(CIM_System,PrimaryOwnerContact)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_Roles;
+extern const Meta_Property _CIM_System_Roles;
 
 const Meta_Property _CIM_System_Roles =
 {
@@ -138,7 +138,7 @@ const Meta_Class CIM_System::static_meta_class =
     &CIM_EnabledLogicalElement::static_meta_class,
     2,
     0x99E12464,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

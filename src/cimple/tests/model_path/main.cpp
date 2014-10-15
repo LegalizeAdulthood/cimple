@@ -36,10 +36,10 @@ int main(int argc, char** argv)
     // Create Glue object.
 
     Ref<Glue> glue1(Glue::create());
-    nullify_non_keys(glue1);
+    nullify_non_keys(glue1.ptr());
 
     Ref<Part> part1(Part::create());
-    nullify_non_keys(part1);
+    nullify_non_keys(part1.ptr());
     part1->key1.value = true;
     part1->key2.value = 9999;
     part1->key3.value = "Seriously?";
@@ -54,12 +54,12 @@ int main(int argc, char** argv)
 	const char PATH[] = 
 	    "Part.key1=true,key2=9999,key3=\"Seriously?\"";
 
-	Ref<Instance> part2(
-	    __model_path_to_instance(&Part::static_meta_class, PATH));
+	Ref<Instance> part2 =
+	    cimom::model_path_to_instance(&Part::static_meta_class, PATH);
 	assert(part2 != 0);
 	// print(part2, true);
 
-	assert(identical(part1, part2));
+	assert(identical(part1.ptr(), part2.ptr()));
     }
 
     // Create a Glue instance name from an instance path.
@@ -70,12 +70,23 @@ int main(int argc, char** argv)
 	    "right="
 	    "\"Part.key1=true,key2=9999,key3=\\\"Seriously?\\\"\"";
 
-	Ref<Instance> glue2(
-	    __model_path_to_instance(&Glue::static_meta_class, PATH));
+	Ref<Instance> glue2 =
+	    cimom::model_path_to_instance(&Glue::static_meta_class, PATH);
 	assert(glue2 != 0);
-	// print(glue2 , true);
 
-	assert(identical(glue2, glue1));
+	Ref<Instance> tmp(glue2);
+	Ref<Instance> tmp2(glue2);
+	Ref<Glue> glue3(glue2);
+
+#if 0
+	print(glue1.ptr());
+	print(glue2.ptr());
+	print(glue3.ptr());
+#endif
+
+	assert(identical(glue2.ptr(), glue1.ptr()));
+	assert(identical(glue2.ptr(), glue3.ptr()));
+	assert(identical(glue1.ptr(), glue3.ptr()));
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

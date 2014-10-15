@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cimplecmpiadap
+SHARED_LIBRARY = cimplecmpiadap
 
 SOURCES = \
     CMPI_Thread_Context.cpp \

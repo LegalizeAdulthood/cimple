@@ -112,7 +112,7 @@ Ref<Instance> cimom::get_instance(
     if (context)
 	return context->get_instance(name_space, model);
 
-    return Ref<Instance>(0);
+    return Ref<Instance>();
 }
 
 int cimom::create_instance(

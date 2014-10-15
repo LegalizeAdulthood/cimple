@@ -12,7 +12,7 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	$(TARGET)
+	@ $(BINARY_TARGET)
 
 genclass:
 	$(BIN_DIR)/genclass YourClass MyClass EmbeddedClass

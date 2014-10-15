@@ -4,21 +4,29 @@
 //
 //==============================================================================
 
-#ifndef _Thing_h
-#define _Thing_h
+#ifndef _cimple_Thing_h
+#define _cimple_Thing_h
 
 #include <cimple/cimple.h>
 #include "Base.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Thing : public Base
+class Thing : public Instance
 {
 public:
+    // Base features:
+    Property<boolean> w;
+    Property<uint32> x;
+    Property<String> y;
+    Property<Array_uint32> z;
+
+    // Thing features:
     Property<uint32> key;
+
     CIMPLE_CLASS(Thing)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Thing_h */
+#endif /* _cimple_Thing_h */

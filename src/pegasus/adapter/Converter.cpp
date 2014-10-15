@@ -882,7 +882,7 @@ int Converter::_to_cimple_ref(
 
     const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings = op.getKeyBindings();
 
-    if (bindings.size() != count_keys(mr->meta_class))
+    if (bindings.size() != mr->meta_class->num_keys)
     {
 	CIMPLE_ERROR(("key count mismatch"));
 	return -1;
@@ -940,7 +940,7 @@ int Converter::to_cimple_key(
     ci = _make_cimple_instance(&bindings, bindings.size(),
 	_bindings_get_name, _bindings_get_value, mc, false);
 
-    if (bindings.size() != count_keys(mc))
+    if (bindings.size() != mc->num_keys)
     {
 	CIMPLE_ERROR(("key count mismatch"));
 	return -1;

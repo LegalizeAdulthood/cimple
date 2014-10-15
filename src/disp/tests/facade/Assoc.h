@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _Assoc_h
-#define _Assoc_h
+#ifndef _cimple_Assoc_h
+#define _cimple_Assoc_h
 
 #include <cimple/cimple.h>
 #include "Thing.h"
@@ -16,11 +16,13 @@ CIMPLE_NAMESPACE_BEGIN
 class Assoc : public Instance
 {
 public:
-    Thing* left;
-    Thing* right;
+    // Assoc features:
+    CIMPLE_REF(Thing,left);
+    CIMPLE_REF(Thing,right);
+
     CIMPLE_CLASS(Assoc)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _Assoc_h */
+#endif /* _cimple_Assoc_h */

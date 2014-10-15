@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplmethods
+SHARED_LIBRARY = cmplmethods
 
 INCLUDES += -I../repository
 
@@ -18,9 +18,9 @@ include $(TOP)/mak/rules.mak
 tests:
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
 
 genclass:

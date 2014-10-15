@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Reference _CIM_Dependency_Antecedent;
+extern const Meta_Reference _CIM_Dependency_Antecedent;
 
 const Meta_Reference _CIM_Dependency_Antecedent =
 {
@@ -23,7 +23,7 @@ const Meta_Reference _CIM_Dependency_Antecedent =
     CIMPLE_OFF(CIM_Dependency,Antecedent)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _CIM_Dependency_Dependent;
+extern const Meta_Reference _CIM_Dependency_Dependent;
 
 const Meta_Reference _CIM_Dependency_Dependent =
 {

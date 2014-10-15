@@ -20,11 +20,6 @@ Unload_Status LinuxComputerSystem_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status LinuxComputerSystem_Provider::timer(uint64& timeout)
-{
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status LinuxComputerSystem_Provider::get_instance(
     const LinuxComputerSystem* model,
     LinuxComputerSystem*& instance)

@@ -13,7 +13,6 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
 extern const Meta_Reference _AY_left;
 
 const Meta_Reference _AY_left =
@@ -24,7 +23,6 @@ const Meta_Reference _AY_left =
     CIMPLE_OFF(AY,left)
 };
 
-CIMPLE_HIDE
 extern const Meta_Reference _AY_right;
 
 const Meta_Reference _AY_right =
@@ -51,6 +49,7 @@ const Meta_Class AY::static_meta_class =
     &AX::static_meta_class,
     0,
     0x57A8CE86,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

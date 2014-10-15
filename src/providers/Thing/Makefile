@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplthing
+SHARED_LIBRARY = cmplthing
 
 INCLUDES += -I$(TOP)/src/providers/repository 
 INCLUDES += -I$(TOP)/src/CMPI/cmpi
@@ -19,6 +19,8 @@ LIBRARIES += cimplecmpiadap
 include $(TOP)/mak/rules.mak
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 tests:
+
+genclass:

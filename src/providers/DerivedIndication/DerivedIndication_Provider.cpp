@@ -20,11 +20,6 @@ Unload_Status DerivedIndication_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status DerivedIndication_Provider::timer(uint64& timeout)
-{
-    return TIMER_CANCEL;
-}
-
 Enable_Indications_Status DerivedIndication_Provider::enable_indications(
     Indication_Handler<DerivedIndication>* indication_handler)
 {

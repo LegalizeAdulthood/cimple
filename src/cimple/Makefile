@@ -1,7 +1,8 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cimple
+SHARED_LIBRARY = cimple
+STATIC_LIBRARY = cimple_s
 
 SOURCES = \
     Enc.cpp \
@@ -11,11 +12,8 @@ SOURCES = \
     cimom.cpp \
     Atomic_Counter.cpp \
     Cond.cpp \
-    Cond_Queue.cpp \
     Error.cpp \
     version.cpp \
-    Id_Pool.cpp \
-    List.cpp \
     Mutex.cpp \
     Time.cpp \
     Thread.cpp \
@@ -40,14 +38,13 @@ SOURCES = \
     String.cpp \
     Strings.cpp \
     Type.cpp \
-    Property.cpp \
-    Scheduler.cpp
+    Property.cpp
 
 LIBRARIES =
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
-DEFINES += -DCIMPLE_LIBCIMPLE
+DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 

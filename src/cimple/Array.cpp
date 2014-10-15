@@ -230,7 +230,7 @@ void Array_Base::_remove(size_t pos, size_t size)
     _rep->size -= size;
 }
 
-struct Array_Friend
+struct CIMPLE_HIDE Array_Friend
 {
     static bool equal(const Array_Base& x, const Array_Base& y)
     {

@@ -32,56 +32,15 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-const Meta_Property* find_property(const Meta_Class* mc, const char* name)
-{
-    return (const Meta_Property*)find_feature(mc, name, CIMPLE_FLAG_PROPERTY);
-}
-
-const Meta_Reference* find_reference(const Meta_Class* mc, const char* name)
-{
-    return (const Meta_Reference*)find_feature(mc, name, CIMPLE_FLAG_REFERENCE);
-}
-
-const Meta_Method* find_method(const Meta_Class* mc, const char* name)
-{
-    return (const Meta_Method*)find_feature(mc, name, CIMPLE_FLAG_METHOD);
-}
-
-bool has_methods(const Meta_Class* mc)
+bool __has_feature(const Meta_Class* mc, uint32 type)
 {
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
-	if (mc->meta_features[i]->flags & CIMPLE_FLAG_METHOD)
+	if (mc->meta_features[i]->flags & type)
 	    return true;
     }
 
     return false;
-}
-
-bool has_references(const Meta_Class* mc)
-{
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-	if (mc->meta_features[i]->flags & CIMPLE_FLAG_REFERENCE)
-	    return true;
-    }
-
-    return false;
-}
-
-size_t count_keys(const Meta_Class* mc)
-{
-    size_t n = 0;
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-	const Meta_Feature* feature = mc->meta_features[i];
-
-        if (feature->flags & CIMPLE_FLAG_KEY)
-	    n++;
-    }
-
-    return n;
 }
 
 const Meta_Feature* find_feature(
@@ -134,20 +93,6 @@ bool is_local_feature(const Meta_Class* mc, const Meta_Feature* mf)
     return true;
 }
 
-// This is used for embedded objects.
-Meta_Class Instance_meta_class =
-{
-    CIMPLE_FLAG_CLASS, /* flags */
-    "Instance", /* name */
-    0, /* meta_features */
-    0, /* num_meta_features */
-    sizeof(Instance), /* size */
-    0, /* super_meta_class */
-    0, /* num_keys */
-    0x00000000, /* crc */
-    0,
-};
-
 bool is_subclass(
     const Meta_Class* super_class, 
     const Meta_Class* sub_class)
@@ -161,6 +106,32 @@ bool is_subclass(
     }
 
     return false;
+}
+
+const Meta_Class* find_meta_class(
+    const Meta_Class* source_meta_class,
+    const char* class_name)
+{
+    // Check this class.
+
+    if (strcasecmp(source_meta_class->name, class_name) == 0)
+	return source_meta_class;
+
+    // Check superclass chain.
+
+    for (const Meta_Class* p = source_meta_class; p; p = p->super_meta_class)
+    {
+	if (strcasecmp(p->name, class_name) == 0)
+	    return p;
+    }
+
+    // Check meta-repository.
+
+    if (source_meta_class->meta_repository)
+	return find_meta_class(source_meta_class->meta_repository, class_name);
+
+    // Not found!
+    return 0;
 }
 
 #if 0
@@ -232,31 +203,5 @@ void pack_meta_class(Buffer& out, const Meta_Class* mc)
     }
 }
 #endif
-
-const Meta_Class* find_meta_class(
-    const Meta_Class* source_meta_class,
-    const char* class_name)
-{
-    // Check this class.
-
-    if (strcasecmp(source_meta_class->name, class_name) == 0)
-	return source_meta_class;
-
-    // Check superclass chain.
-
-    for (const Meta_Class* p = source_meta_class; p; p = p->super_meta_class)
-    {
-	if (strcasecmp(p->name, class_name) == 0)
-	    return p;
-    }
-
-    // Check meta-repository.
-
-    if (source_meta_class->meta_repository)
-	return find_meta_class(source_meta_class->meta_repository, class_name);
-
-    // Not found!
-    return 0;
-}
 
 CIMPLE_NAMESPACE_END

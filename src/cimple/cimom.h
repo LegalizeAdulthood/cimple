@@ -56,8 +56,8 @@ public:
     Ref<Instance> operator()() const;
 
 private:
-    Instance_Enumerator(const Instance_Enumerator& e);
-    Instance_Enumerator& operator=(const Instance_Enumerator& e);
+    Instance_Enumerator(const Instance_Enumerator&);
+    Instance_Enumerator& operator=(const Instance_Enumerator&);
     void operator++();
     Instance_Enumerator_Rep* _rep;
     friend struct cimom;

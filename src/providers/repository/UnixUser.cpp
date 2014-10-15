@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _UnixUser_name;
+extern const Meta_Property _UnixUser_name;
 
 const Meta_Property _UnixUser_name =
 {
@@ -26,7 +26,7 @@ const Meta_Property _UnixUser_name =
     CIMPLE_OFF(UnixUser,name)
 };
 
-extern CIMPLE_HIDE const Meta_Property _UnixUser_password;
+extern const Meta_Property _UnixUser_password;
 
 const Meta_Property _UnixUser_password =
 {
@@ -37,7 +37,7 @@ const Meta_Property _UnixUser_password =
     CIMPLE_OFF(UnixUser,password)
 };
 
-extern CIMPLE_HIDE const Meta_Property _UnixUser_uid;
+extern const Meta_Property _UnixUser_uid;
 
 const Meta_Property _UnixUser_uid =
 {
@@ -48,7 +48,7 @@ const Meta_Property _UnixUser_uid =
     CIMPLE_OFF(UnixUser,uid)
 };
 
-extern CIMPLE_HIDE const Meta_Property _UnixUser_gid;
+extern const Meta_Property _UnixUser_gid;
 
 const Meta_Property _UnixUser_gid =
 {
@@ -59,7 +59,7 @@ const Meta_Property _UnixUser_gid =
     CIMPLE_OFF(UnixUser,gid)
 };
 
-extern CIMPLE_HIDE const Meta_Property _UnixUser_fullName;
+extern const Meta_Property _UnixUser_fullName;
 
 const Meta_Property _UnixUser_fullName =
 {
@@ -70,7 +70,7 @@ const Meta_Property _UnixUser_fullName =
     CIMPLE_OFF(UnixUser,fullName)
 };
 
-extern CIMPLE_HIDE const Meta_Property _UnixUser_homeDir;
+extern const Meta_Property _UnixUser_homeDir;
 
 const Meta_Property _UnixUser_homeDir =
 {
@@ -81,7 +81,7 @@ const Meta_Property _UnixUser_homeDir =
     CIMPLE_OFF(UnixUser,homeDir)
 };
 
-extern CIMPLE_HIDE const Meta_Property _UnixUser_shellProgram;
+extern const Meta_Property _UnixUser_shellProgram;
 
 const Meta_Property _UnixUser_shellProgram =
 {
@@ -113,7 +113,7 @@ const Meta_Class UnixUser::static_meta_class =
     0,
     1,
     0xFBD88476,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

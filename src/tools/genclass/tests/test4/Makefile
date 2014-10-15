@@ -14,4 +14,4 @@ genclass:
 	$(BIN_DIR)/genclass -I ../mof Erp2
 
 tests:
-	$(TARGET)
+	@ $(BINARY_TARGET)

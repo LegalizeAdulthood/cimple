@@ -40,34 +40,6 @@ CIMPLE_NAMESPACE_BEGIN
 
 //------------------------------------------------------------------------------
 //
-// _timer()
-//
-//------------------------------------------------------------------------------
-
-static uint64 _timer(void* arg)
-{
-    Envelope* env = (Envelope*)arg;
-
-    Auto_Mutex a(env->mutex());
-
-    uint64 timeout = 0;
-    Timer_Status status = env->timer(timeout);
-
-    switch (status)
-    {
-	case TIMER_CANCEL:
-	    return 0;
-
-	case TIMER_RESCHEDULE:
-	    return timeout * 1000;
-    }
-
-    // Unreachable!
-    return 0;
-}
-
-//------------------------------------------------------------------------------
-//
 // Dispatcher::create()
 //
 //------------------------------------------------------------------------------
@@ -82,27 +54,10 @@ Dispatcher* Dispatcher::create(const char* path)
     if (!cache)
 	return 0;
 
-    // Create scheduler:
-
-    Scheduler* sched = new Scheduler;
-
     // Create dispatcher:
 
     Dispatcher* dispatcher = new Dispatcher;
     dispatcher->_cache = cache;
-    dispatcher->_sched = sched;
-
-    // Scheduler one microsecond timers for all providers:
-
-    for (size_t i = 0; i < cache->num_providers(); i++)
-    {
-	Envelope* env = cache->get_provider(i);
-	sched->add_timer(1, _timer, env);
-    }
-
-    // Create a thread to run the scheduler:
-
-    sched->start_thread();
 
     return dispatcher;
 }

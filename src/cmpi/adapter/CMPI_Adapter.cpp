@@ -46,80 +46,6 @@ static const char _INDICATIONS_NAMESPACE[] = "root/cimv2";
 
 //------------------------------------------------------------------------------
 //
-// _timer()
-//
-//------------------------------------------------------------------------------
-
-#ifdef ENABLE_TIMER_PROC
-
-uint64 CMPI_Adapter::_timer(void* arg)
-{
-    TRACE;
-
-    // This function is called when the Scheduler's timer proc expires. It
-    // invokes the provider's timer() method().
-
-    CMPI_Adapter* adapter = (CMPI_Adapter*)arg;
-    Auto_Mutex auto_lock(adapter->_lock);
-
-    uint64 timeout = 0;
-    Timer_Status status = adapter->timer(timeout);
-
-    switch (status)
-    {
-        case TIMER_CANCEL:
-            return 0;
-
-        case TIMER_RESCHEDULE:
-	    // Convert to microseconds.
-            return timeout * 1000;
-    }
-
-    // Unreachable!
-    return 0;
-}
-
-#endif /* ENABLE_TIMER_PROC */
-
-//------------------------------------------------------------------------------
-//
-// _timer_thread_proc()
-//
-//------------------------------------------------------------------------------
-
-#ifdef ENABLE_TIMER_PROC
-
-void* CMPI_Adapter::_timer_thread_proc(void* arg)
-{
-    TRACE;
-
-    CMPI_Adapter* adapter = (CMPI_Adapter*)arg;
-
-    // ATTN: there is currently no logic to stop this thread.
-
-    while (!adapter->_stop_timer_thread)
-        adapter->_sched->dispatch();
-
-    return 0;
-}
-
-#endif /* ENABLE_TIMER_PROC */
-
-//------------------------------------------------------------------------------
-//
-// CMPI_Adapter::_sched
-//
-//------------------------------------------------------------------------------
-
-#ifdef ENABLE_TIMER_PROC
-
-Scheduler* CMPI_Adapter::_sched = 0;
-Mutex CMPI_Adapter::_sched_lock;
-
-#endif /* ENABLE_TIMER_PROC */
-
-//------------------------------------------------------------------------------
-//
 // CMPI_Adapter::CMPI_Adapter()
 //
 //------------------------------------------------------------------------------
@@ -137,10 +63,6 @@ CMPI_Adapter::CMPI_Adapter(
     TRACE;
 
     CMPI_Thread_Context_Pusher pusher(broker_, context);
-
-#ifdef ENABLE_TIMER_PROC
-    _stop_timer_thread = false;
-#endif /* ENABLE_TIMER_PROC */
 
     instance_ft.ftVersion = 100;
     instance_ft.miVersion = 100;
@@ -188,29 +110,6 @@ CMPI_Adapter::CMPI_Adapter(
 
     load();
 
-#ifdef ENABLE_TIMER_PROC
-
-    // Create a scheduler on first invocation.
-
-    if (_sched == 0)
-    {
-	_sched_lock.lock();
-
-	if (_sched == 0)
-	{
-	    _sched = new Scheduler;
-	    Thread::create(_timer_thread, _timer_thread_proc, this);
-	}
-
-	_sched_lock.unlock();
-    }
-
-    // Schedule timer to call the provider's timer() method:
-
-    _timer_id = _sched->add_timer(1, _timer, this);
-
-#endif /* ENABLE_TIMER_PROC */
-
     // Save meta-class:
 
     get_meta_class(_mc);
@@ -227,7 +126,8 @@ CMPI_Adapter::~CMPI_Adapter()
     TRACE;
 
 /*
-ATTN: cannot get a context here:
+ATTN: cannot get a context here so cimom:: operations are not supported from
+the unload method.
     CMPI_Thread_Context_Pusher pusher(broker_, cmpi_context);
 */
 
@@ -240,19 +140,9 @@ ATTN: cannot get a context here:
     free((char*)method_ft.miName);
     free((char*)indication_ft.miName);
 
-    // Remove timer:
-
-#ifdef ENABLE_TIMER_PROC
-    _sched->remove_timer(_timer_id);
-#endif
-
     // Null this out so that next time cimple_cmpi_adapter() is called, it
     // will find a null adapter.
     _adapter_back_pointer = 0;
-
-#if 0
-    Thread_Context::pop();
-#endif
 }
 
 //------------------------------------------------------------------------------

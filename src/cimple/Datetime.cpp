@@ -34,7 +34,6 @@
 #include <time.h>
 #include "Datetime.h"
 #include "Time.h"
-#include "Strings.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -44,6 +43,27 @@ const uint64 Datetime::SEC = 1000000;
 const uint64 Datetime::MIN = 60 * SEC;
 const uint64 Datetime::HOUR = 60 * MIN;
 const uint64 Datetime::DAY = 24 * HOUR;
+
+static bool _str_to_uint32(const char* s, size_t n, uint32& x)
+{
+    // ATTN: check for overflow!
+
+    x = 0;
+    uint32 r = 1;
+
+    for (const char* p = &s[n]; n--; )
+    {
+	char c = *--p;
+
+	if (!isdigit(c))
+	    return false;
+
+	x += r * (c - '0');
+	r *= 10;
+    }
+
+    return true;
+}
 
 void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
 {
@@ -231,22 +251,22 @@ bool Datetime::set(const char* str)
 	uint32 seconds;
 	uint32 microseconds;
 
-	if (!str_to_uint32(str, 8, days))
+	if (!_str_to_uint32(str, 8, days))
 	    return false;
 
-	if (!str_to_uint32(str + 8, 2, hours))
+	if (!_str_to_uint32(str + 8, 2, hours))
 	    return false;
 
-	if (!str_to_uint32(str + 10, 2, minutes))
+	if (!_str_to_uint32(str + 10, 2, minutes))
 	    return false;
 
-	if (!str_to_uint32(str + 12, 2, seconds))
+	if (!_str_to_uint32(str + 12, 2, seconds))
 	    return false;
 
 	if (str[14] != '.')
 	    return false;
 
-	if (!str_to_uint32(str + 15, 6, microseconds))
+	if (!_str_to_uint32(str + 15, 6, microseconds))
 	    return false;
 
 	if (str[22] != '0' || str[23] != '0' || str[24] != '0')
@@ -269,31 +289,31 @@ bool Datetime::set(const char* str)
 	uint32 microseconds;
 	uint32 utc;
 
-	if (!str_to_uint32(str, 4, year))
+	if (!_str_to_uint32(str, 4, year))
 	    return false;
 
-	if (!str_to_uint32(str + 4, 2, month))
+	if (!_str_to_uint32(str + 4, 2, month))
 	    return false;
 
-	if (!str_to_uint32(str + 6, 2, day))
+	if (!_str_to_uint32(str + 6, 2, day))
 	    return false;
 
-	if (!str_to_uint32(str + 8, 2, hours))
+	if (!_str_to_uint32(str + 8, 2, hours))
 	    return false;
 
-	if (!str_to_uint32(str + 10, 2, minutes))
+	if (!_str_to_uint32(str + 10, 2, minutes))
 	    return false;
 
-	if (!str_to_uint32(str + 12, 2, seconds))
+	if (!_str_to_uint32(str + 12, 2, seconds))
 	    return false;
 
 	if (str[14] != '.')
 	    return false;
 
-	if (!str_to_uint32(str + 15, 6, microseconds))
+	if (!_str_to_uint32(str + 15, 6, microseconds))
 	    return false;
 
-	if (!str_to_uint32(str + 22, 3, utc))
+	if (!_str_to_uint32(str + 22, 3, utc))
 	    return false;
 
 	set_timestamp(

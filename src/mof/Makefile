@@ -1,7 +1,7 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = mof
+SHARED_LIBRARY = mof
 
 INCLUDES += -I.
 

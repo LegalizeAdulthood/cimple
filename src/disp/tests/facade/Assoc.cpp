@@ -17,7 +17,7 @@ extern const Meta_Reference _Assoc_left;
 
 const Meta_Reference _Assoc_left =
 {
-    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_LOCAL,
+    CIMPLE_FLAG_REFERENCE,
     "left",
     &Thing::static_meta_class,
     CIMPLE_OFF(Assoc,left)
@@ -27,7 +27,7 @@ extern const Meta_Reference _Assoc_right;
 
 const Meta_Reference _Assoc_right =
 {
-    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_LOCAL,
+    CIMPLE_FLAG_REFERENCE,
     "right",
     &Thing::static_meta_class,
     CIMPLE_OFF(Assoc,right)
@@ -47,6 +47,8 @@ const Meta_Class Assoc::static_meta_class =
     CIMPLE_ARRAY_SIZE(_Assoc_meta_features),
     sizeof(Assoc),
     0,
+    0,
+    0x80626AF1,
     0,
 };
 

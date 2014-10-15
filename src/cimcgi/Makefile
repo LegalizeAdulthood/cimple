@@ -1,7 +1,7 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplcimcgi
+SHARED_LIBRARY = cmplcimcgi
 
 SOURCES = module.cpp 
 
@@ -14,4 +14,4 @@ include $(TOP)/mak/rules.mak
 genclass:
 
 reg:
-	$(BIN_DIR)/regmod -c $(TARGET)
+	$(BIN_DIR)/regmod -c $(SHARED_BINARY_TARGET)

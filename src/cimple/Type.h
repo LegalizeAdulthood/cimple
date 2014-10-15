@@ -54,18 +54,10 @@ enum Type
 };
 
 CIMPLE_LIBCIMPLE_LINKAGE 
-extern size_t type_size[];
+extern size_t const type_size[];
 
 CIMPLE_LIBCIMPLE_LINKAGE 
-extern const char* type_name[];
-
-// Returns true if the index is one of the integer types defined above.
-CIMPLE_LIBCIMPLE_LINKAGE 
-extern char is_integer[];
-
-// Returns true if the index is one of the "raw" types.
-CIMPLE_LIBCIMPLE_LINKAGE 
-extern char is_raw[];
+extern const char* const type_name[];
 
 inline void clear(boolean& x) { x = false; }
 inline void clear(uint8& x) { x = 0; }

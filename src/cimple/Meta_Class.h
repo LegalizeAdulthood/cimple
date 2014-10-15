@@ -68,28 +68,43 @@ struct Meta_Repository
 
 CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Feature* find_feature(
-    const Meta_Class* mc, const char* name, uint32 type = 0xFFFFFFFF);
+    const Meta_Class* mc, 
+    const char* name, 
+    uint32 type = CIMPLE_FLAG_ANY_FEATURE);
+
+inline const Meta_Property* find_property(
+    const Meta_Class* mc, 
+    const char* name)
+{
+    return (const Meta_Property*)find_feature(mc, name, CIMPLE_FLAG_PROPERTY);
+}
+
+inline const Meta_Reference* find_reference(
+    const Meta_Class* mc, 
+    const char* name)
+{
+    return (const Meta_Reference*)find_feature(mc, name, CIMPLE_FLAG_REFERENCE);
+}
+
+inline const Meta_Method* find_method(
+    const Meta_Class* mc, 
+    const char* name)
+{
+    return (const Meta_Method*)find_feature(mc, name, CIMPLE_FLAG_METHOD);
+}
 
 CIMPLE_LIBCIMPLE_LINKAGE
-const Meta_Property* find_property(const Meta_Class* mc, const char* name);
+bool __has_feature(const Meta_Class* mc, uint32 type);
 
-CIMPLE_LIBCIMPLE_LINKAGE
-const Meta_Reference* find_reference(const Meta_Class* mc, const char* name);
+inline bool has_methods(const Meta_Class* mc)
+{
+    return __has_feature(mc, CIMPLE_FLAG_METHOD);
+}
 
-CIMPLE_LIBCIMPLE_LINKAGE
-const Meta_Method* find_method(const Meta_Class* mc, const char* name);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-bool has_methods(const Meta_Class* mc);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-bool has_references(const Meta_Class* mc);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-size_t count_keys(const Meta_Class* mc);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-extern Meta_Class Instance_meta_class;
+inline bool has_references(const Meta_Class* mc)
+{
+    return __has_feature(mc, CIMPLE_FLAG_REFERENCE);
+}
 
 CIMPLE_LIBCIMPLE_LINKAGE
 bool is_local_feature(const Meta_Class* mc, const Meta_Feature* mf);

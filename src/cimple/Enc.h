@@ -44,7 +44,6 @@ typedef void (*Pack_Elem)(
     Buffer& out, 
     const void* x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void __pack_array(
     Buffer& out, 
     const Array_Base& x,
@@ -55,7 +54,6 @@ typedef void (*Unpack_Elem)(
     size_t& pos, 
     void* x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void __unpack_array(
     const Buffer& in,
     size_t& pos,
@@ -78,28 +76,20 @@ inline void pack_uint8(Buffer& out, const uint8& x)
     out.append(char(x));
 }
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_uint16(Buffer& out, const uint16& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_uint32(Buffer& out, const uint32& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_uint64(Buffer& out, const uint64& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_real32(Buffer& out, const real32& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_real64(Buffer& out, const real64& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_string(Buffer& out, const String& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_c_str(Buffer& out, const char* str);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_datetime(Buffer& out, const Datetime& x);
 
 inline void pack_boolean_array(Buffer& out, const Array<boolean>& x)
@@ -163,28 +153,20 @@ inline void unpack_uint8(const Buffer& in, size_t& pos, uint8& x)
     x = in[pos++];
 }
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_uint16(const Buffer& in, size_t& pos, uint16& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_uint32(const Buffer& in, size_t& pos, uint32& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_uint64(const Buffer& in, size_t& pos, uint64& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_real32(const Buffer& in, size_t& pos, real32& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_real64(const Buffer& in, size_t& pos, real64& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_string(const Buffer& in, size_t& pos, String& x);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_c_str(const Buffer& in, size_t& pos, char*& str);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_datetime(const Buffer& in, size_t& pos, Datetime& x);
 
 inline void unpack_boolean_array(
@@ -223,7 +205,6 @@ inline void unpack_real64_array(const Buffer& in, size_t& pos, Array<real64>& x)
     __unpack_array(in, pos, x, (Unpack_Elem)unpack_real64);
 }
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_string_array(const Buffer& in, size_t& pos, Array<String>& x);
 
 inline void unpack_datetime_array(

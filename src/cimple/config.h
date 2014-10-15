@@ -138,18 +138,25 @@
     } \
     while (0)
 
-//FIX: get rid of one of these!
-#ifdef CIMPLE_LIBCIMPLE
+#ifdef CIMPLE_BUILDING_LIBCIMPLE
 # define CIMPLE_LIBCIMPLE_LINKAGE CIMPLE_EXPORT
 #else
-# define CIMPLE_LIBCIMPLE_LINKAGE CIMPLE_IMPORT
+# ifdef CIMPLE_LINK_STATIC_LIBCIMPLE
+#   define CIMPLE_LIBCIMPLE_LINKAGE /* empty */
+#else
+#   define CIMPLE_LIBCIMPLE_LINKAGE CIMPLE_IMPORT
+# endif
 #endif
 
 // These definitions are for generated classes to use:
 #ifdef CIMPLE_INTERNAL
 # define CIMPLE_LINKAGE CIMPLE_EXPORT
 #else
-# define CIMPLE_LINKAGE CIMPLE_IMPORT
+# ifdef CIMPLE_LINK_STATIC_CIMPLE
+#  define CIMPLE_LINKAGE /* empty */
+# else
+#  define CIMPLE_LINKAGE CIMPLE_IMPORT
+#endif
 #endif
 
 CIMPLE_NAMESPACE_BEGIN
@@ -177,12 +184,6 @@ typedef CIMPLE_SINT64 sint64;
 typedef float real32;
 typedef double real64;
 typedef uint16 char16;
-
-#ifdef CIMPLE_LITTLE_ENDIAN
-# define CIMPLE_IF_LITTLE_ENDIAN(BLOCK) BLOCK
-#else
-# define CIMPLE_IF_LITTLE_ENDIAN(BLOCK) /* empty */
-#endif
 
 CIMPLE_NAMESPACE_END
 

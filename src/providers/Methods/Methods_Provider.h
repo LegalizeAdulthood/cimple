@@ -14,32 +14,30 @@ public:
 
     Methods_Provider();
 
-    CIMPLE_HIDE ~Methods_Provider();
+    ~Methods_Provider();
 
-    CIMPLE_HIDE Load_Status load();
+    Load_Status load();
 
-    CIMPLE_HIDE Unload_Status unload();
+    Unload_Status unload();
 
-    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
-
-    CIMPLE_HIDE Get_Instance_Status get_instance(
+    Get_Instance_Status get_instance(
 	const Methods* model,
 	Methods*& instance);
 
-    CIMPLE_HIDE Enum_Instances_Status enum_instances(
+    Enum_Instances_Status enum_instances(
 	const Methods* model,
 	Enum_Instances_Handler<Methods>* handler);
 
-    CIMPLE_HIDE Create_Instance_Status create_instance(
+    Create_Instance_Status create_instance(
 	const Methods* instance);
 
-    CIMPLE_HIDE Delete_Instance_Status delete_instance(
+    Delete_Instance_Status delete_instance(
 	const Methods* instance);
 
-    CIMPLE_HIDE Modify_Instance_Status modify_instance(
+    Modify_Instance_Status modify_instance(
 	const Methods* instance);
 
-    CIMPLE_HIDE Invoke_Method_Status foo(
+    Invoke_Method_Status foo(
         const Methods* self,
         const Property<uint32>& arg1,
         const Property<String>& arg2,
@@ -49,7 +47,7 @@ public:
         Property<boolean>& arg6,
         Property<String>& return_value);
 
-    CIMPLE_HIDE Invoke_Method_Status foo2(
+    Invoke_Method_Status foo2(
         const Methods* self,
         const Arg* arg1,
         Arg* arg2,

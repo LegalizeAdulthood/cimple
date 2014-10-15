@@ -35,7 +35,7 @@ static const uint32 INITIAL_STRING_SIZE = 16;
 
 String::Rep String::_empty;
 
-static inline uint32 _next_pow_2(uint32 x)
+static uint32 _next_pow_2(uint32 x)
 {
     if (x < INITIAL_STRING_SIZE)
 	return INITIAL_STRING_SIZE;

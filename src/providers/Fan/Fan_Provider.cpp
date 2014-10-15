@@ -40,11 +40,6 @@ Unload_Status Fan_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status Fan_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_RESCHEDULE;
-}
-
 Get_Instance_Status Fan_Provider::get_instance(
     const Fan* model,
     Fan*& instance)

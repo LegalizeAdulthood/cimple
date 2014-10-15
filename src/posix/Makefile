@@ -2,7 +2,7 @@ TOP = ../..
 POSIX_MAKEFILE=1
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = posix
+SHARED_LIBRARY = posix
 
 SOURCES = \
     dirent.cpp \

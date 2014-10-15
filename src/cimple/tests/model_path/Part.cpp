@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_02BE6C00A89619CC8BAB08DE92ADB597;
+extern const Meta_Repository __meta_repository_6F8BC1F67AB816DE99DC59EACFBC2B83;
 
-extern CIMPLE_HIDE const Meta_Property _Part_key1;
+extern const Meta_Property _Part_key1;
 
 const Meta_Property _Part_key1 =
 {
@@ -26,7 +26,7 @@ const Meta_Property _Part_key1 =
     CIMPLE_OFF(Part,key1)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Part_key2;
+extern const Meta_Property _Part_key2;
 
 const Meta_Property _Part_key2 =
 {
@@ -37,7 +37,7 @@ const Meta_Property _Part_key2 =
     CIMPLE_OFF(Part,key2)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Part_key3;
+extern const Meta_Property _Part_key3;
 
 const Meta_Property _Part_key3 =
 {
@@ -48,7 +48,7 @@ const Meta_Property _Part_key3 =
     CIMPLE_OFF(Part,key3)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Part_prop1;
+extern const Meta_Property _Part_prop1;
 
 const Meta_Property _Part_prop1 =
 {
@@ -59,7 +59,7 @@ const Meta_Property _Part_prop1 =
     CIMPLE_OFF(Part,prop1)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Part_prop2;
+extern const Meta_Property _Part_prop2;
 
 const Meta_Property _Part_prop2 =
 {
@@ -70,7 +70,7 @@ const Meta_Property _Part_prop2 =
     CIMPLE_OFF(Part,prop2)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Part_prop3;
+extern const Meta_Property _Part_prop3;
 
 const Meta_Property _Part_prop3 =
 {
@@ -101,7 +101,7 @@ const Meta_Class Part::static_meta_class =
     0,
     3,
     0xDB3D3070,
-    &__meta_repository_02BE6C00A89619CC8BAB08DE92ADB597,
+    &__meta_repository_6F8BC1F67AB816DE99DC59EACFBC2B83,
 };
 
 CIMPLE_NAMESPACE_END

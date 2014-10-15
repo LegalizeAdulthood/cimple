@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _YourClass_str1;
+extern const Meta_Property _YourClass_str1;
 
-extern CIMPLE_HIDE const Meta_Property _MyClass_str2;
+extern const Meta_Property _MyClass_str2;
 
 const Meta_Property _MyClass_str2 =
 {
@@ -26,19 +26,19 @@ const Meta_Property _MyClass_str2 =
     CIMPLE_OFF(MyClass,str2)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _YourClass_obj1;
+extern const Meta_Reference _YourClass_obj1;
 
-extern CIMPLE_HIDE const Meta_Reference _MyClass_obj2;
+extern const Meta_Reference _MyClass_obj2;
 
 const Meta_Reference _MyClass_obj2 =
 {
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj2",
-    &Instance_meta_class,
+    &Instance::static_meta_class,
     CIMPLE_OFF(MyClass,obj2)
 };
 
-extern CIMPLE_HIDE const Meta_Property _MyClass_str3;
+extern const Meta_Property _MyClass_str3;
 
 const Meta_Property _MyClass_str3 =
 {
@@ -49,13 +49,13 @@ const Meta_Property _MyClass_str3 =
     CIMPLE_OFF(MyClass,str3)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _MyClass_obj3;
+extern const Meta_Reference _MyClass_obj3;
 
 const Meta_Reference _MyClass_obj3 =
 {
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj3",
-    &Instance_meta_class,
+    &Instance::static_meta_class,
     CIMPLE_OFF(MyClass,obj3)
 };
 

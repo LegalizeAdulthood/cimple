@@ -29,11 +29,6 @@ Unload_Status ThingLink_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status ThingLink_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status ThingLink_Provider::get_instance(
     const ThingLink* model,
     ThingLink*& instance)

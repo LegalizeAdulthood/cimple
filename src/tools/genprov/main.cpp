@@ -89,7 +89,7 @@ void write_method(
     }
     else
     {
-	fprintf(os, "%sCIMPLE_HIDE Invoke_Method_Status %s(\n", indent_chars,
+	fprintf(os, "%sInvoke_Method_Status %s(\n", indent_chars,
 	    meth->name);
     }
 

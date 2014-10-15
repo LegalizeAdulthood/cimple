@@ -13,13 +13,13 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
 const Meta_Property _CIM_ManagedSystemElement_InstallDate =
 {
@@ -30,7 +30,7 @@ const Meta_Property _CIM_ManagedSystemElement_InstallDate =
     CIMPLE_OFF(CIM_ManagedSystemElement,InstallDate)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property _CIM_ManagedSystemElement_Name;
 
 const Meta_Property _CIM_ManagedSystemElement_Name =
 {
@@ -41,7 +41,7 @@ const Meta_Property _CIM_ManagedSystemElement_Name =
     CIMPLE_OFF(CIM_ManagedSystemElement,Name)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
 const Meta_Property _CIM_ManagedSystemElement_OperationalStatus =
 {
@@ -52,7 +52,7 @@ const Meta_Property _CIM_ManagedSystemElement_OperationalStatus =
     CIMPLE_OFF(CIM_ManagedSystemElement,OperationalStatus)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
 const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions =
 {
@@ -63,7 +63,7 @@ const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions =
     CIMPLE_OFF(CIM_ManagedSystemElement,StatusDescriptions)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property _CIM_ManagedSystemElement_Status;
 
 const Meta_Property _CIM_ManagedSystemElement_Status =
 {

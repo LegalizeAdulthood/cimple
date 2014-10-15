@@ -62,6 +62,7 @@ enum Unload_Status
     UNLOAD_FAILED = 40,
 };
 
+// Deprecated!
 enum Timer_Status
 {
     TIMER_RESCHEDULE = 0,
@@ -147,7 +148,6 @@ enum Provider_Operation
     OPERATION_DESTROY_PROVIDER,
     OPERATION_LOAD,
     OPERATION_UNLOAD,
-    OPERATION_TIMER,
     OPERATION_GET_INSTANCE,
     OPERATION_ENUM_INSTANCES,
     OPERATION_CREATE_INSTANCE,
@@ -381,12 +381,6 @@ public:
 		return provider->unload();
 	    }
 
-	    case OPERATION_TIMER:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->timer(*((uint64*)arg1));
-	    }
-
 	    case OPERATION_GET_REPOSITORY:
 	    {
 		const Meta_Repository*& meta_repository = 
@@ -436,7 +430,6 @@ public:
 	    case OPERATION_DESTROY_PROVIDER:
 	    case OPERATION_LOAD:
 	    case OPERATION_UNLOAD:
-	    case OPERATION_TIMER:
 	    case OPERATION_GET_REPOSITORY:
 	    {
 		return Provider_Proc_Common_T<PROVIDER>::proc(registration,
@@ -521,7 +514,6 @@ public:
 	    case OPERATION_DESTROY_PROVIDER:
 	    case OPERATION_LOAD:
 	    case OPERATION_UNLOAD:
-	    case OPERATION_TIMER:
 	    case OPERATION_GET_REPOSITORY:
 	    {
 		return Provider_Proc_Common_T<PROVIDER>::proc(registration,
@@ -582,7 +574,6 @@ public:
 	    case OPERATION_DESTROY_PROVIDER:
 	    case OPERATION_LOAD:
 	    case OPERATION_UNLOAD:
-	    case OPERATION_TIMER:
 	    case OPERATION_GET_REPOSITORY:
 	    case OPERATION_GET_INSTANCE:
 	    case OPERATION_ENUM_INSTANCES:

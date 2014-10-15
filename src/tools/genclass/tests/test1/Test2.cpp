@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _Test2_ref_field1;
+extern const Meta_Property _Test2_ref_field1;
 
 const Meta_Property _Test2_ref_field1 =
 {
@@ -24,7 +24,7 @@ const Meta_Property _Test2_ref_field1 =
     CIMPLE_OFF(Test2,ref_field1)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Test2_ref_field2;
+extern const Meta_Property _Test2_ref_field2;
 
 const Meta_Property _Test2_ref_field2 =
 {
@@ -35,7 +35,7 @@ const Meta_Property _Test2_ref_field2 =
     CIMPLE_OFF(Test2,ref_field2)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Test2_ref_field3;
+extern const Meta_Property _Test2_ref_field3;
 
 const Meta_Property _Test2_ref_field3 =
 {
@@ -46,7 +46,7 @@ const Meta_Property _Test2_ref_field3 =
     CIMPLE_OFF(Test2,ref_field3)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _Test2_ref1;
+extern const Meta_Reference _Test2_ref1;
 
 const Meta_Reference _Test2_ref1 =
 {
@@ -56,7 +56,7 @@ const Meta_Reference _Test2_ref1 =
     CIMPLE_OFF(Test2,ref1)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _Test2_ref2;
+extern const Meta_Reference _Test2_ref2;
 
 const Meta_Reference _Test2_ref2 =
 {

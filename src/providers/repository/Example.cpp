@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _Example_key;
+extern const Meta_Property _Example_key;
 
 const Meta_Property _Example_key =
 {
@@ -26,7 +26,7 @@ const Meta_Property _Example_key =
     CIMPLE_OFF(Example,key)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Example_prop1;
+extern const Meta_Property _Example_prop1;
 
 const Meta_Property _Example_prop1 =
 {
@@ -37,7 +37,7 @@ const Meta_Property _Example_prop1 =
     CIMPLE_OFF(Example,prop1)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Example_prop2;
+extern const Meta_Property _Example_prop2;
 
 const Meta_Property _Example_prop2 =
 {
@@ -304,7 +304,7 @@ const Meta_Class Example::static_meta_class =
     0,
     1,
     0x27F5848A,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

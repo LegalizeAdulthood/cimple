@@ -14,45 +14,43 @@ public:
 
     LinuxComputerSystem_Provider();
 
-    CIMPLE_HIDE ~LinuxComputerSystem_Provider();
+    ~LinuxComputerSystem_Provider();
 
-    CIMPLE_HIDE Load_Status load();
+    Load_Status load();
 
-    CIMPLE_HIDE Unload_Status unload();
+    Unload_Status unload();
 
-    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
-
-    CIMPLE_HIDE Get_Instance_Status get_instance(
+    Get_Instance_Status get_instance(
 	const LinuxComputerSystem* model,
 	LinuxComputerSystem*& instance);
 
-    CIMPLE_HIDE Enum_Instances_Status enum_instances(
+    Enum_Instances_Status enum_instances(
 	const LinuxComputerSystem* model,
 	Enum_Instances_Handler<LinuxComputerSystem>* handler);
 
-    CIMPLE_HIDE Create_Instance_Status create_instance(
+    Create_Instance_Status create_instance(
 	const LinuxComputerSystem* instance);
 
-    CIMPLE_HIDE Delete_Instance_Status delete_instance(
+    Delete_Instance_Status delete_instance(
 	const LinuxComputerSystem* instance);
 
-    CIMPLE_HIDE Modify_Instance_Status modify_instance(
+    Modify_Instance_Status modify_instance(
 	const LinuxComputerSystem* instance);
 
-    CIMPLE_HIDE Invoke_Method_Status RequestStateChange(
+    Invoke_Method_Status RequestStateChange(
         const LinuxComputerSystem* self,
         const Property<uint16>& RequestedState,
         CIM_ConcreteJob* Job,
         const Property<Datetime>& TimeoutPeriod,
         Property<uint32>& return_value);
 
-    CIMPLE_HIDE Invoke_Method_Status SetPowerState(
+    Invoke_Method_Status SetPowerState(
         const LinuxComputerSystem* self,
         const Property<uint32>& PowerState,
         const Property<Datetime>& Time,
         Property<uint32>& return_value);
 
-    static CIMPLE_HIDE int proc(
+    static int proc(
 	const Registration* registration,
 	int operation, 
 	void* arg0, 

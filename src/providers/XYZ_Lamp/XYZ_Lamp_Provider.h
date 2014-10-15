@@ -14,38 +14,36 @@ public:
 
     XYZ_Lamp_Provider();
 
-    CIMPLE_HIDE ~XYZ_Lamp_Provider();
+    ~XYZ_Lamp_Provider();
 
-    CIMPLE_HIDE Load_Status load();
+    Load_Status load();
 
-    CIMPLE_HIDE Unload_Status unload();
+    Unload_Status unload();
 
-    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
-
-    CIMPLE_HIDE Get_Instance_Status get_instance(
+    Get_Instance_Status get_instance(
 	const XYZ_Lamp* model,
 	XYZ_Lamp*& instance);
 
-    CIMPLE_HIDE Enum_Instances_Status enum_instances(
+    Enum_Instances_Status enum_instances(
 	const XYZ_Lamp* model,
 	Enum_Instances_Handler<XYZ_Lamp>* handler);
 
-    CIMPLE_HIDE Create_Instance_Status create_instance(
+    Create_Instance_Status create_instance(
 	const XYZ_Lamp* instance);
 
-    CIMPLE_HIDE Delete_Instance_Status delete_instance(
+    Delete_Instance_Status delete_instance(
 	const XYZ_Lamp* instance);
 
-    CIMPLE_HIDE Modify_Instance_Status modify_instance(
+    Modify_Instance_Status modify_instance(
 	const XYZ_Lamp* instance);
 
-    CIMPLE_HIDE Invoke_Method_Status foo(
+    Invoke_Method_Status foo(
         const XYZ_Lamp* self,
         const Property<String>& arg1,
         const Property<String>& arg2,
         Property<uint32>& return_value);
 
-    static CIMPLE_HIDE int proc(
+    static int proc(
 	const Registration* registration,
 	int operation, 
 	void* arg0, 

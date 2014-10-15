@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplmyindic
+SHARED_LIBRARY = cmplmyindic
 
 INCLUDES += -I../repository
 
@@ -24,7 +24,7 @@ else
 endif
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 xxx:
 	cimmofl ../repository/MyEmbeddedClass.mof 2> $(DEV_NULL)
@@ -32,4 +32,4 @@ xxx:
 genclass:
 
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)

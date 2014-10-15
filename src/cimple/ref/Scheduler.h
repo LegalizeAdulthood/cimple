@@ -27,10 +27,11 @@
 #ifndef _cimple_Scheduler_h
 #define _cimple_Scheduler_h
 
+#include <pthread.h>
 #include "config.h"
 #include "List.h"
-#include "Threads.h"
-#include "RMutex.h"
+#include "Mutex.h"
+#include "Thread.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -74,7 +75,7 @@ public:
 
 private:
 
-    RMutex _lock;
+    Mutex _lock;
 
     List _list;
 

@@ -89,10 +89,10 @@ static Ref<Instance> _next_instance(
 	CMPIData data = CMGetNext(cmpi_enumeration, &status);
 
 	if (status.rc != CMPI_RC_OK)
-	    return Ref<Instance>(0);
+	    return Ref<Instance>();
 
 	if (data.type != CMPI_instance)
-	    return Ref<Instance>(0);
+	    return Ref<Instance>();
 
 	CMPIInstance* cmpi_instance = data.value.inst;
 
@@ -104,12 +104,12 @@ static Ref<Instance> _next_instance(
 	    instance);
 
 	if (rc != CMPI_RC_OK)
-	    return Ref<Instance>(0);
+	    return Ref<Instance>();
 
 	return Ref<Instance>(instance);
     }
 
-    return Ref<Instance>(0);
+    return Ref<Instance>();
 }
 
 Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
@@ -237,7 +237,7 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
     rc = make_cimple_instance(model->meta_class, cmpi_instance, instance);
 
     if (rc != CMPI_RC_OK)
-	return Ref<Instance>(0);
+	return Ref<Instance>();
 
     return Ref<Instance>(instance);
 }

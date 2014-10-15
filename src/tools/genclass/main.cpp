@@ -348,7 +348,9 @@ string normalize_value_qual_name(const char* name)
     return r;
 }
 
-void gen_property_decl(const MOF_Property_Decl* prop)
+void gen_property_decl(
+    const MOF_Class_Decl* class_decl, 
+    const MOF_Property_Decl* prop)
 {
     // Process Values/ValueMap qualifiers.
 
@@ -399,6 +401,8 @@ void gen_property_decl(const MOF_Property_Decl* prop)
 	    if (values.size() != value_map.size())
 		break;
 
+	    // Generate enum property.
+
 	    out("    struct\n");
 	    out("    {\n");
 	    out("        enum\n");
@@ -414,6 +418,37 @@ void gen_property_decl(const MOF_Property_Decl* prop)
 
 	    out("        %s value;\n", _to_string(prop->data_type));
 	    out("        uint8 null;\n");
+
+	    switch (prop->data_type)
+	    {
+		case TOK_UINT8:
+		case TOK_SINT8:
+		    out("        char padding[48];\n");
+		    break;
+
+		case TOK_UINT16:
+		case TOK_SINT16:
+		    out("        char padding[40];\n");
+		    break;
+
+		case TOK_UINT32:
+		case TOK_SINT32:
+		    out("        char padding[24];\n");
+		    break;
+
+		case TOK_UINT64:
+		case TOK_SINT64:
+		    out("        char padding[56];\n");
+		    break;
+
+		default:
+		{
+		    err("Values qualifier on non-integer property: %s.%s",
+			class_decl->name, prop->name);
+		    break;
+		}
+	    }
+
 	    out("    }\n");
 	    out("    %s;\n", prop->name);
 
@@ -477,7 +512,7 @@ void gen_feature_decls(
 	    if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
 		out("    CIMPLE_REF(Instance,%s);\n", prop->name);
 	    else
-		gen_property_decl(prop);
+		gen_property_decl(class_decl, prop);
 
 	    continue;
 	}
@@ -738,7 +773,8 @@ void gen_property_def(
 {
     // Write external definition (whether propagated or not).
 
-    out("extern CIMPLE_HIDE const Meta_Property _%s_%s;\n", 
+    //out("extern CIMPLE_HIDE const Meta_Property _%s_%s;\n", 
+    out("extern const Meta_Property _%s_%s;\n", 
 	propagating_class_name, prop->name);
     nl();
 
@@ -792,7 +828,8 @@ void gen_reference_def(
     const MOF_Reference_Decl* ref)
 {
     // Write external definition (whether propagated or not).
-    out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n", 
+    //out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n", 
+    out("extern const Meta_Reference _%s_%s;\n", 
 	propagating_class_name, ref->name);
     nl();
 
@@ -1056,7 +1093,7 @@ static const char _embedded_object_format[] =
     "{\n"
     "    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,\n"
     "    \"%s\",\n"
-    "    &Instance_meta_class,\n"
+    "    &Instance::static_meta_class,\n"
     "    CIMPLE_OFF(%s,%s)\n"
     "};\n"
     "\n";
@@ -1066,7 +1103,8 @@ void gen_embedded_object_def(
     const char* propagating_class_name, 
     const MOF_Property_Decl* prop)
 {
-    out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n\n", 
+    //out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n\n", 
+    out("extern const Meta_Reference _%s_%s;\n\n", 
 	propagating_class_name, prop->name);
 
     if (strcasecmp(class_name, propagating_class_name) == 0)

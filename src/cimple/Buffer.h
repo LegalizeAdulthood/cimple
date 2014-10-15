@@ -37,7 +37,7 @@ CIMPLE_NAMESPACE_BEGIN
 // fundamentals: insertion of a single element at the rear and removal of
 // a single element form the middle.
 //
-class CIMPLE_LIBCIMPLE_LINKAGE Buffer
+class Buffer
 {
 public:
 

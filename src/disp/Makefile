@@ -1,9 +1,10 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cimpledisp
+SHARED_LIBRARY = cimpledisp
 
 SOURCES = \
+    List.cpp \
     version.cpp \
     Buffer.cpp \
     Cache.cpp \

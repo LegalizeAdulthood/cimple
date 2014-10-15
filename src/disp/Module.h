@@ -29,7 +29,7 @@
 
 #include <cimple/config.h>
 #include <cimple/Registration.h>
-#include <cimple/List.h>
+#include <disp/List.h>
 #include "Envelope.h"
 #include "linkage.h"
 
@@ -45,13 +45,13 @@ public:
 
     Registration* registration() { return _registration; }
 
-    CIMPLE_HIDE void load_providers();
+    void load_providers();
 
-    CIMPLE_HIDE void unload_providers();
+    void unload_providers();
 
-    CIMPLE_HIDE Envelope* find_provider(const char* class_name);
+    Envelope* find_provider(const char* class_name);
 
-    CIMPLE_HIDE List_Elem* envelopes() { return _envelopes.head; }
+    List_Elem* envelopes() { return _envelopes.head; }
 
     void dump() const;
 

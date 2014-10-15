@@ -13,23 +13,23 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property _CIM_ManagedSystemElement_Name;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property _CIM_ManagedSystemElement_Status;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_JobStatus;
+extern const Meta_Property _CIM_Job_JobStatus;
 
 const Meta_Property _CIM_Job_JobStatus =
 {
@@ -40,7 +40,7 @@ const Meta_Property _CIM_Job_JobStatus =
     CIMPLE_OFF(CIM_Job,JobStatus)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_TimeSubmitted;
+extern const Meta_Property _CIM_Job_TimeSubmitted;
 
 const Meta_Property _CIM_Job_TimeSubmitted =
 {
@@ -51,7 +51,7 @@ const Meta_Property _CIM_Job_TimeSubmitted =
     CIMPLE_OFF(CIM_Job,TimeSubmitted)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_ScheduledStartTime;
+extern const Meta_Property _CIM_Job_ScheduledStartTime;
 
 const Meta_Property _CIM_Job_ScheduledStartTime =
 {
@@ -62,7 +62,7 @@ const Meta_Property _CIM_Job_ScheduledStartTime =
     CIMPLE_OFF(CIM_Job,ScheduledStartTime)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_StartTime;
+extern const Meta_Property _CIM_Job_StartTime;
 
 const Meta_Property _CIM_Job_StartTime =
 {
@@ -73,7 +73,7 @@ const Meta_Property _CIM_Job_StartTime =
     CIMPLE_OFF(CIM_Job,StartTime)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_ElapsedTime;
+extern const Meta_Property _CIM_Job_ElapsedTime;
 
 const Meta_Property _CIM_Job_ElapsedTime =
 {
@@ -84,7 +84,7 @@ const Meta_Property _CIM_Job_ElapsedTime =
     CIMPLE_OFF(CIM_Job,ElapsedTime)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_JobRunTimes;
+extern const Meta_Property _CIM_Job_JobRunTimes;
 
 const Meta_Property _CIM_Job_JobRunTimes =
 {
@@ -95,7 +95,7 @@ const Meta_Property _CIM_Job_JobRunTimes =
     CIMPLE_OFF(CIM_Job,JobRunTimes)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunMonth;
+extern const Meta_Property _CIM_Job_RunMonth;
 
 const Meta_Property _CIM_Job_RunMonth =
 {
@@ -106,7 +106,7 @@ const Meta_Property _CIM_Job_RunMonth =
     CIMPLE_OFF(CIM_Job,RunMonth)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunDay;
+extern const Meta_Property _CIM_Job_RunDay;
 
 const Meta_Property _CIM_Job_RunDay =
 {
@@ -117,7 +117,7 @@ const Meta_Property _CIM_Job_RunDay =
     CIMPLE_OFF(CIM_Job,RunDay)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunDayOfWeek;
+extern const Meta_Property _CIM_Job_RunDayOfWeek;
 
 const Meta_Property _CIM_Job_RunDayOfWeek =
 {
@@ -128,7 +128,7 @@ const Meta_Property _CIM_Job_RunDayOfWeek =
     CIMPLE_OFF(CIM_Job,RunDayOfWeek)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunStartInterval;
+extern const Meta_Property _CIM_Job_RunStartInterval;
 
 const Meta_Property _CIM_Job_RunStartInterval =
 {
@@ -139,7 +139,7 @@ const Meta_Property _CIM_Job_RunStartInterval =
     CIMPLE_OFF(CIM_Job,RunStartInterval)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_LocalOrUtcTime;
+extern const Meta_Property _CIM_Job_LocalOrUtcTime;
 
 const Meta_Property _CIM_Job_LocalOrUtcTime =
 {
@@ -150,7 +150,7 @@ const Meta_Property _CIM_Job_LocalOrUtcTime =
     CIMPLE_OFF(CIM_Job,LocalOrUtcTime)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_UntilTime;
+extern const Meta_Property _CIM_Job_UntilTime;
 
 const Meta_Property _CIM_Job_UntilTime =
 {
@@ -161,7 +161,7 @@ const Meta_Property _CIM_Job_UntilTime =
     CIMPLE_OFF(CIM_Job,UntilTime)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_Notify;
+extern const Meta_Property _CIM_Job_Notify;
 
 const Meta_Property _CIM_Job_Notify =
 {
@@ -172,7 +172,7 @@ const Meta_Property _CIM_Job_Notify =
     CIMPLE_OFF(CIM_Job,Notify)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_Owner;
+extern const Meta_Property _CIM_Job_Owner;
 
 const Meta_Property _CIM_Job_Owner =
 {
@@ -183,7 +183,7 @@ const Meta_Property _CIM_Job_Owner =
     CIMPLE_OFF(CIM_Job,Owner)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_Priority;
+extern const Meta_Property _CIM_Job_Priority;
 
 const Meta_Property _CIM_Job_Priority =
 {
@@ -194,7 +194,7 @@ const Meta_Property _CIM_Job_Priority =
     CIMPLE_OFF(CIM_Job,Priority)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_PercentComplete;
+extern const Meta_Property _CIM_Job_PercentComplete;
 
 const Meta_Property _CIM_Job_PercentComplete =
 {
@@ -205,7 +205,7 @@ const Meta_Property _CIM_Job_PercentComplete =
     CIMPLE_OFF(CIM_Job,PercentComplete)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_DeleteOnCompletion;
+extern const Meta_Property _CIM_Job_DeleteOnCompletion;
 
 const Meta_Property _CIM_Job_DeleteOnCompletion =
 {
@@ -216,7 +216,7 @@ const Meta_Property _CIM_Job_DeleteOnCompletion =
     CIMPLE_OFF(CIM_Job,DeleteOnCompletion)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_ErrorCode;
+extern const Meta_Property _CIM_Job_ErrorCode;
 
 const Meta_Property _CIM_Job_ErrorCode =
 {
@@ -227,7 +227,7 @@ const Meta_Property _CIM_Job_ErrorCode =
     CIMPLE_OFF(CIM_Job,ErrorCode)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_ErrorDescription;
+extern const Meta_Property _CIM_Job_ErrorDescription;
 
 const Meta_Property _CIM_Job_ErrorDescription =
 {
@@ -238,7 +238,7 @@ const Meta_Property _CIM_Job_ErrorDescription =
     CIMPLE_OFF(CIM_Job,ErrorDescription)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_RecoveryAction;
+extern const Meta_Property _CIM_Job_RecoveryAction;
 
 const Meta_Property _CIM_Job_RecoveryAction =
 {
@@ -249,7 +249,7 @@ const Meta_Property _CIM_Job_RecoveryAction =
     CIMPLE_OFF(CIM_Job,RecoveryAction)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Job_OtherRecoveryAction;
+extern const Meta_Property _CIM_Job_OtherRecoveryAction;
 
 const Meta_Property _CIM_Job_OtherRecoveryAction =
 {

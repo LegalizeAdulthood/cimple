@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 INCLUDES += -I../repository
 
-SH_LIBRARY = cmpllinuxsysprov
+SHARED_LIBRARY = cmpllinuxsysprov
 
 SOURCES = \
     LinuxComputerSystem_Provider.cpp \
@@ -18,9 +18,9 @@ LIBRARIES += cimplepegadap
 include $(TOP)/mak/rules.mak
 
 reg:
-	$(BIN_DIR)/regmod -c $(TARGET)
+	$(BIN_DIR)/regmod -c $(SHARED_LIBRARY_TARGET)
 
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
 
 genclass:

@@ -133,19 +133,19 @@ SIZE = size
 
 ##==============================================================================
 ##
-## shlib_target(name)
+## shared_library_target(name)
 ##
 ##==============================================================================
 
-shlib_target = $(BIN_DIR)/$(1).dll
+shared_library_target = $(BIN_DIR)/$(1).dll
 
 ##==============================================================================
 ##
-## lib_target(name)
+## static_library_target(name)
 ##
 ##==============================================================================
 
-lib_target = $(LIB_DIR)/$(1).lib
+static_library_target = $(LIB_DIR)/$(1).lib
 
 ##==============================================================================
 ##
@@ -183,15 +183,15 @@ endif
 
 ##==============================================================================
 ##
-## make_shlib(SH_LIBRARY, OBJECTS, LIBRARIES) -- create a shared library.
+## make_shlib(SHARED_LIBRARY, OBJECTS, LIBRARIES) -- create a shared library.
 ##
 ##==============================================================================
 
 _SYS_LIBS = ws2_32.lib advapi32.lib netapi32.lib
 
 make_shlib = link -nologo -dll $(LINK_FLAGS) \
-    -out:$(call shlib_target,$(1)) \
-    -implib:$(call lib_target,$(1)) \
+    -out:$(call shared_library_target,$(1)) \
+    -implib:$(call static_library_target,$(1)) \
     $(2) \
     $(call _full_libs,$(3)) \
     $(_FULL_POSIX_LIB) \
@@ -199,18 +199,18 @@ make_shlib = link -nologo -dll $(LINK_FLAGS) \
 
 ##==============================================================================
 ##
-## clean_shlib_list(SH_LIBRARY)
+## clean_shlib_list(SHARED_LIBRARY)
 ##
 ##==============================================================================
 
 shlib_clean_targets = \
-    $(call shlib_target,$(1)) \
-    $(call lib_target,$(1)) \
+    $(call shared_library_target,$(1)) \
+    $(call static_library_target,$(1)) \
     $(call exp_target,$(1))
 
 ##==============================================================================
 ##
-## make_lib(SH_LIBRARY, OBJECTS)
+## make_lib(SHARED_LIBRARY, OBJECTS)
 ##
 ##==============================================================================
 

@@ -47,8 +47,6 @@ public:
 
     Unload_Status unload();
 
-    Timer_Status timer(uint64& timeout);
-
     Get_Instance_Status get_instance(
 	const Instance* model,
 	Instance*& instance);
@@ -135,13 +133,6 @@ inline Unload_Status Provider_Handle::unload()
 {
     return (Unload_Status)_proc(_registration,
 	OPERATION_UNLOAD, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
-}
-
-inline Timer_Status Provider_Handle::timer(
-    uint64& timeout)
-{
-    return (Timer_Status)_proc(_registration,
-	OPERATION_TIMER, (void*)_provider, &timeout, 0, 0, 0, 0, 0, 0);
 }
 
 inline Enum_Instances_Status Provider_Handle::enum_instances(

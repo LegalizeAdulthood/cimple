@@ -15,4 +15,4 @@ genclass:
 	genclass BBB CCC DDD AAA AAA2
 
 tests:
-	$(TARGET)
+	$(BINARY_TARGET)

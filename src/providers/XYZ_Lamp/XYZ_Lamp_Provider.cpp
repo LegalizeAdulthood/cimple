@@ -20,11 +20,6 @@ Unload_Status XYZ_Lamp_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status XYZ_Lamp_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status XYZ_Lamp_Provider::get_instance(
     const XYZ_Lamp* model,
     XYZ_Lamp*& instance)

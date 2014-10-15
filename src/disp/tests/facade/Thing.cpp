@@ -25,7 +25,7 @@ extern const Meta_Property _Thing_key;
 
 const Meta_Property _Thing_key =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_LOCAL,
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
     "key",
     UINT32,
     0,
@@ -50,6 +50,8 @@ const Meta_Class Thing::static_meta_class =
     sizeof(Thing),
     &Base::static_meta_class,
     1,
+    0x05E00DDE,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

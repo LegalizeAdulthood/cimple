@@ -23,3 +23,5 @@ usage:
 	file2c usage.txt -n USAGE > usage.h
 
 tests:
+
+genclass:

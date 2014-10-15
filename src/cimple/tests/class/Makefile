@@ -1,14 +1,15 @@
 TOP = ../../../..
 include $(TOP)/mak/config.mak
 
-BINARY = test_cast
+BINARY = test_class
 SOURCES = main.cpp X.cpp Y.cpp Z.cpp AX.cpp AY.cpp AZ.cpp
-LIBRARIES = cimple
+LIBRARIES = cimple_s
+DEFINES += -DCIMPLE_LINK_STATIC_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 
 tests:
-	$(TARGET)
+	$(BINARY_TARGET)
 
 genclass:
 	$(BIN_DIR)/genclass X Y Z AX AY AZ

@@ -3,14 +3,12 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_mutex
 SOURCES = main.cpp
-LIBRARIES = cimple
+LIBRARIES = cimple_s
+DEFINES += -DCIMPLE_LINK_STATIC_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN_DIR)/test_mutex
+	@ $(BINARY_TARGET)
 
 genclass:
-
-xxx:
-	echo $(TARGET)

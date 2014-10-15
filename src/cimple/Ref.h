@@ -39,13 +39,25 @@ public:
 
     Ref();
 
-    Ref(const Ref& x);
+    template<class U>
+    inline Ref(const Ref<U>& x)
+    {
+	ref(_ptr = cast<T*>(x.ptr()));
+    }
 
-    explicit Ref(T* ptr);
+    template<class U>
+    Ref(U* ptr)
+    {
+	_ptr = cast<T*>(ptr);
+    }
 
     ~Ref();
 
     Ref& operator=(const Ref& x);
+
+    void reset();
+
+    void reset(T* ptr);
 
     const T *operator->() const;
 
@@ -65,21 +77,7 @@ public:
 
     bool operator!() const;
 
-    operator const T*() const;
-
-#if 0
-    // Casting constructor.
-    template<class U>
-    explicit Ref(const Ref<U>& x)
-    {
-	T* ptr = cast<T*>((U*)x.ptr());
-
-	if (ptr)
-	    ref(_ptr = ptr);
-	else
-	    _ptr = 0;
-    }
-#endif
+    size_t count() const;
 
 private:
     T* _ptr;
@@ -87,17 +85,6 @@ private:
 
 template<class T>
 inline Ref<T>::Ref() : _ptr(0)
-{
-}
-
-template<class T>
-inline Ref<T>::Ref(const Ref<T>& x)
-{
-    ref(_ptr = x._ptr);
-}
-
-template<class T>
-inline Ref<T>::Ref(T* ptr) : _ptr(ptr)
 {
 }
 
@@ -117,6 +104,20 @@ Ref<T>& Ref<T>::operator=(const Ref<T>& x)
     }
 
     return *this;
+}
+
+template<class T>
+inline void Ref<T>::reset()
+{
+    unref(_ptr);
+    _ptr = 0;
+}
+
+template<class T>
+inline void Ref<T>::reset(T* ptr)
+{
+    unref(_ptr);
+    ref(_ptr = ptr);
 }
 
 template<class T>
@@ -152,33 +153,33 @@ inline T* Ref<T>::steal()
 }
 
 template<class T>
-T& Ref<T>::operator*()
+inline T& Ref<T>::operator*()
 {
     return *_ptr;
 }
 
 template<class T>
-const T& Ref<T>::operator*() const
+inline const T& Ref<T>::operator*() const
 {
     return *_ptr;
 }
 
 template<class T>
-Ref<T>::operator bool() const
+inline Ref<T>::operator bool() const
 {
     return _ptr != 0;
 }
 
 template<class T>
-bool Ref<T>::operator!() const
+inline bool Ref<T>::operator!() const
 {
     return _ptr == 0;
 }
 
 template<class T>
-Ref<T>::operator const T*() const
+size_t Ref<T>::count() const
 {
-    return _ptr;
+    return Atomic_get(_ptr->refs);
 }
 
 CIMPLE_NAMESPACE_END

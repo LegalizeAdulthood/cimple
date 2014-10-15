@@ -37,21 +37,6 @@ Unload_Status MyIndication_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status MyIndication_Provider::timer(uint64& timeout_msec)
-{
-    // printf("MyIndication_Provider::timer()\n");
-
-    if (_indication_handler)
-    {
-	MyIndication* indic = MyIndication_create("9999", "nine");
-	// print(indic);
-	_indication_handler->handle(indic);
-    }
-
-    timeout_msec = 1000;
-    return TIMER_RESCHEDULE;
-}
-
 Enable_Indications_Status MyIndication_Provider::enable_indications(
     Indication_Handler<MyIndication>* indication_handler)
 {

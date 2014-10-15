@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _SomeClass_h
-#define _SomeClass_h
+#ifndef _cimple_SomeClass_h
+#define _cimple_SomeClass_h
 
 #include <cimple/cimple.h>
 #include "OtherClass.h"
@@ -16,17 +16,19 @@ CIMPLE_NAMESPACE_BEGIN
 class SomeClass : public Instance
 {
 public:
+    // SomeClass features:
     Property<String> prop1;
     Property<uint32> prop2;
     Property<boolean> prop3;
     Property<Array_String> prop4;
     Property<Array_uint32> prop5;
     Property<Array_boolean> prop6;
-    OtherClass* other1;
-    OtherClass* other2;
+    CIMPLE_REF(OtherClass,other1);
+    CIMPLE_REF(OtherClass,other2);
+
     CIMPLE_CLASS(SomeClass)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _SomeClass_h */
+#endif /* _cimple_SomeClass_h */

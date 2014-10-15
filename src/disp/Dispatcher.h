@@ -29,7 +29,6 @@
 
 #include <cimple/Instance.h>
 #include <cimple/Provider.h>
-#include <cimple/Scheduler.h>
 #include "Status.h"
 #include "State.h"
 #include <cimple/Error.h>
@@ -165,13 +164,11 @@ private:
 
     ~Dispatcher() { }
 
-    CIMPLE_HIDE Envelope* _find_provider(const Instance* inst);
+    Envelope* _find_provider(const Instance* inst);
 
-    CIMPLE_HIDE Envelope* _find_provider(const char* class_name);
+    Envelope* _find_provider(const char* class_name);
 
     Cache* _cache;
-
-    Scheduler* _sched;
 
     friend struct __Dummy;
 };

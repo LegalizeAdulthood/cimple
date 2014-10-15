@@ -13,7 +13,6 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
 extern const Meta_Property _SomeClass_prop1;
 
 const Meta_Property _SomeClass_prop1 =
@@ -25,7 +24,6 @@ const Meta_Property _SomeClass_prop1 =
     CIMPLE_OFF(SomeClass,prop1)
 };
 
-CIMPLE_HIDE
 extern const Meta_Property _SomeClass_prop2;
 
 const Meta_Property _SomeClass_prop2 =
@@ -37,7 +35,6 @@ const Meta_Property _SomeClass_prop2 =
     CIMPLE_OFF(SomeClass,prop2)
 };
 
-CIMPLE_HIDE
 extern const Meta_Property _SomeClass_prop3;
 
 const Meta_Property _SomeClass_prop3 =
@@ -49,7 +46,6 @@ const Meta_Property _SomeClass_prop3 =
     CIMPLE_OFF(SomeClass,prop3)
 };
 
-CIMPLE_HIDE
 extern const Meta_Property _SomeClass_prop4;
 
 const Meta_Property _SomeClass_prop4 =
@@ -61,7 +57,6 @@ const Meta_Property _SomeClass_prop4 =
     CIMPLE_OFF(SomeClass,prop4)
 };
 
-CIMPLE_HIDE
 extern const Meta_Property _SomeClass_prop5;
 
 const Meta_Property _SomeClass_prop5 =
@@ -73,7 +68,6 @@ const Meta_Property _SomeClass_prop5 =
     CIMPLE_OFF(SomeClass,prop5)
 };
 
-CIMPLE_HIDE
 extern const Meta_Property _SomeClass_prop6;
 
 const Meta_Property _SomeClass_prop6 =
@@ -85,7 +79,6 @@ const Meta_Property _SomeClass_prop6 =
     CIMPLE_OFF(SomeClass,prop6)
 };
 
-CIMPLE_HIDE
 extern const Meta_Reference _SomeClass_other1;
 
 const Meta_Reference _SomeClass_other1 =
@@ -96,7 +89,6 @@ const Meta_Reference _SomeClass_other1 =
     CIMPLE_OFF(SomeClass,other1)
 };
 
-CIMPLE_HIDE
 extern const Meta_Reference _SomeClass_other2;
 
 const Meta_Reference _SomeClass_other2 =
@@ -129,6 +121,7 @@ const Meta_Class SomeClass::static_meta_class =
     0,
     0,
     0xB0044D87,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

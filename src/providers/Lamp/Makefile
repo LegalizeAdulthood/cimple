@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = Lamp
+SHARED_LIBRARY = Lamp
 
 INCLUDES += -I../repository -I$(TOP)/src/CMPI/cmpi \
     -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
@@ -17,7 +17,7 @@ include $(TOP)/mak/rules.mak
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 reg:
-	regmod -c -s $(TARGET)
+	regmod -c -s $(SHARED_LIBRARY_TARGET)
 
 genclass:
 

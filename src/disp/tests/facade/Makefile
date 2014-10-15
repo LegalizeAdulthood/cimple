@@ -8,6 +8,7 @@ LIBRARIES = cimpledisp cimple
 include $(TOP)/mak/rules.mak
 
 genclass:
+	$(BIN_DIR)/genclass Thing Assoc Base
 
 tests:
-	$(TARGET)
+	@ $(BINARY_TARGET)

@@ -81,6 +81,11 @@ static uint16 _to_cimple_type(CMPIType type)
     }
 }
 
+static char _is_integer[] = { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, };
+
+static char _is_raw[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, };
+
+
 static CMPIrc _set_cimple_scalar(
     const Meta_Property* mp, 
     void* prop, 
@@ -110,7 +115,7 @@ static CMPIrc _set_cimple_scalar(
 
     // Handle integer types up front:
 
-    if (is_raw[mp->type] && mp->type != cimple::BOOLEAN)
+    if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
     {
 	memcpy(prop, &data.value, type_size[mp->type]);
 	RETURN(CMPI_RC_OK);
@@ -175,7 +180,7 @@ static sint64 _promote(const CMPIData& data)
 
 static bool _type_compatible(uint16 type1, uint16 type2)
 {
-    RETURN((type1 == type2) || (is_integer[type1] && is_integer[type2]));
+    RETURN((type1 == type2) || (_is_integer[type1] && _is_integer[type2]));
 }
 
 static CMPIrc _set_cimple_scalar_key(
@@ -648,7 +653,7 @@ static void _to_cmpi_value(
 
     if (mp->subscript == 0)
     {
-	if (is_raw[mp->type] && mp->type != cimple::BOOLEAN)
+	if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
 	{
 	    memcpy(&value, prop, type_size[mp->type]);
 	}
@@ -678,7 +683,7 @@ static void _to_cmpi_value(
 	const Array_Base* array = (const Array_Base*)prop;
 	value.array = CMNewArray(broker, array->size(), type, NULL);
 
-	if (is_raw[mp->type] && mp->type != cimple::BOOLEAN)
+	if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
 	{
 	    for (size_t i = 0; i < array->size(); i++)
 		CMSetArrayElementAt(value.array, i, array->get_raw(i), type);

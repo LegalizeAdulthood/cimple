@@ -202,10 +202,10 @@ public:
 
 private:
 
-    CIMPLE_HIDE int _set_array(
+    int _set_array(
 	Type type, const char* name, const Array_Base& value, bool null);
 
-    CIMPLE_HIDE int _get_array(
+    int _get_array(
 	Type type, const char* name, Array_Base& value, bool& null);
 
     Instance* _instance;

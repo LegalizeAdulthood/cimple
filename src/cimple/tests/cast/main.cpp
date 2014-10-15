@@ -165,6 +165,18 @@ int main(int argc, char** argv)
 	assert(pa != 0);
 
 	assert(pa->a.value == 100);
+
+	assert(cast<Instance*>(e) != 0);
+
+	Ref<A> a_ref(d);
+	assert(a_ref);
+
+	Ref<D> d_ref(a);
+	assert(!d_ref);
+	assert(d_ref == 0);
+
+	Ref<Instance> i_ref(a);
+	assert(i_ref != 0);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

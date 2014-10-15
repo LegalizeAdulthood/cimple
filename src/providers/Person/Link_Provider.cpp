@@ -40,11 +40,6 @@ Unload_Status Link_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status Link_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status Link_Provider::get_instance(
     const Link* model, 
     Link*& instance)

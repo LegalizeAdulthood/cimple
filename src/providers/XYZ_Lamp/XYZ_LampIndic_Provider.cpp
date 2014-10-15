@@ -20,11 +20,6 @@ Unload_Status XYZ_LampIndic_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status XYZ_LampIndic_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_CANCEL;
-}
-
 Enable_Indications_Status XYZ_LampIndic_Provider::enable_indications(
     Indication_Handler<XYZ_LampIndic>* indication_handler)
 {

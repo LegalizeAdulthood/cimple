@@ -3,11 +3,12 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_array
 SOURCES = main.cpp
-LIBRARIES = cimple
+LIBRARIES = cimple_s
+DEFINES += -DCIMPLE_LINK_STATIC_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN_DIR)/test_array
+	@ $(BINARY_TARGET)
 
 genclass:

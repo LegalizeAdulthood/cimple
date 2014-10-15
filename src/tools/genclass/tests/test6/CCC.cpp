@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _BBB_counter;
+extern const Meta_Property _BBB_counter;
 
-extern CIMPLE_HIDE const Meta_Property _CCC_key;
+extern const Meta_Property _CCC_key;
 
 const Meta_Property _CCC_key =
 {
@@ -26,7 +26,7 @@ const Meta_Property _CCC_key =
     CIMPLE_OFF(CCC,key)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CCC_bbb;
+extern const Meta_Property _CCC_bbb;
 
 const Meta_Property _CCC_bbb =
 {

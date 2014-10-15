@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _AX_h
-#define _AX_h
+#ifndef _cimple_AX_h
+#define _cimple_AX_h
 
 #include <cimple/cimple.h>
 #include "X.h"
@@ -17,12 +17,12 @@ class AX : public Instance
 {
 public:
     // AX features:
-    X* left;
-    X* right;
+    CIMPLE_REF(X,left);
+    CIMPLE_REF(X,right);
 
     CIMPLE_CLASS(AX)
 };
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _AX_h */
+#endif /* _cimple_AX_h */

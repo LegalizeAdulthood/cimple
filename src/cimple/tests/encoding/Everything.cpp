@@ -13,18 +13,18 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _Everything_a;
+extern const Meta_Property _Everything_a;
 
 const Meta_Property _Everything_a =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    CIMPLE_FLAG_PROPERTY,
     "a",
     BOOLEAN,
     0,
     CIMPLE_OFF(Everything,a)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_b;
+extern const Meta_Property _Everything_b;
 
 const Meta_Property _Everything_b =
 {
@@ -35,7 +35,7 @@ const Meta_Property _Everything_b =
     CIMPLE_OFF(Everything,b)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_c;
+extern const Meta_Property _Everything_c;
 
 const Meta_Property _Everything_c =
 {
@@ -46,18 +46,18 @@ const Meta_Property _Everything_c =
     CIMPLE_OFF(Everything,c)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_d;
+extern const Meta_Property _Everything_d;
 
 const Meta_Property _Everything_d =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    CIMPLE_FLAG_PROPERTY,
     "d",
     UINT32,
     0,
     CIMPLE_OFF(Everything,d)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_e;
+extern const Meta_Property _Everything_e;
 
 const Meta_Property _Everything_e =
 {
@@ -68,7 +68,7 @@ const Meta_Property _Everything_e =
     CIMPLE_OFF(Everything,e)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_f;
+extern const Meta_Property _Everything_f;
 
 const Meta_Property _Everything_f =
 {
@@ -79,7 +79,7 @@ const Meta_Property _Everything_f =
     CIMPLE_OFF(Everything,f)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_g;
+extern const Meta_Property _Everything_g;
 
 const Meta_Property _Everything_g =
 {
@@ -90,7 +90,7 @@ const Meta_Property _Everything_g =
     CIMPLE_OFF(Everything,g)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_h;
+extern const Meta_Property _Everything_h;
 
 const Meta_Property _Everything_h =
 {
@@ -101,18 +101,18 @@ const Meta_Property _Everything_h =
     CIMPLE_OFF(Everything,h)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_i;
+extern const Meta_Property _Everything_i;
 
 const Meta_Property _Everything_i =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    CIMPLE_FLAG_PROPERTY,
     "i",
     STRING,
     0,
     CIMPLE_OFF(Everything,i)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_j;
+extern const Meta_Property _Everything_j;
 
 const Meta_Property _Everything_j =
 {
@@ -123,7 +123,7 @@ const Meta_Property _Everything_j =
     CIMPLE_OFF(Everything,j)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_k;
+extern const Meta_Property _Everything_k;
 
 const Meta_Property _Everything_k =
 {
@@ -134,7 +134,7 @@ const Meta_Property _Everything_k =
     CIMPLE_OFF(Everything,k)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_l;
+extern const Meta_Property _Everything_l;
 
 const Meta_Property _Everything_l =
 {
@@ -145,7 +145,7 @@ const Meta_Property _Everything_l =
     CIMPLE_OFF(Everything,l)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_m;
+extern const Meta_Property _Everything_m;
 
 const Meta_Property _Everything_m =
 {
@@ -156,7 +156,7 @@ const Meta_Property _Everything_m =
     CIMPLE_OFF(Everything,m)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_aa;
+extern const Meta_Property _Everything_aa;
 
 const Meta_Property _Everything_aa =
 {
@@ -167,7 +167,7 @@ const Meta_Property _Everything_aa =
     CIMPLE_OFF(Everything,aa)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_bb;
+extern const Meta_Property _Everything_bb;
 
 const Meta_Property _Everything_bb =
 {
@@ -178,7 +178,7 @@ const Meta_Property _Everything_bb =
     CIMPLE_OFF(Everything,bb)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_cc;
+extern const Meta_Property _Everything_cc;
 
 const Meta_Property _Everything_cc =
 {
@@ -189,7 +189,7 @@ const Meta_Property _Everything_cc =
     CIMPLE_OFF(Everything,cc)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_dd;
+extern const Meta_Property _Everything_dd;
 
 const Meta_Property _Everything_dd =
 {
@@ -200,7 +200,7 @@ const Meta_Property _Everything_dd =
     CIMPLE_OFF(Everything,dd)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_ee;
+extern const Meta_Property _Everything_ee;
 
 const Meta_Property _Everything_ee =
 {
@@ -211,7 +211,7 @@ const Meta_Property _Everything_ee =
     CIMPLE_OFF(Everything,ee)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_ff;
+extern const Meta_Property _Everything_ff;
 
 const Meta_Property _Everything_ff =
 {
@@ -222,7 +222,7 @@ const Meta_Property _Everything_ff =
     CIMPLE_OFF(Everything,ff)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_gg;
+extern const Meta_Property _Everything_gg;
 
 const Meta_Property _Everything_gg =
 {
@@ -233,7 +233,7 @@ const Meta_Property _Everything_gg =
     CIMPLE_OFF(Everything,gg)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_hh;
+extern const Meta_Property _Everything_hh;
 
 const Meta_Property _Everything_hh =
 {
@@ -244,7 +244,7 @@ const Meta_Property _Everything_hh =
     CIMPLE_OFF(Everything,hh)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_ii;
+extern const Meta_Property _Everything_ii;
 
 const Meta_Property _Everything_ii =
 {
@@ -255,7 +255,7 @@ const Meta_Property _Everything_ii =
     CIMPLE_OFF(Everything,ii)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_jj;
+extern const Meta_Property _Everything_jj;
 
 const Meta_Property _Everything_jj =
 {
@@ -266,7 +266,7 @@ const Meta_Property _Everything_jj =
     CIMPLE_OFF(Everything,jj)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_kk;
+extern const Meta_Property _Everything_kk;
 
 const Meta_Property _Everything_kk =
 {
@@ -277,7 +277,7 @@ const Meta_Property _Everything_kk =
     CIMPLE_OFF(Everything,kk)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_ll;
+extern const Meta_Property _Everything_ll;
 
 const Meta_Property _Everything_ll =
 {
@@ -288,7 +288,7 @@ const Meta_Property _Everything_ll =
     CIMPLE_OFF(Everything,ll)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Everything_mm;
+extern const Meta_Property _Everything_mm;
 
 const Meta_Property _Everything_mm =
 {
@@ -337,9 +337,9 @@ const Meta_Class Everything::static_meta_class =
     CIMPLE_ARRAY_SIZE(_Everything_meta_features),
     sizeof(Everything),
     0,
-    3,
-    0xAA5D1327,
-    0
+    0,
+    0xB6F3B6A9,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

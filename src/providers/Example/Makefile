@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 INCLUDES += -I../repository
 
-SH_LIBRARY = cmplexample
+SHARED_LIBRARY = cmplexample
 
 SOURCES = Example_Provider.cpp module.cpp
 
@@ -16,11 +16,11 @@ include $(TOP)/mak/rules.mak
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS) 
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
 
 genclass:
 genprov:

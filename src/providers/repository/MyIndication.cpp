@@ -13,25 +13,25 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationIdentifier;
+extern const Meta_Property _CIM_Indication_IndicationIdentifier;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_CorrelatedIndications;
+extern const Meta_Property _CIM_Indication_CorrelatedIndications;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationTime;
+extern const Meta_Property _CIM_Indication_IndicationTime;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_PerceivedSeverity;
+extern const Meta_Property _CIM_Indication_PerceivedSeverity;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_OtherSeverity;
+extern const Meta_Property _CIM_Indication_OtherSeverity;
 
-extern CIMPLE_HIDE const Meta_Reference _MyIndication_object;
+extern const Meta_Reference _MyIndication_object;
 
 const Meta_Reference _MyIndication_object =
 {
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "object",
-    &Instance_meta_class,
+    &Instance::static_meta_class,
     CIMPLE_OFF(MyIndication,object)
 };
 
@@ -80,7 +80,7 @@ const Meta_Class MyIndication::static_meta_class =
     &CIM_Indication::static_meta_class,
     0,
     0x1777CCD1,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

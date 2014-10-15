@@ -17,7 +17,7 @@ extern const Meta_Property _Base_w;
 
 const Meta_Property _Base_w =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_LOCAL,
+    CIMPLE_FLAG_PROPERTY,
     "w",
     BOOLEAN,
     0,
@@ -28,7 +28,7 @@ extern const Meta_Property _Base_x;
 
 const Meta_Property _Base_x =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_LOCAL,
+    CIMPLE_FLAG_PROPERTY,
     "x",
     UINT32,
     0,
@@ -39,7 +39,7 @@ extern const Meta_Property _Base_y;
 
 const Meta_Property _Base_y =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_LOCAL,
+    CIMPLE_FLAG_PROPERTY,
     "y",
     STRING,
     0,
@@ -50,7 +50,7 @@ extern const Meta_Property _Base_z;
 
 const Meta_Property _Base_z =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_LOCAL,
+    CIMPLE_FLAG_PROPERTY,
     "z",
     UINT32,
     -1,
@@ -73,6 +73,8 @@ const Meta_Class Base::static_meta_class =
     CIMPLE_ARRAY_SIZE(_Base_meta_features),
     sizeof(Base),
     0,
+    0,
+    0x8A9A4317,
     0,
 };
 

@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_02BE6C00A89619CC8BAB08DE92ADB597;
+extern const Meta_Repository __meta_repository_6F8BC1F67AB816DE99DC59EACFBC2B83;
 
-extern CIMPLE_HIDE const Meta_Reference _Glue_left;
+extern const Meta_Reference _Glue_left;
 
 const Meta_Reference _Glue_left =
 {
@@ -25,7 +25,7 @@ const Meta_Reference _Glue_left =
     CIMPLE_OFF(Glue,left)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _Glue_right;
+extern const Meta_Reference _Glue_right;
 
 const Meta_Reference _Glue_right =
 {
@@ -35,7 +35,7 @@ const Meta_Reference _Glue_right =
     CIMPLE_OFF(Glue,right)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Glue_message;
+extern const Meta_Property _Glue_message;
 
 const Meta_Property _Glue_message =
 {
@@ -63,7 +63,7 @@ const Meta_Class Glue::static_meta_class =
     0,
     2,
     0x93B8DC91,
-    &__meta_repository_02BE6C00A89619CC8BAB08DE92ADB597,
+    &__meta_repository_6F8BC1F67AB816DE99DC59EACFBC2B83,
 };
 
 CIMPLE_NAMESPACE_END

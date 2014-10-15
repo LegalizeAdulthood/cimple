@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _YourClass_str1;
+extern const Meta_Property _YourClass_str1;
 
 const Meta_Property _YourClass_str1 =
 {
@@ -24,7 +24,7 @@ const Meta_Property _YourClass_str1 =
     CIMPLE_OFF(YourClass,str1)
 };
 
-extern CIMPLE_HIDE const Meta_Property _YourClass_str2;
+extern const Meta_Property _YourClass_str2;
 
 const Meta_Property _YourClass_str2 =
 {
@@ -35,23 +35,23 @@ const Meta_Property _YourClass_str2 =
     CIMPLE_OFF(YourClass,str2)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _YourClass_obj1;
+extern const Meta_Reference _YourClass_obj1;
 
 const Meta_Reference _YourClass_obj1 =
 {
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj1",
-    &Instance_meta_class,
+    &Instance::static_meta_class,
     CIMPLE_OFF(YourClass,obj1)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _YourClass_obj2;
+extern const Meta_Reference _YourClass_obj2;
 
 const Meta_Reference _YourClass_obj2 =
 {
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj2",
-    &Instance_meta_class,
+    &Instance::static_meta_class,
     CIMPLE_OFF(YourClass,obj2)
 };
 

@@ -27,7 +27,7 @@ Erp2.cpp:
 CLEAN += Erp2.h Erp2.cpp
 
 tests:
-	$(TARGET)
+	@ $(BINARY_TARGET)
 
 genclass:
 	$(BIN_DIR)/genclass CIM_ComputerSystem

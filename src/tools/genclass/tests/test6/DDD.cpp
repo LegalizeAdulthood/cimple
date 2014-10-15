@@ -13,13 +13,13 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _BBB_counter;
+extern const Meta_Property _BBB_counter;
 
-extern CIMPLE_HIDE const Meta_Property _CCC_key;
+extern const Meta_Property _CCC_key;
 
-extern CIMPLE_HIDE const Meta_Property _CCC_bbb;
+extern const Meta_Property _CCC_bbb;
 
-extern CIMPLE_HIDE const Meta_Property _DDD_ccc;
+extern const Meta_Property _DDD_ccc;
 
 const Meta_Property _DDD_ccc =
 {

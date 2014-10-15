@@ -50,37 +50,37 @@ inline const char* host_name(const CMPIObjectPath* op)
     return CMGetCharsPtr(CMGetHostname(op, NULL), NULL);
 }
 
-CIMPLE_HIDE CMPIrc make_cimple_reference(
+CMPIrc make_cimple_reference(
     const Meta_Class* mc,
     const CMPIObjectPath* op,
     Instance*& inst);
 
-CIMPLE_HIDE CMPIrc make_cimple_instance(
+CMPIrc make_cimple_instance(
     const Meta_Class* mc,
     const CMPIInstance* cmpi_inst,
     Instance*& cimple_inst);
 
-CIMPLE_HIDE CMPIrc make_cmpi_object_path(
+CMPIrc make_cmpi_object_path(
     const CMPIBroker* broker,
     const Instance* cimple_inst, 
     const char* name_space,
     CMPIObjectPath*& cmpi_op);
 
-CIMPLE_HIDE CMPIrc make_cmpi_instance(
+CMPIrc make_cmpi_instance(
     const CMPIBroker* broker,
     const Instance* cimple_inst, 
     const char* name_space,
     const CMPIObjectPath* cmpi_op,
     CMPIInstance*& cmpi_inst);
 
-CIMPLE_HIDE CMPIrc make_method(
+CMPIrc make_method(
     const Meta_Method* mm,
     const CMPIArgs* in,
     const Meta_Class* find_meta_class(const char*, void*),
     void* client_data,
     Instance*& cimple_meth);
 
-CIMPLE_HIDE CMPIrc make_method_out(
+CMPIrc make_method_out(
     const CMPIBroker* broker,
     const char* name_space,
     const Instance* cimple_meth,
@@ -90,13 +90,13 @@ CIMPLE_HIDE CMPIrc make_method_out(
 
 #ifdef CIMPLE_NEED_CMPI_IO
 
-CIMPLE_HIDE void print_scalar(const CMPIData& data);
+void print_scalar(const CMPIData& data);
 
-CIMPLE_HIDE void print(const CMPIData& data);
+void print(const CMPIData& data);
 
-CIMPLE_HIDE void print(const CMPIObjectPath* op);
+void print(const CMPIObjectPath* op);
 
-CIMPLE_HIDE void print(const CMPIInstance* inst);
+void print(const CMPIInstance* inst);
 
 #endif /* CIMPLE_NEED_CMPI_IO */
 

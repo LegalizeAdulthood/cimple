@@ -34,7 +34,7 @@
 
 PEGASUS_NAMESPACE_BEGIN
 
-class CIMPLE_Provider_Manager : public ProviderManager
+class CIMPLE_HIDE CIMPLE_Provider_Manager : public ProviderManager
 {
 public:
 
@@ -50,33 +50,33 @@ public:
 
 private:
 
-    CIMPLE_HIDE Message* _handleInitializeProviderRequest(Message*);
-    CIMPLE_HIDE Message* _handleGetInstanceRequest(Message*);
-    CIMPLE_HIDE Message* _handleEnumerateInstancesRequest(Message*);
-    CIMPLE_HIDE Message* _handleEnumerateInstanceNamesRequest(Message*);
-    CIMPLE_HIDE Message* _handleCreateInstanceRequest(Message*);
-    CIMPLE_HIDE Message* _handleModifyInstanceRequest(Message*);
-    CIMPLE_HIDE Message* _handleDeleteInstanceRequest(Message*);
-    CIMPLE_HIDE Message* _handleExecQueryRequest(Message*);
-    CIMPLE_HIDE Message* _handleAssociatorsRequest(Message*);
-    CIMPLE_HIDE Message* _handleAssociatorNamesRequest(Message*);
-    CIMPLE_HIDE Message* _handleReferencesRequest(Message*);
-    CIMPLE_HIDE Message* _handleReferenceNamesRequest(Message*);
-    CIMPLE_HIDE Message* _handleInvokeMethodRequest(Message*);
-    CIMPLE_HIDE Message* _handleGetPropertyRequest(Message*);
-    CIMPLE_HIDE Message* _handleSetPropertyRequest(Message*);
-    CIMPLE_HIDE Message* _handleCreateSubscriptionRequest(Message*);
-    CIMPLE_HIDE Message* _handleModifySubscriptionRequest(Message*);
-    CIMPLE_HIDE Message* _handleDeleteSubscriptionRequest(Message*);
-    CIMPLE_HIDE Message* _handleExportIndicationRequest(Message*);
-    CIMPLE_HIDE Message* _handleDisableModuleRequest(Message*);
-    CIMPLE_HIDE Message* _handleEnableModuleRequest(Message*);
-    CIMPLE_HIDE Message* _handleStopAllProvidersRequest(Message*);
-    CIMPLE_HIDE Message* _handleSubscriptionInitCompleteRequest(Message*);
+    Message* _handleInitializeProviderRequest(Message*);
+    Message* _handleGetInstanceRequest(Message*);
+    Message* _handleEnumerateInstancesRequest(Message*);
+    Message* _handleEnumerateInstanceNamesRequest(Message*);
+    Message* _handleCreateInstanceRequest(Message*);
+    Message* _handleModifyInstanceRequest(Message*);
+    Message* _handleDeleteInstanceRequest(Message*);
+    Message* _handleExecQueryRequest(Message*);
+    Message* _handleAssociatorsRequest(Message*);
+    Message* _handleAssociatorNamesRequest(Message*);
+    Message* _handleReferencesRequest(Message*);
+    Message* _handleReferenceNamesRequest(Message*);
+    Message* _handleInvokeMethodRequest(Message*);
+    Message* _handleGetPropertyRequest(Message*);
+    Message* _handleSetPropertyRequest(Message*);
+    Message* _handleCreateSubscriptionRequest(Message*);
+    Message* _handleModifySubscriptionRequest(Message*);
+    Message* _handleDeleteSubscriptionRequest(Message*);
+    Message* _handleExportIndicationRequest(Message*);
+    Message* _handleDisableModuleRequest(Message*);
+    Message* _handleEnableModuleRequest(Message*);
+    Message* _handleStopAllProvidersRequest(Message*);
+    Message* _handleSubscriptionInitCompleteRequest(Message*);
 
-    CIMPLE_HIDE void _create_disp(Message* message);
+    void _create_disp(Message* message);
 
-    CIMPLE_HIDE int _enable_indications(
+    int _enable_indications(
 	Subscription* sub);
 
     cimple::Dispatcher* _disp;

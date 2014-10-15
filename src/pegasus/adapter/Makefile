@@ -22,3 +22,5 @@ CIMPLE_ROOT = ../../..
 
 include $(CIMPLE_ROOT)/mak/extras.mak
 include $(ROOT)/mak/library.mak
+
+genclass:

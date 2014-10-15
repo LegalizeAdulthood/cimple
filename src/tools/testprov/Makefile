@@ -14,19 +14,19 @@ else
 endif
 
 tests:
-	$(TARGET) $(SHLIB) Person $(TO_DEV_NULL)
-	@ $(ECHO) "+++++ passed all tests ($(TARGET) Person)"
-	$(TARGET) $(SHLIB) Link $(TO_DEV_NULL)
-	@ $(ECHO) "+++++ passed all tests ($(TARGET) Link)"
-	$(TARGET) $(SHLIB) Example $(TO_DEV_NULL)
-	@ $(ECHO) "+++++ passed all tests ($(TARGET) Example)"
-	$(TARGET) $(SHLIB) Fan $(TO_DEV_NULL)
-	@ $(ECHO) "+++++ passed all tests ($(TARGET) Fan)"
+	$(BINARY_TARGET) $(SHLIB) Person $(TO_DEV_NULL)
+	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) Person)"
+	$(BINARY_TARGET) $(SHLIB) Link $(TO_DEV_NULL)
+	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) Link)"
+	$(BINARY_TARGET) $(SHLIB) Example $(TO_DEV_NULL)
+	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) Example)"
+	$(BINARY_TARGET) $(SHLIB) Fan $(TO_DEV_NULL)
+	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) Fan)"
 ifdef CIMPLE_UNIX
-	$(TARGET) $(SHLIB) UnixUser $(TO_DEV_NULL)
-	@ $(ECHO) "+++++ passed all tests ($(TARGET) UnixUser)"
+	$(BINARY_TARGET) $(SHLIB) UnixUser $(TO_DEV_NULL)
+	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) UnixUser)"
 endif
-	$(TARGET) $(SHLIB) LinuxComputerSystem $(TO_DEV_NULL)
-	@ $(ECHO) "+++++ passed all tests ($(TARGET) LinuxComputerSystem)"
+	$(BINARY_TARGET) $(SHLIB) LinuxComputerSystem $(TO_DEV_NULL)
+	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) LinuxComputerSystem)"
 
 CLEAN += .dev.null

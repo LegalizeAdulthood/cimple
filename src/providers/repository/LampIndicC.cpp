@@ -13,21 +13,21 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationIdentifier;
+extern const Meta_Property _CIM_Indication_IndicationIdentifier;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_CorrelatedIndications;
+extern const Meta_Property _CIM_Indication_CorrelatedIndications;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationTime;
+extern const Meta_Property _CIM_Indication_IndicationTime;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_PerceivedSeverity;
+extern const Meta_Property _CIM_Indication_PerceivedSeverity;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_Indication_OtherSeverity;
+extern const Meta_Property _CIM_Indication_OtherSeverity;
 
-extern CIMPLE_HIDE const Meta_Property _LampIndic_message;
+extern const Meta_Property _LampIndic_message;
 
-extern CIMPLE_HIDE const Meta_Property _LampIndicC_messageC;
+extern const Meta_Property _LampIndicC_messageC;
 
 const Meta_Property _LampIndicC_messageC =
 {
@@ -60,7 +60,7 @@ const Meta_Class LampIndicC::static_meta_class =
     &LampIndic::static_meta_class,
     0,
     0x41DD584C,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

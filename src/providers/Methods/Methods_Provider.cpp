@@ -26,12 +26,6 @@ Unload_Status Methods_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status Methods_Provider::timer(uint64& timeout)
-{
-    TRACE;
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status Methods_Provider::get_instance(
     const Methods* model,
     Methods*& instance)

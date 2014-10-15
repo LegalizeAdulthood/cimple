@@ -37,50 +37,50 @@ PEGASUS_NAMESPACE_BEGIN
 
 typedef Array<CIMKeyBinding> Key_Bindings;
 
-class Converter
+class CIMPLE_HIDE Converter
 {
 public:
 
-    static CIMPLE_HIDE int to_pegasus_instance(
+    static int to_pegasus_instance(
 	const String& host_name,
 	const CIMNamespaceName& name_space,
 	const cimple::Instance* cimple_instance,
 	CIMInstance& pegasus_instance);
 
-    static CIMPLE_HIDE int to_cimple_instance(
+    static int to_cimple_instance(
 	const CIMInstance& pegasus_instance,
 	const cimple::Meta_Class* meta_class,
 	cimple::Instance*& cimple_instance);
 
-    static CIMPLE_HIDE int to_cimple_key(
+    static int to_cimple_key(
 	const Key_Bindings& bindings,
 	const cimple::Meta_Class* meta_class,
 	cimple::Instance*& cimple_key);
 
-    static CIMPLE_HIDE int to_pegasus_object_path(
+    static int to_pegasus_object_path(
 	const String& host_name,
 	const CIMNamespaceName& name_space,
 	const cimple::Instance* cimple_key,
 	CIMObjectPath& object_path);
 
-    static CIMPLE_HIDE int to_cimple_method(
+    static int to_cimple_method(
 	const char* meth_name,
 	const Array<CIMParamValue>& in_params,
 	const cimple::Meta_Class* meta_class,
 	cimple::Instance*& meth);
 
-    static CIMPLE_HIDE int to_pegasus_method(
+    static int to_pegasus_method(
 	const String& host_name,
 	const CIMNamespaceName& name_space,
 	const cimple::Instance* meth,
 	Array<CIMParamValue>& out_params,
 	CIMValue& return_value);
 
-    static CIMPLE_HIDE int de_nullify_properties(
+    static int de_nullify_properties(
 	const CIMPropertyList& propertyList,
 	cimple::Instance* cimple_instance);
 
-    static CIMPLE_HIDE int _to_cimple_ref(
+    static int _to_cimple_ref(
 	const CIMValue& v,
 	cimple::Instance* ci,
 	const cimple::Meta_Reference* mr);

@@ -14,4 +14,4 @@ genclass:
 	$(BIN_DIR)/genclass -I ../mof Test1 Test2
 
 tests:
-	$(TARGET)
+	@ $(BINARY_TARGET)

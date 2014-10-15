@@ -27,27 +27,8 @@
 #ifndef _cimple_platform_LINUX_PPC_GNU_h
 #define _cimple_platform_LINUX_PPC_GNU_h
 
-// #define __USE_UNIX98
-// #define __USE_GNU
+#include "platform_LINUX.h"
 
-// #define CIMPLE_HAVE_ZU
-
-#define CIMPLE_HIDE /* empty */
-
-#define CIMPLE_DEFAULT /* empty */
-
-#define CIMPLE_UINT64 unsigned long long
-
-#define CIMPLE_SINT64 signed long long
-
-#define CIMPLE_UNIX
-
-#define CIMPLE_IMPORT
-
-#define CIMPLE_EXPORT
-
-#define CIMPLE_LITTLE_ENDIAN
-
-#define CIMPLE_HAVE_DEV_RANDOM
+#define CIMPLE_BIG_ENDIAN
 
 #endif /* _cimple_platform_LINUX_PPC_GNU_h */

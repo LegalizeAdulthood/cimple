@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
 const Meta_Property _CIM_ManagedElement_Caption =
 {
@@ -24,7 +24,7 @@ const Meta_Property _CIM_ManagedElement_Caption =
     CIMPLE_OFF(CIM_ManagedElement,Caption)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
 const Meta_Property _CIM_ManagedElement_Description =
 {
@@ -35,7 +35,7 @@ const Meta_Property _CIM_ManagedElement_Description =
     CIMPLE_OFF(CIM_ManagedElement,Description)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
 const Meta_Property _CIM_ManagedElement_ElementName =
 {

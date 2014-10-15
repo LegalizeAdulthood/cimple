@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplunixusrprov
+SHARED_LIBRARY = cmplunixusrprov
 
 INCLUDES += -I../repository
 
@@ -14,9 +14,9 @@ LIBRARIES += cimplepegadap
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
 
 genclass:
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)

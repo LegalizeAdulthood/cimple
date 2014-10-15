@@ -99,19 +99,6 @@ Unload_Status LampIndic_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status LampIndic_Provider::timer(uint64& timeout)
-{
-    TRACE;
-
-    timeout = 1000;
-
-    _indication_handler_mutex.lock();
-    _send_indication("timer()", _indication_handler);
-    _indication_handler_mutex.unlock();
-
-    return TIMER_RESCHEDULE;
-}
-
 Enable_Indications_Status LampIndic_Provider::enable_indications(
     Indication_Handler<LampIndic>* indication_handler)
 {

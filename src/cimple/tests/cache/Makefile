@@ -3,7 +3,8 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_cache
 SOURCES = main.cpp
-LIBRARIES = cimple
+LIBRARIES = cimple_s
+DEFINES += -DCIMPLE_LINK_STATIC_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 
@@ -12,4 +13,4 @@ tests:
 genclass:
 
 run:
-	$(TARGET) $(LIB_DIR)
+	$(BINARY_TARGET) $(LIB_DIR)

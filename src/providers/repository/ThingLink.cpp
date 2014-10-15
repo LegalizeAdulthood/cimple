@@ -13,9 +13,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_301C3D768E5D1704B1028C1944B9CD9D;
+extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
 
-extern CIMPLE_HIDE const Meta_Reference _ThingLink_left;
+extern const Meta_Reference _ThingLink_left;
 
 const Meta_Reference _ThingLink_left =
 {
@@ -25,7 +25,7 @@ const Meta_Reference _ThingLink_left =
     CIMPLE_OFF(ThingLink,left)
 };
 
-extern CIMPLE_HIDE const Meta_Reference _ThingLink_right;
+extern const Meta_Reference _ThingLink_right;
 
 const Meta_Reference _ThingLink_right =
 {
@@ -51,7 +51,7 @@ const Meta_Class ThingLink::static_meta_class =
     0,
     2,
     0x32F93684,
-    &__meta_repository_301C3D768E5D1704B1028C1944B9CD9D,
+    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
 };
 
 CIMPLE_NAMESPACE_END

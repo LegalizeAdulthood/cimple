@@ -13,35 +13,35 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_Name;
+extern const Meta_Property _CIM_System_Name;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property _CIM_ManagedSystemElement_Status;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_CreationClassName;
+extern const Meta_Property _CIM_System_CreationClassName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_NameFormat;
+extern const Meta_Property _CIM_ComputerSystem_NameFormat;
 
 const Meta_Property _CIM_ComputerSystem_NameFormat =
 {
@@ -52,13 +52,13 @@ const Meta_Property _CIM_ComputerSystem_NameFormat =
     CIMPLE_OFF(CIM_ComputerSystem,NameFormat)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_PrimaryOwnerName;
+extern const Meta_Property _CIM_System_PrimaryOwnerName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_PrimaryOwnerContact;
+extern const Meta_Property _CIM_System_PrimaryOwnerContact;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_System_Roles;
+extern const Meta_Property _CIM_System_Roles;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo;
+extern const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo;
 
 const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo =
 {
@@ -69,7 +69,7 @@ const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo =
     CIMPLE_OFF(CIM_ComputerSystem,OtherIdentifyingInfo)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions;
+extern const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions;
 
 const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions =
 {
@@ -80,7 +80,7 @@ const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions =
     CIMPLE_OFF(CIM_ComputerSystem,IdentifyingDescriptions)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_Dedicated;
+extern const Meta_Property _CIM_ComputerSystem_Dedicated;
 
 const Meta_Property _CIM_ComputerSystem_Dedicated =
 {
@@ -91,7 +91,7 @@ const Meta_Property _CIM_ComputerSystem_Dedicated =
     CIMPLE_OFF(CIM_ComputerSystem,Dedicated)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions;
+extern const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions;
 
 const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions =
 {
@@ -102,7 +102,7 @@ const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions =
     CIMPLE_OFF(CIM_ComputerSystem,OtherDedicatedDescriptions)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_ResetCapability;
+extern const Meta_Property _CIM_ComputerSystem_ResetCapability;
 
 const Meta_Property _CIM_ComputerSystem_ResetCapability =
 {
@@ -113,7 +113,7 @@ const Meta_Property _CIM_ComputerSystem_ResetCapability =
     CIMPLE_OFF(CIM_ComputerSystem,ResetCapability)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_PowerManagementCapabilities;
+extern const Meta_Property _CIM_ComputerSystem_PowerManagementCapabilities;
 
 const Meta_Property _CIM_ComputerSystem_PowerManagementCapabilities =
 {

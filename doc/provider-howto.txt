@@ -281,7 +281,7 @@ BUILD THE LIBRARY:
 	TOP = $(CIMPLE_ROOT)
 	include $(TOP)/mak/config.mak
 
-	SH_LIBRARY = cmplfan
+	SHARED_LIBRARY = cmplfan
 	SOURCES = Fan_Provider.cpp Fan.cpp module.cpp
 	LIBRARIES = -lcimple
 	FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
@@ -393,7 +393,7 @@ SUMMARY:
 	    TOP = $(CIMPLE_ROOT)
 	    include $(TOP)/mak/config.mak
 
-	    SH_LIBRARY = cmplfan
+	    SHARED_LIBRARY = cmplfan
 	    SOURCES = Fan_Provider.cpp Fan.cpp module.cpp
 	    LIBRARIES = -lcimple
 

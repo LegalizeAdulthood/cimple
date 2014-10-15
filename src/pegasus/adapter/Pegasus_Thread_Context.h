@@ -35,7 +35,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 #define CIMPLE_PEGASUS_MAGIC 0x93C45251
 
-class Pegasus_Thread_Context : public Thread_Context
+class CIMPLE_HIDE Pegasus_Thread_Context : public Thread_Context
 {
 public:
 

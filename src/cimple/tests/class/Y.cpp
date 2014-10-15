@@ -13,10 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
 extern const Meta_Property _X_x;
 
-CIMPLE_HIDE
 extern const Meta_Property _Y_y;
 
 const Meta_Property _Y_y =
@@ -44,6 +42,7 @@ const Meta_Class Y::static_meta_class =
     &X::static_meta_class,
     0,
     0x00D00792,
+    0,
 };
 
 CIMPLE_NAMESPACE_END

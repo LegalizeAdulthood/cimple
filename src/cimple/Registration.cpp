@@ -28,21 +28,4 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-Registration::Registration(
-    const char* module_name_,
-    const char* provider_name_, 
-    Provider_Proc provider_proc_,
-    const Meta_Class* meta_class_,
-    Registration*& next_)
-{
-    provider_name = provider_name_;
-    module_name = module_name_;
-    provider_proc = provider_proc_;
-    meta_class = meta_class_;
-    next = next_;
-
-    // Prepend to registration list:
-    next_ = this;
-}
-
 CIMPLE_NAMESPACE_END

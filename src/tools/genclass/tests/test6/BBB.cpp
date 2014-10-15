@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _BBB_counter;
+extern const Meta_Property _BBB_counter;
 
 const Meta_Property _BBB_counter =
 {

@@ -4,8 +4,8 @@
 //
 //==============================================================================
 
-#ifndef _AY_h
-#define _AY_h
+#ifndef _cimple_AY_h
+#define _cimple_AY_h
 
 #include <cimple/cimple.h>
 #include "AX.h"
@@ -18,8 +18,8 @@ class AY : public Instance
 {
 public:
     // AX features:
-    Y* left;
-    Y* right;
+    CIMPLE_REF(Y,left);
+    CIMPLE_REF(Y,right);
 
     // AY features:
 
@@ -28,4 +28,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _AY_h */
+#endif /* _cimple_AY_h */

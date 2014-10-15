@@ -14,43 +14,41 @@ public:
 
     Example_Provider();
 
-    CIMPLE_HIDE ~Example_Provider();
+    ~Example_Provider();
 
-    CIMPLE_HIDE Load_Status load();
+    Load_Status load();
 
-    CIMPLE_HIDE Unload_Status unload();
+    Unload_Status unload();
 
-    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
-
-    CIMPLE_HIDE Get_Instance_Status get_instance(
+    Get_Instance_Status get_instance(
 	const Example* model,
 	Example*& instance);
 
-    CIMPLE_HIDE Enum_Instances_Status enum_instances(
+    Enum_Instances_Status enum_instances(
 	const Example* model,
 	Enum_Instances_Handler<Example>* handler);
 
-    CIMPLE_HIDE Create_Instance_Status create_instance(
+    Create_Instance_Status create_instance(
 	const Example* instance);
 
-    CIMPLE_HIDE Delete_Instance_Status delete_instance(
+    Delete_Instance_Status delete_instance(
 	const Example* instance);
 
-    CIMPLE_HIDE Modify_Instance_Status modify_instance(
+    Modify_Instance_Status modify_instance(
 	const Example* instance);
 
-    CIMPLE_HIDE Invoke_Method_Status foo0(
+    Invoke_Method_Status foo0(
         const Example* self,
         Property<uint32>& return_value);
 
-    CIMPLE_HIDE Invoke_Method_Status foo1(
+    Invoke_Method_Status foo1(
         const Example* self,
         const Property<real32>& x,
         const Property<uint32>& y,
         const Property<boolean>& z,
         Property<uint32>& return_value);
 
-    CIMPLE_HIDE Invoke_Method_Status foo2(
+    Invoke_Method_Status foo2(
         const Example* self,
         const Property<String>& w,
         const Property<real32>& x,
@@ -58,21 +56,21 @@ public:
         const Property<boolean>& z,
         Property<uint32>& return_value);
 
-    CIMPLE_HIDE Invoke_Method_Status foo3(
+    Invoke_Method_Status foo3(
         const Example* self,
         Property<String>& return_value);
 
-    CIMPLE_HIDE Invoke_Method_Status foo4(
+    Invoke_Method_Status foo4(
         const Example* self,
         const Property<Array_real32>& x,
         Property<String>& return_value);
 
-    CIMPLE_HIDE Invoke_Method_Status foo5(
+    Invoke_Method_Status foo5(
         const Example* self,
         const House* house,
         Property<String>& return_value);
 
-    static CIMPLE_HIDE int proc(
+    static int proc(
 	const Registration* registration,
 	int operation, 
 	void* arg0, 

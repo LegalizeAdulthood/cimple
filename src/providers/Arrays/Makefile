@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 INCLUDES += -I../repository
 
-SH_LIBRARY = cmplarrays
+SHARED_LIBRARY = cmplarrays
 
 SOURCES = Arrays_Provider.cpp module.cpp
 
@@ -19,4 +19,6 @@ include $(TOP)/mak/rules.mak
 tests:
 
 reg:
-	regmod -n root/cimv2 -c $(TARGET)
+	regmod -n root/cimv2 -c $(SHARED_LIBRARY_TARGET)
+
+genclass:

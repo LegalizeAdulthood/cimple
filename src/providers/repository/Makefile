@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplrep
+SHARED_LIBRARY = cmplrep
 
 CLASSES = \
     Fan  \
@@ -95,4 +95,4 @@ genclass:
 	genclass -l -r $(CLASSES)
 
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)

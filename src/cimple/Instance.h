@@ -85,7 +85,7 @@ struct Meta_Property;
 /** Base class for all generated CIM classes and CIM method objects.
     Note: sizeof(Instance) == 24 on all platforms.
 */
-struct Instance
+struct CIMPLE_LIBCIMPLE_LINKAGE Instance
 {
     uint32 magic;
     uint32 __padding1;
@@ -101,6 +101,8 @@ struct Instance
 	uint64 __padding3;
 	const Meta_Class* meta_class;
     };
+
+    static const Meta_Class static_meta_class;
 };
 
 /** Creates an instance from the given meta class. For each property, the 
@@ -223,6 +225,7 @@ bool identical(const Instance* i1, const Instance* i2);
 
 /** Initialize an instance with random values.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 void random_initialize(Instance* instance);
 
 #endif /* CIMPLE_NEED_RANDOM_INITIALIZE */
@@ -305,25 +308,23 @@ private:
 template<class CLASS_PTR>
 struct cast
 {
-    explicit cast(const Instance* inst) : _inst(inst) { }
+    explicit cast(const Instance* ptr) : _ptr(ptr) { }
 
     operator CLASS_PTR()
     {
-	if (__is_a(&CLASS_PTR(0)->static_meta_class, _inst->meta_class))
-	    return CLASS_PTR(_inst);
+	if (_ptr && __is_a(
+	    &((CLASS_PTR)0)->static_meta_class, _ptr->meta_class))
+	    return CLASS_PTR(_ptr);
 
 	return 0;
     }
 
 private:
-    const Instance* _inst;
+    const Instance* _ptr;
 };
 
 CIMPLE_LIBCIMPLE_LINKAGE
 void destroyer(Instance* p);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-const char* class_name(const Instance* instance);
 
 CIMPLE_LIBCIMPLE_LINKAGE
 void ref(const Instance* instance);
@@ -334,10 +335,8 @@ void unref(const Instance* instance);
 CIMPLE_LIBCIMPLE_LINKAGE
 int filter_properties(Instance* instance, const char* const* properties);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 void pack_instance(Buffer& out, const Instance* inst, bool keys_only = false);
 
-CIMPLE_LIBCIMPLE_LINKAGE
 int unpack_instance(
     const Buffer& in, 
     size_t& pos, 
@@ -356,7 +355,6 @@ int unpack_instance(
 // to an array of all other classes, which is only true if the -r option was
 // passed to genclass when the source class was generated.
 //
-CIMPLE_LIBCIMPLE_LINKAGE
 Instance* __model_path_to_instance(
     const Meta_Class* source_meta_class, 
     const char* path);

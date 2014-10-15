@@ -31,7 +31,7 @@
 #include <cimple/Instance.h>
 #include <cimple/Registration.h>
 #include <cimple/Provider_Handle.h>
-#include <cimple/List.h>
+#include <disp/List.h>
 #include <cimple/Mutex.h>
 #include "linkage.h"
 

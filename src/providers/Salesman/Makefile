@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplsalesman
+SHARED_LIBRARY = cmplsalesman
 
 INCLUDES += -I../repository
 
@@ -16,7 +16,7 @@ include $(TOP)/mak/rules.mak
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 genclass:
 

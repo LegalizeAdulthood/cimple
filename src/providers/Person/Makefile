@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cmplperson
+SHARED_LIBRARY = cmplperson
 
 INCLUDES += -I../repository
 
@@ -16,7 +16,7 @@ include $(TOP)/mak/rules.mak
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 genclass:
 
@@ -50,7 +50,7 @@ cs:
 	( cimserver -s ; sleep 1; cimserver )
 
 cat:	
-	catmod $(TARGET)
+	catmod $(SHARED_LIBRARY_TARGET)
 
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)

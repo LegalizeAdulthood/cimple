@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _Erp_w;
+extern const Meta_Property _Erp_w;
 
 const Meta_Property _Erp_w =
 {
@@ -24,7 +24,7 @@ const Meta_Property _Erp_w =
     CIMPLE_OFF(Erp,w)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Erp_x;
+extern const Meta_Property _Erp_x;
 
 const Meta_Property _Erp_x =
 {
@@ -35,7 +35,7 @@ const Meta_Property _Erp_x =
     CIMPLE_OFF(Erp,x)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Erp_y;
+extern const Meta_Property _Erp_y;
 
 const Meta_Property _Erp_y =
 {
@@ -46,7 +46,7 @@ const Meta_Property _Erp_y =
     CIMPLE_OFF(Erp,y)
 };
 
-extern CIMPLE_HIDE const Meta_Property _Erp_z;
+extern const Meta_Property _Erp_z;
 
 const Meta_Property _Erp_z =
 {

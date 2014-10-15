@@ -561,6 +561,9 @@ bool is_reference_of(
 
 bool __is_a(const Meta_Class* ancestor, const Meta_Class* descendant)
 {
+    if (ancestor == &Instance::static_meta_class)
+	return true;
+
     while (descendant)
     {
 	if ((void*)descendant == (void*)ancestor)
@@ -927,13 +930,6 @@ void destroyer(Instance* p)
 {
     if (p) 
 	destroy(p); 
-}
-
-const char* class_name(const Instance* instance)
-{
-    CIMPLE_ASSERT(instance != 0);
-    CIMPLE_ASSERT(instance->magic == CIMPLE_INSTANCE_MAGIC);
-    return instance->meta_class->name;
 }
 
 void ref(const Instance* instance)
@@ -1751,5 +1747,19 @@ Instance* __model_path_to_instance(
 
     return inst.steal();
 }
+
+// This is used for embedded objects.
+const Meta_Class Instance::static_meta_class =
+{
+    CIMPLE_FLAG_CLASS, /* flags */
+    "Instance", /* name */
+    0, /* meta_features */
+    0, /* num_meta_features */
+    sizeof(Instance), /* size */
+    0, /* super_meta_class */
+    0, /* num_keys */
+    0x00000000, /* crc */
+    0,
+};
 
 CIMPLE_NAMESPACE_END

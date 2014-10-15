@@ -44,9 +44,14 @@ distclean: clean
 	$(RM) src/platform.h
 
 regress:
-	( cimserver -s; sleep 1 )
+	( cimserver -s; sleep 3 )
 	( cd $(PEGASUS_ROOT); make repository )
 	$(MAKE) reg
 	( cimserver; sleep 3 )
 	$(MAKE) live-tests
 	cimserver -s
+
+full-regress:
+	$(MAKE) clean
+	$(MAKE)
+	$(MAKE) regress

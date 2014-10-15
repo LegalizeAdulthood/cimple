@@ -28,7 +28,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-size_t type_size[] =
+size_t const type_size[] =
 {
     sizeof(boolean),
     sizeof(uint8),
@@ -46,7 +46,7 @@ size_t type_size[] =
     sizeof(Datetime),
 };
 
-const char* type_name[] =
+const char* const type_name[] =
 {
     "boolean",
     "uint8",
@@ -63,9 +63,5 @@ const char* type_name[] =
     "string",
     "datetime",
 };
-
-char is_integer[] = { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, };
-
-char is_raw[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, };
 
 CIMPLE_NAMESPACE_END

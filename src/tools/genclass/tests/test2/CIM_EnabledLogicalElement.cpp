@@ -13,23 +13,23 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property _CIM_ManagedElement_Caption;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property _CIM_ManagedElement_Description;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property _CIM_ManagedElement_ElementName;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property _CIM_ManagedSystemElement_Name;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property _CIM_ManagedSystemElement_Status;
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
 
 const Meta_Property _CIM_EnabledLogicalElement_EnabledState =
 {
@@ -40,7 +40,7 @@ const Meta_Property _CIM_EnabledLogicalElement_EnabledState =
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledState)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
 
 const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState =
 {
@@ -51,7 +51,7 @@ const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState =
     CIMPLE_OFF(CIM_EnabledLogicalElement,OtherEnabledState)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
 
 const Meta_Property _CIM_EnabledLogicalElement_RequestedState =
 {
@@ -62,7 +62,7 @@ const Meta_Property _CIM_EnabledLogicalElement_RequestedState =
     CIMPLE_OFF(CIM_EnabledLogicalElement,RequestedState)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
 
 const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault =
 {
@@ -73,7 +73,7 @@ const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault =
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledDefault)
 };
 
-extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
 const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange =
 {

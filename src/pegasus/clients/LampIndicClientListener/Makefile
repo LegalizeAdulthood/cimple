@@ -22,3 +22,5 @@ tests:
 
 live-tests:
 	@ $(PROGRAM)
+
+genclass:

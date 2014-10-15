@@ -1,7 +1,7 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = cimpleutil
+SHARED_LIBRARY = cimpleutil
 
 SOURCES = \
     util.cpp \

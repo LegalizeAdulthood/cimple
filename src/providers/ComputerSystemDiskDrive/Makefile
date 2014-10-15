@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 INCLUDES += -I../repository
 
-SH_LIBRARY = cmplcsdd
+SHARED_LIBRARY = cmplcsdd
 
 SOURCES = ComputerSystemDiskDrive_Provider.cpp module.cpp
 
@@ -16,13 +16,12 @@ include $(TOP)/mak/rules.mak
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS) 
 
 reg:
-	regmod -c $(TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 genprov:
 	genprov -I ../repository -f Example
 
-genclass:
-	genclass Example
-
 tests:
-	@ $(BIN_DIR)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+
+genclass:
