@@ -39,23 +39,23 @@ public:
     Magic() 
     {
 #ifdef CIMPLE_DEBUG
-	_magic = ID;
+        _magic = ID;
 #endif
     }
 
     ~Magic() 
     {
 #ifdef CIMPLE_DEBUG
-	_magic = 0xDDDDDDDD;
+        _magic = 0xDDDDDDDD;
 #endif
     }
 
     operator bool() const 
     { 
 #ifdef CIMPLE_DEBUG
-	return _magic == ID; 
+        return _magic == ID; 
 #else
-	return true;
+        return true;
 #endif
     }
 

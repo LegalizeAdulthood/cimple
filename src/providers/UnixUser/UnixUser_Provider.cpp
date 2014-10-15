@@ -32,6 +32,25 @@ Get_Instance_Status UnixUser_Provider::get_instance(
     return GET_INSTANCE_UNSUPPORTED;
 }
 
+#if defined(CIMPLE_OS_DARWIN)
+
+// ATTN: replace with something thread-safe.
+
+static int getpwent_r(
+    passwd* pw,
+    char* buffer,
+    size_t buffer_length,
+    passwd** pwp)
+{
+    if ((*pwp = getpwent()) == 0)
+        return -1;
+
+    memcpy(pw, *pwp, sizeof(passwd));
+    return 0;
+}
+
+#endif /* defined(CIMPLE_OS_DARWIN) */
+
 Enum_Instances_Status UnixUser_Provider::enum_instances(
     const UnixUser* model,
     Enum_Instances_Handler<UnixUser>* handler)
@@ -44,41 +63,41 @@ Enum_Instances_Status UnixUser_Provider::enum_instances(
 
     while (getpwent_r(&pw, buffer, BUFFER_LENGTH, &pwp) == 0)
     {
-	UnixUser* instance = UnixUser::create();
+        UnixUser* instance = UnixUser::create();
 
-	instance->name.value = pw.pw_name;
+        instance->name.value = pw.pw_name;
 
-	if (model->password.null)
-	    instance->password.null = true;
-	else
-	    instance->password.value = pw.pw_passwd;    
+        if (model->password.null)
+            instance->password.null = true;
+        else
+            instance->password.value = pw.pw_passwd;    
 
-	if (model->uid.null)
-	    instance->uid.null = true;
-	else
-	    instance->uid.value = pw.pw_uid;    
+        if (model->uid.null)
+            instance->uid.null = true;
+        else
+            instance->uid.value = pw.pw_uid;    
 
-	if (model->gid.null)
-	    instance->gid.null = true;
-	else
-	    instance->gid.value = pw.pw_gid;    
+        if (model->gid.null)
+            instance->gid.null = true;
+        else
+            instance->gid.value = pw.pw_gid;    
 
-	if (model->fullName.null)
-	    instance->fullName.null = true;
-	else
-	    instance->fullName.value = pw.pw_gecos;    
+        if (model->fullName.null)
+            instance->fullName.null = true;
+        else
+            instance->fullName.value = pw.pw_gecos;    
 
-	if (model->homeDir.null)
-	    instance->homeDir.null = true;
-	else
-	    instance->homeDir.value = pw.pw_dir;    
+        if (model->homeDir.null)
+            instance->homeDir.null = true;
+        else
+            instance->homeDir.value = pw.pw_dir;    
 
-	if (model->shellProgram.null)
-	    instance->shellProgram.null = true;
-	else
-	    instance->shellProgram.value = pw.pw_shell;
+        if (model->shellProgram.null)
+            instance->shellProgram.null = true;
+        else
+            instance->shellProgram.value = pw.pw_shell;
 
-	handler->handle(instance);
+        handler->handle(instance);
     }
 
     endpwent();
@@ -122,7 +141,7 @@ int UnixUser_Provider::proc(
     typedef UnixUser Class;
     typedef UnixUser_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END

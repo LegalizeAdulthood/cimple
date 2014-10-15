@@ -50,6 +50,7 @@ static const Meta_Class* _meta_classes[] =
     &Thing::static_meta_class,
     &ThingLink::static_meta_class,
     &Lamp::static_meta_class,
+    &ModernLamp::static_meta_class,
     &LampLink::static_meta_class,
     &LampIndic::static_meta_class,
     &LampIndicA::static_meta_class,
@@ -62,9 +63,9 @@ static const Meta_Class* _meta_classes[] =
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);
 
-extern const Meta_Repository __meta_repository_48D39CF2E1A81164BA57916E443B1258;
+extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
 
-const Meta_Repository __meta_repository_48D39CF2E1A81164BA57916E443B1258 =
+const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849 =
 {
     _meta_classes,
     _num_meta_classes,

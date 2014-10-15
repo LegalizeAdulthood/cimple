@@ -1,0 +1,25 @@
+// Additional registration needed by subclasses:
+
+instance of PG_ProviderCapabilities
+{
+    CapabilityID = "Sub1";
+    ProviderModuleName = "Super_Module";
+    ProviderName = "Super_Provider";
+    ClassName = "Sub1";
+    Namespaces = {"root/cimv2"};
+    ProviderType = {2};
+    supportedProperties = NULL;
+    supportedMethods = NULL;
+};
+
+instance of PG_ProviderCapabilities
+{
+    CapabilityID = "Sub2";
+    ProviderModuleName = "Super_Module";
+    ProviderName = "Super_Provider";
+    ClassName = "Sub2";
+    Namespaces = {"root/cimv2"};
+    ProviderType = {2};
+    supportedProperties = NULL;
+    supportedMethods = NULL;
+};

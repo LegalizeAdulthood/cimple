@@ -48,36 +48,36 @@ struct CIMPLE_CIMPLE_LINKAGE Thread_Context
     virtual void thread_exit_hook() = 0;
 
     virtual Instance_Enumerator_Rep* instance_enumerator_create(
-	const char* name_space, 
-	const Instance* model) = 0;
+        const char* name_space, 
+        const Instance* model) = 0;
 
     virtual void instance_enumerator_destroy(
-	Instance_Enumerator_Rep* rep) = 0;
+        Instance_Enumerator_Rep* rep) = 0;
 
     virtual bool instance_enumerator_more(
-	Instance_Enumerator_Rep* rep) = 0;
+        Instance_Enumerator_Rep* rep) = 0;
 
     virtual void instance_enumerator_next(
-	Instance_Enumerator_Rep* rep) = 0;
+        Instance_Enumerator_Rep* rep) = 0;
 
     virtual Ref<Instance> instance_enumerator_get(
-	Instance_Enumerator_Rep* rep) = 0;
+        Instance_Enumerator_Rep* rep) = 0;
 
     virtual Ref<Instance> get_instance(
-	const char* name_space, 
-	const Instance* model) = 0;
+        const char* name_space, 
+        const Instance* model) = 0;
 
     virtual int create_instance(
-	const char* name_space, 
-	const Instance* instance) = 0;
+        const char* name_space, 
+        const Instance* instance) = 0;
 
     virtual int delete_instance(
-	const char* name_space, 
-	const Instance* instance) = 0;
+        const char* name_space, 
+        const Instance* instance) = 0;
 
     virtual int modify_instance(
-	const char* name_space, 
-	const Instance* instance) = 0;
+        const char* name_space, 
+        const Instance* instance) = 0;
 
     static void push(Thread_Context* context);
 

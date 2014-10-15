@@ -13,75 +13,111 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_EA4D42DE96501C068A2E0C2F6B614B6E;
+extern const Meta_Repository __meta_repository_348EBB378EDF1C7685D9CEE1DD7A9546;
 
-extern const Meta_Property _Part_key1;
+extern const Meta_Property
+_Part_key1;
 
-const Meta_Property _Part_key1 =
+const Meta_Property
+_Part_key1 =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "key1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(Part,key1)
+    0, /* subscript */
+    CIMPLE_OFF(Part,key1),
+    0, /* value */
 };
 
-extern const Meta_Property _Part_key2;
+extern const Meta_Property
+_Part_key2;
 
-const Meta_Property _Part_key2 =
+const Meta_Property
+_Part_key2 =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "key2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT64,
-    0,
-    CIMPLE_OFF(Part,key2)
+    0, /* subscript */
+    CIMPLE_OFF(Part,key2),
+    0, /* value */
 };
 
-extern const Meta_Property _Part_key3;
+extern const Meta_Property
+_Part_key3;
 
-const Meta_Property _Part_key3 =
+const Meta_Property
+_Part_key3 =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "key3",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(Part,key3)
+    0, /* subscript */
+    CIMPLE_OFF(Part,key3),
+    0, /* value */
 };
 
-extern const Meta_Property _Part_prop1;
+extern const Meta_Property
+_Part_prop1;
 
-const Meta_Property _Part_prop1 =
+const Meta_Property
+_Part_prop1 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "prop1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(Part,prop1)
+    0, /* subscript */
+    CIMPLE_OFF(Part,prop1),
+    0, /* value */
 };
 
-extern const Meta_Property _Part_prop2;
+extern const Meta_Property
+_Part_prop2;
 
-const Meta_Property _Part_prop2 =
+const Meta_Property
+_Part_prop2 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "prop2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT64,
-    0,
-    CIMPLE_OFF(Part,prop2)
+    0, /* subscript */
+    CIMPLE_OFF(Part,prop2),
+    0, /* value */
 };
 
-extern const Meta_Property _Part_prop3;
+extern const Meta_Property
+_Part_prop3;
 
-const Meta_Property _Part_prop3 =
+const Meta_Property
+_Part_prop3 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "prop3",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(Part,prop3)
+    0, /* subscript */
+    CIMPLE_OFF(Part,prop3),
+    0, /* value */
 };
 
-static Meta_Feature* _Part_meta_features[] =
+static Meta_Feature* _Part_MFA[] =
 {
     (Meta_Feature*)&_Part_key1,
     (Meta_Feature*)&_Part_key2,
@@ -103,18 +139,19 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Part::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Part",
-    _Part_meta_features,
-    CIMPLE_ARRAY_SIZE(_Part_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Part_MFA,
+    CIMPLE_ARRAY_SIZE(_Part_MFA),
     sizeof(Part),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     3, /* num_keys */
-    0xDB3D3070,/* crc */
-    &__meta_repository_EA4D42DE96501C068A2E0C2F6B614B6E,
+    0xDB3D3070, /* crc */
+    &__meta_repository_348EBB378EDF1C7685D9CEE1DD7A9546,
 };
 
 CIMPLE_NAMESPACE_END

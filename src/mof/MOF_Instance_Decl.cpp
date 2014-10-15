@@ -364,7 +364,8 @@ static void _build_all_features_list(
 			0,
 			prop_decl->qualifiers, 
 			feature->all_qualifiers,
-			&prop_decl->qual_mask);
+			&prop_decl->qual_mask,
+                        true); /* prop */
 
 		/*
 		 * Validate the initializer (if any).
@@ -419,7 +420,8 @@ static void _build_all_features_list(
 		    0,
 		    ref_decl->qualifiers, 
 		    feature->all_qualifiers,
-		    &ref_decl->qual_mask);
+		    &ref_decl->qual_mask,
+                    false); /* prop */
 
 		/*
 		 * Validate the alias (ATTN) OR object reference.
@@ -608,7 +610,8 @@ void MOF_Instance_Decl::handle(MOF_Instance_Decl* inst_decl)
 	0,
 	inst_decl->qualifiers, 
 	class_decl->all_qualifiers,
-	&inst_decl->qual_mask);
+	&inst_decl->qual_mask,
+        false); /* prop */
 
     /*
      * Check for duplicate features:

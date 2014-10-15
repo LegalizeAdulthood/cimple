@@ -135,7 +135,6 @@ static void _validate_feature_compatibility(
     }
     else if (p->type == MOF_FEATURE_REF)
     {
-//MEB
 	MOF_Reference_Decl* pp = (MOF_Reference_Decl*)p;
 	MOF_Reference_Decl* qq = (MOF_Reference_Decl*)q;
 
@@ -213,7 +212,8 @@ static void _build_param_qual_info_list(
 	    param1->name, /* parameter name */
 	    param1->qualifiers, /* local qualifiers */
 	    all_qualifiers, /* inherited qualifiers */
-	    &param1->qual_mask);
+	    &param1->qual_mask,
+            false); /* prop */
 
 #if 0
 	printf("class_name[%s]\n", class_name);
@@ -295,7 +295,6 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
 		     * Build the all-qualifiers list.
 		     */
 
-
 		    p->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
 			class_decl->name,
 			0, /* instance name */
@@ -303,7 +302,8 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
 			0, /* parameter name */
 			p->qualifiers, /* local qualifiers */
 			q->feature->all_qualifiers, /* inherited qualifiers */
-			&p->qual_mask);
+			&p->qual_mask,
+                        p->type == MOF_FEATURE_PROP);
 
 #if 0
 		printf("=== class_name[%s]\n", class_decl->name);
@@ -348,7 +348,8 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
 		    0, /* parameter name */
 		    p->qualifiers, /* local qualifiers */
 		    0, /* inherited qualifiers */
-		    &p->qual_mask);
+		    &p->qual_mask,
+                    p->type == MOF_FEATURE_PROP);
 
 #if 0
 		printf("=== class_name[%s]\n", class_decl->name);
@@ -381,6 +382,7 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
 		else
 		    class_decl->all_features->append(info);
 	    }
+
 	}
     }
 }
@@ -498,9 +500,13 @@ void MOF_Class_Decl::validate()
     }
 
     /*
+     * Set self as owning class.
+     */
+    set_owning_class(this->name);
+
+    /*
      * Build the all-qualifiers list:
      */
-
 
     all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
 	name, 
@@ -509,7 +515,8 @@ void MOF_Class_Decl::validate()
 	0,
 	qualifiers, 
 	super_class_qualifiers,
-	&qual_mask);
+	&qual_mask,
+        false); /* prop */
 
 #if 0
 	MOF_Qualifier_info_print_list(all_qualifiers, 0);
@@ -849,3 +856,11 @@ void MOF_Class_Decl::print_nested_refs()
 }
 
 #endif
+
+void MOF_Class_Decl::set_owning_class(const char* owning_class_)
+{
+    MOF_Qualified_Element::set_owning_class(owning_class_);
+
+    for (MOF_Feature* p = features; p; p = (MOF_Feature*)p->next)
+        p->set_owning_class(owning_class_);
+}

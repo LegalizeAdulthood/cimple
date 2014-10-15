@@ -42,11 +42,11 @@ CIMPLE_NAMESPACE_BEGIN
     .
     void foo()
     {
-	// Lock mutex here!
-	Auto_Mutex auto_mutex(_mutex);
+        // Lock mutex here!
+        Auto_Mutex auto_mutex(_mutex);
 
 
-	// Unlock mutex here!
+        // Unlock mutex here!
     }
     \endcode
 */

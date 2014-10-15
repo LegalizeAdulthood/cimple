@@ -49,23 +49,23 @@ void TSD::set(void* data)
 {
     pthread_mutex_lock(&_mutex);
     {
-	pthread_t self = pthread_self();
+        pthread_t self = pthread_self();
 
-	for (size_t i = 0; i < _num_entries; i++)
-	{
-	    if (pthread_equal(self, _entries[i].self))
-	    {
-		_entries[i].data = data;
-		pthread_mutex_unlock(&_mutex);
-		return;
-	    }
-	}
+        for (size_t i = 0; i < _num_entries; i++)
+        {
+            if (pthread_equal(self, _entries[i].self))
+            {
+                _entries[i].data = data;
+                pthread_mutex_unlock(&_mutex);
+                return;
+            }
+        }
 
-	_entries = (TSD_Entry*)realloc(
-	    _entries, (_num_entries + 1) * sizeof(TSD_Entry));
-	_entries[_num_entries].self = self;
-	_entries[_num_entries].data = data;
-	_num_entries++;
+        _entries = (TSD_Entry*)realloc(
+            _entries, (_num_entries + 1) * sizeof(TSD_Entry));
+        _entries[_num_entries].self = self;
+        _entries[_num_entries].data = data;
+        _num_entries++;
     }
     pthread_mutex_unlock(&_mutex);
 }
@@ -74,17 +74,17 @@ void* TSD::get()
 {
     pthread_mutex_lock(&_mutex);
     {
-	pthread_t self = pthread_self();
+        pthread_t self = pthread_self();
 
-	for (size_t i = 0; i < _num_entries; i++)
-	{
-	    if (pthread_equal(self, _entries[i].self))
-	    {
-		void* data = _entries[i].data;
-		pthread_mutex_unlock(&_mutex);
-		return data;
-	    }
-	}
+        for (size_t i = 0; i < _num_entries; i++)
+        {
+            if (pthread_equal(self, _entries[i].self))
+            {
+                void* data = _entries[i].data;
+                pthread_mutex_unlock(&_mutex);
+                return data;
+            }
+        }
     }
     pthread_mutex_unlock(&_mutex);
 

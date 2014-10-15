@@ -17,11 +17,11 @@ To register provider with Pegasus:
 
 To test:
 
-	% CLI gi Person
-	% CLI ei Person
-	% CLI ni Person
-	% CLI gi Person.ssn=2
-	% CLI di Person.ssn=2
+	% cimcli gi Person
+	% cimcli ei Person
+	% cimcli ni Person
+	% cimcli gi Person.ssn=2
+	% cimcli di Person.ssn=2
 	% create_person
 	% modify_person
 

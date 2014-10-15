@@ -13,40 +13,58 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-const Meta_Property _CIM_ManagedElement_Caption =
+const Meta_Property
+_CIM_ManagedElement_Caption =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Caption",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_ManagedElement,Caption)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ManagedElement,Caption),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property
+_CIM_ManagedElement_Description;
 
-const Meta_Property _CIM_ManagedElement_Description =
+const Meta_Property
+_CIM_ManagedElement_Description =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Description",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_ManagedElement,Description)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ManagedElement,Description),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property
+_CIM_ManagedElement_ElementName;
 
-const Meta_Property _CIM_ManagedElement_ElementName =
+const Meta_Property
+_CIM_ManagedElement_ElementName =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ElementName",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_ManagedElement,ElementName)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ManagedElement,ElementName),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_ManagedElement_meta_features[] =
+static Meta_Feature* _CIM_ManagedElement_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_ManagedElement_Description,
@@ -62,17 +80,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_ManagedElement::static_meta_class =
 {
-    CIMPLE_FLAG_CLASS,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_CLASS|CIMPLE_FLAG_ABSTRACT,
     "CIM_ManagedElement",
-    _CIM_ManagedElement_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_ManagedElement_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_ManagedElement_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_ManagedElement_MFA),
     sizeof(CIM_ManagedElement),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     0, /* num_keys */
-    0x5B2A3886,/* crc */
+    0x5B2A3886, /* crc */
     0,
 };
 

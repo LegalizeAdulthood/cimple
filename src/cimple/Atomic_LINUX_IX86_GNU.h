@@ -58,9 +58,9 @@ inline void Atomic_set(Atomic* atomic, int x)
 static __inline__ void Atomic_inc(Atomic* atomic)
 {
     __asm__ __volatile__(
-	"lock ; incl %0"
-	:"=m" (atomic->n)
-	:"m" (atomic->n));
+        "lock ; incl %0"
+        :"=m" (atomic->n)
+        :"m" (atomic->n));
 }
 
 static __inline__ int Atomic_dec_and_test(Atomic* atomic)
@@ -68,9 +68,9 @@ static __inline__ int Atomic_dec_and_test(Atomic* atomic)
     unsigned char n;
 
     __asm__ __volatile__(
-	"lock ; decl %0; sete %1"
-	:"=m" (atomic->n), "=qm" (n)
-	:"m" (atomic->n) : "memory");
+        "lock ; decl %0; sete %1"
+        :"=m" (atomic->n), "=qm" (n)
+        :"m" (atomic->n) : "memory");
 
     return n != 0;
 }
@@ -78,9 +78,9 @@ static __inline__ int Atomic_dec_and_test(Atomic* atomic)
 static __inline__ void Atomic_dec(Atomic* atomic)
 {
     __asm__ __volatile__(
-	" lock; decl %0"
-	:"=m" (atomic->n)
-	:"m" (atomic->n));
+        " lock; decl %0"
+        :"=m" (atomic->n)
+        :"m" (atomic->n));
 }
 
 CIMPLE_NAMESPACE_END

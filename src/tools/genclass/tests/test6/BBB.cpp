@@ -13,18 +13,24 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _BBB_counter;
+extern const Meta_Property
+_BBB_counter;
 
-const Meta_Property _BBB_counter =
+const Meta_Property
+_BBB_counter =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "counter",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(BBB,counter)
+    0, /* subscript */
+    CIMPLE_OFF(BBB,counter),
+    0, /* value */
 };
 
-static Meta_Feature* _BBB_meta_features[] =
+static Meta_Feature* _BBB_MFA[] =
 {
     (Meta_Feature*)&_BBB_counter,
 };
@@ -36,17 +42,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class BBB::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "BBB",
-    _BBB_meta_features,
-    CIMPLE_ARRAY_SIZE(_BBB_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _BBB_MFA,
+    CIMPLE_ARRAY_SIZE(_BBB_MFA),
     sizeof(BBB),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     0, /* num_keys */
-    0x0F3721B9,/* crc */
+    0x0F3721B9, /* crc */
     0,
 };
 

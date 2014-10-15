@@ -41,7 +41,7 @@ void __cimple_assert(
     // Print general assertion failure message:
 
     fprintf(stderr, "%s(%d): %s(): assert: %s\n\n", 
-	file, int(line), function, cond);
+        file, int(line), function, cond);
 
 #ifdef __USE_GNU
 
@@ -55,7 +55,7 @@ void __cimple_assert(
     strings = backtrace_symbols (array, size);
 
     for (size_t i = 0; i < size; i++)
-	fprintf(stderr, "%s\n", strings[i]);
+        fprintf(stderr, "%s\n", strings[i]);
 
     free (strings);
     fflush(stderr);

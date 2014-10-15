@@ -1,0 +1,14 @@
+class Super
+{
+    [Key] uint32 key;
+};
+
+class Sub1 : Super
+{
+    uint32 sub1;
+};
+
+class Sub2 : Super
+{
+    uint32 sub2;
+};

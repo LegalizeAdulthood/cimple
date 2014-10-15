@@ -30,23 +30,29 @@
 #include "config.h"
 #include "Type.h"
 #include "Meta_Feature.h"
+#include "Meta_Qualifier.h"
+#include "Meta_Value.h"
 #include "Array.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
 // This structure defines meta-data for a CIM class property. It shares first 
-// two fields with the Meta_Feature structure, which functions as a base type.
+// three fields with the Meta_Feature structure, which functions as a base type.
 // That is, Meta_Property pointer can be cast to a Meta_Feature pointer.
 struct Meta_Property
 {
     /* Meta_Feature fields */
+    Atomic refs;
     uint32 flags;
     const char* name;
+    const Meta_Qualifier* const* meta_qualifiers;
+    size_t num_meta_qualifiers;
 
     /* Local fields */
     uint16 type;
     sint16 subscript;
     uint32 offset;
+    const Meta_Value* value;
 };
 
 /** Returns the size of the property type (excluding the null flag)
@@ -65,6 +71,15 @@ inline uint8& null_of(const Meta_Property* mp, const void* prop)
 
 CIMPLE_CIMPLE_LINKAGE
 bool property_eq(const Meta_Property* mp, const void* prop1, const void* prop2);
+
+CIMPLE_CIMPLE_LINKAGE
+Meta_Property* clone(const Meta_Property* mp);
+
+CIMPLE_CIMPLE_LINKAGE
+void destroy(Meta_Property* mp);
+
+CIMPLE_CIMPLE_LINKAGE
+void print(const Meta_Property* mp, bool is_parameter);
 
 CIMPLE_NAMESPACE_END
 

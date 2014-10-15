@@ -52,43 +52,49 @@ bool linkage_opt = false;
 bool enum_opt = false;
 bool gen_repository_opt = false;
 bool schema_opt = false;
+bool qualifier_opt = false;
+bool descriptions_opt = false;
+bool boolean_qualifiers_opt = false;
 
 string meta_repository_name;
+
+// ATTN: do we need to implement qualifiers for parameters?
+// ATTN: optimize out empty Meta_Qualifier arrays (MQAs).
 
 char data_type_tag(int data_type)
 {
     switch (data_type)
     {
-	case TOK_BOOLEAN:
-	    return 'O';
-	case TOK_UINT8:
-	    return 'B';
-	case TOK_SINT8:
-	    return 'b';
-	case TOK_UINT16:
-	    return 'S';
-	case TOK_SINT16:
-	    return 's';
-	case TOK_UINT32:
-	    return 'I';
-	case TOK_SINT32:
-	    return 'i';
-	case TOK_UINT64:
-	    return 'L';
-	case TOK_SINT64:
-	    return 'l';
-	case TOK_REAL32:
-	    return 'F';
-	case TOK_REAL64:
-	    return 'D';
-	case TOK_CHAR16:
-	    return 'C';
-	case TOK_STRING:
-	    return 'Z';
-	case TOK_DATETIME:
-	    return 'T';
-	default:
-	    assert(0);
+        case TOK_BOOLEAN:
+            return 'O';
+        case TOK_UINT8:
+            return 'B';
+        case TOK_SINT8:
+            return 'b';
+        case TOK_UINT16:
+            return 'S';
+        case TOK_SINT16:
+            return 's';
+        case TOK_UINT32:
+            return 'I';
+        case TOK_SINT32:
+            return 'i';
+        case TOK_UINT64:
+            return 'L';
+        case TOK_SINT64:
+            return 'l';
+        case TOK_REAL32:
+            return 'F';
+        case TOK_REAL64:
+            return 'D';
+        case TOK_CHAR16:
+            return 'C';
+        case TOK_STRING:
+            return 'Z';
+        case TOK_DATETIME:
+            return 'T';
+        default:
+            assert(0);
     }
 
     return 0;
@@ -99,25 +105,25 @@ void put_qual_sig(int qual_mask, string& sig)
     string tmp;
 
     if (qual_mask & MOF_QT_KEY)
-	tmp += 'K';
+        tmp += 'K';
 
     if (qual_mask & MOF_QT_EMBEDDEDOBJECT)
-	tmp += 'E';
+        tmp += 'E';
 
     if (qual_mask & MOF_QT_STATIC)
-	tmp += 'S';
+        tmp += 'S';
 
     if (qual_mask & MOF_QT_IN)
-	tmp += 'I';
+        tmp += 'I';
 
     if (qual_mask & MOF_QT_OUT)
-	tmp += 'O';
+        tmp += 'O';
 
     if (tmp.size())
     {
-	sig += '[';
-	sig += tmp;
-	sig += ']';
+        sig += '[';
+        sig += tmp;
+        sig += ']';
     }
 }
 
@@ -126,12 +132,12 @@ void put_data_type_sig(int data_type, int array_index, string& sig)
     // Subscript:
 
     if (array_index == -1)
-	sig += "@";
+        sig += "@";
     else if (array_index > 0)
     {
-	char buffer[16];
-	sprintf(buffer, "@%d", array_index);
-	sig += buffer;
+        char buffer[16];
+        sprintf(buffer, "@%d", array_index);
+        sig += buffer;
     }
 
     // Type:
@@ -146,11 +152,11 @@ void make_signature(const MOF_Class_Decl* cd, string& sig)
     // Object type tag: [A]ssociation, [I]ndication, [C]lass.
 
     if (cd->qual_mask & MOF_QT_ASSOCIATION)
-	sig += 'A';
+        sig += 'A';
     else if (cd->qual_mask & MOF_QT_INDICATION)
-	sig += 'N';
+        sig += 'N';
     else
-	sig += 'C';
+        sig += 'C';
 
     // Class name:
 
@@ -160,8 +166,8 @@ void make_signature(const MOF_Class_Decl* cd, string& sig)
 
     if (cd->super_class_name)
     {
-	sig += ';';
-	sig += cd->super_class_name;
+        sig += ';';
+        sig += cd->super_class_name;
     }
 
     sig += '\n';
@@ -172,110 +178,110 @@ void make_signature(const MOF_Class_Decl* cd, string& sig)
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	MOF_Feature* f = p->feature;
+        MOF_Feature* f = p->feature;
 
-	// The next character written is a tag which represents the data type.
-	// It will be one of the following:
-	//
-	//     'O' - boolean
-	//     'B' - uint8 (unsigned byte)
-	//     'b' - sint8 (signed byte)
-	//     'S' - uint16 (unsigned short)
-	//     's' - sint16 (signed short)
-	//     'I' - uint32 (unsigned integer)
-	//     'i' - sint32 (sint32 integer)
-	//     'L' - uint64 (unsigned long)
-	//     'l' - sint64 (singed long)
-	//     'F' - real32 (float)
-	//     'D' - real64 (double)
-	//     'C' - char16
-	//     'Z' - string
-	//     'T' - datetime
-	//     'R' - reference
-	//     'M' - method
+        // The next character written is a tag which represents the data type.
+        // It will be one of the following:
+        //
+        //     'O' - boolean
+        //     'B' - uint8 (unsigned byte)
+        //     'b' - sint8 (signed byte)
+        //     'S' - uint16 (unsigned short)
+        //     's' - sint16 (signed short)
+        //     'I' - uint32 (unsigned integer)
+        //     'i' - sint32 (sint32 integer)
+        //     'L' - uint64 (unsigned long)
+        //     'l' - sint64 (singed long)
+        //     'F' - real32 (float)
+        //     'D' - real64 (double)
+        //     'C' - char16
+        //     'Z' - string
+        //     'T' - datetime
+        //     'R' - reference
+        //     'M' - method
 
-	// Property:
+        // Property:
 
-	MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(f);
+        MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(f);
 
-	if (prop)
-	{
-	    // Qualifiers:
+        if (prop)
+        {
+            // Qualifiers:
 
-	    put_qual_sig(
-		prop->qual_mask & (MOF_QT_EMBEDDEDOBJECT|MOF_QT_KEY), sig);
+            put_qual_sig(
+                prop->qual_mask & (MOF_QT_EMBEDDEDOBJECT|MOF_QT_KEY), sig);
 
-	    // Type:
+            // Type:
 
-	    put_data_type_sig(prop->data_type, prop->array_index, sig);
+            put_data_type_sig(prop->data_type, prop->array_index, sig);
 
-	    // Name:
+            // Name:
 
-	    sig += f->name;
+            sig += f->name;
 
-	    sig += '\n';
-	}
+            sig += '\n';
+        }
 
-	// Reference:
+        // Reference:
 
-	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(f);
+        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(f);
 
-	if (ref)
-	{
-	    // Qualifiers:
+        if (ref)
+        {
+            // Qualifiers:
 
-	    put_qual_sig(ref->qual_mask & MOF_QT_KEY, sig);
+            put_qual_sig(ref->qual_mask & MOF_QT_KEY, sig);
 
-	    sig += 'R';
-	    sig += ref->class_name;
-	    sig += ';';
-	    sig += ref->name;
-	    sig += '\n';
-	}
+            sig += 'R';
+            sig += ref->class_name;
+            sig += ';';
+            sig += ref->name;
+            sig += '\n';
+        }
 
-	// Method:
+        // Method:
 
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(f);
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(f);
 
-	if (meth)
-	{
-	    put_qual_sig(meth->qual_mask & MOF_QT_STATIC, sig);
+        if (meth)
+        {
+            put_qual_sig(meth->qual_mask & MOF_QT_STATIC, sig);
 
-	    sig += 'M';
-	    sig += data_type_tag(meth->data_type);
-	    sig += meth->name;
-	    sig += ';';
+            sig += 'M';
+            sig += data_type_tag(meth->data_type);
+            sig += meth->name;
+            sig += ';';
 
-	    MOF_Parameter* param = meth->parameters;
+            MOF_Parameter* param = meth->parameters;
 
-	    for (; param; param = (MOF_Parameter*)param->next)
-	    {
-		// Qualifiers:
+            for (; param; param = (MOF_Parameter*)param->next)
+            {
+                // Qualifiers:
 
-		put_qual_sig(param->qual_mask & (MOF_QT_IN|MOF_QT_OUT), sig);
+                put_qual_sig(param->qual_mask & (MOF_QT_IN|MOF_QT_OUT), sig);
 
-		// Data type:
+                // Data type:
 
-		if (param->data_type == TOK_REF)
-		{
-		    sig += 'R';
-		    sig += param->ref_name;
-		    sig += ';';
-		}
-		else
-		{
-		    put_data_type_sig(
-			param->data_type, param->array_index, sig);
-		}
+                if (param->data_type == TOK_REF)
+                {
+                    sig += 'R';
+                    sig += param->ref_name;
+                    sig += ';';
+                }
+                else
+                {
+                    put_data_type_sig(
+                        param->data_type, param->array_index, sig);
+                }
 
-		// Param name:
+                // Param name:
 
-		sig += param->name;
-		sig += ';';
-	    }
+                sig += param->name;
+                sig += ';';
+            }
 
-	    sig += "\n";
-	}
+            sig += "\n";
+        }
     }
 }
 
@@ -283,8 +289,8 @@ size_t find(vector<string>& array, const string& x)
 {
     for (size_t i = 0; i < array.size(); i++)
     {
-	if (array[i] == x)
-	    return i;
+        if (array[i] == x)
+            return i;
     }
 
     return size_t(-1);
@@ -295,13 +301,13 @@ void append_unique(vector<string>& array, const string& x)
     size_t pos = find(array, x);
 
     if (pos == size_t(-1))
-	array.push_back(x);
+        array.push_back(x);
 }
 
 void print(vector<string>& array)
 {
     for (size_t i = 0; i < array.size(); i++)
-	printf("[%s]\n", array[i].c_str());
+        printf("[%s]\n", array[i].c_str());
 }
 
 void nl()
@@ -309,6 +315,7 @@ void nl()
     fputc('\n', _os);
 }
 
+CIMPLE_PRINTF_ATTR(1, 2)
 static void out(const char* format, ...)
 {
     va_list ap;
@@ -321,16 +328,16 @@ static void out(const char* format, ...)
 static void _print_include_paths()
 {
     for (size_t i = 0; i < MOF_num_include_paths; i++)
-	printf("MOF_include_paths[%u]=\"%s\"\n", (int)i, MOF_include_paths[i]);
+        printf("MOF_include_paths[%u]=\"%s\"\n", (int)i, MOF_include_paths[i]);
 }
 #endif
 
 static inline const char* _to_string(int data_type)
 {
     if (data_type == TOK_STRING)
-	return "String";
+        return "String";
     else if (data_type == TOK_DATETIME)
-	return "Datetime";
+        return "Datetime";
 
     return MOF_Data_Type::to_string(data_type);
 }
@@ -341,13 +348,487 @@ string normalize_value_qual_name(const char* name)
 
     for (const char* p = name; *p; p++)
     {
-	if (isalnum(*p) || *p == '_')
-	    r += *p;
-	else
-	    r += '_';
+        if (isalnum(*p) || *p == '_')
+            r += *p;
+        else
+            r += '_';
     }
 
     return r;
+}
+
+void str_literal_out(const char* str)
+{
+    out("\"");
+
+    while (*str)
+    {
+        char c = *str++;
+
+        switch (c)
+        {
+            case '\n':
+                out("\\n");
+                break;
+
+            case '\r':
+                out("\\r");
+                break;
+
+            case '\t':
+                out("\\t");
+                break;
+
+            case '\f':
+                out("\\f");
+                break;
+
+            case '"':
+                out("\\\"");
+                break;
+
+            default:
+                out("%c", c);
+        }
+    }
+
+    out("\"");
+}
+
+void literal_out(const MOF_Literal* ml)
+{
+    switch (ml->value_type)
+    {
+        case TOK_INT_VALUE:
+            out(CIMPLE_LLD, ml->int_value);
+            break;
+
+        case TOK_REAL_VALUE:
+            out("%f", ml->real_value);
+            break;
+
+        case TOK_CHAR_VALUE:
+            out("%u", ml->char_value);
+            break;
+
+        case TOK_BOOL_VALUE:
+            out("%s", ml->bool_value ? "true" : "false");
+            break;
+
+        case TOK_STRING_VALUE:
+            str_literal_out(ml->string_value);
+            break;
+
+        default:
+            assert(0);
+    }
+}
+
+//==============================================================================
+//
+// _literal_type_name()
+//
+//==============================================================================
+
+static const char* _literal_type_name(int data_type)
+{
+    switch (data_type)
+    {
+        case TOK_BOOLEAN:
+            return "boolean";
+        case TOK_UINT8:
+            return "uint8";
+        case TOK_SINT8:
+            return "sint8";
+        case TOK_UINT16:
+            return "uint16";
+        case TOK_SINT16:
+            return "sint16";
+        case TOK_UINT32:
+            return "uint32";
+        case TOK_SINT32:
+            return "sint32";
+        case TOK_UINT64:
+            return "uint64";
+        case TOK_SINT64:
+            return "sint64";
+        case TOK_REAL32:
+            return "real32";
+        case TOK_REAL64:
+            return "real64";
+        case TOK_CHAR16:
+            return "char16";
+        case TOK_STRING:
+            return "const char*";
+        case TOK_DATETIME:
+            return "const char*";
+    }
+
+    // Unreachable
+    return 0;
+}
+
+//==============================================================================
+//
+// gen_value_scalar_def()
+//
+//     Generate a Meta_Value_Scalar<> definition.
+//
+//==============================================================================
+
+void gen_value_scalar_def(
+    const char* class_name,
+    const char* feature_name, /* can be null */
+    const char* qualifier_name, /* can be null */
+    int mof_data_type,
+    const MOF_Literal* mof_literal)
+{
+    assert(mof_literal != 0);
+
+    // Build variable name:
+
+    string var = string("_") + class_name;
+
+    if (feature_name)
+        var += string("_") + string(feature_name);
+
+    if (qualifier_name)
+        var += string("_") + string(qualifier_name);
+
+    // Generate code:
+
+    out("static const Meta_Value_Scalar<%s>\n%s_MV =\n",
+        _literal_type_name(mof_data_type), var.c_str());
+
+    out("{\n");
+    out("    ");
+    literal_out(mof_literal);
+    out("\n");
+    out("};\n");
+    nl();
+}
+
+void gen_flavors(const MOF_Qualifier_Decl* mqd, const MOF_Qualifier* mq)
+{
+    // Now override with qualifier flavor.
+
+    string str;
+
+    if (mq->flavor & MOF_FLAVOR_RESTRICTED)
+    {
+        str += "CIMPLE_FLAVOR_RESTRICTED";
+    }
+
+    if (mq->flavor & MOF_FLAVOR_TOSUBCLASS)
+    {
+        if (str.size())
+            str += "|\n    ";
+
+        str += "CIMPLE_FLAVOR_TO_SUBCLASS";
+    }
+
+    if (mq->flavor & MOF_FLAVOR_ENABLEOVERRIDE)
+    {
+        if (str.size())
+            str += "|\n    ";
+
+        str += "CIMPLE_FLAVOR_ENABLE_OVERRIDE";
+    }
+
+    if (mq->flavor & MOF_FLAVOR_DISABLEOVERRIDE)
+    {
+        if (str.size())
+            str += "|\n    ";
+
+        str += "CIMPLE_FLAVOR_DISABLE_OVERRIDE";
+    }
+
+    if (mq->flavor & MOF_FLAVOR_TRANSLATABLE)
+    {
+        if (str.size())
+            str += "|\n    ";
+
+        str += "CIMPLE_FLAVOR_TRANSLATABLE";
+    }
+
+    if (str.size() == 0)
+        str = "0 /* flavors */";
+
+    out("    %s,\n", str.c_str());
+}
+
+void gen_qual_scalar_def(
+    const char* class_name,
+    const char* feature_name, /* can be null */
+    const MOF_Qualifier_Decl* mqd,
+    const MOF_Qualifier* mq)
+{
+    // Build var name:
+
+    string var = string("_") + string(mq->owning_class);
+
+    if (feature_name)
+        var += string("_") + string(feature_name);
+
+    var += string("_") + string(mq->name);
+
+    // Get type string:
+
+    const char* type_str = MOF_Data_Type::to_string(mqd->data_type);
+
+    // Declaration:
+
+    out("extern const Meta_Qualifier\n%s_MQ;\n", var.c_str());
+    nl();
+
+    if (strcasecmp(class_name, mq->owning_class) != 0)
+        return;
+
+    // Value:
+
+    if (mq->params && mq->params->value_type != TOK_NULL_VALUE)
+    {
+        gen_value_scalar_def(class_name, feature_name, mq->name,
+            mqd->data_type, mq->params);
+    }
+
+    // Definition:
+
+    out("const Meta_Qualifier\n%s_MQ =\n", var.c_str());
+    out("{\n");
+    out("    { 0 }, /* refs */\n");
+    out("    \"%s\", /* name */\n", mq->name);
+    out("    %s, /* type */\n", toupper(type_str).c_str());
+    out("    0, /* array */\n");
+    gen_flavors(mqd, mq);
+
+    if (mq->params && mq->params->value_type != TOK_NULL_VALUE)
+        out("    (const Meta_Value*)&%s_MV,\n", var.c_str());
+    else
+        out("    0, /* value */\n");
+
+    out("};\n");
+    nl();
+}
+
+//==============================================================================
+//
+// _type_name()
+//
+//==============================================================================
+
+static const char* _type_name(int data_type)
+{
+    switch (data_type)
+    {
+        case TOK_BOOLEAN:
+            return "BOOLEAN";
+        case TOK_UINT8:
+            return "UINT8";
+        case TOK_SINT8:
+            return "SINT8";
+        case TOK_UINT16:
+            return "UINT16";
+        case TOK_SINT16:
+            return "SINT16";
+        case TOK_UINT32:
+            return "UINT32";
+        case TOK_SINT32:
+            return "SINT32";
+        case TOK_UINT64:
+            return "UINT64";
+        case TOK_SINT64:
+            return "SINT64";
+        case TOK_REAL32:
+            return "REAL32";
+        case TOK_REAL64:
+            return "REAL64";
+        case TOK_CHAR16:
+            return "CHAR16";
+        case TOK_STRING:
+            return "STRING";
+        case TOK_DATETIME:
+            return "DATETIME";
+    }
+
+    // Unreachable
+    return 0;
+}
+
+void gen_value_array_def(
+    const char* class_name,
+    const char* feature_name,
+    const char* qualifier_name,
+    int data_type,
+    const MOF_Literal* mof_literal)
+{
+    // Build variable name:
+
+    string var = string("_") + class_name;
+
+    if (feature_name)
+        var += string("_") + string(feature_name);
+
+    if (qualifier_name)
+        var += string("_") + string(qualifier_name);
+
+    // Elements:
+
+    out("static %s\n%s_elements[] =\n", 
+        _literal_type_name(data_type), var.c_str());
+
+    out("{\n");
+
+    for (const MOF_Literal* p = mof_literal; p; p = (const MOF_Literal*)p->next)
+    {
+        out("    ");
+        literal_out(p);
+        out(",\n");
+    }
+
+    out("};\n");
+    nl();
+
+    // Definition:
+
+    out("const Meta_Value_Array<%s>\n%s_MV =\n", 
+        _literal_type_name(data_type), var.c_str());
+    out("{\n");
+    out("    %s_elements,\n", var.c_str());
+    out("    CIMPLE_ARRAY_SIZE(%s_elements),\n", var.c_str());
+    out("};\n");
+    nl();
+}
+
+void gen_qual_array_def(
+    const char* class_name,
+    const char* feature_name, /* can be null */
+    const MOF_Qualifier_Decl* mqd,
+    const MOF_Qualifier* mq)
+{
+    // Bauild variable name:
+
+    string var = string("_") + string(mq->owning_class);
+
+    if (feature_name)
+        var += string("_") + string(feature_name);
+
+    var += string("_") + string(mq->name);
+
+    // Declaration:
+
+    out("extern const Meta_Qualifier\n%s_MQ;\n", var.c_str());
+    nl();
+
+    if (strcasecmp(class_name, mq->owning_class) != 0)
+        return;
+
+    // Value:
+
+    if (mq->params && mq->params->value_type != TOK_NULL_VALUE)
+    {
+        gen_value_array_def(class_name, feature_name, mq->name,
+            mqd->data_type, mq->params);
+    }
+
+    // Definition:
+
+    out("const Meta_Qualifier\n%s_MQ =\n", var.c_str());
+    out("{\n");
+    out("    { 0 }, /* refs */\n");
+    out("    \"%s\", /* name */\n", mq->name);
+    out("    %s, /* type */\n", _type_name(mqd->data_type));
+    out("    1, /* array */\n");
+    gen_flavors(mqd, mq);
+
+    if (mq->params && mq->params->value_type != TOK_NULL_VALUE)
+        out("    (const Meta_Value*)&%s_MV,\n", var.c_str());
+    else
+        out("    0, /* value */\n");
+
+    out("};\n");
+    nl();
+}
+
+void gen_qual_def(
+    const char* class_name,
+    const char* feature_name, /* can be null */
+    const MOF_Qualifier_Decl* mqd,
+    const MOF_Qualifier* mq)
+{
+    if (mqd->array_index == 0)
+        gen_qual_scalar_def(class_name, feature_name, mqd, mq);
+    else
+        gen_qual_array_def(class_name, feature_name, mqd, mq);
+}
+
+void gen_qual_defs(
+    const MOF_Class_Decl* mcd,
+    MOF_Qualifier_Info* all_qualifiers,
+    const char* feature_name) /* may be null */
+{
+    // Generate individual qualifiers:
+
+    for (const MOF_Qualifier_Info* p = all_qualifiers; 
+        p; 
+        p = (const MOF_Qualifier_Info*)p->next)
+    {
+        const MOF_Qualifier* mq = p->qualifier;
+        const MOF_Qualifier_Decl* mqd = MOF_Qualifier_Decl::find(mq->name);
+        assert(mqd != 0);
+
+        if (!descriptions_opt && strcasecmp(mq->name, "Description") == 0)
+            continue;
+
+        if (!boolean_qualifiers_opt && mqd->data_type == TOK_BOOLEAN)
+            continue;
+
+        if (mqd->data_type == TOK_DATETIME)
+            err("datetime qualifiers not supported");
+
+        gen_qual_def(mcd->name, feature_name, mqd, mq);
+    }
+
+    // Build variable name:
+
+    string var = string("_") + mcd->name;
+
+    if (feature_name)
+        var += string("_") + feature_name;
+
+    // Generate qualifiers array:
+
+    out("static const Meta_Qualifier*\n%s_MQA[] =\n", var.c_str());
+
+    out("{\n");
+
+    for (const MOF_Qualifier_Info* p = all_qualifiers; 
+        p; 
+        p = (const MOF_Qualifier_Info*)p->next)
+    {
+        const MOF_Qualifier* mq = p->qualifier;
+        const MOF_Qualifier_Decl* mqd = MOF_Qualifier_Decl::find(mq->name);
+
+        if (!descriptions_opt && strcasecmp(mq->name, "Description") == 0)
+            continue;
+
+        if (!boolean_qualifiers_opt && mqd->data_type == TOK_BOOLEAN)
+            continue;
+
+        // Build variable name:
+
+        string var = string("_") + string(mq->owning_class);
+
+        if (feature_name)
+            var += string("_") + string(feature_name);
+
+        var += string("_") + string(mq->name);
+
+        out("    (Meta_Qualifier*)&%s_MQ,\n", var.c_str());
+    }
+
+    out("};\n");
+    nl();
 }
 
 void gen_property_decl(
@@ -361,101 +842,101 @@ void gen_property_decl(
 
     if (enum_opt)
     {
-	for (const MOF_Qualifier* q = prop->qualifiers; 
-	    q; 
-	    q = (const MOF_Qualifier*)q->next)
-	{
-	    if (strcasecmp(q->name, "Values") == 0)
-		values_qual  = q;
-	    else if (strcasecmp(q->name, "ValueMap") == 0)
-		value_map_qual  = q;
-	}
+        for (const MOF_Qualifier* q = prop->qualifiers; 
+            q; 
+            q = (const MOF_Qualifier*)q->next)
+        {
+            if (strcasecmp(q->name, "Values") == 0)
+                values_qual  = q;
+            else if (strcasecmp(q->name, "ValueMap") == 0)
+                value_map_qual  = q;
+        }
     }
 
     do
     {
-	if (values_qual && value_map_qual)
-	{
-	    vector<string> values;
-	    vector<long> value_map;
+        if (values_qual && value_map_qual)
+        {
+            vector<string> values;
+            vector<long> value_map;
 
-	    assert(values_qual->params);
+            assert(values_qual->params);
 
-	    for (MOF_Literal* l = values_qual->params; 
-		l; 
-		l = (MOF_Literal*)l->next)
-	    {
-		assert(l->value_type == TOK_STRING_VALUE);
-		string tmp = normalize_value_qual_name(l->string_value);
-		values.push_back(tmp);
-	    }
+            for (MOF_Literal* l = values_qual->params; 
+                l; 
+                l = (MOF_Literal*)l->next)
+            {
+                assert(l->value_type == TOK_STRING_VALUE);
+                string tmp = normalize_value_qual_name(l->string_value);
+                values.push_back(tmp);
+            }
 
-	    for (MOF_Literal* l = value_map_qual->params; 
-		l; l = (MOF_Literal*)l->next)
-	    {
-		assert(l->value_type == TOK_STRING_VALUE);
-		long tmp = atol(l->string_value);
-		value_map.push_back(tmp);
-	    }
+            for (MOF_Literal* l = value_map_qual->params; 
+                l; l = (MOF_Literal*)l->next)
+            {
+                assert(l->value_type == TOK_STRING_VALUE);
+                long tmp = atol(l->string_value);
+                value_map.push_back(tmp);
+            }
 
-	    // Check for duplicates:
+            // Check for duplicates:
 
-	    if (values.size() != value_map.size())
-		break;
+            if (values.size() != value_map.size())
+                break;
 
-	    // Generate enum property.
+            // Generate enum property.
 
-	    out("    struct\n");
-	    out("    {\n");
-	    out("        enum\n");
-	    out("        {\n");
+            out("    struct\n");
+            out("    {\n");
+            out("        enum\n");
+            out("        {\n");
 
-	    for (size_t i = 0; i < values.size(); i++)
-	    {
-		out("            ");
-		out("enum_%s = %ld,\n", values[i].c_str(), value_map[i]);
-	    }
+            for (size_t i = 0; i < values.size(); i++)
+            {
+                out("            ");
+                out("enum_%s = %ld,\n", values[i].c_str(), value_map[i]);
+            }
 
-	    out("        };\n");
+            out("        };\n");
 
-	    out("        %s value;\n", _to_string(prop->data_type));
-	    out("        uint8 null;\n");
+            out("        %s value;\n", _to_string(prop->data_type));
+            out("        uint8 null;\n");
 
-	    switch (prop->data_type)
-	    {
-		case TOK_UINT8:
-		case TOK_SINT8:
-		    out("        char padding[48];\n");
-		    break;
+            switch (prop->data_type)
+            {
+                case TOK_UINT8:
+                case TOK_SINT8:
+                    out("        char padding[48];\n");
+                    break;
 
-		case TOK_UINT16:
-		case TOK_SINT16:
-		    out("        char padding[40];\n");
-		    break;
+                case TOK_UINT16:
+                case TOK_SINT16:
+                    out("        char padding[40];\n");
+                    break;
 
-		case TOK_UINT32:
-		case TOK_SINT32:
-		    out("        char padding[24];\n");
-		    break;
+                case TOK_UINT32:
+                case TOK_SINT32:
+                    out("        char padding[24];\n");
+                    break;
 
-		case TOK_UINT64:
-		case TOK_SINT64:
-		    out("        char padding[56];\n");
-		    break;
+                case TOK_UINT64:
+                case TOK_SINT64:
+                    out("        char padding[56];\n");
+                    break;
 
-		default:
-		{
-		    err("Values qualifier on non-integer property: %s.%s",
-			class_decl->name, prop->name);
-		    break;
-		}
-	    }
+                default:
+                {
+                    err("Values qualifier on non-integer property: %s.%s",
+                        class_decl->name, prop->name);
+                    break;
+                }
+            }
 
-	    out("    }\n");
-	    out("    %s;\n", prop->name);
+            out("    }\n");
+            out("    %s;\n", prop->name);
 
-	    return;
-	}
+            return;
+        }
     }
     while (0);
 
@@ -464,14 +945,13 @@ void gen_property_decl(
 
     if (i == 0)
     {
-	/* Scalar */
-	out("    Property<%s> %s;\n", tmp, prop->name);
+        /* Scalar */
+        out("    Property<%s> %s;\n", tmp, prop->name);
     }
     else
     {
-	/* VLA */
-	out("    Property<Array_%s> %s;\n", 
-	    tmp, prop->name);
+        /* VLA */
+        out("    Property<Array_%s> %s;\n", tmp, prop->name);
     }
 }
 
@@ -483,8 +963,8 @@ static size_t _count_keys(const MOF_Class_Decl* class_decl)
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	if (p->feature->qual_mask & MOF_QT_KEY)
-	    n++;
+        if (p->feature->qual_mask & MOF_QT_KEY)
+            n++;
     }
 
     return n;
@@ -500,62 +980,62 @@ void gen_feature_decls(
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	// Skip non-local properties:
+        // Skip non-local properties:
 
-	if (strcasecmp(class_decl->name, p->class_origin->name) != 0)
-	    continue;
+        if (strcasecmp(class_decl->name, p->class_origin->name) != 0)
+            continue;
 
-	// Is it a property?
+        // Is it a property?
 
-	MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(p->feature);
+        MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(p->feature);
 
-	if (prop)
-	{
-	    if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-		out("    Instance* %s;\n", prop->name);
-	    else
-		gen_property_decl(class_decl, prop);
+        if (prop)
+        {
+            if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+                out("    Instance* %s;\n", prop->name);
+            else
+                gen_property_decl(class_decl, prop);
 
-	    continue;
-	}
+            continue;
+        }
 
-	// Is is a reference?
+        // Is is a reference?
 
-	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(p->feature);
+        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(p->feature);
 
-	if (ref)
-	{
-	    // Search the leaf class and use its class name for this reference
-	    // since it may have been overriden.
+        if (ref)
+        {
+            // Search the leaf class and use its class name for this reference
+            // since it may have been overriden.
 
-	    MOF_Feature_Info* q = leaf_class_decl->all_features;
-	    bool found = false;
+            MOF_Feature_Info* q = leaf_class_decl->all_features;
+            bool found = false;
 
-	    for (; q; q = (MOF_Feature_Info*)q->next)
-	    {
-		if (strcasecmp(q->feature->name, ref->name) == 0)
-		{
-		    MOF_Reference_Decl* qref = 
-			dynamic_cast<MOF_Reference_Decl*>(q->feature);
+            for (; q; q = (MOF_Feature_Info*)q->next)
+            {
+                if (strcasecmp(q->feature->name, ref->name) == 0)
+                {
+                    MOF_Reference_Decl* qref = 
+                        dynamic_cast<MOF_Reference_Decl*>(q->feature);
 
-		    if (qref)
-		    {
-			out("    %s* %s;\n", 
-			    qref->class_name, qref->name);
-			found = true;
-			break;
-		    }
-		}
-	    }
+                    if (qref)
+                    {
+                        out("    %s* %s;\n", 
+                            qref->class_name, qref->name);
+                        found = true;
+                        break;
+                    }
+                }
+            }
 
-	    if (!found)
-	    {
-		err("failed to find reference in leaf class: %s.%s", 
-		    leaf_class_decl->name, ref->name);
-	    }
+            if (!found)
+            {
+                err("failed to find reference in leaf class: %s.%s", 
+                    leaf_class_decl->name, ref->name);
+            }
 
-	    continue;
-	}
+            continue;
+        }
     }
 
     out("\n");
@@ -566,7 +1046,7 @@ void gen_feature_decls_recursive(
     const MOF_Class_Decl* leaf_class_decl)
 {
     if (class_decl->super_class)
-	gen_feature_decls_recursive(class_decl->super_class, leaf_class_decl);
+        gen_feature_decls_recursive(class_decl->super_class, leaf_class_decl);
 
     gen_feature_decls(class_decl, leaf_class_decl);
 }
@@ -577,7 +1057,7 @@ void gen_comment_line(size_t n)
     out("//");
 
     for (size_t i = 0; i < n; i++)
-	fputc('=', _os);
+        fputc('=', _os);
 
     out("\n");
 }
@@ -625,13 +1105,13 @@ void gen_param_prop_decl(
 
     if (i == 0)
     {
-	/* Scalar */
-	out("    Property<%s> %s;\n", tmp, param->name);
+        /* Scalar */
+        out("    Property<%s> %s;\n", tmp, param->name);
     }
     else
     {
-	/* VLA */
-	out("    Property<Array_%s> %s;\n", tmp, param->name);
+        /* VLA */
+        out("    Property<Array_%s> %s;\n", tmp, param->name);
     }
 }
 
@@ -641,10 +1121,10 @@ void gen_param_decls(
 {
     for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
     {
-	if (p->data_type == TOK_REF)
-	    gen_param_ref_decl(p);
-	else
-	    gen_param_prop_decl(p);
+        if (p->data_type == TOK_REF)
+            gen_param_ref_decl(p);
+        else
+            gen_param_prop_decl(p);
     }
 }
 
@@ -654,12 +1134,21 @@ void gen_meth_decl(
 {
     const char* meth_name = meth_decl->name;
 
+#if 0
+    // ATTN: Do we need this?
+    if (qualifier_opt)
+    {
+        string tmp = string(suffix) + string("_") + mq->name;
+        gen_qual_def(mcd, mqd, mq, tmp.c_str());
+    }
+#endif
+
     // Generate class definition.
 
     const char* linkage = linkage_opt ? "CIMPLE_LINKAGE " : "";
 
     out("class %s%s_%s_method : public Instance\n", 
-	linkage, class_name, meth_name);
+        linkage, class_name, meth_name);
 
     out("{\n");
     out("public:\n");
@@ -680,7 +1169,7 @@ void gen_meth_typedef(
     // Generate class definition.
 
     out("typedef %s_%s_method %s_%s_method;\n\n", 
-	class_origin_name, meth_name, class_name, meth_name);
+        class_origin_name, meth_name, class_name, meth_name);
 }
 
 void gen_meth_decls(
@@ -690,15 +1179,15 @@ void gen_meth_decls(
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p->feature);
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p->feature);
 
-	if (meth)
-	{
-	    if (strcasecmp(class_decl->name, p->class_origin->name) == 0)
-		gen_meth_decl(class_decl->name, meth);
-	    else
-		gen_meth_typedef(class_decl->name, p->class_origin->name, meth);
-	}
+        if (meth)
+        {
+            if (strcasecmp(class_decl->name, p->class_origin->name) == 0)
+                gen_meth_decl(class_decl->name, meth);
+            else
+                gen_meth_typedef(class_decl->name, p->class_origin->name, meth);
+        }
     }
 }
 
@@ -710,10 +1199,10 @@ void generate_ref_includes(const MOF_Class_Decl* class_decl)
 
     for (; p; p = (MOF_Feature*)p->next)
     {
-	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(p);
+        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(p);
 
-	if (ref)
-	    out("#include \"%s.h\"\n", ref->class_name);
+        if (ref)
+            out("#include \"%s.h\"\n", ref->class_name);
     }
 }
 
@@ -723,16 +1212,16 @@ void generate_param_ref_includes(const MOF_Class_Decl* class_decl)
 
     for (; p; p = (MOF_Feature*)p->next)
     {
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p);
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p);
 
-	if (!meth)
-	    continue;
+        if (!meth)
+            continue;
 
-	for (MOF_Parameter* q = meth->parameters; q; q =(MOF_Parameter*)q->next)
-	{
-	    if (q->data_type == TOK_REF)
-		out("#include \"%s.h\"\n", q->ref_name);
-	}
+        for (MOF_Parameter* q = meth->parameters; q; q =(MOF_Parameter*)q->next)
+        {
+            if (q->data_type == TOK_REF)
+                out("#include \"%s.h\"\n", q->ref_name);
+        }
     }
 }
 
@@ -748,7 +1237,7 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
     out("#include <cimple/cimple.h>\n");
 
     if (class_decl->super_class)
-	out("#include \"%s.h\"\n", class_decl->super_class->name);
+        out("#include \"%s.h\"\n", class_decl->super_class->name);
 
     generate_ref_includes(class_decl);
     generate_param_ref_includes(class_decl);
@@ -768,57 +1257,143 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
     out("#endif /* _cimple_%s_h */\n", class_decl->name);
 }
 
+void gen_bool_qual_list(MOF_mask mask, bool param)
+{
+#if 0
+    // Generated beforehand!
+    if (mask & MOF_QT_ASSOCIATION)
+        out("|CIMPLE_FLAG_ASSOCIATION");
+    if (mask & MOF_QT_INDICATION)
+        out("|CIMPLE_FLAG_INDICATION");
+#endif
+
+    if (mask & MOF_QT_KEY)
+        out("|CIMPLE_FLAG_KEY");
+    if (param && (mask & MOF_QT_IN))
+        out("|CIMPLE_FLAG_IN");
+    if (param && (mask & MOF_QT_OUT))
+        out("|CIMPLE_FLAG_OUT");
+    if (mask & MOF_QT_ABSTRACT)
+        out("|CIMPLE_FLAG_ABSTRACT");
+    if (mask & MOF_QT_AGGREGATE)
+        out("|CIMPLE_FLAG_AGGREGATE");
+    if (mask & MOF_QT_AGGREGATION)
+        out("|CIMPLE_FLAG_AGGREGATION");
+    if (mask & MOF_QT_COUNTER)
+        out("|CIMPLE_FLAG_COUNTER");
+    if (mask & MOF_QT_DELETE)
+        out("|CIMPLE_FLAG_DELETE");
+    if (mask & MOF_QT_DN)
+        out("|CIMPLE_FLAG_DN");
+    if (mask & MOF_QT_EMBEDDEDOBJECT)
+        out("|CIMPLE_FLAG_EMBEDDEDOBJECT");
+    if (mask & MOF_QT_EXPENSIVE)
+        out("|CIMPLE_FLAG_EXPENSIVE");
+    if (mask & MOF_QT_EXPERIMENTAL)
+        out("|CIMPLE_FLAG_EXPERIMENTAL");
+    if (mask & MOF_QT_GAUGE)
+        out("|CIMPLE_FLAG_GAUGE");
+    if (mask & MOF_QT_IFDELETED)
+        out("|CIMPLE_FLAG_IFDELETED");
+    if (mask & MOF_QT_INVISIBLE)
+        out("|CIMPLE_FLAG_INVISIBLE");
+    if (mask & MOF_QT_LARGE)
+        out("|CIMPLE_FLAG_LARGE");
+    if (mask & MOF_QT_OCTETSTRING)
+        out("|CIMPLE_FLAG_OCTET_STRING");
+    if (mask & MOF_QT_READ)
+        out("|CIMPLE_FLAG_READ");
+    if (mask & MOF_QT_REQUIRED)
+        out("|CIMPLE_FLAG_REQUIRED");
+    if (mask & MOF_QT_STATIC)
+        out("|CIMPLE_FLAG_STATIC");
+    if (mask & MOF_QT_TERMINAL)
+        out("|CIMPLE_FLAG_TERMINAL");
+    if (mask & MOF_QT_WEAK)
+        out("|CIMPLE_FLAG_WEAK");
+    if (mask & MOF_QT_WRITE)
+        out("|CIMPLE_FLAG_WRITE");
+}
+
 void gen_property_def(
     const char* class_name,
-    const char* propagating_class_name,
-    const MOF_Property_Decl* prop)
+    const MOF_Property_Decl* mp)
 {
     // Write external definition (whether propagated or not).
 
-    //out("extern CIMPLE_HIDE const Meta_Property _%s_%s;\n", 
-    out("extern const Meta_Property _%s_%s;\n", 
-	propagating_class_name, prop->name);
+    out("extern const Meta_Property\n_%s_%s;\n", mp->owning_class, mp->name);
     nl();
 
     // Go no further if property is propagated.
 
-    if (strcasecmp(class_name, propagating_class_name) != 0)
-	return;
+    if (strcasecmp(class_name, mp->owning_class) != 0)
+        return;
+
+    // Generate Meta_Value:
+
+    if (mp->initializer && mp->initializer->value_type != TOK_NULL_VALUE)
+    {
+        if (mp->array_index == 0)
+            gen_value_scalar_def(
+                class_name, mp->name, 0, mp->data_type, mp->initializer);
+        else
+            gen_value_array_def(
+                class_name, mp->name, 0, mp->data_type, mp->initializer);
+    }
 
     // Generate property definition.
 
-    out("const Meta_Property _%s_%s =\n", class_name, prop->name);
+    out("const Meta_Property\n_%s_%s =\n", class_name, mp->name);
     out("{\n");
 
+    // Refs:
+    out("    { 0 }, /* refs */\n");
+
     // Flags field:
-
     {
-	out("    CIMPLE_FLAG_PROPERTY");
-
-	if (prop->qual_mask & MOF_QT_KEY)
-	    out("|CIMPLE_FLAG_KEY");
-
-	out(",\n");
+        out("    CIMPLE_FLAG_PROPERTY");
+        gen_bool_qual_list(mp->qual_mask, false);
+        out(",\n");
     }
 
     // Name field:
 
-    out("    \"%s\",\n", prop->name);
+    out("    \"%s\",\n", mp->name);
+
+    // Qualifiers:
+
+    if (qualifier_opt && mp->all_qualifiers)
+    {
+        out("    _%s_%s_MQA,\n", mp->owning_class, mp->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_MQA),\n", mp->owning_class, mp->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
+    }
 
     // Print type:
 
     {
-	string tmp = toupper(MOF_Data_Type::to_string(prop->data_type));
-	out("    %s,\n", tmp.c_str());
+        string tmp = toupper(MOF_Data_Type::to_string(mp->data_type));
+        out("    %s,\n", tmp.c_str());
     }
 
     // Print array subscript:
 
-    out("    %d,\n", prop->array_index);
+    out("    %d, /* subscript */\n", mp->array_index);
 
     // Print offset to field.
 
-    out("    CIMPLE_OFF(%s,%s)\n", class_name, prop->name);
+    out("    CIMPLE_OFF(%s,%s),\n", class_name, mp->name);
+
+    // Meta_Property.value:
+
+    if (mp->initializer && mp->initializer->value_type != TOK_NULL_VALUE)
+        out("    (const Meta_Value*)&_%s_%s_MV,\n", class_name, mp->name);
+    else
+        out("    0, /* value */\n");
 
     out("};\n");
     nl();
@@ -826,52 +1401,60 @@ void gen_property_def(
 
 void gen_reference_def(
     const char* class_name,
-    const char* propagating_class_name,
-    const MOF_Reference_Decl* ref)
+    const MOF_Reference_Decl* mr)
 {
     // Write external definition (whether propagated or not).
-    //out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n", 
-    out("extern const Meta_Reference _%s_%s;\n", 
-	propagating_class_name, ref->name);
+    out("extern const Meta_Reference\n_%s_%s;\n", mr->owning_class, mr->name);
     nl();
 
     // If propagated, go no further.
 
-    if (strcasecmp(class_name, propagating_class_name) != 0)
-	return;
+    if (strcasecmp(class_name, mr->owning_class) != 0)
+        return;
 
     // Write the reference declaration.
 
-    out("const Meta_Reference _%s_%s =\n", 
-	class_name, ref->name);
+    out("const Meta_Reference\n_%s_%s =\n", class_name, mr->name);
     out("{\n");
 
+    // Refs:
+    out("    { 0 }, /* refs */\n");
+
     // Flags field:
-
     {
-	out("    CIMPLE_FLAG_REFERENCE");
-
-	if (ref->qual_mask & MOF_QT_KEY)
-	    out("|CIMPLE_FLAG_KEY");
-
-	out(",\n");
+        out("    CIMPLE_FLAG_REFERENCE");
+        gen_bool_qual_list(mr->qual_mask, false);
+        out(",\n");
     }
 
     // Name:
 
     {
-	out("    \"%s\",\n", ref->name);
+        out("    \"%s\",\n", mr->name);
+    }
+
+    // Qualifiers:
+
+    if (qualifier_opt && mr->all_qualifiers)
+    {
+        out("    _%s_%s_MQA,\n", mr->owning_class, mr->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_MQA),\n", mr->owning_class, mr->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
     }
 
     // Meta class:
 
     {
-	out("    &%s::static_meta_class,\n" , ref->class_name);
+        out("    &%s::static_meta_class,\n" , mr->class_name);
     }
 
     // Print offset to field.
 
-    out("    CIMPLE_OFF(%s,%s)\n", class_name, ref->name);
+    out("    CIMPLE_OFF(%s,%s)\n", class_name, mr->name);
     out("};\n");
     nl();
 }
@@ -883,38 +1466,49 @@ void gen_param_ref_def(
 {
     // Preamble:
     {
-	out("static const Meta_Reference _%s_%s_%s =\n",
-	    class_name, meth_name, param->name);
-	out("{\n");
+        out("static const Meta_Reference\n");
+        out("_%s_%s_%s =\n", class_name, meth_name, param->name);
+        out("{\n");
     }
+
+    // Refs:
+    out("    { 0 }, /* refs */\n");
 
     // Flags:
     {
-	out("    CIMPLE_FLAG_REFERENCE");
-
-	if (param->qual_mask & MOF_QT_IN)
-	    out("|CIMPLE_FLAG_IN");
-
-	if (param->qual_mask & MOF_QT_OUT)
-	    out("|CIMPLE_FLAG_OUT");
-
-	out(",\n");
+        out("    CIMPLE_FLAG_REFERENCE");
+        gen_bool_qual_list(param->qual_mask, true);
+        out(",\n");
     }
 
     // Name:
     {
-	out("    \"%s\",\n", param->name);
+        out("    \"%s\",\n", param->name);
+    }
+
+    // Qualifiers:
+
+    if (qualifier_opt && param->all_qualifiers)
+    {
+        out("    _%s_%s_%s_MQA,\n", class_name, meth_name, param->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_%s_MQA),\n",
+            class_name, meth_name, param->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
     }
 
     // Meta class:
     {
-	out("    &%s::static_meta_class,\n" , param->ref_name);
+        out("    &%s::static_meta_class,\n" , param->ref_name);
     }
 
     /// Offset:
 
     out("    CIMPLE_OFF(%s_%s_method,%s)\n", 
-	class_name, meth_name, param->name);
+        class_name, meth_name, param->name);
 
     /// Postamble:
 
@@ -928,27 +1522,37 @@ void gen_param_prop_def(
 {
     /// Preamble:
 
-    out("static const Meta_Property _%s_%s_%s =\n",
-	class_name, meth_name, param->name);
+    out("static const Meta_Property\n_%s_%s_%s =\n",
+        class_name, meth_name, param->name);
     out("{\n");
 
-    /// Flags:
+    // Refs:
+    out("    { 0 }, /* refs */\n");
 
+    // Flags:
     {
-	out("    CIMPLE_FLAG_PROPERTY");
-
-	if (param->qual_mask & MOF_QT_IN)
-	    out("|CIMPLE_FLAG_IN");
-
-	if (param->qual_mask & MOF_QT_OUT)
-	    out("|CIMPLE_FLAG_OUT");
-
-	out(",\n");
+        out("    CIMPLE_FLAG_PROPERTY");
+        gen_bool_qual_list(param->qual_mask, true);
+        out(",\n");
     }
 
     /// Name:
 
     out("    \"%s\",\n", param->name);
+
+    // Qualifiers:
+
+    if (qualifier_opt && param->all_qualifiers)
+    {
+        out("    _%s_%s_%s_MQA,\n", class_name, meth_name, param->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_%s_MQA),\n",
+            class_name, meth_name, param->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
+    }
 
     /// Type:
 
@@ -961,8 +1565,12 @@ void gen_param_prop_def(
 
     /// Offset:
 
-    out("    CIMPLE_OFF(%s_%s_method,%s)\n", 
-	class_name, meth_name, param->name);
+    out("    CIMPLE_OFF(%s_%s_method,%s),\n", 
+        class_name, meth_name, param->name);
+
+    // Meta_Property.value:
+
+    out("    0, /* value */\n");
 
     /// Postamble:
 
@@ -973,14 +1581,14 @@ void gen_param_array(
     const char* class_name,
     const MOF_Method_Decl* meth)
 {
-    out("static Meta_Feature* _%s_%s_meta_features[] =\n", 
-	class_name, meth->name);
+    out("static Meta_Feature* _%s_%s_MFA[] =\n", 
+        class_name, meth->name);
     out("{\n");
 
     for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
     {
-	out("    (Meta_Feature*)&_%s_%s_%s,\n", class_name, meth->name, 
-	    p->name);
+        out("    (Meta_Feature*)&_%s_%s_%s,\n", class_name, meth->name, 
+            p->name);
     }
 
     out("    (Meta_Feature*)&_%s_%s_return_value\n", class_name, meth->name);
@@ -995,17 +1603,34 @@ void gen_meth_return_def(
 {
     // Preamble:
 
-    out("static const Meta_Property _%s_%s_return_value =\n",
-	class_name, meth->name);
+    out("static const Meta_Property\n_%s_%s_return_value =\n",
+        class_name, meth->name);
     out("{\n");
 
-    // Flags:
+    // Refs:
 
+    out("    { 0 }, /* refs */\n");
+
+    // Flags:
+    // ATTN: can boolean qualifiers appear on the return value?
     out("    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,\n");
 
     // Name:
 
     out("    \"return_value\",\n");
+
+    // Qualifiers:
+
+    if (qualifier_opt && meth->all_qualifiers)
+    {
+        out("    _%s_%s_MQA,\n", class_name, meth->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_MQA),\n", class_name, meth->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
+    }
 
     // Type:
 
@@ -1018,8 +1643,12 @@ void gen_meth_return_def(
 
     // Offset:
 
-    out("    CIMPLE_OFF(%s_%s_method,return_value)\n", 
-	class_name, meth->name);
+    out("    CIMPLE_OFF(%s_%s_method,return_value),\n", 
+        class_name, meth->name);
+
+    // Meta_Property.value:
+
+    out("    0, /* value */\n");
 
     // Postamble:
 
@@ -1027,6 +1656,7 @@ void gen_meth_return_def(
 }
 
 void gen_method_def(
+    const MOF_Class_Decl* mcd,
     const MOF_Method_Decl* meth, 
     const char* class_name)
 {
@@ -1034,10 +1664,22 @@ void gen_method_def(
 
     for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
     {
-	if (p->data_type == TOK_REF)
-	    gen_param_ref_def(class_name, meth->name, p);
-	else
-	    gen_param_prop_def(class_name, meth->name, p);
+        // Generate param qualifiers:
+
+        if (qualifier_opt && p->all_qualifiers)
+        {
+            // Compound feature name (Method-name + Parameter-name)
+            string feature_name = 
+                string(meth->name) + string("_") + string(p->name);
+            gen_qual_defs(mcd, p->all_qualifiers, feature_name.c_str());
+        }
+
+        // Generate param:
+
+        if (p->data_type == TOK_REF)
+            gen_param_ref_def(class_name, meth->name, p);
+        else
+            gen_param_prop_def(class_name, meth->name, p);
     }
 
     // Generate the return value.
@@ -1050,29 +1692,42 @@ void gen_method_def(
 
     // Preamble:
 
-    out("const Meta_Method %s_%s_method::static_meta_class =\n", 
-	class_name, meth->name);
+    out("const Meta_Method\n%s_%s_method::static_meta_class =\n", 
+        class_name, meth->name);
 
     out("{\n");
+
+    // Refs:
+    out("    { 0 }, /* refs */\n");
 
     // Flags:
 
     out("    CIMPLE_FLAG_METHOD");
-
-    if (meth->qual_mask & MOF_QT_STATIC)
-	out("|CIMPLE_FLAG_STATIC");
-
+    gen_bool_qual_list(meth->qual_mask, false);
     out(",\n");
 
     // Name:
 
     out("    \"%s\",\n", meth->name);
 
+    // Qualifier array.
+
+    if (qualifier_opt && meth->all_qualifiers)
+    {
+        out("    _%s_%s_MQA,\n", class_name, meth->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_MQA),\n", class_name, meth->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
+    }
+
     // Feature array.
 
-    out("    _%s_%s_meta_features,\n", class_name, meth->name);
-    out("    CIMPLE_ARRAY_SIZE(_%s_%s_meta_features),\n", 
-	class_name, meth->name);
+    out("    _%s_%s_MFA,\n", class_name, meth->name);
+    out("    CIMPLE_ARRAY_SIZE(_%s_%s_MFA),\n", 
+        class_name, meth->name);
 
     // Size of parameter block
 
@@ -1081,8 +1736,8 @@ void gen_method_def(
     // Return type:
 
     {
-	string tmp = toupper(MOF_Data_Type::to_string(meth->data_type));
-	out("    %s,\n", tmp.c_str());
+        string tmp = toupper(MOF_Data_Type::to_string(meth->data_type));
+        out("    %s,\n", tmp.c_str());
     }
 
     // Postamble:
@@ -1090,109 +1745,101 @@ void gen_method_def(
     out("};\n\n");
 }
 
-static const char _embedded_object_format[] =
-    "const Meta_Reference _%s_%s =\n"
-    "{\n"
-    "    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,\n"
-    "    \"%s\",\n"
-    "    &Instance::static_meta_class,\n"
-    "    CIMPLE_OFF(%s,%s)\n"
-    "};\n"
-    "\n";
-
 void gen_embedded_object_def(
     const char* class_name, 
-    const char* propagating_class_name, 
-    const MOF_Property_Decl* prop)
+    const MOF_Property_Decl* mpd)
 {
-    //out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n\n", 
-    out("extern const Meta_Reference _%s_%s;\n\n", 
-	propagating_class_name, prop->name);
+    // Meta_Reference (declaration):
+    out("extern const Meta_Reference\n_%s_%s;\n\n", 
+        mpd->owning_class, mpd->name);
 
-    if (strcasecmp(class_name, propagating_class_name) == 0)
+    if (strcasecmp(class_name, mpd->owning_class) != 0)
+        return;
+
+    // Meta_Reference (definition):
+    out("const Meta_Reference _%s_%s =\n", class_name, mpd->name);
+    out("{\n");
+
+    // Meta_Reference.refs:
+    out("    { 0 }, /* refs */\n");
+
+    // Meta_Reference.flags:
+    // ATTN: can boolean qualifiers appear here?
+    out("    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,\n");
+
+    // Meta_Reference.name:
+    out("    \"%s\",\n", mpd->name);
+
+    // Meta_Reference.meta_qualifiers:
+
+    if (qualifier_opt && mpd->all_qualifiers)
     {
-	out(_embedded_object_format, class_name, prop->name,
-	    prop->name, class_name, prop->name, class_name, prop->name);
+        out("    _%s_%s_MQA,\n", mpd->owning_class, mpd->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_MQA),\n", 
+            mpd->owning_class, mpd->name);
     }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qualifiers */\n");
+    }
+
+    // Meta_Reference.super_meta_class:
+    out("    &Instance::static_meta_class,\n");
+
+    // Meta_Reference.offset:
+    out("    CIMPLE_OFF(%s,%s)\n", class_name, mpd->name);
+
+    // Trailer:
+    out("};\n");
+    nl();
 }
 
-const char* find_propagating_class(
-    const MOF_Class_Decl* class_decl,
-    const char* feature_name)
+void gen_feature_defs(const MOF_Class_Decl* cd)
 {
-    // Find the name of the class that propagated this property:
-
-    // Search the current class first:
-
-    MOF_Feature_Info* p = class_decl->all_features;
+    MOF_Feature_Info* p = cd->all_features;
+    const char* class_name = cd->name;
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	if (!p->propagated && strcasecmp(p->feature->name, feature_name) == 0)
-	    return class_decl->name;
-    }
+        MOF_Feature* mf = p->feature;
 
-    // Now search the super class (if any)
+        // Generate qualifier definitions:
 
-    if (class_decl->super_class)
-    {
-	const char* class_name = find_propagating_class(
-	    class_decl->super_class, feature_name);
+        if (qualifier_opt && mf->all_qualifiers)
+            gen_qual_defs(cd, mf->all_qualifiers, mf->name);
 
-	if (class_name)
-	    return class_name;
-    }
+        MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(mf);
 
-    // Not found!
-    return 0;
-}
+        // Find class that propagated this feature.
 
-void gen_feature_defs(const MOF_Class_Decl* class_decl)
-{
-    MOF_Feature_Info* p = class_decl->all_features;
-    const char* class_name = class_decl->name;
+        // Property.
 
-    for (; p; p = (MOF_Feature_Info*)p->next)
-    {
-	MOF_Feature* feature = p->feature;
+        if (prop)
+        {
+            if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            {
+                gen_embedded_object_def(class_name, prop);
+            }
+            else
+            {
+                gen_property_def(class_name, prop);
+            }
+        }
 
-	MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(feature);
+        // Reference:
 
-	// Find class that propagated this feature.
+        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(mf);
 
-	const char* propagating_class_name = 
-	    find_propagating_class(class_decl, feature->name);
+        if (ref)
+            gen_reference_def(class_name, ref);
 
-	// Property.
+        // Method:
 
-	if (prop)
-	{
-	    if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-	    {
-		gen_embedded_object_def(
-		    class_name, propagating_class_name, prop);
-	    }
-	    else
-	    {
-		gen_property_def(
-		    class_name, propagating_class_name, prop);
-	    }
-	}
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(mf);
 
-	// Reference.
-
-	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(feature);
-
-	if (ref)
-	{
-	    gen_reference_def(
-		class_name, propagating_class_name, ref);
-	}
-
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
-
-	if (meth && !p->propagated)
-	    gen_method_def(meth, class_decl->name);
+        if (meth && !p->propagated)
+            gen_method_def(cd, meth, cd->name);
     }
 }
 
@@ -1200,44 +1847,40 @@ void gen_feature_array(const MOF_Class_Decl* class_decl)
 {
     MOF_Feature_Info* p = class_decl->all_features;
 
-    out("static Meta_Feature* _%s_meta_features[] =\n", class_decl->name);
+    out("static Meta_Feature* _%s_MFA[] =\n", class_decl->name);
     out("{\n");
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	MOF_Feature* feature = p->feature;
+        MOF_Feature* feature = p->feature;
 
-	// Find name of class that propagated this feature.
+        // Find name of class that propagated this feature.
 
-	const char* class_name = 
-	    find_propagating_class(class_decl, feature->name);
+        const char* class_name = feature->owning_class;
 
-	if (!class_name)
-	    err("unexpected error");
+        // Property.
 
-	// Property.
+        MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(feature);
 
-	MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(feature);
+        if (prop)
+            out("    (Meta_Feature*)&_%s_%s,\n", class_name, prop->name);
 
-	if (prop)
-	    out("    (Meta_Feature*)&_%s_%s,\n", class_name, prop->name);
+        // Reference.
 
-	// Reference.
+        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(feature);
 
-	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(feature);
+        if (ref)
+            out("    (Meta_Feature*)&_%s_%s,\n", class_name, ref->name);
 
-	if (ref)
-	    out("    (Meta_Feature*)&_%s_%s,\n", class_name, ref->name);
+        // Method.
 
-	// Method.
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
 
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
-
-	if (meth)
-	{
-	    out("    (Meta_Feature*)&%s_%s_method::static_meta_class,\n", 
-		p->class_origin->name, meth->name);
-	}
+        if (meth)
+        {
+            out("    (Meta_Feature*)&%s_%s_method::static_meta_class,\n", 
+                p->class_origin->name, meth->name);
+        }
     }
 
     out("};\n");
@@ -1246,22 +1889,6 @@ void gen_feature_array(const MOF_Class_Decl* class_decl)
 
 void gen_class_def(const MOF_Class_Decl* class_decl)
 {
-    // Generate _super_classes[] array:
-
-    if (class_decl->super_class)
-    {
-	out("static const char* _super_classes[] =\n");
-	out("{\n");
-
-	for (MOF_Class_Decl* p = class_decl->super_class; p; p = p->super_class)
-	{
-	    out("    \"%s\",\n", p->name);
-	}
-
-	out("};\n");
-	nl();
-    }
-
     // Generate _locals[] array.
 
     out("static const Meta_Feature_Local _locals[] =\n");
@@ -1270,41 +1897,65 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
     MOF_Feature_Info* p = class_decl->all_features;
 
     for (; p; p = (MOF_Feature_Info*)p->next)
-	out("    {%u},\n", p->propagated ? 0 : 1);
+        out("    {%u},\n", p->propagated ? 0 : 1);
 
     out("};\n");
     nl();
 
+    // qualifiers:
+
+    if (qualifier_opt && class_decl->all_qualifiers)
+        gen_qual_defs(class_decl, class_decl->all_qualifiers, 0);
+
     // static_meta_class:
 
     out("const Meta_Class %s::static_meta_class =\n", 
-	class_decl->name);
+        class_decl->name);
     out("{\n");
+
+    // Refs:
+    out("    { 0 }, /* refs */\n");
 
     // Flags:
     {
-	if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
-	    out("    CIMPLE_FLAG_ASSOCIATION,\n");
-	else if (class_decl->qual_mask & MOF_QT_INDICATION)
-	    out("    CIMPLE_FLAG_INDICATION,\n");
-	else
-	    out("    CIMPLE_FLAG_CLASS,\n");
+        if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
+            out("    CIMPLE_FLAG_ASSOCIATION");
+        else if (class_decl->qual_mask & MOF_QT_INDICATION)
+            out("    CIMPLE_FLAG_INDICATION");
+        else
+            out("    CIMPLE_FLAG_CLASS");
+
+        gen_bool_qual_list(class_decl->qual_mask, false);
+        out(",\n");
     }
 
     // Name:
     {
-	out("    \"%s\",\n", class_decl->name);
+        out("    \"%s\",\n", class_decl->name);
+    }
+
+    // Qualifiers:
+
+    if (qualifier_opt && class_decl->all_qualifiers)
+    {
+        out("    _%s_MQA,\n", class_decl->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_MQA),\n", class_decl->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
     }
 
     // Features:
     {
-	out("    _%s_meta_features,\n", class_decl->name);
-	out("    CIMPLE_ARRAY_SIZE(_%s_meta_features),\n", class_decl->name);
+        out("    _%s_MFA,\n", class_decl->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_MFA),\n", class_decl->name);
     }
 
     // Size:
     {
-	out("    sizeof(%s),\n", class_decl->name);
+        out("    sizeof(%s),\n", class_decl->name);
     }
 
     // Local:
@@ -1313,38 +1964,30 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
     // Superclass:
 
     if (class_decl->super_class)
-    {
-	out("    &%s::static_meta_class,\n", class_decl->super_class->name);
-	out("    _super_classes,\n");
-	out("    CIMPLE_ARRAY_SIZE(_super_classes),\n");
-    }
+        out("    &%s::static_meta_class,\n", class_decl->super_class->name);
     else
-    {
-	out("    0, /* super_class */ \n");
-	out("    0, /* super_classes */\n");
-	out("    0, /* num_super_classes */\n");
-    }
+        out("    0, /* super_class */ \n");
 
     // Number of keys.
     {
-	out("    %u, /* num_keys */\n", _count_keys(class_decl));
+        out("    %u, /* num_keys */\n", int(_count_keys(class_decl)));
     }
 
     // CRC:
 
     {
-	string sig;
-	make_signature(class_decl, sig);
-	unsigned int crc = crc_compute((unsigned char*)sig.c_str(), sig.size());
-	out("    0x%08X,/* crc */\n", crc);
+        string sig;
+        make_signature(class_decl, sig);
+        unsigned int crc = crc_compute((unsigned char*)sig.c_str(), sig.size());
+        out("    0x%08X, /* crc */\n", crc);
     }
 
     // meta_repository:
 
     if (gen_repository_opt)
-	out("    &%s,\n", meta_repository_name.c_str());
+        out("    &%s,\n", meta_repository_name.c_str());
     else
-	out("    0,\n");
+        out("    0,\n");
 
     out("};\n");
     nl();
@@ -1375,8 +2018,8 @@ void gen_source_file(const MOF_Class_Decl* class_decl)
 
     if (gen_repository_opt)
     {
-	out("extern const Meta_Repository %s;\n", meta_repository_name.c_str());
-	nl();
+        out("extern const Meta_Repository %s;\n", meta_repository_name.c_str());
+        nl();
     }
 
     // Generate class meta data.
@@ -1403,7 +2046,7 @@ void generate_class(const char* class_name)
     // Avoid generating any class more than once:
 
     if (duplicate_classes.find(class_name) != duplicate_classes.end())
-	return;
+        return;
 
     duplicate_classes.insert(class_name);
 
@@ -1425,8 +2068,8 @@ void generate_class(const char* class_name)
 
     if (!class_decl)
     {
-	err("error: no such class: \"%s\"", class_name);
-	exit(1);
+        err("error: no such class: \"%s\"", class_name);
+        exit(1);
     }
 
     // Remember all generated classes:
@@ -1439,46 +2082,50 @@ void generate_class(const char* class_name)
     // ATTN: need to generate abstract references (for associations).
     if (class_decl->qual_mask & MOF_QT_ABSTRACT)
     {
-	err("%s: attempt to generate an abstract class: \"%s\"", 
-	    arg0, class_name);
-	exit(1);
+        err("%s: attempt to generate an abstract class: \"%s\"", 
+            arg0, class_name);
+        exit(1);
     }
 #endif
 
     // Generate header file:
 
     {
-	char buffer[1024];
-	sprintf(buffer, "%s.h", class_name);
-	
-	if ((_os = fopen(buffer, "wb")) == 0)
-	{
-	    err("error: cannot open \"%s\"", buffer);
-	    exit(1);
-	}
+        char buffer[1024];
+        sprintf(buffer, "%s.h", class_name);
+        
+        if ((_os = fopen(buffer, "wb")) == 0)
+        {
+            err("error: cannot open \"%s\"", buffer);
+            exit(1);
+        }
 
-	gen_header_file(class_decl);
+        out("/*NOCHKSRC*/\n");
 
-	fclose(_os);
-	printf("Created %s\n", buffer);
+        gen_header_file(class_decl);
+
+        fclose(_os);
+        printf("Created %s\n", buffer);
     }
 
     // Generate source file:
 
     {
-	char buffer[1024];
-	sprintf(buffer, "%s.cpp", class_name);
-	
-	if ((_os = fopen(buffer, "wb")) == 0)
-	{
-	    err("error: cannot open \"%s\"", buffer);
-	    exit(1);
-	}
+        char buffer[1024];
+        sprintf(buffer, "%s.cpp", class_name);
+        
+        if ((_os = fopen(buffer, "wb")) == 0)
+        {
+            err("error: cannot open \"%s\"", buffer);
+            exit(1);
+        }
 
-	gen_source_file(class_decl);
+        out("/*NOCHKSRC*/\n");
 
-	fclose(_os);
-	printf("Created %s\n", buffer);
+        gen_source_file(class_decl);
+
+        fclose(_os);
+        printf("Created %s\n", buffer);
     }
 }
 
@@ -1490,8 +2137,8 @@ void generate_ancestor_classes(const char* class_name)
 
     if (!class_decl)
     {
-	err("error: no such class: \"%s\"", class_name);
-	exit(1);
+        err("error: no such class: \"%s\"", class_name);
+        exit(1);
     }
 
     // Generate the super class (and its superclass)
@@ -1499,7 +2146,7 @@ void generate_ancestor_classes(const char* class_name)
     const MOF_Class_Decl* super_class_decl = class_decl->super_class;
 
     if (!super_class_decl)
-	return;
+        return;
 
     generate_ancestor_classes(super_class_decl->name);
 
@@ -1514,8 +2161,8 @@ void generate_ref_clases(const char* class_name)
 
     if (!class_decl)
     {
-	err("error: no such class: \"%s\"", class_name);
-	exit(1);
+        err("error: no such class: \"%s\"", class_name);
+        exit(1);
     }
 
     // For each reference, generate the association class.
@@ -1524,10 +2171,10 @@ void generate_ref_clases(const char* class_name)
 
     for (; p; p = (MOF_Feature*)p->next)
     {
-	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(p);
+        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(p);
 
-	if (ref)
-	    generate_class(ref->class_name);
+        if (ref)
+            generate_class(ref->class_name);
     }
 
     return;
@@ -1541,8 +2188,8 @@ void generate_param_ref_clases(const char* class_name)
 
     if (!class_decl)
     {
-	err("error: no such class: \"%s\"", class_name);
-	exit(1);
+        err("error: no such class: \"%s\"", class_name);
+        exit(1);
     }
 
     // Look for methods with ref parameters.
@@ -1551,18 +2198,18 @@ void generate_param_ref_clases(const char* class_name)
 
     for (; p; p = (MOF_Feature*)p->next)
     {
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p);
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p);
 
-	if (!meth)
-	    continue;
+        if (!meth)
+            continue;
 
-	for (MOF_Parameter* q = meth->parameters; q; q =(MOF_Parameter*)q->next)
-	{
-	    if (q->data_type == TOK_REF)
-	    {
-		generate_class(q->ref_name);
-	    }
-	}
+        for (MOF_Parameter* q = meth->parameters; q; q =(MOF_Parameter*)q->next)
+        {
+            if (q->data_type == TOK_REF)
+            {
+                generate_class(q->ref_name);
+            }
+        }
     }
 }
 
@@ -1578,7 +2225,7 @@ void gen_repository_header_file(const vector<string>& classes)
     out("#include <cimple/cimple.h>\n");
 
     for (size_t i = 0; i < classes.size(); i++)
-	out("#include \"%s.h\"\n", classes[i].c_str());
+        out("#include \"%s.h\"\n", classes[i].c_str());
 
     nl();
 
@@ -1614,7 +2261,7 @@ void gen_repository_source_file(const vector<string>& classes)
     out("{\n");
 
     for (size_t i = 0; i < classes.size(); i++)
-	out("    &%s::static_meta_class,\n", classes[i].c_str());
+        out("    &%s::static_meta_class,\n", classes[i].c_str());
 
     out("};\n");
     nl();
@@ -1651,54 +2298,54 @@ void gen_repository(const vector<string>& classes)
     // Generate header:
 
     {
-	//
-	// Open the file.
-	//
+        //
+        // Open the file.
+        //
 
-	const char FILENAME[] = "repository.h";
+        const char FILENAME[] = "repository.h";
 
-	if ((_os = fopen(FILENAME, "wb")) == 0)
-	{
-	    err("error: cannot open \"%s\"", FILENAME);
-	    exit(1);
-	}
+        if ((_os = fopen(FILENAME, "wb")) == 0)
+        {
+            err("error: cannot open \"%s\"", FILENAME);
+            exit(1);
+        }
 
-	//
-	// Generate file.
-	//
+        //
+        // Generate file.
+        //
 
-	gen_repository_header_file(classes);
+        gen_repository_header_file(classes);
 
-	printf("created %s\n", FILENAME);
+        printf("created %s\n", FILENAME);
 
-	//
-	// Close the file.
-	//
+        //
+        // Close the file.
+        //
 
-	fclose(_os);
+        fclose(_os);
     }
 
     // Generate source:
 
     {
-	// Open the file.
+        // Open the file.
 
-	const char FILENAME[] = "repository.cpp";
+        const char FILENAME[] = "repository.cpp";
 
-	if ((_os = fopen(FILENAME, "wb")) == 0)
-	{
-	    err("error: cannot open \"%s\"", FILENAME);
-	    exit(1);
-	}
+        if ((_os = fopen(FILENAME, "wb")) == 0)
+        {
+            err("error: cannot open \"%s\"", FILENAME);
+            exit(1);
+        }
 
-	// Generate file.
+        // Generate file.
 
-	gen_repository_source_file(classes);
-	printf("Created %s\n", FILENAME);
+        gen_repository_source_file(classes);
+        printf("Created %s\n", FILENAME);
 
-	// Close the file.
+        // Close the file.
 
-	fclose(_os);
+        fclose(_os);
     }
 }
 
@@ -1717,7 +2364,7 @@ int main(int argc, char** argv)
 
     // Process command-line options.
 
-    for (int opt; (opt = getopt(argc, argv, "I:M:hrvles")) != -1; )
+    for (int opt; (opt = getopt(argc, argv, "I:M:hrvlesqdb")) != -1; )
     {
         switch (opt)
         {
@@ -1747,59 +2394,71 @@ int main(int argc, char** argv)
                     exit(1);
                 }
 
-		extra_mof_files.push_back(optarg);
+                extra_mof_files.push_back(optarg);
                 break;
             }
 
             case 'h':
-		printf((char*)USAGE);
-		exit(0);
-		break;
+                printf((char*)USAGE);
+                exit(0);
+                break;
 
             case 'v':
-		printf("genclass: version 0.91\n\n");
-		exit(0);
-		break;
+                printf("genclass: version 0.91\n\n");
+                exit(0);
+                break;
 
             case 'r':
-		gen_repository_opt = true;
-		break;
+                gen_repository_opt = true;
+                break;
 
             case 'l':
-		linkage_opt = true;
-		break;
+                linkage_opt = true;
+                break;
 
             case 'e':
-		enum_opt = true;
-		break;
+                enum_opt = true;
+                break;
 
             case 's':
-		schema_opt = true;
-		break;
+                schema_opt = true;
+                break;
 
-	    default:
-		err("invalid option: %c; try -h for help", opt);
-		break;
-	}
+            case 'q':
+                qualifier_opt = true;
+                break;
+
+            case 'd':
+                descriptions_opt = true;
+                break;
+
+            case 'b':
+                boolean_qualifiers_opt = true;
+                break;
+
+            default:
+                err("invalid option: %c; try -h for help", opt);
+                break;
+        }
     }
 
     // Build meta-repository symbol name:
 
     if (gen_repository_opt)
     {
-	cimple::UUID uuid;
-	cimple::create_uuid(uuid);
-	char uuid_str[CIMPLE_UUID_STRING_SIZE];
-	cimple::uuid_to_string(uuid, uuid_str);
-	meta_repository_name = string("__meta_repository_") + string(uuid_str);
+        cimple::UUID uuid;
+        cimple::create_uuid(uuid);
+        char uuid_str[CIMPLE_UUID_STRING_SIZE];
+        cimple::uuid_to_string(uuid, uuid_str);
+        meta_repository_name = string("__meta_repository_") + string(uuid_str);
     }
 
     // We expect at least one argument (or -c option)
 
     if (optind == argc && !schema_opt)
     {
-	printf((char*)USAGE);
-	exit(1);
+        printf((char*)USAGE);
+        exit(1);
     }
 
     // Setup the MOF include path.
@@ -1815,27 +2474,27 @@ int main(int argc, char** argv)
     vector<string> classes;
 
     for (int i = optind; i < argc; i++)
-	append_unique(classes, argv[i]);
+        append_unique(classes, argv[i]);
 
     if (schema_opt)
     {
-	// Generate entire CIM schema:
+        // Generate entire CIM schema:
 
-	for (const MOF_Class_Decl* p = MOF_Class_Decl::list; 
-	    p; 
-	    p = (const MOF_Class_Decl*)(p->next))
-	{
-	    generate_class(p->name);
-	}
+        for (const MOF_Class_Decl* p = MOF_Class_Decl::list; 
+            p; 
+            p = (const MOF_Class_Decl*)(p->next))
+        {
+            generate_class(p->name);
+        }
     }
 
     for (size_t i = 0; i < classes.size(); i++)
-	generate_class(classes[i].c_str());
+        generate_class(classes[i].c_str());
 
     // Generate the repository:
 
     if (gen_repository_opt)
-	gen_repository(_generated_classes);
+        gen_repository(_generated_classes);
 
     return 0;
 }

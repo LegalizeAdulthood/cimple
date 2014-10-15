@@ -13,60 +13,83 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Reference _AAA_left;
+extern const Meta_Reference
+_AAA_left;
 
-const Meta_Reference _AAA_left =
+const Meta_Reference
+_AAA_left =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "left",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &CCC::static_meta_class,
     CIMPLE_OFF(AAA,left)
 };
 
-extern const Meta_Reference _AAA_right;
+extern const Meta_Reference
+_AAA_right;
 
-const Meta_Reference _AAA_right =
+const Meta_Reference
+_AAA_right =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "right",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &DDD::static_meta_class,
     CIMPLE_OFF(AAA,right)
 };
 
-static const Meta_Reference _AAA_fool_c =
+static const Meta_Reference
+_AAA_fool_c =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_IN,
     "c",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &CCC::static_meta_class,
     CIMPLE_OFF(AAA_fool_method,c)
 };
 
-static const Meta_Property _AAA_fool_return_value =
+static const Meta_Property
+_AAA_fool_return_value =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
     "return_value",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
     0,
-    CIMPLE_OFF(AAA_fool_method,return_value)
+    CIMPLE_OFF(AAA_fool_method,return_value),
+    0, /* value */
 };
 
-static Meta_Feature* _AAA_fool_meta_features[] =
+static Meta_Feature* _AAA_fool_MFA[] =
 {
     (Meta_Feature*)&_AAA_fool_c,
     (Meta_Feature*)&_AAA_fool_return_value
 };
 
-const Meta_Method AAA_fool_method::static_meta_class =
+const Meta_Method
+AAA_fool_method::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_METHOD,
     "fool",
-    _AAA_fool_meta_features,
-    CIMPLE_ARRAY_SIZE(_AAA_fool_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _AAA_fool_MFA,
+    CIMPLE_ARRAY_SIZE(_AAA_fool_MFA),
     sizeof(AAA_fool_method),
     UINT32,
 };
 
-static Meta_Feature* _AAA_meta_features[] =
+static Meta_Feature* _AAA_MFA[] =
 {
     (Meta_Feature*)&_AAA_left,
     (Meta_Feature*)&_AAA_right,
@@ -82,17 +105,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class AAA::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_ASSOCIATION,
     "AAA",
-    _AAA_meta_features,
-    CIMPLE_ARRAY_SIZE(_AAA_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _AAA_MFA,
+    CIMPLE_ARRAY_SIZE(_AAA_MFA),
     sizeof(AAA),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     2, /* num_keys */
-    0x40EE457B,/* crc */
+    0x40EE457B, /* crc */
     0,
 };
 

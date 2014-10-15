@@ -103,7 +103,7 @@ inline Atomic_Counter::~Atomic_Counter()
 inline Atomic_Counter& Atomic_Counter::operator=(Atomic_Counter& x)
 {
     if (this != &x)
-	Atomic_set(&_rep, x._rep.n);
+        Atomic_set(&_rep, x._rep.n);
 
     return *this;
 }

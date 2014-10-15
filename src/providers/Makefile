@@ -16,7 +16,9 @@ DIRS = \
     Thing \
     Salesman \
     Arrays \
-    CIM_DiskDrive
+    CIM_DiskDrive \
+    Super \
+    President
 
 ifdef CIMPLE_UNIX
     DIRS += UnixUser
@@ -40,53 +42,54 @@ reg:
 	$(MAKE) -C $(TOP)/src/providers/ComputerSystemDiskDrive reg
 	$(MAKE) -C $(TOP)/src/providers/Thing reg
 	$(MAKE) -C $(TOP)/src/providers/Lamp reg
-	$(MAKE) -C $(TOP)/src/providers/CIM_DiskDrive
+	$(MAKE) -C $(TOP)/src/providers/Super reg
 
 live-tests:
-	CLI gi Person.ssn=1
-	CLI ni Person
-	CLI ni Link
-	CLI ni Link
-	CLI ni Fan
-	CLI ei Person
-	CLI ei Link
-	CLI ei Link
-	CLI ei Fan
-	CLI an Person
-	CLI an Person.ssn=1
-	CLI an Person.ssn=2
-	CLI an Person.ssn=3
-	CLI an Person.ssn=4
-	CLI an Person.ssn=5
-	CLI a Person.ssn=1
-	CLI a Person.ssn=2
-	CLI a Person.ssn=3
-	CLI a Person.ssn=4
-	CLI a Person.ssn=5
-	CLI r Person.ssn=1
-	CLI r Person.ssn=2
-	CLI r Person.ssn=3
-	CLI r Person.ssn=4
-	CLI r Person.ssn=5
-	CLI rn Person.ssn=1
-	CLI rn Person.ssn=2
-	CLI rn Person.ssn=3
-	CLI rn Person.ssn=4
-	CLI rn Person.ssn=5
+	$(CIMCLI) gi Person.ssn=1
+	$(CIMCLI) ni Person
+	$(CIMCLI) ni Link
+	$(CIMCLI) ni Link
+	$(CIMCLI) ni Fan
+	$(CIMCLI) ei Person
+	$(CIMCLI) ei Link
+	$(CIMCLI) ei Link
+	$(CIMCLI) ei Fan
+	$(CIMCLI) an Person
+	$(CIMCLI) an Person.ssn=1
+	$(CIMCLI) an Person.ssn=2
+	$(CIMCLI) an Person.ssn=3
+	$(CIMCLI) an Person.ssn=4
+	$(CIMCLI) an Person.ssn=5
+	$(CIMCLI) a Person.ssn=1
+	$(CIMCLI) a Person.ssn=2
+	$(CIMCLI) a Person.ssn=3
+	$(CIMCLI) a Person.ssn=4
+	$(CIMCLI) a Person.ssn=5
+	$(CIMCLI) r Person.ssn=1
+	$(CIMCLI) r Person.ssn=2
+	$(CIMCLI) r Person.ssn=3
+	$(CIMCLI) r Person.ssn=4
+	$(CIMCLI) r Person.ssn=5
+	$(CIMCLI) rn Person.ssn=1
+	$(CIMCLI) rn Person.ssn=2
+	$(CIMCLI) rn Person.ssn=3
+	$(CIMCLI) rn Person.ssn=4
+	$(CIMCLI) rn Person.ssn=5
 	call_foo
 	call_foo2
-	CLI ei Thing
-	CLI gi Thing.key=200
-	CLI a Thing.key=100
-	CLI an Thing.key=100
-	CLI r Thing.key=100
-	CLI rn Thing.key=100
-	CLI ei Lamp
-	CLI gi 'Lamp.model="A"'
-	CLI an 'Lamp.model="A"'
-	CLI rn 'Lamp.model="A"'
-	CLI a 'Lamp.model="A"'
-	CLI r 'Lamp.model="A"'
+	$(CIMCLI) ei Thing
+	$(CIMCLI) gi Thing.key=200
+	$(CIMCLI) a Thing.key=100
+	$(CIMCLI) an Thing.key=100
+	$(CIMCLI) r Thing.key=100
+	$(CIMCLI) rn Thing.key=100
+	$(CIMCLI) ei Lamp
+	$(CIMCLI) gi 'Lamp.model="A"'
+	$(CIMCLI) an 'Lamp.model="A"'
+	$(CIMCLI) rn 'Lamp.model="A"'
+	$(CIMCLI) a 'Lamp.model="A"'
+	$(CIMCLI) r 'Lamp.model="A"'
+	$(CIMCLI) ei Super
 
 endif
 

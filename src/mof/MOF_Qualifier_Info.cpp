@@ -85,7 +85,10 @@ static MOF_Pair _pairs[] =
 
 static const size_t NUM_PAIRS = (sizeof(_pairs) / sizeof(_pairs[0]));
 
-static MOF_mask _make_qual_mask(MOF_Qualifier_Info* qual_info_list)
+static MOF_mask _make_qual_mask(
+    MOF_Qualifier_Info* qual_info_list,
+    bool prop,
+    bool param)
 {
     MOF_Qualifier_Info* p;
     MOF_mask mask = 0;
@@ -95,8 +98,11 @@ static MOF_mask _make_qual_mask(MOF_Qualifier_Info* qual_info_list)
      * Set bits for qualifiers whose default is true.
      */
     
-    mask |= MOF_QT_IN;
-    mask |= MOF_QT_READ;
+    if (prop)
+        mask |= MOF_QT_READ;
+
+    if (param)
+        mask |= MOF_QT_IN;
 
     /*
      * Iterate over qualifier list and either set or clear the corresponding
@@ -170,7 +176,8 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
     const char* param_name,
     MOF_Qualifier* local_qualifiers,
     MOF_Qualifier_Info* inherited_qual_info_list,
-    MOF_mask* qual_mask)
+    MOF_mask* qual_mask,
+    bool prop)
 {
     MOF_Qualifier_Info* all_qualifiers_list = 0;
     MOF_Qualifier_Info* qi;
@@ -266,7 +273,7 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
      * Now build the resulting mask of all boolean qualifiers.
      */
 
-    *qual_mask = _make_qual_mask(all_qualifiers_list);
+    *qual_mask = _make_qual_mask(all_qualifiers_list, prop, param_name != 0);
 
     return all_qualifiers_list;
 }

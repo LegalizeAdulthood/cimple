@@ -13,81 +13,117 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_75E2CB8B53E2155E90DBB99ABED114CA;
+extern const Meta_Repository __meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_PhysicalElement_Description;
+extern const Meta_Property
+_CIM_PhysicalElement_Description;
 
-extern const Meta_Property _CIM_PhysicalElement_ElementName;
+extern const Meta_Property
+_CIM_PhysicalElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Name;
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-extern const Meta_Property _CIM_PhysicalElement_Tag;
+extern const Meta_Property
+_CIM_PhysicalElement_Tag;
 
-extern const Meta_Property _CIM_PhysicalElement_CreationClassName;
+extern const Meta_Property
+_CIM_PhysicalElement_CreationClassName;
 
-extern const Meta_Property _CIM_PhysicalElement_Manufacturer;
+extern const Meta_Property
+_CIM_PhysicalElement_Manufacturer;
 
-extern const Meta_Property _CIM_PhysicalElement_Model;
+extern const Meta_Property
+_CIM_PhysicalElement_Model;
 
-extern const Meta_Property _CIM_PhysicalElement_SKU;
+extern const Meta_Property
+_CIM_PhysicalElement_SKU;
 
-extern const Meta_Property _CIM_PhysicalElement_SerialNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_SerialNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_Version;
+extern const Meta_Property
+_CIM_PhysicalElement_Version;
 
-extern const Meta_Property _CIM_PhysicalElement_PartNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_PartNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_OtherIdentifyingInfo;
+extern const Meta_Property
+_CIM_PhysicalElement_OtherIdentifyingInfo;
 
-extern const Meta_Property _CIM_PhysicalElement_PoweredOn;
+extern const Meta_Property
+_CIM_PhysicalElement_PoweredOn;
 
-extern const Meta_Property _CIM_PhysicalElement_ManufactureDate;
+extern const Meta_Property
+_CIM_PhysicalElement_ManufactureDate;
 
-extern const Meta_Property _CIM_PhysicalElement_VendorEquipmentType;
+extern const Meta_Property
+_CIM_PhysicalElement_VendorEquipmentType;
 
-extern const Meta_Property _CIM_PhysicalElement_UserTracking;
+extern const Meta_Property
+_CIM_PhysicalElement_UserTracking;
 
-extern const Meta_Property _CIM_PhysicalElement_CanBeFRUed;
+extern const Meta_Property
+_CIM_PhysicalElement_CanBeFRUed;
 
-extern const Meta_Property _CIM_PhysicalPackage_RemovalConditions;
+extern const Meta_Property
+_CIM_PhysicalPackage_RemovalConditions;
 
-extern const Meta_Property _CIM_PhysicalPackage_Removable;
+extern const Meta_Property
+_CIM_PhysicalPackage_Removable;
 
-extern const Meta_Property _CIM_PhysicalPackage_Replaceable;
+extern const Meta_Property
+_CIM_PhysicalPackage_Replaceable;
 
-extern const Meta_Property _CIM_PhysicalPackage_HotSwappable;
+extern const Meta_Property
+_CIM_PhysicalPackage_HotSwappable;
 
-extern const Meta_Property _CIM_PhysicalPackage_Height;
+extern const Meta_Property
+_CIM_PhysicalPackage_Height;
 
-extern const Meta_Property _CIM_PhysicalPackage_Depth;
+extern const Meta_Property
+_CIM_PhysicalPackage_Depth;
 
-extern const Meta_Property _CIM_PhysicalPackage_Width;
+extern const Meta_Property
+_CIM_PhysicalPackage_Width;
 
-extern const Meta_Property _CIM_PhysicalPackage_Weight;
+extern const Meta_Property
+_CIM_PhysicalPackage_Weight;
 
-extern const Meta_Property _CIM_Card_HostingBoard;
+extern const Meta_Property
+_CIM_Card_HostingBoard;
 
-extern const Meta_Property _CIM_Card_SlotLayout;
+extern const Meta_Property
+_CIM_Card_SlotLayout;
 
-extern const Meta_Property _CIM_Card_RequiresDaughterBoard;
+extern const Meta_Property
+_CIM_Card_RequiresDaughterBoard;
 
-extern const Meta_Property _CIM_Card_SpecialRequirements;
+extern const Meta_Property
+_CIM_Card_SpecialRequirements;
 
-extern const Meta_Property _CIM_Card_RequirementsDescription;
+extern const Meta_Property
+_CIM_Card_RequirementsDescription;
 
-extern const Meta_Property _CIM_Card_OperatingVoltages;
+extern const Meta_Property
+_CIM_Card_OperatingVoltages;
 
-static Meta_Feature* _Benchmark1_meta_features[] =
+static Meta_Feature* _Benchmark1_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_PhysicalElement_Description,
@@ -127,15 +163,6 @@ static Meta_Feature* _Benchmark1_meta_features[] =
     (Meta_Feature*)&_CIM_Card_RequirementsDescription,
     (Meta_Feature*)&_CIM_Card_OperatingVoltages,
     (Meta_Feature*)&CIM_Card_ConnectorPower_method::static_meta_class,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_Card",
-    "CIM_PhysicalPackage",
-    "CIM_PhysicalElement",
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -182,18 +209,19 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Benchmark1::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Benchmark1",
-    _Benchmark1_meta_features,
-    CIMPLE_ARRAY_SIZE(_Benchmark1_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Benchmark1_MFA,
+    CIMPLE_ARRAY_SIZE(_Benchmark1_MFA),
     sizeof(Benchmark1),
     _locals,
     &CIM_Card::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0xE44AD721,/* crc */
-    &__meta_repository_75E2CB8B53E2155E90DBB99ABED114CA,
+    0x9274D56B, /* crc */
+    &__meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6,
 };
 
 CIMPLE_NAMESPACE_END

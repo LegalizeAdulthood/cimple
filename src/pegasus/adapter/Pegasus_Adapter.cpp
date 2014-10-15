@@ -109,11 +109,15 @@ void Pegasus_Adapter::getInstance(
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
+    // Find model meta class:
+
+    const Meta_Class* mc = find_model_meta_class(objectPath);
+
     // Create key.
 
     Instance* model = 0;
 
-    if (Converter::to_cimple_key(objectPath.getKeyBindings(), _mc, model) != 0)
+    if (Converter::to_cimple_key(objectPath.getKeyBindings(), mc, model) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> model_d(model);
@@ -193,9 +197,13 @@ void Pegasus_Adapter::enumerateInstances(
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
+    // Find model meta class:
+
+    const Meta_Class* mc = find_model_meta_class(objectPath);
+
     // Create the model.
 
-    Instance* model = create(_mc);
+    Instance* model = create(mc);
     Ref<Instance> model_d(model);
     nullify_properties(model);
 
@@ -273,9 +281,13 @@ void Pegasus_Adapter::enumerateInstanceNames(
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
+    // Find model meta class:
+
+    const Meta_Class* mc = find_model_meta_class(objectPath);
+
     // Create the model (nullify non-key properties).
 
-    Instance* model = create(_mc);
+    Instance* model = create(mc);
     Ref<Instance> model_d(model);
     nullify_non_keys(model);
 
@@ -309,11 +321,15 @@ void Pegasus_Adapter::createInstance(
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
+    // Find model meta class:
+
+    const Meta_Class* mc = find_model_meta_class(objectPath);
+
     // Convert the Pegasus instance to a CIMPLE instance.
 
     Instance* ci = 0;
 
-    if (Converter::to_cimple_instance(instance, _mc, ci) != 0)
+    if (Converter::to_cimple_instance(instance, mc, ci) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ci_d(ci);
@@ -356,11 +372,15 @@ void Pegasus_Adapter::modifyInstance(
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
+    // Find model meta class:
+
+    const Meta_Class* mc = find_model_meta_class(objectPath);
+
     // Convert the Pegasus instance to a CIMPLE instance.
 
     Instance* ci = 0;
 
-    if (Converter::to_cimple_instance(instance, _mc, ci) != 0)
+    if (Converter::to_cimple_instance(instance, mc, ci) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ci_d(ci);
@@ -391,11 +411,15 @@ void Pegasus_Adapter::deleteInstance(
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
+    // Find model meta class:
+
+    const Meta_Class* mc = find_model_meta_class(objectPath);
+
     // Create CIMPLE instance (initialize key properties).
 
     Instance* ci = 0;
 
-    if (Converter::to_cimple_key(objectPath.getKeyBindings(), _mc, ci) != 0)
+    if (Converter::to_cimple_key(objectPath.getKeyBindings(), mc, ci) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ci_d(ci);
@@ -423,11 +447,15 @@ void Pegasus_Adapter::invokeMethod(
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
+    // Find model meta class:
+
+    const Meta_Class* mc = find_model_meta_class(objectPath);
+
     // Convert instance name to CIMPLE reference.
 
     Instance* ref = 0;
 
-    if (Converter::to_cimple_key(objectPath.getKeyBindings(), _mc, ref) != 0)
+    if (Converter::to_cimple_key(objectPath.getKeyBindings(), mc, ref) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ref_d(ref);
@@ -437,7 +465,7 @@ void Pegasus_Adapter::invokeMethod(
     CStr meth_name(methodName);
     Instance* meth;
 
-    if (Converter::to_cimple_method(meth_name, inParameters, _mc, meth) != 0)
+    if (Converter::to_cimple_method(meth_name, inParameters, mc, meth) != 0)
 	_throw(Pegasus::CIM_ERR_FAILED);
 
     // Invoke the method:
@@ -1089,6 +1117,26 @@ const Meta_Class* Pegasus_Adapter::find_meta_class(
     // Find the class.
 
     return cimple::find_meta_class(repository, class_name);
+}
+
+const Meta_Class* Pegasus_Adapter::find_model_meta_class(
+    const Pegasus::CIMObjectPath& objectPath) const
+{
+#ifdef CIMPLE_ENABLE_SUBCLASS_PROVIDERS
+
+    const Meta_Class* mc = find_meta_class(objectPath);
+
+    if (!mc)
+	_throw(Pegasus::CIM_ERR_NOT_FOUND);
+
+    if (!is_subclass(_mc, mc))
+	_throw(Pegasus::CIM_ERR_INVALID_CLASS);
+
+    return mc;
+
+#else
+    return _mc;
+#endif
 }
 
 CIMPLE_NAMESPACE_END

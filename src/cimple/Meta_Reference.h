@@ -40,13 +40,25 @@ struct Meta_Class;
 struct Meta_Reference
 {
     // Meta_Feature fields
+    Atomic refs;
     uint32 flags;
     const char* name;
+    const Meta_Qualifier* const* meta_qualifiers;
+    size_t num_meta_qualifiers;
 
     // Local fields
     const Meta_Class* meta_class;
     uint32 offset;
 };
+
+CIMPLE_CIMPLE_LINKAGE
+Meta_Reference* clone(const Meta_Reference* mr);
+
+CIMPLE_CIMPLE_LINKAGE
+void destroy(Meta_Reference* mr);
+
+CIMPLE_CIMPLE_LINKAGE
+void print(const Meta_Reference* mr);
 
 CIMPLE_NAMESPACE_END
 

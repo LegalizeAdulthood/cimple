@@ -13,51 +13,75 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _Erp_w;
+extern const Meta_Property
+_Erp_w;
 
-const Meta_Property _Erp_w =
+const Meta_Property
+_Erp_w =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "w",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(Erp,w)
+    0, /* subscript */
+    CIMPLE_OFF(Erp,w),
+    0, /* value */
 };
 
-extern const Meta_Property _Erp_x;
+extern const Meta_Property
+_Erp_x;
 
-const Meta_Property _Erp_x =
+const Meta_Property
+_Erp_x =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "x",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(Erp,x)
+    0, /* subscript */
+    CIMPLE_OFF(Erp,x),
+    0, /* value */
 };
 
-extern const Meta_Property _Erp_y;
+extern const Meta_Property
+_Erp_y;
 
-const Meta_Property _Erp_y =
+const Meta_Property
+_Erp_y =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "y",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(Erp,y)
+    -1, /* subscript */
+    CIMPLE_OFF(Erp,y),
+    0, /* value */
 };
 
-extern const Meta_Property _Erp_z;
+extern const Meta_Property
+_Erp_z;
 
-const Meta_Property _Erp_z =
+const Meta_Property
+_Erp_z =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "z",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    3,
-    CIMPLE_OFF(Erp,z)
+    3, /* subscript */
+    CIMPLE_OFF(Erp,z),
+    0, /* value */
 };
 
-static Meta_Feature* _Erp_meta_features[] =
+static Meta_Feature* _Erp_MFA[] =
 {
     (Meta_Feature*)&_Erp_w,
     (Meta_Feature*)&_Erp_x,
@@ -75,17 +99,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Erp::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Erp",
-    _Erp_meta_features,
-    CIMPLE_ARRAY_SIZE(_Erp_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Erp_MFA,
+    CIMPLE_ARRAY_SIZE(_Erp_MFA),
     sizeof(Erp),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     1, /* num_keys */
-    0x308E8173,/* crc */
+    0x308E8173, /* crc */
     0,
 };
 

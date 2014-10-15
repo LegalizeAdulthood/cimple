@@ -94,12 +94,12 @@ int cimom::enum_instances(
     Thread_Context* context = Thread_Context::top();
 
     if (!context)
-	return -1;
+        return -1;
 
     if (enumerator._rep)
     {
-	context->instance_enumerator_destroy(enumerator._rep);
-	enumerator._rep = 0;
+        context->instance_enumerator_destroy(enumerator._rep);
+        enumerator._rep = 0;
     }
 
     enumerator._rep = context->instance_enumerator_create(name_space, model);
@@ -114,7 +114,7 @@ Ref<Instance> cimom::get_instance(
     Thread_Context* context = Thread_Context::top();
 
     if (context)
-	return context->get_instance(name_space, model);
+        return context->get_instance(name_space, model);
 
     return Ref<Instance>();
 }
@@ -126,7 +126,7 @@ int cimom::create_instance(
     Thread_Context* context = Thread_Context::top();
 
     if (context)
-	return context->create_instance(name_space, instance);
+        return context->create_instance(name_space, instance);
 
     return -1;
 }
@@ -138,7 +138,7 @@ int cimom::delete_instance(
     Thread_Context* context = Thread_Context::top();
 
     if (context)
-	return context->delete_instance(name_space, instance);
+        return context->delete_instance(name_space, instance);
 
     return -1;
 }
@@ -150,7 +150,7 @@ int cimom::modify_instance(
     Thread_Context* context = Thread_Context::top();
 
     if (context)
-	return context->modify_instance(name_space, instance);
+        return context->modify_instance(name_space, instance);
 
     return -1;
 }

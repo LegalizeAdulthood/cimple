@@ -13,23 +13,31 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property
+_CIM_ManagedElement_Description;
 
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property
+_CIM_ManagedElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Name;
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-static Meta_Feature* _CIM_LogicalElement_meta_features[] =
+static Meta_Feature* _CIM_LogicalElement_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_ManagedElement_Description,
@@ -39,12 +47,6 @@ static Meta_Feature* _CIM_LogicalElement_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -61,17 +63,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_LogicalElement::static_meta_class =
 {
-    CIMPLE_FLAG_CLASS,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_CLASS|CIMPLE_FLAG_ABSTRACT,
     "CIM_LogicalElement",
-    _CIM_LogicalElement_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_LogicalElement_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_LogicalElement_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_LogicalElement_MFA),
     sizeof(CIM_LogicalElement),
     _locals,
     &CIM_ManagedSystemElement::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0xE3ABB7C2,/* crc */
+    0xE3ABB7C2, /* crc */
     0,
 };
 

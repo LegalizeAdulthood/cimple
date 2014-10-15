@@ -52,6 +52,9 @@ struct __Array_Traits
     bool (*equal)(const void* x, const void* y);
 };
 
+CIMPLE_CIMPLE_LINKAGE
+extern const __Array_Traits* __cim_array_traits[];
+
 //==============================================================================
 //
 // struct __Array_Traits_Factory<>
@@ -65,25 +68,28 @@ struct __Array_Traits
 template<class T>
 struct __Array_Traits_Factory
 {
-    static void construct(void* x, const void* y)
+    static const __Array_Traits* traits()
     {
-	new (x) T(*((T*)y));
+        static __Array_Traits _traits = 
+            { sizeof(T), _construct, _destruct, _equal };
+        return &_traits;
     }
 
-    static void destruct(void* x)
+private:
+
+    static void _construct(void* x, const void* y)
     {
-	((T*)x)->~T();
+        new (x) T(*((T*)y));
     }
 
-    static bool equal(const void* x, const void* y)
+    static void _destruct(void* x)
     {
-	return *((T*)x) == *((T*)y);
+        ((T*)x)->~T();
     }
 
-    static __Array_Traits* traits()
+    static bool _equal(const void* x, const void* y)
     {
-	static __Array_Traits _traits = {sizeof(T), construct, destruct, equal};
-	return &_traits;
+        return *((T*)x) == *((T*)y);
     }
 };
 
@@ -104,17 +110,33 @@ struct __Array_Traits_Factory
 //     permits the Array implementation to perform special optimizations. First,
 //     it eliminates the need to call a destructor function on each element. 
 //     Second, elements may be copied with memcpy() rather than with a special
-//     constructor callback. And finally, elements may be compared with memcmp()//     rather than with a special equal callback.
+//     constructor callback. And finally, elements may be compared with memcmp()
+//     rather than with a special equal callback.
 //
 //==============================================================================
 
 template<class T>
 struct __Array_Traits_Factory_Raw
 {
-    static __Array_Traits* traits()
+    static const __Array_Traits* traits()
     {
-	static __Array_Traits _traits = { sizeof(T), 0, 0, 0 };
-	return &_traits;
+        static __Array_Traits _traits = { sizeof(T), 0, 0, 0 };
+        return &_traits;
+    }
+};
+
+//==============================================================================
+//
+// struct __Array_Traits_Factory_CIM<T, N>
+//
+//==============================================================================
+
+template<class T, int N>
+struct __Array_Traits_Factory_CIM
+{
+    static const __Array_Traits* traits()
+    {
+        return __cim_array_traits[N];
     }
 };
 
@@ -125,7 +147,7 @@ struct __Array_Traits_Factory_Raw
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<boolean> : 
-    public __Array_Traits_Factory_Raw<boolean> { };
+    public __Array_Traits_Factory_CIM<boolean, BOOLEAN> { };
 
 //==============================================================================
 //
@@ -134,7 +156,7 @@ template<> struct __Array_Traits_Factory<boolean> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<uint8> : 
-    public __Array_Traits_Factory_Raw<uint8> { };
+    public __Array_Traits_Factory_CIM<uint8, UINT8> { };
 
 //==============================================================================
 //
@@ -143,7 +165,7 @@ template<> struct __Array_Traits_Factory<uint8> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<sint8> : 
-    public __Array_Traits_Factory_Raw<uint8> { };
+    public __Array_Traits_Factory_CIM<sint8, SINT8> { };
 
 //==============================================================================
 //
@@ -152,7 +174,7 @@ template<> struct __Array_Traits_Factory<sint8> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<uint16> : 
-    public __Array_Traits_Factory_Raw<uint16> { };
+    public __Array_Traits_Factory_CIM<uint16, UINT16> { };
 
 //==============================================================================
 //
@@ -161,7 +183,7 @@ template<> struct __Array_Traits_Factory<uint16> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<sint16> : 
-    public __Array_Traits_Factory_Raw<uint16> { };
+    public __Array_Traits_Factory_CIM<sint16, SINT16> { };
 
 //==============================================================================
 //
@@ -170,7 +192,7 @@ template<> struct __Array_Traits_Factory<sint16> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<uint32> : 
-    public __Array_Traits_Factory_Raw<uint32> { };
+    public __Array_Traits_Factory_CIM<uint32, UINT32> { };
 
 //==============================================================================
 //
@@ -179,7 +201,7 @@ template<> struct __Array_Traits_Factory<uint32> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<sint32> : 
-    public __Array_Traits_Factory_Raw<uint32> { };
+    public __Array_Traits_Factory_CIM<sint32, SINT32> { };
 
 //==============================================================================
 //
@@ -188,7 +210,25 @@ template<> struct __Array_Traits_Factory<sint32> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<uint64> : 
-    public __Array_Traits_Factory_Raw<uint64> { };
+    public __Array_Traits_Factory_CIM<uint64, UINT64> { };
+
+//==============================================================================
+//
+// __Array_Traits_Factory<real32> specialization.
+//
+//==============================================================================
+
+template<> struct __Array_Traits_Factory<real32> : 
+    public __Array_Traits_Factory_CIM<real32, REAL32> { };
+
+//==============================================================================
+//
+// __Array_Traits_Factory<real64> specialization.
+//
+//==============================================================================
+
+template<> struct __Array_Traits_Factory<real64> : 
+    public __Array_Traits_Factory_CIM<real64, REAL64> { };
 
 //==============================================================================
 //
@@ -197,16 +237,7 @@ template<> struct __Array_Traits_Factory<uint64> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<sint64> : 
-    public __Array_Traits_Factory_Raw<uint64> { };
-
-//==============================================================================
-//
-// __Array_Traits_Factory<datetime> specialization.
-//
-//==============================================================================
-
-template<> struct __Array_Traits_Factory<Datetime> : 
-    public __Array_Traits_Factory_Raw<Datetime> { };
+    public __Array_Traits_Factory_CIM<sint64, SINT64> { };
 
 //==============================================================================
 //
@@ -215,7 +246,25 @@ template<> struct __Array_Traits_Factory<Datetime> :
 //==============================================================================
 
 template<> struct __Array_Traits_Factory<char16> : 
-    public __Array_Traits_Factory_Raw<uint16> { };
+    public __Array_Traits_Factory_CIM<char16, CHAR16> { };
+
+//==============================================================================
+//
+// __Array_Traits_Factory<String> specialization.
+//
+//==============================================================================
+
+template<> struct __Array_Traits_Factory<String> : 
+    public __Array_Traits_Factory_CIM<String, STRING> { };
+
+//==============================================================================
+//
+// __Array_Traits_Factory<datetime> specialization.
+//
+//==============================================================================
+
+template<> struct __Array_Traits_Factory<Datetime> : 
+    public __Array_Traits_Factory_CIM<Datetime, DATETIME> { };
 
 //==============================================================================
 //
@@ -270,44 +319,6 @@ template<> struct __Array_Traits_Factory<Meta_Class*> :
 
 //==============================================================================
 //
-// __Array_Traits_Factory<String> specialization.
-//
-//==============================================================================
-
-template<> 
-struct CIMPLE_CIMPLE_LINKAGE __Array_Traits_Factory<String>
-{
-    static __Array_Traits* traits();
-};
-
-//==============================================================================
-//
-// __Array_Traits_Factory<real32> specialization.
-//
-//==============================================================================
-
-template<> 
-struct CIMPLE_CIMPLE_LINKAGE __Array_Traits_Factory<real32>
-{
-    static __Array_Traits* traits();
-};
-
-//==============================================================================
-//
-// struct __Array_Traits_Factory<real64>
-//
-//     Specialization for real64.
-//
-//==============================================================================
-
-template<> 
-struct CIMPLE_CIMPLE_LINKAGE __Array_Traits_Factory<real64>
-{
-    static __Array_Traits* traits();
-};
-
-//==============================================================================
-//
 // struct __Array_Rep
 //
 //     This structure represents the internal implementatin of the Array<>
@@ -317,15 +328,15 @@ struct CIMPLE_CIMPLE_LINKAGE __Array_Traits_Factory<real64>
 
 struct __Array_Rep
 {
-    __Array_Traits* traits;
+    const __Array_Traits* traits;
     size_t size;
     size_t capacity;
     Atomic refs;
     union
     {
-	// Align data suitably for any data type.
-	double alignment;
-	char data[1];
+        // Align data suitably for any data type.
+        double alignment;
+        char data[1];
     };
 };
 
@@ -336,14 +347,14 @@ struct __Array_Rep
 //==============================================================================
 
 CIMPLE_CIMPLE_LINKAGE
-void __construct(__Array_Rep*& rep, __Array_Traits* traits);
+void __construct(__Array_Rep*& rep, const __Array_Traits* traits);
 
 CIMPLE_CIMPLE_LINKAGE
 void __construct(__Array_Rep*& rep, const __Array_Rep* x);
 
 CIMPLE_CIMPLE_LINKAGE
-void __construct(
-    __Array_Rep*& rep, __Array_Traits* traits, const char* data, size_t size);
+void __construct(__Array_Rep*& rep, 
+    const __Array_Traits* traits, const char* data, size_t size);
 
 CIMPLE_CIMPLE_LINKAGE
 void __destruct(__Array_Rep* rep);

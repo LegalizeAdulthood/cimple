@@ -13,68 +13,101 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property
+_CIM_ManagedElement_Description;
 
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property
+_CIM_ManagedElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-const Meta_Property _CIM_ManagedSystemElement_InstallDate =
+const Meta_Property
+_CIM_ManagedSystemElement_InstallDate =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "InstallDate",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     DATETIME,
-    0,
-    CIMPLE_OFF(CIM_ManagedSystemElement,InstallDate)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ManagedSystemElement,InstallDate),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Name;
 
-const Meta_Property _CIM_ManagedSystemElement_Name =
+const Meta_Property
+_CIM_ManagedSystemElement_Name =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Name",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_ManagedSystemElement,Name)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ManagedSystemElement,Name),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-const Meta_Property _CIM_ManagedSystemElement_OperationalStatus =
+const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "OperationalStatus",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    -1,
-    CIMPLE_OFF(CIM_ManagedSystemElement,OperationalStatus)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_ManagedSystemElement,OperationalStatus),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions =
+const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "StatusDescriptions",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(CIM_ManagedSystemElement,StatusDescriptions)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_ManagedSystemElement,StatusDescriptions),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-const Meta_Property _CIM_ManagedSystemElement_Status =
+const Meta_Property
+_CIM_ManagedSystemElement_Status =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Status",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_ManagedSystemElement,Status)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ManagedSystemElement,Status),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_ManagedSystemElement_meta_features[] =
+static Meta_Feature* _CIM_ManagedSystemElement_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_ManagedElement_Description,
@@ -84,11 +117,6 @@ static Meta_Feature* _CIM_ManagedSystemElement_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -105,17 +133,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_ManagedSystemElement::static_meta_class =
 {
-    CIMPLE_FLAG_CLASS,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_CLASS|CIMPLE_FLAG_ABSTRACT,
     "CIM_ManagedSystemElement",
-    _CIM_ManagedSystemElement_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_ManagedSystemElement_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_ManagedSystemElement_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_ManagedSystemElement_MFA),
     sizeof(CIM_ManagedSystemElement),
     _locals,
     &CIM_ManagedElement::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0x5DB2A81C,/* crc */
+    0x5DB2A81C, /* crc */
     0,
 };
 

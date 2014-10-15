@@ -4,3 +4,4 @@ Version 0.99.22 Release Notes
 1.  Ported and tested on Microsoft Visual Studio 8.0.
 
 2.  Retested on supported Linux platforms.
+

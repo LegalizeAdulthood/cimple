@@ -13,53 +13,75 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _YourClass_str1;
+extern const Meta_Property
+_YourClass_str1;
 
-extern const Meta_Property _MyClass_str2;
+extern const Meta_Property
+_MyClass_str2;
 
-const Meta_Property _MyClass_str2 =
+const Meta_Property
+_MyClass_str2 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "str2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(MyClass,str2)
+    0, /* subscript */
+    CIMPLE_OFF(MyClass,str2),
+    0, /* value */
 };
 
-extern const Meta_Reference _YourClass_obj1;
+extern const Meta_Reference
+_YourClass_obj1;
 
-extern const Meta_Reference _MyClass_obj2;
+extern const Meta_Reference
+_MyClass_obj2;
 
 const Meta_Reference _MyClass_obj2 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qualifiers */
     &Instance::static_meta_class,
     CIMPLE_OFF(MyClass,obj2)
 };
 
-extern const Meta_Property _MyClass_str3;
+extern const Meta_Property
+_MyClass_str3;
 
-const Meta_Property _MyClass_str3 =
+const Meta_Property
+_MyClass_str3 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "str3",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(MyClass,str3)
+    0, /* subscript */
+    CIMPLE_OFF(MyClass,str3),
+    0, /* value */
 };
 
-extern const Meta_Reference _MyClass_obj3;
+extern const Meta_Reference
+_MyClass_obj3;
 
 const Meta_Reference _MyClass_obj3 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj3",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qualifiers */
     &Instance::static_meta_class,
     CIMPLE_OFF(MyClass,obj3)
 };
 
-static Meta_Feature* _MyClass_meta_features[] =
+static Meta_Feature* _MyClass_MFA[] =
 {
     (Meta_Feature*)&_YourClass_str1,
     (Meta_Feature*)&_MyClass_str2,
@@ -67,11 +89,6 @@ static Meta_Feature* _MyClass_meta_features[] =
     (Meta_Feature*)&_MyClass_obj2,
     (Meta_Feature*)&_MyClass_str3,
     (Meta_Feature*)&_MyClass_obj3,
-};
-
-static const char* _super_classes[] =
-{
-    "YourClass",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -86,17 +103,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class MyClass::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_INDICATION,
     "MyClass",
-    _MyClass_meta_features,
-    CIMPLE_ARRAY_SIZE(_MyClass_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _MyClass_MFA,
+    CIMPLE_ARRAY_SIZE(_MyClass_MFA),
     sizeof(MyClass),
     _locals,
     &YourClass::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0x37C63A9B,/* crc */
+    0x37C63A9B, /* crc */
     0,
 };
 

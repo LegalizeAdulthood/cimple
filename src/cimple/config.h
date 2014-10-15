@@ -51,6 +51,8 @@
 # include "platform_LINUX_PPC_GNU.h"
 #elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
 # include "platform_WIN32_IX86_MSVC.h"
+#elif defined(CIMPLE_PLATFORM_DARWIN_PPC_GNU)
+# include "platform_DARWIN_PPC_GNU.h"
 #else
 # error "Unknown platform"
 #endif
@@ -152,8 +154,8 @@ CIMPLE_NAMESPACE_END
 # define CIMPLE_ASSERT(COND) \
     do \
     { \
-	if (!(COND)) \
-	    __cimple_assert(__FILE__, __LINE__, CIMPLE_FUNCTION, #COND); \
+        if (!(COND)) \
+            __cimple_assert(__FILE__, __LINE__, CIMPLE_FUNCTION, #COND); \
     } \
     while (0)
 #else
@@ -242,7 +244,7 @@ CIMPLE_NAMESPACE_END
     do \
     { \
         printf("CIMPLE_RETURN: %s(%d): %s\n", \
-	    __FILE__, __LINE__, CIMPLE_FUNCTION); \
+            __FILE__, __LINE__, CIMPLE_FUNCTION); \
         return X; \
     } \
     while (0)
@@ -289,6 +291,34 @@ CIMPLE_NAMESPACE_END
 #endif
 
 //==============================================================================
+//
+// CIMPLE_MALLOC()
+//
+//     Type-casted malloc() wrapper.
+//
+//==============================================================================
+
+#define CIMPLE_MALLOC(TYPE) ((TYPE*)malloc(sizeof(TYPE)))
+
+//==============================================================================
+//
+// CIMPLE_CALLOC()
+//
+//     Type-casted calloc() wrapper.
+//
+//==============================================================================
+
+#define CIMPLE_CALLOC(TYPE) ((TYPE*)calloc(1, sizeof(TYPE)))
+
+//==============================================================================
+//
+// CIMPLE_REALLOC()
+//
+//     Type-casted realloc() wrapper.
+//
+//==============================================================================
+
+#define CIMPLE_REALLOC(P, N, TYPE) ((TYPE*)realloc(P, (N) * sizeof(TYPE)))
 
 //==============================================================================
 //

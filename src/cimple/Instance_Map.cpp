@@ -42,7 +42,7 @@ Instance_Map_Base::~Instance_Map_Base()
 void Instance_Map_Base::clear()
 {
     for (size_t i = 0; i < _instances.size(); i++)
-	destroy(_instances[i]);
+        destroy(_instances[i]);
 
     _instances.clear();
 }
@@ -50,7 +50,7 @@ void Instance_Map_Base::clear()
 size_t Instance_Map_Base::_insert(Instance* instance)
 {
     if (_find(instance) != (size_t)-1)
-	return (size_t)-1;
+        return (size_t)-1;
 
     size_t pos = _instances.size();
     _instances.append(instance);
@@ -61,8 +61,8 @@ size_t Instance_Map_Base::_find(const Instance* instance)
 {
     for (size_t i = 0; i < _instances.size(); i++)
     {
-	if (key_eq(_instances[i], instance))
-	    return i;
+        if (key_eq(_instances[i], instance))
+            return i;
     }
 
     return (size_t)-1;
@@ -73,7 +73,7 @@ Instance* Instance_Map_Base::_lookup(const Instance* instance)
     size_t pos = _find(instance);
 
     if (pos == (size_t)-1)
-	return 0;
+        return 0;
 
     return _instances[pos];
 }
@@ -81,7 +81,7 @@ Instance* Instance_Map_Base::_lookup(const Instance* instance)
 void Instance_Map_Base::_remove(size_t pos)
 {
     if (pos < _instances.size())
-	_instances.remove(pos);
+        _instances.remove(pos);
 }
 
 Get_Instance_Status Instance_Map_Base::_get_instance(
@@ -91,7 +91,7 @@ Get_Instance_Status Instance_Map_Base::_get_instance(
     Instance* tmp = _lookup(model);
 
     if (!tmp)
-	return GET_INSTANCE_NOT_FOUND;
+        return GET_INSTANCE_NOT_FOUND;
 
     instance = clone(tmp);
     return GET_INSTANCE_OK;
@@ -104,8 +104,8 @@ Enum_Instances_Status Instance_Map_Base::_enum_instances(
 {
     for (size_t i = 0; i < _instances.size(); i++)
     {
-	Instance* inst = clone(_instances[i]);
-	proc(inst, ENUM_INSTANCES_OK, client_data);
+        Instance* inst = clone(_instances[i]);
+        proc(inst, ENUM_INSTANCES_OK, client_data);
     }
 
     return ENUM_INSTANCES_OK;
@@ -115,7 +115,7 @@ Create_Instance_Status Instance_Map_Base::_create_instance(
     const Instance* instance)
 {
     if (_find(instance) != (size_t)-1)
-	return CREATE_INSTANCE_DUPLICATE;
+        return CREATE_INSTANCE_DUPLICATE;
 
     _instances.append(clone(instance));
     return CREATE_INSTANCE_OK;
@@ -127,7 +127,7 @@ Delete_Instance_Status Instance_Map_Base::_delete_instance(
     size_t pos = _find(instance);
 
     if (pos == (size_t)-1)
-	return DELETE_INSTANCE_NOT_FOUND;
+        return DELETE_INSTANCE_NOT_FOUND;
 
     destroy(_instances[pos]);
     _instances.remove(pos);
@@ -141,7 +141,7 @@ Modify_Instance_Status Instance_Map_Base::_modify_instance(
     size_t pos = _find(instance);
 
     if (pos == (size_t)-1)
-	return MODIFY_INSTANCE_NOT_FOUND;
+        return MODIFY_INSTANCE_NOT_FOUND;
 
     copy(_instances[pos], instance);
 

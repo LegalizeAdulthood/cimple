@@ -48,47 +48,47 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const Instance* model,
-	Instance*& instance);
+        const Instance* model,
+        Instance*& instance);
 
     Enum_Instances_Status enum_instances(
-	const Instance* model, 
-	Enum_Instances_Proc enum_instances_proc,
-	void* client_data);
+        const Instance* model, 
+        Enum_Instances_Proc enum_instances_proc,
+        void* client_data);
 
     Create_Instance_Status create_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Delete_Instance_Status delete_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Modify_Instance_Status modify_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Invoke_Method_Status invoke_method(
-	const Instance* instance,
-	const Instance* method);
+        const Instance* instance,
+        const Instance* method);
 
     Enable_Indications_Status enable_indications(
-	Indication_Proc indication_proc, 
-	void* client_data);
+        Indication_Proc indication_proc, 
+        void* client_data);
 
     Disable_Indications_Status disable_indications();
 
     Enum_Associator_Names_Status enum_associator_names(
-	const Instance* instance,
-	const String& result_class,
-	const String& role,
-	const String& result_role,
-	Enum_Associator_Names_Proc proc,
-	void* client_data);
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associator_Names_Proc proc,
+        void* client_data);
 
     Enum_References_Status enum_references(
-	const Instance* instance,
-	const Instance* model,
-	const String& role,
-	Enum_References_Proc proc,
-	void* client_data);
+        const Instance* instance,
+        const Instance* model,
+        const String& role,
+        Enum_References_Proc proc,
+        void* client_data);
 
     Get_Repository_Status get_repository(
         const Meta_Repository*& meta_repository);
@@ -106,33 +106,33 @@ inline Provider_Handle::Provider_Handle(const Registration* registration) :
     _provider(0)
 {
     (Create_Provider_Status)_proc(_registration,
-	OPERATION_CREATE_PROVIDER, (void*)&_provider, 0, 0, 0, 0, 0, 0, 0);
+        OPERATION_CREATE_PROVIDER, (void*)&_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Provider_Handle::~Provider_Handle()
 {
     (Destroy_Provider_Status)_proc(_registration,
-	OPERATION_DESTROY_PROVIDER, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
+        OPERATION_DESTROY_PROVIDER, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Get_Meta_Class_Status Provider_Handle::get_meta_class(
     const Meta_Class*& meta_class)
 {
     return (Get_Meta_Class_Status)_proc(_registration, 
-	OPERATION_GET_META_CLASS, 
-	(Meta_Class**)&meta_class, 0, 0, 0, 0, 0, 0, 0);
+        OPERATION_GET_META_CLASS, 
+        (Meta_Class**)&meta_class, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Load_Status Provider_Handle::load()
 {
     return (Load_Status)_proc(_registration,
-	OPERATION_LOAD, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
+        OPERATION_LOAD, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Unload_Status Provider_Handle::unload()
 {
     return (Unload_Status)_proc(_registration,
-	OPERATION_UNLOAD, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
+        OPERATION_UNLOAD, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Enum_Instances_Status Provider_Handle::enum_instances(
@@ -141,16 +141,16 @@ inline Enum_Instances_Status Provider_Handle::enum_instances(
     void* client_data)
 {
     return (Enum_Instances_Status)_proc(_registration, OPERATION_ENUM_INSTANCES,
-	_provider, (void*)model, (void*)enum_instances_proc, client_data,
-	0, 0, 0, 0);
+        _provider, (void*)model, (void*)enum_instances_proc, client_data,
+        0, 0, 0, 0);
 }
 
 inline Create_Instance_Status Provider_Handle::create_instance(
     const Instance* instance)
 {
     return (Create_Instance_Status)_proc(_registration, 
-	OPERATION_CREATE_INSTANCE, 
-	_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
+        OPERATION_CREATE_INSTANCE, 
+        _provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
 inline Delete_Instance_Status Provider_Handle::delete_instance(
@@ -158,15 +158,15 @@ inline Delete_Instance_Status Provider_Handle::delete_instance(
 {
     return (Delete_Instance_Status)_proc(_registration, 
     OPERATION_DELETE_INSTANCE, 
-	(void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
+        (void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
 inline Modify_Instance_Status Provider_Handle::modify_instance(
     const Instance* instance)
 {
     return (Modify_Instance_Status)_proc(_registration, 
-	OPERATION_MODIFY_INSTANCE, 
-	(void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
+        OPERATION_MODIFY_INSTANCE, 
+        (void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
 inline Invoke_Method_Status Provider_Handle::invoke_method(
@@ -174,7 +174,7 @@ inline Invoke_Method_Status Provider_Handle::invoke_method(
     const Instance* method)
 {
     return (Invoke_Method_Status)_proc(_registration, OPERATION_INVOKE_METHOD, 
-	(void*)_provider, (void*)instance, (void*)method, 0, 0, 0, 0, 0);
+        (void*)_provider, (void*)instance, (void*)method, 0, 0, 0, 0, 0);
 }
 
 inline Enable_Indications_Status Provider_Handle::enable_indications(
@@ -182,22 +182,22 @@ inline Enable_Indications_Status Provider_Handle::enable_indications(
     void* client_data)
 {
     return (Enable_Indications_Status)_proc(_registration,
-	OPERATION_ENABLE_INDICATIONS, (void*)_provider, 
-	(void*)indication_proc, client_data, 0, 0, 0, 0, 0);
+        OPERATION_ENABLE_INDICATIONS, (void*)_provider, 
+        (void*)indication_proc, client_data, 0, 0, 0, 0, 0);
 }
 
 inline Disable_Indications_Status Provider_Handle::disable_indications()
 {
     return (Disable_Indications_Status)_proc(_registration,
-	OPERATION_DISABLE_INDICATIONS, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
+        OPERATION_DISABLE_INDICATIONS, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Get_Repository_Status Provider_Handle::get_repository(
     const Meta_Repository*& meta_repository)
 {
     return (Get_Repository_Status)_proc(_registration,
-	OPERATION_GET_REPOSITORY, 
-	(void*)&meta_repository, 0, 0, 0, 0, 0, 0, 0);
+        OPERATION_GET_REPOSITORY, 
+        (void*)&meta_repository, 0, 0, 0, 0, 0, 0, 0);
 }
 
 CIMPLE_NAMESPACE_END

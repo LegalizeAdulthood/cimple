@@ -1,0 +1,79 @@
+CIMPLE 0.99.40 Release Notes
+============================
+
+1.  Fixed bug in Datetime formatting, which caused double '-' signs in output.
+
+2.  Fixed bug int cimple::create(), which caused data corruption for some
+    element types in rare cases.
+
+3.  Extended generated meta data to include:
+
+        - Full qualifiers meta data (new Meta_Qualifier structure).
+
+        - Default property values (new Meta_Value structure).
+
+        - All boolean qualifiers are now represented in the Meta_Class::flags
+          member (see constants of the form CIMPLE_FLAG_?).
+
+    Accordingly, metagen now generates qualifiers (use -q) and default values
+    (use -d).
+
+4.  The cimple::create() function now optionally initializes instance 
+    properties to the default given by the class. To use this feature,
+    regenerate your classes with genclass (with -d) and pass true to
+    cimple::create().
+
+5.  Added environment variables (CIMPLE_LIBRARY_PREFIX and 
+    CIMPLE_LIBRARY_SUFFIX), that are affixed to library and program names 
+    to avoid name collisions with other vendors.
+
+6.  Fixed minor memory leaks and corruption as part of ongoing effort.
+
+7.  Added support for multi-class providers. A provider for class A can provide
+    instances of class A, B, C, and so forth, assuming that all they derive 
+    from A. Use CIMPLE cast operator to "cast up" or "cast done". See
+    cast<T*>() operator for more details. See cimple/src/providers/Super
+    for an example.
+
+8.  Added print routines for printing meta data.
+
+9.  Fixed bug in associators operations, which erroneously excluded derived
+    classes from the result set.
+
+10. Fixed leak of mutex handles on Windows, in pthread.cpp.
+
+11. Fixed CMPI adapter to deliver events on the SourceNamespace given by the 
+    subscription, rather than on the formerly hardcoded "root/cimv2" namespace.
+    The same fix is needed in the Pegasus C++ adapter.
+
+12. Ported CIMPLE to the Darwin Operating System, on both IX86 and PPC.
+
+13. Reimplemented Array<> and Datetime classes to promote binary
+    compatibility in future releases.
+
+14. Fixed CIMPLE to work with recent changes to Pegasus-CMPI provider
+    interface. EnableIndications() and DisableIndication() now return
+    a value (before they did not).
+
+15. Created cmpi.mak file (under cimple/src/cmpi/adapter) to enable build
+    with other CMPI implementations (other than Pegasus). This makefile
+    sets the CMPI_ROOT variable used to locate these standard CMPI headers.
+
+        <cmpidt.h>
+        <cmpift.h>
+        <cmpimacs.h>
+
+    To override CMPI_ROOT, define an environment variable with the same name
+    or build CIMPLE with "make CMPI_ROOT=<path>".
+
+16. Fixed bug in Pegasus adapter by removing faulty meta-class caching
+    logic. This bug caused some properties to be lost during conversion.
+
+17. Optimized Pegasus adapter to improve efficiency of CIMPLE providers,
+    which are now as least as fast as Pegasus adapters.
+
+
+18. Added Standalone example provider to illustrate how to create a
+    self contained provider, which contains its own generated meta-classes
+    (rather than linking to a meta-class repository).
+

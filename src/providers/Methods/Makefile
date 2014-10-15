@@ -18,7 +18,7 @@ include $(TOP)/mak/rules.mak
 tests:
 
 reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
+	regmod -d -c $(SHARED_LIBRARY_TARGET)
 
 tests:
 	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)

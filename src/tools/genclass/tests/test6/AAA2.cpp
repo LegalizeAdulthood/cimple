@@ -13,32 +13,35 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Reference _AAA_left;
+extern const Meta_Reference
+_AAA_left;
 
-extern const Meta_Reference _AAA_right;
+extern const Meta_Reference
+_AAA_right;
 
-extern const Meta_Property _AAA2_aaa;
+extern const Meta_Property
+_AAA2_aaa;
 
-const Meta_Property _AAA2_aaa =
+const Meta_Property
+_AAA2_aaa =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "aaa",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(AAA2,aaa)
+    0, /* subscript */
+    CIMPLE_OFF(AAA2,aaa),
+    0, /* value */
 };
 
-static Meta_Feature* _AAA2_meta_features[] =
+static Meta_Feature* _AAA2_MFA[] =
 {
     (Meta_Feature*)&_AAA_left,
     (Meta_Feature*)&_AAA_right,
     (Meta_Feature*)&AAA_fool_method::static_meta_class,
     (Meta_Feature*)&_AAA2_aaa,
-};
-
-static const char* _super_classes[] =
-{
-    "AAA",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -51,17 +54,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class AAA2::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_ASSOCIATION,
     "AAA2",
-    _AAA2_meta_features,
-    CIMPLE_ARRAY_SIZE(_AAA2_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _AAA2_MFA,
+    CIMPLE_ARRAY_SIZE(_AAA2_MFA),
     sizeof(AAA2),
     _locals,
     &AAA::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0xA612DD62,/* crc */
+    0xA612DD62, /* crc */
     0,
 };
 

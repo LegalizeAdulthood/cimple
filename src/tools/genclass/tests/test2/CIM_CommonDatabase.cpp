@@ -13,88 +13,131 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property
+_CIM_ManagedElement_Description;
 
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property
+_CIM_ManagedElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Name;
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_EnabledState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_OtherEnabledState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_RequestedState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_EnabledDefault;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-extern const Meta_Property _CIM_CommonDatabase_InstanceID;
+extern const Meta_Property
+_CIM_CommonDatabase_InstanceID;
 
-const Meta_Property _CIM_CommonDatabase_InstanceID =
+const Meta_Property
+_CIM_CommonDatabase_InstanceID =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "InstanceID",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_CommonDatabase,InstanceID)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_CommonDatabase,InstanceID),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_CommonDatabase_DatabaseVersion;
+extern const Meta_Property
+_CIM_CommonDatabase_DatabaseVersion;
 
-const Meta_Property _CIM_CommonDatabase_DatabaseVersion =
+const Meta_Property
+_CIM_CommonDatabase_DatabaseVersion =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "DatabaseVersion",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_CommonDatabase,DatabaseVersion)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_CommonDatabase,DatabaseVersion),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_CommonDatabase_LastBackup;
+extern const Meta_Property
+_CIM_CommonDatabase_LastBackup;
 
-const Meta_Property _CIM_CommonDatabase_LastBackup =
+const Meta_Property
+_CIM_CommonDatabase_LastBackup =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "LastBackup",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     DATETIME,
-    0,
-    CIMPLE_OFF(CIM_CommonDatabase,LastBackup)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_CommonDatabase,LastBackup),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_CommonDatabase_SizeAllocated;
+extern const Meta_Property
+_CIM_CommonDatabase_SizeAllocated;
 
-const Meta_Property _CIM_CommonDatabase_SizeAllocated =
+const Meta_Property
+_CIM_CommonDatabase_SizeAllocated =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "SizeAllocated",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(CIM_CommonDatabase,SizeAllocated)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_CommonDatabase,SizeAllocated),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_CommonDatabase_SizeUnits;
+extern const Meta_Property
+_CIM_CommonDatabase_SizeUnits;
 
-const Meta_Property _CIM_CommonDatabase_SizeUnits =
+const Meta_Property
+_CIM_CommonDatabase_SizeUnits =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "SizeUnits",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    0,
-    CIMPLE_OFF(CIM_CommonDatabase,SizeUnits)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_CommonDatabase,SizeUnits),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_CommonDatabase_meta_features[] =
+static Meta_Feature* _CIM_CommonDatabase_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_ManagedElement_Description,
@@ -115,14 +158,6 @@ static Meta_Feature* _CIM_CommonDatabase_meta_features[] =
     (Meta_Feature*)&_CIM_CommonDatabase_LastBackup,
     (Meta_Feature*)&_CIM_CommonDatabase_SizeAllocated,
     (Meta_Feature*)&_CIM_CommonDatabase_SizeUnits,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_EnabledLogicalElement",
-    "CIM_LogicalElement",
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -150,17 +185,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_CommonDatabase::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "CIM_CommonDatabase",
-    _CIM_CommonDatabase_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_CommonDatabase_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_CommonDatabase_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_CommonDatabase_MFA),
     sizeof(CIM_CommonDatabase),
     _locals,
     &CIM_EnabledLogicalElement::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     1, /* num_keys */
-    0x8A85F4E2,/* crc */
+    0x8A85F4E2, /* crc */
     0,
 };
 

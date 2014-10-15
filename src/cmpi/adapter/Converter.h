@@ -28,10 +28,8 @@
 #define _cmpi_Converter_h
 
 #include <cimple/config.h>
-#include "cmpidt.h"
-#include "cmpift.h"
-#include "cmpimacs.h"
 #include <cimple/cimple.h>
+#include "cmpi.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

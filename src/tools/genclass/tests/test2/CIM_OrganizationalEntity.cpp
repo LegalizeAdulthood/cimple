@@ -13,22 +13,20 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property
+_CIM_ManagedElement_Description;
 
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property
+_CIM_ManagedElement_ElementName;
 
-static Meta_Feature* _CIM_OrganizationalEntity_meta_features[] =
+static Meta_Feature* _CIM_OrganizationalEntity_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_ManagedElement_Description,
     (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -40,17 +38,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_OrganizationalEntity::static_meta_class =
 {
-    CIMPLE_FLAG_CLASS,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_CLASS|CIMPLE_FLAG_ABSTRACT,
     "CIM_OrganizationalEntity",
-    _CIM_OrganizationalEntity_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_OrganizationalEntity_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_OrganizationalEntity_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_OrganizationalEntity_MFA),
     sizeof(CIM_OrganizationalEntity),
     _locals,
     &CIM_ManagedElement::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0x4540D7DA,/* crc */
+    0x4540D7DA, /* crc */
     0,
 };
 

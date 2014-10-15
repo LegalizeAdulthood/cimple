@@ -52,7 +52,7 @@ public:
     void signal();
 
     /** Blocks until a thread calls signal(). The mutex is unlocked while
-	the thread is waiting and relocked upon wakeup.
+        the thread is waiting and relocked upon wakeup.
     */
     void wait(Mutex& lock);
 

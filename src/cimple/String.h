@@ -122,11 +122,11 @@ private:
 
     struct Rep
     {
-	uint32 size;
-	uint32 cap;
-	Atomic refs;
-	char data[1];
-	Rep() { Atomic_create(&refs, 2); }
+        uint32 size;
+        uint32 cap;
+        Atomic refs;
+        char data[1];
+        Rep() { Atomic_create(&refs, 2); }
     };
 
     static CIMPLE_HIDE Rep* _new(size_t cap);
@@ -147,13 +147,13 @@ private:
 inline void String::_ref(const String::Rep* rep)
 {
     if (rep != &String::_empty)
-	Atomic_inc(&((Rep*)rep)->refs);
+        Atomic_inc(&((Rep*)rep)->refs);
 }
 
 inline void String::_unref(const String::Rep* rep)
 {
     if (rep != &String::_empty && Atomic_dec_and_test(&((Rep*)rep)->refs))
-	::operator delete((Rep*)rep);
+        ::operator delete((Rep*)rep);
 }
 
 inline String::String() : _rep(&_empty)
@@ -173,22 +173,22 @@ inline String::~String()
 inline void String::reserve(size_t n)
 {
     if (n > _rep->cap || Atomic_get(&_rep->refs) != 1)
-	_reserve(n);
+        _reserve(n);
 }
 
 inline void String::assign(const String& s)
 {
     if (&s != this)
     {
-	_unref(_rep);
-	_ref(_rep = s._rep);
+        _unref(_rep);
+        _ref(_rep = s._rep);
     }
 }
 
 inline void String::append(char c)
 {
     if (_rep->size == _rep->cap || Atomic_get(&_rep->refs) != 1)
-	_append_char(c);
+        _append_char(c);
 
     _rep->data[_rep->size++] = c;
     _rep->data[_rep->size] = '\0';
@@ -235,7 +235,7 @@ inline char String::operator[](size_t i) const
 inline bool String::equal(const String& s) const
 {
     return _rep->size == s._rep->size &&
-	memcmp(_rep->data, s._rep->data, _rep->size) == 0;
+        memcmp(_rep->data, s._rep->data, _rep->size) == 0;
 }
 
 inline bool String::equal(const char* s) const
@@ -256,7 +256,7 @@ inline bool String::equal(size_t pos, const char* s, size_t n) const
 inline bool String::equali(const String& s) const
 {
     return _rep->size == s._rep->size &&
-	strncasecmp(_rep->data, s._rep->data, _rep->size) == 0;
+        strncasecmp(_rep->data, s._rep->data, _rep->size) == 0;
 }
 
 inline bool String::equali(const char* s) const
@@ -337,6 +337,21 @@ inline String cat(const String& s1, const String& s2)
     String s = s1;
     s.append(s2);
     return s;
+}
+
+inline bool eqi(const String& s1, const String& s2)
+{
+    return eqi(s1.c_str(), s2.c_str());
+}
+
+inline bool eqi(const String& s1, const char* s2)
+{
+    return eqi(s1.c_str(), s2);
+}
+
+inline bool eqi(const char* s1, const String& s2)
+{
+    return eqi(s1, s2.c_str());
 }
 
 CIMPLE_NAMESPACE_END

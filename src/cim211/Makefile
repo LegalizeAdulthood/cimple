@@ -1,4 +1,4 @@
-TOP = $(HOME)/cimple
+TOP = ../..
 include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = cim211
@@ -14,6 +14,6 @@ DEFINES += -DCIMPLE_INTERNAL
 include $(TOP)/mak/rules.mak
 
 genclass:
-	genclass -s -r -l
+	genclass -q -s -r -l
 
-CLEAN += $(SOURCES)
+CLEAN += $(SOURCES) $(SOURCES:.cpp=.h)

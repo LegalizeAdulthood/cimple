@@ -13,97 +13,145 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property
+_CIM_ManagedElement_Description;
 
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property
+_CIM_ManagedElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_System_Name;
+extern const Meta_Property
+_CIM_System_Name;
 
-const Meta_Property _CIM_System_Name =
+const Meta_Property
+_CIM_System_Name =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "Name",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_System,Name)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_System,Name),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_EnabledState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_OtherEnabledState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_RequestedState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_EnabledDefault;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-extern const Meta_Property _CIM_System_CreationClassName;
+extern const Meta_Property
+_CIM_System_CreationClassName;
 
-const Meta_Property _CIM_System_CreationClassName =
+const Meta_Property
+_CIM_System_CreationClassName =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "CreationClassName",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_System,CreationClassName)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_System,CreationClassName),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_System_NameFormat;
+extern const Meta_Property
+_CIM_System_NameFormat;
 
-const Meta_Property _CIM_System_NameFormat =
+const Meta_Property
+_CIM_System_NameFormat =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "NameFormat",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_System,NameFormat)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_System,NameFormat),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_System_PrimaryOwnerName;
+extern const Meta_Property
+_CIM_System_PrimaryOwnerName;
 
-const Meta_Property _CIM_System_PrimaryOwnerName =
+const Meta_Property
+_CIM_System_PrimaryOwnerName =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ|CIMPLE_FLAG_WRITE,
     "PrimaryOwnerName",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_System,PrimaryOwnerName)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_System,PrimaryOwnerName),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_System_PrimaryOwnerContact;
+extern const Meta_Property
+_CIM_System_PrimaryOwnerContact;
 
-const Meta_Property _CIM_System_PrimaryOwnerContact =
+const Meta_Property
+_CIM_System_PrimaryOwnerContact =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ|CIMPLE_FLAG_WRITE,
     "PrimaryOwnerContact",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_System,PrimaryOwnerContact)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_System,PrimaryOwnerContact),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_System_Roles;
+extern const Meta_Property
+_CIM_System_Roles;
 
-const Meta_Property _CIM_System_Roles =
+const Meta_Property
+_CIM_System_Roles =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ|CIMPLE_FLAG_WRITE,
     "Roles",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(CIM_System,Roles)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_System,Roles),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_System_meta_features[] =
+static Meta_Feature* _CIM_System_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_ManagedElement_Description,
@@ -124,14 +172,6 @@ static Meta_Feature* _CIM_System_meta_features[] =
     (Meta_Feature*)&_CIM_System_PrimaryOwnerName,
     (Meta_Feature*)&_CIM_System_PrimaryOwnerContact,
     (Meta_Feature*)&_CIM_System_Roles,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_EnabledLogicalElement",
-    "CIM_LogicalElement",
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -159,17 +199,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_System::static_meta_class =
 {
-    CIMPLE_FLAG_CLASS,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_CLASS|CIMPLE_FLAG_ABSTRACT,
     "CIM_System",
-    _CIM_System_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_System_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_System_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_System_MFA),
     sizeof(CIM_System),
     _locals,
     &CIM_EnabledLogicalElement::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0x99E12464,/* crc */
+    0x99E12464, /* crc */
     0,
 };
 

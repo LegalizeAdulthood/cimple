@@ -24,20 +24,21 @@
 **==============================================================================
 */
 
-#ifndef _provmgr_Converter_h
-#define _provmgr_Converter_h
+#ifndef _pegadapter_Converter_h
+#define _pegadapter_Converter_h
 
 #include <Pegasus/Common/Config.h>
 #include <Pegasus/Common/CIMInstance.h>
 #include <Pegasus/Common/CIMObjectPath.h>
 #include <Pegasus/Common/CIMParamValue.h>
 #include <cimple/cimple.h>
+#include "Linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
 typedef Pegasus::Array<Pegasus::CIMKeyBinding> Key_Bindings;
 
-class CIMPLE_HIDE Converter
+class CIMPLE_PEGADAP_LINKAGE Converter
 {
 public:
 
@@ -88,4 +89,4 @@ public:
 
 CIMPLE_NAMESPACE_END
 
-#endif /* _provmgr_Converter_h */
+#endif /* _pegadapter_Converter_h */

@@ -80,22 +80,17 @@ regress:
 ##
 ##==============================================================================
 
-VERSION=0.99.34-beta
-TAG=cimple_0_99_34_beta
-PRIOR_TAG=cimple_0_99_32_beta
-
-##------------------------------------------------------------------------------
+VERSION=0.99.40
+TAG=cimple_0_99_40
 
 TARBALL=cimple-$(VERSION).tar.gz
 DIFF_FILE=cimple-$(VERSION).diff
 RELEASE_NOTES=cimple-$(VERSION)-release-notes.txt
 PREFIX=$(HOME)/websites/www.cimple.org
 
-release:
+dist:
 	$(MAKE) distclean > /dev/null
 	cvs tag -F $(TAG)
-	- cvs diff -r $(PRIOR_TAG) > $(PREFIX)/$(DIFF_FILE)
 	( cd ..; tar zcvf $(PREFIX)/$(TARBALL) cimple )
-	cp doc/$(RELEASE_NOTES) $(PREFIX)/
 	@ echo done
 

@@ -51,9 +51,15 @@ public:
 
     void validate_list(int expected_scope);
 
+    void set_owning_class(const char* owning_class_)
+    {
+        owning_class = strdup(owning_class_);
+    }
+
     char* name;
     class MOF_Literal* params;
     MOF_mask flavor;
+    char* owning_class;
 };
 
 #endif /* _MOF_Qualifier_h */

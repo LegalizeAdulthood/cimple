@@ -44,6 +44,7 @@ void MOF_Method_Decl::print() const
 
 void MOF_Method_Decl::validate()
 {
+    assert(owning_class != 0);
     parameters->check_duplicates();
 }
 
@@ -87,4 +88,12 @@ void MOF_Method_Decl::check_compatibility(
 	    "conflicting types for method \"%s\"", m1->name);
 	return;
     }
+}
+
+void MOF_Method_Decl::set_owning_class(const char* owning_class)
+{
+    MOF_Qualified_Element::set_owning_class(owning_class);
+
+    for (MOF_Parameter* p = parameters; p; p = (MOF_Parameter*)p->next)
+        p->set_owning_class(owning_class);
 }

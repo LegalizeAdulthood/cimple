@@ -13,51 +13,75 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _Erp2_w;
+extern const Meta_Property
+_Erp2_w;
 
-const Meta_Property _Erp2_w =
+const Meta_Property
+_Erp2_w =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "w",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(Erp2,w)
+    0, /* subscript */
+    CIMPLE_OFF(Erp2,w),
+    0, /* value */
 };
 
-extern const Meta_Property _Erp2_x;
+extern const Meta_Property
+_Erp2_x;
 
-const Meta_Property _Erp2_x =
+const Meta_Property
+_Erp2_x =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "x",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(Erp2,x)
+    0, /* subscript */
+    CIMPLE_OFF(Erp2,x),
+    0, /* value */
 };
 
-extern const Meta_Property _Erp2_y;
+extern const Meta_Property
+_Erp2_y;
 
-const Meta_Property _Erp2_y =
+const Meta_Property
+_Erp2_y =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "y",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(Erp2,y)
+    -1, /* subscript */
+    CIMPLE_OFF(Erp2,y),
+    0, /* value */
 };
 
-extern const Meta_Property _Erp2_z;
+extern const Meta_Property
+_Erp2_z;
 
-const Meta_Property _Erp2_z =
+const Meta_Property
+_Erp2_z =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "z",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    3,
-    CIMPLE_OFF(Erp2,z)
+    3, /* subscript */
+    CIMPLE_OFF(Erp2,z),
+    0, /* value */
 };
 
-static Meta_Feature* _Erp2_meta_features[] =
+static Meta_Feature* _Erp2_MFA[] =
 {
     (Meta_Feature*)&_Erp2_w,
     (Meta_Feature*)&_Erp2_x,
@@ -75,17 +99,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Erp2::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Erp2",
-    _Erp2_meta_features,
-    CIMPLE_ARRAY_SIZE(_Erp2_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Erp2_MFA,
+    CIMPLE_ARRAY_SIZE(_Erp2_MFA),
     sizeof(Erp2),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     1, /* num_keys */
-    0x2DA47FD5,/* crc */
+    0x2DA47FD5, /* crc */
     0,
 };
 

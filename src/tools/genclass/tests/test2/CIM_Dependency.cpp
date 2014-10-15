@@ -13,27 +13,37 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Reference _CIM_Dependency_Antecedent;
+extern const Meta_Reference
+_CIM_Dependency_Antecedent;
 
-const Meta_Reference _CIM_Dependency_Antecedent =
+const Meta_Reference
+_CIM_Dependency_Antecedent =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "Antecedent",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &CIM_ManagedElement::static_meta_class,
     CIMPLE_OFF(CIM_Dependency,Antecedent)
 };
 
-extern const Meta_Reference _CIM_Dependency_Dependent;
+extern const Meta_Reference
+_CIM_Dependency_Dependent;
 
-const Meta_Reference _CIM_Dependency_Dependent =
+const Meta_Reference
+_CIM_Dependency_Dependent =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "Dependent",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &CIM_ManagedElement::static_meta_class,
     CIMPLE_OFF(CIM_Dependency,Dependent)
 };
 
-static Meta_Feature* _CIM_Dependency_meta_features[] =
+static Meta_Feature* _CIM_Dependency_MFA[] =
 {
     (Meta_Feature*)&_CIM_Dependency_Antecedent,
     (Meta_Feature*)&_CIM_Dependency_Dependent,
@@ -47,17 +57,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_Dependency::static_meta_class =
 {
-    CIMPLE_FLAG_ASSOCIATION,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_ASSOCIATION|CIMPLE_FLAG_ABSTRACT,
     "CIM_Dependency",
-    _CIM_Dependency_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_Dependency_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_Dependency_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_Dependency_MFA),
     sizeof(CIM_Dependency),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     2, /* num_keys */
-    0xFE53221F,/* crc */
+    0xFE53221F, /* crc */
     0,
 };
 

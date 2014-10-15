@@ -29,12 +29,43 @@
 
 //------------------------------------------------------------------------------
 //
-// CIMPLE_NEED_RANDOM_INITIALIZE
+// CIMPLE_HAVE_PROPERTY_PADDING
 //
-//     Controls whether the random_initialize() function is compiled.
+//     Controls whether Property<> objects are padded so that that their size
+//     is 16 bytes.
 //
 //------------------------------------------------------------------------------
 
-//#define CIMPLE_NEED_RANDOM_INITIALIZE
+//#define CIMPLE_HAVE_PROPERTY_PADDING
+
+//------------------------------------------------------------------------------
+//
+// CIMPLE_ENABLE_SUBCLASS_PROVIDERS
+//
+//     Controls whether providers can provide subclasses of the class for
+//     which they were generated.
+//
+//------------------------------------------------------------------------------
+
+#define CIMPLE_ENABLE_SUBCLASS_PROVIDERS
+
+//------------------------------------------------------------------------------
+//
+// CIMPLE_HAVE_CMPI_ENABLE_INDICATIONS_FIX
+//
+//     Whether Pegasus has the fix to the CMPI enableIndications (and 
+//     disableIndications) that corrects the faulty prototype from
+// 
+//         void (*enableIndications)(...)
+//
+//     to
+//
+//         CMPIStatus (*enableIndications)(...)
+//
+//------------------------------------------------------------------------------
+
+#if defined(PEGASUS_VERSION_NUMBER) && PEGASUS_VERSION_NUMBER >= 0x02060000
+# define CIMPLE_HAVE_CMPI_ENABLE_INDICATIONS_FIX
+#endif
 
 #endif /* _cimple_options_h */

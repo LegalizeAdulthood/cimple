@@ -3,7 +3,7 @@ Usage: %s [-cvh] provider-module-library
 Where:
     -c : create classes (or delete them when -u present)
     -i : delete indirect classes (when -u and -c present)
-    -s : create subclasses of provided class (or delete them when -u present)
+    -s : provide subclasses of the provided class (or delete them with -u)
     -v : verbose mode
     -n namespace : provider namespace (may occur multiple times)
     -d : dump the MOF registration instances to standard output

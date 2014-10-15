@@ -42,14 +42,14 @@ Mutex::Mutex(bool recursive)
 
     if (recursive)
     {
-	pthread_mutexattr_t attr;
-	pthread_mutexattr_init(&attr);
-	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
-	pthread_mutex_init(&((MutexRep*)_rep)->mutex, &attr);
-	pthread_mutexattr_destroy(&attr);
+        pthread_mutexattr_t attr;
+        pthread_mutexattr_init(&attr);
+        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+        pthread_mutex_init(&((MutexRep*)_rep)->mutex, &attr);
+        pthread_mutexattr_destroy(&attr);
     }
     else
-	pthread_mutex_init(&((MutexRep*)_rep)->mutex, NULL);
+        pthread_mutex_init(&((MutexRep*)_rep)->mutex, NULL);
 }
 
 Mutex::~Mutex()

@@ -40,9 +40,9 @@ CIMPLE_NAMESPACE_BEGIN
     elements. This class is similar to the STL #vector class but offers three 
     major advantages.
 
-	- It causes virtually no code bloat due to template usage.
-	- It offers binary compatibility from one release to the next.
-	- It provides a simplified index-oriented interface (no iterators).
+        - It causes virtually no code bloat due to template usage.
+        - It offers binary compatibility from one release to the next.
+        - It provides a simplified index-oriented interface (no iterators).
 
     The snippet below creates an array with three integers.
 
@@ -58,7 +58,7 @@ CIMPLE_NAMESPACE_BEGIN
 
     \code
     for (size_t i = 0; i < a.size(); i++)
-	printf("%d\n", a[i]);
+        printf("%d\n", a[i]);
     \endcode
 
     Arrays can also be used to manage sequences of class objects. For example,
@@ -75,9 +75,9 @@ CIMPLE_NAMESPACE_BEGIN
 
     The following functions are used to add elements to an array.
 
-	- #insert()
-	- #prepend()
-	- #append()
+        - #insert()
+        - #prepend()
+        - #append()
 
     Prepend() adds elements to the beginning of the array and append() adds
     them to the end. Insert() adds elements at a given position. The example
@@ -151,7 +151,7 @@ CIMPLE_NAMESPACE_BEGIN
     a.reserve(100);
 
     for (size_t i = 0; i < 100; i++)
-	a.append(i);
+        a.append(i);
     \endcode
 
     \section section6 Error Checking
@@ -208,7 +208,7 @@ public:
     size_t size() const;
 
     /** Returns the number of elements the array has room for. The following
-	invariant is always true: capacity() >= size().
+        invariant is always true: capacity() >= size().
     */
     size_t capacity() const;
 
@@ -230,13 +230,13 @@ public:
 
     /** Increases the internal allocation to accomodate the given number of
         elements if capacity is greater than capacity(). Note that this function
-	has no effect on the size() of the array.
+        has no effect on the size() of the array.
     */
     void reserve(size_t capacity);
 
     /** Change the size of the array. If size is less than size(), elements are
-	removed. If size() is greater than size(), then new elements are added.
-	Upon return, size() is the same as size.
+        removed. If size() is greater than size(), then new elements are added.
+        Upon return, size() is the same as size.
     */
     void resize(size_t size);
 
@@ -281,7 +281,7 @@ public:
     void swap(Array& x);
 
     /** Attempts to find the an element that is equal to x.
-	@return position matching element or size_t(-1) if not found.
+        @return position matching element or size_t(-1) if not found.
     */
     size_t find(const T& x) const;
 
@@ -305,7 +305,8 @@ inline Array<T>::Array(const Array& x)
 template<class T>
 inline Array<T>::Array(const T* data, size_t size)
 {
-    __construct(_rep, __Array_Traits_Factory<T>::traits(), data, size);
+    __construct(
+        _rep, __Array_Traits_Factory<T>::traits(), (const char*)data, size);
 }
 
 template<class T>

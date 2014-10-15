@@ -13,178 +13,262 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_75E2CB8B53E2155E90DBB99ABED114CA;
+extern const Meta_Repository __meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_PhysicalElement_Description;
+extern const Meta_Property
+_CIM_PhysicalElement_Description;
 
-extern const Meta_Property _CIM_PhysicalElement_ElementName;
+extern const Meta_Property
+_CIM_PhysicalElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Name;
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-extern const Meta_Property _CIM_PhysicalElement_Tag;
+extern const Meta_Property
+_CIM_PhysicalElement_Tag;
 
-extern const Meta_Property _CIM_PhysicalElement_CreationClassName;
+extern const Meta_Property
+_CIM_PhysicalElement_CreationClassName;
 
-extern const Meta_Property _CIM_PhysicalElement_Manufacturer;
+extern const Meta_Property
+_CIM_PhysicalElement_Manufacturer;
 
-extern const Meta_Property _CIM_PhysicalElement_Model;
+extern const Meta_Property
+_CIM_PhysicalElement_Model;
 
-extern const Meta_Property _CIM_PhysicalElement_SKU;
+extern const Meta_Property
+_CIM_PhysicalElement_SKU;
 
-extern const Meta_Property _CIM_PhysicalElement_SerialNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_SerialNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_Version;
+extern const Meta_Property
+_CIM_PhysicalElement_Version;
 
-extern const Meta_Property _CIM_PhysicalElement_PartNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_PartNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_OtherIdentifyingInfo;
+extern const Meta_Property
+_CIM_PhysicalElement_OtherIdentifyingInfo;
 
-extern const Meta_Property _CIM_PhysicalElement_PoweredOn;
+extern const Meta_Property
+_CIM_PhysicalElement_PoweredOn;
 
-extern const Meta_Property _CIM_PhysicalElement_ManufactureDate;
+extern const Meta_Property
+_CIM_PhysicalElement_ManufactureDate;
 
-extern const Meta_Property _CIM_PhysicalElement_VendorEquipmentType;
+extern const Meta_Property
+_CIM_PhysicalElement_VendorEquipmentType;
 
-extern const Meta_Property _CIM_PhysicalElement_UserTracking;
+extern const Meta_Property
+_CIM_PhysicalElement_UserTracking;
 
-extern const Meta_Property _CIM_PhysicalElement_CanBeFRUed;
+extern const Meta_Property
+_CIM_PhysicalElement_CanBeFRUed;
 
-extern const Meta_Property _CIM_PhysicalPackage_RemovalConditions;
+extern const Meta_Property
+_CIM_PhysicalPackage_RemovalConditions;
 
-extern const Meta_Property _CIM_PhysicalPackage_Removable;
+extern const Meta_Property
+_CIM_PhysicalPackage_Removable;
 
-extern const Meta_Property _CIM_PhysicalPackage_Replaceable;
+extern const Meta_Property
+_CIM_PhysicalPackage_Replaceable;
 
-extern const Meta_Property _CIM_PhysicalPackage_HotSwappable;
+extern const Meta_Property
+_CIM_PhysicalPackage_HotSwappable;
 
-extern const Meta_Property _CIM_PhysicalPackage_Height;
+extern const Meta_Property
+_CIM_PhysicalPackage_Height;
 
-extern const Meta_Property _CIM_PhysicalPackage_Depth;
+extern const Meta_Property
+_CIM_PhysicalPackage_Depth;
 
-extern const Meta_Property _CIM_PhysicalPackage_Width;
+extern const Meta_Property
+_CIM_PhysicalPackage_Width;
 
-extern const Meta_Property _CIM_PhysicalPackage_Weight;
+extern const Meta_Property
+_CIM_PhysicalPackage_Weight;
 
-extern const Meta_Property _CIM_Card_HostingBoard;
+extern const Meta_Property
+_CIM_Card_HostingBoard;
 
-const Meta_Property _CIM_Card_HostingBoard =
+const Meta_Property
+_CIM_Card_HostingBoard =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "HostingBoard",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(CIM_Card,HostingBoard)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_Card,HostingBoard),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_Card_SlotLayout;
+extern const Meta_Property
+_CIM_Card_SlotLayout;
 
-const Meta_Property _CIM_Card_SlotLayout =
+const Meta_Property
+_CIM_Card_SlotLayout =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "SlotLayout",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_Card,SlotLayout)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_Card,SlotLayout),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_Card_RequiresDaughterBoard;
+extern const Meta_Property
+_CIM_Card_RequiresDaughterBoard;
 
-const Meta_Property _CIM_Card_RequiresDaughterBoard =
+const Meta_Property
+_CIM_Card_RequiresDaughterBoard =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "RequiresDaughterBoard",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(CIM_Card,RequiresDaughterBoard)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_Card,RequiresDaughterBoard),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_Card_SpecialRequirements;
+extern const Meta_Property
+_CIM_Card_SpecialRequirements;
 
-const Meta_Property _CIM_Card_SpecialRequirements =
+const Meta_Property
+_CIM_Card_SpecialRequirements =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "SpecialRequirements",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(CIM_Card,SpecialRequirements)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_Card,SpecialRequirements),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_Card_RequirementsDescription;
+extern const Meta_Property
+_CIM_Card_RequirementsDescription;
 
-const Meta_Property _CIM_Card_RequirementsDescription =
+const Meta_Property
+_CIM_Card_RequirementsDescription =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "RequirementsDescription",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_Card,RequirementsDescription)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_Card,RequirementsDescription),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_Card_OperatingVoltages;
+extern const Meta_Property
+_CIM_Card_OperatingVoltages;
 
-const Meta_Property _CIM_Card_OperatingVoltages =
+const Meta_Property
+_CIM_Card_OperatingVoltages =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "OperatingVoltages",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT16,
-    -1,
-    CIMPLE_OFF(CIM_Card,OperatingVoltages)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_Card,OperatingVoltages),
+    0, /* value */
 };
 
-static const Meta_Reference _CIM_Card_ConnectorPower_Connector =
+static const Meta_Reference
+_CIM_Card_ConnectorPower_Connector =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_IN,
     "Connector",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &CIM_PhysicalConnector::static_meta_class,
     CIMPLE_OFF(CIM_Card_ConnectorPower_method,Connector)
 };
 
-static const Meta_Property _CIM_Card_ConnectorPower_PoweredOn =
+static const Meta_Property
+_CIM_Card_ConnectorPower_PoweredOn =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
     "PoweredOn",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
     0,
-    CIMPLE_OFF(CIM_Card_ConnectorPower_method,PoweredOn)
+    CIMPLE_OFF(CIM_Card_ConnectorPower_method,PoweredOn),
+    0, /* value */
 };
 
-static const Meta_Property _CIM_Card_ConnectorPower_return_value =
+static const Meta_Property
+_CIM_Card_ConnectorPower_return_value =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
     "return_value",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
     0,
-    CIMPLE_OFF(CIM_Card_ConnectorPower_method,return_value)
+    CIMPLE_OFF(CIM_Card_ConnectorPower_method,return_value),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_Card_ConnectorPower_meta_features[] =
+static Meta_Feature* _CIM_Card_ConnectorPower_MFA[] =
 {
     (Meta_Feature*)&_CIM_Card_ConnectorPower_Connector,
     (Meta_Feature*)&_CIM_Card_ConnectorPower_PoweredOn,
     (Meta_Feature*)&_CIM_Card_ConnectorPower_return_value
 };
 
-const Meta_Method CIM_Card_ConnectorPower_method::static_meta_class =
+const Meta_Method
+CIM_Card_ConnectorPower_method::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_METHOD,
     "ConnectorPower",
-    _CIM_Card_ConnectorPower_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_Card_ConnectorPower_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_Card_ConnectorPower_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_Card_ConnectorPower_MFA),
     sizeof(CIM_Card_ConnectorPower_method),
     UINT32,
 };
 
-static Meta_Feature* _CIM_Card_meta_features[] =
+static Meta_Feature* _CIM_Card_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_PhysicalElement_Description,
@@ -224,14 +308,6 @@ static Meta_Feature* _CIM_Card_meta_features[] =
     (Meta_Feature*)&_CIM_Card_RequirementsDescription,
     (Meta_Feature*)&_CIM_Card_OperatingVoltages,
     (Meta_Feature*)&CIM_Card_ConnectorPower_method::static_meta_class,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_PhysicalPackage",
-    "CIM_PhysicalElement",
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -278,18 +354,19 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_Card::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "CIM_Card",
-    _CIM_Card_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_Card_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_Card_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_Card_MFA),
     sizeof(CIM_Card),
     _locals,
     &CIM_PhysicalPackage::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0x9C430412,/* crc */
-    &__meta_repository_75E2CB8B53E2155E90DBB99ABED114CA,
+    0x9C430412, /* crc */
+    &__meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6,
 };
 
 CIMPLE_NAMESPACE_END

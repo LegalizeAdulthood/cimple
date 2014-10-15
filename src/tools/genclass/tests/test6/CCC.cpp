@@ -13,85 +13,112 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _BBB_counter;
+extern const Meta_Property
+_BBB_counter;
 
-extern const Meta_Property _CCC_key;
+extern const Meta_Property
+_CCC_key;
 
-const Meta_Property _CCC_key =
+const Meta_Property
+_CCC_key =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "key",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CCC,key)
+    0, /* subscript */
+    CIMPLE_OFF(CCC,key),
+    0, /* value */
 };
 
-extern const Meta_Property _CCC_bbb;
+extern const Meta_Property
+_CCC_bbb;
 
-const Meta_Property _CCC_bbb =
+const Meta_Property
+_CCC_bbb =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "bbb",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(CCC,bbb)
+    0, /* subscript */
+    CIMPLE_OFF(CCC,bbb),
+    0, /* value */
 };
 
-static const Meta_Property _CCC_foo_arg1 =
+static const Meta_Property
+_CCC_foo_arg1 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
     "arg1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
     0,
-    CIMPLE_OFF(CCC_foo_method,arg1)
+    CIMPLE_OFF(CCC_foo_method,arg1),
+    0, /* value */
 };
 
-static const Meta_Property _CCC_foo_arg2 =
+static const Meta_Property
+_CCC_foo_arg2 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
     "arg2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
     0,
-    CIMPLE_OFF(CCC_foo_method,arg2)
+    CIMPLE_OFF(CCC_foo_method,arg2),
+    0, /* value */
 };
 
-static const Meta_Property _CCC_foo_return_value =
+static const Meta_Property
+_CCC_foo_return_value =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
     "return_value",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
     0,
-    CIMPLE_OFF(CCC_foo_method,return_value)
+    CIMPLE_OFF(CCC_foo_method,return_value),
+    0, /* value */
 };
 
-static Meta_Feature* _CCC_foo_meta_features[] =
+static Meta_Feature* _CCC_foo_MFA[] =
 {
     (Meta_Feature*)&_CCC_foo_arg1,
     (Meta_Feature*)&_CCC_foo_arg2,
     (Meta_Feature*)&_CCC_foo_return_value
 };
 
-const Meta_Method CCC_foo_method::static_meta_class =
+const Meta_Method
+CCC_foo_method::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_METHOD,
     "foo",
-    _CCC_foo_meta_features,
-    CIMPLE_ARRAY_SIZE(_CCC_foo_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CCC_foo_MFA,
+    CIMPLE_ARRAY_SIZE(_CCC_foo_MFA),
     sizeof(CCC_foo_method),
     UINT32,
 };
 
-static Meta_Feature* _CCC_meta_features[] =
+static Meta_Feature* _CCC_MFA[] =
 {
     (Meta_Feature*)&_BBB_counter,
     (Meta_Feature*)&_CCC_key,
     (Meta_Feature*)&_CCC_bbb,
     (Meta_Feature*)&CCC_foo_method::static_meta_class,
-};
-
-static const char* _super_classes[] =
-{
-    "BBB",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -104,17 +131,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CCC::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "CCC",
-    _CCC_meta_features,
-    CIMPLE_ARRAY_SIZE(_CCC_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CCC_MFA,
+    CIMPLE_ARRAY_SIZE(_CCC_MFA),
     sizeof(CCC),
     _locals,
     &BBB::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0x3EA79480,/* crc */
+    0x3EA79480, /* crc */
     0,
 };
 

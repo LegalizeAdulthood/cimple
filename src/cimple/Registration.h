@@ -33,15 +33,15 @@
     static cimple::Registration* _cimple_registration_head = 0; \
     static const char* _cimple_module_name = #MODULE; \
     extern "C" CIMPLE_EXPORT cimple::Registration* cimple_module() \
-	{ return _cimple_registration_head; }
+        { return _cimple_registration_head; }
 
 #define CIMPLE_PROVIDER(PROVIDER) \
     static cimple::Registration _cimple_registration_##PROVIDER( \
-	_cimple_module_name, \
-	#PROVIDER, \
-	cimple::PROVIDER::proc, \
-	&cimple::PROVIDER::Class::static_meta_class, \
-	_cimple_registration_head);
+        _cimple_module_name, \
+        #PROVIDER, \
+        cimple::PROVIDER::proc, \
+        &cimple::PROVIDER::Class::static_meta_class, \
+        _cimple_registration_head);
 
 //==============================================================================
 //
@@ -55,10 +55,10 @@
         void* arg4, void* arg5, void* arg6, void* arg7); \
     extern "C" CIMPLE_EXPORT void* PegasusCreateProvider(void* arg) \
     { \
-	void* adapter = 0; \
-	cimple_pegasus_adapter( \
-	    (void*)'P', arg, _cimple_registration_head, &adapter, 0, 0, 0, 0); \
-	return adapter; \
+        void* adapter = 0; \
+        cimple_pegasus_adapter( \
+            (void*)'P', arg, _cimple_registration_head, &adapter, 0, 0, 0, 0); \
+        return adapter; \
     }
 
 //==============================================================================
@@ -72,21 +72,21 @@
         void* arg0, void* arg1, void* arg2, void* arg3, \
         void* arg4, void* arg5, void* arg6, void* arg7); \
     extern "C" CIMPLE_EXPORT void* PROVIDER##_Create_##TYPE_NAME##MI( \
-	void* cmpi_broker, \
-	void* cmpi_context, \
-	void* cmpi_status) \
+        void* cmpi_broker, \
+        void* cmpi_context, \
+        void* cmpi_status) \
     { \
-	void* _mi = 0; \
-	cimple_cmpi_adapter( \
-	    (void*)'C', \
-	    (void*)&_adapter##PROVIDER, \
-	    (void*)&_cimple_registration_##PROVIDER, \
-	    (void*)cmpi_broker, \
-	    (void*)cmpi_context, \
-	    (void*)#PROVIDER, \
-	    (void*)TYPE, \
-	    (void*)&_mi); \
-	return _mi; \
+        void* _mi = 0; \
+        cimple_cmpi_adapter( \
+            (void*)'C', \
+            (void*)&_adapter##PROVIDER, \
+            (void*)&_cimple_registration_##PROVIDER, \
+            (void*)cmpi_broker, \
+            (void*)cmpi_context, \
+            (void*)#PROVIDER, \
+            (void*)TYPE, \
+            (void*)&_mi); \
+        return _mi; \
     }
 
 #define CIMPLE_CMPI_INSTANCE_PROVIDER(PROVIDER)  \
@@ -136,11 +136,11 @@ struct CIMPLE_CIMPLE_LINKAGE Registration
     Registration* next;
 
     Registration(
-	const char* module_name_,
-	const char* provider_name_, 
-	Provider_Proc provider_proc_,
-	const Meta_Class* meta_class_,
-	Registration*& next_);
+        const char* module_name_,
+        const char* provider_name_, 
+        Provider_Proc provider_proc_,
+        const Meta_Class* meta_class_,
+        Registration*& next_);
 };
 
 inline Registration::Registration(

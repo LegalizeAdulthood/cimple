@@ -61,9 +61,9 @@ static Stack* _stack()
 
     if (stack == 0)
     {
-	stack = new Stack;
-	stack->size = 0;
-	pthread_setspecific(_key, stack);
+        stack = new Stack;
+        stack->size = 0;
+        pthread_setspecific(_key, stack);
     }
 
     return stack;
@@ -85,8 +85,8 @@ void Thread_Context::pop()
 
     if (stack->size == 0)
     {
-	pthread_setspecific(_key, NULL);
-	delete stack;
+        pthread_setspecific(_key, NULL);
+        delete stack;
     }
 }
 
@@ -95,7 +95,7 @@ Thread_Context* Thread_Context::top()
     Stack* stack = _stack();
 
     if (stack->size != 0)
-	return stack->data[stack->size-1];
+        return stack->data[stack->size-1];
 
     return 0;
 }

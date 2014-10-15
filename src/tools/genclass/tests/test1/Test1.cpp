@@ -13,469 +13,721 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _Test1_field1;
+extern const Meta_Property
+_Test1_field1;
 
-const Meta_Property _Test1_field1 =
+const Meta_Property
+_Test1_field1 =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "field1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(Test1,field1)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field1),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field2;
+extern const Meta_Property
+_Test1_field2;
 
-const Meta_Property _Test1_field2 =
+const Meta_Property
+_Test1_field2 =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "field2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT8,
-    0,
-    CIMPLE_OFF(Test1,field2)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field2),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field3;
+extern const Meta_Property
+_Test1_field3;
 
-const Meta_Property _Test1_field3 =
+const Meta_Property
+_Test1_field3 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field3",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT8,
-    0,
-    CIMPLE_OFF(Test1,field3)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field3),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field4;
+extern const Meta_Property
+_Test1_field4;
 
-const Meta_Property _Test1_field4 =
+const Meta_Property
+_Test1_field4 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field4",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT16,
-    0,
-    CIMPLE_OFF(Test1,field4)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field4),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field5;
+extern const Meta_Property
+_Test1_field5;
 
-const Meta_Property _Test1_field5 =
+const Meta_Property
+_Test1_field5 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field5",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    0,
-    CIMPLE_OFF(Test1,field5)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field5),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field6;
+extern const Meta_Property
+_Test1_field6;
 
-const Meta_Property _Test1_field6 =
+const Meta_Property
+_Test1_field6 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field6",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT32,
-    0,
-    CIMPLE_OFF(Test1,field6)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field6),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field7;
+extern const Meta_Property
+_Test1_field7;
 
-const Meta_Property _Test1_field7 =
+const Meta_Property
+_Test1_field7 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field7",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(Test1,field7)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field7),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field8;
+extern const Meta_Property
+_Test1_field8;
 
-const Meta_Property _Test1_field8 =
+const Meta_Property
+_Test1_field8 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field8",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT64,
-    0,
-    CIMPLE_OFF(Test1,field8)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field8),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field9;
+extern const Meta_Property
+_Test1_field9;
 
-const Meta_Property _Test1_field9 =
+const Meta_Property
+_Test1_field9 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field9",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT64,
-    0,
-    CIMPLE_OFF(Test1,field9)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field9),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field10;
+extern const Meta_Property
+_Test1_field10;
 
-const Meta_Property _Test1_field10 =
+const Meta_Property
+_Test1_field10 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field10",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL32,
-    0,
-    CIMPLE_OFF(Test1,field10)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field10),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field11;
+extern const Meta_Property
+_Test1_field11;
 
-const Meta_Property _Test1_field11 =
+const Meta_Property
+_Test1_field11 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field11",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL64,
-    0,
-    CIMPLE_OFF(Test1,field11)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field11),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field12;
+extern const Meta_Property
+_Test1_field12;
 
-const Meta_Property _Test1_field12 =
+const Meta_Property
+_Test1_field12 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field12",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     CHAR16,
-    0,
-    CIMPLE_OFF(Test1,field12)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field12),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field13;
+extern const Meta_Property
+_Test1_field13;
 
-const Meta_Property _Test1_field13 =
+const Meta_Property
+_Test1_field13 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "field13",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     DATETIME,
-    0,
-    CIMPLE_OFF(Test1,field13)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field13),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_field14;
+extern const Meta_Property
+_Test1_field14;
 
-const Meta_Property _Test1_field14 =
+const Meta_Property
+_Test1_field14 =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "field14",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(Test1,field14)
+    0, /* subscript */
+    CIMPLE_OFF(Test1,field14),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla1;
+extern const Meta_Property
+_Test1_vla1;
 
-const Meta_Property _Test1_vla1 =
+const Meta_Property
+_Test1_vla1 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    -1,
-    CIMPLE_OFF(Test1,vla1)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla1),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla2;
+extern const Meta_Property
+_Test1_vla2;
 
-const Meta_Property _Test1_vla2 =
+const Meta_Property
+_Test1_vla2 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT8,
-    -1,
-    CIMPLE_OFF(Test1,vla2)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla2),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla3;
+extern const Meta_Property
+_Test1_vla3;
 
-const Meta_Property _Test1_vla3 =
+const Meta_Property
+_Test1_vla3 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla3",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT8,
-    -1,
-    CIMPLE_OFF(Test1,vla3)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla3),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla4;
+extern const Meta_Property
+_Test1_vla4;
 
-const Meta_Property _Test1_vla4 =
+const Meta_Property
+_Test1_vla4 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla4",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT16,
-    -1,
-    CIMPLE_OFF(Test1,vla4)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla4),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla5;
+extern const Meta_Property
+_Test1_vla5;
 
-const Meta_Property _Test1_vla5 =
+const Meta_Property
+_Test1_vla5 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla5",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    -1,
-    CIMPLE_OFF(Test1,vla5)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla5),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla6;
+extern const Meta_Property
+_Test1_vla6;
 
-const Meta_Property _Test1_vla6 =
+const Meta_Property
+_Test1_vla6 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla6",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT32,
-    -1,
-    CIMPLE_OFF(Test1,vla6)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla6),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla7;
+extern const Meta_Property
+_Test1_vla7;
 
-const Meta_Property _Test1_vla7 =
+const Meta_Property
+_Test1_vla7 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla7",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    -1,
-    CIMPLE_OFF(Test1,vla7)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla7),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla8;
+extern const Meta_Property
+_Test1_vla8;
 
-const Meta_Property _Test1_vla8 =
+const Meta_Property
+_Test1_vla8 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla8",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT64,
-    -1,
-    CIMPLE_OFF(Test1,vla8)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla8),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla9;
+extern const Meta_Property
+_Test1_vla9;
 
-const Meta_Property _Test1_vla9 =
+const Meta_Property
+_Test1_vla9 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla9",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT64,
-    -1,
-    CIMPLE_OFF(Test1,vla9)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla9),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla10;
+extern const Meta_Property
+_Test1_vla10;
 
-const Meta_Property _Test1_vla10 =
+const Meta_Property
+_Test1_vla10 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla10",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL32,
-    -1,
-    CIMPLE_OFF(Test1,vla10)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla10),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla11;
+extern const Meta_Property
+_Test1_vla11;
 
-const Meta_Property _Test1_vla11 =
+const Meta_Property
+_Test1_vla11 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla11",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL64,
-    -1,
-    CIMPLE_OFF(Test1,vla11)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla11),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla12;
+extern const Meta_Property
+_Test1_vla12;
 
-const Meta_Property _Test1_vla12 =
+const Meta_Property
+_Test1_vla12 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla12",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     CHAR16,
-    -1,
-    CIMPLE_OFF(Test1,vla12)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla12),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla13;
+extern const Meta_Property
+_Test1_vla13;
 
-const Meta_Property _Test1_vla13 =
+const Meta_Property
+_Test1_vla13 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla13",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     DATETIME,
-    -1,
-    CIMPLE_OFF(Test1,vla13)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla13),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_vla14;
+extern const Meta_Property
+_Test1_vla14;
 
-const Meta_Property _Test1_vla14 =
+const Meta_Property
+_Test1_vla14 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "vla14",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(Test1,vla14)
+    -1, /* subscript */
+    CIMPLE_OFF(Test1,vla14),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla1;
+extern const Meta_Property
+_Test1_fla1;
 
-const Meta_Property _Test1_fla1 =
+const Meta_Property
+_Test1_fla1 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    1,
-    CIMPLE_OFF(Test1,fla1)
+    1, /* subscript */
+    CIMPLE_OFF(Test1,fla1),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla2;
+extern const Meta_Property
+_Test1_fla2;
 
-const Meta_Property _Test1_fla2 =
+const Meta_Property
+_Test1_fla2 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT8,
-    2,
-    CIMPLE_OFF(Test1,fla2)
+    2, /* subscript */
+    CIMPLE_OFF(Test1,fla2),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla3;
+extern const Meta_Property
+_Test1_fla3;
 
-const Meta_Property _Test1_fla3 =
+const Meta_Property
+_Test1_fla3 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla3",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT8,
-    3,
-    CIMPLE_OFF(Test1,fla3)
+    3, /* subscript */
+    CIMPLE_OFF(Test1,fla3),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla4;
+extern const Meta_Property
+_Test1_fla4;
 
-const Meta_Property _Test1_fla4 =
+const Meta_Property
+_Test1_fla4 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla4",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT16,
-    4,
-    CIMPLE_OFF(Test1,fla4)
+    4, /* subscript */
+    CIMPLE_OFF(Test1,fla4),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla5;
+extern const Meta_Property
+_Test1_fla5;
 
-const Meta_Property _Test1_fla5 =
+const Meta_Property
+_Test1_fla5 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla5",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    5,
-    CIMPLE_OFF(Test1,fla5)
+    5, /* subscript */
+    CIMPLE_OFF(Test1,fla5),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla6;
+extern const Meta_Property
+_Test1_fla6;
 
-const Meta_Property _Test1_fla6 =
+const Meta_Property
+_Test1_fla6 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla6",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT32,
-    6,
-    CIMPLE_OFF(Test1,fla6)
+    6, /* subscript */
+    CIMPLE_OFF(Test1,fla6),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla7;
+extern const Meta_Property
+_Test1_fla7;
 
-const Meta_Property _Test1_fla7 =
+const Meta_Property
+_Test1_fla7 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla7",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    7,
-    CIMPLE_OFF(Test1,fla7)
+    7, /* subscript */
+    CIMPLE_OFF(Test1,fla7),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla8;
+extern const Meta_Property
+_Test1_fla8;
 
-const Meta_Property _Test1_fla8 =
+const Meta_Property
+_Test1_fla8 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla8",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     SINT64,
-    8,
-    CIMPLE_OFF(Test1,fla8)
+    8, /* subscript */
+    CIMPLE_OFF(Test1,fla8),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla9;
+extern const Meta_Property
+_Test1_fla9;
 
-const Meta_Property _Test1_fla9 =
+const Meta_Property
+_Test1_fla9 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla9",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT64,
-    9,
-    CIMPLE_OFF(Test1,fla9)
+    9, /* subscript */
+    CIMPLE_OFF(Test1,fla9),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla10;
+extern const Meta_Property
+_Test1_fla10;
 
-const Meta_Property _Test1_fla10 =
+const Meta_Property
+_Test1_fla10 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla10",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL32,
-    10,
-    CIMPLE_OFF(Test1,fla10)
+    10, /* subscript */
+    CIMPLE_OFF(Test1,fla10),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla11;
+extern const Meta_Property
+_Test1_fla11;
 
-const Meta_Property _Test1_fla11 =
+const Meta_Property
+_Test1_fla11 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla11",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL64,
-    11,
-    CIMPLE_OFF(Test1,fla11)
+    11, /* subscript */
+    CIMPLE_OFF(Test1,fla11),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla12;
+extern const Meta_Property
+_Test1_fla12;
 
-const Meta_Property _Test1_fla12 =
+const Meta_Property
+_Test1_fla12 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla12",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     CHAR16,
-    13,
-    CIMPLE_OFF(Test1,fla12)
+    13, /* subscript */
+    CIMPLE_OFF(Test1,fla12),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla13;
+extern const Meta_Property
+_Test1_fla13;
 
-const Meta_Property _Test1_fla13 =
+const Meta_Property
+_Test1_fla13 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla13",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     DATETIME,
-    13,
-    CIMPLE_OFF(Test1,fla13)
+    13, /* subscript */
+    CIMPLE_OFF(Test1,fla13),
+    0, /* value */
 };
 
-extern const Meta_Property _Test1_fla14;
+extern const Meta_Property
+_Test1_fla14;
 
-const Meta_Property _Test1_fla14 =
+const Meta_Property
+_Test1_fla14 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "fla14",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    14,
-    CIMPLE_OFF(Test1,fla14)
+    14, /* subscript */
+    CIMPLE_OFF(Test1,fla14),
+    0, /* value */
 };
 
-static Meta_Feature* _Test1_meta_features[] =
+static Meta_Feature* _Test1_MFA[] =
 {
     (Meta_Feature*)&_Test1_field1,
     (Meta_Feature*)&_Test1_field2,
@@ -569,17 +821,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Test1::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Test1",
-    _Test1_meta_features,
-    CIMPLE_ARRAY_SIZE(_Test1_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Test1_MFA,
+    CIMPLE_ARRAY_SIZE(_Test1_MFA),
     sizeof(Test1),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     3, /* num_keys */
-    0x88CF2035,/* crc */
+    0x88CF2035, /* crc */
     0,
 };
 

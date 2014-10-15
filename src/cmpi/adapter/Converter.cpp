@@ -1042,7 +1042,7 @@ CMPIrc make_method(
 {
     Error::clear();
 
-    // ATTN: are some argument required in the model?
+    // ATTN: are some arguments required in the model?
 
     cimple_meth = 0;
 

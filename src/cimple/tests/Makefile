@@ -6,7 +6,6 @@ DIRS = \
     array \
     string \
     property \
-    meta \
     sizes \
     time \
     join \

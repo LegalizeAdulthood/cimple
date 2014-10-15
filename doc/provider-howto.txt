@@ -331,14 +331,14 @@ TESTING THE PROVIDER:
 
 	% cimserver
 
-    Now use the Pegasus CLI utility to send requests to the provider. Here are
+    Now use the Pegasus cimcli utility to send requests to the provider. Here are
     some examples.
 
-	% CLI ni
+	% cimcli ni
 	Fan.DeviceID="FAN01"
 	Fan.DeviceID="FAN02"
 
-	% CLI gi 'Fan.DeviceID="FAN01"'
+	% cimcli gi 'Fan.DeviceID="FAN01"'
 	path= Fan
 
 	//Instance of Class Fan
@@ -414,7 +414,7 @@ SUMMARY:
 
 	    % cimserver
 
-	Test the provider with the Pegasus CLI tool.
+	Test the provider with the Pegasus cimcli tool.
 
-	    % CLI ei Fan
+	    % cimcli ei Fan
 

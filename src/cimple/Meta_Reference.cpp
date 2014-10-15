@@ -26,7 +26,48 @@
 
 #include "Meta_Reference.h"
 #include "Meta_Class.h"
+#include "io.h"
 
 CIMPLE_NAMESPACE_BEGIN
+
+Meta_Reference* clone(const Meta_Reference* x)
+{
+    Meta_Reference* mr = (Meta_Reference*)malloc(sizeof(Meta_Reference));
+    memcpy(mr, x, sizeof(Meta_Reference));
+    mr->name = strdup(x->name);
+    ref(mr->meta_class = x->meta_class);
+
+    return mr;
+}
+
+void destroy(Meta_Reference* mr)
+{
+    // Meta_Reference.name:
+    free((char*)(mr->name));
+
+    // Meta_Reference.meta_qualifiers:
+
+    for (size_t i = 0; i < mr->num_meta_qualifiers; i++)
+        destroy((Meta_Qualifier*)mr->meta_qualifiers[i]);
+
+    free((Meta_Qualifier*)mr->meta_qualifiers);
+
+    // Meta_Reference.meta_class:
+    unref(mr->meta_class);
+
+    // Meta_Reference:
+    free(mr);
+}
+
+//==============================================================================
+//
+// _print_meta_reference()
+//
+//==============================================================================
+
+void print(const Meta_Reference* mr)
+{
+    printf("%s ref %s", mr->meta_class->name, mr->name);
+}
 
 CIMPLE_NAMESPACE_END

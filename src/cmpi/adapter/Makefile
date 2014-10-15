@@ -1,5 +1,6 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
+include cmpi.mak
 
 ifdef STATIC
   STATIC_LIBRARY = cimplecmpiadap_s
@@ -15,11 +16,14 @@ SOURCES = \
     Converter.cpp \
     CMPI_Adapter.cpp \
 
-CMPI_INCLUDES = -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
 DEFINES += -DCIMPLE_NEED_CMPI_IO
 DEFINES += -DCIMPLECMPL_INTERNAL
 
-INCLUDES += $(CMPI_INCLUDES)
+ifdef CMPI_ROOT
+    INCLUDES += -I$(CMPI_ROOT)
+else
+    $(error "please define CMPI_ROOT to point to CMPI include directory")
+endif
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 

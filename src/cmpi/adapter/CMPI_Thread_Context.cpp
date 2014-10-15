@@ -40,7 +40,7 @@ CIMPLE_NAMESPACE_BEGIN
 static CMPI_Thread_Context* _top()
 {
     CMPI_Thread_Context* context = (CMPI_Thread_Context*)Thread_Context::top();
-    assert(context != 0);
+    CIMPLE_ASSERT(context != 0);
     return context;
 }
 
@@ -57,10 +57,15 @@ CMPI_Thread_Context::~CMPI_Thread_Context()
 Thread_Context* CMPI_Thread_Context::thread_create_hook(void* arg)
 {
     CMPI_Thread_Context* context = _top();
-    assert(context != 0);
+
+    CIMPLE_ASSERT(context != 0);
+    CIMPLE_ASSERT(context->cmpi_broker() != 0);
+    CIMPLE_ASSERT(context->cmpi_context() != 0);
 
     CMPIContext* cmpi_context = CBPrepareAttachThread(
-	context->cmpi_broker(), context->cmpi_context());
+        context->cmpi_broker(), context->cmpi_context());
+
+    CIMPLE_ASSERT(cmpi_context != 0);
 
     return new CMPI_Thread_Context(context->cmpi_broker(), cmpi_context);
 }
@@ -68,12 +73,22 @@ Thread_Context* CMPI_Thread_Context::thread_create_hook(void* arg)
 void CMPI_Thread_Context::thread_start_hook()
 {
     CMPI_Thread_Context* context = _top();
+
+    CIMPLE_ASSERT(context != 0);
+    CIMPLE_ASSERT(context->cmpi_broker() != 0);
+    CIMPLE_ASSERT(context->cmpi_context() != 0);
+
     CBAttachThread(context->cmpi_broker(), context->cmpi_context());
 }
 
 void CMPI_Thread_Context::thread_exit_hook()
 {
     CMPI_Thread_Context* context = _top();
+
+    CIMPLE_ASSERT(context != 0);
+    CIMPLE_ASSERT(context->cmpi_broker() != 0);
+    CIMPLE_ASSERT(context->cmpi_context() != 0);
+
     CBDetachThread(context->cmpi_broker(), context->cmpi_context());
 }
 
@@ -92,27 +107,27 @@ static Ref<Instance> _next_instance(
 
     if (CMHasNext(cmpi_enumeration, &status))
     {
-	CMPIData data = CMGetNext(cmpi_enumeration, &status);
+        CMPIData data = CMGetNext(cmpi_enumeration, &status);
 
-	if (status.rc != CMPI_RC_OK)
-	    return Ref<Instance>();
+        if (status.rc != CMPI_RC_OK)
+            return Ref<Instance>();
 
-	if (data.type != CMPI_instance)
-	    return Ref<Instance>();
+        if (data.type != CMPI_instance)
+            return Ref<Instance>();
 
-	CMPIInstance* cmpi_instance = data.value.inst;
+        CMPIInstance* cmpi_instance = data.value.inst;
 
-	Instance* instance = 0;
+        Instance* instance = 0;
 
-	CMPIrc rc = make_cimple_instance(
-	    meta_class,
-	    data.value.inst,
-	    instance);
+        CMPIrc rc = make_cimple_instance(
+            meta_class,
+            data.value.inst,
+            instance);
 
-	if (rc != CMPI_RC_OK)
-	    return Ref<Instance>();
+        if (rc != CMPI_RC_OK)
+            return Ref<Instance>();
 
-	return Ref<Instance>(instance);
+        return Ref<Instance>(instance);
     }
 
     return Ref<Instance>();
@@ -129,7 +144,7 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
         set_cmpi_error(CMPI_RC_ERR_FAILED, 
             "CMPI_Thread_Context::instance_enumerator_create(): "
             "null name_space parameter");
-	return 0;
+        return 0;
     }
 
     if (!model)
@@ -137,7 +152,7 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
         set_cmpi_error(CMPI_RC_ERR_FAILED, 
             "CMPI_Thread_Context::instance_enumerator_create(): "
             "null model parameter");
-	return 0;
+        return 0;
     }
 
     // Get thread context.
@@ -149,15 +164,15 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
     CMPIObjectPath* object_path = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
-	context->cmpi_broker(),
-	model,
-	name_space,
-	object_path);
+        context->cmpi_broker(),
+        model,
+        name_space,
+        object_path);
 
     if (rc != CMPI_RC_OK)
     {
         // Propgate error.
-	return 0;
+        return 0;
     }
 
     // Create the enumeration object.
@@ -165,16 +180,16 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
     CMPIStatus status;
 
     CMPIEnumeration* enumeration = CBEnumInstances(
-	context->cmpi_broker(), 
-	context->cmpi_context(),
-	object_path,
-	NULL, // properties
-	&status);
+        context->cmpi_broker(), 
+        context->cmpi_context(),
+        object_path,
+        NULL, // properties
+        &status);
 
     if (status.rc != CMPI_RC_OK)
     {
         set_cmpi_error(status);
-	return 0;
+        return 0;
     }
 
     Instance_Enumerator_Rep* rep = new Instance_Enumerator_Rep;
@@ -196,7 +211,7 @@ bool CMPI_Thread_Context::instance_enumerator_more(
     Instance_Enumerator_Rep* rep)
 {
     if (!rep)
-	return false;
+        return false;
 
     return rep->instance.ptr() != 0;
 }
@@ -205,7 +220,7 @@ void CMPI_Thread_Context::instance_enumerator_next(
     Instance_Enumerator_Rep* rep)
 {
     if (!rep)
-	return;
+        return;
 
     rep->instance = _next_instance(rep->cmpi_enumeration, rep->meta_class);
 }
@@ -214,7 +229,7 @@ Ref<Instance> CMPI_Thread_Context::instance_enumerator_get(
     Instance_Enumerator_Rep* rep)
 {
     if (!rep)
-	return Ref<Instance>();
+        return Ref<Instance>();
 
     return rep->instance;
 }
@@ -230,7 +245,7 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
         set_cmpi_error(CMPI_RC_ERR_FAILED,
             "CMPI_Thread_Context::get_instance(): "
             "null name_space parameter");
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     if (!model)
@@ -238,7 +253,7 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
         set_cmpi_error(CMPI_RC_ERR_FAILED,
             "CMPI_Thread_Context::get_instance(): "
             "null model parameter");
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     // Get thread context.
@@ -250,15 +265,15 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
     CMPIObjectPath* cmpi_object_path = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
-	context->cmpi_broker(),
-	model,
-	name_space,
-	cmpi_object_path);
+        context->cmpi_broker(),
+        model,
+        name_space,
+        cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
     {
         // Propgate error!
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     // Get the instance.
@@ -266,16 +281,16 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
     CMPIStatus status;
 
     CMPIInstance* cmpi_instance = CBGetInstance(
-	context->cmpi_broker(),
-	context->cmpi_context(),
-	cmpi_object_path,
-	NULL,
-	&status);
+        context->cmpi_broker(),
+        context->cmpi_context(),
+        cmpi_object_path,
+        NULL,
+        &status);
 
     if (status.rc != CMPI_RC_OK)
     {
         set_cmpi_error(status);
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     // Create CIMPLE instance.
@@ -287,7 +302,7 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
     if (rc != CMPI_RC_OK)
     {
         // Propagate error!
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     return Ref<Instance>(instance);
@@ -304,7 +319,7 @@ int CMPI_Thread_Context::create_instance(
         set_cmpi_error(CMPI_RC_ERR_FAILED, 
             "CMPI_Thread_Context::create_instance(): "
             "null name_space parameter");
-	return -1;
+        return -1;
     }
 
     if (!instance)
@@ -312,7 +327,7 @@ int CMPI_Thread_Context::create_instance(
         set_cmpi_error(CMPI_RC_ERR_FAILED, 
             "CMPI_Thread_Context::create_instance(): "
             "null instance parameter");
-	return -1;
+        return -1;
     }
 
     // Get thread context.
@@ -324,15 +339,15 @@ int CMPI_Thread_Context::create_instance(
     CMPIObjectPath* cmpi_object_path = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
-	context->cmpi_broker(),
-	instance,
-	name_space,
-	cmpi_object_path);
+        context->cmpi_broker(),
+        instance,
+        name_space,
+        cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
     {
         // Propagate error!
-	return -1;
+        return -1;
     }
 
     // Create CMPI instance.
@@ -340,16 +355,16 @@ int CMPI_Thread_Context::create_instance(
     CMPIInstance* cmpi_instance = NULL;
 
     rc = make_cmpi_instance(
-	context->cmpi_broker(),
-	instance,
-	name_space,
-	cmpi_object_path,
-	cmpi_instance);
+        context->cmpi_broker(),
+        instance,
+        name_space,
+        cmpi_object_path,
+        cmpi_instance);
 
     if (rc != CMPI_RC_OK)
     {
         // Propagate error!
-	return -1;
+        return -1;
     }
 
     // Create instance.
@@ -357,16 +372,16 @@ int CMPI_Thread_Context::create_instance(
     CMPIStatus status;
 
     CMPIObjectPath* cmpi_object_path_tmp = CBCreateInstance(
-	context->cmpi_broker(),
-	context->cmpi_context(),
-	cmpi_object_path,
-	cmpi_instance,
-	&status);
+        context->cmpi_broker(),
+        context->cmpi_context(),
+        cmpi_object_path,
+        cmpi_instance,
+        &status);
 
     if (status.rc != CMPI_RC_OK)
     {
         set_cmpi_error(status);
-	return -1;
+        return -1;
     }
 
     return 0;
@@ -391,7 +406,7 @@ int CMPI_Thread_Context::delete_instance(
         set_cmpi_error(CMPI_RC_ERR_FAILED, 
             "CMPI_Thread_Context::delete_instance(): "
             "null instance paramter");
-	return -1;
+        return -1;
     }
 
     // Get thread context.
@@ -403,28 +418,28 @@ int CMPI_Thread_Context::delete_instance(
     CMPIObjectPath* cmpi_object_path = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
-	context->cmpi_broker(),
-	instance,
-	name_space,
-	cmpi_object_path);
+        context->cmpi_broker(),
+        instance,
+        name_space,
+        cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
     {
         // Propagate error!
-	return -1;
+        return -1;
     }
 
     // Delete instance.
 
     CMPIStatus status = CBDeleteInstance(
-	context->cmpi_broker(),
-	context->cmpi_context(),
-	cmpi_object_path);
+        context->cmpi_broker(),
+        context->cmpi_context(),
+        cmpi_object_path);
 
     if (status.rc != CMPI_RC_OK)
     {
         set_cmpi_error(status);
-	return -1;
+        return -1;
     }
 
     return 0;
@@ -441,7 +456,7 @@ int CMPI_Thread_Context::modify_instance(
         set_cmpi_error(CMPI_RC_ERR_FAILED, 
             "CMPI_Thread_Context::modify_instance(): "
             "null name_space parameter");
-	return -1;
+        return -1;
     }
 
     if (!instance)
@@ -449,7 +464,7 @@ int CMPI_Thread_Context::modify_instance(
         set_cmpi_error(CMPI_RC_ERR_FAILED, 
             "CMPI_Thread_Context::modify_instance(): "
             "null instance parameter");
-	return -1;
+        return -1;
     }
 
     // Get thread context.
@@ -461,15 +476,15 @@ int CMPI_Thread_Context::modify_instance(
     CMPIObjectPath* cmpi_object_path = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
-	context->cmpi_broker(),
-	instance,
-	name_space,
-	cmpi_object_path);
+        context->cmpi_broker(),
+        instance,
+        name_space,
+        cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
     {
         // Propagate error!
-	return -1;
+        return -1;
     }
 
     // Create CMPI instance.
@@ -477,31 +492,31 @@ int CMPI_Thread_Context::modify_instance(
     CMPIInstance* cmpi_instance = NULL;
 
     rc = make_cmpi_instance(
-	context->cmpi_broker(),
-	instance,
-	name_space,
-	cmpi_object_path,
-	cmpi_instance);
+        context->cmpi_broker(),
+        instance,
+        name_space,
+        cmpi_object_path,
+        cmpi_instance);
 
     if (rc != CMPI_RC_OK)
     {
         // Propagate error!
-	return -1;
+        return -1;
     }
 
     // Create instance.
 
     CMPIStatus status = CBModifyInstance(
-	context->cmpi_broker(),
-	context->cmpi_context(),
-	cmpi_object_path,
-	cmpi_instance,
-	NULL);
+        context->cmpi_broker(),
+        context->cmpi_context(),
+        cmpi_object_path,
+        cmpi_instance,
+        NULL);
 
     if (status.rc != CMPI_RC_OK)
     {
         set_cmpi_error(status);
-	return -1;
+        return -1;
     }
 
     return 0;

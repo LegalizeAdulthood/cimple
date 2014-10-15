@@ -57,6 +57,9 @@ CIMPLE_CIMPLE_LINKAGE
 extern size_t const type_size[];
 
 CIMPLE_CIMPLE_LINKAGE 
+extern size_t const literal_type_size[];
+
+CIMPLE_CIMPLE_LINKAGE 
 extern const char* const type_name[];
 
 inline void clear(boolean& x) { x = false; }
@@ -87,6 +90,14 @@ inline Type type_of(const real64& x) { return REAL64; }
 inline Type type_of(const char16& x) { return CHAR16; }
 inline Type type_of(const String& x) { return STRING; }
 inline Type type_of(const Datetime& x) { return DATETIME; }
+
+CIMPLE_CIMPLE_LINKAGE
+void print_scalar(Type type, const void* value);
+
+CIMPLE_CIMPLE_LINKAGE
+void print_array(Type type, const void* elements, size_t num_elements);
+
+extern void print_string(const char* str);
 
 CIMPLE_NAMESPACE_END
 

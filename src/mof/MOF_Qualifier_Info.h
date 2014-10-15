@@ -54,7 +54,8 @@ public:
 	const char* param_name,
 	MOF_Qualifier* local_qualifiers,
 	MOF_Qualifier_Info* inherited_qual_info_list,
-	MOF_mask* qual_mask);
+	MOF_mask* qual_mask,
+        bool prop);
 
     const MOF_Qualifier* qualifier;
     MOF_mask flavor;

@@ -28,6 +28,8 @@
 #define _cimple_Meta_Feature_h
 
 #include "config.h"
+#include "Atomic.h"
+#include "Meta_Qualifier.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -36,17 +38,37 @@ CIMPLE_NAMESPACE_BEGIN
 // These structures share the same two fields with this structure.
 struct Meta_Feature
 {
+    Atomic refs;
     uint32 flags;
     const char* name;
+    const Meta_Qualifier* const* meta_qualifiers;
+    size_t num_meta_qualifiers;
 };
 
 // This structure defines feature-related attributes that are specific to
-// one class. Recall that a Meta_Feature may be shared two or more classes
-// in the class hierarchy.
+// one class. This is necessary since Meta_Features may be shared by two or 
+// more classes in the class hierarchy.
 struct Meta_Feature_Local
 {
+    // Whether feature is local to this class (if not, it was propagated from
+    // another class).
     uint8 local;
 };
+
+CIMPLE_CIMPLE_LINKAGE
+void destroy(Meta_Feature* mf);
+
+CIMPLE_CIMPLE_LINKAGE
+void print(const Meta_Feature* mf, bool print_qualifiers, size_t level);
+
+CIMPLE_CIMPLE_LINKAGE
+Meta_Feature* clone(const Meta_Feature* x);
+
+CIMPLE_CIMPLE_LINKAGE
+void append(
+    const Meta_Feature* const*& meta_features,
+    size_t& num_meta_features,
+    const Meta_Feature* meta_feature);
 
 CIMPLE_NAMESPACE_END
 

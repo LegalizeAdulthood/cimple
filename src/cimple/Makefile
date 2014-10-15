@@ -5,6 +5,13 @@ SHARED_LIBRARY = cimple
 STATIC_LIBRARY = cimple_s
 
 SOURCES = \
+    ptr_array.cpp \
+    io.cpp \
+    flags.cpp \
+    Meta_Value.cpp \
+    Meta_Repository.cpp \
+    Meta_Qualifier.cpp \
+    Meta_Reference.cpp \
     TSD.cpp \
     Thread_Context.cpp \
     cimom.cpp \
@@ -22,6 +29,7 @@ SOURCES = \
     Datetime.cpp \
     Instance.cpp \
     Instance_Map.cpp \
+    Meta_Feature.cpp \
     Meta_Class.cpp \
     Meta_Method.cpp \
     Meta_Property.cpp \
@@ -33,7 +41,7 @@ SOURCES = \
 
 LIBRARIES =
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+#FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
 

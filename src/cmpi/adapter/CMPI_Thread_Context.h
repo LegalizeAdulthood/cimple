@@ -28,7 +28,7 @@
 #define _CMPI_Thread_Context_h
 
 #include <cimple/Thread_Context.h>
-#include <cmpidt.h>
+#include "cmpi.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -37,19 +37,19 @@ class CMPI_Thread_Context : public Thread_Context
 public:
 
     CMPI_Thread_Context(
-	const CMPIBroker* cmpi_broker,
-	const CMPIContext* cmpi_context);
+        const CMPIBroker* cmpi_broker,
+        const CMPIContext* cmpi_context);
 
     virtual ~CMPI_Thread_Context();
 
     const CMPIBroker* cmpi_broker() const
     {
-	return _cmpi_broker;
+        return _cmpi_broker;
     }
 
     const CMPIContext* cmpi_context() const
     {
-	return _cmpi_context;
+        return _cmpi_context;
     }
 
     virtual Thread_Context* thread_create_hook(void* arg);
@@ -59,36 +59,36 @@ public:
     virtual void thread_exit_hook();
 
     virtual Instance_Enumerator_Rep* instance_enumerator_create(
-	const char* name_space, 
-	const Instance* model);
+        const char* name_space, 
+        const Instance* model);
 
     virtual void instance_enumerator_destroy(
-	Instance_Enumerator_Rep* rep);
+        Instance_Enumerator_Rep* rep);
 
     virtual bool instance_enumerator_more(
-	Instance_Enumerator_Rep* rep);
+        Instance_Enumerator_Rep* rep);
 
     virtual void instance_enumerator_next(
-	Instance_Enumerator_Rep* rep);
+        Instance_Enumerator_Rep* rep);
 
     virtual Ref<Instance> instance_enumerator_get(
-	Instance_Enumerator_Rep* rep);
+        Instance_Enumerator_Rep* rep);
 
     virtual Ref<Instance> get_instance(
-	const char* name_space, 
-	const Instance* model);
+        const char* name_space, 
+        const Instance* model);
 
     virtual int create_instance(
-	const char* name_space, 
-	const Instance* instance);
+        const char* name_space, 
+        const Instance* instance);
 
     virtual int delete_instance(
-	const char* name_space, 
-	const Instance* instance);
+        const char* name_space, 
+        const Instance* instance);
 
     virtual int modify_instance(
-	const char* name_space, 
-	const Instance* instance);
+        const char* name_space, 
+        const Instance* instance);
 
 private:
 
@@ -101,18 +101,20 @@ class CMPI_Thread_Context_Pusher
 public:
 
     CMPI_Thread_Context_Pusher(
-	const CMPIBroker* cmpi_broker, 
-	const CMPIContext* cmpi_context)
+        const CMPIBroker* cmpi_broker, 
+        const CMPIContext* cmpi_context)
     {
-	_context = new CMPI_Thread_Context(cmpi_broker, cmpi_context);
-	Thread_Context::push(_context);
+        CIMPLE_ASSERT(cmpi_broker);
+        CIMPLE_ASSERT(cmpi_context);
+        _context = new CMPI_Thread_Context(cmpi_broker, cmpi_context);
+        Thread_Context::push(_context);
     }
 
     ~CMPI_Thread_Context_Pusher()
     {
-	assert(Thread_Context::top() == _context);
-	Thread_Context::pop();
-	delete _context;
+        CIMPLE_ASSERT(Thread_Context::top() == _context);
+        Thread_Context::pop();
+        delete _context;
     }
 
 private:

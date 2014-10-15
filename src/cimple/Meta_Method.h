@@ -38,10 +38,15 @@ CIMPLE_NAMESPACE_BEGIN
 // fields with the Meta_Class structure.
 struct Meta_Method
 {
-    // Fields common with Meta_Class.
+    // Fields common with Meta_Feature and Meta_Class.
+    Atomic refs;
     uint32 flags;
     const char* name;
-    Meta_Feature** meta_features;
+    const Meta_Qualifier* const* meta_qualifiers;
+    size_t num_meta_qualifiers;
+
+    // Fields common with Meta_Class only
+    const Meta_Feature* const* meta_features;
     size_t num_meta_features;
     size_t size;
 
@@ -61,7 +66,11 @@ const Meta_Property* find_parameter(const Meta_Method* mm, const char* name);
 CIMPLE_CIMPLE_LINKAGE
 const Meta_Reference* find_reference(const Meta_Method* mm, const char* name);
 
-class Buffer;
+CIMPLE_CIMPLE_LINKAGE
+void destroy(Meta_Method* mm);
+
+CIMPLE_CIMPLE_LINKAGE
+void print(const Meta_Method* mm, bool print_qualifiers, size_t level);
 
 CIMPLE_NAMESPACE_END
 

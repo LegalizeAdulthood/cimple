@@ -48,12 +48,12 @@ static void* _thread_proc(void* arg_)
     // Push context if any.
 
     if (context)
-	Thread_Context::push(context);
+        Thread_Context::push(context);
 
     // Invoke start hook.
 
     if (context)
-	context->thread_start_hook();
+        context->thread_start_hook();
 
     // Invoke thread routine.
 
@@ -62,7 +62,7 @@ static void* _thread_proc(void* arg_)
     // Invoke exit hook.
 
     if (context)
-	context->thread_exit_hook();
+        context->thread_exit_hook();
 
     // Pop context.
 
@@ -70,8 +70,8 @@ static void* _thread_proc(void* arg_)
 
     if (context)
     {
-	Thread_Context::pop();
-	delete context;
+        Thread_Context::pop();
+        delete context;
     }
 
     return return_value;
@@ -95,7 +95,7 @@ Thread::~Thread()
 Thread& Thread::operator=(const Thread& x)
 {
     if (&x != this)
-	*((pthread_t*)_rep) = *((pthread_t*)x._rep);
+        *((pthread_t*)_rep) = *((pthread_t*)x._rep);
 
     return *this;
 }
@@ -115,9 +115,9 @@ int _create(
     Thread_Context* context = Thread_Context::top();
 
     if (context)
-	arg->context = context->thread_create_hook(arg_);
+        arg->context = context->thread_create_hook(arg_);
     else
-	arg->context = 0;
+        arg->context = 0;
 
     // Create the thread.
 
@@ -125,12 +125,12 @@ int _create(
     pthread_attr_init(&attr);
 
     if (detached)
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
     else
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+        pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
     int status = pthread_create(
-	(pthread_t*)&thread, &attr, _thread_proc, arg);
+        (pthread_t*)&thread, &attr, _thread_proc, arg);
 
     pthread_attr_destroy(&attr);
 
@@ -138,8 +138,8 @@ int _create(
 
     if (status != 0)
     {
-	delete context;
-	delete arg;
+        delete context;
+        delete arg;
     }
 
     return status;
@@ -162,7 +162,7 @@ void Thread::exit(void* return_value)
     Thread_Context* context = Thread_Context::top();
 
     if (context)
-	context->thread_exit_hook();
+        context->thread_exit_hook();
 
     pthread_exit(return_value);
 }

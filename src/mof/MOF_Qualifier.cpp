@@ -40,9 +40,8 @@
 **------------------------------------------------------------------------------
 */
 
-MOF_Qualifier::MOF_Qualifier() : name(0), params(0), flavor(0)
+MOF_Qualifier::MOF_Qualifier() : name(0), params(0), flavor(0), owning_class(0)
 {
-
 }
 
 /*
@@ -56,6 +55,7 @@ MOF_Qualifier::MOF_Qualifier() : name(0), params(0), flavor(0)
 MOF_Qualifier::~MOF_Qualifier()
 {
     free(name);
+    free(owning_class);
     params->delete_list();
 }
 
@@ -72,6 +72,7 @@ MOF_Element* MOF_Qualifier::clone() const
     MOF_Qualifier* tmp = new MOF_Qualifier();
     tmp->name = strdup(name);
     tmp->params = (MOF_Literal*)params->clone();
+    tmp->owning_class = 0;
     return tmp;
 }
 
@@ -125,6 +126,21 @@ void MOF_Qualifier::validate()
 
     if ((qual_decl = MOF_Qualifier_Decl::find(name)) == 0)
 	MOF_error_printf("undefined qualifier: \"%s\"\n", name);
+
+    /*
+     * The presence of a scalar boolean qualifier without arguments implies
+     * true.
+     */
+
+    if (qual_decl->data_type == TOK_BOOLEAN &&
+        qual_decl->array_index == 0 &&
+        (params == 0 || params->value_type == TOK_NULL_VALUE))
+    {
+        params->delete_list();
+	params = new MOF_Literal();
+	params->value_type = TOK_BOOL_VALUE;
+        params->bool_value = true;
+    }
 
     /*
      * Check the qualifier params (if any):

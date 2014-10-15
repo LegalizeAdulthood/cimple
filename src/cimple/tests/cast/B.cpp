@@ -13,28 +13,30 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _A_a;
+extern const Meta_Property
+_A_a;
 
-extern const Meta_Property _B_b;
+extern const Meta_Property
+_B_b;
 
-const Meta_Property _B_b =
+const Meta_Property
+_B_b =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "b",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(B,b)
+    0, /* subscript */
+    CIMPLE_OFF(B,b),
+    0, /* value */
 };
 
-static Meta_Feature* _B_meta_features[] =
+static Meta_Feature* _B_MFA[] =
 {
     (Meta_Feature*)&_A_a,
     (Meta_Feature*)&_B_b,
-};
-
-static const char* _super_classes[] =
-{
-    "A",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -45,17 +47,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class B::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "B",
-    _B_meta_features,
-    CIMPLE_ARRAY_SIZE(_B_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _B_MFA,
+    CIMPLE_ARRAY_SIZE(_B_MFA),
     sizeof(B),
     _locals,
     &A::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0x78AC69E4,/* crc */
+    0x78AC69E4, /* crc */
     0,
 };
 

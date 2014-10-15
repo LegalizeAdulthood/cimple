@@ -27,6 +27,7 @@
 #include "Meta_Method.h"
 #include "Meta_Class.h"
 #include "flags.h"
+#include "io.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -46,6 +47,57 @@ const Meta_Property* find_parameter(const Meta_Method* mm, const char* name)
 const Meta_Reference* find_reference(const Meta_Method* mm, const char* name)
 {
     return (const Meta_Reference*)find_feature(mm, name, CIMPLE_FLAG_REFERENCE);
+}
+
+void destroy(Meta_Method* mm)
+{
+    destroy((Meta_Class*)mm);
+}
+
+//==============================================================================
+//
+// print()
+//
+//==============================================================================
+
+void print(const Meta_Method* mm, bool print_qualifiers, size_t level)
+{
+    printf("%s %s(", type_name[mm->return_type], mm->name);
+
+    assert(mm->num_meta_features > 0);
+
+    size_t n = mm->num_meta_features;
+
+    // Ignore final "return_value" parameter.
+    
+    if (mm->num_meta_features > 0)
+        n--;
+
+    for (size_t i = 0; i < n; i++)
+    {
+        putchar('\n');
+
+        const Meta_Feature* mf = mm->meta_features[i];
+
+        if (print_qualifiers)
+        {
+            print(mf->meta_qualifiers, mf->num_meta_qualifiers, 
+                mf->flags, true, level + 1);
+        }
+
+        iprintf(level + 1, "");
+
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+            print((Meta_Property*)mf, true);
+
+        if (mf->flags & CIMPLE_FLAG_REFERENCE)
+            print((Meta_Reference*)mf);
+
+        if (i + 1 != n)
+            printf(",");
+    }
+
+    printf(")");
 }
 
 CIMPLE_NAMESPACE_END

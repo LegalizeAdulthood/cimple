@@ -13,40 +13,56 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_EA4D42DE96501C068A2E0C2F6B614B6E;
+extern const Meta_Repository __meta_repository_348EBB378EDF1C7685D9CEE1DD7A9546;
 
-extern const Meta_Reference _Glue_left;
+extern const Meta_Reference
+_Glue_left;
 
-const Meta_Reference _Glue_left =
+const Meta_Reference
+_Glue_left =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "left",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &Part::static_meta_class,
     CIMPLE_OFF(Glue,left)
 };
 
-extern const Meta_Reference _Glue_right;
+extern const Meta_Reference
+_Glue_right;
 
-const Meta_Reference _Glue_right =
+const Meta_Reference
+_Glue_right =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "right",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &Part::static_meta_class,
     CIMPLE_OFF(Glue,right)
 };
 
-extern const Meta_Property _Glue_message;
+extern const Meta_Property
+_Glue_message;
 
-const Meta_Property _Glue_message =
+const Meta_Property
+_Glue_message =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "message",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(Glue,message)
+    0, /* subscript */
+    CIMPLE_OFF(Glue,message),
+    0, /* value */
 };
 
-static Meta_Feature* _Glue_meta_features[] =
+static Meta_Feature* _Glue_MFA[] =
 {
     (Meta_Feature*)&_Glue_left,
     (Meta_Feature*)&_Glue_right,
@@ -62,18 +78,19 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Glue::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_ASSOCIATION,
     "Glue",
-    _Glue_meta_features,
-    CIMPLE_ARRAY_SIZE(_Glue_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Glue_MFA,
+    CIMPLE_ARRAY_SIZE(_Glue_MFA),
     sizeof(Glue),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     2, /* num_keys */
-    0x93B8DC91,/* crc */
-    &__meta_repository_EA4D42DE96501C068A2E0C2F6B614B6E,
+    0x93B8DC91, /* crc */
+    &__meta_repository_348EBB378EDF1C7685D9CEE1DD7A9546,
 };
 
 CIMPLE_NAMESPACE_END

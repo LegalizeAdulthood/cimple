@@ -13,18 +13,24 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _Test2_key;
+extern const Meta_Property
+_Test2_key;
 
-const Meta_Property _Test2_key =
+const Meta_Property
+_Test2_key =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "key",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(Test2,key)
+    0, /* subscript */
+    CIMPLE_OFF(Test2,key),
+    0, /* value */
 };
 
-static Meta_Feature* _Test2_meta_features[] =
+static Meta_Feature* _Test2_MFA[] =
 {
     (Meta_Feature*)&_Test2_key,
 };
@@ -36,17 +42,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Test2::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Test2",
-    _Test2_meta_features,
-    CIMPLE_ARRAY_SIZE(_Test2_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Test2_MFA,
+    CIMPLE_ARRAY_SIZE(_Test2_MFA),
     sizeof(Test2),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     1, /* num_keys */
-    0xF5C9C5FE,/* crc */
+    0xF5C9C5FE, /* crc */
     0,
 };
 

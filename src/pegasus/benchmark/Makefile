@@ -14,19 +14,19 @@ reg:
 	$(MAKE) -C Benchmark4 reg
 
 bench1: start
-	CLI ei -niq Benchmark1 --sum --t
+	$(CIMCLI) ei -niq Benchmark1 --sum --t
 	cimserver -s
 
 bench2: start
-	CLI ei -niq Benchmark2 --sum --t
+	$(CIMCLI) ei -niq Benchmark2 --sum --t
 	cimserver -s
 
 bench3: start
-	CLI ei -niq Benchmark3 --sum --t
+	$(CIMCLI) ei -niq Benchmark3 --sum --t
 	cimserver -s
 
 bench4: start
-	CLI ei -niq Benchmark4 --sum --t
+	$(CIMCLI) ei -niq Benchmark4 --sum --t
 	cimserver -s
 
 start:

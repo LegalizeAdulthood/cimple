@@ -13,35 +13,40 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Reference _AY_left;
+extern const Meta_Reference
+_AY_left;
 
-const Meta_Reference _AY_left =
+const Meta_Reference
+_AY_left =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE,
     "left",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &Y::static_meta_class,
     CIMPLE_OFF(AY,left)
 };
 
-extern const Meta_Reference _AY_right;
+extern const Meta_Reference
+_AY_right;
 
-const Meta_Reference _AY_right =
+const Meta_Reference
+_AY_right =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE,
     "right",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &Y::static_meta_class,
     CIMPLE_OFF(AY,right)
 };
 
-static Meta_Feature* _AY_meta_features[] =
+static Meta_Feature* _AY_MFA[] =
 {
     (Meta_Feature*)&_AY_left,
     (Meta_Feature*)&_AY_right,
-};
-
-static const char* _super_classes[] =
-{
-    "AX",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -52,17 +57,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class AY::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_ASSOCIATION,
     "AY",
-    _AY_meta_features,
-    CIMPLE_ARRAY_SIZE(_AY_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _AY_MFA,
+    CIMPLE_ARRAY_SIZE(_AY_MFA),
     sizeof(AY),
     _locals,
     &AX::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0x57A8CE86,/* crc */
+    0x57A8CE86, /* crc */
     0,
 };
 

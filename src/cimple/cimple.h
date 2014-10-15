@@ -44,6 +44,10 @@
 #include "Thread.h"
 #include "Time.h"
 #include "Atomic_Counter.h"
+#include "Meta_Repository.h"
 #include "Error.h"
+#include "io.h"
+#include "flavor.h"
+#include "scope.h"
 
 #endif /* _cimple_h */

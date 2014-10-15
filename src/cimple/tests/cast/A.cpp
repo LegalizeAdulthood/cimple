@@ -13,18 +13,24 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _A_a;
+extern const Meta_Property
+_A_a;
 
-const Meta_Property _A_a =
+const Meta_Property
+_A_a =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "a",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(A,a)
+    0, /* subscript */
+    CIMPLE_OFF(A,a),
+    0, /* value */
 };
 
-static Meta_Feature* _A_meta_features[] =
+static Meta_Feature* _A_MFA[] =
 {
     (Meta_Feature*)&_A_a,
 };
@@ -36,17 +42,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class A::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "A",
-    _A_meta_features,
-    CIMPLE_ARRAY_SIZE(_A_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _A_MFA,
+    CIMPLE_ARRAY_SIZE(_A_MFA),
     sizeof(A),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     0, /* num_keys */
-    0xD1584D4B,/* crc */
+    0xD1584D4B, /* crc */
     0,
 };
 

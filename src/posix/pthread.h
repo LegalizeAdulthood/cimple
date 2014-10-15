@@ -54,7 +54,8 @@ enum pthread_mutex_initializer_t { PTHREAD_MUTEX_INITIALIZER };
 
 struct POSIX_LINKAGE pthread_mutex_t
 {
-    pthread_mutex_t() { }
+    pthread_mutex_t();
+    ~pthread_mutex_t();
     pthread_mutex_t(pthread_mutex_initializer_t);
     char opaque[16];
 };

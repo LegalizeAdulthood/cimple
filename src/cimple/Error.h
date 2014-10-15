@@ -34,8 +34,8 @@
 # define CIMPLE_ERROR(ARGS) \
     do \
     { \
-	Error::set ARGS; \
-	Error::set_prefix(__FUNCTION__, __FILE__, __LINE__); \
+        Error::set ARGS; \
+        Error::set_prefix(__FUNCTION__, __FILE__, __LINE__); \
     } \
     while (0)
 #else
@@ -56,9 +56,9 @@ public:
 
     // Prepends debugging information to error message:
     static void set_prefix(
-	const char* function, 
-	const char* file, 
-	size_t line);
+        const char* function, 
+        const char* file, 
+        size_t line);
 
     static const char* get();
 

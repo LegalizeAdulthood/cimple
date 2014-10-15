@@ -57,22 +57,22 @@ protected:
     Array<Instance*> _instances;
 
     Get_Instance_Status _get_instance(
-	const Instance* model, 
-	Instance*& instance);
+        const Instance* model, 
+        Instance*& instance);
 
     Enum_Instances_Status _enum_instances(
-	const Instance* model,
-	Enum_Instances_Proc proc,
-	void* client_data);
+        const Instance* model,
+        Enum_Instances_Proc proc,
+        void* client_data);
 
     Create_Instance_Status _create_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Delete_Instance_Status _delete_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Modify_Instance_Status _modify_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     friend class Load_Provider_Base;
 };
@@ -101,21 +101,21 @@ public:
     const CLASS* operator[](size_t pos) const;
 
     Get_Instance_Status get_instance(
-	const CLASS* model, 
-	CLASS*& instance);
+        const CLASS* model, 
+        CLASS*& instance);
 
     Enum_Instances_Status enum_instances(
-	const CLASS* model,
-	Enum_Instances_Handler<CLASS>* handler);
+        const CLASS* model,
+        Enum_Instances_Handler<CLASS>* handler);
 
     Create_Instance_Status create_instance(
-	const CLASS* instance);
+        const CLASS* instance);
 
     Delete_Instance_Status delete_instance(
-	const CLASS* instance);
+        const CLASS* instance);
 
     Modify_Instance_Status modify_instance(
-	const CLASS* instance);
+        const CLASS* instance);
 };
 
 template<class CLASS>
@@ -185,7 +185,7 @@ Enum_Instances_Status Instance_Map<CLASS>::enum_instances(
     Enum_Instances_Handler<CLASS>* handler)
 {
     return _enum_instances(
-	(const Instance*)model, handler->_proc, handler->_client_data);
+        (const Instance*)model, handler->_proc, handler->_client_data);
 }
 
 

@@ -34,4 +34,7 @@ OPTIONS:
     -e      -- Generate enum tags for Values/ValueMap qualifiers.
     -s      -- Generate classes for entire CIM schema.
     -l      -- Export class symbols (for shared libraries).
+    -q      -- Generate non-boolean qualifiers and non-description qualifiers.
+    -d      -- Generate Description qualifiers.
+    -b      -- Generate boolean qualifiers (in addition to bit mask).
 

@@ -41,27 +41,28 @@ struct Meta_Feature;
 struct Meta_Class
 {
     // Fields common with Meta_Method.
+    Atomic refs;
     uint32 flags;
     const char* name;
-    Meta_Feature** meta_features; 
+    const Meta_Qualifier* const* meta_qualifiers;
+    size_t num_meta_qualifiers;
+    const Meta_Feature* const* meta_features; 
     size_t num_meta_features;
     uint32 size;
 
     // Local fields:
     const Meta_Feature_Local* locals;
     const Meta_Class* super_meta_class;
-    const char* const* super_classes;
-    size_t num_super_classes;
     size_t num_keys;
     uint32 crc;
     const struct Meta_Repository* meta_repository;
 };
 
-struct Meta_Repository
-{
-    const Meta_Class* const* meta_classes;
-    size_t num_meta_classes;
-};
+CIMPLE_CIMPLE_LINKAGE
+void ref(const Meta_Class* mc);
+
+CIMPLE_CIMPLE_LINKAGE
+void unref(const Meta_Class* mc);
 
 CIMPLE_CIMPLE_LINKAGE
 const Meta_Feature* find_feature(
@@ -110,37 +111,35 @@ bool is_subclass(
 
 CIMPLE_CIMPLE_LINKAGE
 const Meta_Class* find_meta_class(
-    const Meta_Repository* meta_repository,
-    const char* class_name);
-
-CIMPLE_CIMPLE_LINKAGE
-const Meta_Class* find_meta_class(
     const Meta_Class* source_meta_class,
     const char* class_name);
 
-class Buffer;
+CIMPLE_CIMPLE_LINKAGE
+Meta_Class* create_meta_class(
+    const char* name, 
+    const Meta_Class* super_meta_class,
+    uint32 flags);
 
 CIMPLE_CIMPLE_LINKAGE
-void pack_meta_class(
-    Buffer& out, 
-    const Meta_Class* mc);
+Meta_Class* clone(const Meta_Class* mc);
 
 CIMPLE_CIMPLE_LINKAGE
-Meta_Class* unpack_meta_class(
-    Buffer& in,
-    size_t& pos);
+void destroy(Meta_Class* mc);
 
 CIMPLE_CIMPLE_LINKAGE
-void dump(const Meta_Class* mc);
-
-CIMPLE_CIMPLE_LINKAGE
-void print(const Meta_Class* mc);
+void print(const Meta_Class* mc, bool print_qualifiers);
 
 CIMPLE_CIMPLE_LINKAGE
 bool identical(const Meta_Class* mc1, const Meta_Class* mc2);
 
 CIMPLE_CIMPLE_LINKAGE
-void destroy(Meta_Class* mc);
+void dump(const Meta_Class* mc);
+
+CIMPLE_CIMPLE_LINKAGE
+void filter_qualifiers(
+    Meta_Class* mc,
+    const char* const* names,
+    size_t num_names);
 
 CIMPLE_NAMESPACE_END
 

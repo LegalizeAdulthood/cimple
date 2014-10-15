@@ -2,6 +2,7 @@
 #include <Pegasus/Common/Config.h>
 #include <Pegasus/Repository/CIMRepository.h>
 #include <Pegasus/Common/MofWriter.h>
+#include <Pegasus/Common/PegasusVersion.h>
 #include <string>
 #include <sys/types.h>
 #include <dlfcn.h>
@@ -40,10 +41,6 @@ void check_class_compatibility(
     const cimple::Meta_Class* mc, 
     CIMClass& c);
 
-CIMRepository_Mode g_repository_mode;
-string g_pegasus_repository_dir;
-void* g_handle = 0;
-
 //------------------------------------------------------------------------------
 //
 // Options:
@@ -62,6 +59,53 @@ bool indirect_opt = false;
 Array<String> providing_namespaces;
 bool absolute_opt = false;
 string repository_opt;
+bool bin_repository_opt = false;
+
+//------------------------------------------------------------------------------
+//
+// repository_mode()
+//
+//     Translate bin_repository_opt into corresponding CIMRepository mode.
+//
+//------------------------------------------------------------------------------
+
+#if defined(PEGASUS_VERSION_NUMBER) && PEGASUS_VERSION_NUMBER >= 0x02060000
+inline CIMRepository::CIMRepositoryMode repository_mode()
+{
+    if (bin_repository_opt)
+        return CIMRepository::MODE_BIN;
+    else
+        return CIMRepository::MODE_DEFAULT;
+}
+#else
+inline CIMRepository_Mode repository_mode()
+{
+    CIMRepository_Mode mode;
+
+    if (bin_repository_opt)
+        mode.flag = CIMRepository_Mode::NONE;
+    else
+        mode.flag = CIMRepository_Mode::BIN;
+
+    return mode;
+}
+#endif
+
+//------------------------------------------------------------------------------
+//
+// g_pegasus_repository_dir
+//
+//------------------------------------------------------------------------------
+
+string g_pegasus_repository_dir;
+
+//------------------------------------------------------------------------------
+//
+// g_handle
+//
+//------------------------------------------------------------------------------
+
+void* g_handle = 0;
 
 //------------------------------------------------------------------------------
 //
@@ -400,11 +444,34 @@ cimple::Registration* load_module(
 //
 //------------------------------------------------------------------------------
 
-void unregister_provider(
+void delete_capabilities(
     CIMRepository& repository,
     const string& module_name,
     const string& provider_name,
     const string& class_name)
+{
+    char buf[1024];
+    sprintf(buf, 
+        "PG_ProviderCapabilities."
+        "ProviderName=\"%s\","
+        "ProviderModuleName=\"%s\","
+        "CapabilityID=\"%s\"", 
+        provider_name.c_str(),
+        module_name.c_str(),
+        class_name.c_str());
+
+    if (verbose_opt)
+        printf("Deleting %s\n", buf);
+
+    repository.deleteInstance(REGISTRATION_NAMESPACE, CIMObjectPath(buf));
+}
+
+void unregister_provider(
+    CIMRepository& repository,
+    const string& module_name,
+    const string& provider_name,
+    const string& class_name,
+    const cimple::Meta_Class* meta_class)
 {
     if (verbose_opt)
 	printf("=== Deleting provider registration instances\n");
@@ -438,19 +505,28 @@ void unregister_provider(
 
     try
     {
-	char buf[1024];
-	sprintf(buf, 
-	    "PG_ProviderCapabilities."
-	    "ProviderName=\"%s\","
-	    "ProviderModuleName=\"%s\","
-	    "CapabilityID=\"1\"", 
-	    provider_name.c_str(),
-	    module_name.c_str());
-
-	if (verbose_opt)
-	    printf("Deleting %s\n", buf);
-
-	repository.deleteInstance(REGISTRATION_NAMESPACE, CIMObjectPath(buf));
+        if (subclass_opt)
+        {
+            for (size_t i = 0; i < _num_meta_classes; i++)
+            {
+                if (cimple::is_subclass(meta_class, _meta_classes[i]))
+                {
+                    delete_capabilities(
+                        repository,
+                        module_name,
+                        provider_name,
+                        _meta_classes[i]->name);
+                }
+            }
+        }
+        else
+        {
+            delete_capabilities(
+                repository,
+                module_name,
+                provider_name,
+                class_name);
+        }
     }
     catch (...)
     {
@@ -514,7 +590,7 @@ void register_module(
 	// Remove old registration instance.
 
 	CIMRepository repository(
-	    g_pegasus_repository_dir.c_str(), g_repository_mode);
+	    g_pegasus_repository_dir.c_str(), repository_mode());
 
 	string location;
 	
@@ -563,11 +639,11 @@ void register_module(
     catch (CIMException& e)
     {
 	CString msg = e.getMessage().getCString();
-	err("xxx1 unexpected repository error: %s", (const char*)msg);
+	err("unexpected repository error: %s", (const char*)msg);
     }
     catch (...)
     {
-	err("xxx2 unexpected repository error");
+	err("unexpected repository error");
     }
 }
 
@@ -734,6 +810,110 @@ void uninstall_classes(
 //
 //------------------------------------------------------------------------------
 
+static void create_capabilities(
+    const string& module_name,
+    const string& provider_name,
+    const string& class_name,
+    const cimple::Meta_Class* meta_class,
+    CIMRepository& repository)
+{
+    String mn = module_name.c_str();
+    String pn = provider_name.c_str();
+    String cn = class_name.c_str();
+
+    CIMInstance i("PG_ProviderCapabilities");
+
+    if (verbose_opt)
+        printf("Creating PG_ProviderCapabilities instance\n");
+
+    i.addProperty(CIMProperty("CapabilityID", cn));
+    i.addProperty(CIMProperty("ProviderModuleName", mn));
+    i.addProperty(CIMProperty("ProviderName", pn));
+    i.addProperty(CIMProperty("ClassName", cn));
+    i.addProperty(CIMProperty("Namespaces", providing_namespaces));
+
+    // Set provider type.
+
+    Pegasus::Array<Uint16> providerType;
+
+    // Register provider as one or more of the following types:
+    //     - Instance provider
+    //     - Indication provider
+    //     - Association provider
+    //     - Method provider
+
+    if (meta_class->flags & CIMPLE_FLAG_INDICATION)
+    {
+        // Indication provider:
+        providerType.append(4);
+
+        if (verbose_opt)
+            printf("=== Registered as indication provider\n");
+
+        if (cmpi_opt)
+            check_cmpi_entry_point(provider_name.c_str(), "Indication");
+    }
+    else
+    {
+        // Instance provider.
+        providerType.append(2);
+
+        if (verbose_opt)
+            printf("=== Registered as instance provider\n");
+
+        if (cmpi_opt)
+            check_cmpi_entry_point(provider_name.c_str(), "Instance");
+    }
+
+    if (meta_class->flags & CIMPLE_FLAG_ASSOCIATION)
+    {
+        // Association provider.
+        providerType.append(3);
+
+        if (verbose_opt)
+            printf("=== Registered as association provider\n");
+
+        if (cmpi_opt)
+            check_cmpi_entry_point(
+                provider_name.c_str(), "Association");
+    }
+
+    if (cimple::has_methods(meta_class))
+    {
+        // Method provider.
+        providerType.append(5);
+
+        if (verbose_opt)
+            printf("=== Registered as method provider\n");
+
+        if (cmpi_opt)
+            check_cmpi_entry_point(provider_name.c_str(), "Method");
+    }
+
+
+    i.addProperty(CIMProperty("ProviderType", providerType));
+
+    // supportedProperties
+
+    CIMValue supportedProperties;
+    supportedProperties.setNullValue(CIMTYPE_STRING, true, 0);
+    i.addProperty(
+        CIMProperty("supportedProperties", supportedProperties));
+
+    // supportedMethods
+
+    CIMValue supportedMethods;
+    supportedMethods.setNullValue(CIMTYPE_STRING, true, 0);
+    assert(supportedMethods.isNull());
+    i.addProperty(
+        CIMProperty("supportedMethods", supportedMethods));
+
+    if (dump_opt)
+        print(i);
+
+    repository.createInstance(REGISTRATION_NAMESPACE, i);
+}
+
 void register_provider(
     const string& module_name,
     const string& provider_name,
@@ -760,10 +940,10 @@ void register_provider(
 	// Remove old registration instances.
 
 	CIMRepository repository(
-	    g_pegasus_repository_dir.c_str(), g_repository_mode);
+	    g_pegasus_repository_dir.c_str(), repository_mode());
 
 	unregister_provider(
-	    repository, module_name, provider_name, class_name);
+	    repository, module_name, provider_name, class_name, meta_class);
 
 	if (unregister_opt && class_opt)
 	    uninstall_classes(repository, meta_class);
@@ -801,99 +981,35 @@ void register_provider(
 
 	// Create PG_ProviderCapabilities instance.
 
-	{
-	    CIMInstance i("PG_ProviderCapabilities");
+        if (subclass_opt)
+        {
+            // With this option, we register the provider to provide all
+            // subclasses of this class.
 
-	    if (verbose_opt)
-		printf("Creating PG_ProviderCapabilities instance\n");
+            for (size_t i = 0; i < _num_meta_classes; i++)
+            {
+                if (cimple::is_subclass(meta_class, _meta_classes[i]))
+                {
+                    create_capabilities(
+                        module_name,
+                        provider_name,
+                        _meta_classes[i]->name,
+                        _meta_classes[i],
+                        repository);
+                }
+            }
+        }
+        else
+        {
+            // Register provider only to provide the single class.
 
-	    i.addProperty(CIMProperty("CapabilityID", String("1")));
-	    i.addProperty(CIMProperty("ProviderModuleName", mn));
-	    i.addProperty(CIMProperty("ProviderName", pn));
-	    i.addProperty(CIMProperty("ClassName", String(cn)));
-	    i.addProperty(CIMProperty("Namespaces", providing_namespaces));
-
-	    // Set provider type.
-
-	    Pegasus::Array<Uint16> providerType;
-
-	    // Register provider as one or more of the following types:
-	    //     - Instance provider
-	    //     - Indication provider
-	    //     - Association provider
-	    //     - Method provider
-
-	    if (meta_class->flags & CIMPLE_FLAG_INDICATION)
-	    {
-		// Indication provider:
-		providerType.append(4);
-
-		if (verbose_opt)
-		    printf("=== Registered as indication provider\n");
-
-		if (cmpi_opt)
-		    check_cmpi_entry_point(provider_name.c_str(), "Indication");
-	    }
-	    else
-	    {
-		// Instance provider.
-		providerType.append(2);
-
-		if (verbose_opt)
-		    printf("=== Registered as instance provider\n");
-
-		if (cmpi_opt)
-		    check_cmpi_entry_point(provider_name.c_str(), "Instance");
-	    }
-
-	    if (meta_class->flags & CIMPLE_FLAG_ASSOCIATION)
-	    {
-		// Association provider.
-		providerType.append(3);
-
-		if (verbose_opt)
-		    printf("=== Registered as association provider\n");
-
-		if (cmpi_opt)
-		    check_cmpi_entry_point(
-			provider_name.c_str(), "Association");
-	    }
-
-	    if (cimple::has_methods(meta_class))
-	    {
-		// Method provider.
-		providerType.append(5);
-
-		if (verbose_opt)
-		    printf("=== Registered as method provider\n");
-
-		if (cmpi_opt)
-		    check_cmpi_entry_point(provider_name.c_str(), "Method");
-	    }
-
-
-	    i.addProperty(CIMProperty("ProviderType", providerType));
-
-	    // supportedProperties
-
-	    CIMValue supportedProperties;
-	    supportedProperties.setNullValue(CIMTYPE_STRING, true, 0);
-	    i.addProperty(
-		CIMProperty("supportedProperties", supportedProperties));
-
-	    // supportedMethods
-
-	    CIMValue supportedMethods;
-	    supportedMethods.setNullValue(CIMTYPE_STRING, true, 0);
-	    assert(supportedMethods.isNull());
-	    i.addProperty(
-		CIMProperty("supportedMethods", supportedMethods));
-
-	    if (dump_opt)
-		print(i);
-
-	    repository.createInstance(REGISTRATION_NAMESPACE, i);
-	}
+            create_capabilities(
+                module_name,
+                provider_name,
+                class_name,
+                meta_class,
+                repository);
+        }
     }
     catch (CIMException& e)
     {
@@ -1406,7 +1522,7 @@ void validate_class(
 	// Open repository:
 
 	CIMRepository repository(
-	    g_pegasus_repository_dir.c_str(), g_repository_mode);
+	    g_pegasus_repository_dir.c_str(), repository_mode());
 
 	// Create class:
 
@@ -1538,7 +1654,7 @@ int main(int argc, char** argv)
 
     // Set the default repository mode:
 
-    g_repository_mode.flag = CIMRepository_Mode::NONE;
+    bin_repository_opt = false;
 
     // Extract options:
 
@@ -1587,7 +1703,7 @@ int main(int argc, char** argv)
 		break;
 
 	    case 'b':
-		g_repository_mode.flag = CIMRepository_Mode::BIN;
+		bin_repository_opt = true;
 		break;
 
 	    case 'u':
@@ -1624,7 +1740,7 @@ int main(int argc, char** argv)
     if (repository_mode)
     {
 	if (strcmp(repository_mode, "BIN") == 0)
-	    g_repository_mode.flag = CIMRepository_Mode::BIN;
+	    bin_repository_opt = true;
 	else if (strcmp(repository_mode, "XML") != 0)
 	{
 	    err("Invalid value for PEGASUS_REPOSITORY_MODE "

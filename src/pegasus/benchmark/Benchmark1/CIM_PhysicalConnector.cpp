@@ -13,152 +13,228 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_75E2CB8B53E2155E90DBB99ABED114CA;
+extern const Meta_Repository __meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_PhysicalElement_Description;
+extern const Meta_Property
+_CIM_PhysicalElement_Description;
 
-extern const Meta_Property _CIM_PhysicalElement_ElementName;
+extern const Meta_Property
+_CIM_PhysicalElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Name;
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-extern const Meta_Property _CIM_PhysicalElement_Tag;
+extern const Meta_Property
+_CIM_PhysicalElement_Tag;
 
-extern const Meta_Property _CIM_PhysicalElement_CreationClassName;
+extern const Meta_Property
+_CIM_PhysicalElement_CreationClassName;
 
-extern const Meta_Property _CIM_PhysicalElement_Manufacturer;
+extern const Meta_Property
+_CIM_PhysicalElement_Manufacturer;
 
-extern const Meta_Property _CIM_PhysicalElement_Model;
+extern const Meta_Property
+_CIM_PhysicalElement_Model;
 
-extern const Meta_Property _CIM_PhysicalElement_SKU;
+extern const Meta_Property
+_CIM_PhysicalElement_SKU;
 
-extern const Meta_Property _CIM_PhysicalElement_SerialNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_SerialNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_Version;
+extern const Meta_Property
+_CIM_PhysicalElement_Version;
 
-extern const Meta_Property _CIM_PhysicalElement_PartNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_PartNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_OtherIdentifyingInfo;
+extern const Meta_Property
+_CIM_PhysicalElement_OtherIdentifyingInfo;
 
-extern const Meta_Property _CIM_PhysicalElement_PoweredOn;
+extern const Meta_Property
+_CIM_PhysicalElement_PoweredOn;
 
-extern const Meta_Property _CIM_PhysicalElement_ManufactureDate;
+extern const Meta_Property
+_CIM_PhysicalElement_ManufactureDate;
 
-extern const Meta_Property _CIM_PhysicalElement_VendorEquipmentType;
+extern const Meta_Property
+_CIM_PhysicalElement_VendorEquipmentType;
 
-extern const Meta_Property _CIM_PhysicalElement_UserTracking;
+extern const Meta_Property
+_CIM_PhysicalElement_UserTracking;
 
-extern const Meta_Property _CIM_PhysicalElement_CanBeFRUed;
+extern const Meta_Property
+_CIM_PhysicalElement_CanBeFRUed;
 
-extern const Meta_Property _CIM_PhysicalConnector_ConnectorPinout;
+extern const Meta_Property
+_CIM_PhysicalConnector_ConnectorPinout;
 
-const Meta_Property _CIM_PhysicalConnector_ConnectorPinout =
+const Meta_Property
+_CIM_PhysicalConnector_ConnectorPinout =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ConnectorPinout",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorPinout)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorPinout),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_ConnectorType;
+extern const Meta_Property
+_CIM_PhysicalConnector_ConnectorType;
 
-const Meta_Property _CIM_PhysicalConnector_ConnectorType =
+const Meta_Property
+_CIM_PhysicalConnector_ConnectorType =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ConnectorType",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    -1,
-    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorType)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorType),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_OtherTypeDescription;
+extern const Meta_Property
+_CIM_PhysicalConnector_OtherTypeDescription;
 
-const Meta_Property _CIM_PhysicalConnector_OtherTypeDescription =
+const Meta_Property
+_CIM_PhysicalConnector_OtherTypeDescription =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "OtherTypeDescription",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_PhysicalConnector,OtherTypeDescription)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,OtherTypeDescription),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_ConnectorGender;
+extern const Meta_Property
+_CIM_PhysicalConnector_ConnectorGender;
 
-const Meta_Property _CIM_PhysicalConnector_ConnectorGender =
+const Meta_Property
+_CIM_PhysicalConnector_ConnectorGender =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ConnectorGender",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    0,
-    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorGender)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorGender),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_ConnectorElectricalCharacteristics;
+extern const Meta_Property
+_CIM_PhysicalConnector_ConnectorElectricalCharacteristics;
 
-const Meta_Property _CIM_PhysicalConnector_ConnectorElectricalCharacteristics =
+const Meta_Property
+_CIM_PhysicalConnector_ConnectorElectricalCharacteristics =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ConnectorElectricalCharacteristics",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    -1,
-    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorElectricalCharacteristics)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorElectricalCharacteristics),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_OtherElectricalCharacteristics;
+extern const Meta_Property
+_CIM_PhysicalConnector_OtherElectricalCharacteristics;
 
-const Meta_Property _CIM_PhysicalConnector_OtherElectricalCharacteristics =
+const Meta_Property
+_CIM_PhysicalConnector_OtherElectricalCharacteristics =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "OtherElectricalCharacteristics",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(CIM_PhysicalConnector,OtherElectricalCharacteristics)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,OtherElectricalCharacteristics),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_NumPhysicalPins;
+extern const Meta_Property
+_CIM_PhysicalConnector_NumPhysicalPins;
 
-const Meta_Property _CIM_PhysicalConnector_NumPhysicalPins =
+const Meta_Property
+_CIM_PhysicalConnector_NumPhysicalPins =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "NumPhysicalPins",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(CIM_PhysicalConnector,NumPhysicalPins)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,NumPhysicalPins),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_ConnectorLayout;
+extern const Meta_Property
+_CIM_PhysicalConnector_ConnectorLayout;
 
-const Meta_Property _CIM_PhysicalConnector_ConnectorLayout =
+const Meta_Property
+_CIM_PhysicalConnector_ConnectorLayout =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ConnectorLayout",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    0,
-    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorLayout)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorLayout),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalConnector_ConnectorDescription;
+extern const Meta_Property
+_CIM_PhysicalConnector_ConnectorDescription;
 
-const Meta_Property _CIM_PhysicalConnector_ConnectorDescription =
+const Meta_Property
+_CIM_PhysicalConnector_ConnectorDescription =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ConnectorDescription",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorDescription)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalConnector,ConnectorDescription),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_PhysicalConnector_meta_features[] =
+static Meta_Feature* _CIM_PhysicalConnector_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_PhysicalElement_Description,
@@ -191,13 +267,6 @@ static Meta_Feature* _CIM_PhysicalConnector_meta_features[] =
     (Meta_Feature*)&_CIM_PhysicalConnector_NumPhysicalPins,
     (Meta_Feature*)&_CIM_PhysicalConnector_ConnectorLayout,
     (Meta_Feature*)&_CIM_PhysicalConnector_ConnectorDescription,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_PhysicalElement",
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -237,18 +306,19 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_PhysicalConnector::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "CIM_PhysicalConnector",
-    _CIM_PhysicalConnector_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_PhysicalConnector_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_PhysicalConnector_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_PhysicalConnector_MFA),
     sizeof(CIM_PhysicalConnector),
     _locals,
     &CIM_PhysicalElement::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0xFF3314DE,/* crc */
-    &__meta_repository_75E2CB8B53E2155E90DBB99ABED114CA,
+    0xFF3314DE, /* crc */
+    &__meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6,
 };
 
 CIMPLE_NAMESPACE_END

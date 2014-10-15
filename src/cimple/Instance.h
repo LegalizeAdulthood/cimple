@@ -36,42 +36,42 @@
 
 #define CIMPLE_CLASS(CLASS) \
     public: \
-	static const Meta_Class static_meta_class; \
-	static CLASS* create() \
-	{ \
-	    return (CLASS*)cimple::create(&CLASS::static_meta_class); \
-	} \
-	static void destroy(CLASS* instance) \
-	{ \
-	    cimple::destroy(instance); \
-	} \
-	CLASS* clone() const \
-	{ \
-	    return (CLASS*)cimple::clone(this); \
-	} \
+        static const Meta_Class static_meta_class; \
+        static CLASS* create(bool defaults = false) \
+        { \
+            return (CLASS*)cimple::create(&CLASS::static_meta_class,defaults); \
+        } \
+        static void destroy(CLASS* instance) \
+        { \
+            cimple::destroy(instance); \
+        } \
+        CLASS* clone() const \
+        { \
+            return (CLASS*)cimple::clone(this); \
+        } \
     private: \
-	CLASS() { } \
-	~CLASS() { } \
+        CLASS() { } \
+        ~CLASS() { } \
     public:
 
 #define CIMPLE_METHOD(METHOD) \
     public: \
-	static const Meta_Method static_meta_class; \
-	static METHOD* create() \
-	{ \
-	    return (METHOD*)cimple::create(&METHOD::static_meta_class); \
-	} \
-	static void destroy(METHOD* instance) \
-	{ \
-	    cimple::destroy(instance); \
-	} \
-	METHOD* clone() const \
-	{ \
-	    return (METHOD*)cimple::clone(this); \
-	} \
+        static const Meta_Method static_meta_class; \
+        static METHOD* create() \
+        { \
+            return (METHOD*)cimple::create(&METHOD::static_meta_class); \
+        } \
+        static void destroy(METHOD* instance) \
+        { \
+            cimple::destroy(instance); \
+        } \
+        METHOD* clone() const \
+        { \
+            return (METHOD*)cimple::clone(this); \
+        } \
     private: \
-	METHOD() { } \
-	~METHOD() { } \
+        METHOD() { } \
+        ~METHOD() { } \
     public:
 
 #define CIMPLE_INSTANCE_MAGIC 0xF00DFACE
@@ -97,14 +97,15 @@ CIMPLE_CIMPLE_LINKAGE
 void __construct(
     const Meta_Class* mc,
     Instance* inst,
-    bool clear = true);
+    bool clear,
+    bool defaults);
 
 /** Creates an instance from the given meta class. For each property, the 
     null flag is set to false. The caller must eventually pass the new object 
     to destroy().
 */
 CIMPLE_CIMPLE_LINKAGE
-Instance* create(const Meta_Class* meta_class);
+Instance* create(const Meta_Class* meta_class, bool defaults = false);
 
 /** Creates an instance from the given meta method. Sets all null flags to
     false. The caller must eventually pass the new object to destroy.
@@ -215,15 +216,6 @@ inline const Instance*& reference_of(
 CIMPLE_CIMPLE_LINKAGE
 bool identical(const Instance* i1, const Instance* i2);
 
-#ifdef CIMPLE_NEED_RANDOM_INITIALIZE
-
-/** Initialize an instance with random values.
-*/
-CIMPLE_CIMPLE_LINKAGE
-void random_initialize(Instance* instance);
-
-#endif /* CIMPLE_NEED_RANDOM_INITIALIZE */
-
 /** Finds associators of the instance with respect to the given association 
     instance. Returns the number of associators or negative one if this 
     association instance does not refer to the instance at all.
@@ -252,11 +244,6 @@ bool is_reference_of(
 CIMPLE_CIMPLE_LINKAGE
 bool keys_non_null(const Instance* instance);
 
-/** Returns true if *ancestor* is a ancestor-class of *descendant*.
-*/
-CIMPLE_CIMPLE_LINKAGE
-bool __is_a(const Meta_Class* ancestor, const Meta_Class* descendant);
-
 /** The is_a operator is used to determine wether an instance is a subclass
     of a given class. For example:
 
@@ -265,7 +252,7 @@ bool __is_a(const Meta_Class* ancestor, const Meta_Class* descendant);
 
     if (is_a<Base>(inst))
     {
-	// inst is descendant from Base.
+        // inst is descendant from Base.
     }
     \endcode
 
@@ -277,7 +264,10 @@ struct is_a
 {
     explicit is_a(const Instance* inst) : _meta_class(inst->meta_class) { }
 
-    operator bool() { return __is_a(&CLASS::static_meta_class, _meta_class); }
+    operator bool() 
+    { 
+        return is_subclass(&CLASS::static_meta_class, _meta_class); 
+    }
 
 private:
     const Meta_Class* _meta_class;
@@ -296,7 +286,7 @@ private:
 
     if (descendant)
     {
-	// inst must refer to an instance of Derived.
+        // inst must refer to an instance of Derived.
     }
     \endcode
 
@@ -310,11 +300,11 @@ struct cast
 
     operator CLASS_PTR()
     {
-	if (_ptr && __is_a(
-	    &((CLASS_PTR)0)->static_meta_class, _ptr->meta_class))
-	    return CLASS_PTR(_ptr);
+        if (_ptr && is_subclass(
+            &((CLASS_PTR)0)->static_meta_class, _ptr->meta_class))
+            return CLASS_PTR(_ptr);
 
-	return 0;
+        return 0;
     }
 
 private:

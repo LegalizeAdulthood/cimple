@@ -182,20 +182,20 @@ class Indication_Handler
 public:
 
     Indication_Handler(Indication_Proc proc, void* client_data) :
-	_proc(proc), _client_data(client_data) 
+        _proc(proc), _client_data(client_data) 
     { 
     }
 
     ~Indication_Handler()
     {
-	_proc(0, _client_data);
+        _proc(0, _client_data);
     }
 
     /**
     */
     bool handle(CLASS* indication)
     {
-	return _proc(indication, _client_data);
+        return _proc(indication, _client_data);
     }
 
 private:
@@ -224,13 +224,13 @@ class Enum_Instances_Handler
 public:
 
     Enum_Instances_Handler(Enum_Instances_Proc proc, void* client_data) :
-	_proc(proc), _client_data(client_data)
+        _proc(proc), _client_data(client_data)
     { 
     }
 
     bool handle(CLASS* instance)
     {
-	return _proc(instance, ENUM_INSTANCES_OK, _client_data);
+        return _proc(instance, ENUM_INSTANCES_OK, _client_data);
     }
 
     Enum_Instances_Proc _proc;
@@ -259,14 +259,14 @@ class Enum_Associator_Names_Handler
 public:
 
     Enum_Associator_Names_Handler(
-	Enum_Associator_Names_Proc proc, void* client_data) :
-	_proc(proc), _client_data(client_data)
+        Enum_Associator_Names_Proc proc, void* client_data) :
+        _proc(proc), _client_data(client_data)
     {
     }
 
     bool handle(CLASS* instance)
     {
-	return _proc(instance, ENUM_ASSOCIATOR_NAMES_OK, _client_data);
+        return _proc(instance, ENUM_ASSOCIATOR_NAMES_OK, _client_data);
     }
 
     Enum_Associator_Names_Proc _proc;
@@ -293,13 +293,13 @@ class Enum_References_Handler
 public:
 
     Enum_References_Handler(Enum_References_Proc proc, void* client_data) :
-	_proc(proc), _client_data(client_data)
+        _proc(proc), _client_data(client_data)
     {
     }
 
     bool handle(CLASS* instance)
     {
-	return _proc(instance, ENUM_REFERENCES_OK, _client_data);
+        return _proc(instance, ENUM_REFERENCES_OK, _client_data);
     }
 
     Enum_References_Proc _proc;
@@ -336,67 +336,67 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3, 
-	void* arg4, 
-	void* arg5, 
-	void* arg6, 
-	void* arg7)
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3, 
+        void* arg4, 
+        void* arg5, 
+        void* arg6, 
+        void* arg7)
     {
-	switch (operation)
-	{
-	    case OPERATION_GET_META_CLASS:
-	    {
-		*((Meta_Class**)arg0) = (Meta_Class*)&CLASS::static_meta_class;
-		return GET_META_CLASS_OK;
-	    }
+        switch (operation)
+        {
+            case OPERATION_GET_META_CLASS:
+            {
+                *((Meta_Class**)arg0) = (Meta_Class*)&CLASS::static_meta_class;
+                return GET_META_CLASS_OK;
+            }
 
-	    case OPERATION_CREATE_PROVIDER:
-	    {
-		*((PROVIDER**)arg0) = new PROVIDER;
-		return CREATE_PROVIDER_OK;
-	    }
+            case OPERATION_CREATE_PROVIDER:
+            {
+                *((PROVIDER**)arg0) = new PROVIDER;
+                return CREATE_PROVIDER_OK;
+            }
 
-	    case OPERATION_DESTROY_PROVIDER:
-	    {
-		delete (PROVIDER*)arg0;
-		return DESTROY_PROVIDER_OK;
-	    }
+            case OPERATION_DESTROY_PROVIDER:
+            {
+                delete (PROVIDER*)arg0;
+                return DESTROY_PROVIDER_OK;
+            }
 
-	    case OPERATION_LOAD:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->load();
-	    }
+            case OPERATION_LOAD:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                return provider->load();
+            }
 
-	    case OPERATION_UNLOAD:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->unload();
-	    }
+            case OPERATION_UNLOAD:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                return provider->unload();
+            }
 
-	    case OPERATION_GET_REPOSITORY:
-	    {
-		const Meta_Repository*& meta_repository = 
-		    *((const Meta_Repository**)arg0);
+            case OPERATION_GET_REPOSITORY:
+            {
+                const Meta_Repository*& meta_repository = 
+                    *((const Meta_Repository**)arg0);
 
-		const Meta_Class* mc = (Meta_Class*)&CLASS::static_meta_class;
+                const Meta_Class* mc = (Meta_Class*)&CLASS::static_meta_class;
 
-		meta_repository = mc->meta_repository;
+                meta_repository = mc->meta_repository;
 
-		return GET_REPOSITORY_OK;
-	    }
+                return GET_REPOSITORY_OK;
+            }
 
-	    default:
-	    {
-		// Not handled!
-		return -1;
-	    }
-	}
+            default:
+            {
+                // Not handled!
+                return -1;
+            }
+        }
     }
 };
 
@@ -409,76 +409,76 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3, 
-	void* arg4, 
-	void* arg5, 
-	void* arg6, 
-	void* arg7)
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3, 
+        void* arg4, 
+        void* arg5, 
+        void* arg6, 
+        void* arg7)
     {
-	switch (operation)
-	{
-	    case OPERATION_GET_META_CLASS:
-	    case OPERATION_CREATE_PROVIDER:
-	    case OPERATION_DESTROY_PROVIDER:
-	    case OPERATION_LOAD:
-	    case OPERATION_UNLOAD:
-	    case OPERATION_GET_REPOSITORY:
-	    {
-		return Provider_Proc_Common_T<PROVIDER>::proc(registration,
-		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-	    }
+        switch (operation)
+        {
+            case OPERATION_GET_META_CLASS:
+            case OPERATION_CREATE_PROVIDER:
+            case OPERATION_DESTROY_PROVIDER:
+            case OPERATION_LOAD:
+            case OPERATION_UNLOAD:
+            case OPERATION_GET_REPOSITORY:
+            {
+                return Provider_Proc_Common_T<PROVIDER>::proc(registration,
+                    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            }
 
-	    case OPERATION_GET_INSTANCE:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->get_instance(
-		    (const CLASS*)arg1, *((CLASS**)arg2));
-	    }
+            case OPERATION_GET_INSTANCE:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                return provider->get_instance(
+                    (const CLASS*)arg1, *((CLASS**)arg2));
+            }
 
-	    case OPERATION_ENUM_INSTANCES:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
+            case OPERATION_ENUM_INSTANCES:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
 
-		Enum_Instances_Handler<CLASS> handler(
-		    (Enum_Instances_Proc)arg2, (void*)arg3);
-			
-		Enum_Instances_Status status = provider->enum_instances(
-		    (const CLASS*)arg1, &handler);
+                Enum_Instances_Handler<CLASS> handler(
+                    (Enum_Instances_Proc)arg2, (void*)arg3);
+                        
+                Enum_Instances_Status status = provider->enum_instances(
+                    (const CLASS*)arg1, &handler);
 
-		handler._proc(0, status, handler._client_data);
+                handler._proc(0, status, handler._client_data);
 
-		return status;
-	    }
+                return status;
+            }
 
-	    case OPERATION_CREATE_INSTANCE:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->create_instance((const CLASS*)arg1);
-	    }
+            case OPERATION_CREATE_INSTANCE:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                return provider->create_instance((const CLASS*)arg1);
+            }
 
-	    case OPERATION_DELETE_INSTANCE:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->delete_instance((const CLASS*)arg1);
-	    }
+            case OPERATION_DELETE_INSTANCE:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                return provider->delete_instance((const CLASS*)arg1);
+            }
 
-	    case OPERATION_MODIFY_INSTANCE:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->modify_instance((const CLASS*)arg1);
-	    }
+            case OPERATION_MODIFY_INSTANCE:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                return provider->modify_instance((const CLASS*)arg1);
+            }
 
-	    default:
-	    {
-		// Not handled!
-		return -1;
-	    }
-	}
+            default:
+            {
+                // Not handled!
+                return -1;
+            }
+        }
     }
 };
 
@@ -491,53 +491,53 @@ public:
     typedef Indication_Handler<CLASS> INDICATION_HANDLER;
 
     static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3, 
-	void* arg4, 
-	void* arg5, 
-	void* arg6, 
-	void* arg7)
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3, 
+        void* arg4, 
+        void* arg5, 
+        void* arg6, 
+        void* arg7)
     {
-	switch (operation)
-	{
-	    case OPERATION_GET_META_CLASS:
-	    case OPERATION_CREATE_PROVIDER:
-	    case OPERATION_DESTROY_PROVIDER:
-	    case OPERATION_LOAD:
-	    case OPERATION_UNLOAD:
-	    case OPERATION_GET_REPOSITORY:
-	    {
-		return Provider_Proc_Common_T<PROVIDER>::proc(registration,
-		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-	    }
+        switch (operation)
+        {
+            case OPERATION_GET_META_CLASS:
+            case OPERATION_CREATE_PROVIDER:
+            case OPERATION_DESTROY_PROVIDER:
+            case OPERATION_LOAD:
+            case OPERATION_UNLOAD:
+            case OPERATION_GET_REPOSITORY:
+            {
+                return Provider_Proc_Common_T<PROVIDER>::proc(registration,
+                    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            }
 
-	    case OPERATION_ENABLE_INDICATIONS:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		Indication_Proc indication_proc = (Indication_Proc)arg1;
-		void* client_data = arg2;
+            case OPERATION_ENABLE_INDICATIONS:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                Indication_Proc indication_proc = (Indication_Proc)arg1;
+                void* client_data = arg2;
 
-		INDICATION_HANDLER* indication_handler = new INDICATION_HANDLER(
-		    indication_proc, client_data);
-		return provider->enable_indications(indication_handler);
-	    }
+                INDICATION_HANDLER* indication_handler = new INDICATION_HANDLER(
+                    indication_proc, client_data);
+                return provider->enable_indications(indication_handler);
+            }
 
-	    case OPERATION_DISABLE_INDICATIONS:
-	    {
-		PROVIDER* provider = (PROVIDER*)arg0;
-		return provider->disable_indications();
-	    }
+            case OPERATION_DISABLE_INDICATIONS:
+            {
+                PROVIDER* provider = (PROVIDER*)arg0;
+                return provider->disable_indications();
+            }
 
-	    default:
-	    {
-		// Not handled!
-		return -1;
-	    }
-	}
+            default:
+            {
+                // Not handled!
+                return -1;
+            }
+        }
     }
 };
 
@@ -549,103 +549,103 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3, 
-	void* arg4, 
-	void* arg5, 
-	void* arg6, 
-	void* arg7)
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3, 
+        void* arg4, 
+        void* arg5, 
+        void* arg6, 
+        void* arg7)
     {
-	switch (operation)
-	{
-	    case OPERATION_GET_META_CLASS:
-	    case OPERATION_CREATE_PROVIDER:
-	    case OPERATION_DESTROY_PROVIDER:
-	    case OPERATION_LOAD:
-	    case OPERATION_UNLOAD:
-	    case OPERATION_GET_REPOSITORY:
-	    case OPERATION_GET_INSTANCE:
-	    case OPERATION_ENUM_INSTANCES:
-	    case OPERATION_CREATE_INSTANCE:
-	    case OPERATION_DELETE_INSTANCE:
-	    case OPERATION_MODIFY_INSTANCE:
-	    {
-		return Provider_Proc_T<PROVIDER>::proc(registration,
-		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-	    }
+        switch (operation)
+        {
+            case OPERATION_GET_META_CLASS:
+            case OPERATION_CREATE_PROVIDER:
+            case OPERATION_DESTROY_PROVIDER:
+            case OPERATION_LOAD:
+            case OPERATION_UNLOAD:
+            case OPERATION_GET_REPOSITORY:
+            case OPERATION_GET_INSTANCE:
+            case OPERATION_ENUM_INSTANCES:
+            case OPERATION_CREATE_INSTANCE:
+            case OPERATION_DELETE_INSTANCE:
+            case OPERATION_MODIFY_INSTANCE:
+            {
+                return Provider_Proc_T<PROVIDER>::proc(registration,
+                    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            }
 
-	    case OPERATION_ENUM_ASSOCIATOR_NAMES:
-	    {
-		// arg0: provider
-		// arg1: instance
-		// arg2: result_class
-		// arg3: role
-		// arg4: result_role
-		// arg5: proc
-		// arg6: client_data
+            case OPERATION_ENUM_ASSOCIATOR_NAMES:
+            {
+                // arg0: provider
+                // arg1: instance
+                // arg2: result_class
+                // arg3: role
+                // arg4: result_role
+                // arg5: proc
+                // arg6: client_data
 
-		PROVIDER* provider = (PROVIDER*)arg0;
+                PROVIDER* provider = (PROVIDER*)arg0;
 
-		Enum_Associator_Names_Handler<Instance> handler(
-		    (Enum_Associator_Names_Proc)arg5, (void*)arg6);
+                Enum_Associator_Names_Handler<Instance> handler(
+                    (Enum_Associator_Names_Proc)arg5, (void*)arg6);
 
-		Enum_Associator_Names_Status status = 
-		    provider->enum_associator_names(
-			(const Instance*)arg1, /* instance */
-			*((const String*)arg2), /* result_class */
-			*((const String*)arg3), /* role */
-			*((const String*)arg4), /* result_role */
-			&handler);
+                Enum_Associator_Names_Status status = 
+                    provider->enum_associator_names(
+                        (const Instance*)arg1, /* instance */
+                        *((const String*)arg2), /* result_class */
+                        *((const String*)arg3), /* role */
+                        *((const String*)arg4), /* result_role */
+                        &handler);
 
-		// ATTN: a hack for now since otherwise the user's
-		// callback would be called here and by the Provider_Handle
-		// method with the same name as well.
-		if (status != ENUM_ASSOCIATOR_NAMES_UNSUPPORTED)
-		    handler._proc(0, status, handler._client_data);
+                // ATTN: a hack for now since otherwise the user's
+                // callback would be called here and by the Provider_Handle
+                // method with the same name as well.
+                if (status != ENUM_ASSOCIATOR_NAMES_UNSUPPORTED)
+                    handler._proc(0, status, handler._client_data);
 
-		return status;
-	    }
+                return status;
+            }
 
-	    case OPERATION_ENUM_REFERENCES:
-	    {
-		// arg0: provider
-		// arg1: instance
-		// arg2: model
-		// arg3: role
-		// arg4: proc
-		// arg5: client_data
+            case OPERATION_ENUM_REFERENCES:
+            {
+                // arg0: provider
+                // arg1: instance
+                // arg2: model
+                // arg3: role
+                // arg4: proc
+                // arg5: client_data
 
-		PROVIDER* provider = (PROVIDER*)arg0;
+                PROVIDER* provider = (PROVIDER*)arg0;
 
-		Enum_References_Handler<CLASS> handler(
-		    (Enum_References_Proc)arg4, (void*)arg5);
+                Enum_References_Handler<CLASS> handler(
+                    (Enum_References_Proc)arg4, (void*)arg5);
 
-		Enum_References_Status status = 
-		    provider->enum_references(
-			(const Instance*)arg1, /* instance */
-			(const CLASS*)arg2, /* model */
-			*((const String*)arg3), /* role */
-			&handler);
+                Enum_References_Status status = 
+                    provider->enum_references(
+                        (const Instance*)arg1, /* instance */
+                        (const CLASS*)arg2, /* model */
+                        *((const String*)arg3), /* role */
+                        &handler);
 
-		// ATTN: a hack for now since otherwise the user's
-		// callback would be called here and by the Provider_Handle
-		// method with the same name as well.
-		if (status != ENUM_REFERENCES_UNSUPPORTED)
-		    handler._proc(0, status, handler._client_data);
+                // ATTN: a hack for now since otherwise the user's
+                // callback would be called here and by the Provider_Handle
+                // method with the same name as well.
+                if (status != ENUM_REFERENCES_UNSUPPORTED)
+                    handler._proc(0, status, handler._client_data);
 
-		return status;
-	    }
+                return status;
+            }
 
-	    default:
-	    {
-		// Not handled!
-		return -1;
-	    }
-	}
+            default:
+            {
+                // Not handled!
+                return -1;
+            }
+        }
     }
 };
 

@@ -74,9 +74,9 @@ endif
 ##
 ##==============================================================================
 
-FLAGS = -W -Wall -Wno-unused -fPIC
+FLAGS = -Wall -Wextra -Wno-unused -fPIC
 
-ifdef CIMPLE_TREAT_WARNINGS_LIKE_ERRROS
+ifdef CIMPLE_WERROR
   FLAGS += -Werror
 endif
 

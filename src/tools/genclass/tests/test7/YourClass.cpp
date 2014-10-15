@@ -13,49 +13,69 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _YourClass_str1;
+extern const Meta_Property
+_YourClass_str1;
 
-const Meta_Property _YourClass_str1 =
+const Meta_Property
+_YourClass_str1 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "str1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(YourClass,str1)
+    0, /* subscript */
+    CIMPLE_OFF(YourClass,str1),
+    0, /* value */
 };
 
-extern const Meta_Property _YourClass_str2;
+extern const Meta_Property
+_YourClass_str2;
 
-const Meta_Property _YourClass_str2 =
+const Meta_Property
+_YourClass_str2 =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "str2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(YourClass,str2)
+    0, /* subscript */
+    CIMPLE_OFF(YourClass,str2),
+    0, /* value */
 };
 
-extern const Meta_Reference _YourClass_obj1;
+extern const Meta_Reference
+_YourClass_obj1;
 
 const Meta_Reference _YourClass_obj1 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qualifiers */
     &Instance::static_meta_class,
     CIMPLE_OFF(YourClass,obj1)
 };
 
-extern const Meta_Reference _YourClass_obj2;
+extern const Meta_Reference
+_YourClass_obj2;
 
 const Meta_Reference _YourClass_obj2 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
     "obj2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qualifiers */
     &Instance::static_meta_class,
     CIMPLE_OFF(YourClass,obj2)
 };
 
-static Meta_Feature* _YourClass_meta_features[] =
+static Meta_Feature* _YourClass_MFA[] =
 {
     (Meta_Feature*)&_YourClass_str1,
     (Meta_Feature*)&_YourClass_str2,
@@ -73,17 +93,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class YourClass::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_INDICATION,
     "YourClass",
-    _YourClass_meta_features,
-    CIMPLE_ARRAY_SIZE(_YourClass_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _YourClass_MFA,
+    CIMPLE_ARRAY_SIZE(_YourClass_MFA),
     sizeof(YourClass),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     0, /* num_keys */
-    0xF4FB8560,/* crc */
+    0xF4FB8560, /* crc */
     0,
 };
 

@@ -42,13 +42,13 @@ public:
     template<class U>
     inline Ref(const Ref<U>& x)
     {
-	ref(_ptr = cast<T*>(x.ptr()));
+        ref(_ptr = cast<T*>(x.ptr()));
     }
 
     template<class U>
     Ref(U* ptr)
     {
-	_ptr = cast<T*>(ptr);
+        _ptr = cast<T*>(ptr);
     }
 
     ~Ref();
@@ -99,8 +99,8 @@ Ref<T>& Ref<T>::operator=(const Ref<T>& x)
 {
     if (x._ptr != _ptr)
     {
-	unref(_ptr);
-	ref(_ptr = x._ptr);
+        unref(_ptr);
+        ref(_ptr = x._ptr);
     }
 
     return *this;

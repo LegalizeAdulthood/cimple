@@ -13,174 +13,263 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_75E2CB8B53E2155E90DBB99ABED114CA;
+extern const Meta_Repository __meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_PhysicalElement_Description;
+extern const Meta_Property
+_CIM_PhysicalElement_Description;
 
-extern const Meta_Property _CIM_PhysicalElement_ElementName;
+extern const Meta_Property
+_CIM_PhysicalElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Name;
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-extern const Meta_Property _CIM_PhysicalElement_Tag;
+extern const Meta_Property
+_CIM_PhysicalElement_Tag;
 
-extern const Meta_Property _CIM_PhysicalElement_CreationClassName;
+extern const Meta_Property
+_CIM_PhysicalElement_CreationClassName;
 
-extern const Meta_Property _CIM_PhysicalElement_Manufacturer;
+extern const Meta_Property
+_CIM_PhysicalElement_Manufacturer;
 
-extern const Meta_Property _CIM_PhysicalElement_Model;
+extern const Meta_Property
+_CIM_PhysicalElement_Model;
 
-extern const Meta_Property _CIM_PhysicalElement_SKU;
+extern const Meta_Property
+_CIM_PhysicalElement_SKU;
 
-extern const Meta_Property _CIM_PhysicalElement_SerialNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_SerialNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_Version;
+extern const Meta_Property
+_CIM_PhysicalElement_Version;
 
-extern const Meta_Property _CIM_PhysicalElement_PartNumber;
+extern const Meta_Property
+_CIM_PhysicalElement_PartNumber;
 
-extern const Meta_Property _CIM_PhysicalElement_OtherIdentifyingInfo;
+extern const Meta_Property
+_CIM_PhysicalElement_OtherIdentifyingInfo;
 
-extern const Meta_Property _CIM_PhysicalElement_PoweredOn;
+extern const Meta_Property
+_CIM_PhysicalElement_PoweredOn;
 
-extern const Meta_Property _CIM_PhysicalElement_ManufactureDate;
+extern const Meta_Property
+_CIM_PhysicalElement_ManufactureDate;
 
-extern const Meta_Property _CIM_PhysicalElement_VendorEquipmentType;
+extern const Meta_Property
+_CIM_PhysicalElement_VendorEquipmentType;
 
-extern const Meta_Property _CIM_PhysicalElement_UserTracking;
+extern const Meta_Property
+_CIM_PhysicalElement_UserTracking;
 
-extern const Meta_Property _CIM_PhysicalElement_CanBeFRUed;
+extern const Meta_Property
+_CIM_PhysicalElement_CanBeFRUed;
 
-extern const Meta_Property _CIM_PhysicalPackage_RemovalConditions;
+extern const Meta_Property
+_CIM_PhysicalPackage_RemovalConditions;
 
-const Meta_Property _CIM_PhysicalPackage_RemovalConditions =
+const Meta_Value_Scalar<uint16>
+_CIM_PhysicalPackage_RemovalConditions_MV =
 {
-    CIMPLE_FLAG_PROPERTY,
+    2
+};
+
+const Meta_Property
+_CIM_PhysicalPackage_RemovalConditions =
+{
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "RemovalConditions",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,RemovalConditions)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,RemovalConditions),
+    (const Meta_Value*)&_CIM_PhysicalPackage_RemovalConditions_MV,
 };
 
-extern const Meta_Property _CIM_PhysicalPackage_Removable;
+extern const Meta_Property
+_CIM_PhysicalPackage_Removable;
 
-const Meta_Property _CIM_PhysicalPackage_Removable =
+const Meta_Property
+_CIM_PhysicalPackage_Removable =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Removable",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,Removable)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,Removable),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalPackage_Replaceable;
+extern const Meta_Property
+_CIM_PhysicalPackage_Replaceable;
 
-const Meta_Property _CIM_PhysicalPackage_Replaceable =
+const Meta_Property
+_CIM_PhysicalPackage_Replaceable =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Replaceable",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,Replaceable)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,Replaceable),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalPackage_HotSwappable;
+extern const Meta_Property
+_CIM_PhysicalPackage_HotSwappable;
 
-const Meta_Property _CIM_PhysicalPackage_HotSwappable =
+const Meta_Property
+_CIM_PhysicalPackage_HotSwappable =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "HotSwappable",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     BOOLEAN,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,HotSwappable)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,HotSwappable),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalPackage_Height;
+extern const Meta_Property
+_CIM_PhysicalPackage_Height;
 
-const Meta_Property _CIM_PhysicalPackage_Height =
+const Meta_Property
+_CIM_PhysicalPackage_Height =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Height",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL32,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,Height)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,Height),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalPackage_Depth;
+extern const Meta_Property
+_CIM_PhysicalPackage_Depth;
 
-const Meta_Property _CIM_PhysicalPackage_Depth =
+const Meta_Property
+_CIM_PhysicalPackage_Depth =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Depth",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL32,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,Depth)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,Depth),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalPackage_Width;
+extern const Meta_Property
+_CIM_PhysicalPackage_Width;
 
-const Meta_Property _CIM_PhysicalPackage_Width =
+const Meta_Property
+_CIM_PhysicalPackage_Width =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Width",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL32,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,Width)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,Width),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_PhysicalPackage_Weight;
+extern const Meta_Property
+_CIM_PhysicalPackage_Weight;
 
-const Meta_Property _CIM_PhysicalPackage_Weight =
+const Meta_Property
+_CIM_PhysicalPackage_Weight =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Weight",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     REAL32,
-    0,
-    CIMPLE_OFF(CIM_PhysicalPackage,Weight)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_PhysicalPackage,Weight),
+    0, /* value */
 };
 
-static const Meta_Reference _CIM_PhysicalPackage_IsCompatible_ElementToCheck =
+static const Meta_Reference
+_CIM_PhysicalPackage_IsCompatible_ElementToCheck =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_IN,
     "ElementToCheck",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &CIM_PhysicalElement::static_meta_class,
     CIMPLE_OFF(CIM_PhysicalPackage_IsCompatible_method,ElementToCheck)
 };
 
-static const Meta_Property _CIM_PhysicalPackage_IsCompatible_return_value =
+static const Meta_Property
+_CIM_PhysicalPackage_IsCompatible_return_value =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
     "return_value",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
     0,
-    CIMPLE_OFF(CIM_PhysicalPackage_IsCompatible_method,return_value)
+    CIMPLE_OFF(CIM_PhysicalPackage_IsCompatible_method,return_value),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_PhysicalPackage_IsCompatible_meta_features[] =
+static Meta_Feature* _CIM_PhysicalPackage_IsCompatible_MFA[] =
 {
     (Meta_Feature*)&_CIM_PhysicalPackage_IsCompatible_ElementToCheck,
     (Meta_Feature*)&_CIM_PhysicalPackage_IsCompatible_return_value
 };
 
-const Meta_Method CIM_PhysicalPackage_IsCompatible_method::static_meta_class =
+const Meta_Method
+CIM_PhysicalPackage_IsCompatible_method::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_METHOD,
     "IsCompatible",
-    _CIM_PhysicalPackage_IsCompatible_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_PhysicalPackage_IsCompatible_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_PhysicalPackage_IsCompatible_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_PhysicalPackage_IsCompatible_MFA),
     sizeof(CIM_PhysicalPackage_IsCompatible_method),
     UINT32,
 };
 
-static Meta_Feature* _CIM_PhysicalPackage_meta_features[] =
+static Meta_Feature* _CIM_PhysicalPackage_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_PhysicalElement_Description,
@@ -213,13 +302,6 @@ static Meta_Feature* _CIM_PhysicalPackage_meta_features[] =
     (Meta_Feature*)&_CIM_PhysicalPackage_Width,
     (Meta_Feature*)&_CIM_PhysicalPackage_Weight,
     (Meta_Feature*)&CIM_PhysicalPackage_IsCompatible_method::static_meta_class,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_PhysicalElement",
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -259,18 +341,19 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_PhysicalPackage::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "CIM_PhysicalPackage",
-    _CIM_PhysicalPackage_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_PhysicalPackage_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_PhysicalPackage_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_PhysicalPackage_MFA),
     sizeof(CIM_PhysicalPackage),
     _locals,
     &CIM_PhysicalElement::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0xFDD6B396,/* crc */
-    &__meta_repository_75E2CB8B53E2155E90DBB99ABED114CA,
+    0xFDD6B396, /* crc */
+    &__meta_repository_5F56407F5BCA1C188DF80B644BFEBCD6,
 };
 
 CIMPLE_NAMESPACE_END

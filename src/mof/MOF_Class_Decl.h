@@ -60,6 +60,8 @@ public:
 
     const MOF_Class_Decl* find_ancestor(const char* class_name) const;
 
+    virtual void set_owning_class(const char* owning_class);
+
     static MOF_Class_Decl* find(
 	char* class_name,
 	bool fix_case = false);

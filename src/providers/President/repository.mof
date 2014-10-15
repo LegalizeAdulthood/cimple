@@ -1,0 +1,6 @@
+class President
+{
+    [Key] uint32 Number;
+    string First;
+    string Last;
+};

@@ -50,9 +50,9 @@ CIMPLE_NAMESPACE_BEGIN
     The Datetime::now() method constructs a timestamp with the current 
     time. For example,
 
-    	\code
-	Datetime dt = Datetime::now();
-	\endcode
+        \code
+        Datetime dt = Datetime::now();
+        \endcode
 
     This class was designed to interact easily with the POSIX date/time
     routines. For example, time() obtains the number of seconds transpired
@@ -91,6 +91,14 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
     */
     Datetime(uint64 usec);
 
+    /** Initializing constructor (character string).
+    */
+    explicit Datetime(const char* str);
+
+    /** Destructor.
+    */
+    ~Datetime();
+
     /** Assignment operator.
     */
     Datetime& operator=(const Datetime& x);
@@ -104,7 +112,7 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
     void set(uint64 usec);
 
     /** Set from a string of the form: "ddddddddhhmmss.mmmmmm:000" or
-	 yyyymmddhhmmss.mmmmmmsutc. Return true if successful.
+         yyyymmddhhmmss.mmmmmmsutc. Return true if successful.
     */
     bool set(const char* str);
 
@@ -113,48 +121,48 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
     void clear();
 
     /** Gets the components of an interval. The behavior is undefined it not
-	an interval.
+        an interval.
     */
     void get_interval(
-	uint32& days, 
-	uint32& hours, 
-	uint32& minutes, 
-	uint32& seconds, 
-	uint32& microseconds);
+        uint32& days, 
+        uint32& hours, 
+        uint32& minutes, 
+        uint32& seconds, 
+        uint32& microseconds);
 
     /** Sets the interval from its components.
     */
     void set_interval(
-	uint32 days, 
-	uint32 hours, 
-	uint32 minutes, 
-	uint32 seconds, 
-	uint32 microseconds);
+        uint32 days, 
+        uint32 hours, 
+        uint32 minutes, 
+        uint32 seconds, 
+        uint32 microseconds);
 
     /** Gets the components of a timestamp. The behavior is undefined if not
-	a timestamp.
+        a timestamp.
     */
     void get_timestamp(
-	uint32& year, 
-	uint32& month, 
-	uint32& day, 
-	uint32& hours, 
-	uint32& minutes,
-	uint32& seconds,
-	uint32& microseconds,
-	sint32& utc) const;
+        uint32& year, 
+        uint32& month, 
+        uint32& day, 
+        uint32& hours, 
+        uint32& minutes,
+        uint32& seconds,
+        uint32& microseconds,
+        sint32& utc) const;
 
     /** Sets the timestamp from components.
     */
     void set_timestamp(
-	uint32 year, 
-	uint32 month, 
-	uint32 day, 
-	uint32 hours, 
-	uint32 minutes,
-	uint32 seconds,
-	uint32 microseconds,
-	sint32 utc);
+        uint32 year, 
+        uint32 month, 
+        uint32 day, 
+        uint32 hours, 
+        uint32 minutes,
+        uint32 seconds,
+        uint32 microseconds,
+        sint32 utc);
 
     /** Returns true if this object represents an interval.
     */
@@ -181,31 +189,31 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
     void offset(sint32 offset);
 
     /** Converts to ASCII representation. Intervals are printed with the 
-	following format.
+        following format.
 
-	    \verbatim
-	    ddddddddhhmmss.mmmmmm:000
-	    \endverbatim
+            \verbatim
+            ddddddddhhmmss.mmmmmm:000
+            \endverbatim
 
-	For example,
+        For example,
 
-	    \verbatim
-	    00000000112233.444444:000
-	    \endverbatim
+            \verbatim
+            00000000112233.444444:000
+            \endverbatim
 
-	Timestamps are formatted like this.
+        Timestamps are formatted like this.
 
-	    \verbatim
-	    yyyymmddhhmmss.mmmmmmsutc
-	    \endverbatim
+            \verbatim
+            yyyymmddhhmmss.mmmmmmsutc
+            \endverbatim
 
-	For example,
+        For example,
 
-	    \verbatim
-	    20050710170840.899256+300
-	    \endverbatim
+            \verbatim
+            20050710170840.899256+300
+            \endverbatim
 
-	If the prettify flag is true, the format is somewhat more readable.
+        If the prettify flag is true, the format is somewhat more readable.
     */
     void ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify = false) const;
 
@@ -219,96 +227,10 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
 
 private:
 
-    // Microseconds since the epoch if timestamp. Otherwise, microseconds 
-    // elapsed since an arbitrary time (interval)..
-    uint64 _usec;
+    void _cow();
 
-    // For timestamps, this field is the UTC offset in minutes. For intervals,
-    // the field is always zero.
-    sint32 _offset;
-
-    // Non-zero (1) if timestamp. Otherwise, zero.
-    uint32 _is_timestamp;
+    struct Datetime_Rep* _rep;
 };
-
-inline Datetime::Datetime() : _usec(0), _offset(0), _is_timestamp(0)
-{
-}
-
-inline Datetime::Datetime(const Datetime& x) : 
-    _usec(x._usec), _offset(x._offset), _is_timestamp(x._is_timestamp)
-{
-}
-
-inline Datetime::Datetime(uint64 usec, sint32 offset)
-    : _usec(usec), _offset(offset), _is_timestamp(1)
-{
-}
-
-inline Datetime::Datetime(uint64 usec) : 
-    _usec(usec), _offset(0), _is_timestamp(0)
-{
-}
-
-inline Datetime& Datetime::operator=(const Datetime& x)
-{
-    _usec = x._usec;
-    _offset = x._offset;
-    _is_timestamp = x._is_timestamp;
-
-    return *this;
-}
-
-inline void Datetime::set(uint64 usec, sint32 offset)
-{
-    _usec = usec;
-    _offset = offset;
-    _is_timestamp = 1;
-}
-
-inline void Datetime::set(uint64 usec)
-{
-    _usec = usec;
-    _offset = 0;
-    _is_timestamp = 0;
-}
-
-inline void Datetime::clear()
-{
-    _usec = 0;
-    _offset = 0;
-    _is_timestamp = 0;
-}
-
-inline bool Datetime::is_interval() const
-{
-    return _is_timestamp == 0;
-}
-
-inline bool Datetime::is_timestamp() const
-{
-    return _is_timestamp == 1;
-}
-
-inline uint64 Datetime::usec() const 
-{ 
-    return _usec; 
-}
-
-inline void Datetime::usec(uint64 usec) 
-{ 
-    _usec = usec; 
-}
-
-inline sint32 Datetime::offset() const 
-{ 
-    return _offset; 
-}
-
-inline void Datetime::offset(sint32 offset) 
-{ 
-    _offset = offset; 
-}
 
 inline bool operator==(const Datetime& x, const Datetime& y)
 {

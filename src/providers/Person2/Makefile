@@ -24,16 +24,16 @@ genclass:
 tests:
 
 ei:
-	CLI ei Person2
+	$(CIMCLI) ei Person2
 
 ni:
-	CLI ni Person2
+	$(CIMCLI) ni Person2
 
 gi:
-	CLI gi Person2.ssn=2
+	$(CIMCLI) gi Person2.ssn=2
 
 di:
-	CLI di Person2.ssn=2
+	$(CIMCLI) di Person2.ssn=2
 
 ci:
 	create_person

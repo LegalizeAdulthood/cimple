@@ -38,7 +38,7 @@ String::Rep String::_empty;
 static uint32 _next_pow_2(uint32 x)
 {
     if (x < INITIAL_STRING_SIZE)
-	return INITIAL_STRING_SIZE;
+        return INITIAL_STRING_SIZE;
 
     x--;
     x |= (x >> 1);
@@ -68,7 +68,7 @@ void String::_append_char(char c)
     {
         rep = _new(2 * _rep->cap);
         rep->size = _rep->size;
-	memcpy(rep->data, _rep->data, _rep->size);
+        memcpy(rep->data, _rep->data, _rep->size);
     }
     else
     {
@@ -84,26 +84,26 @@ String::String(const char* s)
 {
     if (*s)
     {
-	size_t n = strlen(s);
-	_rep = _new(n);
-	memcpy(_rep->data, s, n + 1);
-	_rep->size = n;
+        size_t n = strlen(s);
+        _rep = _new(n);
+        memcpy(_rep->data, s, n + 1);
+        _rep->size = n;
     }
     else
-	_rep = &_empty;
+        _rep = &_empty;
 }
 
 String::String(const char* s, size_t n)
 {
     if (n)
     {
-	_rep = _new(n);
-	memcpy(_rep->data, s, n);
-	_rep->data[n] = '\0';
-	_rep->size = n;
+        _rep = _new(n);
+        memcpy(_rep->data, s, n);
+        _rep->data[n] = '\0';
+        _rep->size = n;
     }
     else
-	_rep = &_empty;
+        _rep = &_empty;
 }
 
 String::String(const char* s1, const char* s2)
@@ -184,7 +184,7 @@ void String::remove(size_t pos, size_t n)
     CIMPLE_ASSERT(pos + n <= _rep->size);
 
     if (Atomic_get(&_rep->refs) != 1)
-	_reserve(_rep->cap);
+        _reserve(_rep->cap);
 
     size_t rem = _rep->size - (pos + n);
 
@@ -198,7 +198,7 @@ void String::remove(size_t pos, size_t n)
 String String::substr(size_t pos, size_t n)
 {
     if (n == size_t(-1))
-	n = _rep->size - pos;
+        n = _rep->size - pos;
 
     CIMPLE_ASSERT(pos + n <= _rep->size);
     return String(_rep->data + pos, n);
@@ -208,16 +208,16 @@ void String::clear()
 {
     if (_rep->size)
     {
-	if (Atomic_get(&_rep->refs) == 1)
-	{
-	    _rep->size = 0;
-	    _rep->data[0] = '\0';
-	}
-	else
-	{
-	    _unref(_rep);
-	    _rep = &_empty;
-	}
+        if (Atomic_get(&_rep->refs) == 1)
+        {
+            _rep->size = 0;
+            _rep->data[0] = '\0';
+        }
+        else
+        {
+            _unref(_rep);
+            _rep = &_empty;
+        }
     }
 }
 
@@ -226,7 +226,7 @@ void String::set(size_t i, char c)
     CIMPLE_ASSERT(i <= _rep->size);
 
     if (Atomic_get(&_rep->refs) != 1)
-	_reserve(_rep->cap);
+        _reserve(_rep->cap);
 
     _rep->data[i] = c;
 }
@@ -243,13 +243,13 @@ void String::split(const char* str, char c, String& left, String& right)
 
     if (p)
     {
-	left.assign(str, p - str);
-	right.assign(p + 1);
+        left.assign(str, p - str);
+        right.assign(p + 1);
     }
     else
     {
-	left.assign(str);
-	right.clear();
+        left.assign(str);
+        right.clear();
     }
 }
 
@@ -258,13 +258,13 @@ CIMPLE_NAMESPACE_END
 /* 
     To-do list:
 
-	-  Implement insert()
-	-  clone()
-	-  substr()
-	-  find()
-	-  rfind()
-	-  tolower()
-	-  toupper()
-	-  lexographical compare (for sorting).
-	-  s/string/String/g?
+        -  Implement insert()
+        -  clone()
+        -  substr()
+        -  find()
+        -  rfind()
+        -  tolower()
+        -  toupper()
+        -  lexographical compare (for sorting).
+        -  s/string/String/g?
 */

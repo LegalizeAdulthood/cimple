@@ -47,6 +47,7 @@
 #include "Thing.h"
 #include "ThingLink.h"
 #include "Lamp.h"
+#include "ModernLamp.h"
 #include "LampLink.h"
 #include "LampIndic.h"
 #include "LampIndicA.h"

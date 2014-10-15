@@ -13,58 +13,81 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _BBB_counter;
+extern const Meta_Property
+_BBB_counter;
 
-extern const Meta_Property _CCC_key;
+extern const Meta_Property
+_CCC_key;
 
-extern const Meta_Property _CCC_bbb;
+extern const Meta_Property
+_CCC_bbb;
 
-extern const Meta_Property _DDD_ccc;
+extern const Meta_Property
+_DDD_ccc;
 
-const Meta_Property _DDD_ccc =
+const Meta_Property
+_DDD_ccc =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ccc",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(DDD,ccc)
+    0, /* subscript */
+    CIMPLE_OFF(DDD,ccc),
+    0, /* value */
 };
 
-static const Meta_Property _DDD_goo_arg1 =
+static const Meta_Property
+_DDD_goo_arg1 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
     "arg1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
     0,
-    CIMPLE_OFF(DDD_goo_method,arg1)
+    CIMPLE_OFF(DDD_goo_method,arg1),
+    0, /* value */
 };
 
-static const Meta_Property _DDD_goo_return_value =
+static const Meta_Property
+_DDD_goo_return_value =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
     "return_value",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
     0,
-    CIMPLE_OFF(DDD_goo_method,return_value)
+    CIMPLE_OFF(DDD_goo_method,return_value),
+    0, /* value */
 };
 
-static Meta_Feature* _DDD_goo_meta_features[] =
+static Meta_Feature* _DDD_goo_MFA[] =
 {
     (Meta_Feature*)&_DDD_goo_arg1,
     (Meta_Feature*)&_DDD_goo_return_value
 };
 
-const Meta_Method DDD_goo_method::static_meta_class =
+const Meta_Method
+DDD_goo_method::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_METHOD,
     "goo",
-    _DDD_goo_meta_features,
-    CIMPLE_ARRAY_SIZE(_DDD_goo_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _DDD_goo_MFA,
+    CIMPLE_ARRAY_SIZE(_DDD_goo_MFA),
     sizeof(DDD_goo_method),
     UINT32,
 };
 
-static Meta_Feature* _DDD_meta_features[] =
+static Meta_Feature* _DDD_MFA[] =
 {
     (Meta_Feature*)&_BBB_counter,
     (Meta_Feature*)&_CCC_key,
@@ -72,12 +95,6 @@ static Meta_Feature* _DDD_meta_features[] =
     (Meta_Feature*)&CCC_foo_method::static_meta_class,
     (Meta_Feature*)&_DDD_ccc,
     (Meta_Feature*)&DDD_goo_method::static_meta_class,
-};
-
-static const char* _super_classes[] =
-{
-    "CCC",
-    "BBB",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -92,17 +109,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class DDD::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "DDD",
-    _DDD_meta_features,
-    CIMPLE_ARRAY_SIZE(_DDD_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _DDD_MFA,
+    CIMPLE_ARRAY_SIZE(_DDD_MFA),
     sizeof(DDD),
     _locals,
     &CCC::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0x0D139C11,/* crc */
+    0x0D139C11, /* crc */
     0,
 };
 

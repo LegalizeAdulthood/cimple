@@ -43,6 +43,8 @@ public:
 
     virtual MOF_Element* clone() const;
 
+    virtual void set_owning_class(const char* owning_class);
+
     static void check_compatibility(
 	const char* class_name,
 	const MOF_Method_Decl* m1,

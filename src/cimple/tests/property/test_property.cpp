@@ -100,6 +100,37 @@ int main(int argc, char** argv)
     assert(sizeof(real32) == 4);
     assert(sizeof(real64) == 8);
 
+#ifdef CIMPLE_HAVE_PROPERTY_PADDING
+    assert(sizeof(Property<boolean>) == 16);
+    assert(sizeof(Property<uint8>) == 16);
+    assert(sizeof(Property<sint8>) == 16);
+    assert(sizeof(Property<uint16>) == 16);
+    assert(sizeof(Property<sint16>) == 16);
+    assert(sizeof(Property<uint32>) == 16);
+    assert(sizeof(Property<sint32>) == 16);
+    assert(sizeof(Property<uint64>) == 16);
+    assert(sizeof(Property<sint64>) == 16);
+    assert(sizeof(Property<real32>) == 16);
+    assert(sizeof(Property<real64>) == 16);
+    assert(sizeof(Property<char16>) == 16);
+    assert(sizeof(Property<String>) == 16);
+    assert(sizeof(Property<Datetime>) == 16);
+    assert(sizeof(Property< Array<boolean> >) == 16);
+    assert(sizeof(Property< Array<uint8> >) == 16);
+    assert(sizeof(Property< Array<sint8> >) == 16);
+    assert(sizeof(Property< Array<uint16> >) == 16);
+    assert(sizeof(Property< Array<sint16> >) == 16);
+    assert(sizeof(Property< Array<uint32> >) == 16);
+    assert(sizeof(Property< Array<sint32> >) == 16);
+    assert(sizeof(Property< Array<uint64> >) == 16);
+    assert(sizeof(Property< Array<sint64> >) == 16);
+    assert(sizeof(Property< Array<real32> >) == 16);
+    assert(sizeof(Property< Array<real64> >) == 16);
+    assert(sizeof(Property< Array<char16> >) == 16);
+    assert(sizeof(Property< Array<String> >) == 16);
+    assert(sizeof(Property< Array<Datetime> >) == 16);
+#endif
+
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;

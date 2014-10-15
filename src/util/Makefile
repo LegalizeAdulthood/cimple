@@ -7,8 +7,8 @@ STATIC_LIBRARY = cimpleutil_s
 SOURCES = \
     util.cpp \
     crc.cpp \
-    MAC.cpp \
-    UUID.cpp
+    UUID.cpp \
+    MAC.cpp
 
 LIBRARIES =
 

@@ -13,162 +13,240 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern const Meta_Property
+_CIM_ManagedElement_Caption;
 
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern const Meta_Property
+_CIM_ManagedElement_Description;
 
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern const Meta_Property
+_CIM_ManagedElement_ElementName;
 
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern const Meta_Property
+_CIM_ManagedSystemElement_InstallDate;
 
-extern const Meta_Property _CIM_System_Name;
+extern const Meta_Property
+_CIM_System_Name;
 
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern const Meta_Property
+_CIM_ManagedSystemElement_OperationalStatus;
 
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern const Meta_Property
+_CIM_ManagedSystemElement_StatusDescriptions;
 
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern const Meta_Property
+_CIM_ManagedSystemElement_Status;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_EnabledState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_OtherEnabledState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_RequestedState;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_EnabledDefault;
 
-extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern const Meta_Property
+_CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-extern const Meta_Property _CIM_System_CreationClassName;
+extern const Meta_Property
+_CIM_System_CreationClassName;
 
-extern const Meta_Property _CIM_ComputerSystem_NameFormat;
+extern const Meta_Property
+_CIM_ComputerSystem_NameFormat;
 
-const Meta_Property _CIM_ComputerSystem_NameFormat =
+const Meta_Property
+_CIM_ComputerSystem_NameFormat =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "NameFormat",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    0,
-    CIMPLE_OFF(CIM_ComputerSystem,NameFormat)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ComputerSystem,NameFormat),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_System_PrimaryOwnerName;
+extern const Meta_Property
+_CIM_System_PrimaryOwnerName;
 
-extern const Meta_Property _CIM_System_PrimaryOwnerContact;
+extern const Meta_Property
+_CIM_System_PrimaryOwnerContact;
 
-extern const Meta_Property _CIM_System_Roles;
+extern const Meta_Property
+_CIM_System_Roles;
 
-extern const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo;
+extern const Meta_Property
+_CIM_ComputerSystem_OtherIdentifyingInfo;
 
-const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo =
+const Meta_Property
+_CIM_ComputerSystem_OtherIdentifyingInfo =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "OtherIdentifyingInfo",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(CIM_ComputerSystem,OtherIdentifyingInfo)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_ComputerSystem,OtherIdentifyingInfo),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions;
+extern const Meta_Property
+_CIM_ComputerSystem_IdentifyingDescriptions;
 
-const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions =
+const Meta_Property
+_CIM_ComputerSystem_IdentifyingDescriptions =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "IdentifyingDescriptions",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(CIM_ComputerSystem,IdentifyingDescriptions)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_ComputerSystem,IdentifyingDescriptions),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ComputerSystem_Dedicated;
+extern const Meta_Property
+_CIM_ComputerSystem_Dedicated;
 
-const Meta_Property _CIM_ComputerSystem_Dedicated =
+const Meta_Property
+_CIM_ComputerSystem_Dedicated =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "Dedicated",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    -1,
-    CIMPLE_OFF(CIM_ComputerSystem,Dedicated)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_ComputerSystem,Dedicated),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions;
+extern const Meta_Property
+_CIM_ComputerSystem_OtherDedicatedDescriptions;
 
-const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions =
+const Meta_Property
+_CIM_ComputerSystem_OtherDedicatedDescriptions =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "OtherDedicatedDescriptions",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     STRING,
-    -1,
-    CIMPLE_OFF(CIM_ComputerSystem,OtherDedicatedDescriptions)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_ComputerSystem,OtherDedicatedDescriptions),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ComputerSystem_ResetCapability;
+extern const Meta_Property
+_CIM_ComputerSystem_ResetCapability;
 
-const Meta_Property _CIM_ComputerSystem_ResetCapability =
+const Meta_Property
+_CIM_ComputerSystem_ResetCapability =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "ResetCapability",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    0,
-    CIMPLE_OFF(CIM_ComputerSystem,ResetCapability)
+    0, /* subscript */
+    CIMPLE_OFF(CIM_ComputerSystem,ResetCapability),
+    0, /* value */
 };
 
-extern const Meta_Property _CIM_ComputerSystem_PowerManagementCapabilities;
+extern const Meta_Property
+_CIM_ComputerSystem_PowerManagementCapabilities;
 
-const Meta_Property _CIM_ComputerSystem_PowerManagementCapabilities =
+const Meta_Property
+_CIM_ComputerSystem_PowerManagementCapabilities =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "PowerManagementCapabilities",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT16,
-    -1,
-    CIMPLE_OFF(CIM_ComputerSystem,PowerManagementCapabilities)
+    -1, /* subscript */
+    CIMPLE_OFF(CIM_ComputerSystem,PowerManagementCapabilities),
+    0, /* value */
 };
 
-static const Meta_Property _CIM_ComputerSystem_SetPowerState_PowerState =
+static const Meta_Property
+_CIM_ComputerSystem_SetPowerState_PowerState =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
     "PowerState",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
     0,
-    CIMPLE_OFF(CIM_ComputerSystem_SetPowerState_method,PowerState)
+    CIMPLE_OFF(CIM_ComputerSystem_SetPowerState_method,PowerState),
+    0, /* value */
 };
 
-static const Meta_Property _CIM_ComputerSystem_SetPowerState_Time =
+static const Meta_Property
+_CIM_ComputerSystem_SetPowerState_Time =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
     "Time",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     DATETIME,
     0,
-    CIMPLE_OFF(CIM_ComputerSystem_SetPowerState_method,Time)
+    CIMPLE_OFF(CIM_ComputerSystem_SetPowerState_method,Time),
+    0, /* value */
 };
 
-static const Meta_Property _CIM_ComputerSystem_SetPowerState_return_value =
+static const Meta_Property
+_CIM_ComputerSystem_SetPowerState_return_value =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
     "return_value",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
     0,
-    CIMPLE_OFF(CIM_ComputerSystem_SetPowerState_method,return_value)
+    CIMPLE_OFF(CIM_ComputerSystem_SetPowerState_method,return_value),
+    0, /* value */
 };
 
-static Meta_Feature* _CIM_ComputerSystem_SetPowerState_meta_features[] =
+static Meta_Feature* _CIM_ComputerSystem_SetPowerState_MFA[] =
 {
     (Meta_Feature*)&_CIM_ComputerSystem_SetPowerState_PowerState,
     (Meta_Feature*)&_CIM_ComputerSystem_SetPowerState_Time,
     (Meta_Feature*)&_CIM_ComputerSystem_SetPowerState_return_value
 };
 
-const Meta_Method CIM_ComputerSystem_SetPowerState_method::static_meta_class =
+const Meta_Method
+CIM_ComputerSystem_SetPowerState_method::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_METHOD,
     "SetPowerState",
-    _CIM_ComputerSystem_SetPowerState_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_ComputerSystem_SetPowerState_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_ComputerSystem_SetPowerState_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_ComputerSystem_SetPowerState_MFA),
     sizeof(CIM_ComputerSystem_SetPowerState_method),
     UINT32,
 };
 
-static Meta_Feature* _CIM_ComputerSystem_meta_features[] =
+static Meta_Feature* _CIM_ComputerSystem_MFA[] =
 {
     (Meta_Feature*)&_CIM_ManagedElement_Caption,
     (Meta_Feature*)&_CIM_ManagedElement_Description,
@@ -196,15 +274,6 @@ static Meta_Feature* _CIM_ComputerSystem_meta_features[] =
     (Meta_Feature*)&_CIM_ComputerSystem_ResetCapability,
     (Meta_Feature*)&_CIM_ComputerSystem_PowerManagementCapabilities,
     (Meta_Feature*)&CIM_ComputerSystem_SetPowerState_method::static_meta_class,
-};
-
-static const char* _super_classes[] =
-{
-    "CIM_System",
-    "CIM_EnabledLogicalElement",
-    "CIM_LogicalElement",
-    "CIM_ManagedSystemElement",
-    "CIM_ManagedElement",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -239,17 +308,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class CIM_ComputerSystem::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "CIM_ComputerSystem",
-    _CIM_ComputerSystem_meta_features,
-    CIMPLE_ARRAY_SIZE(_CIM_ComputerSystem_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _CIM_ComputerSystem_MFA,
+    CIMPLE_ARRAY_SIZE(_CIM_ComputerSystem_MFA),
     sizeof(CIM_ComputerSystem),
     _locals,
     &CIM_System::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     2, /* num_keys */
-    0x18F2C8F2,/* crc */
+    0x18F2C8F2, /* crc */
     0,
 };
 

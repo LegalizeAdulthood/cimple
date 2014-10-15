@@ -46,9 +46,24 @@ struct pthread_mutex_rep_t
     size_t count;
 };
 
+pthread_mutex_t::pthread_mutex_t()
+{
+    pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)this;
+    rep->handle = NULL;
+    rep->count = 0;
+}
+
 pthread_mutex_t::pthread_mutex_t(pthread_mutex_initializer_t)
 {
     pthread_mutex_init(this, NULL);
+}
+
+pthread_mutex_t::~pthread_mutex_t()
+{
+    pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)this;
+
+    if (rep->handle != NULL)
+        pthread_mutex_destroy(this);
 }
 
 int pthread_mutex_init(
@@ -72,8 +87,14 @@ int pthread_mutex_destroy(
     pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
 
     if (!CloseHandle(rep->handle))
+    {
+        rep->handle = NULL;
+        rep->count = 0;
 	return -1;
+    }
 
+    rep->handle = NULL;
+    rep->count = 0;
     return 0;
 }
 
@@ -105,6 +126,12 @@ int pthread_mutex_unlock(
 
     return 0;
 }
+
+//==============================================================================
+//
+// pthread_mutexattr_t
+//
+//==============================================================================
 
 int pthread_mutexattr_init(
     pthread_mutexattr_t* attr)

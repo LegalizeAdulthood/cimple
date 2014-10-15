@@ -13,32 +13,34 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Property _X_x;
+extern const Meta_Property
+_X_x;
 
-extern const Meta_Property _Y_y;
+extern const Meta_Property
+_Y_y;
 
-extern const Meta_Property _Z_z;
+extern const Meta_Property
+_Z_z;
 
-const Meta_Property _Z_z =
+const Meta_Property
+_Z_z =
 {
-    CIMPLE_FLAG_PROPERTY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
     "z",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(Z,z)
+    0, /* subscript */
+    CIMPLE_OFF(Z,z),
+    0, /* value */
 };
 
-static Meta_Feature* _Z_meta_features[] =
+static Meta_Feature* _Z_MFA[] =
 {
     (Meta_Feature*)&_X_x,
     (Meta_Feature*)&_Y_y,
     (Meta_Feature*)&_Z_z,
-};
-
-static const char* _super_classes[] =
-{
-    "Y",
-    "X",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -50,17 +52,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Z::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Z",
-    _Z_meta_features,
-    CIMPLE_ARRAY_SIZE(_Z_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Z_MFA,
+    CIMPLE_ARRAY_SIZE(_Z_MFA),
     sizeof(Z),
     _locals,
     &Y::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0xFE4E8CBC,/* crc */
+    0xFE4E8CBC, /* crc */
     0,
 };
 

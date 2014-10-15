@@ -30,6 +30,7 @@
 #include <cimple/Strings.h>
 #include "Error.h"
 #include "TSD.h"
+#include "io.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -61,7 +62,7 @@ void Error::set(const char* format, ...)
     void* old_message = _tsd.get();
 
     if (old_message)
-	free(old_message);
+        free(old_message);
 
     _tsd.set(message);
 }
@@ -89,7 +90,7 @@ void Error::clear()
     void* old_message = _tsd.get();
 
     if (old_message)
-	free(old_message);
+        free(old_message);
 
     _tsd.set(0);
 }

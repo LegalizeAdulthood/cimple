@@ -65,13 +65,13 @@ static __inline__ void Atomic_inc(Atomic* atomic)
     int t;
 
     __asm__ __volatile__(
-	"1: lwarx %0,0,%2\n"
-	"addic %0,%0,1\n"
-	"stwcx.	%0,0,%2\n"
-	"bne- 1b"
-	: "=&r" (t), "=m" (atomic->n)
-	: "r" (&atomic->n), "m" (atomic->n)
-	: "cc");
+        "1: lwarx %0,0,%2\n"
+        "addic %0,%0,1\n"
+        "stwcx. %0,0,%2\n"
+        "bne- 1b"
+        : "=&r" (t), "=m" (atomic->n)
+        : "r" (&atomic->n), "m" (atomic->n)
+        : "cc");
 }
 
 static __inline__ int Atomic_dec_and_test(Atomic* atomic)
@@ -79,13 +79,13 @@ static __inline__ int Atomic_dec_and_test(Atomic* atomic)
     int n;
 
     __asm__ __volatile__(
-	"1: lwarx %0,0,%1\n"
-	"addic %0,%0,-1\n"
-	"stwcx.	%0,0,%1\n"
-	"bne- 1b"
-	: "=&r" (n)
-	: "r" (&atomic->n)
-	: "cc", "memory");
+        "1: lwarx %0,0,%1\n"
+        "addic %0,%0,-1\n"
+        "stwcx. %0,0,%1\n"
+        "bne- 1b"
+        : "=&r" (n)
+        : "r" (&atomic->n)
+        : "cc", "memory");
 
     return n == 0;
 }
@@ -95,13 +95,13 @@ static __inline__ void Atomic_dec(Atomic* atomic)
     int n;
 
     __asm__ __volatile__(
-	"1: lwarx %0,0,%2\n"
-	"addic %0,%0,-1\n"
-	"stwcx. %0,0,%2\n"
-	"bne- 1b"
-	: "=&r" (n), "=m" (atomic->n)
-	: "r" (&atomic->n), "m" (atomic->n)
-	: "cc");
+        "1: lwarx %0,0,%2\n"
+        "addic %0,%0,-1\n"
+        "stwcx. %0,0,%2\n"
+        "bne- 1b"
+        : "=&r" (n), "=m" (atomic->n)
+        : "r" (&atomic->n), "m" (atomic->n)
+        : "cc");
 }
 
 CIMPLE_NAMESPACE_END

@@ -13,20 +13,26 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_B5EE13050EED1F6191F16DBE4BE79DE8;
+extern const Meta_Repository __meta_repository_933548EDE4621629AEAC16B3AD1E0554;
 
-extern const Meta_Property _Standalone_key;
+extern const Meta_Property
+_Standalone_key;
 
-const Meta_Property _Standalone_key =
+const Meta_Property
+_Standalone_key =
 {
-    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
+    { 0 }, /* refs */
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
     "key",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     UINT32,
-    0,
-    CIMPLE_OFF(Standalone,key)
+    0, /* subscript */
+    CIMPLE_OFF(Standalone,key),
+    0, /* value */
 };
 
-static Meta_Feature* _Standalone_meta_features[] =
+static Meta_Feature* _Standalone_MFA[] =
 {
     (Meta_Feature*)&_Standalone_key,
 };
@@ -38,18 +44,19 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Standalone::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_CLASS,
     "Standalone",
-    _Standalone_meta_features,
-    CIMPLE_ARRAY_SIZE(_Standalone_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Standalone_MFA,
+    CIMPLE_ARRAY_SIZE(_Standalone_MFA),
     sizeof(Standalone),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     1, /* num_keys */
-    0xE7251808,/* crc */
-    &__meta_repository_B5EE13050EED1F6191F16DBE4BE79DE8,
+    0xE7251808, /* crc */
+    &__meta_repository_933548EDE4621629AEAC16B3AD1E0554,
 };
 
 CIMPLE_NAMESPACE_END

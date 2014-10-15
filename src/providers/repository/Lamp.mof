@@ -8,6 +8,11 @@ class Lamp
     uint32 foo(string arg1, string arg2);
 };
 
+class ModernLamp : Lamp
+{
+    string artist;
+};
+
 [Association]
 class LampLink
 {

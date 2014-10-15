@@ -1,0 +1,40 @@
+
+[Description("The Thing to do")]
+class Thing
+{
+    [Description("this is prop1")]
+    uint32 prop1 = NULL;
+
+    [Read]
+    uint32 prop2 = 200;
+
+    [Read(True)]
+    uint32 prop3 = 300;
+
+    [Read(False)]
+    uint32 prop4 = 400;
+
+    string prop5 = "Hello\nWorld";
+
+    string prop6[] = { "Red", "Green", "Blue" };
+
+    datetime prop7 = "20061225123000.000000-360";
+
+    datetime prop8[] = 
+        { "20061225123000.000000-360", "20061225123000.000000+360" };
+
+    boolean prop9[] = { true, false, true };
+
+    uint32 prop10[] = { 10, 20, 30 };
+
+    uint32 prop11[];
+
+    uint32 foo(
+        string param0,
+        [In, Out] string param1,
+        [In] string param2,
+        [Out] string param3,
+        [In(false), Out] string param4,
+        [In(False), Out(False)] string param5);
+
+};

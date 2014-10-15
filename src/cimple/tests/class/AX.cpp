@@ -13,27 +13,37 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Reference _AX_left;
+extern const Meta_Reference
+_AX_left;
 
-const Meta_Reference _AX_left =
+const Meta_Reference
+_AX_left =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE,
     "left",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &X::static_meta_class,
     CIMPLE_OFF(AX,left)
 };
 
-extern const Meta_Reference _AX_right;
+extern const Meta_Reference
+_AX_right;
 
-const Meta_Reference _AX_right =
+const Meta_Reference
+_AX_right =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE,
     "right",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &X::static_meta_class,
     CIMPLE_OFF(AX,right)
 };
 
-static Meta_Feature* _AX_meta_features[] =
+static Meta_Feature* _AX_MFA[] =
 {
     (Meta_Feature*)&_AX_left,
     (Meta_Feature*)&_AX_right,
@@ -47,17 +57,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class AX::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_ASSOCIATION,
     "AX",
-    _AX_meta_features,
-    CIMPLE_ARRAY_SIZE(_AX_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _AX_MFA,
+    CIMPLE_ARRAY_SIZE(_AX_MFA),
     sizeof(AX),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     0, /* num_keys */
-    0xCAC665DC,/* crc */
+    0xCAC665DC, /* crc */
     0,
 };
 

@@ -26,6 +26,7 @@ CLASSES = \
     Thing \
     ThingLink \
     Lamp \
+    ModernLamp \
     LampLink \
     LampIndic \
     LampIndicA \
@@ -76,6 +77,7 @@ SOURCES = \
     Thing.cpp \
     ThingLink.cpp \
     Lamp.cpp \
+    ModernLamp.cpp \
     LampLink.cpp \
     LampIndic.cpp \
     LampIndicA.cpp \

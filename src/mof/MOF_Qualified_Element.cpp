@@ -27,12 +27,21 @@
 #include "MOF_Qualified_Element.h"
 
 MOF_Qualified_Element::MOF_Qualified_Element() 
-    : qualifiers(0), all_qualifiers(0), qual_mask(0)
+    : qualifiers(0), all_qualifiers(0), qual_mask(0), owning_class(0)
 {
 
 }
 
 MOF_Qualified_Element::~MOF_Qualified_Element()
 {
-
+    free(owning_class);
 }
+
+void MOF_Qualified_Element::set_owning_class(const char* owning_class_)
+{
+    owning_class = strdup(owning_class_);
+
+    for (MOF_Qualifier* q = qualifiers; q; q = (MOF_Qualifier*)q->next)
+        q->set_owning_class(owning_class_);
+}
+

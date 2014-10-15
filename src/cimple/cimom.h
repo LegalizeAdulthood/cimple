@@ -74,25 +74,25 @@ struct CIMPLE_CIMPLE_LINKAGE cimom
 public:
 
     static int enum_instances(
-	const char* name_space, 
-	const Instance* model,
-	Instance_Enumerator& enumerator);
+        const char* name_space, 
+        const Instance* model,
+        Instance_Enumerator& enumerator);
 
     static Ref<Instance> get_instance(
-	const char* name_space, 
-	const Instance* model);
+        const char* name_space, 
+        const Instance* model);
 
     static int create_instance(
-	const char* name_space, 
-	const Instance* instance);
+        const char* name_space, 
+        const Instance* instance);
 
     static int delete_instance(
-	const char* name_space, 
-	const Instance* instance);
+        const char* name_space, 
+        const Instance* instance);
 
     static int modify_instance(
-	const char* name_space, 
-	const Instance* instance);
+        const char* name_space, 
+        const Instance* instance);
 };
 
 CIMPLE_NAMESPACE_END

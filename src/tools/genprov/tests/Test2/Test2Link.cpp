@@ -13,27 +13,37 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Reference _Test2Link_r1;
+extern const Meta_Reference
+_Test2Link_r1;
 
-const Meta_Reference _Test2Link_r1 =
+const Meta_Reference
+_Test2Link_r1 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "r1",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &Test2::static_meta_class,
     CIMPLE_OFF(Test2Link,r1)
 };
 
-extern const Meta_Reference _Test2Link_r2;
+extern const Meta_Reference
+_Test2Link_r2;
 
-const Meta_Reference _Test2Link_r2 =
+const Meta_Reference
+_Test2Link_r2 =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "r2",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &Test2::static_meta_class,
     CIMPLE_OFF(Test2Link,r2)
 };
 
-static Meta_Feature* _Test2Link_meta_features[] =
+static Meta_Feature* _Test2Link_MFA[] =
 {
     (Meta_Feature*)&_Test2Link_r1,
     (Meta_Feature*)&_Test2Link_r2,
@@ -47,17 +57,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class Test2Link::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_ASSOCIATION,
     "Test2Link",
-    _Test2Link_meta_features,
-    CIMPLE_ARRAY_SIZE(_Test2Link_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _Test2Link_MFA,
+    CIMPLE_ARRAY_SIZE(_Test2Link_MFA),
     sizeof(Test2Link),
     _locals,
     0, /* super_class */ 
-    0, /* super_classes */
-    0, /* num_super_classes */
     2, /* num_keys */
-    0x43985E92,/* crc */
+    0x43985E92, /* crc */
     0,
 };
 

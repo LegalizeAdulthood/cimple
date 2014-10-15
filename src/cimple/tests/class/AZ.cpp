@@ -13,28 +13,28 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Reference _AZ_left;
+extern const Meta_Reference
+_AZ_left;
 
-const Meta_Reference _AZ_left =
+const Meta_Reference
+_AZ_left =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_REFERENCE,
     "left",
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
     &Z::static_meta_class,
     CIMPLE_OFF(AZ,left)
 };
 
-extern const Meta_Reference _AY_right;
+extern const Meta_Reference
+_AY_right;
 
-static Meta_Feature* _AZ_meta_features[] =
+static Meta_Feature* _AZ_MFA[] =
 {
     (Meta_Feature*)&_AZ_left,
     (Meta_Feature*)&_AY_right,
-};
-
-static const char* _super_classes[] =
-{
-    "AY",
-    "AX",
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -45,17 +45,18 @@ static const Meta_Feature_Local _locals[] =
 
 const Meta_Class AZ::static_meta_class =
 {
+    { 0 }, /* refs */
     CIMPLE_FLAG_ASSOCIATION,
     "AZ",
-    _AZ_meta_features,
-    CIMPLE_ARRAY_SIZE(_AZ_meta_features),
+    0, /* meta_qualifiers */
+    0, /* num_meta_qaulifiers */
+    _AZ_MFA,
+    CIMPLE_ARRAY_SIZE(_AZ_MFA),
     sizeof(AZ),
     _locals,
     &AY::static_meta_class,
-    _super_classes,
-    CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
-    0x90FA576C,/* crc */
+    0x90FA576C, /* crc */
     0,
 };
 

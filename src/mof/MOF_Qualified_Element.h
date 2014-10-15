@@ -45,9 +45,12 @@ public:
 
     virtual MOF_Element* clone() const = 0;
 
+    virtual void set_owning_class(const char* owning_class);
+
     MOF_Qualifier* qualifiers;
     MOF_Qualifier_Info* all_qualifiers;
     MOF_mask qual_mask;
+    char* owning_class;
 };
 
 #endif /*_MOF_Qualified_Element_h */

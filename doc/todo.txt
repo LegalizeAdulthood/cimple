@@ -1,75 +1,45 @@
 
-    ????????????????????????????????????????????????????????????????????????????
-    ?
-    ? Questions
-    ?
-    ????????????????????????????????????????????????????????????????????????????
-
-    (AAA-?) Should we change the provider interface to use references?
-
-    (B-?) Can references be null?
-
-    (B-?) Is it necessary to implement 
-
-         CIMPLE_Provider_Manager::_handleModifySubscription(). Can it enable
-	 or disable indications. What if the type changes in the subscription.
-
-	 CLI an Person.ssn=99999
-
-    (A-?) Should instance packing exclude name and type since the meta-data
-	  should be available to client?
-
-    (A-?) Should we remove the timer() operation?
-
-    (A-?) Should instances have null properties when created?
-
-    (A-?) Should regmod -s (subclasses) be the default?
-
-    (B-?) Should providers and meta-classes reside in CIMPLE namespace?
-
-    (B-?) Should "CLI an Person.ssn=99" error out if non-existent.
-
-    (B-?) How can a server avoid sending redundant copies of classes to
-	  clients?
-
-    (C-?) How should the CGI provider find its provider scripts?
-
-
-    NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-    N
-    N Now
-    N
-    NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
-
-    (A) Implement namespace handling for indication providers in Pegasus
-        adapter (see CMPI implementation).
-
-    (A) Consider removing Meta_Feature_Local.
-
-    (A) Remove encodings and dispatcher from CIMPLE (unused now that there is
-	no provider manager).
-
-    (A) Add option to pack_meta_class() to avoid packing of super classes
-	hierarchy or visa versa (e.g., include_super_classes).
-
-    (A) Implement binary compatible provider interfaces (and clean up).
-
-    (A) Work through ATTNs.
-
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     A
     A A-priorities
     A
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-    (A) Revist Instance APIs to see if Ref<Instance> is better.
+    (A) Modify print(const Instance*) to print MOF format.
 
-    (A) Resolve bug with Pegasus adapter which occurs in response to asking
-	for a non existent instance with CLI gi.
+    (A) Add optional print function argument print() functions.
+
+            Print_Stream
+            {
+                void (*print)(void* client_data, const char* format, ...);
+                void* client_data;
+            };
+
+            void print(..., Print_Stream* out);
+
+    (A) Test multi-class providers that implement a family of classes derived
+        from a single class.
+
+    (A) Implement identical() function.
+
+    (A) Doxygen
+
+    (A) Work through ATTNs.
 
     (A) Fix lifecycle indications in the CMPI adapter.
 
-    (A) Implement inter-provider communication.
+    (A) Implement indication "SourceNamespace" in namespace handling in Pegasus
+        adapter (already implemented in CMPI adapter).
+
+    (A) Implement validate(Instance*).
+
+    (A) Figure out how to handle namespaces.
+
+    (A) Consider requiring declaration of all qualifiers and then using
+        that to validate adding of qualifiers to objects.
+
+    (A) Consider removing qualifier setters for Indicaiton and Association
+        (these should be set during CIM_Class initialization). Same for key?
 
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
     B
@@ -77,22 +47,37 @@
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 
-    (B) Optimize conversion of CIMPLE instance to Pegasus instance during
-        enumerate by creating the Pegasus instance once. Also consider
-        bypassing the duplicate property check since the CIMPLE instance is
-        known to be correct.
+    (B) Honor DisableOverride flavor.
+
+    (B) Implement Restricted flavor in create_meta_class().
+
+    (B) Implement Restricted flavor in genclass.
+
+    (B) Copy-on-write properties.
+
+    (B) Implement binary compatibility.
+
+    (B) Deprecate Provider::timer() method.
+
+    (B) Revisit need for Meta_Class.crc.
 
     (B) Implement array reference counting (refs member already present).
 
-    (B) Logging and tracing.
+    (B) Improve error reporting.
 
-    (B) Add error reporting (for the cimom interface and elsewhere).
+    (B) Validate property-list filtering.
 
-    (B) Fully implement property-list filtering.
+    (B) Validate provider reentrancy.
 
-    (B) Revisit provider reentrancy (i.e., thread safety, synchronization).
+    (B) Implement MOF-compliant print() functions (Instance, Meta_Class).
 
-    (B) Implement automatic lifecycle indication generation.
+    (B-NG) Implement automatic lifecycle indication generation.
+
+    (B-NG) Automatic query providers.
+
+    (B-NG) Logging.
+
+    (B-NG) Tracing.
 
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
     C
@@ -100,53 +85,36 @@
     C
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-    (C) Create string table for all strings in a repository to save space.
+    (C) Check "sub-scopes". For example, you should not be able to add a
+        MinLen qualifier to a uint32 property.
 
-    (C) Handle conflicts between CIM schema versions (should regmod check
-	for CIM schema version compatibility?).
+    (C) Optimize scalar boolean qualifier generation. Define true/false
+        versions for all predefined-qualifiers in cimple library. For
+        example: 
+        
+            Meta_Qualifier_Scalar<bool> key_qualifier_false =
+            {
+                ...
+            };
 
-    (C) Improve error reporting in CMPI adapter (include error description).
+            Meta_Qualifier_Scalar<bool> key_qualifier_true =
+            {
+                ...
+            };
 
-    (C) Implement default property initializers (as defined in MOF class).
+        This only works if the flavor mask is zero.
 
-    (C) Implement embeddedobject for parameters and methods.
+    (C) Implement inter-provider communication.
 
-    (C) Implement WMI Adapter
+    (C) Implement EmbeddedObject (includes embedded classes and instances).
 
-    (C) Finish CIMCGI work (enhance error messages and handle array properties).
+    (C) Implement WMI Adapter.
 
-    (C) Modify values/valuemap enum tags so that they are true enums and not
-	just integers.
+    (C) Eliminate experimental CIMCGI.
 
-    (C) Validate CIMPLE/CMPI providers with SFCB (Small-Footprint CIM Broker)
-
-    (C) Consider versioning of providers.
+    (C) Test CIMPLE/CMPI providers with SFCB (Small-Footprint CIM Broker).
 
     (C) Enhance regmod to interact with CIMOM rather than repository directly.
-
-    (C) Move random_initialize() function out of cimple runtime.
-
-    (C) Make copy() and copy_keys() work on instances of different classes
-	with common ancestory.
-
-    (C)	Implement pthread_exit().
-
-    (C)	Implement pthread_equal().
-
-    (C)	Mitigate "ambiguous symbol" problem with BOOLEAN, UINT32, boolean, etc.,
-	requiring qualification with "cimple::".
-
-    (C) Implement pthread_join() for Windows.
-
-    (C) Implement pthread_cond_timedwait() for Windows.
-
-    (C) Implement pthread_key_t destructor proc on Windows.
-
-    (C) Implement static TLS initializers.
-
-    (C) Implement instance serialization.
-
-    (C) Query providers.
 
     (C) Implement embeddedinstance qualifier.
 
@@ -154,10 +122,3 @@
 
     (C) Support for fixed-length CIM arrays.
 
-    (C) Consolidate the error scheme (Error.h, Status.h, etc.).
-
-    ============================================================================
-    Done
-    ============================================================================
-
-    (A) Implement reference-counted handle for CIMPLE instances.
