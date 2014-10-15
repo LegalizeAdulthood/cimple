@@ -49,6 +49,8 @@ public:
     const Meta_Class* get_meta_class(
 	const char* class_name);
 
+    const Meta_Repository* get_meta_repository();
+
     Status get_meta_method(
 	const char* class_name,
 	const char* method_name,

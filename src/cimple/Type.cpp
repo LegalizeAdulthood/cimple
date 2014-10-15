@@ -25,6 +25,7 @@
 */
 
 #include "Type.h"
+#include "Array.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

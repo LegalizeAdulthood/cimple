@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_cond_queue
 SOURCES = main.cpp
-LIBRARIES = cimple_s
+LIBRARIES = cimple
 DEFINES += -DCIMPLE_LINK_STATIC_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak

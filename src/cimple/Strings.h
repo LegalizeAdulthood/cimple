@@ -41,6 +41,19 @@ char* str_printf(const char* format, ...);
 CIMPLE_LIBCIMPLE_LINKAGE 
 char* str_vprintf(const char* format, va_list ap);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
+extern const uint8 __lower[256];
+
+CIMPLE_LIBCIMPLE_LINKAGE 
+bool __eqi(const char* s1, const char* s2);
+
+inline bool eqi(const char* s1, const char* s2)
+{
+    return 
+	__lower[uint8(s1[0])] == __lower[uint8(s2[0])] && 
+	strcasecmp(s1, s2) == 0;
+}
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Strings_h */

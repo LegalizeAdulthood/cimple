@@ -329,6 +329,36 @@ static Meta_Feature* _Everything_meta_features[] =
     (Meta_Feature*)&_Everything_mm,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class Everything::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -336,9 +366,12 @@ const Meta_Class Everything::static_meta_class =
     _Everything_meta_features,
     CIMPLE_ARRAY_SIZE(_Everything_meta_features),
     sizeof(Everything),
-    0,
-    0,
-    0xB6F3B6A9,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0xB6F3B6A9,/* crc */
     0,
 };
 

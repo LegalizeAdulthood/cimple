@@ -453,6 +453,25 @@ struct _to_cimple_scalar
     }
 };
 
+template<> 
+struct _to_cimple_scalar<Pegasus::Char16, char16>
+{
+    typedef Pegasus::Char16 PT;
+    typedef char16 CT;
+
+    static void func(
+	const Pegasus::CIMValue& value,
+	Instance* ci,
+	char* field)
+    {
+	PT pt;
+	value.get(pt);
+	CT ct = uint16(pt);
+	((Property<CT>*)field)->value = ct;
+	((Property<CT>*)field)->null = value.isNull() ? 1 : 0;
+    }
+};
+
 //------------------------------------------------------------------------------
 //
 // _to_cimple_array()
@@ -773,6 +792,7 @@ static Instance* _make_cimple_instance(
     // Create a new instance:
 
     Instance* instance = create(mc);
+    CIMPLE_ASSERT(ref->magic == CIMPLE_INSTANCE_MAGIC);
 
     // Nullify the properties:
 

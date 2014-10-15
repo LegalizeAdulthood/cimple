@@ -335,16 +335,27 @@ void unref(const Instance* instance);
 CIMPLE_LIBCIMPLE_LINKAGE
 int filter_properties(Instance* instance, const char* const* properties);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void pack_instance(Buffer& out, const Instance* inst, bool keys_only = false);
 
-int unpack_instance(
+CIMPLE_LIBCIMPLE_LINKAGE
+void pack_instance_local(Buffer& out, const Instance* inst);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+Instance* unpack_instance(
     const Buffer& in, 
     size_t& pos, 
     const Meta_Class* (*lookup)(const char* class_name, void* client_data),
-    void* client_data,
-    Instance*& inst);
+    void* client_data);
 
-// This class parses a CIM model path of the following form.
+CIMPLE_LIBCIMPLE_LINKAGE
+Instance* unpack_instance_local(
+    const Buffer& in, 
+    size_t& pos, 
+    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
+    void* client_data);
+
+// This function parses a CIM model path of the following form.
 //
 //     MyClass.key1=value1,key2=value2
 //
@@ -355,9 +366,22 @@ int unpack_instance(
 // to an array of all other classes, which is only true if the -r option was
 // passed to genclass when the source class was generated.
 //
-Instance* __model_path_to_instance(
+CIMPLE_LIBCIMPLE_LINKAGE
+Instance* model_path_to_instance(
     const Meta_Class* source_meta_class, 
     const char* path);
+
+// This function converts and instance to a CIM model path of the following
+// form:
+//
+//     MyClass.key1=value1,key2=value2
+//
+// It does the reverse of model_path_to_instance() defined above.
+//
+CIMPLE_LIBCIMPLE_LINKAGE
+int instance_to_model_path(
+    const Instance* instance, 
+    String& model_path);
 
 CIMPLE_NAMESPACE_END
 

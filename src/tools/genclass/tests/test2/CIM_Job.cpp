@@ -328,6 +328,47 @@ static Meta_Feature* _CIM_Job_meta_features[] =
     (Meta_Feature*)&CIM_Job_KillJob_method::static_meta_class,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_LogicalElement",
+    "CIM_ManagedSystemElement",
+    "CIM_ManagedElement",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class CIM_Job::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -335,9 +376,12 @@ const Meta_Class CIM_Job::static_meta_class =
     _CIM_Job_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_Job_meta_features),
     sizeof(CIM_Job),
+    _locals,
     &CIM_LogicalElement::static_meta_class,
-    0,
-    0x0BC3279B,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    0, /* num_keys */
+    0x0BC3279B,/* crc */
     0,
 };
 

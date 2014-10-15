@@ -207,6 +207,53 @@ static Meta_Feature* _CIM_ConcreteJob_meta_features[] =
     (Meta_Feature*)&_CIM_ConcreteJob_TimeBeforeRemoval,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_Job",
+    "CIM_LogicalElement",
+    "CIM_ManagedSystemElement",
+    "CIM_ManagedElement",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+    {0},
+    {1},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class CIM_ConcreteJob::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -214,9 +261,12 @@ const Meta_Class CIM_ConcreteJob::static_meta_class =
     _CIM_ConcreteJob_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_ConcreteJob_meta_features),
     sizeof(CIM_ConcreteJob),
+    _locals,
     &CIM_Job::static_meta_class,
-    1,
-    0xBA4DC394,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    1, /* num_keys */
+    0xBA4DC394,/* crc */
     0,
 };
 

@@ -74,6 +74,22 @@ static Meta_Feature* _DDD_meta_features[] =
     (Meta_Feature*)&DDD_goo_method::static_meta_class,
 };
 
+static const char* _super_classes[] =
+{
+    "CCC",
+    "BBB",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+    {0},
+    {1},
+    {1},
+};
+
 const Meta_Class DDD::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -81,9 +97,12 @@ const Meta_Class DDD::static_meta_class =
     _DDD_meta_features,
     CIMPLE_ARRAY_SIZE(_DDD_meta_features),
     sizeof(DDD),
+    _locals,
     &CCC::static_meta_class,
-    2,
-    0x0D139C11,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    2, /* num_keys */
+    0x0D139C11,/* crc */
     0,
 };
 

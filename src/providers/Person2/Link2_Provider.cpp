@@ -40,11 +40,6 @@ Unload_Status Link2_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status Link2_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_CANCEL;
-}
-
 Get_Instance_Status Link2_Provider::get_instance(
     const Link2* model, 
     Link2*& instance)
@@ -114,38 +109,9 @@ Enum_Associator_Names_Status Link2_Provider::enum_associator_names(
     const String& result_role,
     Enum_Associator_Names_Handler<Instance>* handler)
 {
-    for (size_t i = 0; i < _map.size(); i++)
-    {
-	// from parent-to-child association:
-
-	if ((role.empty() || role.equali("parent")) &&
-	    (result_role.empty() || result_role.equali("child")))
-	{
-	    if (key_eq(instance, _map[i]->parent))
-	    {
-		Instance* child = _map[i]->child;
-
-		if (strcasecmp(class_name(child), "Person2") == 0)
-		    handler->handle(clone(child));
-	    }
-	}
-
-	// from child-to-parent association:
-
-	if ((role.empty() || role.equali("child")) &&
-	    (result_role.empty() || result_role.equali("parent")))
-	{
-	    if (key_eq(instance, _map[i]->child))
-	    {
-		Instance* parent = _map[i]->parent;
-
-		if (strcasecmp(class_name(parent), "Person2") == 0)
-		    handler->handle(clone(parent));
-	    }
-	}
-    }
-
-    return ENUM_ASSOCIATOR_NAMES_OK;
+    // Return unsupported, causing the caller will use enum_instances() 
+    // to implement this operation.
+    return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
 }
 
 Enum_References_Status Link2_Provider::enum_references(
@@ -154,25 +120,13 @@ Enum_References_Status Link2_Provider::enum_references(
     const String& role,
     Enum_References_Handler<Link2>* handler)
 {
-    for (size_t i = 0; i < _map.size(); i++)
-    {
-	if (role.empty() || role.equali("parent"))
-	{
-	    if (key_eq(instance, _map[i]->parent))
-		handler->handle(_map[i]->clone());
-	}
-
-	if (role.empty() || role.equali("child"))
-	{
-	    if (key_eq(instance, _map[i]->child))
-		handler->handle(_map[i]->clone());
-	}
-    }
-
-    return ENUM_REFERENCES_OK;
+    // Return unsupported, causing the caller will use enum_instances() 
+    // to implement this operation.
+    return ENUM_REFERENCES_UNSUPPORTED;
 }
 
 int Link2_Provider::proc(
+    const Registration* registration,
     int operation, 
     void* arg0, 
     void* arg1, 
@@ -188,7 +142,7 @@ int Link2_Provider::proc(
 
     typedef Link2 Class;
     typedef Link2_Provider Provider;
-    return Association_Provider_Proc_T<Provider>::proc(
+    return Association_Provider_Proc_T<Provider>::proc(registration,
 	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 

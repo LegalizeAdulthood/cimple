@@ -32,6 +32,17 @@ static Meta_Feature* _B_meta_features[] =
     (Meta_Feature*)&_B_b,
 };
 
+static const char* _super_classes[] =
+{
+    "A",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {1},
+};
+
 const Meta_Class B::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -39,9 +50,12 @@ const Meta_Class B::static_meta_class =
     _B_meta_features,
     CIMPLE_ARRAY_SIZE(_B_meta_features),
     sizeof(B),
+    _locals,
     &A::static_meta_class,
-    0,
-    0x78AC69E4,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    0, /* num_keys */
+    0x78AC69E4,/* crc */
     0,
 };
 

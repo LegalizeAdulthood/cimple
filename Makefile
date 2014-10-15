@@ -1,5 +1,5 @@
-
 CIMPLE_PLATFORM=
+
 -include mak/platform.mak
 
 ifeq ($(CIMPLE_PLATFORM),)
@@ -44,6 +44,7 @@ distclean: clean
 	$(RM) src/platform.h
 
 regress:
+	$(MAKE) tests
 	( cimserver -s; sleep 3 )
 	( cd $(PEGASUS_ROOT); make repository )
 	$(MAKE) reg

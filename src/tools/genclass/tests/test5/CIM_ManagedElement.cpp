@@ -53,6 +53,13 @@ static Meta_Feature* _CIM_ManagedElement_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedElement_ElementName,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class CIM_ManagedElement::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -60,9 +67,12 @@ const Meta_Class CIM_ManagedElement::static_meta_class =
     _CIM_ManagedElement_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_ManagedElement_meta_features),
     sizeof(CIM_ManagedElement),
-    0,
-    0,
-    0x5B2A3886,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0x5B2A3886,/* crc */
     0,
 };
 

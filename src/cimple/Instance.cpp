@@ -42,10 +42,13 @@ CIMPLE_NAMESPACE_BEGIN
 
 void __construct(
     const Meta_Class* mc,
-    Instance* inst)
+    Instance* inst,
+    bool clear = true)
 {
     // Zero-fill the object (clearing the null).
-    memset(inst, 0, mc->size);
+
+    if (clear)
+	memset(inst, 0, mc->size);
 
     inst->meta_class = mc;
     inst->magic = CIMPLE_INSTANCE_MAGIC;
@@ -485,7 +488,7 @@ ssize_t get_associators(
 
 		if (role && *role != '\0')
 		{
-		    if (strcasecmp(mr->name, role) != 0)
+		    if (!eqi(mr->name, role))
 			continue;
 		}
 
@@ -497,7 +500,7 @@ ssize_t get_associators(
 
 		if (result_class && *result_class != '\0')
 		{
-		    if (strcasecmp(tmp->meta_class->name, result_class) != 0)
+		    if (!eqi(tmp->meta_class->name, result_class))
 			continue;
 		}
 
@@ -505,7 +508,7 @@ ssize_t get_associators(
 
 		if (result_role && *result_role != '\0')
 		{
-		    if (strcasecmp(mr->name, result_role) != 0)
+		    if (!eqi(mr->name, result_role))
 			continue;
 		}
 
@@ -547,7 +550,7 @@ bool is_reference_of(
 
 		if (role && *role != '\0')
 		{
-		    if (strcasecmp(mr->name, role) != 0)
+		    if (!eqi(mr->name, role))
 			continue;
 		}
 
@@ -561,28 +564,26 @@ bool is_reference_of(
 
 bool __is_a(const Meta_Class* ancestor, const Meta_Class* descendant)
 {
+    // Try to short-circuit class name checks below.
+
     if (ancestor == &Instance::static_meta_class)
 	return true;
 
-    while (descendant)
+    if (ancestor == descendant)
+	return true;
+
+    // Use class names to perform operation.
+
+    if (eqi(ancestor->name, "Instance"))
+	return true;
+
+    if (eqi(ancestor->name, descendant->name))
+	return true;
+
+    for (size_t i = 0; i < descendant->num_super_classes; i++)
     {
-	if ((void*)descendant == (void*)ancestor)
+	if (eqi(ancestor->name, descendant->super_classes[i]))
 	    return true;
-
-	descendant = descendant->super_meta_class;
-    }
-
-    return false;
-}
-
-bool is_descendent(const char* ancestor, const Meta_Class* descendant)
-{
-    while (descendant)
-    {
-	if ((void*)descendant == (void*)ancestor)
-	    return true;
-
-	descendant = descendant->super_meta_class;
     }
 
     return false;
@@ -1099,6 +1100,84 @@ static void _pack_value(
     }
 }
 
+static void _pack_value_local(
+    Buffer& out, 
+    const Instance* inst,
+    const Meta_Property* mp)
+{
+    // ATTN: consolidate with _pack_value().
+
+    const void* prop = property_of(inst, mp);
+
+    if (mp->subscript == 0 && mp->type == STRING)
+    {
+	pack_string(out, *((String*)prop));
+	return;
+    }
+
+    switch (mp->type)
+    {
+	case BOOLEAN:
+	{
+	    pack_boolean_array(out, *((Array<boolean>*)prop));
+	    break;
+	}
+
+	case UINT8:
+	case SINT8:
+	{
+	    pack_uint8_array(out, *((Array<uint8>*)prop));
+	    break;
+	}
+
+	case UINT16:
+	case SINT16:
+	case CHAR16:
+	{
+	    pack_uint16_array(out, *((Array<uint16>*)prop));
+	    break;
+	}
+
+	case UINT32:
+	case SINT32:
+	{
+	    pack_uint32_array(out, *((Array<uint32>*)prop));
+	    break;
+	}
+
+	case UINT64:
+	case SINT64:
+	{
+	    pack_uint64_array(out, *((Array<uint64>*)prop));
+	    break;
+	}
+
+	case REAL32:
+	{
+	    pack_real32_array(out, *((Array<real32>*)prop));
+	    break;
+	}
+
+	case REAL64:
+	{
+	    pack_real64_array(out, *((Array<real64>*)prop));
+	    break;
+	}
+
+	case DATETIME:
+	{
+	    pack_datetime_array(out, *((Array<Datetime>*)prop));
+	    break;
+	}
+
+	case STRING:
+	{
+	    pack_string_array(out, *((Array<String>*)prop));
+	    break;
+	}
+    }
+}
+
 static void _unpack_value(
     const Buffer& in, 
     size_t& pos,
@@ -1248,6 +1327,83 @@ static void _unpack_value(
     }
 }
 
+static void _unpack_value_local(
+    const Buffer& in, 
+    size_t& pos,
+    Instance* inst,
+    const Meta_Property* mp)
+{
+    void* prop = property_of(inst, mp);
+
+    if (mp->subscript == 0 && mp->type == STRING)
+    {
+	unpack_string(in, pos, *((String*)prop));
+	return;
+    }
+
+    switch (mp->type)
+    {
+	case BOOLEAN:
+	{
+	    unpack_boolean_array(in, pos, *((Array<boolean>*)prop));
+	    break;
+	}
+
+	case UINT8:
+	case SINT8:
+	{
+	    unpack_uint8_array(in, pos, *((Array<uint8>*)prop));
+	    break;
+	}
+
+	case UINT16:
+	case SINT16:
+	case CHAR16:
+	{
+	    unpack_uint16_array(in, pos, *((Array<uint16>*)prop));
+	    break;
+	}
+
+	case UINT32:
+	case SINT32:
+	{
+	    unpack_uint32_array(in, pos, *((Array<uint32>*)prop));
+	    break;
+	}
+
+	case UINT64:
+	case SINT64:
+	{
+	    unpack_uint64_array(in, pos, *((Array<uint64>*)prop));
+	    break;
+	}
+
+	case REAL32:
+	{
+	    unpack_real32_array(in, pos, *((Array<real32>*)prop));
+	    break;
+	}
+
+	case REAL64:
+	{
+	    unpack_real64_array(in, pos, *((Array<real64>*)prop));
+	    break;
+	}
+
+	case DATETIME:
+	{
+	    unpack_datetime_array(in, pos, *((Array<Datetime>*)prop));
+	    break;
+	}
+
+	case STRING:
+	{
+	    unpack_string_array(in, pos, *((Array<String>*)prop));
+	    break;
+	}
+    }
+}
+
 void pack_instance(Buffer& out, const Instance* inst, bool keys_only)
 {
     CIMPLE_ASSERT(inst != 0);
@@ -1276,6 +1432,12 @@ void pack_instance(Buffer& out, const Instance* inst, bool keys_only)
 	// Name:
 
 	pack_c_str(out, mf->name);
+
+	// Index:
+
+#if 0
+	pack_uint16(out, i);
+#endif
 
 	// Property/Reference.
 
@@ -1327,30 +1489,79 @@ void pack_instance(Buffer& out, const Instance* inst, bool keys_only)
     pack_uint32(out, 0xFFFFFFFF);
 }
 
-int unpack_instance(
-    const Buffer& in, 
-    size_t& pos, 
-    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
-    void* client_data,
-    Instance*& inst)
+void pack_instance_local(Buffer& out, const Instance* inst)
 {
-    inst = 0;
+    CIMPLE_ASSERT(inst != 0);
+    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    const Meta_Class* mc = inst->meta_class;
 
     // Class name:
 
-    String class_name;
-    unpack_string(in, pos, class_name);
+    pack_c_str(out, mc->name);
+
+    // CRC:
+
+    pack_uint32(out, mc->crc);
+
+    // Pack footprint first:
+
+    out.append((const char*)inst, mc->size);
+
+    // Pack non-flat features:
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+	const Meta_Feature* mf = (Meta_Feature*)mc->meta_features[i];
+
+	// Property/Reference.
+
+	if (mf->flags & CIMPLE_FLAG_PROPERTY)
+	{
+	    // ATTN: Skip nulls?
+
+	    const Meta_Property* mp = (Meta_Property*)mf;
+
+	    if (mp->subscript || mp->type == STRING)
+		_pack_value_local(out, inst, mp);
+	}
+	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+	{
+	    const Meta_Reference* mr = (Meta_Reference*)mf;
+	    Instance* tmp = *((Instance**)((uint8*)inst + mr->offset));
+
+	    if (tmp)
+	    {
+		if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
+		    pack_instance_local(out, tmp);
+		else
+		    pack_instance_local(out, tmp);
+	    }
+	}
+    }
+}
+
+Instance* unpack_instance(
+    const Buffer& in, 
+    size_t& pos, 
+    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
+    void* client_data)
+{
+    // Class name:
+
+    const char* class_name;
+    size_t class_name_size;
+    unpack_c_str(in, pos, class_name, class_name_size);
 
     // Lookup the class:
 
-    const Meta_Class* mc = (*lookup)(class_name.c_str(), client_data);
+    const Meta_Class* mc = (*lookup)(class_name, client_data);
 
     if (!mc)
-	return -1;
+	return 0;
 
     // Create the inst:
 
-    inst = create(mc);
+    Ref<Instance> inst(create(mc));
 
     // Pack each feature.
 
@@ -1366,26 +1577,35 @@ int unpack_instance(
 
 	// Name:
 
-	String name;
-	unpack_string(in, pos, name);
+	const char* name;
+	size_t size;
+	unpack_c_str(in, pos, name, size);
+
+	// Index:
+
+#if 0
+	uint16 index;
+	unpack_uint16(in, pos, index);
+#endif
 
 	// Find meta feature.
 
-	const Meta_Feature* mf = find_feature(mc, name.c_str());
+#if 0
+	const Meta_Feature* mf;
 
-	if (!mf)
+	if (index < mc->num_meta_features && 
+	    eqi(name, mc->meta_features[index]->name))
 	{
-	    destroy(inst);
-	    inst = 0;
+	    mf = mc->meta_features[index];
 	}
-
+	else
+	    mf = find_feature(mc, name);
+#else
+	const Meta_Feature* mf = find_feature(mc, name);
+#endif
 
 	if (!mf || mf->flags != flags)
-	{
-	    destroy(inst);
-	    inst = 0;
-	    return -1;
-	}
+	    return 0;
 
 	// Property/Reference.
 
@@ -1399,11 +1619,7 @@ int unpack_instance(
 	    unpack_uint16(in, pos, type);
 
 	    if (type != mp->type)
-	    {
-		destroy(inst);
-		inst = 0;
-		return -1;
-	    }
+		return 0;
 
 	    // Subscript:
 
@@ -1411,15 +1627,11 @@ int unpack_instance(
 	    unpack_uint16(in, pos, *((uint16*)&subscript));
 
 	    if (subscript != mp->subscript)
-	    {
-		destroy(inst);
-		inst = 0;
-		return -1;
-	    }
+		return 0;
 
 	    // Unpack property value.
 
-	    _unpack_value(in, pos, inst, mp);
+	    _unpack_value(in, pos, inst.ptr(), mp);
 	}
 	else if (flags & CIMPLE_FLAG_REFERENCE)
 	{
@@ -1427,45 +1639,106 @@ int unpack_instance(
 
 	    // Reference class name.
 
-	    String class_name;
-	    unpack_string(in, pos, class_name);
+	    const char* class_name;
+	    size_t class_name_size;
+	    unpack_c_str(in, pos, class_name, class_name_size);
 
-	    const Meta_Class* rc = (*lookup)(class_name.c_str(), client_data);
+	    const Meta_Class* rc = (*lookup)(class_name, client_data);
 
 	    if (!rc)
-	    {
-		destroy(inst);
-		inst = 0;
-		return -1;
-	    }
+		return 0;
 
 	    // Null flag:
 
 	    boolean null_flag;
 	    unpack_boolean(in, pos, null_flag);
 
-	    Instance*& ri = *((Instance**)((uint8*)inst + mr->offset));
+	    Instance*& ri = *((Instance**)((uint8*)inst.ptr() + mr->offset));
 
 	    if (null_flag)
 		ri = 0;
 	    else
 	    {
-		if (unpack_instance(in, pos, lookup, client_data, ri) != 0)
-		{
-		    destroy(inst);
-		    inst = 0;
-		    return -1;
-		}
+		if (!(ri = unpack_instance(in, pos, lookup, client_data)))
+		    return 0;
 	    }
 	}
     }
 
-    return 0;
+    return inst.steal();
+}
+
+Instance* unpack_instance_local(
+    const Buffer& in, 
+    size_t& pos, 
+    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
+    void* client_data)
+{
+    // Unpack class_name:
+
+    const char* class_name;
+    size_t class_name_size;
+    unpack_c_str(in, pos, class_name, class_name_size);
+
+    // Lookup the class:
+
+    const Meta_Class* mc = (*lookup)(class_name, client_data);
+
+    if (!mc)
+	return 0;
+
+    // Unpack the CRC:
+
+    uint32 crc;
+    unpack_uint32(in, pos, crc);
+
+    if (crc != mc->crc)
+	return 0;
+
+    // Unpack the footprint:
+
+    Instance* footprint = (Instance*)::operator new(mc->size);
+    memcpy(footprint, in.data() + pos, mc->size);
+    pos += mc->size;
+    __construct(mc, footprint, false);
+    Ref<Instance> inst((Instance*)footprint);
+
+    // Unpack non-flat features.
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+	const Meta_Feature* mf = mc->meta_features[i];
+
+	if (mf->flags & CIMPLE_FLAG_PROPERTY)
+	{
+	    // ATTN: Skip nulls?
+	    const Meta_Property* mp = (Meta_Property*)mf;
+
+	    if (mp->subscript || mp->type == STRING)
+		_unpack_value_local(in, pos, inst.ptr(), mp);
+	}
+	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+	{
+	    const Meta_Reference* mr = (Meta_Reference*)mf;
+
+	    Instance*& ri = *((Instance**)((uint8*)inst.ptr() + mr->offset));
+
+	    if (ri)
+	    {
+		ri = unpack_instance_local(in, pos, lookup, client_data);
+
+		if (!ri)
+		    return 0;
+	    }
+	}
+    }
+
+    return inst.steal();
 }
 
 //==============================================================================
 //
-// __model_path_to_instance()
+// model_path_to_instance()
 //
 //==============================================================================
 
@@ -1555,10 +1828,12 @@ static bool _str_to_sint64(const char*& str, sint64& x)
     return false;
 }
 
-Instance* __model_path_to_instance(
+Instance* model_path_to_instance(
     const Meta_Class* source_meta_class, 
     const char* path)
 {
+    // ATTN: handle null values here!
+
     if (!source_meta_class)
 	return 0;
 
@@ -1629,7 +1904,7 @@ Instance* __model_path_to_instance(
 	    if (!_parse_string_literal(p, value))
 		return 0;
 
-	    Ref<Instance> tmp(__model_path_to_instance(
+	    Ref<Instance> tmp(model_path_to_instance(
 		mr->meta_class, value.c_str()));
 
 	    if (!tmp)
@@ -1756,10 +2031,195 @@ const Meta_Class Instance::static_meta_class =
     0, /* meta_features */
     0, /* num_meta_features */
     sizeof(Instance), /* size */
+    0, /* locals */
     0, /* super_meta_class */
+    0, /* super_classes */
+    0, /* num_super_classes */
     0, /* num_keys */
     0x00000000, /* crc */
-    0,
+    0, /* meta_repository */
 };
+
+//==============================================================================
+//
+// instance_to_model_path()
+//
+//==============================================================================
+
+static int _append_key(const Meta_Property* mp, const void* prop, String& str)
+{
+    char buffer[64];
+
+    switch (mp->type)
+    {
+	case BOOLEAN:
+	    sprintf(buffer, "%s", *((boolean*)prop) ? "true" : "false");
+	    break;
+
+	case UINT8:
+	    sprintf(buffer, "%u", *((uint8*)prop));
+	    break;
+
+	case SINT8:
+	    sprintf(buffer, "%d", *((sint8*)prop));
+	    break;
+
+	case UINT16:
+	    sprintf(buffer, "%u", *((uint16*)prop));
+	    break;
+
+	case SINT16:
+	    sprintf(buffer, "%d", *((sint16*)prop));
+	    break;
+
+	case UINT32:
+	    sprintf(buffer, "%u", *((uint32*)prop));
+	    break;
+
+	case SINT32:
+	    sprintf(buffer, "%d", *((sint32*)prop));
+	    break;
+
+	case UINT64:
+	    sprintf(buffer, CIMPLE_LLU, *((uint64*)prop));
+	    break;
+
+	case SINT64:
+	    sprintf(buffer, CIMPLE_LLD, *((sint64*)prop));
+	    break;
+
+	case REAL32:
+	    sprintf(buffer, "%f", *((real32*)prop));
+	    break;
+
+	case REAL64:
+	    sprintf(buffer, "%f", *((real64*)prop));
+	    break;
+
+	case DATETIME:
+	    ((Datetime*)prop)->ascii(buffer);
+	    break;
+
+	case CHAR16:
+	    // ATTN: handle escaping of characters here! UTF8
+	    sprintf(buffer, "'%c'", *((uint16*)prop));
+	    break;
+
+	case STRING:
+	    // ATTN: handle escaping of characters here! UTF8
+	    str.append('"');
+	    str.append(*((String*)prop));
+	    str.append('"');
+	    return 0;
+    }
+
+    str.append(buffer);
+    return 0;
+}
+
+static void _escape_quotes_and_append(String& out, const String& str)
+{
+    const char* p = str.c_str(); 
+    
+    while (*p)
+    {
+	char c = *p++;
+
+	if (c == '"')
+	    out.append('\\');
+
+	out.append(c);
+    }
+}
+
+int instance_to_model_path(const Instance* inst, String& model_path)
+{
+    model_path.clear();
+
+    CIMPLE_ASSERT(inst != 0);
+    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+
+    const Meta_Class* mc = inst->meta_class;
+
+    // Reject instance without keys.
+
+    if (mc->num_keys == 0)
+	return -1;
+
+    // Class name:
+
+    model_path.append(mc->name);
+    model_path.append('.');
+
+    // Process keys:
+
+    size_t num_keys_found = 0;
+    
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+	uint32 flags = mc->meta_features[i]->flags;
+	const Meta_Feature* mf = (Meta_Feature*)mc->meta_features[i];
+
+	// Skip non-keys:
+
+	if (!(flags & CIMPLE_FLAG_KEY))
+	    continue;
+
+	// name:
+
+	model_path.append(mf->name);
+	model_path.append('=');
+
+	// value:
+
+	if (flags & CIMPLE_FLAG_PROPERTY)
+	{
+	    const Meta_Property* mp = (Meta_Property*)mf;
+	    const void* prop = property_of(inst, mp);
+
+	    // Arrays cannot be keys.
+
+	    if (mp->subscript)
+		return -1;
+
+	    // ATTN: is this assumption correct?
+	    // Null-valued properties cannot be keys.
+
+	    if (null_of(mp, prop))
+		return -1;
+
+	    _append_key(mp, prop, model_path);
+	}
+	if (flags & CIMPLE_FLAG_REFERENCE)
+	{
+	    const Meta_Reference* mr = (Meta_Reference*)mf;
+	    const Instance* tmp_instance = reference_of(inst, mr);
+
+	    // ATTN: is this assumption correct?
+	    // A null reference cannot be a key.
+
+	    if (!tmp_instance)
+		return -1;
+
+	    String tmp_model_path;
+
+	    if (instance_to_model_path(tmp_instance, tmp_model_path) != 0)
+		return -1;
+
+	    model_path.append('"');
+	    _escape_quotes_and_append(model_path, tmp_model_path);
+	    model_path.append('"');
+	}
+
+	// Append comma:
+
+	num_keys_found++;
+
+	if (num_keys_found != mc->num_keys)
+	    model_path.append(',');
+    }
+
+    return 0;
+}
 
 CIMPLE_NAMESPACE_END

@@ -32,6 +32,7 @@
 #include "Type.h"
 #include "Atomic.h"
 #include "flags.h"
+#include "Strings.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -106,6 +107,8 @@ public:
     bool equali(const char* s, size_t n) const;
 
     size_t find(char c) const;
+
+    static void split(const char* str, char c, String& left, String& right);
 
     /** Returns true if the given string is a prefix of this string.
     */
@@ -263,7 +266,7 @@ inline bool String::equali(const String& s) const
 
 inline bool String::equali(const char* s) const
 {
-    return strcasecmp(_rep->data, s) == 0;
+    return eqi(_rep->data, s);
 }
 
 inline bool String::equali(const char* s, size_t n) const

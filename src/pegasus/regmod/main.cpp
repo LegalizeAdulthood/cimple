@@ -1042,7 +1042,7 @@ void check_class_compatibility(
 
 	// Check only local features:
 
-	if (!cimple::is_local_feature(mc, mf))
+	if (!mc->locals[i].local)
 	    continue;
 
 	// If it's a method, process and then short-circuit the remainder.
@@ -1309,7 +1309,7 @@ void create_class(
 
 	    // Ignore non-local feature:
 
-	    if (!cimple::is_local_feature(mc, mf))
+	    if (!mc->locals[i].local)
 		continue;
 
 	    if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)

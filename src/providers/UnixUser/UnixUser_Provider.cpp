@@ -28,57 +28,8 @@ Get_Instance_Status UnixUser_Provider::get_instance(
     const UnixUser* model,
     UnixUser*& instance)
 {
-    passwd pw;
-    passwd* pwp;
-    char buffer[BUFFER_LENGTH];
-
-    setpwent();
-
-    while (getpwent_r(&pw, buffer, BUFFER_LENGTH, &pwp) == 0)
-    {
-	if (model->name.value == pw.pw_name)
-	{
-	    instance = UnixUser::create();
-
-	    instance->name.value = pw.pw_name;
-
-	    if (model->password.null)
-		instance->password.null = true;
-	    else
-		instance->password.value = pw.pw_passwd;    
-
-	    if (model->uid.null)
-		instance->uid.null = true;
-	    else
-		instance->uid.value = pw.pw_uid;    
-
-	    if (model->gid.null)
-		instance->gid.null = true;
-	    else
-		instance->gid.value = pw.pw_gid;    
-
-	    if (model->fullName.null)
-		instance->fullName.null = true;
-	    else
-		instance->fullName.value = pw.pw_gecos;    
-
-	    if (model->homeDir.null)
-		instance->homeDir.null = true;
-	    else
-		instance->homeDir.value = pw.pw_dir;    
-
-	    if (model->shellProgram.null)
-		instance->shellProgram.null = true;
-	    else
-		instance->shellProgram.value = pw.pw_shell;
-
-	    return GET_INSTANCE_OK;
-	}
-    }
-
-    endpwent();
-
-    return GET_INSTANCE_NOT_FOUND;
+    // Tell the caller to use enum_instances() and pick a matching instance.
+    return GET_INSTANCE_UNSUPPORTED;
 }
 
 Enum_Instances_Status UnixUser_Provider::enum_instances(

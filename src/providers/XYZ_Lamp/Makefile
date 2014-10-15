@@ -20,6 +20,5 @@ reg:
 	regmod -c $(SHARED_LIBRARY_TARGET)
 
 genclass:
-	$(BIN_DIR)/genclass -I../repository XYZ_Lamp
 
 tests:

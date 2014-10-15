@@ -521,6 +521,52 @@ static Meta_Feature* _Test1_meta_features[] =
     (Meta_Feature*)&_Test1_fla14,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class Test1::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -528,9 +574,12 @@ const Meta_Class Test1::static_meta_class =
     _Test1_meta_features,
     CIMPLE_ARRAY_SIZE(_Test1_meta_features),
     sizeof(Test1),
-    0,
-    3,
-    0x88CF2035,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    3, /* num_keys */
+    0x88CF2035,/* crc */
     0,
 };
 

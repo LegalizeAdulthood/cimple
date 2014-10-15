@@ -30,46 +30,11 @@ CIMPLE_NAMESPACE_BEGIN
 
 //==============================================================================
 //
-// align
-//
-//==============================================================================
-
-static inline size_t _align(size_t x, size_t n)
-{
-    ptrdiff_t m = n - 1;
-    return (x + m) & ~m;
-}
-
-//==============================================================================
-//
 // swap functions.
 //
 //==============================================================================
 
-static inline uint16 _swap_uint16(uint16 x)
-{
-    return (uint16)(
-	(((uint16)(x) & 0x00ffu) << 8) |
-	(((uint16)(x) & 0xff00u) >> 8));
-}
-
-static inline uint32 _swap_uint32(uint32 x)
-{
-    return (uint32)(
-	(((uint32)(x) & 0x000000fful) << 24) |
-	(((uint32)(x) & 0x0000ff00ul) <<  8) |
-	(((uint32)(x) & 0x00ff0000ul) >>  8) |
-	(((uint32)(x) & 0xff000000ul) >> 24));
-}
-
-static inline void _swap(uint8& x, uint8& y)
-{
-    uint8 t = x;
-    x = y;
-    y = t;
-}
-
-static uint64 _swap_uint64(uint64 x)
+uint64 swap_uint64(uint64 x)
 {
 #ifdef _GNU_SOURCE
 
@@ -93,10 +58,10 @@ static uint64 _swap_uint64(uint64 x)
     u;
 
     u.x = x;
-    _swap(u.data[0], u.data[7]);
-    _swap(u.data[1], u.data[6]);
-    _swap(u.data[2], u.data[5]);
-    _swap(u.data[3], u.data[4]);
+    swap(u.data[0], u.data[7]);
+    swap(u.data[1], u.data[6]);
+    swap(u.data[2], u.data[5]);
+    swap(u.data[3], u.data[4]);
 
     return u.x;
 
@@ -105,51 +70,16 @@ static uint64 _swap_uint64(uint64 x)
 
 //==============================================================================
 //
-// align_buffer()
-//
-//==============================================================================
-
-static void* _align_buffer(Buffer& out, size_t elem_size)
-{
-    size_t pos = _align(out.size(), elem_size);
-    out.resize(pos + elem_size);
-    return out.data() + pos;
-}
-
-//==============================================================================
-//
 // pack:
 //
 //==============================================================================
 
-void pack_uint16(Buffer& out, const uint16& x)
-{
-    uint16* ptr = (uint16*)_align_buffer(out, sizeof(uint16));
-
-#ifdef CIMPLE_LITTLE_ENDIAN
-    *ptr = _swap_uint16(x);
-#else
-    *ptr = x;
-#endif
-}
-
-void pack_uint32(Buffer& out, const uint32& x)
-{
-    uint32* ptr = (uint32*)_align_buffer(out, sizeof(uint32));
-
-#ifdef CIMPLE_LITTLE_ENDIAN
-    *ptr = _swap_uint32(x);
-#else
-    *ptr = x;
-#endif
-}
-
 void pack_uint64(Buffer& out, const uint64& x)
 {
-    uint64* ptr = (uint64*)_align_buffer(out, sizeof(uint64));
+    uint64* ptr = (uint64*)align_buffer(out, sizeof(uint64));
 
-#ifdef CIMPLE_LITTLE_ENDIAN
-    *ptr = _swap_uint64(x);
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    *ptr = swap_uint64(x);
 #else
     *ptr = x;
 #endif
@@ -172,16 +102,14 @@ void pack_real64(Buffer& out, const real64& x)
 void pack_string(Buffer& out, const String& x)
 {
     pack_uint32(out, x.size());
-    out.append(x.c_str(), x.size());
+    out.append(x.c_str(), x.size() + 1);
 }
-
-// ATTN: consider null-terminated string encodings.
 
 void pack_c_str(Buffer& out, const char* str)
 {
     size_t size = strlen(str);
     pack_uint32(out, size);
-    out.append(str, size);
+    out.append(str, size + 1);
 }
 
 void pack_datetime(Buffer& out, const Datetime& x)
@@ -195,6 +123,9 @@ void __pack_array(
     const Array_Base& x,
     Pack_Elem pack_elem)
 {
+    // ATTN: make this faster by not aligning each element (only the first
+    // element should be aligned.
+
     pack_uint32(out, x.size());
 
     for (size_t i = 0; i < x.size(); i++)
@@ -209,11 +140,11 @@ void __pack_array(
 
 void unpack_uint16(const Buffer& in, size_t& pos, uint16& x)
 {
-    pos = _align(pos, sizeof(uint16));
+    pos = align(pos, sizeof(uint16));
     uint16* ptr = (uint16*)(in.data() + pos);
 
-#ifdef CIMPLE_LITTLE_ENDIAN
-    x = _swap_uint16(*ptr);
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    x = swap_uint16(*ptr);
 #else
     x = *ptr;
 #endif
@@ -223,11 +154,11 @@ void unpack_uint16(const Buffer& in, size_t& pos, uint16& x)
 
 void unpack_uint32(const Buffer& in, size_t& pos, uint32& x)
 {
-    pos = _align(pos, sizeof(uint32));
+    pos = align(pos, sizeof(uint32));
     uint32* ptr = (uint32*)(in.data() + pos);
 
-#ifdef CIMPLE_LITTLE_ENDIAN
-    x = _swap_uint32(*ptr);
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    x = swap_uint32(*ptr);
 #else
     x = *ptr;
 #endif
@@ -237,11 +168,11 @@ void unpack_uint32(const Buffer& in, size_t& pos, uint32& x)
 
 void unpack_uint64(const Buffer& in, size_t& pos, uint64& x)
 {
-    pos = _align(pos, sizeof(uint64));
+    pos = align(pos, sizeof(uint64));
     uint64* ptr = (uint64*)(in.data() + pos);
 
-#ifdef CIMPLE_LITTLE_ENDIAN
-    x = _swap_uint64(*ptr);
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    x = swap_uint64(*ptr);
 #else
     x = *ptr;
 #endif
@@ -268,18 +199,16 @@ void unpack_string(const Buffer& in, size_t& pos, String& x)
     uint32 size;
     unpack_uint32(in, pos, size);
     x.assign(in.data() + pos, size);
-    pos += size;
+    pos += size + 1;
 }
 
-void unpack_c_str(const Buffer& in, size_t& pos, char*& str)
+void unpack_c_str(const Buffer& in, size_t& pos, const char*& str, size_t& size)
 {
-    uint32 size;
-    unpack_uint32(in, pos, size);
-
-    str = new char[size+1];
-    memcpy(str, in.data() + pos, size);
-
-    pos += size;
+    uint32 n;
+    unpack_uint32(in, pos, n);
+    str = (const char*)(in.data() + pos);
+    pos += n + 1;
+    size = size_t(n);
 }
 
 void unpack_datetime(const Buffer& in, size_t& pos, Datetime& x)

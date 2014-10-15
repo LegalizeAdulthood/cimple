@@ -154,12 +154,4 @@ int cimom::modify_instance(
     return -1;
 }
 
-Ref<Instance> cimom::model_path_to_instance(
-    const Meta_Class* source_meta_class,
-    const char* model_path)
-{
-    return Ref<Instance>(
-	__model_path_to_instance(source_meta_class, model_path));
-}
-
 CIMPLE_NAMESPACE_END

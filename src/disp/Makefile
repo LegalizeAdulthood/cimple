@@ -2,6 +2,7 @@ TOP = ../..
 include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = cimpledisp
+STATIC_LIBRARY = cimpledisp_s
 
 SOURCES = \
     List.cpp \

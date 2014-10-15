@@ -35,6 +35,19 @@ static Meta_Feature* _Z_meta_features[] =
     (Meta_Feature*)&_Z_z,
 };
 
+static const char* _super_classes[] =
+{
+    "Y",
+    "X",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {1},
+};
+
 const Meta_Class Z::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -42,9 +55,12 @@ const Meta_Class Z::static_meta_class =
     _Z_meta_features,
     CIMPLE_ARRAY_SIZE(_Z_meta_features),
     sizeof(Z),
+    _locals,
     &Y::static_meta_class,
-    0,
-    0xFE4E8CBC,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    0, /* num_keys */
+    0xFE4E8CBC,/* crc */
     0,
 };
 

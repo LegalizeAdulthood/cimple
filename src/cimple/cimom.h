@@ -93,10 +93,6 @@ public:
     static int modify_instance(
 	const char* name_space, 
 	const Instance* instance);
-
-    static Ref<Instance> model_path_to_instance(
-	const Meta_Class* source_meta_class,
-	const char* model_path);
 };
 
 CIMPLE_NAMESPACE_END

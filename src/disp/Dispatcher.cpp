@@ -455,6 +455,17 @@ const Meta_Class* Dispatcher::get_meta_class(const char* class_name)
 
 //------------------------------------------------------------------------------
 //
+// Dispatcher::get_meta_repository()
+//
+//------------------------------------------------------------------------------
+
+const Meta_Repository* Dispatcher::get_meta_repository()
+{
+    return _cache->get_meta_repository();
+}
+
+//------------------------------------------------------------------------------
+//
 // Dispatcher::get_meta_method()
 //
 //------------------------------------------------------------------------------

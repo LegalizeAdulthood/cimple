@@ -27,7 +27,7 @@
 #include "Buffer.h"
 #include <cstdarg>
 
-#define MIN_CAPACITY 1024
+#define MIN_CAPACITY 4096
 
 CIMPLE_NAMESPACE_BEGIN
 

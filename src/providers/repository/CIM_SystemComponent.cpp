@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Reference _CIM_SystemComponent_GroupComponent;
 
@@ -41,6 +41,17 @@ static Meta_Feature* _CIM_SystemComponent_meta_features[] =
     (Meta_Feature*)&_CIM_SystemComponent_PartComponent,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_Component",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+};
+
 const Meta_Class CIM_SystemComponent::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -48,10 +59,13 @@ const Meta_Class CIM_SystemComponent::static_meta_class =
     _CIM_SystemComponent_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_SystemComponent_meta_features),
     sizeof(CIM_SystemComponent),
+    _locals,
     &CIM_Component::static_meta_class,
-    2,
-    0xB30B108B,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    2, /* num_keys */
+    0xB30B108B,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

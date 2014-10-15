@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Property _CIM_ManagedElement_Caption;
 
@@ -200,6 +200,45 @@ static Meta_Feature* _CIM_ComputerSystem_meta_features[] =
     (Meta_Feature*)&CIM_ComputerSystem_SetPowerState_method::static_meta_class,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_System",
+    "CIM_EnabledLogicalElement",
+    "CIM_LogicalElement",
+    "CIM_ManagedSystemElement",
+    "CIM_ManagedElement",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {1},
+    {0},
+    {0},
+    {0},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class CIM_ComputerSystem::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -207,10 +246,13 @@ const Meta_Class CIM_ComputerSystem::static_meta_class =
     _CIM_ComputerSystem_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_ComputerSystem_meta_features),
     sizeof(CIM_ComputerSystem),
+    _locals,
     &CIM_System::static_meta_class,
-    2,
-    0x18F2C8F2,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    2, /* num_keys */
+    0x18F2C8F2,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

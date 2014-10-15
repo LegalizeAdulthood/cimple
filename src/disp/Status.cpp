@@ -38,6 +38,10 @@ const char* __status_messages[] =
     "unsupported",
     "unknown class",
     "unknown method",
+    "socket read failed",
+    "socket write failed",
+    "unpack failed",
+    "no meta repository",
 };
 
 CIMPLE_NAMESPACE_END

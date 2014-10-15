@@ -61,6 +61,10 @@ public:
     */
     const Meta_Class* get_meta_class(const char* class_name) const;
 
+    /** Get meta repository.
+    */
+    const Meta_Repository* get_meta_repository();
+
     /** Get number of modules in cache.
     */
     size_t num_modules() const;
@@ -85,6 +89,7 @@ private:
 
     Raw_Array<Module*> _modules;
     Raw_Array<Envelope*> _envelopes;
+    const Meta_Class* _last_meta_class;
 };
 
 inline size_t Cache::num_modules() const

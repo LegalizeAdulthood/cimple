@@ -8,3 +8,5 @@ LIBRARIES =
 include $(TOP)/mak/rules.mak
 
 tests:
+
+genclass:

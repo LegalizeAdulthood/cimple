@@ -36,6 +36,19 @@ static Meta_Feature* _AAA2_meta_features[] =
     (Meta_Feature*)&_AAA2_aaa,
 };
 
+static const char* _super_classes[] =
+{
+    "AAA",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+    {1},
+};
+
 const Meta_Class AAA2::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -43,9 +56,12 @@ const Meta_Class AAA2::static_meta_class =
     _AAA2_meta_features,
     CIMPLE_ARRAY_SIZE(_AAA2_meta_features),
     sizeof(AAA2),
+    _locals,
     &AAA::static_meta_class,
-    2,
-    0xA612DD62,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    2, /* num_keys */
+    0xA612DD62,/* crc */
     0,
 };
 

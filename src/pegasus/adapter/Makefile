@@ -11,8 +11,10 @@ SOURCES = \
     CStr.cpp
 
 LIBRARIES = \
+    pegprm \
     pegprovidermanager \
     pegprovider \
+    pegconfig \
     pegcommon \
     cimple
 

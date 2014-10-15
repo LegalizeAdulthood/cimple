@@ -28,3 +28,4 @@ all:
 	@ $(ECHO) "PWD=$(PWD)"
 	@ $(ECHO) "SIZE=$(SIZE)"
 	@ $(ECHO) "OBJ=$(OBJ)"
+	@ $(ECHO) "GCC_VERSION=$(GCC_VERSION)"

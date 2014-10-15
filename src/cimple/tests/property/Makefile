@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_property
 SOURCES = test_property.cpp
-LIBRARIES = cimple_s
+LIBRARIES = cimple
 DEFINES += -DCIMPLE_LINK_STATIC_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak

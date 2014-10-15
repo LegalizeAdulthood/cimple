@@ -30,3 +30,5 @@ endif
 	@ $(ECHO) "+++++ passed all tests ($(BINARY_TARGET) LinuxComputerSystem)"
 
 CLEAN += .dev.null
+
+genclass:

@@ -39,6 +39,17 @@ static Meta_Feature* _CIM_DatabaseAdministrator_meta_features[] =
     (Meta_Feature*)&_CIM_DatabaseAdministrator_Dependent,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_Dependency",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+};
+
 const Meta_Class CIM_DatabaseAdministrator::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -46,9 +57,12 @@ const Meta_Class CIM_DatabaseAdministrator::static_meta_class =
     _CIM_DatabaseAdministrator_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_DatabaseAdministrator_meta_features),
     sizeof(CIM_DatabaseAdministrator),
+    _locals,
     &CIM_Dependency::static_meta_class,
-    2,
-    0xEF2153FB,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    2, /* num_keys */
+    0xEF2153FB,/* crc */
     0,
 };
 

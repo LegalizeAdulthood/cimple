@@ -71,6 +71,23 @@ inline void clear(sint64& x) { x = 0; }
 inline void clear(real32& x) { x = 0.0; }
 inline void clear(real64& x) { x = 0.0; }
 
+class String;
+
+inline Type type_of(const boolean& x) { return BOOLEAN; }
+inline Type type_of(const uint8& x) { return UINT8; }
+inline Type type_of(const sint8& x) { return SINT8; }
+inline Type type_of(const uint16& x) { return UINT16; }
+inline Type type_of(const sint16& x) { return SINT16; }
+inline Type type_of(const uint32& x) { return UINT32; }
+inline Type type_of(const sint32& x) { return SINT32; }
+inline Type type_of(const uint64& x) { return UINT64; }
+inline Type type_of(const sint64& x) { return SINT64; }
+inline Type type_of(const real32& x) { return REAL32; }
+inline Type type_of(const real64& x) { return REAL64; }
+inline Type type_of(const char16& x) { return CHAR16; }
+inline Type type_of(const String& x) { return STRING; }
+inline Type type_of(const Datetime& x) { return DATETIME; }
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Type_h */

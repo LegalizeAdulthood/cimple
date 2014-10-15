@@ -49,14 +49,12 @@ struct Meta_Class
     uint32 size;
 
     // Local fields:
+    const Meta_Feature_Local* locals;
     const Meta_Class* super_meta_class;
+    const char* const* super_classes;
+    size_t num_super_classes;
     size_t num_keys;
-
-    // 32-bit CRC over entire class:
     uint32 crc;
-
-    // Backpointer to meta-repository (given any class, all other classes in
-    // the same meta-repository can be obtained).
     const struct Meta_Repository* meta_repository;
 };
 
@@ -107,9 +105,6 @@ inline bool has_references(const Meta_Class* mc)
 }
 
 CIMPLE_LIBCIMPLE_LINKAGE
-bool is_local_feature(const Meta_Class* mc, const Meta_Feature* mf);
-
-CIMPLE_LIBCIMPLE_LINKAGE
 bool is_subclass(
     const Meta_Class* super_class, 
     const Meta_Class* sub_class);
@@ -123,6 +118,30 @@ CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Class* find_meta_class(
     const Meta_Class* source_meta_class,
     const char* class_name);
+
+class Buffer;
+
+CIMPLE_LIBCIMPLE_LINKAGE
+void pack_meta_class(
+    Buffer& out, 
+    const Meta_Class* mc);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+Meta_Class* unpack_meta_class(
+    Buffer& in,
+    size_t& pos);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+void dump(const Meta_Class* mc);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+void print(const Meta_Class* mc);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+bool identical(const Meta_Class* mc1, const Meta_Class* mc2);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+void destroy(Meta_Class* mc);
 
 CIMPLE_NAMESPACE_END
 

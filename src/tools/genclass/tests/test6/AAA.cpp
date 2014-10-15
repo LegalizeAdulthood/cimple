@@ -73,6 +73,13 @@ static Meta_Feature* _AAA_meta_features[] =
     (Meta_Feature*)&AAA_fool_method::static_meta_class,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class AAA::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -80,9 +87,12 @@ const Meta_Class AAA::static_meta_class =
     _AAA_meta_features,
     CIMPLE_ARRAY_SIZE(_AAA_meta_features),
     sizeof(AAA),
-    0,
-    2,
-    0x40EE457B,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    2, /* num_keys */
+    0x40EE457B,/* crc */
     0,
 };
 

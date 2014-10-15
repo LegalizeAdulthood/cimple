@@ -34,3 +34,8 @@ Wed May 31 16:34:51 CDT 2006
 Wed May 31 16:34:51 CDT 2006
     Released 0.99.13
 
+Tue Jun 20 10:37:10 CDT 2006
+    Implemented model_path_to_instance().
+
+Tue Jun 20 10:37:29 CDT 2006
+    Implemented packing and unpacking routines.

@@ -39,6 +39,12 @@ static Meta_Feature* _AX_meta_features[] =
     (Meta_Feature*)&_AX_right,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+};
+
 const Meta_Class AX::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -46,9 +52,12 @@ const Meta_Class AX::static_meta_class =
     _AX_meta_features,
     CIMPLE_ARRAY_SIZE(_AX_meta_features),
     sizeof(AX),
-    0,
-    0,
-    0xCAC665DC,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0xCAC665DC,/* crc */
     0,
 };
 

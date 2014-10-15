@@ -89,6 +89,19 @@ static Meta_Feature* _CCC_meta_features[] =
     (Meta_Feature*)&CCC_foo_method::static_meta_class,
 };
 
+static const char* _super_classes[] =
+{
+    "BBB",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class CCC::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -96,9 +109,12 @@ const Meta_Class CCC::static_meta_class =
     _CCC_meta_features,
     CIMPLE_ARRAY_SIZE(_CCC_meta_features),
     sizeof(CCC),
+    _locals,
     &BBB::static_meta_class,
-    2,
-    0x3EA79480,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    2, /* num_keys */
+    0x3EA79480,/* crc */
     0,
 };
 

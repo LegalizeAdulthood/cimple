@@ -29,6 +29,11 @@ static Meta_Feature* _BBB_meta_features[] =
     (Meta_Feature*)&_BBB_counter,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+};
+
 const Meta_Class BBB::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -36,9 +41,12 @@ const Meta_Class BBB::static_meta_class =
     _BBB_meta_features,
     CIMPLE_ARRAY_SIZE(_BBB_meta_features),
     sizeof(BBB),
-    0,
-    0,
-    0x0F3721B9,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0x0F3721B9,/* crc */
     0,
 };
 

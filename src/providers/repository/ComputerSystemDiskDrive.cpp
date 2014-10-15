@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Reference _ComputerSystemDiskDrive_GroupComponent;
 
@@ -41,6 +41,19 @@ static Meta_Feature* _ComputerSystemDiskDrive_meta_features[] =
     (Meta_Feature*)&_ComputerSystemDiskDrive_PartComponent,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_SystemDevice",
+    "CIM_SystemComponent",
+    "CIM_Component",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+};
+
 const Meta_Class ComputerSystemDiskDrive::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -48,10 +61,13 @@ const Meta_Class ComputerSystemDiskDrive::static_meta_class =
     _ComputerSystemDiskDrive_meta_features,
     CIMPLE_ARRAY_SIZE(_ComputerSystemDiskDrive_meta_features),
     sizeof(ComputerSystemDiskDrive),
+    _locals,
     &CIM_SystemDevice::static_meta_class,
-    2,
-    0x51E0A9ED,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    2, /* num_keys */
+    0x51E0A9ED,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

@@ -29,6 +29,11 @@ static Meta_Feature* _EmbeddedClass_meta_features[] =
     (Meta_Feature*)&_EmbeddedClass_msg,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+};
+
 const Meta_Class EmbeddedClass::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -36,9 +41,12 @@ const Meta_Class EmbeddedClass::static_meta_class =
     _EmbeddedClass_meta_features,
     CIMPLE_ARRAY_SIZE(_EmbeddedClass_meta_features),
     sizeof(EmbeddedClass),
-    0,
-    0,
-    0xC580D23F,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0xC580D23F,/* crc */
     0,
 };
 

@@ -8,3 +8,5 @@ LIBRARIES = cimpleutil
 include $(TOP)/mak/rules.mak
 
 tests:
+
+genclass:

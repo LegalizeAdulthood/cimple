@@ -18,3 +18,5 @@ Test1_Provider.cpp:
 
 Test1.cpp:
 	genclass Test1
+
+genclass:

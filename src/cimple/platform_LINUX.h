@@ -33,9 +33,13 @@
 
 #define CIMPLE_HAVE_ZU
 
-#define CIMPLE_HIDE __attribute__((visibility("hidden")))
-
-#define CIMPLE_EXPORT __attribute__((visibility("default")))
+#if (__GNUC__ >= 4)
+# define CIMPLE_HIDE __attribute__((visibility("hidden")))
+# define CIMPLE_EXPORT __attribute__((visibility("default")))
+#else
+# define CIMPLE_HIDE /* empty */
+# define CIMPLE_EXPORT /* empty */
+#endif
 
 #define CIMPLE_IMPORT
 
@@ -44,6 +48,9 @@
 #define CIMPLE_SINT64 signed long long
 
 #define CIMPLE_UNIX
+
+#define CIMPLE_LLU "%llu"
+#define CIMPLE_LLD "%lld"
 
 #define CIMPLE_HAVE_DEV_RANDOM
 

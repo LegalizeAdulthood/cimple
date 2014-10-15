@@ -31,7 +31,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-static const uint32 INITIAL_STRING_SIZE = 16;
+static const uint32 INITIAL_STRING_SIZE = 32;
 
 String::Rep String::_empty;
 
@@ -235,6 +235,22 @@ size_t String::find(char c) const
 {
     char* p = strchr(_rep->data, c);
     return p ? (p - _rep->data) : size_t(-1);
+}
+
+void String::split(const char* str, char c, String& left, String& right)
+{
+    const char* p = strchr(str, c);
+
+    if (p)
+    {
+	left.assign(str, p - str);
+	right.assign(p + 1);
+    }
+    else
+    {
+	left.assign(str);
+	right.clear();
+    }
 }
 
 CIMPLE_NAMESPACE_END

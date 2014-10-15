@@ -40,3 +40,5 @@ Test2Link_Provider.cpp:
 
 Test2Link.cpp:
 	genclass Test2Link
+
+genclass:

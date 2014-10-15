@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Property _Thing_key;
 
@@ -31,6 +31,11 @@ static Meta_Feature* _Thing_meta_features[] =
     (Meta_Feature*)&_Thing_key,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+};
+
 const Meta_Class Thing::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -38,10 +43,13 @@ const Meta_Class Thing::static_meta_class =
     _Thing_meta_features,
     CIMPLE_ARRAY_SIZE(_Thing_meta_features),
     sizeof(Thing),
-    0,
-    1,
-    0x60EE9C0C,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    1, /* num_keys */
+    0x60EE9C0C,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

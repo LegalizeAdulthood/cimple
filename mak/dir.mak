@@ -1,3 +1,5 @@
+.PHONY: genclass
+
 all:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i $(NL) )
 

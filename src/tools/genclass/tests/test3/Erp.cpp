@@ -65,6 +65,14 @@ static Meta_Feature* _Erp_meta_features[] =
     (Meta_Feature*)&_Erp_z,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class Erp::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -72,9 +80,12 @@ const Meta_Class Erp::static_meta_class =
     _Erp_meta_features,
     CIMPLE_ARRAY_SIZE(_Erp_meta_features),
     sizeof(Erp),
-    0,
-    1,
-    0x308E8173,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    1, /* num_keys */
+    0x308E8173,/* crc */
     0,
 };
 

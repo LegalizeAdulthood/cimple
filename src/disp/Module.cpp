@@ -27,6 +27,7 @@
 #include <dlfcn.h>
 #include "Module.h"
 #include <cimple/Error.h>
+#include <cimple/Strings.h>
 #include "Envelope.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -99,7 +100,7 @@ Envelope* Module::find_provider(const char* class_name)
     {
 	Envelope* env = (Envelope*)p;
 
-	if (strcasecmp(env->class_name(), class_name) == 0)
+	if (eqi(env->class_name(), class_name))
 	    return env;
     }
 

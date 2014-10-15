@@ -15,3 +15,5 @@ genclass:
 
 tests:
 	@ $(BINARY_TARGET)
+
+genclass:

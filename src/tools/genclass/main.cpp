@@ -1244,6 +1244,37 @@ void gen_feature_array(const MOF_Class_Decl* class_decl)
 
 void gen_class_def(const MOF_Class_Decl* class_decl)
 {
+    // Generate _super_classes[] array:
+
+    if (class_decl->super_class)
+    {
+	out("static const char* _super_classes[] =\n");
+	out("{\n");
+
+	for (MOF_Class_Decl* p = class_decl->super_class; p; p = p->super_class)
+	{
+	    out("    \"%s\",\n", p->name);
+	}
+
+	out("};\n");
+	nl();
+    }
+
+    // Generate _locals[] array.
+
+    out("static const Meta_Feature_Local _locals[] =\n");
+    out("{\n");
+
+    MOF_Feature_Info* p = class_decl->all_features;
+
+    for (; p; p = (MOF_Feature_Info*)p->next)
+	out("    {%u},\n", p->propagated ? 0 : 1);
+
+    out("};\n");
+    nl();
+
+    // static_meta_class:
+
     out("const Meta_Class %s::static_meta_class =\n", 
 	class_decl->name);
     out("{\n");
@@ -1274,20 +1305,27 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
 	out("    sizeof(%s),\n", class_decl->name);
     }
 
+    // Local:
+    out("    _locals,\n");
+
     // Superclass:
 
     if (class_decl->super_class)
     {
 	out("    &%s::static_meta_class,\n", class_decl->super_class->name);
+	out("    _super_classes,\n");
+	out("    CIMPLE_ARRAY_SIZE(_super_classes),\n");
     }
     else
     {
-	out("    0,\n");
+	out("    0, /* super_class */ \n");
+	out("    0, /* super_classes */\n");
+	out("    0, /* num_super_classes */\n");
     }
 
     // Number of keys.
     {
-	out("    %u,\n", _count_keys(class_decl));
+	out("    %u, /* num_keys */\n", _count_keys(class_decl));
     }
 
     // CRC:
@@ -1296,17 +1334,15 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
 	string sig;
 	make_signature(class_decl, sig);
 	unsigned int crc = crc_compute((unsigned char*)sig.c_str(), sig.size());
-	out("    0x%08X,\n", crc);
+	out("    0x%08X,/* crc */\n", crc);
     }
 
     // meta_repository:
 
-    {
-	if (gen_repository_opt)
-	    out("    &%s,\n", meta_repository_name.c_str());
-	else
-	    out("    0,\n");
-    }
+    if (gen_repository_opt)
+	out("    &%s,\n", meta_repository_name.c_str());
+    else
+	out("    0,\n");
 
     out("};\n");
     nl();

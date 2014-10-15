@@ -1,4 +1,5 @@
 #include "Person2_Provider.h"
+#include "Fan.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -17,7 +18,7 @@ Load_Status Person2_Provider::load()
 	instance->ssn.value = 1;
 	instance->first.value = "Mike";
 	instance->last.value = "Brasher";
-	_map.insert(instance);
+	_person1 = instance;
     }
 
     {
@@ -25,7 +26,7 @@ Load_Status Person2_Provider::load()
 	instance->ssn.value = 2;
 	instance->first.value = "Saara";
 	instance->last.value = "Silva-Brasher";
-	_map.insert(instance);
+	_person2 = instance;
     }
 
     {
@@ -33,7 +34,7 @@ Load_Status Person2_Provider::load()
 	instance->ssn.value = 3;
 	instance->first.value = "Sofia";
 	instance->last.value = "Brasher";
-	_map.insert(instance);
+	_person3 = instance;
     }
 
     {
@@ -41,7 +42,7 @@ Load_Status Person2_Provider::load()
 	instance->ssn.value = 4;
 	instance->first.value = "Andrea";
 	instance->last.value = "Brasher";
-	_map.insert(instance);
+	_person4 = instance;
     }
 
     return LOAD_OK;
@@ -49,78 +50,65 @@ Load_Status Person2_Provider::load()
 
 Unload_Status Person2_Provider::unload()
 {
-    _map.clear();
     return UNLOAD_OK;
-}
-
-Timer_Status Person2_Provider::timer(uint64& timeout_msec)
-{
-    return TIMER_CANCEL;
 }
 
 Get_Instance_Status Person2_Provider::get_instance(
     const Person2* model, 
     Person2*& instance)
 {
-    Person2* person = _map.lookup(model);
-
-    if (person)
+    switch (model->ssn.value)
     {
-	instance = person->clone();
-	return GET_INSTANCE_OK;
+	case 1:
+	    instance = _person1->clone();
+	    return GET_INSTANCE_OK;
+	case 2:
+	    instance = _person2->clone();
+	    return GET_INSTANCE_OK;
+	case 3:
+	    instance = _person3->clone();
+	    return GET_INSTANCE_OK;
+	case 4:
+	    instance = _person4->clone();
+	    return GET_INSTANCE_OK;
+	default:
+	    return GET_INSTANCE_NOT_FOUND;
     }
-
-    return GET_INSTANCE_NOT_FOUND;
 }
 
 Enum_Instances_Status Person2_Provider::enum_instances(
     const Person2* model, 
     Enum_Instances_Handler<Person2>* handler)
 {
-    for (size_t i = 0; i < _map.size(); i++)
-    {
-	Person2* person = _map[i]->clone();
-	handler->handle(person);
-    }
+    handler->handle(_person1->clone());
+    handler->handle(_person2->clone());
+    handler->handle(_person3->clone());
+    handler->handle(_person4->clone());
 
     return ENUM_INSTANCES_OK;
 }
 
-Create_Instance_Status Person2_Provider::create_instance(const Person2* instance)
+Create_Instance_Status Person2_Provider::create_instance(
+    const Person2* instance)
 {
-    if (_map.find(instance) != size_t(-1))
-	return CREATE_INSTANCE_DUPLICATE;
-
-    _map.insert(instance->clone());
-
-    return CREATE_INSTANCE_OK;
+    return CREATE_INSTANCE_UNSUPPORTED;
 }
 
-Delete_Instance_Status Person2_Provider::delete_instance(const Person2* instance)
+Delete_Instance_Status Person2_Provider::delete_instance(
+    const Person2* instance)
 {
-    size_t pos = _map.find(instance);
-
-    if (pos == size_t(-1))
-	return DELETE_INSTANCE_NOT_FOUND;
-
-    _map.remove(pos);
-
     return DELETE_INSTANCE_OK;
+    //return DELETE_INSTANCE_UNSUPPORTED;
 }
 
-Modify_Instance_Status Person2_Provider::modify_instance(const Person2* instance)
+Modify_Instance_Status Person2_Provider::modify_instance(
+    const Person2* instance)
 {
-    size_t pos = _map.find(instance);
-
-    if (pos == size_t(-1))
-	return MODIFY_INSTANCE_NOT_FOUND;
-
-    copy(_map[pos], instance);
-
-    return MODIFY_INSTANCE_OK;
+    return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
 int Person2_Provider::proc(
+    const Registration* registration,
     int operation, 
     void* arg0, 
     void* arg1, 
@@ -136,7 +124,7 @@ int Person2_Provider::proc(
 
     typedef Person2 Class;
     typedef Person2_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(
+    return Provider_Proc_T<Provider>::proc(registration,
 	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 

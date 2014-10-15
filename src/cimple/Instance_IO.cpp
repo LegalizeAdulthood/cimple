@@ -79,13 +79,13 @@ struct IO
 
 	    case UINT64:
 	    {
-		printf("%llu", *((uint64*)ptr));
+		printf(CIMPLE_LLU, *((uint64*)ptr));
 		break;
 	    }
 
 	    case SINT64:
 	    {
-		printf("%lld", *((sint64*)ptr));
+		printf(CIMPLE_LLD, *((sint64*)ptr));
 		break;
 	    }
 
@@ -103,7 +103,7 @@ struct IO
 
 	    case CHAR16:
 	    {
-		char16 c = *((char16*)ptr);
+		uint16 c = *((uint16*)ptr);
 
 		if (c >= ' ' && c <= '~')
 		    printf("'%c'", c);

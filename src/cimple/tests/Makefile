@@ -8,11 +8,12 @@ DIRS = \
     property \
     meta \
     sizes \
-    cast \
     time \
     join \
-    encoding \
+    meta_class \
     model_path \
+    encoding \
+    cast \
     class
 
 BROKEN_TESTS = \

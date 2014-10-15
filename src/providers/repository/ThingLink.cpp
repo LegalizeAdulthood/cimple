@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Reference _ThingLink_left;
 
@@ -41,6 +41,12 @@ static Meta_Feature* _ThingLink_meta_features[] =
     (Meta_Feature*)&_ThingLink_right,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+};
+
 const Meta_Class ThingLink::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -48,10 +54,13 @@ const Meta_Class ThingLink::static_meta_class =
     _ThingLink_meta_features,
     CIMPLE_ARRAY_SIZE(_ThingLink_meta_features),
     sizeof(ThingLink),
-    0,
-    2,
-    0x32F93684,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    2, /* num_keys */
+    0x32F93684,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

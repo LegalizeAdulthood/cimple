@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Property _Fan_DeviceID;
 
@@ -90,6 +90,14 @@ static Meta_Feature* _Fan_meta_features[] =
     (Meta_Feature*)&Fan_SetSpeed_method::static_meta_class,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class Fan::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -97,10 +105,13 @@ const Meta_Class Fan::static_meta_class =
     _Fan_meta_features,
     CIMPLE_ARRAY_SIZE(_Fan_meta_features),
     sizeof(Fan),
-    0,
-    1,
-    0xF0EDE346,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    1, /* num_keys */
+    0xF0EDE346,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

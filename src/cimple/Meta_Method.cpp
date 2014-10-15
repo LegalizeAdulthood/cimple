@@ -25,7 +25,9 @@
 */
 
 #include "Meta_Method.h"
+#include "Meta_Class.h"
 #include "flags.h"
+#include "Enc.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -34,15 +36,7 @@ const Meta_Feature* find_feature(
     const char* name, 
     uint32 type)
 {
-    for (size_t i = 0; i < mm->num_meta_features; i++)
-    {
-	const Meta_Feature* mf = mm->meta_features[i];
-
-	if (strcasecmp(mf->name, name) == 0 && mf->flags & type)
-	    return mf;
-    }
-
-    return 0;
+    return find_feature((const Meta_Class*)mm, name, type);
 }
 
 const Meta_Property* find_parameter(const Meta_Method* mm, const char* name)

@@ -63,6 +63,14 @@ static Meta_Feature* _YourClass_meta_features[] =
     (Meta_Feature*)&_YourClass_obj2,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class YourClass::static_meta_class =
 {
     CIMPLE_FLAG_INDICATION,
@@ -70,9 +78,12 @@ const Meta_Class YourClass::static_meta_class =
     _YourClass_meta_features,
     CIMPLE_ARRAY_SIZE(_YourClass_meta_features),
     sizeof(YourClass),
-    0,
-    0,
-    0xF4FB8560,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0xF4FB8560,/* crc */
     0,
 };
 

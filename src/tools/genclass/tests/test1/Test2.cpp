@@ -75,6 +75,15 @@ static Meta_Feature* _Test2_meta_features[] =
     (Meta_Feature*)&_Test2_ref2,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class Test2::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -82,9 +91,12 @@ const Meta_Class Test2::static_meta_class =
     _Test2_meta_features,
     CIMPLE_ARRAY_SIZE(_Test2_meta_features),
     sizeof(Test2),
-    0,
-    0,
-    0xDC8273B9,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0xDC8273B9,/* crc */
     0,
 };
 

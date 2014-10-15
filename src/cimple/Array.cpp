@@ -256,6 +256,18 @@ struct CIMPLE_HIDE Array_Friend
 
 	return true;
     }
+
+    static size_t find(const Array_Base& x, const void* elem, Equal_Proc equal)
+    {
+	for (size_t i = 0; i < x._rep->size; i++)
+	{
+	    if (equal(x.get_raw(i), elem))
+		return i;
+	}
+
+	// Not found!
+	return size_t(-1);
+    }
 };
 
 bool __equal(const Array_Base& x, const Array_Base& y)
@@ -266,6 +278,11 @@ bool __equal(const Array_Base& x, const Array_Base& y)
 bool __equal(const Array_Base& x, const Array_Base& y, Equal_Proc equal)
 {
     return Array_Friend::equal(x, y, equal);
+}
+
+size_t __find(const Array_Base& x, const void* elem, Equal_Proc equal)
+{
+    return Array_Friend::find(x, elem, equal);
 }
 
 bool Equal<String>::proc(const void* x, const void* y)

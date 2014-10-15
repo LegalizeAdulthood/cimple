@@ -26,6 +26,18 @@ static Meta_Feature* _CIM_OrganizationalEntity_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedElement_ElementName,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_ManagedElement",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+};
+
 const Meta_Class CIM_OrganizationalEntity::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -33,9 +45,12 @@ const Meta_Class CIM_OrganizationalEntity::static_meta_class =
     _CIM_OrganizationalEntity_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_OrganizationalEntity_meta_features),
     sizeof(CIM_OrganizationalEntity),
+    _locals,
     &CIM_ManagedElement::static_meta_class,
-    0,
-    0x4540D7DA,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    0, /* num_keys */
+    0x4540D7DA,/* crc */
     0,
 };
 

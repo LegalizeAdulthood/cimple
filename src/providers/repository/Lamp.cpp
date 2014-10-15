@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Property _Lamp_model;
 
@@ -112,6 +112,15 @@ static Meta_Feature* _Lamp_meta_features[] =
     (Meta_Feature*)&Lamp_foo_method::static_meta_class,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class Lamp::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -119,10 +128,13 @@ const Meta_Class Lamp::static_meta_class =
     _Lamp_meta_features,
     CIMPLE_ARRAY_SIZE(_Lamp_meta_features),
     sizeof(Lamp),
-    0,
-    1,
-    0x1AC5D1C7,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    1, /* num_keys */
+    0x1AC5D1C7,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

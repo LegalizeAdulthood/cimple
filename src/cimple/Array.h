@@ -131,7 +131,7 @@ protected:
 	Array_Base_Rep* _rep;
     };
 
-    friend void __construct(const Meta_Class*, Instance*);
+    friend void __construct(const Meta_Class*, Instance*, bool);
     friend void __destruct(Instance* instance);
     friend void __uninitialized_copy(Instance*, const Instance*);
     friend struct IO;
@@ -155,6 +155,9 @@ bool __equal(const Array_Base& x, const Array_Base& y);
 
 CIMPLE_LIBCIMPLE_LINKAGE
 bool __equal(const Array_Base& x, const Array_Base& y, Equal_Proc equal);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+size_t __find(const Array_Base& x, const void* elem, Equal_Proc equal);
 
 template<class T>
 class Array : public Array_Base
@@ -321,6 +324,12 @@ template<class T>
 bool operator==(const Array<T>& x, const Array<T>& y)
 {
     return __equal(x, y, Equal<T>::proc);
+}
+
+template<class T>
+size_t find(const Array<T>& x, const T& elem)
+{
+    return __find(x, &elem, Equal<T>::proc);
 }
 
 template<class T> 

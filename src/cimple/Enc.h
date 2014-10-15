@@ -32,7 +32,66 @@
 #include "Buffer.h"
 #include "Array.h"
 
+// #define CIMPLE_ENABLE_TAGGING
+
 CIMPLE_NAMESPACE_BEGIN
+
+//==============================================================================
+//
+// align()
+//
+//==============================================================================
+
+inline size_t align(size_t x, size_t n)
+{
+    ptrdiff_t m = n - 1;
+    return (x + m) & ~m;
+}
+
+//==============================================================================
+//
+// align_buffer()
+//
+//==============================================================================
+
+inline void* align_buffer(Buffer& out, size_t elem_size)
+{
+    size_t pos = align(out.size(), elem_size);
+    out.resize(pos + elem_size);
+    return out.data() + pos;
+}
+
+//==============================================================================
+//
+// Internal encoding functions
+//
+//==============================================================================
+
+inline void swap(uint8& x, uint8& y)
+{
+    uint8 t = x;
+    x = y;
+    y = t;
+}
+
+inline uint16 swap_uint16(uint16 x)
+{
+    return (uint16)(
+	(((uint16)(x) & 0x00ffu) << 8) |
+	(((uint16)(x) & 0xff00u) >> 8));
+}
+
+inline uint32 swap_uint32(uint32 x)
+{
+    return (uint32)(
+	(((uint32)(x) & 0x000000fful) << 24) |
+	(((uint32)(x) & 0x0000ff00ul) <<  8) |
+	(((uint32)(x) & 0x00ff0000ul) >>  8) |
+	(((uint32)(x) & 0xff000000ul) >> 24));
+}
+
+CIMPLE_LIBCIMPLE_LINKAGE
+uint64 swap_uint64(uint64 x);
 
 //==============================================================================
 //
@@ -44,6 +103,7 @@ typedef void (*Pack_Elem)(
     Buffer& out, 
     const void* x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void __pack_array(
     Buffer& out, 
     const Array_Base& x,
@@ -54,6 +114,7 @@ typedef void (*Unpack_Elem)(
     size_t& pos, 
     void* x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void __unpack_array(
     const Buffer& in,
     size_t& pos,
@@ -76,20 +137,57 @@ inline void pack_uint8(Buffer& out, const uint8& x)
     out.append(char(x));
 }
 
-void pack_uint16(Buffer& out, const uint16& x);
+inline void pack_uint16(Buffer& out, const uint16& x)
+{
+    uint16* ptr = (uint16*)align_buffer(out, sizeof(uint16));
 
-void pack_uint32(Buffer& out, const uint32& x);
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    *ptr = swap_uint16(x);
+#else
+    *ptr = x;
+#endif
+}
 
+CIMPLE_LIBCIMPLE_LINKAGE
+void pack_char16(Buffer& out, const char16& x);
+
+inline void pack_char16(Buffer& out, const char16& x)
+{
+    pack_uint16(out, x.code);
+}
+
+inline void pack_uint32(Buffer& out, const uint32& x)
+{
+    uint32* ptr = (uint32*)align_buffer(out, sizeof(uint32));
+
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    *ptr = swap_uint32(x);
+#else
+    *ptr = x;
+#endif
+}
+
+CIMPLE_LIBCIMPLE_LINKAGE
 void pack_uint64(Buffer& out, const uint64& x);
 
+inline void pack_size_t(Buffer& out, const size_t& x)
+{
+    pack_uint64(out, uint64(x));
+}
+
+CIMPLE_LIBCIMPLE_LINKAGE
 void pack_real32(Buffer& out, const real32& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void pack_real64(Buffer& out, const real64& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void pack_string(Buffer& out, const String& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void pack_c_str(Buffer& out, const char* str);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void pack_datetime(Buffer& out, const Datetime& x);
 
 inline void pack_boolean_array(Buffer& out, const Array<boolean>& x)
@@ -105,6 +203,11 @@ inline void pack_uint8_array(Buffer& out, const Array<uint8>& x)
 inline void pack_uint16_array(Buffer& out, const Array<uint16>& x)
 {
     __pack_array(out, x, Pack_Elem(pack_uint16));
+}
+
+inline void pack_char16_array(Buffer& out, const Array<char16>& x)
+{
+    __pack_array(out, x, Pack_Elem(pack_char16));
 }
 
 inline void pack_uint32_array(Buffer& out, const Array<uint32>& x)
@@ -153,20 +256,44 @@ inline void unpack_uint8(const Buffer& in, size_t& pos, uint8& x)
     x = in[pos++];
 }
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_uint16(const Buffer& in, size_t& pos, uint16& x);
 
+inline void unpack_char16(const Buffer& in, size_t& pos, char16& x)
+{
+    unpack_uint16(in, pos, x.code);
+}
+
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_uint32(const Buffer& in, size_t& pos, uint32& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_uint64(const Buffer& in, size_t& pos, uint64& x);
 
+inline void unpack_size_t(const Buffer& in, size_t& pos, size_t& x)
+{
+    uint64 tmp;
+    unpack_uint64(in, pos, tmp);
+    x = size_t(tmp);
+}
+
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_real32(const Buffer& in, size_t& pos, real32& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_real64(const Buffer& in, size_t& pos, real64& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_string(const Buffer& in, size_t& pos, String& x);
 
-void unpack_c_str(const Buffer& in, size_t& pos, char*& str);
+CIMPLE_LIBCIMPLE_LINKAGE
+void unpack_c_str(
+    const Buffer& in, 
+    size_t& pos, 
+    const char*& str, 
+    size_t& size);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_datetime(const Buffer& in, size_t& pos, Datetime& x);
 
 inline void unpack_boolean_array(
@@ -181,6 +308,11 @@ inline void unpack_uint8_array(const Buffer& in, size_t& pos, Array<uint8>& x)
 }
 
 inline void unpack_uint16_array(const Buffer& in, size_t& pos, Array<uint16>& x)
+{
+    __unpack_array(in, pos, x, (Unpack_Elem)unpack_uint16);
+}
+
+inline void unpack_char16_array(const Buffer& in, size_t& pos, Array<char16>& x)
 {
     __unpack_array(in, pos, x, (Unpack_Elem)unpack_uint16);
 }
@@ -205,6 +337,7 @@ inline void unpack_real64_array(const Buffer& in, size_t& pos, Array<real64>& x)
     __unpack_array(in, pos, x, (Unpack_Elem)unpack_real64);
 }
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void unpack_string_array(const Buffer& in, size_t& pos, Array<String>& x);
 
 inline void unpack_datetime_array(
@@ -212,280 +345,6 @@ inline void unpack_datetime_array(
 {
     __unpack_array(in, pos, x, (Unpack_Elem)unpack_datetime);
 }
-
-//==============================================================================
-//
-// pack<>
-//
-//==============================================================================
-
-template<class T>
-struct pack
-{
-};
-
-template<>
-struct pack<boolean>
-{
-    pack(Buffer& out, const boolean& x) 
-    { 
-	pack_boolean(out, x); 
-    }
-
-    pack(Buffer& out, const Array<boolean>& x) 
-    { 
-	pack_boolean_array(out, x); 
-    }
-};
-
-template<>
-struct pack<uint8>
-{
-    pack(Buffer& out, const uint8& x) 
-    { 
-	pack_uint8(out, x); 
-    }
-
-    pack(Buffer& out, const Array<uint8>& x) 
-    { 
-	pack_uint8_array(out, x); 
-    }
-};
-
-template<>
-struct pack<uint16>
-{
-    pack(Buffer& out, const uint16& x) 
-    { 
-	pack_uint16(out, x); 
-    }
-
-    pack(Buffer& out, const Array<uint16>& x) 
-    { 
-	pack_uint16_array(out, x); 
-    }
-};
-
-template<>
-struct pack<uint32>
-{
-    pack(Buffer& out, const uint32& x) 
-    { 
-	pack_uint32(out, x); 
-    }
-
-    pack(Buffer& out, const Array<uint32>& x) 
-    { 
-	pack_uint32_array(out, x); 
-    }
-};
-
-template<>
-struct pack<uint64>
-{
-    pack(Buffer& out, const uint64& x) 
-    { 
-	pack_uint64(out, x); 
-    }
-
-    pack(Buffer& out, const Array<uint64>& x) 
-    { 
-	pack_uint64_array(out, x); 
-    }
-};
-
-template<>
-struct pack<real32>
-{
-    pack(Buffer& out, const real32& x) 
-    { 
-	pack_real32(out, x); 
-    }
-
-    pack(Buffer& out, const Array<real32>& x) 
-    { 
-	pack_real32_array(out, x); 
-    }
-};
-
-template<>
-struct pack<real64>
-{
-    pack(Buffer& out, const real64& x) 
-    { 
-	pack_real64(out, x); 
-    }
-
-    pack(Buffer& out, const Array<real64>& x) 
-    { 
-	pack_real64_array(out, x); 
-    }
-};
-
-template<>
-struct pack<String>
-{
-    pack(Buffer& out, const String& x) 
-    { 
-	pack_string(out, x); 
-    }
-
-    pack(Buffer& out, const Array<String>& x) 
-    { 
-	pack_string_array(out, x); 
-    }
-};
-
-template<>
-struct pack<Datetime>
-{
-    pack(Buffer& out, const Datetime& x) 
-    { 
-	pack_datetime(out, x); 
-    }
-
-    pack(Buffer& out, const Array<Datetime>& x) 
-    { 
-	pack_datetime_array(out, x); 
-    }
-};
-
-//==============================================================================
-//
-// unpack<>
-//
-//==============================================================================
-
-template<class T>
-struct unpack
-{
-};
-
-template<>
-struct unpack<boolean>
-{
-    unpack(const Buffer& in, size_t& pos, boolean& x) 
-    { 
-	unpack_boolean(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<boolean>& x) 
-    { 
-	unpack_boolean_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<uint8>
-{
-    unpack(const Buffer& in, size_t& pos, uint8& x) 
-    { 
-	unpack_uint8(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<uint8>& x) 
-    { 
-	unpack_uint8_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<uint16>
-{
-    unpack(const Buffer& in, size_t& pos, uint16& x) 
-    { 
-	unpack_uint16(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<uint16>& x) 
-    { 
-	unpack_uint16_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<uint32>
-{
-    unpack(const Buffer& in, size_t& pos, uint32& x) 
-    { 
-	unpack_uint32(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<uint32>& x) 
-    { 
-	unpack_uint32_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<uint64>
-{
-    unpack(const Buffer& in, size_t& pos, uint64& x) 
-    { 
-	unpack_uint64(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<uint64>& x) 
-    { 
-	unpack_uint64_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<real32>
-{
-    unpack(const Buffer& in, size_t& pos, real32& x) 
-    { 
-	unpack_real32(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<real32>& x) 
-    { 
-	unpack_real32_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<real64>
-{
-    unpack(const Buffer& in, size_t& pos, real64& x) 
-    { 
-	unpack_real64(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<real64>& x) 
-    { 
-	unpack_real64_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<String>
-{
-    unpack(const Buffer& in, size_t& pos, String& x) 
-    { 
-	unpack_string(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<String>& x) 
-    { 
-	unpack_string_array(in, pos, x); 
-    }
-};
-
-template<>
-struct unpack<Datetime>
-{
-    unpack(const Buffer& in, size_t& pos, Datetime& x) 
-    { 
-	unpack_datetime(in, pos, x); 
-    }
-
-    unpack(const Buffer& in, size_t& pos, Array<Datetime>& x) 
-    { 
-	unpack_datetime_array(in, pos, x); 
-    }
-};
 
 CIMPLE_NAMESPACE_END
 

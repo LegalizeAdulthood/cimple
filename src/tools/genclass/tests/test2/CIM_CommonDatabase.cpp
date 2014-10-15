@@ -117,6 +117,37 @@ static Meta_Feature* _CIM_CommonDatabase_meta_features[] =
     (Meta_Feature*)&_CIM_CommonDatabase_SizeUnits,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_EnabledLogicalElement",
+    "CIM_LogicalElement",
+    "CIM_ManagedSystemElement",
+    "CIM_ManagedElement",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class CIM_CommonDatabase::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -124,9 +155,12 @@ const Meta_Class CIM_CommonDatabase::static_meta_class =
     _CIM_CommonDatabase_meta_features,
     CIMPLE_ARRAY_SIZE(_CIM_CommonDatabase_meta_features),
     sizeof(CIM_CommonDatabase),
+    _locals,
     &CIM_EnabledLogicalElement::static_meta_class,
-    1,
-    0x8A85F4E2,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    1, /* num_keys */
+    0x8A85F4E2,/* crc */
     0,
 };
 

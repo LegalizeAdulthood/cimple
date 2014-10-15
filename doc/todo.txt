@@ -5,6 +5,9 @@
     ?
     ????????????????????????????????????????????????????????????????????????????
 
+    (A-?) Should instance packing exclude name and type since the meta-data
+	  should be available to client?
+
     (A-?) Should we remove the timer() operation?
 
     (A-?) Should instances have null properties when created?
@@ -15,7 +18,11 @@
 
     (B-?) Should "CLI an Person.ssn=99" error out if non-existent.
 
+    (B-?) How can a server avoid sending redundant copies of classes to
+	  clients?
+
     (C-?) How should the CGI provider find its provider scripts?
+
 
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
     N
@@ -23,7 +30,14 @@
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
-    (A) Implement binary compatible for the provider interfaces (and clean up).
+    (A) Avoid redundant packing of meta-clases in pack_meta_class(). Use 
+	a free pointer list or something like that (put list at end of
+	meta-class?).
+
+    (A) Add option to pack_meta_class() to avoid packing of super classes
+	hierarchy or visa versa (e.g., include_super_classes).
+
+    (A) Implement binary compatible provider interfaces (and clean up).
 
     (A) Work through ATTNs.
 
@@ -63,6 +77,8 @@
     C C priorities
     C
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+    (C) Create string table for all strings in a repository to save space.
 
     (C) Handle conflicts between CIM schema versions (should regmod check
 	for CIM schema version compatibility?).

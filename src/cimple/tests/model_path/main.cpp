@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 	    "Part.key1=true,key2=9999,key3=\"Seriously?\"";
 
 	Ref<Instance> part2 =
-	    cimom::model_path_to_instance(&Part::static_meta_class, PATH);
+	    model_path_to_instance(&Part::static_meta_class, PATH);
 	assert(part2 != 0);
 	// print(part2, true);
 
@@ -64,6 +64,8 @@ int main(int argc, char** argv)
 
     // Create a Glue instance name from an instance path.
     {
+	// Convert CIM model path to an instance.
+
 	const char PATH[] = "Glue."
 	    "left="
 	    "\"Part.key1=true,key2=9999,key3=\\\"Seriously?\\\"\","
@@ -71,7 +73,7 @@ int main(int argc, char** argv)
 	    "\"Part.key1=true,key2=9999,key3=\\\"Seriously?\\\"\"";
 
 	Ref<Instance> glue2 =
-	    cimom::model_path_to_instance(&Glue::static_meta_class, PATH);
+	    model_path_to_instance(&Glue::static_meta_class, PATH);
 	assert(glue2 != 0);
 
 	Ref<Instance> tmp(glue2);
@@ -87,6 +89,15 @@ int main(int argc, char** argv)
 	assert(identical(glue2.ptr(), glue1.ptr()));
 	assert(identical(glue2.ptr(), glue3.ptr()));
 	assert(identical(glue1.ptr(), glue3.ptr()));
+
+	// Convert the instance back to a CIM model path:
+
+	String path;
+
+	int result = instance_to_model_path(glue2.ptr(), path);
+	assert(result == 0);
+
+	assert(path == PATH);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

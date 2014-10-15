@@ -14,32 +14,31 @@ public:
 
     Person2_Provider();
 
-    CIMPLE_HIDE ~Person2_Provider();
+    ~Person2_Provider();
 
-    CIMPLE_HIDE Load_Status load();
+    Load_Status load();
 
-    CIMPLE_HIDE Unload_Status unload();
+    Unload_Status unload();
 
-    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
-
-    CIMPLE_HIDE Get_Instance_Status get_instance(
+    Get_Instance_Status get_instance(
 	const Person2* model, 
 	Person2*& instance);
 
-    CIMPLE_HIDE Enum_Instances_Status enum_instances(
+    Enum_Instances_Status enum_instances(
 	const Person2* model, 
 	Enum_Instances_Handler<Person2>* handler);
 
-    CIMPLE_HIDE Create_Instance_Status create_instance(
+    Create_Instance_Status create_instance(
 	const Person2* inst);
 
-    CIMPLE_HIDE Delete_Instance_Status delete_instance(
+    Delete_Instance_Status delete_instance(
 	const Person2* inst);
 
-    CIMPLE_HIDE Modify_Instance_Status modify_instance(
+    Modify_Instance_Status modify_instance(
 	const Person2* inst);
 
-    static CIMPLE_HIDE int proc(
+    static int proc(
+	const Registration* registration,
 	int operation, 
 	void* arg0, 
 	void* arg1, 
@@ -51,7 +50,11 @@ public:
 	void* arg7);
 
 private:
-    Instance_Map<Person2> _map;
+
+    Person2* _person1;
+    Person2* _person2;
+    Person2* _person3;
+    Person2* _person4;
 };
 
 CIMPLE_NAMESPACE_END

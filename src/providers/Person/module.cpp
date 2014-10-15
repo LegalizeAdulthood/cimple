@@ -33,9 +33,4 @@ CIMPLE_MODULE(Person_Module);
 CIMPLE_PROVIDER(Person_Provider);
 CIMPLE_PROVIDER(Link_Provider);
 
-/* Support for CMPI entry points */
-// CIMPLE_CMPI_INSTANCE_PROVIDER(Person_Provider);
-// CIMPLE_CMPI_ASSOCIATION_PROVIDER(Link_Provider);
-
-/* Support for Pegasus C++ Interface */
 CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;

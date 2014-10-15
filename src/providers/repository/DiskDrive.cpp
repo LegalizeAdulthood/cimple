@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C;
+extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
 
 extern const Meta_Property _CIM_ManagedElement_Caption;
 
@@ -187,6 +187,83 @@ static Meta_Feature* _DiskDrive_meta_features[] =
     (Meta_Feature*)&CIM_MediaAccessDevice_LockMedia_method::static_meta_class,
 };
 
+static const char* _super_classes[] =
+{
+    "CIM_DiskDrive",
+    "CIM_MediaAccessDevice",
+    "CIM_LogicalDevice",
+    "CIM_EnabledLogicalElement",
+    "CIM_LogicalElement",
+    "CIM_ManagedSystemElement",
+    "CIM_ManagedElement",
+};
+
+static const Meta_Feature_Local _locals[] =
+{
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+    {0},
+};
+
 const Meta_Class DiskDrive::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -194,10 +271,13 @@ const Meta_Class DiskDrive::static_meta_class =
     _DiskDrive_meta_features,
     CIMPLE_ARRAY_SIZE(_DiskDrive_meta_features),
     sizeof(DiskDrive),
+    _locals,
     &CIM_DiskDrive::static_meta_class,
-    4,
-    0x46EE00ED,
-    &__meta_repository_E277BAB546AC1F9B84FD3C4B6BE00B1C,
+    _super_classes,
+    CIMPLE_ARRAY_SIZE(_super_classes),
+    4, /* num_keys */
+    0x46EE00ED,/* crc */
+    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
 };
 
 CIMPLE_NAMESPACE_END

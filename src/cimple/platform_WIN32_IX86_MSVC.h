@@ -42,6 +42,8 @@
 #define CIMPLE_SINT64 signed __int64
 #define CIMPLE_HIDE
 #define CIMPLE_WINDOWS
+#define CIMPLE_LLU "%I64u"
+#define CIMPLE_LLD "%I64d"
 #define CIMPLE_IMPORT __declspec(dllimport)
 #define CIMPLE_EXPORT __declspec(dllexport)
 #define for if (0) ; else for

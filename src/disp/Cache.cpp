@@ -36,7 +36,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-Cache::Cache()
+Cache::Cache() : _last_meta_class(0)
 {
 }
 
@@ -133,7 +133,7 @@ Envelope* Cache::get_provider_by_class(const char* class_name)
     {
 	Envelope* env = (Envelope*)_envelopes[i];
 
-	if (strcasecmp(env->class_name(), class_name) == 0)
+	if (eqi(env->class_name(), class_name))
 	    return env;
     }
 
@@ -147,7 +147,7 @@ Envelope* Cache::get_provider_by_name(const char* provider_name)
     {
 	Envelope* env = (Envelope*)_envelopes[i];
 
-	if (strcasecmp(env->provider_name(), provider_name) == 0)
+	if (eqi(env->provider_name(), provider_name))
 	    return env;
     }
 
@@ -157,11 +157,14 @@ Envelope* Cache::get_provider_by_name(const char* provider_name)
 
 const Meta_Class* Cache::get_meta_class(const char* class_name) const
 {
+    if (_last_meta_class && eqi(_last_meta_class->name, class_name))
+	return _last_meta_class;
+
     for (size_t i = 0; i < _modules.size(); i++)
     {
 	const Meta_Class* mc = _modules[i]->registration()->meta_class;
 
-	if (strcasecmp(class_name, mc->name) == 0)
+	if (eqi(class_name, mc->name))
 	    return mc;
 
 	if (mc->meta_repository)
@@ -169,8 +172,29 @@ const Meta_Class* Cache::get_meta_class(const char* class_name) const
 	    mc = find_meta_class(mc->meta_repository, class_name);
 
 	    if (mc)
+	    {
+		((Cache*)this)->_last_meta_class = mc;
 		return mc;
+	    }
 	}
+    }
+
+    // Not found!
+    return 0;
+}
+
+const Meta_Repository* Cache::get_meta_repository()
+{
+    // ATTN: solve problem of multiple meta repositories! For the moment,
+    // we take the first meta repository we find assuming that there will
+    // never be more than one.
+
+    for (size_t i = 0; i < _modules.size(); i++)
+    {
+	const Meta_Class* mc = _modules[i]->registration()->meta_class;
+
+	if (mc->meta_repository)
+	    return mc->meta_repository;
     }
 
     // Not found!
@@ -198,7 +222,7 @@ int Cache::_add_module(void* handle, Module_Proc module_proc)
 	{
 	    const Meta_Class* tmp = _envelopes[i]->meta_class();
 
-	    if (strcasecmp(mc->name, tmp->name) == 0)
+	    if (eqi(mc->name, tmp->name))
 	    {
 		CIMPLE_ERROR(("more than one provider for class %s", mc->name));
 		delete module;

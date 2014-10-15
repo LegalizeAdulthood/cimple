@@ -41,6 +41,15 @@ struct Meta_Feature
     const char* name;
 };
 
+/** This structure defines feature-related attributes that are specific to
+    one class. Recall that a Meta_Feature may be shared two or more classes
+    in the class hierarchy.
+*/
+struct Meta_Feature_Local
+{
+    uint8 local;
+};
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Meta_Feature_h */

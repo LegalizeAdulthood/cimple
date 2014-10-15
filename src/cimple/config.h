@@ -159,6 +159,14 @@
 #endif
 #endif
 
+// CIMPLE_BIG_ENDIAN indicates that the endian type of the platform runs
+// converse to the one used on the wire. The platform that defines this
+// flag will have to do more work when packing and unpacking data from
+// the network. You can undefine this to make your platform run faster.
+#ifdef CIMPLE_BIG_ENDIAN
+# define CIMPLE_CONVERSE_ENDIAN
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
 CIMPLE_EXPORT void __cimple_trace(
@@ -183,7 +191,18 @@ typedef CIMPLE_UINT64 uint64;
 typedef CIMPLE_SINT64 sint64;
 typedef float real32;
 typedef double real64;
-typedef uint16 char16;
+
+struct char16
+{
+    uint16 code;
+
+    char16() { }
+    char16(const char16& x) : code(x.code) { }
+    char16(uint16 x) : code(x) { }
+    char16& operator=(const char16& x) { code = x.code; return *this; }
+    char16& operator=(uint16 x) { code = x; return *this; }
+    operator uint16() const { return code; }
+};
 
 CIMPLE_NAMESPACE_END
 

@@ -8,3 +8,5 @@ LIBRARIES = cimpledisp cimple
 include $(TOP)/mak/rules.mak
 
 tests:
+
+genclass:
