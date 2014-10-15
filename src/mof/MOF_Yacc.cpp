@@ -796,12 +796,12 @@ static const unsigned char yystos[] =
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Property)					\
+#define YYBACKUP(Token, Value)					\
 do								\
   if (yychar == YYEMPTY && yylen == 1)				\
     {								\
       yychar = (Token);						\
-      yylval = (Property);						\
+      yylval = (Value);						\
       yytoken = YYTRANSLATE (yychar);				\
       YYPOPSTACK;						\
       goto yybackup;						\
@@ -855,13 +855,13 @@ do {						\
     yysymprint Args;				\
 } while (0)
 
-# define YYDSYMPRINTF(Title, Token, Property, Location)		\
+# define YYDSYMPRINTF(Title, Token, Value, Location)		\
 do {								\
   if (yydebug)							\
     {								\
       YYFPRINTF (stderr, "%s ", Title);				\
       yysymprint (stderr, 					\
-                  Token, Property);	\
+                  Token, Value);	\
       YYFPRINTF (stderr, "\n");					\
     }								\
 } while (0)
@@ -929,7 +929,7 @@ int yydebug;
 #else /* !YYDEBUG */
 # define YYDPRINTF(Args)
 # define YYDSYMPRINT(Args)
-# define YYDSYMPRINTF(Title, Token, Property, Location)
+# define YYDSYMPRINTF(Title, Token, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
 #endif /* !YYDEBUG */
@@ -1517,7 +1517,7 @@ yyreduce:
 	yyval.qual_decl = new MOF_Qualifier_Decl();
 	MOF_ASSERT(yyval.qual_decl != NULL);
 	yyval.qual_decl->name = yyvsp[-5].string_value;
-	yyval.qual_decl->data_type = yyvsp[-3].int_value;
+	yyval.qual_decl->data_type = (int)yyvsp[-3].int_value;
 	yyval.qual_decl->array_index = yyvsp[-2].decl_init.array_index;
 	yyval.qual_decl->initializer = yyvsp[-2].decl_init.initializer;
 	yyval.qual_decl->scope = yyvsp[-1].scope;
@@ -1545,7 +1545,7 @@ yyreduce:
 #line 379 "MOF.y"
     {
 	MOF_trace("qual_decl_array_init:1");
-	yyval.decl_init.array_index = yyvsp[-2].int_value;
+	yyval.decl_init.array_index = (int)yyvsp[-2].int_value;
 	yyval.decl_init.initializer = yyvsp[0].literal;
     }
     break;
@@ -1554,7 +1554,7 @@ yyreduce:
 #line 385 "MOF.y"
     {
 	MOF_trace("qual_decl_array_init:2");
-	yyval.decl_init.array_index = yyvsp[0].int_value;
+	yyval.decl_init.array_index = (int)yyvsp[0].int_value;
 	yyval.decl_init.initializer = NULL;
     }
     break;
@@ -1988,7 +1988,7 @@ yyreduce:
 	MOF_ASSERT(yyval.prop_decl != NULL);
 	yyval.prop_decl->type = MOF_FEATURE_PROP;
 	yyval.prop_decl->name = yyvsp[0].string_value;
-	yyval.prop_decl->data_type = yyvsp[-1].int_value;
+	yyval.prop_decl->data_type = (int)yyvsp[-1].int_value;
     }
     break;
 
@@ -2012,7 +2012,7 @@ yyreduce:
 #line 784 "MOF.y"
     {
 	MOF_trace("prop_decl_array_init:1");
-	yyval.decl_init.array_index = yyvsp[-2].int_value;
+	yyval.decl_init.array_index = (int)yyvsp[-2].int_value;
 	yyval.decl_init.initializer = yyvsp[0].literal;
     }
     break;
@@ -2021,7 +2021,7 @@ yyreduce:
 #line 790 "MOF.y"
     {
 	MOF_trace("prop_decl_array_init:2");
-	yyval.decl_init.array_index = yyvsp[0].int_value;
+	yyval.decl_init.array_index = (int)yyvsp[0].int_value;
 	yyval.decl_init.initializer = NULL;
     }
     break;
@@ -2149,7 +2149,7 @@ yyreduce:
 	MOF_ASSERT(yyval.method_decl != NULL);
 	yyval.method_decl->type = MOF_FEATURE_METHOD;
 	yyval.method_decl->name = yyvsp[0].string_value;
-	yyval.method_decl->data_type = yyvsp[-1].int_value;
+	yyval.method_decl->data_type = (int)yyvsp[-1].int_value;
     }
     break;
 
@@ -2191,7 +2191,7 @@ yyreduce:
     {
 	MOF_trace("param:1");
 	yyval.param = yyvsp[-1].param;
-	yyval.param->array_index = yyvsp[0].int_value;
+	yyval.param->array_index = (int)yyvsp[0].int_value;
     }
     break;
 
@@ -2202,7 +2202,7 @@ yyreduce:
 	yyvsp[-2].qual->validate_list(MOF_SCOPE_PARAMETER);
 	yyval.param = yyvsp[-1].param;
 	yyval.param->qualifiers = yyvsp[-2].qual;
-	yyval.param->array_index = yyvsp[0].int_value;
+	yyval.param->array_index = (int)yyvsp[0].int_value;
     }
     break;
 
@@ -2237,7 +2237,7 @@ yyreduce:
     {
 	MOF_trace("param_data_type:1");
 	yyval.param = new MOF_Parameter();
-	yyval.param->data_type = yyvsp[0].int_value;
+	yyval.param->data_type = (int)yyvsp[0].int_value;
 	yyval.param->ref_name = NULL;
     }
     break;
@@ -2617,7 +2617,7 @@ yyreduce:
 	yyval.literal = new MOF_Literal();
 	MOF_ASSERT(yyval.literal != NULL);
 	yyval.literal->value_type = TOK_BOOL_VALUE;
-	yyval.literal->bool_value = yyvsp[0].bool_value;
+	yyval.literal->bool_value = yyvsp[0].bool_value ? true : false;
     }
     break;
 

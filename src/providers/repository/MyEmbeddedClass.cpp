@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _MyEmbeddedClass_msg;
+extern CIMPLE_HIDE const Meta_Property _MyEmbeddedClass_msg;
 
 const Meta_Property _MyEmbeddedClass_msg =
 {

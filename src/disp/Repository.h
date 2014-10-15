@@ -30,10 +30,11 @@
 #include <dlfcn.h>
 #include <cimple/config.h>
 #include <cimple/Meta_Class.h>
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Repository
+class CIMPLEDISP_LINKAGE Repository
 {
 public:
 

@@ -27,7 +27,7 @@
 #ifndef _cimple_config_h
 #define _cimple_config_h
 
-#include "platform.h"
+#include <platform.h>
 #include <cstddef>
 #include <cstdlib>
 #include <cstdio>
@@ -43,12 +43,16 @@
 //
 //------------------------------------------------------------------------------
 
-#if defined(CIMPLE_PLATFORM_LINUX_PPC_GNU)
-# include "platform_LINUX_PPC_GNU.h"
-#elif defined(CIMPLE_PLATFORM_LINUX_IX86_GNU)
+#if defined(CIMPLE_PLATFORM_LINUX_IX86_GNU)
 # include "platform_LINUX_IX86_GNU.h"
+#elif defined(CIMPLE_PLATFORM_LINUX_X86_64_GNU)
+# include "platform_LINUX_X86_64_GNU.h"
+#elif defined(CIMPLE_PLATFORM_LINUX_PPC_GNU)
+# include "platform_LINUX_PPC_GNU.h"
+#elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
+# include "platform_WIN32_IX86_MSVC.h"
 #else
-# error "Please define a valid platform macro in platform.h"
+# error "Invalid system. System is misconfigured"
 #endif
 
 //------------------------------------------------------------------------------
@@ -87,7 +91,11 @@
 #define CIMPLE_SINT64_MIN (-CIMPLE_SINT64_MAX-1)
 #define CIMPLE_SINT64_MAX 9223372036854775807LL
 
-#define CIMPLE_TRACE __cimple_trace(__FILE__, __LINE__, __FUNCTION__)
+#ifdef __USE_GNU
+# define CIMPLE_TRACE cimple::__cimple_trace(__FILE__, __LINE__, __FUNCTION__)
+#else
+# define CIMPLE_TRACE cimple::__cimple_trace(__FILE__, __LINE__, "unknown")
+#endif
 
 #ifdef CIMPLE_DEBUG
 # define CIMPLE_ASSERT(COND) \
@@ -101,7 +109,11 @@
 # define CIMPLE_ASSERT(COND) /* */
 #endif
 
-#define CIMPLE_PRINTF_ATTR(A1, A2) __attribute__((format (printf, A1, A2)))
+#ifdef __USE_GNU
+# define CIMPLE_PRINTF_ATTR(A1, A2) __attribute__((format (printf, A1, A2)))
+#else
+# define CIMPLE_PRINTF_ATTR(A1, A2) /* empty */
+#endif
 
 #define CIMPLE_OFF(CLASS, FIELD) (((size_t)(void*)&(((CLASS*)8)->FIELD))-8)
 
@@ -126,14 +138,28 @@
     } \
     while (0)
 
+//FIX: get rid of one of these!
+#ifdef CIMPLE_LIBCIMPLE
+# define CIMPLE_LIBCIMPLE_LINKAGE CIMPLE_EXPORT
+#else
+# define CIMPLE_LIBCIMPLE_LINKAGE CIMPLE_IMPORT
+#endif
+
+// These definitions are for generated classes to use:
+#ifdef CIMPLE_INTERNAL
+# define CIMPLE_LINKAGE CIMPLE_EXPORT
+#else
+# define CIMPLE_LINKAGE CIMPLE_IMPORT
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
-void __cimple_trace(
+CIMPLE_EXPORT void __cimple_trace(
     const char* file, 
     size_t line,
     const char* function);
 
-void __cimple_assert(
+CIMPLE_EXPORT void __cimple_assert(
     const char* file, 
     size_t line,
     const char* function, 
@@ -146,8 +172,8 @@ typedef unsigned short uint16;
 typedef signed short sint16;
 typedef unsigned int uint32;
 typedef signed int sint32;
-typedef unsigned long long uint64;
-typedef signed long long sint64;
+typedef CIMPLE_UINT64 uint64;
+typedef CIMPLE_SINT64 sint64;
 typedef float real32;
 typedef double real64;
 typedef uint16 char16;

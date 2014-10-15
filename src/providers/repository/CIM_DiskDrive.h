@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_DiskDrive : public Instance
+class CIMPLE_LINKAGE CIM_DiskDrive : public Instance
 {
 public:
     // CIM_ManagedElement features:
@@ -85,77 +85,23 @@ public:
     CIMPLE_CLASS(CIM_DiskDrive)
 };
 
-class CIM_DiskDrive_RequestStateChange_method : public Instance
-{
-public:
-    Property<uint16> RequestedState;
-    CIM_ConcreteJob* Job;
-    Property<Datetime> TimeoutPeriod;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_RequestStateChange_method)
-};
+typedef CIM_EnabledLogicalElement_RequestStateChange_method CIM_DiskDrive_RequestStateChange_method;
 
-class CIM_DiskDrive_SetPowerState_method : public Instance
-{
-public:
-    Property<uint16> PowerState;
-    Property<Datetime> Time;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_SetPowerState_method)
-};
+typedef CIM_LogicalDevice_SetPowerState_method CIM_DiskDrive_SetPowerState_method;
 
-class CIM_DiskDrive_Reset_method : public Instance
-{
-public:
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_Reset_method)
-};
+typedef CIM_LogicalDevice_Reset_method CIM_DiskDrive_Reset_method;
 
-class CIM_DiskDrive_EnableDevice_method : public Instance
-{
-public:
-    Property<boolean> Enabled;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_EnableDevice_method)
-};
+typedef CIM_LogicalDevice_EnableDevice_method CIM_DiskDrive_EnableDevice_method;
 
-class CIM_DiskDrive_OnlineDevice_method : public Instance
-{
-public:
-    Property<boolean> Online;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_OnlineDevice_method)
-};
+typedef CIM_LogicalDevice_OnlineDevice_method CIM_DiskDrive_OnlineDevice_method;
 
-class CIM_DiskDrive_QuiesceDevice_method : public Instance
-{
-public:
-    Property<boolean> Quiesce;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_QuiesceDevice_method)
-};
+typedef CIM_LogicalDevice_QuiesceDevice_method CIM_DiskDrive_QuiesceDevice_method;
 
-class CIM_DiskDrive_SaveProperties_method : public Instance
-{
-public:
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_SaveProperties_method)
-};
+typedef CIM_LogicalDevice_SaveProperties_method CIM_DiskDrive_SaveProperties_method;
 
-class CIM_DiskDrive_RestoreProperties_method : public Instance
-{
-public:
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_RestoreProperties_method)
-};
+typedef CIM_LogicalDevice_RestoreProperties_method CIM_DiskDrive_RestoreProperties_method;
 
-class CIM_DiskDrive_LockMedia_method : public Instance
-{
-public:
-    Property<boolean> Lock;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_DiskDrive_LockMedia_method)
-};
+typedef CIM_MediaAccessDevice_LockMedia_method CIM_DiskDrive_LockMedia_method;
 
 CIMPLE_NAMESPACE_END
 

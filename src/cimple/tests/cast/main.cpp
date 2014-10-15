@@ -44,25 +44,27 @@ int main(int argc, char** argv)
 	Instance* ic = c;
 	Instance* id = d;
 
-	assert(is_a<A>(id));
-	assert(is_a<B>(id));
-	assert(is_a<C>(id));
-	assert(is_a<D>(id));
+	const Instance* tmp = id;
 
-	assert(is_a<A>(ic));
-	assert(is_a<B>(ic));
-	assert(is_a<C>(ic));
-	assert(!is_a<D>(ic));
+	assert(is_a<A>(id) == true);
+	assert(is_a<B>(id) == true);
+	assert(is_a<C>(id) == true);
+	assert(is_a<D>(id) == true);
 
-	assert(is_a<A>(ib));
-	assert(is_a<B>(ib));
-	assert(!is_a<C>(ib));
-	assert(!is_a<D>(ib));
+	assert(is_a<A>(ic) == true);
+	assert(is_a<B>(ic) == true);
+	assert(is_a<C>(ic) == true);
+	assert(!is_a<D>(ic) == true);
 
-	assert(is_a<A>(ia));
-	assert(!is_a<B>(ia));
-	assert(!is_a<C>(ia));
-	assert(!is_a<D>(ia));
+	assert(is_a<A>(ib) == true);
+	assert(is_a<B>(ib) == true);
+	assert(!is_a<C>(ib) == true);
+	assert(!is_a<D>(ib) == true);
+
+	assert(is_a<A>(ia) == true);
+	assert(!is_a<B>(ia) == true);
+	assert(!is_a<C>(ia) == true);
+	assert(!is_a<D>(ia) == true);
 
 	assert(cast<A*>(id) == (A*)d);
 	assert(cast<B*>(id) == (B*)d);
@@ -97,25 +99,25 @@ int main(int argc, char** argv)
 	const Instance* ic = c;
 	const Instance* id = d;
 
-	assert(is_a<A>(id));
-	assert(is_a<B>(id));
-	assert(is_a<C>(id));
-	assert(is_a<D>(id));
+	assert(is_a<A>(id) == true);
+	assert(is_a<B>(id) == true);
+	assert(is_a<C>(id) == true);
+	assert(is_a<D>(id) == true);
 
-	assert(is_a<A>(ic));
-	assert(is_a<B>(ic));
-	assert(is_a<C>(ic));
-	assert(!is_a<D>(ic));
+	assert(is_a<A>(ic) == true);
+	assert(is_a<B>(ic) == true);
+	assert(is_a<C>(ic) == true);
+	assert(!is_a<D>(ic) == true);
 
-	assert(is_a<A>(ib));
-	assert(is_a<B>(ib));
-	assert(!is_a<C>(ib));
-	assert(!is_a<D>(ib));
+	assert(is_a<A>(ib) == true);
+	assert(is_a<B>(ib) == true);
+	assert(!is_a<C>(ib) == true);
+	assert(!is_a<D>(ib) == true);
 
-	assert(is_a<A>(ia));
-	assert(!is_a<B>(ia));
-	assert(!is_a<C>(ia));
-	assert(!is_a<D>(ia));
+	assert(is_a<A>(ia) == true);
+	assert(!is_a<B>(ia) == true);
+	assert(!is_a<C>(ia) == true);
+	assert(!is_a<D>(ia) == true);
 
 	const D* td = cast<const D*>(id);
 	assert(td != 0);

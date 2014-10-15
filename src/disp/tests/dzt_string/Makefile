@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_dzt_string
 SOURCES = main.cpp
-LIBRARIES = -lcimpledisp -lcimple
+LIBRARIES = cimpledisp cimple
 
 include $(TOP)/mak/rules.mak
 

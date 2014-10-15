@@ -25,14 +25,25 @@
 */
 
 #define _BSD_SOURCE
+
+#include "config.h"
+
 #include <sys/types.h>
 #include <sys/time.h>
 #include <cctype>
 #include <time.h>
 #include "Datetime.h"
+#include "Time.h"
 #include "Strings.h"
 
 CIMPLE_NAMESPACE_BEGIN
+
+const uint64 Datetime::USEC = 1;
+const uint64 Datetime::MSEC = 1000;
+const uint64 Datetime::SEC = 1000000;
+const uint64 Datetime::MIN = 60 * SEC;
+const uint64 Datetime::HOUR = 60 * MIN;
+const uint64 Datetime::DAY = 24 * HOUR;
 
 void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
 {
@@ -53,29 +64,37 @@ void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
 	    hours,
 	    minutes,
 	    seconds,
-	    _usec % 1000000);
+	    uint32(_usec % 1000000));
     }
     else
     {
 	const char* STANDARD_FORMAT =  "%04d%02d%02d%02d%02d%02d.%06d%c%03d";
 	const char* PRETTY_FORMAT = "%04d/%02d/%02d %02d:%02d:%02d.%06d%c%03d";
 
-	time_t t = (_usec / 1000000);
-	struct tm tm;
-	localtime_r(&t, &tm);
+	uint32 year = 0;
+	uint32 month = 0;
+	uint32 day = 0;
+	uint32 hours = 0;
+	uint32 minutes = 0;
+	uint32 seconds = 0;
+	uint32 microseconds = 0;
+	sint32 utc = 0;
+
+	get_timestamp(
+	    year, month, day, hours, minutes, seconds, microseconds, utc);
 
 	sprintf(
 	    buffer,
 	    prettify ? PRETTY_FORMAT : STANDARD_FORMAT,
-	    tm.tm_year + 1900, /* yyyy */
-	    tm.tm_mon + 1, /* mm */
-	    tm.tm_mday, /* dd */
-	    tm.tm_hour, /* hh */
-	    tm.tm_min, /* mm */
-	    tm.tm_sec, /* ss */
-	    int(_usec % 1000000), /* mmmmmm */
+	    year,
+	    month,
+	    day,
+	    hours,
+	    minutes,
+	    seconds,
+	    microseconds,
 	    _offset < 0 ? '-' : '+', /* sign */
-	    _offset); /* utc */
+	    utc);
     }
 }
 
@@ -117,18 +136,25 @@ void Datetime::get_timestamp(
     uint32& minutes,
     uint32& seconds,
     uint32& microseconds,
-    sint32& utc)
+    sint32& utc) const
 {
     time_t t = (_usec / 1000000);
-    struct tm tm;
-    localtime_r(&t, &tm);
+    struct tm* tm;
 
-    year = tm.tm_year + 1900;
-    month = tm.tm_mon + 1;
-    day = tm.tm_mday;
-    hours = tm.tm_hour;
-    minutes = tm.tm_min;
-    seconds = tm.tm_sec;
+#ifdef CIMPLE_WINDOWS
+    tm = localtime(&t);
+#else
+    struct tm tmp;
+    localtime_r(&t, &tmp);
+    tm = &tmp;
+#endif
+
+    year = tm->tm_year + 1900;
+    month = tm->tm_mon + 1;
+    day = tm->tm_mday;
+    hours = tm->tm_hour;
+    minutes = tm->tm_min;
+    seconds = tm->tm_sec;
     microseconds = _usec % 1000000;
     utc = _offset;
 }
@@ -150,6 +176,7 @@ void Datetime::set_timestamp(
     tm.tm_hour = hours;
     tm.tm_min = minutes;
     tm.tm_sec = seconds;
+    tm.tm_isdst = 0;
 
     time_t t = mktime(&tm);
     _usec = uint64(t) * uint64(1000000) + microseconds;
@@ -165,7 +192,12 @@ void Datetime::print(FILE* os, bool prettify)
 
 Datetime Datetime::now()
 {
-    timeval tv;
+#ifdef CIMPLE_WINDOWS
+    struct posix::timeval tv;
+#else
+    struct timeval tv;
+#endif
+
     struct timezone tz;
 
     memset(&tv, 0, sizeof(tz));

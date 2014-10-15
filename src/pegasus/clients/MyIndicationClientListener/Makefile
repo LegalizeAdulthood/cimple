@@ -22,5 +22,3 @@ run:
 	$(PROGRAM)
 
 tests:
-
-genclass:

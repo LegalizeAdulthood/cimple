@@ -32,7 +32,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Provider_Handle
+class CIMPLE_LIBCIMPLE_LINKAGE Provider_Handle
 {
 public:
 

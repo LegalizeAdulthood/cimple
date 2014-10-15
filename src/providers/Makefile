@@ -6,11 +6,15 @@ DIRS = \
     Person \
     LinuxComputerSystem \
     Example \
-    UnixUser \
     Fan \
     Methods \
     MyIndication \
-    DerivedIndication
+    DerivedIndication \
+    ComputerSystemDiskDrive
+
+ifdef CIMPLE_UNIX
+    DIRS += UnixUser
+endif
 
 include $(TOP)/mak/dir.mak
 
@@ -24,16 +28,14 @@ DIRS += \
     Methods/foo2
 
 reg:
-	( cd Person; make reg )
-	( cd Fan; make reg )
-	( cd Methods; make reg )
-	( cd ComputerSystemDiskDrive; make reg )
-	( cd MyIndication; make reg )
-	( cd MyIndication; make reg )
-	( cd DerivedIndication; make reg )
+	$(MAKE) -C $(TOP)/src/providers/Person reg
+	$(MAKE) -C $(TOP)/src/providers/Fan reg
+	$(MAKE) -C $(TOP)/src/providers/Methods reg
+	$(MAKE) -C $(TOP)/src/providers/ComputerSystemDiskDrive reg
 
-xxx:
-	- CLI gi Person.no_such_property=1
+xreg:
+	$(MAKE) -C $(TOP)/src/providers/MyIndication reg
+	$(MAKE) -C $(TOP)/src/providers/DerivedIndication reg
 
 live-tests:
 	CLI gi Person.ssn=1

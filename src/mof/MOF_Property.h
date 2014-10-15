@@ -31,11 +31,11 @@
 #include <MOF_Qualified_Element.h>
 #include <MOF_Literal.h>
 
-class MOF_Property : public MOF_Qualified_Element
+class MOF_LINKAGE MOF_Property : public MOF_Qualified_Element
 {
 public:
 
-    virtual MOF_Property* clone() const;
+    virtual MOF_Element* clone() const;
 
     void print() const;
 

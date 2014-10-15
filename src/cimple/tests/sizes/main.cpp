@@ -47,7 +47,7 @@ int main(int argc, char** argv)
     assert(sizeof(real64) == 8);
     assert(sizeof(char16) == 2);
 
-    printf("+++++ passed all tests\n");
+    printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }

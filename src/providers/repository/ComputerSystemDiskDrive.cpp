@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Reference _ComputerSystemDiskDrive_GroupComponent;
+extern CIMPLE_HIDE const Meta_Reference _ComputerSystemDiskDrive_GroupComponent;
 
 const Meta_Reference _ComputerSystemDiskDrive_GroupComponent =
 {
@@ -24,8 +23,7 @@ const Meta_Reference _ComputerSystemDiskDrive_GroupComponent =
     CIMPLE_OFF(ComputerSystemDiskDrive,GroupComponent)
 };
 
-CIMPLE_HIDE
-extern const Meta_Reference _ComputerSystemDiskDrive_PartComponent;
+extern CIMPLE_HIDE const Meta_Reference _ComputerSystemDiskDrive_PartComponent;
 
 const Meta_Reference _ComputerSystemDiskDrive_PartComponent =
 {

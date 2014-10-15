@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Reference _CIM_SystemDevice_GroupComponent;
+extern CIMPLE_HIDE const Meta_Reference _CIM_SystemDevice_GroupComponent;
 
 const Meta_Reference _CIM_SystemDevice_GroupComponent =
 {
@@ -24,8 +23,7 @@ const Meta_Reference _CIM_SystemDevice_GroupComponent =
     CIMPLE_OFF(CIM_SystemDevice,GroupComponent)
 };
 
-CIMPLE_HIDE
-extern const Meta_Reference _CIM_SystemDevice_PartComponent;
+extern CIMPLE_HIDE const Meta_Reference _CIM_SystemDevice_PartComponent;
 
 const Meta_Reference _CIM_SystemDevice_PartComponent =
 {

@@ -13,7 +13,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_Component : public Instance
+class CIMPLE_LINKAGE CIM_Component : public Instance
 {
 public:
     // CIM_Component features:

@@ -25,7 +25,9 @@
 */
 
 #include <cstdarg>
+#include <cstdio>
 #include <cimple/TLS.h>
+#include <cimple/Strings.h>
 #include "Error.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -36,8 +38,7 @@ void Error::set(const char* format, ...)
 {
     va_list ap;
     va_start(ap, format);
-    char* message;
-    vasprintf(&message, format, ap);
+    char* message = str_vprintf(format, ap);
     va_end(ap);
 
     // Replace the existing message. This is thread safe since we are using

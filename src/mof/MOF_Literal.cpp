@@ -391,7 +391,8 @@ static void _print(
 
 	case TOK_CHAR_VALUE:
 	{
-	    _print_char(stream, literal->char_value);
+	    // ATTN: this only print single byte chars:
+	    _print_char(stream, (char)literal->char_value);
 	    break;
 	}
 
@@ -444,7 +445,7 @@ void MOF_Literal::print(
 	_print(stream, this);
 }
 
-MOF_Literal* MOF_Literal::clone() const
+MOF_Element* MOF_Literal::clone() const
 {
     MOF_Literal* tmp = new MOF_Literal();
 

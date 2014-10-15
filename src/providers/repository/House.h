@@ -11,7 +11,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class House : public Instance
+class CIMPLE_LINKAGE House : public Instance
 {
 public:
     // House features:

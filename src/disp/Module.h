@@ -31,10 +31,11 @@
 #include <cimple/Registration.h>
 #include <cimple/List.h>
 #include "Envelope.h"
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Module
+class CIMPLEDISP_LINKAGE Module
 {
 public:
 

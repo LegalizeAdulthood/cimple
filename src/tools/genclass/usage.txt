@@ -31,4 +31,5 @@ OPTIONS:
     -r      -- generate repository.h and repository.cpp.
     -v      -- print the version number.
     -h      -- Print this message.
+    -l      -- Generate linkage specifiers for Windows DLLs.
 

@@ -3,7 +3,9 @@ include $(TOP)/mak/config.mak
 
 SH_LIBRARY = mof
 
-INCLUDES = -I.
+INCLUDES += -I.
+
+DEFINES += -DMOF_INTERNAL
 
 LEX_AND_YACC_SOURCES = \
     MOF_Yacc.cpp \

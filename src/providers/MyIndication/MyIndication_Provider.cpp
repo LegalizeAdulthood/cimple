@@ -14,7 +14,6 @@ MyIndication* MyIndication_create(
 
     MyEmbeddedClass* embed = MyEmbeddedClass::create();
     embed->msg.value = msg;
-
     indic->object = embed;
 
     return indic;
@@ -40,6 +39,8 @@ Unload_Status MyIndication_Provider::unload()
 
 Timer_Status MyIndication_Provider::timer(uint64& timeout_msec)
 {
+    // printf("MyIndication_Provider::timer()\n");
+
     if (_indication_handler)
     {
 	MyIndication* indic = MyIndication_create("9999", "nine");
@@ -54,7 +55,7 @@ Timer_Status MyIndication_Provider::timer(uint64& timeout_msec)
 Enable_Indications_Status MyIndication_Provider::enable_indications(
     Indication_Handler<MyIndication>* indication_handler)
 {
-    printf("=== MyIndication_Provider::enable_indications()\n");
+    // printf("=== MyIndication_Provider::enable_indications()\n");
 
     _indication_handler = indication_handler;
 
@@ -63,7 +64,7 @@ Enable_Indications_Status MyIndication_Provider::enable_indications(
 
 Disable_Indications_Status MyIndication_Provider::disable_indications()
 {
-    printf("=== MyIndication_Provider::disable_indications()\n");
+    // printf("=== MyIndication_Provider::disable_indications()\n");
 
     delete _indication_handler;
     _indication_handler = 0;
@@ -74,7 +75,7 @@ Disable_Indications_Status MyIndication_Provider::disable_indications()
 Invoke_Method_Status MyIndication_Provider::DeliverIndications(
     Property<uint32>& return_value)
 {
-    printf("=== MyIndication_Provider::DeliverIndications()\n");
+    // printf("=== MyIndication_Provider::DeliverIndications()\n");
 
     return_value.value = 99;
     return_value.null = false;

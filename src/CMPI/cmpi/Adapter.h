@@ -32,13 +32,13 @@
 #include <cmpimacs.h>
 #include <cimple/cimple.h>
 #include <cimple/Provider_Handle.h>
-#include <cimple/Threads.h>
-#include <cimple/RMutex.h>
 #include <cimple/Scheduler.h>
+#include <cimple/RMutex.h>
+#include "linkage.h"
 
 using namespace cimple;
 
-class Adapter : public Provider_Handle
+class CIMPLECMPI_LINKAGE Adapter : public Provider_Handle
 {
 public:
 
@@ -227,8 +227,10 @@ private:
 
     // Scheduler and timer proc to drive provider timer() method.
     static Scheduler* _sched;
+
     static RMutex _sched_lock;
-    Thread _timer_thread;
+    pthread_attr_t _timer_thread_attr;
+    pthread_t _timer_thread;
     size_t _timer_id;
     bool _stop_timer_thread;
     const CMPIContext* _timer_context;

@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _Person_ssn;
+extern CIMPLE_HIDE const Meta_Property _Person_ssn;
 
 const Meta_Property _Person_ssn =
 {
@@ -25,8 +24,7 @@ const Meta_Property _Person_ssn =
     CIMPLE_OFF(Person,ssn)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Person_first;
+extern CIMPLE_HIDE const Meta_Property _Person_first;
 
 const Meta_Property _Person_first =
 {
@@ -37,8 +35,7 @@ const Meta_Property _Person_first =
     CIMPLE_OFF(Person,first)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Person_last;
+extern CIMPLE_HIDE const Meta_Property _Person_last;
 
 const Meta_Property _Person_last =
 {

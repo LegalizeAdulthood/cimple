@@ -154,7 +154,7 @@ void String::assign(const char* s, size_t n)
 
 void String::assign(const char* s)
 {
-    return assign(s, strlen(s));
+    assign(s, strlen(s));
 }
 
 void String::append(const String& s)

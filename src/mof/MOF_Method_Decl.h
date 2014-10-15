@@ -31,7 +31,7 @@
 #include <MOF_Parameter.h>
 #include <MOF_Feature.h>
 
-class MOF_Method_Decl : public MOF_Feature
+class MOF_LINKAGE MOF_Method_Decl : public MOF_Feature
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
     virtual void validate();
 
-    virtual MOF_Method_Decl* clone() const;
+    virtual MOF_Element* clone() const;
 
     static void check_compatibility(
 	const char* class_name,

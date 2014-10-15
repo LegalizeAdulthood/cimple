@@ -35,7 +35,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class String
+class CIMPLE_LIBCIMPLE_LINKAGE String
 {
 public:
 
@@ -105,11 +105,11 @@ public:
 
     /** Returns true if the given string is a prefix of this string.
     */
-    bool is_prefix(const char* s, size_t n);
+    bool is_prefix(const char* s, size_t n) const;
 
     /** Returns true if the given string is a suffix of this string.
     */
-    bool is_suffix(const char* s, size_t n);
+    bool is_suffix(const char* s, size_t n) const;
 
 private:
 
@@ -122,7 +122,7 @@ private:
 	Rep() { Atomic_create(&refs, 2); }
     };
 
-    CIMPLE_HIDE static Rep* _new(size_t cap);
+    static CIMPLE_HIDE Rep* _new(size_t cap);
 
     static void _ref(const Rep* rep);
 
@@ -256,12 +256,12 @@ inline bool String::equali(const char* s, size_t n) const
     return _rep->size == n && strncasecmp(s, _rep->data, n) == 0;
 }
 
-inline bool String::is_prefix(const char* s, size_t n)
+inline bool String::is_prefix(const char* s, size_t n) const
 {
     return _rep->size >= n && memcmp(_rep->data, s, n) == 0;
 }
 
-inline bool String::is_suffix(const char* s, size_t n)
+inline bool String::is_suffix(const char* s, size_t n) const
 {
     return _rep->size >= n && memcmp(_rep->data + _rep->size - n, s, n) == 0;
 }

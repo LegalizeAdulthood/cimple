@@ -35,7 +35,7 @@
 #include <MOF_Feature_Info.h>
 #include <MOF_Class_Decl.h>
 
-class MOF_Instance_Decl : public MOF_Qualified_Element
+class MOF_LINKAGE MOF_Instance_Decl : public MOF_Qualified_Element
 {
 public:
 
@@ -43,7 +43,7 @@ public:
 
     ~MOF_Instance_Decl();
 
-    virtual MOF_Instance_Decl* clone() const;
+    virtual MOF_Element* clone() const;
 
     static void handle(MOF_Instance_Decl* inst_decl);
 

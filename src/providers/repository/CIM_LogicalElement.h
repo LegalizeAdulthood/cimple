@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_LogicalElement : public Instance
+class CIMPLE_LINKAGE CIM_LogicalElement : public Instance
 {
 public:
     // CIM_ManagedElement features:

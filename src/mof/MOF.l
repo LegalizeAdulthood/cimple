@@ -317,6 +317,7 @@ IDENT_CHAR [A-Za-z_]
 {BINARY_VALUE} {
 
     char* end = NULL;
+
     MOF_lval.int_value = strtoll(yytext, &end, 2);
 
     if (end == NULL || (*end != 'b' && *end != 'B'))

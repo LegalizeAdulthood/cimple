@@ -29,7 +29,7 @@
 
 #include <MOF_Config.h>
 
-class MOF_Pragma
+class MOF_LINKAGE MOF_Pragma
 {
 public:
 

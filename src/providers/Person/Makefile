@@ -1,17 +1,13 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-ifdef PEGASUS_HOME
-include $(TOP)/mak/pegasus.mak
-endif
-
 SH_LIBRARY = cmplperson
 
 INCLUDES += -I../repository
 
 SOURCES = Person_Provider.cpp Link_Provider.cpp module.cpp
 
-LIBRARIES = -lcimple -lcmplrep
+LIBRARIES = cimple cmplrep
 
 include $(TOP)/mak/rules.mak
 

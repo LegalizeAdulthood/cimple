@@ -67,11 +67,11 @@ MOF_Qualifier::~MOF_Qualifier()
 **------------------------------------------------------------------------------
 */
 
-MOF_Qualifier* MOF_Qualifier::clone() const
+MOF_Element* MOF_Qualifier::clone() const
 {
     MOF_Qualifier* tmp = new MOF_Qualifier();
     tmp->name = strdup(name);
-    tmp->params = params->clone();
+    tmp->params = (MOF_Literal*)params->clone();
     return tmp;
 }
 

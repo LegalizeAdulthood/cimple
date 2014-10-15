@@ -13,47 +13,33 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_CommonDatabase_InstanceID;
+extern CIMPLE_HIDE const Meta_Property _CIM_CommonDatabase_InstanceID;
 
 const Meta_Property _CIM_CommonDatabase_InstanceID =
 {
@@ -64,8 +50,7 @@ const Meta_Property _CIM_CommonDatabase_InstanceID =
     CIMPLE_OFF(CIM_CommonDatabase,InstanceID)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_CommonDatabase_DatabaseVersion;
+extern CIMPLE_HIDE const Meta_Property _CIM_CommonDatabase_DatabaseVersion;
 
 const Meta_Property _CIM_CommonDatabase_DatabaseVersion =
 {
@@ -76,8 +61,7 @@ const Meta_Property _CIM_CommonDatabase_DatabaseVersion =
     CIMPLE_OFF(CIM_CommonDatabase,DatabaseVersion)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_CommonDatabase_LastBackup;
+extern CIMPLE_HIDE const Meta_Property _CIM_CommonDatabase_LastBackup;
 
 const Meta_Property _CIM_CommonDatabase_LastBackup =
 {
@@ -88,8 +72,7 @@ const Meta_Property _CIM_CommonDatabase_LastBackup =
     CIMPLE_OFF(CIM_CommonDatabase,LastBackup)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_CommonDatabase_SizeAllocated;
+extern CIMPLE_HIDE const Meta_Property _CIM_CommonDatabase_SizeAllocated;
 
 const Meta_Property _CIM_CommonDatabase_SizeAllocated =
 {
@@ -100,8 +83,7 @@ const Meta_Property _CIM_CommonDatabase_SizeAllocated =
     CIMPLE_OFF(CIM_CommonDatabase,SizeAllocated)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_CommonDatabase_SizeUnits;
+extern CIMPLE_HIDE const Meta_Property _CIM_CommonDatabase_SizeUnits;
 
 const Meta_Property _CIM_CommonDatabase_SizeUnits =
 {

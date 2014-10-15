@@ -78,7 +78,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Meta_Property;
+struct Meta_Property;
 
 /** Base class for all generated CIM classes and CIM method objects.
 */
@@ -92,31 +92,38 @@ struct Instance
     null flag is set to false. The caller must eventually pass the new object 
     to destroy().
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 Instance* create(const Meta_Class* meta_class);
 
 /** Creates an instance from the given meta method. Sets all null flags to
     false. The caller must eventually pass the new object to destroy.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 Instance* create(const Meta_Method* meta_meth);
 
 /** Releases all memory held by this instance and and then passes it to 
     delete.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 void destroy(Instance* instance);
 
 /** Makes an exact copy of the given instance. The caller must eventually pass
     the new instance to destroy().
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 Instance* clone(const Instance* instance);
 
 /** Similar to clone() but only copies over the key fields.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 Instance* key_clone(const Instance* instance);
 
 /** Print this instance to the standard output device.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 void print(const Instance* instance);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void __set_null_flags(
     const Instance* inst, bool include_keys, bool include_non_keys, uint8 flag);
 
@@ -149,14 +156,17 @@ inline void de_nullify_keys(const Instance* inst)
     (i.e., have the same names, types, values, and null fields). The 
     instances can be of different classes.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 bool key_eq(const Instance* instance1, const Instance* instance2);
 
 /** Copies all properties from instance2 to instance1.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 void copy(Instance* instance1, const Instance* instance2);
 
 /** Copy all key properties from instance1 to instance2.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 void copy_keys(Instance* instance1, const Instance* instance2);
 
 /** Returns a pointer to the given property.
@@ -191,6 +201,7 @@ inline const Instance*& reference_of(
 /** Returns true if two instances are identical, that is they have the
     same meta class and the property values.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 bool identical(const Instance* i1, const Instance* i2);
 
 #ifdef CIMPLE_NEED_RANDOM_INITIALIZE
@@ -205,6 +216,7 @@ void random_initialize(Instance* instance);
     instance. Returns the number of associators or negative one if this 
     association instance does not refer to the instance at all.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 ssize_t get_associators(
     const Instance* instance,
     const Instance* association_instance,
@@ -217,6 +229,7 @@ ssize_t get_associators(
     then the reference must refer to the instance through a property of
     that name.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 bool is_reference_of(
     const Instance* instance,
     const Instance* reference,
@@ -224,10 +237,12 @@ bool is_reference_of(
 
 /** Return true if all of the keys are non-null.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 bool keys_non_null(const Instance* instance);
 
 /** Returns true if *ancestor* is a ancestor-class of *descendant*.
 */
+CIMPLE_LIBCIMPLE_LINKAGE
 bool __is_a(const Meta_Class* ancestor, const Meta_Class* descendant);
 
 /** The is_a operator is used to determine wether an instance is a subclass
@@ -289,6 +304,7 @@ private:
     const Instance* _inst;
 };
 
+CIMPLE_LIBCIMPLE_LINKAGE
 void destroyer(Instance* p);
 
 CIMPLE_NAMESPACE_END

@@ -27,7 +27,6 @@
 #ifndef _cimple_Auto_RMutex_h
 #define _cimple_Auto_RMutex_h
 
-#include <pthread.h>
 #include "config.h"
 #include "RMutex.h"
 #include "Auto_RMutex.h"

@@ -18,8 +18,8 @@ class CIM_DatabaseAdministrator : public Instance
 {
 public:
     // CIM_Dependency features:
-    CIM_ManagedElement* Antecedent;
-    CIM_ManagedElement* Dependent;
+    CIM_CommonDatabase* Antecedent;
+    CIM_UserEntity* Dependent;
 
     // CIM_DatabaseAdministrator features:
 

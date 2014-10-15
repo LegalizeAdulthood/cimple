@@ -63,15 +63,16 @@ CIMPLE_NAMESPACE_BEGIN
     by a larger integer that holds the number of microseconds. This makes 
     it easier to find the difference between two times and to compare them.
 */
-struct Datetime
+struct CIMPLE_LIBCIMPLE_LINKAGE Datetime
 {
-    static const uint64 USEC = 1;
-    static const uint64 MSEC = 1000;
-    static const uint64 SEC = 1000000;
-    static const uint64 MIN = 60 * SEC;
-    static const uint64 HOUR = 60 * MIN;
-    static const uint64 DAY = 24 * HOUR;
-    static const uint64 BUFFER_SIZE = 32;
+    static const uint64 USEC;
+    static const uint64 MSEC;
+    static const uint64 SEC;
+    static const uint64 MIN;
+    static const uint64 HOUR;
+    static const uint64 DAY;
+
+    enum { BUFFER_SIZE = 32 };
 
     /** Default constructor.
     */
@@ -141,7 +142,7 @@ struct Datetime
 	uint32& minutes,
 	uint32& seconds,
 	uint32& microseconds,
-	sint32& utc);
+	sint32& utc) const;
 
     /** Sets the timestamp from components.
     */

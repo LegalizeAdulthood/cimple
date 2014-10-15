@@ -150,6 +150,7 @@ size_t Buffer::appendf(const char* format, ...)
 	char* str = _data + _size;
 
 	va_start(ap, format);
+
 	int n = vsnprintf(str, size, format, ap);
 	va_end(ap);
 

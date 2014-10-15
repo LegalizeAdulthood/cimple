@@ -11,7 +11,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Fan : public Instance
+class CIMPLE_LINKAGE Fan : public Instance
 {
 public:
     // Fan features:
@@ -22,7 +22,7 @@ public:
     CIMPLE_CLASS(Fan)
 };
 
-class Fan_SetSpeed_method : public Instance
+class CIMPLE_LINKAGE Fan_SetSpeed_method : public Instance
 {
 public:
     Property<uint64> DesiredSpeed;

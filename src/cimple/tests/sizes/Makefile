@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_sizes
 SOURCES = main.cpp
-LIBRARIES = -lcimple
+LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
 

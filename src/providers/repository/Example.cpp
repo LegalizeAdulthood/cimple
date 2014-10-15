@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _Example_key;
+extern CIMPLE_HIDE const Meta_Property _Example_key;
 
 const Meta_Property _Example_key =
 {
@@ -25,8 +24,7 @@ const Meta_Property _Example_key =
     CIMPLE_OFF(Example,key)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Example_prop1;
+extern CIMPLE_HIDE const Meta_Property _Example_prop1;
 
 const Meta_Property _Example_prop1 =
 {
@@ -37,8 +35,7 @@ const Meta_Property _Example_prop1 =
     CIMPLE_OFF(Example,prop1)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Example_prop2;
+extern CIMPLE_HIDE const Meta_Property _Example_prop2;
 
 const Meta_Property _Example_prop2 =
 {

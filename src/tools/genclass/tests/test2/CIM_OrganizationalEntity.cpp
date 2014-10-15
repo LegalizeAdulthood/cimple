@@ -13,14 +13,11 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
 
 static Meta_Feature* _CIM_OrganizationalEntity_meta_features[] =
 {

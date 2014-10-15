@@ -72,6 +72,6 @@
 //
 //------------------------------------------------------------------------------
 
-#define CIMPLE_NEED_RANDOM_INITIALIZE
+//#define CIMPLE_NEED_RANDOM_INITIALIZE
 
 #endif /* _cimple_options_h */

@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field1;
+extern CIMPLE_HIDE const Meta_Property _Test1_field1;
 
 const Meta_Property _Test1_field1 =
 {
@@ -25,8 +24,7 @@ const Meta_Property _Test1_field1 =
     CIMPLE_OFF(Test1,field1)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field2;
+extern CIMPLE_HIDE const Meta_Property _Test1_field2;
 
 const Meta_Property _Test1_field2 =
 {
@@ -37,8 +35,7 @@ const Meta_Property _Test1_field2 =
     CIMPLE_OFF(Test1,field2)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field3;
+extern CIMPLE_HIDE const Meta_Property _Test1_field3;
 
 const Meta_Property _Test1_field3 =
 {
@@ -49,8 +46,7 @@ const Meta_Property _Test1_field3 =
     CIMPLE_OFF(Test1,field3)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field4;
+extern CIMPLE_HIDE const Meta_Property _Test1_field4;
 
 const Meta_Property _Test1_field4 =
 {
@@ -61,8 +57,7 @@ const Meta_Property _Test1_field4 =
     CIMPLE_OFF(Test1,field4)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field5;
+extern CIMPLE_HIDE const Meta_Property _Test1_field5;
 
 const Meta_Property _Test1_field5 =
 {
@@ -73,8 +68,7 @@ const Meta_Property _Test1_field5 =
     CIMPLE_OFF(Test1,field5)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field6;
+extern CIMPLE_HIDE const Meta_Property _Test1_field6;
 
 const Meta_Property _Test1_field6 =
 {
@@ -85,8 +79,7 @@ const Meta_Property _Test1_field6 =
     CIMPLE_OFF(Test1,field6)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field7;
+extern CIMPLE_HIDE const Meta_Property _Test1_field7;
 
 const Meta_Property _Test1_field7 =
 {
@@ -97,8 +90,7 @@ const Meta_Property _Test1_field7 =
     CIMPLE_OFF(Test1,field7)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field8;
+extern CIMPLE_HIDE const Meta_Property _Test1_field8;
 
 const Meta_Property _Test1_field8 =
 {
@@ -109,8 +101,7 @@ const Meta_Property _Test1_field8 =
     CIMPLE_OFF(Test1,field8)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field9;
+extern CIMPLE_HIDE const Meta_Property _Test1_field9;
 
 const Meta_Property _Test1_field9 =
 {
@@ -121,8 +112,7 @@ const Meta_Property _Test1_field9 =
     CIMPLE_OFF(Test1,field9)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field10;
+extern CIMPLE_HIDE const Meta_Property _Test1_field10;
 
 const Meta_Property _Test1_field10 =
 {
@@ -133,8 +123,7 @@ const Meta_Property _Test1_field10 =
     CIMPLE_OFF(Test1,field10)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field11;
+extern CIMPLE_HIDE const Meta_Property _Test1_field11;
 
 const Meta_Property _Test1_field11 =
 {
@@ -145,8 +134,7 @@ const Meta_Property _Test1_field11 =
     CIMPLE_OFF(Test1,field11)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field12;
+extern CIMPLE_HIDE const Meta_Property _Test1_field12;
 
 const Meta_Property _Test1_field12 =
 {
@@ -157,8 +145,7 @@ const Meta_Property _Test1_field12 =
     CIMPLE_OFF(Test1,field12)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field13;
+extern CIMPLE_HIDE const Meta_Property _Test1_field13;
 
 const Meta_Property _Test1_field13 =
 {
@@ -169,8 +156,7 @@ const Meta_Property _Test1_field13 =
     CIMPLE_OFF(Test1,field13)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_field14;
+extern CIMPLE_HIDE const Meta_Property _Test1_field14;
 
 const Meta_Property _Test1_field14 =
 {
@@ -181,8 +167,7 @@ const Meta_Property _Test1_field14 =
     CIMPLE_OFF(Test1,field14)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla1;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla1;
 
 const Meta_Property _Test1_vla1 =
 {
@@ -193,8 +178,7 @@ const Meta_Property _Test1_vla1 =
     CIMPLE_OFF(Test1,vla1)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla2;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla2;
 
 const Meta_Property _Test1_vla2 =
 {
@@ -205,8 +189,7 @@ const Meta_Property _Test1_vla2 =
     CIMPLE_OFF(Test1,vla2)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla3;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla3;
 
 const Meta_Property _Test1_vla3 =
 {
@@ -217,8 +200,7 @@ const Meta_Property _Test1_vla3 =
     CIMPLE_OFF(Test1,vla3)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla4;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla4;
 
 const Meta_Property _Test1_vla4 =
 {
@@ -229,8 +211,7 @@ const Meta_Property _Test1_vla4 =
     CIMPLE_OFF(Test1,vla4)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla5;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla5;
 
 const Meta_Property _Test1_vla5 =
 {
@@ -241,8 +222,7 @@ const Meta_Property _Test1_vla5 =
     CIMPLE_OFF(Test1,vla5)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla6;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla6;
 
 const Meta_Property _Test1_vla6 =
 {
@@ -253,8 +233,7 @@ const Meta_Property _Test1_vla6 =
     CIMPLE_OFF(Test1,vla6)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla7;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla7;
 
 const Meta_Property _Test1_vla7 =
 {
@@ -265,8 +244,7 @@ const Meta_Property _Test1_vla7 =
     CIMPLE_OFF(Test1,vla7)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla8;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla8;
 
 const Meta_Property _Test1_vla8 =
 {
@@ -277,8 +255,7 @@ const Meta_Property _Test1_vla8 =
     CIMPLE_OFF(Test1,vla8)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla9;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla9;
 
 const Meta_Property _Test1_vla9 =
 {
@@ -289,8 +266,7 @@ const Meta_Property _Test1_vla9 =
     CIMPLE_OFF(Test1,vla9)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla10;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla10;
 
 const Meta_Property _Test1_vla10 =
 {
@@ -301,8 +277,7 @@ const Meta_Property _Test1_vla10 =
     CIMPLE_OFF(Test1,vla10)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla11;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla11;
 
 const Meta_Property _Test1_vla11 =
 {
@@ -313,8 +288,7 @@ const Meta_Property _Test1_vla11 =
     CIMPLE_OFF(Test1,vla11)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla12;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla12;
 
 const Meta_Property _Test1_vla12 =
 {
@@ -325,8 +299,7 @@ const Meta_Property _Test1_vla12 =
     CIMPLE_OFF(Test1,vla12)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla13;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla13;
 
 const Meta_Property _Test1_vla13 =
 {
@@ -337,8 +310,7 @@ const Meta_Property _Test1_vla13 =
     CIMPLE_OFF(Test1,vla13)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_vla14;
+extern CIMPLE_HIDE const Meta_Property _Test1_vla14;
 
 const Meta_Property _Test1_vla14 =
 {
@@ -349,8 +321,7 @@ const Meta_Property _Test1_vla14 =
     CIMPLE_OFF(Test1,vla14)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla1;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla1;
 
 const Meta_Property _Test1_fla1 =
 {
@@ -361,8 +332,7 @@ const Meta_Property _Test1_fla1 =
     CIMPLE_OFF(Test1,fla1)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla2;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla2;
 
 const Meta_Property _Test1_fla2 =
 {
@@ -373,8 +343,7 @@ const Meta_Property _Test1_fla2 =
     CIMPLE_OFF(Test1,fla2)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla3;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla3;
 
 const Meta_Property _Test1_fla3 =
 {
@@ -385,8 +354,7 @@ const Meta_Property _Test1_fla3 =
     CIMPLE_OFF(Test1,fla3)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla4;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla4;
 
 const Meta_Property _Test1_fla4 =
 {
@@ -397,8 +365,7 @@ const Meta_Property _Test1_fla4 =
     CIMPLE_OFF(Test1,fla4)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla5;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla5;
 
 const Meta_Property _Test1_fla5 =
 {
@@ -409,8 +376,7 @@ const Meta_Property _Test1_fla5 =
     CIMPLE_OFF(Test1,fla5)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla6;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla6;
 
 const Meta_Property _Test1_fla6 =
 {
@@ -421,8 +387,7 @@ const Meta_Property _Test1_fla6 =
     CIMPLE_OFF(Test1,fla6)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla7;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla7;
 
 const Meta_Property _Test1_fla7 =
 {
@@ -433,8 +398,7 @@ const Meta_Property _Test1_fla7 =
     CIMPLE_OFF(Test1,fla7)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla8;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla8;
 
 const Meta_Property _Test1_fla8 =
 {
@@ -445,8 +409,7 @@ const Meta_Property _Test1_fla8 =
     CIMPLE_OFF(Test1,fla8)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla9;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla9;
 
 const Meta_Property _Test1_fla9 =
 {
@@ -457,8 +420,7 @@ const Meta_Property _Test1_fla9 =
     CIMPLE_OFF(Test1,fla9)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla10;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla10;
 
 const Meta_Property _Test1_fla10 =
 {
@@ -469,8 +431,7 @@ const Meta_Property _Test1_fla10 =
     CIMPLE_OFF(Test1,fla10)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla11;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla11;
 
 const Meta_Property _Test1_fla11 =
 {
@@ -481,8 +442,7 @@ const Meta_Property _Test1_fla11 =
     CIMPLE_OFF(Test1,fla11)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla12;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla12;
 
 const Meta_Property _Test1_fla12 =
 {
@@ -493,8 +453,7 @@ const Meta_Property _Test1_fla12 =
     CIMPLE_OFF(Test1,fla12)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla13;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla13;
 
 const Meta_Property _Test1_fla13 =
 {
@@ -505,8 +464,7 @@ const Meta_Property _Test1_fla13 =
     CIMPLE_OFF(Test1,fla13)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Test1_fla14;
+extern CIMPLE_HIDE const Meta_Property _Test1_fla14;
 
 const Meta_Property _Test1_fla14 =
 {

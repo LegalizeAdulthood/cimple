@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Reference _Link_parent;
+extern CIMPLE_HIDE const Meta_Reference _Link_parent;
 
 const Meta_Reference _Link_parent =
 {
@@ -24,8 +23,7 @@ const Meta_Reference _Link_parent =
     CIMPLE_OFF(Link,parent)
 };
 
-CIMPLE_HIDE
-extern const Meta_Reference _Link_child;
+extern CIMPLE_HIDE const Meta_Reference _Link_child;
 
 const Meta_Reference _Link_child =
 {

@@ -33,7 +33,7 @@
 
 class MOF_Qualifier;
 
-class MOF_Qualifier : public MOF_Element
+class MOF_LINKAGE MOF_Qualifier : public MOF_Element
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
     ~MOF_Qualifier();
 
-    virtual MOF_Qualifier* clone() const;
+    virtual MOF_Element* clone() const;
 
     void print(size_t nesting) const;
 

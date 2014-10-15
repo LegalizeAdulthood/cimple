@@ -47,7 +47,7 @@ MOF_Class_Decl::~MOF_Class_Decl()
     all_features->delete_list();
 }
 
-MOF_Class_Decl* MOF_Class_Decl::clone() const
+MOF_Element* MOF_Class_Decl::clone() const
 {
     MOF_ASSERT("not implemented" == 0);
     return 0;

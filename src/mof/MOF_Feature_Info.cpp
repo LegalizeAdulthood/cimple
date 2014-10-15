@@ -39,7 +39,7 @@ MOF_Feature_Info::~MOF_Feature_Info()
     /* Nothing to do */
 }
 
-MOF_Feature_Info* MOF_Feature_Info::clone() const
+MOF_Element* MOF_Feature_Info::clone() const
 {
     MOF_ASSERT("not implemented" == 0);
     return 0;

@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_facade
 SOURCES = Base.cpp Thing.cpp Assoc.cpp main.cpp
-LIBRARIES = -lcimpledisp -lcimple
+LIBRARIES = cimpledisp cimple
 
 include $(TOP)/mak/rules.mak
 

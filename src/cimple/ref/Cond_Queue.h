@@ -1,0 +1,75 @@
+/*
+**==============================================================================
+**
+** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** 
+** Permission is hereby granted, free of charge, to any person obtaining a
+** copy of this software and associated documentation files (the "Software"),
+** to deal in the Software without restriction, including without limitation
+** the rights to use, copy, modify, merge, publish, distribute, sublicense,
+** and/or sell copies of the Software, and to permit persons to whom the
+** Software is furnished to do so, subject to the following conditions:
+** 
+** The above copyright notice and this permission notice shall be included in
+** all copies or substantial portions of the Software.
+** 
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+** SOFTWARE.
+**
+**==============================================================================
+*/
+
+#ifndef _cimple_Cond_Queue_h
+#define _cimple_Cond_Queue_h
+
+#include "config.h"
+#include "Cond.h"
+
+CIMPLE_NAMESPACE_BEGIN
+
+/** This class provides a thread-safe queue implementation so that threads
+    may exchange data. The dequeue() function blocks until an entry is
+    available. The enqueue() method blocks until there are less than
+    max_size elements.
+*/
+class CIMPLE_LIBCIMPLE_LINKAGE Cond_Queue
+{
+public:
+
+    Cond_Queue(size_t max_size);
+
+    ~Cond_Queue();
+
+    void enqueue(void* entry);
+
+    void* dequeue();
+
+private:
+
+    Cond_Queue(const Cond_Queue&);
+    Cond_Queue& operator=(const Cond_Queue&);
+
+    enum { MAX_AUTO_ELEMENTS = 8 };
+
+    // Used instead of heap memory when max_size <= MAX_AUTO_ELEMENTS.
+    void* _auto_data[MAX_AUTO_ELEMENTS];
+
+    void** _data;
+    size_t _size;
+    size_t _head;
+    size_t _tail;
+    size_t _max_size;
+
+    Mutex _lock;
+    Cond _not_empty;
+    Cond _not_full;
+};
+
+CIMPLE_NAMESPACE_END
+
+#endif /* _cimple_Cond_Queue_h */

@@ -27,12 +27,27 @@
 #ifndef _cimple_platform_LINUX_IX86_GNU_h
 #define _cimple_platform_LINUX_IX86_GNU_h
 
-#define CIMPLE_PLATFORM_LINUX_IX86_GNU
+//#define __USE_UNIX98
+//#define __USE_GNU
+
+#ifndef _GNU_SOURCE
+# define _GNU_SOURCE
+#endif
 
 #define CIMPLE_HAVE_ZU
 
 #define CIMPLE_HIDE __attribute__((visibility("hidden")))
 
 #define CIMPLE_DEFAULT __attribute__((visibility("default")))
+
+#define CIMPLE_UINT64 unsigned long long
+
+#define CIMPLE_SINT64 signed long long
+
+#define CIMPLE_UNIX
+
+#define CIMPLE_IMPORT
+
+#define CIMPLE_EXPORT
 
 #endif /* _cimple_platform_LINUX_IX86_GNU_h */

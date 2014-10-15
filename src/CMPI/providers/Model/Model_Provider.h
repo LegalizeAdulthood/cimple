@@ -54,7 +54,7 @@ public:
         Property<real32>& z,
         Property<String>& return_value);
 
-    CIMPLE_HIDE static int proc(
+    static CIMPLE_HIDE int proc(
 	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
 };
 

@@ -3,8 +3,8 @@ include $(TOP)/mak/config.mak
 
 BINARY = mof2html
 SOURCES = main.cpp
-LIBRARIES = -lmof
-INCLUDES = -I..
+LIBRARIES = mof
+INCLUDES += -I..
 
 include $(TOP)/mak/rules.mak
 

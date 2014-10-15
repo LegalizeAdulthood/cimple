@@ -13,20 +13,15 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _YourClass_str1;
+extern CIMPLE_HIDE const Meta_Property _YourClass_str1;
 
-CIMPLE_HIDE
-extern const Meta_Property _YourClass_str2;
+extern CIMPLE_HIDE const Meta_Property _YourClass_str2;
 
-CIMPLE_HIDE
-extern const Meta_Reference _YourClass_obj1;
+extern CIMPLE_HIDE const Meta_Reference _YourClass_obj1;
 
-CIMPLE_HIDE
-extern const Meta_Reference _YourClass_obj2;
+extern CIMPLE_HIDE const Meta_Reference _YourClass_obj2;
 
-CIMPLE_HIDE
-extern const Meta_Property _MyClass_str3;
+extern CIMPLE_HIDE const Meta_Property _MyClass_str3;
 
 const Meta_Property _MyClass_str3 =
 {
@@ -37,8 +32,7 @@ const Meta_Property _MyClass_str3 =
     CIMPLE_OFF(MyClass,str3)
 };
 
-CIMPLE_HIDE
-extern const Meta_Reference _MyClass_obj3;
+extern CIMPLE_HIDE const Meta_Reference _MyClass_obj3;
 
 const Meta_Reference _MyClass_obj3 =
 {

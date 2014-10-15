@@ -32,20 +32,19 @@
 #include <MOF_Yacc.h>
 #include <MOF_Options.h>
 #include <string>
-
-extern int MOF_line_num;
-extern char* MOF_file_name;
+#include <cstdio>
+#include <cstdlib>
 
 #define MAX_INCLUDES 2000
-extern const char* MOF_include_paths[MAX_INCLUDES];
-extern size_t MOF_num_include_paths;
-
 #define MAX_GENERATES 2000
-extern const char* MOF_generate_classes[MAX_GENERATES];
-extern size_t MOF_num_generate_classes;
 
-FILE* MOF_open_file(const char* path, std::string& full_path);
-
-int MOF_parse_file(const char* mof_file);
+MOF_LINKAGE extern int MOF_line_num;
+MOF_LINKAGE extern char* MOF_file_name;
+MOF_LINKAGE extern const char* MOF_include_paths[MAX_INCLUDES];
+MOF_LINKAGE extern size_t MOF_num_include_paths;
+MOF_LINKAGE extern const char* MOF_generate_classes[MAX_GENERATES];
+MOF_LINKAGE extern size_t MOF_num_generate_classes;
+MOF_LINKAGE FILE* MOF_open_file(const char* path, std::string& full_path);
+MOF_LINKAGE int MOF_parse_file(const char* mof_file);
 
 #endif /* _MOF_Parser_h */

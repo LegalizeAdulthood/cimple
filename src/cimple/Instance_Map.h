@@ -32,7 +32,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Instance_Map_Base
+class CIMPLE_LIBCIMPLE_LINKAGE Instance_Map_Base
 {
 public:
 

@@ -7,15 +7,19 @@
 
     (A) Should all properties be initially null?
 
+    (A) Should we create the Pegasus C++ interface adapter?
+
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
     N
     N Now
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
-    (A) Heed the PEGASUS_REPOSITORY_MODE environment variable in regmod.
+    (A) Lifecycle indications broken.
 
-    (A) Add version tag to meta-data.
+    (A) Create user threading model.
+
+    (A) Test overriding of properties.
 
     (A) Verify that genclass handles property overrides correctly (when
 	for example an override adds a key qualifier).
@@ -34,6 +38,8 @@
     A A-priorities
     A
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+    (A) Test with SFCB (Small-Footprint CIM Broker)
 
     (A) Rename "string" and "datetime".
 
@@ -54,13 +60,17 @@
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 
+    (B) Add -u option to regmod (-u means unregister provider).
+
+    (B) Add -m option to regmod to show final MOF.
+
+    (B) Add version tag to meta-data.
+
     (B) Make copy() and copy_keys() work on instances of different classes.
 
     (B) Check for schema version incompatibility in regmod?
 
     (B) Implement cimple_module_construct() and cimple_module_destruct().
-
-    (B) Improve error reporting in CMPI adapater.
 
     (B) Improve error reporting in CMPI adapter (include error description).
 
@@ -79,8 +89,6 @@
 
     (B) Reference-counted array class.
 
-    (B) Binary compatibility.
-
     (B) Work through ATTNs.
 
     (B) Filter properties by property-list (after getting them from provider).
@@ -98,6 +106,21 @@
     C C priorities
     C
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+    (C)	Implement pthread_exit().
+
+    (C)	Implement pthread_equal().
+
+    (C)	Mitigate "ambiguous symbol" problem with BOOLEAN, UINT32, boolean, etc.,
+	requiring qualification with "cimple::".
+
+    (C) Implement pthread_join() for Windows.
+
+    (C) Implement pthread_cond_timedwait() for Windows.
+
+    (C) Implement pthread_key_t destructor proc on Windows.
+
+    (C) Implement static TLS initializers.
 
     (C) Implement serialization.
 
@@ -190,3 +213,5 @@
 
     (X) Removed checking for root#cimv2 directories in regmod (not all clients
 	create this).
+
+    (X) Heed the PEGASUS_REPOSITORY_MODE environment variable in regmod.

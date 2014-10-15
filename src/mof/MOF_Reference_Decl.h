@@ -31,7 +31,7 @@
 #include <MOF_Feature.h>
 #include <MOF_Object_Reference.h>
 
-class MOF_Reference_Decl : public MOF_Feature
+class MOF_LINKAGE MOF_Reference_Decl : public MOF_Feature
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
     virtual void validate();
 
-    virtual MOF_Reference_Decl* clone() const;
+    virtual MOF_Element* clone() const;
 
     void validate_obj_ref(MOF_Object_Reference* obj_ref);
 

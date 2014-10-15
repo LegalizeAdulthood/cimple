@@ -460,12 +460,12 @@ static const unsigned char yystos[] =
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Property)					\
+#define YYBACKUP(Token, Value)					\
 do								\
   if (yychar == YYEMPTY && yylen == 1)				\
     {								\
       yychar = (Token);						\
-      yylval = (Property);						\
+      yylval = (Value);						\
       yytoken = YYTRANSLATE (yychar);				\
       YYPOPSTACK;						\
       goto yybackup;						\
@@ -519,13 +519,13 @@ do {						\
     yysymprint Args;				\
 } while (0)
 
-# define YYDSYMPRINTF(Title, Token, Property, Location)		\
+# define YYDSYMPRINTF(Title, Token, Value, Location)		\
 do {								\
   if (yydebug)							\
     {								\
       YYFPRINTF (stderr, "%s ", Title);				\
       yysymprint (stderr, 					\
-                  Token, Property);	\
+                  Token, Value);	\
       YYFPRINTF (stderr, "\n");					\
     }								\
 } while (0)
@@ -593,7 +593,7 @@ int yydebug;
 #else /* !YYDEBUG */
 # define YYDPRINTF(Args)
 # define YYDSYMPRINT(Args)
-# define YYDSYMPRINTF(Title, Token, Property, Location)
+# define YYDSYMPRINTF(Title, Token, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
 #endif /* !YYDEBUG */
@@ -1171,7 +1171,7 @@ yyreduce:
 	yyval.literal = new MOF_Literal();
 	MOF_ASSERT(yyval.literal != NULL);
 	yyval.literal->value_type = TOK_BOOL_VALUE;
-	yyval.literal->bool_value = yyvsp[0].bool_value;
+	yyval.literal->bool_value = yyvsp[0].bool_value ? true : false;
     }
     break;
 

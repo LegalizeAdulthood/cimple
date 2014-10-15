@@ -27,12 +27,23 @@
 #ifndef _cimple_platform_LINUX_PPC_GNU_h
 #define _cimple_platform_LINUX_PPC_GNU_h
 
-#define CIMPLE_PLATFORM_LINUX_PPC_GNU
+// #define __USE_UNIX98
+// #define __USE_GNU
 
 // #define CIMPLE_HAVE_ZU
 
 #define CIMPLE_HIDE /* empty */
 
 #define CIMPLE_DEFAULT /* empty */
+
+#define CIMPLE_UINT64 unsigned long long
+
+#define CIMPLE_SINT64 signed long long
+
+#define CIMPLE_UNIX
+
+#define CIMPLE_IMPORT
+
+#define CIMPLE_EXPORT
 
 #endif /* _cimple_platform_LINUX_PPC_GNU_h */

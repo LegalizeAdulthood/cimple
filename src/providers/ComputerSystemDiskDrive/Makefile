@@ -1,21 +1,17 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-ifdef PEGASUS_HOME
-include $(TOP)/mak/pegasus.mak
-endif
-
 INCLUDES += -I../repository
 
 SH_LIBRARY = cmplcsdd
 
 SOURCES = ComputerSystemDiskDrive_Provider.cpp module.cpp
 
-LIBRARIES = -lcimple -lcmplrep
+LIBRARIES = cimple cmplrep
 
 include $(TOP)/mak/rules.mak
 
-FLAGS += -fno-rtti -fno-exceptions
+FLAGS += $(SIZE_OPTIMIZATION_FLAGS) 
 
 reg:
 	regmod -c $(TARGET)

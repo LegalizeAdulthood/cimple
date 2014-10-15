@@ -31,7 +31,7 @@
 #include <MOF_Parameter.h>
 #include <MOF_Feature.h>
 
-class MOF_Property_Decl : public MOF_Feature
+class MOF_LINKAGE MOF_Property_Decl : public MOF_Feature
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
     virtual void validate();
 
-    virtual MOF_Property_Decl* clone() const;
+    virtual MOF_Element* clone() const;
 
     int data_type;
     int array_index;

@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_cast
 SOURCES = D.cpp C.cpp B.cpp A.cpp E.cpp main.cpp
-LIBRARIES = -lcimple
+LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
 

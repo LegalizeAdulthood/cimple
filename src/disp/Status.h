@@ -28,6 +28,7 @@
 #define _cimple_Status_h
 
 #include <cimple/config.h>
+#include "linkage.h"
 
 #define CIMPLE_ASSERT_STATUS(status) \
     do \
@@ -57,7 +58,7 @@ enum Status
     STATUS_UNKNOWN_METHOD,
 };
 
-extern const char* __status_messages[];
+CIMPLEDISP_LINKAGE extern const char* __status_messages[];
 
 inline const char* Status_to_string(Status status)
 {

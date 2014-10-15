@@ -59,8 +59,13 @@ int main(int arc, char** argv)
 	assert(strcmp(buffer1, buffer2) == 0);
 
 	Datetime dt2;
+
 	dt2.set_timestamp(
 	    year, month, day, hours, minutes, seconds, microseconds, utc);
+
+	dt2.get_timestamp(
+	    year, month, day, hours, minutes, seconds, microseconds, utc);
+
 	assert(dt2.is_timestamp());
 	char buffer3[Datetime::BUFFER_SIZE];
 	dt2.ascii(buffer3);
@@ -121,6 +126,18 @@ int main(int arc, char** argv)
 	in2.set_interval(days, hours, minutes, seconds, microseconds);
 	assert(in2.is_interval());
 	assert(in1 == in2);
+
+	uint32 tdays;
+	uint32 thours;
+	uint32 tminutes;
+	uint32 tseconds;
+	uint32 tmicroseconds;
+	in1.get_interval(tdays, thours, tminutes, tseconds, tmicroseconds);
+	assert(tdays == 1);
+	assert(thours == 2);
+	assert(tminutes == 3);
+	assert(tseconds == 4);
+	assert(tmicroseconds == 5);
 
 	char buffer[Datetime::BUFFER_SIZE];
 	in1.ascii(buffer, false);

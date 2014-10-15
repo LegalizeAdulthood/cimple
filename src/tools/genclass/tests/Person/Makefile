@@ -5,7 +5,7 @@ export CIMPLE_MOF_PATH:=$(CIMPLE_MOF_PATH):../mof
 
 BINARY = test_person
 SOURCES = Person.cpp main.cpp
-LIBRARIES = -lcimple
+LIBRARIES = cimple
 INCLUDES += -I.
 
 include $(TOP)/mak/rules.mak

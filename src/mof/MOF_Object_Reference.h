@@ -32,7 +32,7 @@
 #include <MOF_Literal.h>
 #include <MOF_Key_Value_Pair.h>
 
-class MOF_Object_Reference
+class MOF_LINKAGE MOF_Object_Reference
 {
 public:
 

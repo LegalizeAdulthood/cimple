@@ -28,6 +28,7 @@
 #define _cimple_State_h
 
 #include <cimple/config.h>
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

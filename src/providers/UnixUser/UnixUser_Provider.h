@@ -39,7 +39,7 @@ public:
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
 	const UnixUser* instance);
 
-    CIMPLE_HIDE static int proc(
+    static CIMPLE_HIDE int proc(
 	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
 };
 

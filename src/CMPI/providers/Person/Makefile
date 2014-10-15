@@ -1,10 +1,5 @@
 TOP = ../../../..
 include $(TOP)/mak/config.mak
-include $(TOP)/mak/pegasus.mak
-
-ifdef PEGASUS_HOME
-include $(TOP)/mak/pegasus.mak
-endif
 
 SH_LIBRARY = PersonProvider
 
@@ -14,7 +9,9 @@ INCLUDES += $(CMPI_INCLUDES)
 
 SOURCES = Person_Provider.cpp Link_Provider.cpp module.cpp
 
-LIBRARIES = -lcimple -lcmplrep -lcimplecmpi
+LIBRARIES = cimple cmplrep cimplecmpi
+
+INCLUDES += -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
 
 include $(TOP)/mak/rules.mak
 

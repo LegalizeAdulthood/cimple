@@ -30,7 +30,7 @@
 #include <MOF_Config.h>
 #include <MOF_Element.h>
 
-class MOF_Named_Element : public MOF_Element
+class MOF_LINKAGE MOF_Named_Element : public MOF_Element
 {
 public:
 
@@ -38,7 +38,7 @@ public:
 
     virtual ~MOF_Named_Element();
 
-    virtual MOF_Named_Element* clone() const = 0;
+    virtual MOF_Element* clone() const = 0;
 
     char* name;
 };

@@ -5,7 +5,7 @@ BINARY = cimpled
 
 EXTRA_INCLUDES = -I.
 
-LIBRARIES = -lpthread
+LIBRARIES =
 
 SOURCES = \
     main.cpp \

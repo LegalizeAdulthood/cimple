@@ -13,16 +13,30 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Reference _CIM_Dependency_Antecedent;
+extern CIMPLE_HIDE const Meta_Reference _CIM_DatabaseAdministrator_Antecedent;
 
-CIMPLE_HIDE
-extern const Meta_Reference _CIM_Dependency_Dependent;
+const Meta_Reference _CIM_DatabaseAdministrator_Antecedent =
+{
+    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
+    "Antecedent",
+    &CIM_CommonDatabase::static_meta_class,
+    CIMPLE_OFF(CIM_DatabaseAdministrator,Antecedent)
+};
+
+extern CIMPLE_HIDE const Meta_Reference _CIM_DatabaseAdministrator_Dependent;
+
+const Meta_Reference _CIM_DatabaseAdministrator_Dependent =
+{
+    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
+    "Dependent",
+    &CIM_UserEntity::static_meta_class,
+    CIMPLE_OFF(CIM_DatabaseAdministrator,Dependent)
+};
 
 static Meta_Feature* _CIM_DatabaseAdministrator_meta_features[] =
 {
-    (Meta_Feature*)&_CIM_Dependency_Antecedent,
-    (Meta_Feature*)&_CIM_Dependency_Dependent,
+    (Meta_Feature*)&_CIM_DatabaseAdministrator_Antecedent,
+    (Meta_Feature*)&_CIM_DatabaseAdministrator_Dependent,
 };
 
 const Meta_Class CIM_DatabaseAdministrator::static_meta_class =

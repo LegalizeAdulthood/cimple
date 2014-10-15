@@ -64,6 +64,7 @@ inline uint8& null_of(const Meta_Property* mp, const void* prop)
     return *((uint8*)prop + type_size_of(mp));
 }
 
+CIMPLE_LIBCIMPLE_LINKAGE
 bool property_eq(const Meta_Property* mp, const void* prop1, const void* prop2);
 
 CIMPLE_NAMESPACE_END

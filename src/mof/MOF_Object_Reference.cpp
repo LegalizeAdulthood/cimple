@@ -24,6 +24,7 @@
 **==============================================================================
 */
 
+#include <vector>
 #include "MOF_Object_Reference.h"
 #include "MOF_Error.h"
 #include "MOF_String.h"
@@ -31,7 +32,9 @@
 #include "MOF_Class_Decl.h"
 #include "REF_Parser.h"
 
+#ifdef __USE_GNU
 extern "C" FILE* open_memstream(char **, size_t *);
+#endif
 
 MOF_Object_Reference::~MOF_Object_Reference()
 {
@@ -195,16 +198,52 @@ void MOF_Object_Reference::print(FILE* stream) const
 
 char* MOF_Object_Reference::to_string() const
 {
+
+#ifdef __USE_GNU
+
     char* buffer = 0;
     size_t buffer_size = 0;
-
     FILE* stream = open_memstream(&buffer, &buffer_size);
-
     print(stream);
     fputc('\0', stream);
     fclose(stream);
 
     return buffer;
+
+#else /* __USE_GNU */
+
+    const char FILE_NAME[] = "memstream.tmp";
+
+    // Write memstream temporary file:
+
+    FILE* stream = fopen(FILE_NAME, "wb");
+
+    if (!stream)
+	MOF_error_printf("failed to open %s for write", FILE_NAME);
+
+    print(stream);
+    fclose(stream);
+
+    // Reopen file for read:
+
+    stream = fopen(FILE_NAME, "rb");
+
+    if (!stream)
+	MOF_error_printf("failed to open %s for read", FILE_NAME);
+
+    size_t n;
+    char buffer[4096];
+    std::vector<char> v;
+
+    while ((n = fread(buffer, 1, sizeof(buffer), stream)) > 0)
+	v.insert(v.end(), buffer, buffer + n);
+
+    v.push_back('\0');
+    fclose(stream);
+
+    return strdup(&v[0]);
+
+#endif /* __USE_GNU */
 }
 
 char* MOF_Object_Reference::normalize(const char* asc7)

@@ -1,15 +1,14 @@
-TARGET = $(BIN)/$(BINARY)
+TARGET = $(call bin_target,$(BINARY))
 
-$(TARGET): $(OBJECTS)
-	mkdir -p $(BIN)
-ifdef STATIC_LIBSTDCXX
-	cp $(STATIC_LIBSTDCXX) $(LIB)
-endif
-	$(CXX) $(FLAGS) $(RPATH_OPT) -o $(TARGET) $(OBJECTS) -L$(LIB) $(LIBRARIES)
+$(TARGET): $(OBJECTS) $(BIN)/target
+	$(call make_bin,$(BINARY),$(OBJECTS),$(LIBRARIES))
 
 size:
-	size $(TARGET)
+	$(SIZE) $(TARGET)
 
 gen:
 
 include $(TOP)/mak/sub.mak
+
+clean:
+	$(RM) $(OBJECTS) $(TARGET) $(CLEAN) depend.mak

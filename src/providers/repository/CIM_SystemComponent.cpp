@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Reference _CIM_SystemComponent_GroupComponent;
+extern CIMPLE_HIDE const Meta_Reference _CIM_SystemComponent_GroupComponent;
 
 const Meta_Reference _CIM_SystemComponent_GroupComponent =
 {
@@ -24,8 +23,7 @@ const Meta_Reference _CIM_SystemComponent_GroupComponent =
     CIMPLE_OFF(CIM_SystemComponent,GroupComponent)
 };
 
-CIMPLE_HIDE
-extern const Meta_Reference _CIM_SystemComponent_PartComponent;
+extern CIMPLE_HIDE const Meta_Reference _CIM_SystemComponent_PartComponent;
 
 const Meta_Reference _CIM_SystemComponent_PartComponent =
 {

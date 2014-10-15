@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_datetime
 SOURCES = main.cpp
-LIBRARIES = -lcimple
+LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
 

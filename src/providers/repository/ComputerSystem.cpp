@@ -13,77 +13,53 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern CIMPLE_HIDE const Meta_Property _CIM_System_Name;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_System_CreationClassName;
+extern CIMPLE_HIDE const Meta_Property _CIM_System_CreationClassName;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_System_NameFormat;
+extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_NameFormat;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_System_PrimaryOwnerName;
+extern CIMPLE_HIDE const Meta_Property _CIM_System_PrimaryOwnerName;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_System_PrimaryOwnerContact;
+extern CIMPLE_HIDE const Meta_Property _CIM_System_PrimaryOwnerContact;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_System_Roles;
+extern CIMPLE_HIDE const Meta_Property _CIM_System_Roles;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo;
+extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_OtherIdentifyingInfo;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions;
+extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_IdentifyingDescriptions;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ComputerSystem_Dedicated;
+extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_Dedicated;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions;
+extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_OtherDedicatedDescriptions;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ComputerSystem_ResetCapability;
+extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_ResetCapability;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ComputerSystem_PowerManagementCapabilities;
+extern CIMPLE_HIDE const Meta_Property _CIM_ComputerSystem_PowerManagementCapabilities;
 
 static Meta_Feature* _ComputerSystem_meta_features[] =
 {
@@ -91,7 +67,7 @@ static Meta_Feature* _ComputerSystem_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedElement_Description,
     (Meta_Feature*)&_CIM_ManagedElement_ElementName,
     (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)&_CIM_System_Name,
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
@@ -102,7 +78,7 @@ static Meta_Feature* _ComputerSystem_meta_features[] =
     (Meta_Feature*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
     (Meta_Feature*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
     (Meta_Feature*)&_CIM_System_CreationClassName,
-    (Meta_Feature*)&_CIM_System_NameFormat,
+    (Meta_Feature*)&_CIM_ComputerSystem_NameFormat,
     (Meta_Feature*)&_CIM_System_PrimaryOwnerName,
     (Meta_Feature*)&_CIM_System_PrimaryOwnerContact,
     (Meta_Feature*)&_CIM_System_Roles,

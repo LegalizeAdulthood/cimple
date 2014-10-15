@@ -31,30 +31,30 @@
 
 #define MOF_stricmp strcasecmp
 
-extern void MOF_fix_case(
+MOF_LINKAGE extern void MOF_fix_case(
     char* p, 
     const char* q);
 
-extern void MOF_strtolower(
+MOF_LINKAGE extern void MOF_strtolower(
     char* s);
 
-extern size_t MOF_count_char(
+MOF_LINKAGE extern size_t MOF_count_char(
     const char* str, 
     size_t length, 
     char ch);
 
-size_t MOF_char16_to_asc7(
+MOF_LINKAGE size_t MOF_char16_to_asc7(
     MOF_char16 ch, 
     char str[7]);
 
-size_t MOF_asc7_to_char16(
+MOF_LINKAGE size_t MOF_asc7_to_char16(
     const char* str,
     MOF_char16* ch);
 
-char* MOF_unescape(
+MOF_LINKAGE char* MOF_unescape(
     const char* asc7); 
 
-char* MOF_escape(
+MOF_LINKAGE char* MOF_escape(
     const char* asc7);
 
 #endif /* _MOF_String_h */

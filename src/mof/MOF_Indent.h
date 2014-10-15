@@ -29,6 +29,6 @@
 
 #include <MOF_Config.h>
 
-extern void MOF_Indent(size_t nesting);
+MOF_LINKAGE extern void MOF_Indent(size_t nesting);
 
 #endif /* _MOF_Indent_h */

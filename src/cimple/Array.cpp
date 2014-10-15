@@ -67,7 +67,7 @@ void Array_Base::_fill(char* p, size_t size, const void* elem)
 	    _ctor(p, elem);
     }
     else
-	bzero(p, nbytes);
+	memset(p, 0, nbytes);
 }
 
 void Array_Base::_assign_no_release(const char* data, size_t size)
@@ -101,13 +101,13 @@ void Array_Base::_construct(
 
 Array_Base::Array_Base(size_t esize) : _esize(esize)
 {
-    bzero(this, sizeof(*this));
+    memset(this, 0, sizeof(*this));
     _esize = esize;
 }
 
 Array_Base::Array_Base(size_t esize, Ctor_Proc ctor, Dtor_Proc dtor)
 {
-    bzero(this, sizeof(*this));
+    memset(this, 0, sizeof(*this));
     _esize = esize;
     _ctor = ctor;
     _dtor = dtor;

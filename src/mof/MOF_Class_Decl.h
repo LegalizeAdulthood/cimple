@@ -40,7 +40,7 @@
 
 /** Class declaration.
 */
-class MOF_Class_Decl : public MOF_Qualified_Element
+class MOF_LINKAGE MOF_Class_Decl : public MOF_Qualified_Element
 {
 public:
 
@@ -48,7 +48,7 @@ public:
 
     ~MOF_Class_Decl();
 
-    virtual MOF_Class_Decl* clone() const;
+    virtual MOF_Element* clone() const;
 
     void validate();
 

@@ -11,7 +11,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class MyEmbeddedClass : public Instance
+class CIMPLE_LINKAGE MyEmbeddedClass : public Instance
 {
 public:
     // MyEmbeddedClass features:

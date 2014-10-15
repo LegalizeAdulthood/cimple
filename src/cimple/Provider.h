@@ -163,7 +163,7 @@ enum Provider_Operation
 //
 //==============================================================================
 
-class Instance;
+struct Instance;
 
 /** This function is called repeatedly by an indication provider to deliver 
     indications. It is called one final time with instance equal to zero,
@@ -232,8 +232,6 @@ public:
 
     Enum_Instances_Proc _proc;
     void* _client_data;
-
-    template<class PROVIDER> friend class Provider_Proc_T;
 };
 
 /** Called each time a qualifying associator name is found. A null value for
@@ -259,7 +257,7 @@ typedef int (*Provider_Proc)(
 
 /** Every provider must resolve this symbol.
 */
-extern "C" void cimple_repository(
+extern "C" CIMPLE_EXPORT void cimple_repository(
     const Meta_Class* const*& meta_classes,
     size_t& num_meta_classes);
 

@@ -353,7 +353,7 @@ qual_decl_body
 	$$ = new MOF_Qualifier_Decl();
 	MOF_ASSERT($$ != NULL);
 	$$->name = $1;
-	$$->data_type = $3;
+	$$->data_type = (int)$3;
 	$$->array_index = $4.array_index;
 	$$->initializer = $4.initializer;
 	$$->scope = $5;
@@ -378,13 +378,13 @@ qual_decl_array_init
     : array_index TOK_EQUAL array_init
     {
 	MOF_trace("qual_decl_array_init:1");
-	$$.array_index = $1;
+	$$.array_index = (int)$1;
 	$$.initializer = $3;
     }
     | array_index
     {
 	MOF_trace("qual_decl_array_init:2");
-	$$.array_index = $1;
+	$$.array_index = (int)$1;
 	$$.initializer = NULL;
     }
     ;
@@ -762,7 +762,7 @@ prop_decl_head
 	MOF_ASSERT($$ != NULL);
 	$$->type = MOF_FEATURE_PROP;
 	$$->name = $2;
-	$$->data_type = $1;
+	$$->data_type = (int)$1;
     }
     ;
 
@@ -783,13 +783,13 @@ prop_decl_array_init
     : array_index TOK_EQUAL array_init
     {
 	MOF_trace("prop_decl_array_init:1");
-	$$.array_index = $1;
+	$$.array_index = (int)$1;
 	$$.initializer = $3;
     }
     | array_index
     {
 	MOF_trace("prop_decl_array_init:2");
-	$$.array_index = $1;
+	$$.array_index = (int)$1;
 	$$.initializer = NULL;
     }
     ;
@@ -917,7 +917,7 @@ method_head
 	MOF_ASSERT($$ != NULL);
 	$$->type = MOF_FEATURE_METHOD;
 	$$->name = $2;
-	$$->data_type = $1;
+	$$->data_type = (int)$1;
     }
     ;
 
@@ -961,7 +961,7 @@ param
     {
 	MOF_trace("param:1");
 	$$ = $1;
-	$$->array_index = $2;
+	$$->array_index = (int)$2;
     }
     | qual_list param_head param_body
     {
@@ -969,7 +969,7 @@ param
 	$1->validate_list(MOF_SCOPE_PARAMETER);
 	$$ = $2;
 	$$->qualifiers = $1;
-	$$->array_index = $3;
+	$$->array_index = (int)$3;
     }
     ;
 
@@ -1001,7 +1001,7 @@ param_data_type
     {
 	MOF_trace("param_data_type:1");
 	$$ = new MOF_Parameter();
-	$$->data_type = $1;
+	$$->data_type = (int)$1;
 	$$->ref_name = NULL;
     }
     | object_ref
@@ -1362,7 +1362,7 @@ literal
 	$$ = new MOF_Literal();
 	MOF_ASSERT($$ != NULL);
 	$$->value_type = TOK_BOOL_VALUE;
-	$$->bool_value = $1;
+	$$->bool_value = $1 ? true : false;
     }
     | string_value
     {

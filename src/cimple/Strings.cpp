@@ -109,6 +109,8 @@ char* str_clone(const char* s)
 
 char* str_printf(const char* format, ...)
 {
+#ifdef __USE_GNU
+
     va_list ap;
     char* str;
 
@@ -117,13 +119,76 @@ char* str_printf(const char* format, ...)
     va_end(ap);
 
     return str;
+
+#else /* __USE_GNU */
+
+    int n;
+    int size = 128;
+    char *p;
+    va_list ap;
+
+    if ((p = (char*)malloc(size)) == NULL)
+	return 0;
+
+    for (;;)
+    {
+	va_start(ap, format);
+	n = _vsnprintf(p, size, format, ap);
+	va_end(ap);
+
+	if (n > -1 && n < size)
+	    return p;
+
+	if (n > -1)
+	    size = n + 1;
+	else
+	    size *= 2;
+
+	if ((p = (char*)realloc(p, size)) == NULL)
+	    return 0;
+    }
+
+    return 0;
+
+#endif /* __USE_GNU */
 }
 
 char* str_vprintf(const char* format, va_list ap)
 {
+#ifdef __USE_GNU
+
     char* str;
     vasprintf(&str, format, ap);
     return str;
+
+#else /* __USE_GNU */
+
+    int n;
+    int size = 128;
+    char *p;
+
+    if ((p = (char*)malloc(size)) == NULL)
+	return 0;
+
+    for (;;)
+    {
+	n = _vsnprintf(p, size, format, ap);
+
+	if (n > -1 && n < size)
+	    return p;
+
+	if (n > -1)
+	    size = n + 1;
+	else
+	    size *= 2;
+
+	if ((p = (char*)realloc(p, size)) == NULL)
+	    return 0;
+    }
+
+    return 0;
+
+#endif /* __USE_GNU */
 }
 
 CIMPLE_NAMESPACE_END

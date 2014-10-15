@@ -24,6 +24,7 @@
 **==============================================================================
 */
 
+#include <cimple/config.h>
 #include <cassert>
 #include <Pegasus/Common/XmlReader.h>
 #include <disp/Error.h>
@@ -60,8 +61,8 @@ static void _to_pegasus_scalar(
 
     switch (Type(mp->type))
     {
-	case BOOLEAN:
-	    value.set(*((boolean*)field));
+	case cimple::BOOLEAN:
+	    value.set(*((cimple::boolean*)field));
             break;
 
 	case UINT8:
@@ -80,7 +81,7 @@ static void _to_pegasus_scalar(
 	    value.set(*((sint16*)field));
             break;
 
-	case UINT32:
+	case cimple::UINT32:
 	    value.set(*((uint32*)field));
             break;
 
@@ -88,7 +89,7 @@ static void _to_pegasus_scalar(
 	    value.set(*((sint32*)field));
             break;
 
-	case UINT64:
+	case cimple::UINT64:
 	    value.set(*((uint64*)field));
             break;
 
@@ -173,8 +174,8 @@ static void _to_pegasus_array(
 
     switch (Type(mp->type))
     {
-	case BOOLEAN:
-	    _to_pegasus_array_helper<boolean, Boolean>::func(mp, f, v);
+	case cimple::BOOLEAN:
+	    _to_pegasus_array_helper<cimple::boolean, Boolean>::func(mp, f, v);
             break;
 
 	case UINT8:
@@ -193,7 +194,7 @@ static void _to_pegasus_array(
 	    _to_pegasus_array_helper<sint16, Sint16>::func(mp, f, v);
             break;
 
-	case UINT32:
+	case cimple::UINT32:
 	    _to_pegasus_array_helper<uint32, Uint32>::func(mp, f, v);
             break;
 
@@ -201,7 +202,7 @@ static void _to_pegasus_array(
 	    _to_pegasus_array_helper<sint32, Sint32>::func(mp, f, v);
             break;
 
-	case UINT64:
+	case cimple::UINT64:
 	    _to_pegasus_array_helper<uint64, Uint64>::func(mp, f, v);
             break;
 
@@ -515,7 +516,7 @@ static int _to_cimple_property(
 	switch (v.getType())
 	{
 	    case CIMTYPE_BOOLEAN:
-		_to_cimple_scalar<Boolean, boolean>::func(v, ci, f);
+		_to_cimple_scalar<Boolean, cimple::boolean>::func(v, ci, f);
 		break;
 
 	    case CIMTYPE_UINT8:
@@ -591,7 +592,7 @@ static int _to_cimple_property(
 	switch (v.getType())
 	{
 	    case CIMTYPE_BOOLEAN:
-		_to_cimple_array<Boolean, boolean>::func(v, ci, f);
+		_to_cimple_array<Boolean, cimple::boolean>::func(v, ci, f);
 		break;
 
 	    case CIMTYPE_UINT8:

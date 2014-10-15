@@ -29,21 +29,45 @@
 
 #include <string>
 #include "crc.h"
+#include "linkage.h"
 
+CIMPLEUTIL_LINKAGE 
 std::string toupper(const char* str);
 
+CIMPLEUTIL_LINKAGE 
 bool is_c_ident(const char* str);
 
+CIMPLEUTIL_LINKAGE 
 void set_arg0(const char* arg0);
 
+CIMPLEUTIL_LINKAGE 
 void err(const char* format, ...);
 
+CIMPLEUTIL_LINKAGE 
 void warn(const char* format, ...);
 
-std::string basename_of(const char* path);
+CIMPLEUTIL_LINKAGE 
+std::string base_name(const std::string& path);
 
-bool exists(const char* path);
+CIMPLEUTIL_LINKAGE 
+bool exists(const std::string& path);
 
+CIMPLEUTIL_LINKAGE 
 bool is_dir(const char* path);
+
+CIMPLEUTIL_LINKAGE 
+bool is_absolute(const char* path);
+
+CIMPLEUTIL_LINKAGE 
+std::string shlib_name(const std::string& name);
+
+CIMPLEUTIL_LINKAGE 
+std::string shlib_dir(const std::string& root);
+
+CIMPLEUTIL_LINKAGE 
+std::string full_shlib_name(const std::string& root, const std::string& name);
+
+CIMPLEUTIL_LINKAGE 
+std::string shlib_basename(const std::string& path);
 
 #endif /* _cimple_util_h */

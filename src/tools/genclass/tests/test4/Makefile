@@ -1,17 +1,17 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-export CIMPLE_MOF_PATH:=$(CIMPLE_MOF_PATH):../mof
+export CIMPLE_MOF_PATH:=$(TOP)/schema
 
 BINARY = genclass_test4
 SOURCES = Erp2.cpp main.cpp
-LIBRARIES = -lcimple
+LIBRARIES = cimple
 INCLUDES += -I.
 
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN)/genclass -I../mof Erp2
+	$(BIN)/genclass -I ../mof Erp2
 
 tests:
 	$(TARGET)

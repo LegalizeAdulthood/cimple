@@ -41,13 +41,13 @@ MOF_Qualifier_Decl::~MOF_Qualifier_Decl()
     initializer->delete_list();
 }
 
-MOF_Qualifier_Decl* MOF_Qualifier_Decl::clone() const
+MOF_Element* MOF_Qualifier_Decl::clone() const
 {
     MOF_Qualifier_Decl* tmp = new MOF_Qualifier_Decl();
     tmp->name = strdup(name);
     tmp->data_type = data_type;
     tmp->array_index = array_index;
-    tmp->initializer = initializer->clone();
+    tmp->initializer = (MOF_Literal*)initializer->clone();
     tmp->scope = scope;
     tmp->flavor = flavor;
 

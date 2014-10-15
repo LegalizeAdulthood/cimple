@@ -13,7 +13,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Methods : public Instance
+class CIMPLE_LINKAGE Methods : public Instance
 {
 public:
     // Methods features:
@@ -22,7 +22,7 @@ public:
     CIMPLE_CLASS(Methods)
 };
 
-class Methods_foo_method : public Instance
+class CIMPLE_LINKAGE Methods_foo_method : public Instance
 {
 public:
     Property<uint32> arg1;
@@ -35,7 +35,7 @@ public:
     CIMPLE_METHOD(Methods_foo_method)
 };
 
-class Methods_foo2_method : public Instance
+class CIMPLE_LINKAGE Methods_foo2_method : public Instance
 {
 public:
     Arg* arg1;
@@ -44,7 +44,7 @@ public:
     CIMPLE_METHOD(Methods_foo2_method)
 };
 
-class Methods_foo3_method : public Instance
+class CIMPLE_LINKAGE Methods_foo3_method : public Instance
 {
 public:
     Property<String> return_value;

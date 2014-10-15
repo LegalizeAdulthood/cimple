@@ -6,10 +6,6 @@ SH_LIBRARY = cimple
 SOURCES = \
     Id_Pool.cpp \
     List.cpp \
-    Scheduler.cpp \
-    Threads.cpp \
-    Cond.cpp \
-    Cond_Queue.cpp \
     Mutex.cpp \
     Time.cpp \
     Auto_Mutex.cpp \
@@ -37,13 +33,14 @@ SOURCES = \
     String.cpp \
     Strings.cpp \
     Type.cpp \
-    Property.cpp
+    Property.cpp \
+    Scheduler.cpp
 
-LIBRARIES = -ldl -lpthread
+LIBRARIES =
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
-DEFINES += -DCIMPLE_LIBCIMPLE_INTERNAL
+DEFINES += -DCIMPLE_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 

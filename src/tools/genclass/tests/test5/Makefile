@@ -1,7 +1,7 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-export CIMPLE_MOF_PATH:=$(CIMPLE_MOF_PATH):../mof
+export CIMPLE_MOF_PATH:=$(TOP)/schema
 
 BINARY = genclass_test5
 
@@ -16,7 +16,7 @@ SOURCES = \
     CIM_System.cpp \
     main.cpp
 
-LIBRARIES = -lcimple
+LIBRARIES = cimple
 INCLUDES += -I.
 
 include $(TOP)/mak/rules.mak

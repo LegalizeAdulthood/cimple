@@ -1,0 +1,29 @@
+#pragma locale ("en_US")
+
+instance of PG_ProviderModule
+{
+    Name = "FanProviderModule";
+    Vendor = "Pegasus";
+    Version = "2.0.0";
+    InterfaceType = "C++Default";
+    InterfaceVersion = "2.2.0";
+    Location = "FanProvider";
+};
+
+instance of PG_Provider
+{
+    ProviderModuleName = "FanProviderModule";
+    Name = "FanProvider";
+};
+
+instance of PG_ProviderCapabilities
+{
+    ProviderModuleName = "FanProviderModule";
+    ProviderName = "FanProvider";
+    CapabilityID = "1";
+    ClassName = "Fan";
+    Namespaces = { "root/cimv2" };
+    ProviderType = { 2 /* instance */, 5 /* method */ };
+    SupportedProperties = NULL;
+    SupportedMethods = NULL;
+};

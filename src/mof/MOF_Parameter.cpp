@@ -28,7 +28,7 @@
 #include "MOF_String.h"
 #include "MOF_Error.h"
 
-MOF_Parameter* MOF_Parameter::clone() const 
+MOF_Element* MOF_Parameter::clone() const 
 {
     MOF_ASSERT("not implemented" == 0);
     return 0;

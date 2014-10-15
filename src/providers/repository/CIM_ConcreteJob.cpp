@@ -13,95 +13,74 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern CIMPLE_HIDE const Meta_Property _CIM_ConcreteJob_Name;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+const Meta_Property _CIM_ConcreteJob_Name =
+{
+    CIMPLE_FLAG_PROPERTY,
+    "Name",
+    STRING,
+    0,
+    CIMPLE_OFF(CIM_ConcreteJob,Name)
+};
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_JobStatus;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_TimeSubmitted;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_JobStatus;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_ScheduledStartTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_TimeSubmitted;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_StartTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_ScheduledStartTime;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_ElapsedTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_StartTime;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_JobRunTimes;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_ElapsedTime;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_RunMonth;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_JobRunTimes;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_RunDay;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunMonth;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_RunDayOfWeek;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunDay;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_RunStartInterval;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunDayOfWeek;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_LocalOrUtcTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_RunStartInterval;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_UntilTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_LocalOrUtcTime;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_Notify;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_UntilTime;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_Owner;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_Notify;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_Priority;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_Owner;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_PercentComplete;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_Priority;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_DeleteOnCompletion;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_PercentComplete;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_ErrorCode;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_DeleteOnCompletion;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_ErrorDescription;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_ErrorCode;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_RecoveryAction;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_ErrorDescription;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Job_OtherRecoveryAction;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_RecoveryAction;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ConcreteJob_InstanceID;
+extern CIMPLE_HIDE const Meta_Property _CIM_Job_OtherRecoveryAction;
+
+extern CIMPLE_HIDE const Meta_Property _CIM_ConcreteJob_InstanceID;
 
 const Meta_Property _CIM_ConcreteJob_InstanceID =
 {
@@ -112,8 +91,7 @@ const Meta_Property _CIM_ConcreteJob_InstanceID =
     CIMPLE_OFF(CIM_ConcreteJob,InstanceID)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ConcreteJob_JobState;
+extern CIMPLE_HIDE const Meta_Property _CIM_ConcreteJob_JobState;
 
 const Meta_Property _CIM_ConcreteJob_JobState =
 {
@@ -124,8 +102,7 @@ const Meta_Property _CIM_ConcreteJob_JobState =
     CIMPLE_OFF(CIM_ConcreteJob,JobState)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ConcreteJob_TimeOfLastStateChange;
+extern CIMPLE_HIDE const Meta_Property _CIM_ConcreteJob_TimeOfLastStateChange;
 
 const Meta_Property _CIM_ConcreteJob_TimeOfLastStateChange =
 {
@@ -180,8 +157,7 @@ const Meta_Method CIM_ConcreteJob_RequestStateChange_method::static_meta_class =
     UINT32,
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ConcreteJob_TimeBeforeRemoval;
+extern CIMPLE_HIDE const Meta_Property _CIM_ConcreteJob_TimeBeforeRemoval;
 
 const Meta_Property _CIM_ConcreteJob_TimeBeforeRemoval =
 {
@@ -198,7 +174,7 @@ static Meta_Feature* _CIM_ConcreteJob_meta_features[] =
     (Meta_Feature*)&_CIM_ManagedElement_Description,
     (Meta_Feature*)&_CIM_ManagedElement_ElementName,
     (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)&_CIM_ConcreteJob_Name,
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,

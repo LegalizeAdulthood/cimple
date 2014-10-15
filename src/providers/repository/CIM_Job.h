@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_Job : public Instance
+class CIMPLE_LINKAGE CIM_Job : public Instance
 {
 public:
     // CIM_ManagedElement features:
@@ -55,7 +55,7 @@ public:
     CIMPLE_CLASS(CIM_Job)
 };
 
-class CIM_Job_KillJob_method : public Instance
+class CIMPLE_LINKAGE CIM_Job_KillJob_method : public Instance
 {
 public:
     Property<boolean> DeleteOnKill;

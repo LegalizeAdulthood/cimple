@@ -27,9 +27,11 @@
 #ifndef _cmpi_CMPI_h
 #define _cmpi_CMPI_h
 
+#include <cimple/config.h>
 #include "cmpidt.h"
 #include "cmpift.h"
 #include "cmpimacs.h"
+#include "linkage.h"
 
 #define __CIMPLE_CMPI_PROVIDER(TYPE,PROVIDER) \
     extern "C" CMPI##TYPE##MI* PROVIDER##_Create_##TYPE##MI( \
@@ -67,7 +69,7 @@ enum MI_Type
     MI_TYPE_Association,
 };
 
-void __init_mi(
+CIMPLECMPI_LINKAGE void __init_mi(
     void** adapter,
     const CMPIBroker* broker,
     const CMPIContext* context,

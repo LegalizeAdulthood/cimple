@@ -1,10 +1,6 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-ifdef PEGASUS_HOME
-include $(TOP)/mak/pegasus.mak
-endif
-
 SH_LIBRARY = cmplmyindic
 
 INCLUDES += -I../repository
@@ -13,15 +9,23 @@ SOURCES = \
     MyIndication_Provider.cpp \
     module.cpp
 
-LIBRARIES = -lcimple -lcmplrep
+LIBRARIES = cimple cmplrep
 
 include $(TOP)/mak/rules.mak
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
+ifdef CIMPLE_WINDOWS
+    DEV_NULL=.dev.null
+else
+    DEV_NULL=/dev/null
+endif
+
 reg:
-	cimmofl ../repository/MyEmbeddedClass.mof 2> /dev/null
 	regmod -c $(TARGET)
+
+xxx:
+	cimmofl ../repository/MyEmbeddedClass.mof 2> $(DEV_NULL)
 
 genclass:
 

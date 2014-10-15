@@ -41,6 +41,8 @@ static const Meta_Class* _meta_classes[] =
     &CIM_SystemComponent::static_meta_class,
     &CIM_SystemDevice::static_meta_class,
     &ComputerSystemDiskDrive::static_meta_class,
+    &Thing::static_meta_class,
+    &ThingLink::static_meta_class,
 };
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);

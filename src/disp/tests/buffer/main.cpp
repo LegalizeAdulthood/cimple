@@ -110,7 +110,7 @@ int main(int argc, char** argv)
 	char buffer[32];
 	int m = sprintf(buffer, "%u", uint32(i));
 	b2.append(buffer, m);
-	b.appendf("%zu", i);
+	b.appendf("%u", (unsigned int)i);
     }
 
     assert(b.size() == b2.size());

@@ -24,9 +24,12 @@
 **==============================================================================
 */
 
+// Truncated debugger symbols.
+
+#include <cimple/config.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <getopt.h>
 #include <cstdio>
 #include <cctype>
 #include <cstdlib>
@@ -44,6 +47,7 @@ using namespace std;
 
 const char* arg0;
 static FILE* _os = 0;
+bool linkage_opt = false;
 
 char data_type_tag(int data_type)
 {
@@ -80,6 +84,8 @@ char data_type_tag(int data_type)
 	default:
 	    assert(0);
     }
+
+    return 0;
 }
 
 void put_qual_sig(int qual_mask, string& sig)
@@ -464,7 +470,9 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
 
     // Generate class definition.
 
-    out("class %s : public Instance\n", class_name);
+    const char* linkage = linkage_opt ? "CIMPLE_LINKAGE " : "";
+
+    out("class %s%s : public Instance\n", linkage, class_name);
 
     out("{\n");
     out("public:\n");
@@ -519,7 +527,11 @@ void gen_meth_decl(
 
     // Generate class definition.
 
-    out("class %s_%s_method : public Instance\n", class_name, meth_name);
+    const char* linkage = linkage_opt ? "CIMPLE_LINKAGE " : "";
+
+    out("class %s%s_%s_method : public Instance\n", 
+	linkage, class_name, meth_name);
+
     out("{\n");
     out("public:\n");
     gen_param_decls(class_name, meth_decl);
@@ -527,7 +539,20 @@ void gen_meth_decl(
     out("    CIMPLE_METHOD(%s_%s_method)\n", class_name, meth_name);
     out("};\n");
     nl();
-};
+}
+
+void gen_meth_typedef(
+    const char* class_name,
+    const char* class_origin_name,
+    const MOF_Method_Decl* meth_decl)
+{
+    const char* meth_name = meth_decl->name;
+
+    // Generate class definition.
+
+    out("typedef %s_%s_method %s_%s_method;\n\n", 
+	class_origin_name, meth_name, class_name, meth_name);
+}
 
 void gen_meth_decls(
     const MOF_Class_Decl* class_decl)
@@ -539,7 +564,12 @@ void gen_meth_decls(
 	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p->feature);
 
 	if (meth)
-	    gen_meth_decl(class_decl->name, meth);
+	{
+	    if (strcasecmp(class_decl->name, p->class_origin->name) == 0)
+		gen_meth_decl(class_decl->name, meth);
+	    else
+		gen_meth_typedef(class_decl->name, p->class_origin->name, meth);
+	}
     }
 }
 
@@ -610,22 +640,24 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
 }
 
 void gen_property_def(
-    const MOF_Property_Decl* prop, 
     const char* class_name,
-    bool propagated,
-    bool local)
+    const char* propagating_class_name,
+    const MOF_Property_Decl* prop)
 {
-    // This is necessary to extern the definition which follows.
-    out("CIMPLE_HIDE\n");
-    out("extern const Meta_Property _%s_%s;\n", 
-	class_name, prop->name);
+    // Write external definition (whether propagated or not).
+
+    out("extern CIMPLE_HIDE const Meta_Property _%s_%s;\n", 
+	propagating_class_name, prop->name);
     nl();
 
-    if (!local)
+    // Go no further if property is propagated.
+
+    if (strcasecmp(class_name, propagating_class_name) != 0)
 	return;
 
-    out("const Meta_Property _%s_%s =\n", 
-	class_name, prop->name);
+    // Generate property definition.
+
+    out("const Meta_Property _%s_%s =\n", class_name, prop->name);
     out("{\n");
 
     // Flags field:
@@ -663,18 +695,21 @@ void gen_property_def(
 }
 
 void gen_reference_def(
-    const MOF_Reference_Decl* ref, 
     const char* class_name,
-    bool propagated,
-    bool local)
+    const char* propagating_class_name,
+    const MOF_Reference_Decl* ref)
 {
-    out("CIMPLE_HIDE\n");
-    out("extern const Meta_Reference _%s_%s;\n", 
-	class_name, ref->name);
+    // Write external definition (whether propagated or not).
+    out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n", 
+	propagating_class_name, ref->name);
     nl();
 
-    if (!local)
+    // If propagated, go no further.
+
+    if (strcasecmp(class_name, propagating_class_name) != 0)
 	return;
+
+    // Write the reference declaration.
 
     out("const Meta_Reference _%s_%s =\n", 
 	class_name, ref->name);
@@ -862,8 +897,7 @@ void gen_meth_return_def(
 
 void gen_method_def(
     const MOF_Method_Decl* meth, 
-    const char* class_name,
-    bool propagated)
+    const char* class_name)
 {
     // Generate parameter definitions.
 
@@ -936,16 +970,17 @@ static const char _embedded_object_format[] =
     "\n";
 
 void gen_embedded_object_def(
-    const char* class_name, const char* name, bool propagated, bool local)
+    const char* class_name, 
+    const char* propagating_class_name, 
+    const MOF_Property_Decl* prop)
 {
-    out("CIMPLE_HIDE\n");
-    out("extern const Meta_Reference _%s_%s;\n\n", class_name, name);
+    out("extern CIMPLE_HIDE const Meta_Reference _%s_%s;\n\n", 
+	propagating_class_name, prop->name);
 
-    if (local)
+    if (strcasecmp(class_name, propagating_class_name) == 0)
     {
-
-	out(_embedded_object_format, class_name, name,
-	    name, class_name, name, class_name, name);
+	out(_embedded_object_format, class_name, prop->name,
+	    prop->name, class_name, prop->name, class_name, prop->name);
     }
 }
 
@@ -991,72 +1026,46 @@ void gen_feature_defs(const MOF_Class_Decl* class_decl)
 
 	MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(feature);
 
-	const char* class_origin_name = p->class_origin->name;
+	// Find class that propagated this feature.
 
-	// Is this feature local to this class (or inherited).
-	bool local = strcasecmp(class_name, class_origin_name) == 0;
+	const char* propagating_class_name = 
+	    find_propagating_class(class_decl, feature->name);
+
+	// Property.
 
 	if (prop)
 	{
-	    if (local)
+	    if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
 	    {
-		if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-		    gen_embedded_object_def(
-			class_name, prop->name, p->propagated, local);
-		else
-		    gen_property_def(prop, class_name, p->propagated, local);
+		gen_embedded_object_def(
+		    class_name, propagating_class_name, prop);
 	    }
 	    else
 	    {
-		if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-		{
-		    gen_embedded_object_def(
-			class_origin_name, prop->name, p->propagated, local);
-		}
-		else
-		{
-		    gen_property_def(
-			prop, class_origin_name, p->propagated, local);
-		}
+		gen_property_def(
+		    class_name, propagating_class_name, prop);
 	    }
 	}
+
+	// Reference.
 
 	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(feature);
 
 	if (ref)
 	{
-	    if (local)
-		gen_reference_def(ref, class_decl->name, p->propagated, true);
-	    else
-	    {
-		if (p->propagated)
-		{
-		    const char* tmp = 
-			find_propagating_class(class_decl, ref->name);
-
-		    if (!tmp)
-			err("unexpected error");
-
-		    gen_reference_def(ref, tmp, p->propagated, false);
-		}
-		else
-		{
-		    gen_reference_def(
-			ref, class_decl->name, p->propagated, true);
-		}
-	    }
+	    gen_reference_def(
+		class_name, propagating_class_name, ref);
 	}
 
 	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
 
-	if (meth && local)
-	    gen_method_def(meth, class_decl->name, p->propagated);
+	if (meth && !p->propagated)
+	    gen_method_def(meth, class_decl->name);
     }
 }
 
 void gen_feature_array(const MOF_Class_Decl* class_decl)
 {
-    const char* class_name = class_decl->name;
     MOF_Feature_Info* p = class_decl->all_features;
 
     out("static Meta_Feature* _%s_meta_features[] =\n", class_decl->name);
@@ -1066,44 +1075,36 @@ void gen_feature_array(const MOF_Class_Decl* class_decl)
     {
 	MOF_Feature* feature = p->feature;
 
+	// Find name of class that propagated this feature.
+
+	const char* class_name = 
+	    find_propagating_class(class_decl, feature->name);
+
+	if (!class_name)
+	    err("unexpected error");
+
+	// Property.
+
 	MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(feature);
 
-	const char* class_origin_name = p->class_origin->name;
-	const char* use_class_name;
-
-	bool local = strcasecmp(class_name, class_origin_name) == 0;
-
-	if (local)
-	    use_class_name = class_name;
-	else
-	    use_class_name = class_origin_name;
-
 	if (prop)
-	    out("    (Meta_Feature*)&_%s_%s,\n", use_class_name, prop->name);
+	    out("    (Meta_Feature*)&_%s_%s,\n", class_name, prop->name);
+
+	// Reference.
 
 	MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(feature);
 
 	if (ref)
-	{
-	    if (p->propagated)
-	    {
-		const char* tmp = find_propagating_class(class_decl, ref->name);
+	    out("    (Meta_Feature*)&_%s_%s,\n", class_name, ref->name);
 
-		if (!tmp)
-		    err("unexpected error");
-
-		out("    (Meta_Feature*)&_%s_%s,\n", tmp, ref->name);
-	    }
-	    else
-		out("    (Meta_Feature*)&_%s_%s,\n", class_name, ref->name);
-	}
+	// Method.
 
 	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
 
 	if (meth)
 	{
 	    out("    (Meta_Feature*)&%s_%s_method::static_meta_class,\n", 
-		use_class_name, meth->name);
+		p->class_origin->name, meth->name);
 	}
     }
 
@@ -1531,7 +1532,7 @@ int main(int argc, char** argv)
 
     bool gen_repository_opt = false;
 
-    for (int opt; (opt = getopt(argc, argv, "I:M:hrv")) != -1; )
+    for (int opt; (opt = getopt(argc, argv, "I:M:hrvl")) != -1; )
     {
         switch (opt)
         {
@@ -1577,6 +1578,10 @@ int main(int argc, char** argv)
 
             case 'r':
 		gen_repository_opt = true;
+		break;
+
+            case 'l':
+		linkage_opt = true;
 		break;
 
 	    default:

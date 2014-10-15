@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_ConcreteJob : public Instance
+class CIMPLE_LINKAGE CIM_ConcreteJob : public Instance
 {
 public:
     // CIM_ManagedElement features:
@@ -61,15 +61,9 @@ public:
     CIMPLE_CLASS(CIM_ConcreteJob)
 };
 
-class CIM_ConcreteJob_KillJob_method : public Instance
-{
-public:
-    Property<boolean> DeleteOnKill;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_ConcreteJob_KillJob_method)
-};
+typedef CIM_Job_KillJob_method CIM_ConcreteJob_KillJob_method;
 
-class CIM_ConcreteJob_RequestStateChange_method : public Instance
+class CIMPLE_LINKAGE CIM_ConcreteJob_RequestStateChange_method : public Instance
 {
 public:
     Property<uint16> RequestedState;

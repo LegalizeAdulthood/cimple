@@ -42,7 +42,7 @@ MOF_Qualifier_Info::~MOF_Qualifier_Info()
     /* Nothing to do */
 }
 
-MOF_Qualifier_Info* MOF_Qualifier_Info::clone() const
+MOF_Element* MOF_Qualifier_Info::clone() const
 {
     MOF_ASSERT("not implemented" == 0);
     return 0;

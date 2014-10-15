@@ -27,7 +27,6 @@
 #ifndef _cimple_TLS_h
 #define _cimple_TLS_h
 
-#include <pthread.h>
 #include "config.h"
 #include "Mutex.h"
 
@@ -35,7 +34,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 /** Thread-Local Storage (TLS) class. Implements a single TLS slot.
 */
-class TLS
+class CIMPLE_LIBCIMPLE_LINKAGE TLS
 {
 public:
 
@@ -50,6 +49,7 @@ public:
 private:
 
     void _create();
+
     pthread_key_t _key;
     int _initialized;
     Mutex _lock;

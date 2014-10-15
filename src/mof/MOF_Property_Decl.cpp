@@ -66,7 +66,7 @@ void MOF_Property_Decl::validate()
 #endif
 }
 
-MOF_Property_Decl* MOF_Property_Decl::clone() const
+MOF_Element* MOF_Property_Decl::clone() const
 {
     MOF_Property_Decl* tmp;
     

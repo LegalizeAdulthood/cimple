@@ -1,7 +1,7 @@
 
-Cautionary note: if your pegasus environment is set up (i.e., the Pegasus
+Cautionary note: if your Pegasus environment is set up (i.e., the Pegasus
 environment variables are present), CIMPLE will attempt to build Pegasus-
-related components. Be sure PEGASUS has been properly cross compiled before
+related components. Be sure PEGASUS has been properly cross-compiled before
 proceeding. If none of the Pegasus environment variables are defined, then
 you can build a standalone CIMPLE environment with these instructions as
 well.
@@ -18,13 +18,8 @@ First, define three environment variables as shown:
 This is to override the native tool-chain with the cross-compiler tool
 chain.
 
-Next, edit <cimple-root>/src/cimple/platform.h and uncomment the line
-that defines your platform macro. For example:
+Next type this from the the CIMPLE root diretory:
 
-	#define CIMPLE_PLATFORM_LINUX_PPC_GNU
-
-You must also comment out the other definitions. For example:
-
-	// #define CIMPLE_PLATFORM_LINUX_IX86_GNU
+    % ./configure LINUX_PPC_LINUX
 
 Finally, follow the instructions in build-howto.txt as usual.

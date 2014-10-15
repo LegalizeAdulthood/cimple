@@ -1,8 +1,8 @@
-TOP = ../../..
-include $(TOP)/mak/config.mak
-include $(TOP)/mak/pegasus.mak
+ROOT = $(PEGASUS_ROOT)
+DIR = cimple/provmgr
+include $(ROOT)/mak/config.mak
 
-SH_LIBRARY = cimpleprovmgr
+LIBRARY = cimpleprovmgr
 
 SOURCES = \
     Subscription.cpp \
@@ -10,21 +10,14 @@ SOURCES = \
     CStr.cpp \
     CIMPLE_Provider_Manager.cpp
 
-LINK_FLAGS += -L$(PEGASUS_HOME)/lib
-
 LIBRARIES = \
-    -lpegprovidermanager \
-    -lpegprovider \
-    -lpegcommon \
-    -lcimpledisp \
-    -lcimple \
-    -lpthread
+    pegprovidermanager \
+    pegprovider \
+    pegcommon \
+    cimpledisp \
+    cimple
 
-include $(TOP)/mak/rules.mak
+CIMPLE_ROOT = ../../..
+include $(CIMPLE_ROOT)/mak/extras.mak
 
-tests:
-
-dlopen:
-	$(BIN)/dlopen $(TARGET)
-
-genclass:
+include $(ROOT)/mak/library.mak

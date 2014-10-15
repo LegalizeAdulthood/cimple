@@ -13,8 +13,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_k1;
+extern CIMPLE_HIDE
+const Meta_Property _Model_k1;
 
 const Meta_Property _Model_k1 =
 {
@@ -25,8 +25,8 @@ const Meta_Property _Model_k1 =
     CIMPLE_OFF(Model,k1)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_k2;
+extern CIMPLE_HIDE
+const Meta_Property _Model_k2;
 
 const Meta_Property _Model_k2 =
 {
@@ -37,8 +37,8 @@ const Meta_Property _Model_k2 =
     CIMPLE_OFF(Model,k2)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_k3;
+extern CIMPLE_HIDE
+const Meta_Property _Model_k3;
 
 const Meta_Property _Model_k3 =
 {
@@ -49,8 +49,8 @@ const Meta_Property _Model_k3 =
     CIMPLE_OFF(Model,k3)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_prop1;
+extern CIMPLE_HIDE
+const Meta_Property _Model_prop1;
 
 const Meta_Property _Model_prop1 =
 {
@@ -61,8 +61,8 @@ const Meta_Property _Model_prop1 =
     CIMPLE_OFF(Model,prop1)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_prop2;
+extern CIMPLE_HIDE
+const Meta_Property _Model_prop2;
 
 const Meta_Property _Model_prop2 =
 {
@@ -73,8 +73,8 @@ const Meta_Property _Model_prop2 =
     CIMPLE_OFF(Model,prop2)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_prop3;
+extern CIMPLE_HIDE
+const Meta_Property _Model_prop3;
 
 const Meta_Property _Model_prop3 =
 {
@@ -85,8 +85,8 @@ const Meta_Property _Model_prop3 =
     CIMPLE_OFF(Model,prop3)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_prop4;
+extern CIMPLE_HIDE
+const Meta_Property _Model_prop4;
 
 const Meta_Property _Model_prop4 =
 {
@@ -97,8 +97,8 @@ const Meta_Property _Model_prop4 =
     CIMPLE_OFF(Model,prop4)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Model_prop5;
+extern CIMPLE_HIDE
+const Meta_Property _Model_prop5;
 
 const Meta_Property _Model_prop5 =
 {

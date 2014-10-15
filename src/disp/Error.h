@@ -29,6 +29,7 @@
 
 #include <cimple/config.h>
 #include <cimple/String.h>
+#include "linkage.h"
 
 #ifdef CIMPLE_DEBUG
 # define CIMPLE_ERROR(ARGS) \
@@ -48,12 +49,12 @@ CIMPLE_NAMESPACE_BEGIN
     message for the current thread. It uses thread-specific-data (TLS) so that 
     each thread may have its own error message.
 */
-class Error
+class CIMPLEDISP_LINKAGE Error
 {
 public:
 
-    CIMPLE_PRINTF_ATTR(1, 2)
-    static void set(const char* format, ...);
+    static CIMPLE_PRINTF_ATTR(1, 2)
+    void set(const char* format, ...);
 
     // Prepends debugging information to error message:
     static void set_prefix(

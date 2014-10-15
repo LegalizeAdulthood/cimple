@@ -1,2 +1,3 @@
-%.o : %.cpp
-	$(CXX) -c $(FLAGS) $(DEFINES) $(INCLUDES) -o $*.o $*.cpp
+%$(OBJ) : %.cpp
+	$(call make_obj)
+	@ $(ECHO)

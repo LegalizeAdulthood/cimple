@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = dlopen
 SOURCES = main.cpp
-LIBRARIES = -ldl
+LIBRARIES =
 
 include $(TOP)/mak/rules.mak
 

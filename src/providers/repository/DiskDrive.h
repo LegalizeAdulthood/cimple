@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class DiskDrive : public Instance
+class CIMPLE_LINKAGE DiskDrive : public Instance
 {
 public:
     // CIM_ManagedElement features:
@@ -87,77 +87,23 @@ public:
     CIMPLE_CLASS(DiskDrive)
 };
 
-class DiskDrive_RequestStateChange_method : public Instance
-{
-public:
-    Property<uint16> RequestedState;
-    CIM_ConcreteJob* Job;
-    Property<Datetime> TimeoutPeriod;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_RequestStateChange_method)
-};
+typedef CIM_EnabledLogicalElement_RequestStateChange_method DiskDrive_RequestStateChange_method;
 
-class DiskDrive_SetPowerState_method : public Instance
-{
-public:
-    Property<uint16> PowerState;
-    Property<Datetime> Time;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_SetPowerState_method)
-};
+typedef CIM_LogicalDevice_SetPowerState_method DiskDrive_SetPowerState_method;
 
-class DiskDrive_Reset_method : public Instance
-{
-public:
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_Reset_method)
-};
+typedef CIM_LogicalDevice_Reset_method DiskDrive_Reset_method;
 
-class DiskDrive_EnableDevice_method : public Instance
-{
-public:
-    Property<boolean> Enabled;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_EnableDevice_method)
-};
+typedef CIM_LogicalDevice_EnableDevice_method DiskDrive_EnableDevice_method;
 
-class DiskDrive_OnlineDevice_method : public Instance
-{
-public:
-    Property<boolean> Online;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_OnlineDevice_method)
-};
+typedef CIM_LogicalDevice_OnlineDevice_method DiskDrive_OnlineDevice_method;
 
-class DiskDrive_QuiesceDevice_method : public Instance
-{
-public:
-    Property<boolean> Quiesce;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_QuiesceDevice_method)
-};
+typedef CIM_LogicalDevice_QuiesceDevice_method DiskDrive_QuiesceDevice_method;
 
-class DiskDrive_SaveProperties_method : public Instance
-{
-public:
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_SaveProperties_method)
-};
+typedef CIM_LogicalDevice_SaveProperties_method DiskDrive_SaveProperties_method;
 
-class DiskDrive_RestoreProperties_method : public Instance
-{
-public:
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_RestoreProperties_method)
-};
+typedef CIM_LogicalDevice_RestoreProperties_method DiskDrive_RestoreProperties_method;
 
-class DiskDrive_LockMedia_method : public Instance
-{
-public:
-    Property<boolean> Lock;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DiskDrive_LockMedia_method)
-};
+typedef CIM_MediaAccessDevice_LockMedia_method DiskDrive_LockMedia_method;
 
 CIMPLE_NAMESPACE_END
 

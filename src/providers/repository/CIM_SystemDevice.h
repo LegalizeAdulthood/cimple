@@ -14,7 +14,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_SystemDevice : public Instance
+class CIMPLE_LINKAGE CIM_SystemDevice : public Instance
 {
 public:
     // CIM_Component features:

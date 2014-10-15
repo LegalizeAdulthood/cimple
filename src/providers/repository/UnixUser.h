@@ -11,7 +11,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class UnixUser : public Instance
+class CIMPLE_LINKAGE UnixUser : public Instance
 {
 public:
     // UnixUser features:

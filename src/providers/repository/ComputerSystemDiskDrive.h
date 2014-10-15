@@ -14,7 +14,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class ComputerSystemDiskDrive : public Instance
+class CIMPLE_LINKAGE ComputerSystemDiskDrive : public Instance
 {
 public:
     // CIM_Component features:

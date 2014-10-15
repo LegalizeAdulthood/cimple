@@ -13,23 +13,17 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_IndicationIdentifier;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationIdentifier;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_CorrelatedIndications;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_CorrelatedIndications;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_IndicationTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationTime;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_PerceivedSeverity;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_PerceivedSeverity;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_OtherSeverity;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_OtherSeverity;
 
-CIMPLE_HIDE
-extern const Meta_Reference _MyIndication_object;
+extern CIMPLE_HIDE const Meta_Reference _MyIndication_object;
 
 static Meta_Feature* _DerivedIndication_meta_features[] =
 {

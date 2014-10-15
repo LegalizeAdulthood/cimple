@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Example : public Instance
+class CIMPLE_LINKAGE Example : public Instance
 {
 public:
     // Example features:
@@ -23,14 +23,14 @@ public:
     CIMPLE_CLASS(Example)
 };
 
-class Example_foo0_method : public Instance
+class CIMPLE_LINKAGE Example_foo0_method : public Instance
 {
 public:
     Property<uint32> return_value;
     CIMPLE_METHOD(Example_foo0_method)
 };
 
-class Example_foo1_method : public Instance
+class CIMPLE_LINKAGE Example_foo1_method : public Instance
 {
 public:
     Property<real32> x;
@@ -40,7 +40,7 @@ public:
     CIMPLE_METHOD(Example_foo1_method)
 };
 
-class Example_foo2_method : public Instance
+class CIMPLE_LINKAGE Example_foo2_method : public Instance
 {
 public:
     Property<String> w;
@@ -51,14 +51,14 @@ public:
     CIMPLE_METHOD(Example_foo2_method)
 };
 
-class Example_foo3_method : public Instance
+class CIMPLE_LINKAGE Example_foo3_method : public Instance
 {
 public:
     Property<String> return_value;
     CIMPLE_METHOD(Example_foo3_method)
 };
 
-class Example_foo4_method : public Instance
+class CIMPLE_LINKAGE Example_foo4_method : public Instance
 {
 public:
     Property<Array_real32> x;
@@ -66,7 +66,7 @@ public:
     CIMPLE_METHOD(Example_foo4_method)
 };
 
-class Example_foo5_method : public Instance
+class CIMPLE_LINKAGE Example_foo5_method : public Instance
 {
 public:
     House* house;

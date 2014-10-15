@@ -29,13 +29,23 @@ Get_Instance_Status LinuxComputerSystem_Provider::get_instance(
     const LinuxComputerSystem* model,
     LinuxComputerSystem*& instance)
 {
-    return GET_INSTANCE_NOT_FOUND;
+    return GET_INSTANCE_UNSUPPORTED;
 }
 
 Enum_Instances_Status LinuxComputerSystem_Provider::enum_instances(
     const LinuxComputerSystem* model,
     Enum_Instances_Handler<LinuxComputerSystem>* handler)
 {
+    LinuxComputerSystem* inst = LinuxComputerSystem::create();
+    inst->Name.value = "monday";
+    inst->CreationClassName.value = "LinuxComputerSystem";
+    handler->handle(inst);
+
+    inst = LinuxComputerSystem::create();
+    inst->Name.value = "tuesday";
+    inst->CreationClassName.value = "LinuxComputerSystem";
+    handler->handle(inst);
+
     return ENUM_INSTANCES_OK;
 }
 

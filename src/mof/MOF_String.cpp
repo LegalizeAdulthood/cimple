@@ -30,8 +30,6 @@
 #include "MOF_Buffer.h"
 #include "MOF_Error.h"
 
-extern "C" FILE* open_memstream(char **, size_t *);
-
 void MOF_fix_case(char* p, const char* q)
 {
     if (MOF_stricmp(p, q) == 0 && strcmp(p, q) != 0)
@@ -70,7 +68,7 @@ size_t MOF_char16_to_asc7(
 {
     if(ch < 0x80) 
     {
-	str[0] = ch;
+	str[0] = (char)ch;
 	str[1] = '\0';
 	return 1;
     }

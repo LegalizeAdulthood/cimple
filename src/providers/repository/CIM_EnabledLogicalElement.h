@@ -13,7 +13,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_EnabledLogicalElement : public Instance
+class CIMPLE_LINKAGE CIM_EnabledLogicalElement : public Instance
 {
 public:
     // CIM_ManagedElement features:
@@ -40,7 +40,7 @@ public:
     CIMPLE_CLASS(CIM_EnabledLogicalElement)
 };
 
-class CIM_EnabledLogicalElement_RequestStateChange_method : public Instance
+class CIMPLE_LINKAGE CIM_EnabledLogicalElement_RequestStateChange_method : public Instance
 {
 public:
     Property<uint16> RequestedState;

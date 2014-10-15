@@ -27,6 +27,12 @@
 #ifndef _MOF_Config_h
 #define _MOF_Config_h
 
+#include <platform.h>
+
+#ifdef CIMPLE_PLATFORM_WIN32_IX86_MSVC
+# define MOF_WINDOWS
+#endif
+
 #include <cstdio>
 #include <cstdarg>
 #include <cassert>
@@ -35,7 +41,23 @@
 
 #define MOF_HAVE_STRCASECMP
 #define MOF_ASSERT(COND) assert(COND)
-#define MOF_PRINTF_ATTR(A1, A2) __attribute__ ((format (printf, A1, A2)))
+
+#ifdef MOF_WINDOWS
+#  define strcasecmp stricmp
+#  define MOF_PRINTF_ATTR(A1, A2) /* empty */
+#  ifdef MOF_INTERNAL
+#    define MOF_LINKAGE __declspec(dllexport)
+#  else
+#    define MOF_LINKAGE __declspec(dllimport)
+#  endif
+   typedef unsigned __int64 MOF_uint64;
+   typedef signed __int64 MOF_sint64;
+#else
+#  define MOF_PRINTF_ATTR(A1, A2) __attribute__ ((format (printf, A1, A2)))
+#  define MOF_LINKAGE /* empty */
+   typedef unsigned long long MOF_uint64;
+   typedef long long MOF_sint64;
+#endif
 
 typedef unsigned char MOF_uint8;
 typedef signed char MOF_sint8;
@@ -43,13 +65,18 @@ typedef unsigned short MOF_uint16;
 typedef signed short MOF_sint16;
 typedef unsigned int MOF_uint32;
 typedef signed int MOF_sint32;
-typedef unsigned long long MOF_uint64;
-typedef long long MOF_sint64;
 typedef char* MOF_String;
 typedef float MOF_real32;
 typedef double MOF_real64;
 typedef unsigned short MOF_char16; /* UCS-2 character */
 
 typedef unsigned int MOF_mask;
+
+#ifdef MOF_WINDOWS
+inline MOF_sint64 strtoll(const char* str, char** end_ptr, int base)
+{
+    return strtol(str, end_ptr, base);
+}
+#endif
 
 #endif /* _MOF_Config_h */

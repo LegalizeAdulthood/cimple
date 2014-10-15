@@ -29,7 +29,7 @@
 #include <cimple/Strings.h>
 #include "Converter.h"
 
-#define VOID /* */
+// #define VOID /* */
 
 #if 1
 # define RETURN(X) return X
@@ -63,14 +63,14 @@ static uint16 _to_cimple_type(CMPIType type)
 {
     switch (type)
     {
-	case CMPI_boolean: RETURN(BOOLEAN);
+	case CMPI_boolean: RETURN(cimple::BOOLEAN);
 	case CMPI_uint8: RETURN(UINT8);
 	case CMPI_sint8: RETURN(SINT8);
 	case CMPI_uint16: RETURN(UINT16);
 	case CMPI_sint16: RETURN(SINT16);
-	case CMPI_uint32: RETURN(UINT32);
+	case CMPI_uint32: RETURN(cimple::UINT32);
 	case CMPI_sint32: RETURN(SINT32);
-	case CMPI_uint64: RETURN(UINT64);
+	case CMPI_uint64: RETURN(cimple::UINT64);
 	case CMPI_sint64: RETURN(SINT64);
 	case CMPI_real32: RETURN(REAL32);
 	case CMPI_real64: RETURN(REAL64);
@@ -110,7 +110,7 @@ static CMPIrc _set_cimple_scalar(
 
     // Handle integer types up front:
 
-    if (is_raw[mp->type] && mp->type != BOOLEAN)
+    if (is_raw[mp->type] && mp->type != cimple::BOOLEAN)
     {
 	memcpy(prop, &data.value, type_size[mp->type]);
 	RETURN(CMPI_RC_OK);
@@ -120,8 +120,8 @@ static CMPIrc _set_cimple_scalar(
 
     switch(mp->type)
     {
-	case BOOLEAN:
-	    *((boolean*)prop) = data.value.boolean;
+	case cimple::BOOLEAN:
+	    *((cimple::boolean*)prop) = data.value.boolean;
 	    break;
 
 	case STRING:
@@ -211,8 +211,8 @@ static CMPIrc _set_cimple_scalar_key(
 
     switch(mp->type)
     {
-	case BOOLEAN:
-	    *((boolean*)prop) = data.value.boolean;
+	case cimple::BOOLEAN:
+	    *((cimple::boolean*)prop) = data.value.boolean;
 	    break;
 
 	case UINT8:
@@ -231,7 +231,7 @@ static CMPIrc _set_cimple_scalar_key(
 	    *((sint16*)prop) = _promote(data);
 	    break;
 
-	case UINT32:
+	case cimple::UINT32:
 	    *((uint32*)prop) = _promote(data);
 	    break;
 
@@ -239,7 +239,7 @@ static CMPIrc _set_cimple_scalar_key(
 	    *((sint32*)prop) = _promote(data);
 	    break;
 
-	case UINT64:
+	case cimple::UINT64:
 	    *((uint64*)prop) = _promote(data);
 	    break;
 
@@ -296,7 +296,7 @@ static CMPIrc _set_cimple_array(
 
     switch(mp->type)
     {
-	case BOOLEAN:
+	case cimple::BOOLEAN:
 	{
 	    for (CMPICount i = 0; i < n; i++)
 	    {
@@ -311,9 +311,9 @@ static CMPIrc _set_cimple_array(
 	case SINT8:
 	case UINT16:
 	case SINT16:
-	case UINT32:
+	case cimple::UINT32:
 	case SINT32:
-	case UINT64:
+	case cimple::UINT64:
 	case SINT64:
 	case REAL32:
 	case REAL64:
@@ -404,7 +404,7 @@ static CMPIrc _set_cimple_array_key(
 
     switch(mp->type)
     {
-	case BOOLEAN:
+	case cimple::BOOLEAN:
 	{
 	    for (CMPICount i = 0; i < n; i++)
 	    {
@@ -419,7 +419,7 @@ static CMPIrc _set_cimple_array_key(
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint8*)prop)->append(_promote(data));
+		((Array_uint8*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
@@ -429,7 +429,7 @@ static CMPIrc _set_cimple_array_key(
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint8*)prop)->append(_promote(data));
+		((Array_sint8*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
@@ -439,7 +439,7 @@ static CMPIrc _set_cimple_array_key(
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint16*)prop)->append(_promote(data));
+		((Array_uint16*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
@@ -449,17 +449,17 @@ static CMPIrc _set_cimple_array_key(
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint16*)prop)->append(_promote(data));
+		((Array_sint16*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
 
-	case UINT32:
+	case cimple::UINT32:
 	{
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint32*)prop)->append(_promote(data));
+		((Array_uint32*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
@@ -469,17 +469,17 @@ static CMPIrc _set_cimple_array_key(
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint32*)prop)->append(_promote(data));
+		((Array_sint32*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
 
-	case UINT64:
+	case cimple::UINT64:
 	{
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint64*)prop)->append(_promote(data));
+		((Array_uint64*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
@@ -489,7 +489,7 @@ static CMPIrc _set_cimple_array_key(
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint64*)prop)->append(_promote(data));
+		((Array_sint64*)prop)->append(_promote(t));
 	    }
 	    break;
 	}
@@ -647,14 +647,14 @@ static void _to_cmpi_value(
 
     if (mp->subscript == 0)
     {
-	if (is_raw[mp->type] && mp->type != BOOLEAN)
+	if (is_raw[mp->type] && mp->type != cimple::BOOLEAN)
 	{
 	    memcpy(&value, prop, type_size[mp->type]);
 	}
 	else switch (mp->type)
 	{
-	    case BOOLEAN:
-		value.boolean = *((boolean*)prop) ? 1 : 0;
+	    case cimple::BOOLEAN:
+		value.boolean = *((cimple::boolean*)prop) ? 1 : 0;
 		break;
 
 	    case STRING:
@@ -677,14 +677,14 @@ static void _to_cmpi_value(
 	const Array_Base* array = (const Array_Base*)prop;
 	value.array = CMNewArray(broker, array->size(), type, NULL);
 
-	if (is_raw[mp->type] && mp->type != BOOLEAN)
+	if (is_raw[mp->type] && mp->type != cimple::BOOLEAN)
 	{
 	    for (size_t i = 0; i < array->size(); i++)
 		CMSetArrayElementAt(value.array, i, array->get_raw(i), type);
 	}
 	else switch (mp->type)
 	{
-	    case BOOLEAN:
+	    case cimple::BOOLEAN:
 	    {
 		const Array_boolean& array = *((const Array_boolean*)prop);
 
@@ -833,8 +833,7 @@ CMPIrc make_cmpi_instance(
 		CMPIValue value;
 		CMPIType type;
 		_to_cmpi_value(broker, mp, prop, value, type);
-		CMPIStatus status = CMSetProperty(
-		    cmpi_inst, mp->name, &value, type);
+		CMSetProperty(cmpi_inst, mp->name, &value, type);
 	    }
 	}
 	else if (mf->flags & CIMPLE_FLAG_REFERENCE)

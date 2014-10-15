@@ -25,13 +25,7 @@ public:
     CIMPLE_CLASS(AAA2)
 };
 
-class AAA2_fool_method : public Instance
-{
-public:
-    CCC* c;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(AAA2_fool_method)
-};
+typedef AAA_fool_method AAA2_fool_method;
 
 CIMPLE_NAMESPACE_END
 

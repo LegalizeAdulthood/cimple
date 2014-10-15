@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _Methods_key;
+extern CIMPLE_HIDE const Meta_Property _Methods_key;
 
 const Meta_Property _Methods_key =
 {

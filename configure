@@ -1,2 +1,85 @@
 #!/bin/bash
-echo "Just type \"make\"".
+
+##==============================================================================
+##
+## Check usage:
+##
+##==============================================================================
+
+if [ ! -f mak/config.mak ]
+then
+    echo "$0: must be invoked from the CIMPLE root directory"
+    exit 1
+fi
+
+##==============================================================================
+##
+## Determine platform
+##
+##==============================================================================
+
+if [ "$#" = "1" ]
+then
+    PLATFORM=$1
+else
+    ARCH=`uname -m`
+    OS=`uname -s`
+    TOKEN="$OS-$ARCH"
+
+    case "$TOKEN" in
+
+	Linux-i686)
+	    export PLATFORM=LINUX_IX86_GNU
+	    ;;
+
+	Linux-x86_64)
+	    export PLATFORM=LINUX_X86_64_GNU
+	    ;;
+
+	Linux-ppc)
+
+	    export PLATFORM=LINUX_PPC_GNU
+	    ;;
+
+	*)
+	    echo "Failed to automatically detect platform"
+	    exit 1
+	    ;;
+
+    esac
+
+fi
+
+##==============================================================================
+##
+## Check PLATFORM:
+##
+##==============================================================================
+
+case "$PLATFORM" in
+
+    LINUX_IX86_GNU)
+	;;
+
+    LINUX_X86_64_GNU)
+	;;
+
+    LINUX_PPC_GNU)
+	;;
+
+    *)
+	echo "Unrecognized platform: $PLATFORM"
+	exit 1
+	;;
+
+esac
+
+##==============================================================================
+##
+## Determine platform
+##
+##==============================================================================
+
+echo "CIMPLE_PLATFORM=$PLATFORM" > ./mak/platform.mak
+echo "#define CIMPLE_PLATFORM_$PLATFORM" > ./src/platform.h
+echo "Configured for $PLATFORM"

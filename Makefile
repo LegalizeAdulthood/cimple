@@ -1,18 +1,43 @@
-TOP = .
-include $(TOP)/mak/config.mak
 
-DIRS = src
+CIMPLE_PLATFORM=
+-include mak/platform.mak
 
-include $(TOP)/mak/dir.mak
+ifeq ($(CIMPLE_PLATFORM),)
+  $(error "First type ./configure")
+endif
 
-##
-## Register the test providers with Pegasus.
-##
-reg:
-	( $(MAKE) -C $(TOP)/src/providers reg )
+all: mut
+	$(MAKE) -C src
 
-##
-## Run live tests against Pegasus server:
-##
-live-tests:
-	( $(MAKE) -C $(TOP)/src/providers live-tests )
+depend: mut
+	$(MAKE) -C src depend
+
+clean: mut
+	$(MAKE) -C src clean
+
+tests: mut
+	$(MAKE) -C src tests
+
+gen: mut
+	$(MAKE) -C src gen
+
+sub: mut
+	$(MAKE) -C src sub
+
+genclass: mut
+	$(MAKE) -C src genclass
+
+reg: mut
+	$(MAKE) -C src/providers reg
+
+live-tests: mut
+	$(MAKE) -C src/providers live-tests
+
+mut:
+ifeq ($(CIMPLE_PLATFORM),WIN32_IX86_MSVC)
+	$(MAKE) -C src/tools/mut
+endif
+
+distclean: clean
+	$(RM) mak/platform.mak
+	$(RM) src/platform.h

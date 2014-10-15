@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _Fan_DeviceID;
+extern CIMPLE_HIDE const Meta_Property _Fan_DeviceID;
 
 const Meta_Property _Fan_DeviceID =
 {
@@ -25,8 +24,7 @@ const Meta_Property _Fan_DeviceID =
     CIMPLE_OFF(Fan,DeviceID)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Fan_Speed;
+extern CIMPLE_HIDE const Meta_Property _Fan_Speed;
 
 const Meta_Property _Fan_Speed =
 {
@@ -37,8 +35,7 @@ const Meta_Property _Fan_Speed =
     CIMPLE_OFF(Fan,Speed)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _Fan_DesiredSpeed;
+extern CIMPLE_HIDE const Meta_Property _Fan_DesiredSpeed;
 
 const Meta_Property _Fan_DesiredSpeed =
 {

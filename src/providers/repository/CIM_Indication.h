@@ -11,7 +11,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_Indication : public Instance
+class CIMPLE_LINKAGE CIM_Indication : public Instance
 {
 public:
     // CIM_Indication features:

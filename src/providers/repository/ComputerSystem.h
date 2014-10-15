@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class ComputerSystem : public Instance
+class CIMPLE_LINKAGE ComputerSystem : public Instance
 {
 public:
     // CIM_ManagedElement features:
@@ -56,24 +56,9 @@ public:
     CIMPLE_CLASS(ComputerSystem)
 };
 
-class ComputerSystem_RequestStateChange_method : public Instance
-{
-public:
-    Property<uint16> RequestedState;
-    CIM_ConcreteJob* Job;
-    Property<Datetime> TimeoutPeriod;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(ComputerSystem_RequestStateChange_method)
-};
+typedef CIM_EnabledLogicalElement_RequestStateChange_method ComputerSystem_RequestStateChange_method;
 
-class ComputerSystem_SetPowerState_method : public Instance
-{
-public:
-    Property<uint32> PowerState;
-    Property<Datetime> Time;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(ComputerSystem_SetPowerState_method)
-};
+typedef CIM_ComputerSystem_SetPowerState_method ComputerSystem_SetPowerState_method;
 
 CIMPLE_NAMESPACE_END
 

@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = catmod
 SOURCES = main.cpp
-LIBRARIES = -lcimpledisp -lcimple
+LIBRARIES = cimpledisp cimple
 
 include $(TOP)/mak/rules.mak
 

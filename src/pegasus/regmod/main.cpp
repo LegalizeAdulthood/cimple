@@ -1,14 +1,14 @@
+#include <Pegasus/Common/Config.h>
+#include <Pegasus/Repository/CIMRepository.h>
+#include <Pegasus/Common/MofWriter.h>
 #include <string>
 #include <sys/types.h>
 #include <dlfcn.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <getopt.h>
 #include <cstdarg>
 #include <vector>
 #include <cstdio>
-#include <Pegasus/Common/Config.h>
-#include <Pegasus/Repository/CIMRepository.h>
-#include <Pegasus/Common/MofWriter.h>
 #include <cimple/cimple.h>
 #include <cimple/Provider_Handle.h>
 #include <util/util.h>
@@ -127,11 +127,18 @@ void validate_paths(const string& pegasus_home)
 	{ "repository/root/classes", true },
 	{ "repository/root/qualifiers", true },
 	{ "bin", true },
+#ifdef CIMPLE_WINDOWS
+	{ "bin/cimserver.exe", false },
+	{ "bin/pegcommon.dll", false },
+	{ "bin/pegrepository.dll", false },
+	{ "bin/pegprovider.dll", false },
+#else
 	{ "bin/cimserver", false },
-	{ "lib", true },
 	{ "lib/libpegcommon.so", false },
 	{ "lib/libpegrepository.so", false },
 	{ "lib/libpegprovider.so", false },
+#endif
+	{ "lib", true },
     };
     const size_t num_paths = sizeof(paths) / sizeof(paths[0]);
 
@@ -184,15 +191,15 @@ int load_file(const char* path, string& s)
 void check_cimple_provider_manager_patch(
     const string& pegasus_lib_dir)
 {
-    //// Read library file into memory.
+    // Read library file into memory.
 
-    string lib = pegasus_lib_dir + "libpegprovidermanager.so";
+    string lib = pegasus_lib_dir + shlib_name("pegprovidermanager");
     string s;
 
     if (load_file(lib.c_str(), s) == -1)
 	err("Pegasus environment is missing this library: %s\n", lib.c_str());
 
-    //// Look for "cmplcm" string (indicates CIMPLE patch has been applied).
+    // Look for "cmplcm" string (indicates CIMPLE patch has been applied).
 
     if (s.find("cimpleprovmgr") == (size_t)-1)
     {
@@ -210,7 +217,7 @@ void check_cimple_provider_manager_patch(
 
 void check_pegasus_environment(string& pegasus_home)
 {
-    //// Check PEGASUS_HOME environment variable.
+    // Check PEGASUS_HOME environment variable.
 
     char* tmp = getenv("PEGASUS_HOME");
 
@@ -222,31 +229,29 @@ void check_pegasus_environment(string& pegasus_home)
     if (pegasus_home.size() == 0)
 	err("PEGASUS_HOME environment variable is empty");
 
-    if (pegasus_home[0] != '/')
+    if (!is_absolute(pegasus_home.c_str()))
 	err("PEGASUS_HOME environment variable must denote an absolute path");
 
     if (pegasus_home[pegasus_home.size()-1] != '/')
 	pegasus_home += '/';
 
-    //// Validate known paths to directories and files.
+    // Validate known paths to directories and files.
 
     validate_paths(pegasus_home);
 
-    //// Check PEGASUS_HOME/lib directory.
+    // Check whether libcimpleprovmgr.so has been installed.
 
-    string pegasus_lib_dir = pegasus_home + string("/lib/");
+    string cimpleprovmgr = full_shlib_name(pegasus_home, "cimpleprovmgr");
 
-    //// Check whether libcimpleprovmgr.so has been installed.
-
-    string cmplrt_path = pegasus_lib_dir + "libcimpleprovmgr.so";
-
-    if (!exists(cmplrt_path.c_str()))
+    if (!exists(cimpleprovmgr))
+    {
 	err("CIMPLE provider manager not installed. Expected to find %s.\n",
-	    cmplrt_path.c_str());
+	    cimpleprovmgr.c_str());
+    }
 
-    //// Check for CIMPLE provider manager patch.
+    // Check for CIMPLE provider manager patch.
 
-    check_cimple_provider_manager_patch(pegasus_lib_dir);
+    check_cimple_provider_manager_patch(shlib_dir(pegasus_home));
 }
 
 //------------------------------------------------------------------------------
@@ -299,7 +304,7 @@ void copy_library(
 
     // Open destination file.
 
-    string to_path = g_pegasus_home + string("/lib/") + basename_of(path);
+    string to_path = g_pegasus_home + string("/lib/") + base_name(path);
 
     if (verbose_opt)
 	printf("=== Copy provider (%s to %s)\n", path, to_path.c_str());
@@ -440,6 +445,7 @@ void register_module(
 	    g_pegasus_repository_dir.c_str(), g_repository_mode);
 
 	string sln = short_lib_name;
+
 	unregister_module(repository, module_name);
 
 	if (verbose_opt)
@@ -613,7 +619,7 @@ void register_provider(
 			provider_name.c_str(), "Association");
 	    }
 
-	    if (has_methods(meta_class))
+	    if (cimple::has_methods(meta_class))
 	    {
 		// Method provider.
 		providerType.append(5);
@@ -658,25 +664,6 @@ void register_provider(
     {
 	err("unexpected repository error");
     }
-}
-
-//------------------------------------------------------------------------------
-//
-// get_short_lib_name()
-//
-//------------------------------------------------------------------------------
-
-void get_short_lib_name(
-    const char* path, 
-    string& short_lib_name)
-{
-    string base = basename_of(path);
-    size_t dot = base.rfind('.');
-
-    if (base.substr(0, 3) != "lib" || dot == (size_t)-1)
-	err("malformed library name: %s", base.c_str());
-
-    short_lib_name = base.substr(3, dot - 3);
 }
 
 //------------------------------------------------------------------------------
@@ -813,7 +800,7 @@ void check_class_compatibility(
 
 	// Check only local features:
 
-	if (!is_local_feature(mc, mf))
+	if (!cimple::is_local_feature(mc, mf))
 	    continue;
 
 	// If it's a method, process and then short-circuit the remainder.
@@ -860,7 +847,7 @@ void check_class_compatibility(
 
 	    // Check type.
 
-	    if (p.getType() != CIMTYPE_STRING)
+	    if (p.getType() != CIMTYPE_STRING && p.getType() != CIMTYPE_OBJECT)
 	    {
 		err(INCOMPATIBLE "Properties have different types: %s",
 		    mc->name, mr->name);
@@ -1060,7 +1047,7 @@ void create_class(
 
 	    // Ignore non-local feature:
 
-	    if (!is_local_feature(mc, mf))
+	    if (!cimple::is_local_feature(mc, mf))
 		continue;
 
 	    if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
@@ -1313,8 +1300,7 @@ int main(int argc, char** argv)
 
     // Step #5: find short form of library name.
 
-    string short_lib_name;
-    get_short_lib_name(lib_path, short_lib_name);
+    string short_lib_name = shlib_basename(lib_path);
 
     // Step #6: register provider module Pegasus repository.
 

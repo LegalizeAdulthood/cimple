@@ -1,11 +1,12 @@
 TOP = ..
 include $(TOP)/mak/config.mak
 
-ifdef PEGASUS_HOME
-include $(TOP)/mak/pegasus.mak
+ifdef CIMPLE_WINDOWS
+  DIRS += posix
+  DIRS += posix/tests
 endif
 
-DIRS = \
+DIRS += \
     tools/dlopen \
     mof \
     mof/mofc \
@@ -21,8 +22,8 @@ DIRS = \
     providers
 
 ifdef PEGASUS_HOME
-DIRS += pegasus
-DIRS += CMPI
+    DIRS += pegasus
+    DIRS += CMPI
 endif
 
 include $(TOP)/mak/dir.mak

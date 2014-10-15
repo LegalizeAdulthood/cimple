@@ -13,47 +13,33 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Caption;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Caption;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_Description;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_Description;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedElement_ElementName;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedElement_ElementName;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_InstallDate;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_InstallDate;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Name;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Name;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_OperationalStatus;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_StatusDescriptions;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_ManagedSystemElement_Status;
+extern CIMPLE_HIDE const Meta_Property _CIM_ManagedSystemElement_Status;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_OtherEnabledState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_RequestedState;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_EnabledDefault;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
+extern CIMPLE_HIDE const Meta_Property _CIM_EnabledLogicalElement_TimeOfLastStateChange;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_SystemCreationClassName;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_SystemCreationClassName;
 
 const Meta_Property _CIM_LogicalDevice_SystemCreationClassName =
 {
@@ -64,8 +50,7 @@ const Meta_Property _CIM_LogicalDevice_SystemCreationClassName =
     CIMPLE_OFF(CIM_LogicalDevice,SystemCreationClassName)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_SystemName;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_SystemName;
 
 const Meta_Property _CIM_LogicalDevice_SystemName =
 {
@@ -76,8 +61,7 @@ const Meta_Property _CIM_LogicalDevice_SystemName =
     CIMPLE_OFF(CIM_LogicalDevice,SystemName)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_CreationClassName;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_CreationClassName;
 
 const Meta_Property _CIM_LogicalDevice_CreationClassName =
 {
@@ -88,8 +72,7 @@ const Meta_Property _CIM_LogicalDevice_CreationClassName =
     CIMPLE_OFF(CIM_LogicalDevice,CreationClassName)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_DeviceID;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_DeviceID;
 
 const Meta_Property _CIM_LogicalDevice_DeviceID =
 {
@@ -100,8 +83,7 @@ const Meta_Property _CIM_LogicalDevice_DeviceID =
     CIMPLE_OFF(CIM_LogicalDevice,DeviceID)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_PowerManagementSupported;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_PowerManagementSupported;
 
 const Meta_Property _CIM_LogicalDevice_PowerManagementSupported =
 {
@@ -112,8 +94,7 @@ const Meta_Property _CIM_LogicalDevice_PowerManagementSupported =
     CIMPLE_OFF(CIM_LogicalDevice,PowerManagementSupported)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_PowerManagementCapabilities;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_PowerManagementCapabilities;
 
 const Meta_Property _CIM_LogicalDevice_PowerManagementCapabilities =
 {
@@ -124,8 +105,7 @@ const Meta_Property _CIM_LogicalDevice_PowerManagementCapabilities =
     CIMPLE_OFF(CIM_LogicalDevice,PowerManagementCapabilities)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_Availability;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_Availability;
 
 const Meta_Property _CIM_LogicalDevice_Availability =
 {
@@ -136,8 +116,7 @@ const Meta_Property _CIM_LogicalDevice_Availability =
     CIMPLE_OFF(CIM_LogicalDevice,Availability)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_StatusInfo;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_StatusInfo;
 
 const Meta_Property _CIM_LogicalDevice_StatusInfo =
 {
@@ -148,8 +127,7 @@ const Meta_Property _CIM_LogicalDevice_StatusInfo =
     CIMPLE_OFF(CIM_LogicalDevice,StatusInfo)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_LastErrorCode;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_LastErrorCode;
 
 const Meta_Property _CIM_LogicalDevice_LastErrorCode =
 {
@@ -160,8 +138,7 @@ const Meta_Property _CIM_LogicalDevice_LastErrorCode =
     CIMPLE_OFF(CIM_LogicalDevice,LastErrorCode)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_ErrorDescription;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_ErrorDescription;
 
 const Meta_Property _CIM_LogicalDevice_ErrorDescription =
 {
@@ -172,8 +149,7 @@ const Meta_Property _CIM_LogicalDevice_ErrorDescription =
     CIMPLE_OFF(CIM_LogicalDevice,ErrorDescription)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_ErrorCleared;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_ErrorCleared;
 
 const Meta_Property _CIM_LogicalDevice_ErrorCleared =
 {
@@ -184,8 +160,7 @@ const Meta_Property _CIM_LogicalDevice_ErrorCleared =
     CIMPLE_OFF(CIM_LogicalDevice,ErrorCleared)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_OtherIdentifyingInfo;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_OtherIdentifyingInfo;
 
 const Meta_Property _CIM_LogicalDevice_OtherIdentifyingInfo =
 {
@@ -196,8 +171,7 @@ const Meta_Property _CIM_LogicalDevice_OtherIdentifyingInfo =
     CIMPLE_OFF(CIM_LogicalDevice,OtherIdentifyingInfo)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_PowerOnHours;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_PowerOnHours;
 
 const Meta_Property _CIM_LogicalDevice_PowerOnHours =
 {
@@ -208,8 +182,7 @@ const Meta_Property _CIM_LogicalDevice_PowerOnHours =
     CIMPLE_OFF(CIM_LogicalDevice,PowerOnHours)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_TotalPowerOnHours;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_TotalPowerOnHours;
 
 const Meta_Property _CIM_LogicalDevice_TotalPowerOnHours =
 {
@@ -220,8 +193,7 @@ const Meta_Property _CIM_LogicalDevice_TotalPowerOnHours =
     CIMPLE_OFF(CIM_LogicalDevice,TotalPowerOnHours)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_IdentifyingDescriptions;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_IdentifyingDescriptions;
 
 const Meta_Property _CIM_LogicalDevice_IdentifyingDescriptions =
 {
@@ -232,8 +204,7 @@ const Meta_Property _CIM_LogicalDevice_IdentifyingDescriptions =
     CIMPLE_OFF(CIM_LogicalDevice,IdentifyingDescriptions)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_AdditionalAvailability;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_AdditionalAvailability;
 
 const Meta_Property _CIM_LogicalDevice_AdditionalAvailability =
 {
@@ -244,8 +215,7 @@ const Meta_Property _CIM_LogicalDevice_AdditionalAvailability =
     CIMPLE_OFF(CIM_LogicalDevice,AdditionalAvailability)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_LogicalDevice_MaxQuiesceTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_LogicalDevice_MaxQuiesceTime;
 
 const Meta_Property _CIM_LogicalDevice_MaxQuiesceTime =
 {

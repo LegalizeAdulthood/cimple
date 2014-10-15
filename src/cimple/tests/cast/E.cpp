@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _E_e;
+extern CIMPLE_HIDE const Meta_Property _E_e;
 
 const Meta_Property _E_e =
 {

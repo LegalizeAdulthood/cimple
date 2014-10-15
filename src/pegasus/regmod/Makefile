@@ -1,27 +1,24 @@
-TOP = ../../..
-include $(TOP)/mak/config.mak
-include $(TOP)/mak/pegasus.mak
+ROOT = $(PEGASUS_ROOT)
+DIR = cimple/regmod
+include $(ROOT)/mak/config.mak
 
-BINARY = regmod
+PROGRAM = regmod
 
 SOURCES = main.cpp
 
 LIBRARIES = \
-    -lcimpleutil \
-    -lcimple \
-    -lpegprovider \
-    -lpegrepository \
-    -lpegcommon \
-    -lpthread
+    cimpleutil \
+    cimple \
+    pegprovider \
+    pegrepository \
+    pegcommon
 
-DEFINES += -DPEGASUS_INTERNALONLY
+CIMPLE_ROOT = ../../..
+include $(CIMPLE_ROOT)/mak/extras.mak
 
-include $(TOP)/mak/rules.mak
+include $(ROOT)/mak/program.mak
 
 usage:
 	file2c usage.txt -n USAGE > usage.h
 
 tests:
-
-genclass:
-

@@ -24,14 +24,18 @@
 **==============================================================================
 */
 
+#include <Pegasus/ProviderManager2/OperationResponseHandler.h>
+#include <cimple/config.h>
+# include <libgen.h>
+
 #include <cstdarg>
-#include <libgen.h>
 #include <cimple/Strings.h>
 #include <Pegasus/Common/MofWriter.h>
-#include <Pegasus/ProviderManager2/OperationResponseHandler.h>
+
 #include "Converter.h"
 #include "CStr.h"
 #include "CIMPLE_Provider_Manager.h"
+
 
 // ATTN: the indication namespace is hard coded for now. 
 #define INDICATION_NAMESPACE "root/cimv2"
@@ -43,12 +47,33 @@ PEGASUS_NAMESPACE_BEGIN
 
 //------------------------------------------------------------------------------
 //
+// _print_instance()
+//
+//------------------------------------------------------------------------------
+
+#if 0
+static void _print_instance(const CIMInstance& inst)
+{
+    Buffer buf;
+    MofWriter::appendInstanceElement(buf, inst);
+    buf.append('\0');
+
+    printf("<<<<<<<<<< _print_instance():\n");
+
+    printf("%.*s\n", int(buf.size()), buf.getData());
+
+    printf(">>>>>>>>>>\n");
+}
+#endif
+
+//------------------------------------------------------------------------------
+//
 // FTRACE()
 //
 //------------------------------------------------------------------------------
 
 #if 0
-# define FTRACE printf("FTRACE: %s(%d): %s()\n", __FILE__,__LINE__,__FUNCTION__)
+# define FTRACE printf("FTRACE: %s(%d)\n", __FILE__,__LINE__)
 #else
 # define FTRACE /* empty */
 #endif
@@ -61,15 +86,15 @@ PEGASUS_NAMESPACE_BEGIN
 
 static void _set_status(
     OperationResponseHandler& handler, 
-
     const char* format,
     ...)
 {
     va_list ap;
+
     va_start(ap, format);
-    char* str;
-    vasprintf(&str, format, ap);
+    char* str = str_vprintf(format, ap);
     va_end(ap);
+
     handler.setStatus(CIM_ERR_FAILED, str);
     free(str);
 }
@@ -356,10 +381,7 @@ static bool _enum_instances_proc(
 
 
     CIMObjectPath path = pi.getPath();
-cout << "OP1:" << pi.getPath().toString() << endl;
-cout << "OP2:" << path.toString() << endl;
     pi.setPath(path);
-cout << "OP3:" << pi.getPath().toString() << endl;
 
     data->handler->deliver(pi);
 
@@ -413,7 +435,9 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstancesRequest(
 
     handler.processing();
     State state;
-    Enum_Instance_Data data = { &handler, request->nameSpace };
+    Enum_Instance_Data data;
+    data.handler = &handler;
+    data.name_space = request->nameSpace;
     Status stat = _disp->enum_instances(model, _enum_instances_proc, &data);
 
     if (stat != STATUS_OK)
@@ -515,8 +539,10 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstanceNamesRequest(
 
     handler.processing();
 
-    Handle_Enumerate_Instance_Names_Data data = 
-	{ &handler, request->nameSpace, false };
+    Handle_Enumerate_Instance_Names_Data data;
+    data.handler = &handler;
+    data.name_space = request->nameSpace;
+    data.error = false;
 
     Status stat = _disp->enum_instances(
 	model, _enum_instance_names_proc, &data);
@@ -1582,29 +1608,35 @@ struct Indication_Proc_Data
 
 static bool _indication_proc(Instance* indication, void* client_data)
 {
+    Indication_Proc_Data* data = (Indication_Proc_Data*)client_data;
+
+    // Delete client data on last call.
+
     if (indication == 0)
     {
-	delete (IndicationResponseHandler*)client_data;
+	delete data;
 	return false;
     }
 
-    Indication_Proc_Data* data = (Indication_Proc_Data*)client_data;
+    // Convert CIMPLE indication to Pegasus indication.
+
     CIMInstance pegasus_indication;
 
     if (Converter::to_pegasus_instance(System::getHostName(), 
 	data->name_space, indication, pegasus_indication) != 0)
+    {
 	return false;
+    }
+
+    // Build an object path for this indication.
 
     try
     {
-	// FIX: the namespace is hard-coded for now.
-
 	CIMObjectPath objectPath;
 	objectPath.setHost(System::getHostName());
 	objectPath.setNameSpace(INDICATION_NAMESPACE);
 	objectPath.setClassName(indication->meta_class->name);
 	pegasus_indication.setPath(objectPath);
-
 	data->handler->deliver(pegasus_indication);
     }
     catch (Exception& e)
@@ -1643,12 +1675,13 @@ int CIMPLE_Provider_Manager::_enable_indications(
 
     CStr class_name(sub->class_name);
 
-    Indication_Proc_Data data;
-    data.handler = handler;
-    data.name_space = INDICATION_NAMESPACE;
+    // ATTN: this is never deleted!
+    Indication_Proc_Data* data = new Indication_Proc_Data;
+    data->handler = handler;
+    data->name_space = String(INDICATION_NAMESPACE);
 
     Status status = _disp->enable_indications(
-	class_name, _indication_proc, &data);
+	class_name, _indication_proc, data);
 
     if (status != STATUS_OK)
 	return -1;
@@ -1685,9 +1718,11 @@ void CIMPLE_Provider_Manager::_create_disp(Message* message)
 	path = ProviderManager::_resolvePhysicalName(path);
 
 	CStr tmp(path);
+
 	char* dn = strdup(tmp.c_str());
-	dirname(dn);
-	_disp = Dispatcher::create(dn, "cmpl");
+
+	_disp = Dispatcher::create(dirname(dn), "cmpl");
+
 	free(dn);
     }
     catch (...)
@@ -1742,7 +1777,7 @@ PEGASUS_NAMESPACE_END
 //
 //------------------------------------------------------------------------------
 
-void __libcimpleprovmgr()
+CIMPLE_EXPORT void __libcimpleprovmgr()
 {
     // Entry point used by loadpm utility to see if this provider manager
     // can be loaded.

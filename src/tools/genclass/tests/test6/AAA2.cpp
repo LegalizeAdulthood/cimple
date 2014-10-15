@@ -13,14 +13,11 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Reference _AAA_left;
+extern CIMPLE_HIDE const Meta_Reference _AAA_left;
 
-CIMPLE_HIDE
-extern const Meta_Reference _AAA_right;
+extern CIMPLE_HIDE const Meta_Reference _AAA_right;
 
-CIMPLE_HIDE
-extern const Meta_Property _AAA2_aaa;
+extern CIMPLE_HIDE const Meta_Property _AAA2_aaa;
 
 const Meta_Property _AAA2_aaa =
 {

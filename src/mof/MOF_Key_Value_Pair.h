@@ -31,7 +31,7 @@
 #include <MOF_Element.h>
 #include <MOF_Literal.h>
 
-class MOF_Key_Value_Pair : public MOF_Element
+class MOF_LINKAGE MOF_Key_Value_Pair : public MOF_Element
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
     void validate(class MOF_Class_Decl* class_decl);
 
-    virtual MOF_Key_Value_Pair* clone() const;
+    virtual MOF_Element* clone() const;
 
     char* key;
     MOF_Literal* value;

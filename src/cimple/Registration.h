@@ -32,7 +32,8 @@
 #define CIMPLE_MODULE(MODULE) \
     static Registration* _cimple_registration = 0; \
     static const char* _cimple_module_name = #MODULE; \
-    extern "C" Registration* cimple_module() { return _cimple_registration; }
+    extern "C" CIMPLE_EXPORT Registration* cimple_module() \
+	{ return _cimple_registration; }
 
 #define CIMPLE_PROVIDER(PROVIDER) \
     static Registration CIMPLE_PASTE(_cimple_##PROVIDER##_,__LINE__)( \
@@ -44,7 +45,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-struct Registration
+struct CIMPLE_LIBCIMPLE_LINKAGE Registration
 {
     const char* module_name;
     const char* provider_name;

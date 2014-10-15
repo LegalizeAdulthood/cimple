@@ -16,7 +16,9 @@ CLASSES = \
     MyEmbeddedClass \
     DiskDrive \
     ComputerSystem \
-    ComputerSystemDiskDrive
+    ComputerSystemDiskDrive \
+    Thing \
+    ThingLink
 
 SOURCES = \
     DiskDrive.cpp \
@@ -50,15 +52,19 @@ SOURCES = \
     Person.cpp \
     repository.cpp \
     UnixUser.cpp \
+    Thing.cpp \
+    ThingLink.cpp
 
-LIBRARIES = -lcimple
+LIBRARIES = cimple
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+
+DEFINES += -DCIMPLE_INTERNAL
 
 include $(TOP)/mak/rules.mak
 
 genclass:
-	genclass -r $(CLASSES)
+	genclass -l -r $(CLASSES)
 
 tests:
 	@ $(BIN)/dlopen $(TARGET)

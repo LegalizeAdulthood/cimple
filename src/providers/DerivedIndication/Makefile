@@ -1,10 +1,6 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-ifdef PEGASUS_HOME
-include $(TOP)/mak/pegasus.mak
-endif
-
 SH_LIBRARY = cmplderivedindic
 
 INCLUDES += -I../repository
@@ -13,7 +9,7 @@ SOURCES = \
     DerivedIndication_Provider.cpp \
     module.cpp
 
-LIBRARIES = -lcimple -lcmplrep
+LIBRARIES = cimple cmplrep
 
 include $(TOP)/mak/rules.mak
 

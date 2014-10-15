@@ -28,14 +28,7 @@ public:
     CIMPLE_CLASS(DDD)
 };
 
-class DDD_foo_method : public Instance
-{
-public:
-    Property<String> arg1;
-    Property<String> arg2;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DDD_foo_method)
-};
+typedef CCC_foo_method DDD_foo_method;
 
 class DDD_goo_method : public Instance
 {

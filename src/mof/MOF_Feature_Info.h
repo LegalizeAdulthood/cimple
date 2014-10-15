@@ -31,7 +31,7 @@
 #include <MOF_Feature.h>
 #include <MOF_Element.h>
 
-class MOF_Feature_Info : public MOF_Element
+class MOF_LINKAGE MOF_Feature_Info : public MOF_Element
 {
 public:
 
@@ -41,7 +41,7 @@ public:
 
     void print_list() const;
 
-    virtual MOF_Feature_Info* clone() const;
+    virtual MOF_Element* clone() const;
 
     MOF_Feature* feature;
     class MOF_Class_Decl* class_origin;

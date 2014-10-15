@@ -31,6 +31,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -43,8 +44,7 @@ struct Files
 
 inline bool Files::exists(const char* path)
 {
-    struct stat st;
-    return stat(path, &st) == 0;
+    return access(path, F_OK) == 0;
 }
 
 inline bool Files::is_dir(const char* path)

@@ -25,7 +25,6 @@
 */
 
 #include "Time.h"
-#include "Threads.h"
 #include "Scheduler.h"
 #include "Id_Pool.h"
 #include "Auto_RMutex.h"
@@ -203,7 +202,10 @@ int Scheduler::start_thread()
 	return -1;
 
     _thread_running = true;
-    Threads::create_joinable(_thread, _thread_proc, this);
+
+    pthread_attr_init(&_thread_attr);
+    pthread_attr_setdetachstate(&_thread_attr, PTHREAD_CREATE_DETACHED);
+    return pthread_create(&_thread, &_thread_attr, _thread_proc, this);
 
     return 0;
 }
@@ -220,10 +222,7 @@ int Scheduler::stop_thread()
 
     _thread_running = false;
 
-    // Wait for thread to exit:
-
-    void* return_value;
-    Threads::join(_thread, return_value);
+    // pthread_attr_destroy(&_thread_attr);
 
     return 0;
 }

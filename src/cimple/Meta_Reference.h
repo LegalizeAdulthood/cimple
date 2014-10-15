@@ -40,11 +40,11 @@ struct Meta_Class;
 */
 struct Meta_Reference
 {
-    //// Meta_Feature fields
+    // Meta_Feature fields
     uint32 flags;
     const char* name;
 
-    //// Local fields
+    // Local fields
     const Meta_Class* meta_class;
     uint32 offset;
 };

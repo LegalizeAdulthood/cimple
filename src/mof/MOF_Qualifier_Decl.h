@@ -76,7 +76,7 @@
 #define MOF_QT_WEAK (1 << 23)
 #define MOF_QT_WRITE (1 << 24)
 
-class MOF_Qualifier_Decl : public MOF_Named_Element
+class MOF_LINKAGE MOF_Qualifier_Decl : public MOF_Named_Element
 {
 public:
 
@@ -84,7 +84,7 @@ public:
 
     ~MOF_Qualifier_Decl();
 
-    virtual MOF_Qualifier_Decl* clone() const;
+    virtual MOF_Element* clone() const;
 
     void validate();
 

@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _UnixUser_name;
+extern CIMPLE_HIDE const Meta_Property _UnixUser_name;
 
 const Meta_Property _UnixUser_name =
 {
@@ -25,8 +24,7 @@ const Meta_Property _UnixUser_name =
     CIMPLE_OFF(UnixUser,name)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _UnixUser_password;
+extern CIMPLE_HIDE const Meta_Property _UnixUser_password;
 
 const Meta_Property _UnixUser_password =
 {
@@ -37,8 +35,7 @@ const Meta_Property _UnixUser_password =
     CIMPLE_OFF(UnixUser,password)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _UnixUser_uid;
+extern CIMPLE_HIDE const Meta_Property _UnixUser_uid;
 
 const Meta_Property _UnixUser_uid =
 {
@@ -49,8 +46,7 @@ const Meta_Property _UnixUser_uid =
     CIMPLE_OFF(UnixUser,uid)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _UnixUser_gid;
+extern CIMPLE_HIDE const Meta_Property _UnixUser_gid;
 
 const Meta_Property _UnixUser_gid =
 {
@@ -61,8 +57,7 @@ const Meta_Property _UnixUser_gid =
     CIMPLE_OFF(UnixUser,gid)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _UnixUser_fullName;
+extern CIMPLE_HIDE const Meta_Property _UnixUser_fullName;
 
 const Meta_Property _UnixUser_fullName =
 {
@@ -73,8 +68,7 @@ const Meta_Property _UnixUser_fullName =
     CIMPLE_OFF(UnixUser,fullName)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _UnixUser_homeDir;
+extern CIMPLE_HIDE const Meta_Property _UnixUser_homeDir;
 
 const Meta_Property _UnixUser_homeDir =
 {
@@ -85,8 +79,7 @@ const Meta_Property _UnixUser_homeDir =
     CIMPLE_OFF(UnixUser,homeDir)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _UnixUser_shellProgram;
+extern CIMPLE_HIDE const Meta_Property _UnixUser_shellProgram;
 
 const Meta_Property _UnixUser_shellProgram =
 {

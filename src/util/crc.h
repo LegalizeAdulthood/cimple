@@ -27,8 +27,12 @@
 #ifndef _cimple_util_crc_h
 #define _cimple_util_crc_h
 
+#include "linkage.h"
+
+CIMPLEUTIL_LINKAGE 
 unsigned int crc_update(unsigned int crc, unsigned char *buf, int len);
 
+CIMPLEUTIL_LINKAGE 
 unsigned int crc_compute(unsigned char *buf, int len);
 
 #endif /* _cimple_util_crc_h */

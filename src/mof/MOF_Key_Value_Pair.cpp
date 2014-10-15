@@ -31,12 +31,12 @@
 #include "MOF_Yacc.h"
 #include "MOF_Error.h"
 
-MOF_Key_Value_Pair* MOF_Key_Value_Pair::clone() const
+MOF_Element* MOF_Key_Value_Pair::clone() const
 {
     MOF_Key_Value_Pair* tmp = new MOF_Key_Value_Pair;
 
     tmp->key = strdup(key);
-    tmp->value = value->clone();
+    tmp->value = (MOF_Literal*)value->clone();
     tmp->is_array = is_array;
 
     return tmp;
@@ -69,7 +69,7 @@ void MOF_Key_Value_Pair::validate(MOF_Class_Decl* class_decl)
 		MOF_Property_Decl* prop_decl = (MOF_Property_Decl*)p->feature;
 		data_type = prop_decl->data_type;
 		array_index = prop_decl->array_index;
-		is_key = p->feature->qual_mask & MOF_QT_KEY;
+		is_key = (p->feature->qual_mask & MOF_QT_KEY) ? true : false;
 		is_ref = false;
 		break;
 	    }
@@ -77,7 +77,7 @@ void MOF_Key_Value_Pair::validate(MOF_Class_Decl* class_decl)
 	    {
 		data_type = TOK_STRING;
 		array_index = 0;
-		is_key = p->feature->qual_mask & MOF_QT_KEY;
+		is_key = (p->feature->qual_mask & MOF_QT_KEY) ? true : false;
 		is_ref = true;
 		break;
 	    }

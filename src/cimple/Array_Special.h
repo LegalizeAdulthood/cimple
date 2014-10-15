@@ -111,7 +111,7 @@ public:
 
     void insert(size_t pos, const CIMPLE_T& elem)
     {
-	return _insert(pos, &elem, 1);
+	_insert(pos, &elem, 1);
     }
 
     void append(const CIMPLE_T* data, size_t size)

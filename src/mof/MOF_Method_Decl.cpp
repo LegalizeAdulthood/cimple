@@ -47,13 +47,14 @@ void MOF_Method_Decl::validate()
     parameters->check_duplicates();
 }
 
-MOF_Method_Decl* MOF_Method_Decl::clone() const
+MOF_Element* MOF_Method_Decl::clone() const
 {
     /* ATTN: not implemented */
     MOF_ASSERT(false);
+    return 0;
 }
 
-extern void MOF_Method_Decl::check_compatibility(
+void MOF_Method_Decl::check_compatibility(
     const char* class_name,
     const MOF_Method_Decl* m1,
     const MOF_Method_Decl* m2)

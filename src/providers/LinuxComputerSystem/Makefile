@@ -1,10 +1,6 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-ifdef PEGASUS_HOME
-include $(TOP)/mak/pegasus.mak
-endif
-
 INCLUDES += -I../repository
 
 SH_LIBRARY = cmpllinuxsysprov
@@ -15,7 +11,7 @@ SOURCES = \
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
-LIBRARIES = -lcimple -lcmplrep
+LIBRARIES = cimple cmplrep
 
 include $(TOP)/mak/rules.mak
 

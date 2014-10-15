@@ -5,16 +5,15 @@ SH_LIBRARY = MyIndicationProvider
 
 SOURCES = MyIndication_Provider.cpp module.cpp
 
-LIBRARIES = -lcimplecmpi -lcmplrep -lcimple
+LIBRARIES = cimplecmpi cmplrep cimple
 
 REPOSITORY = $(TOP)/src/providers/repository
 
-CMPI_INCLUDES = \
-    -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
+CMPI_INCLUDES = -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
 
 INCLUDES += $(CMPI_INCLUDES) -I$(TOP)/src/CMPI/cmpi -I$(REPOSITORY)
 
-FLAGS += -fno-rtti -fno-exceptions
+FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 include $(TOP)/mak/rules.mak
 

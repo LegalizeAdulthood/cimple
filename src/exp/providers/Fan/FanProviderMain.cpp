@@ -38,4 +38,7 @@ extern "C" PEGASUS_EXPORT CIMProvider* PegasusCreateProvider(
     return 0;
 }
 
+PEGASUS_MODULE("FanModule");
+PEGASUS_PROVIDER("FanProvider", "Fan", "Instance:Method");
+
 PEGASUS_NAMESPACE_END

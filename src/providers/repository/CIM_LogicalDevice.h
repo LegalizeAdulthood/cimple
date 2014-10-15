@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIM_LogicalDevice : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice : public Instance
 {
 public:
     // CIM_ManagedElement features:
@@ -58,17 +58,9 @@ public:
     CIMPLE_CLASS(CIM_LogicalDevice)
 };
 
-class CIM_LogicalDevice_RequestStateChange_method : public Instance
-{
-public:
-    Property<uint16> RequestedState;
-    CIM_ConcreteJob* Job;
-    Property<Datetime> TimeoutPeriod;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_LogicalDevice_RequestStateChange_method)
-};
+typedef CIM_EnabledLogicalElement_RequestStateChange_method CIM_LogicalDevice_RequestStateChange_method;
 
-class CIM_LogicalDevice_SetPowerState_method : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice_SetPowerState_method : public Instance
 {
 public:
     Property<uint16> PowerState;
@@ -77,14 +69,14 @@ public:
     CIMPLE_METHOD(CIM_LogicalDevice_SetPowerState_method)
 };
 
-class CIM_LogicalDevice_Reset_method : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice_Reset_method : public Instance
 {
 public:
     Property<uint32> return_value;
     CIMPLE_METHOD(CIM_LogicalDevice_Reset_method)
 };
 
-class CIM_LogicalDevice_EnableDevice_method : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice_EnableDevice_method : public Instance
 {
 public:
     Property<boolean> Enabled;
@@ -92,7 +84,7 @@ public:
     CIMPLE_METHOD(CIM_LogicalDevice_EnableDevice_method)
 };
 
-class CIM_LogicalDevice_OnlineDevice_method : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice_OnlineDevice_method : public Instance
 {
 public:
     Property<boolean> Online;
@@ -100,7 +92,7 @@ public:
     CIMPLE_METHOD(CIM_LogicalDevice_OnlineDevice_method)
 };
 
-class CIM_LogicalDevice_QuiesceDevice_method : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice_QuiesceDevice_method : public Instance
 {
 public:
     Property<boolean> Quiesce;
@@ -108,14 +100,14 @@ public:
     CIMPLE_METHOD(CIM_LogicalDevice_QuiesceDevice_method)
 };
 
-class CIM_LogicalDevice_SaveProperties_method : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice_SaveProperties_method : public Instance
 {
 public:
     Property<uint32> return_value;
     CIMPLE_METHOD(CIM_LogicalDevice_SaveProperties_method)
 };
 
-class CIM_LogicalDevice_RestoreProperties_method : public Instance
+class CIMPLE_LINKAGE CIM_LogicalDevice_RestoreProperties_method : public Instance
 {
 public:
     Property<uint32> return_value;

@@ -24,8 +24,11 @@
 **==============================================================================
 */
 
-#include <execinfo.h>
 #include "config.h"
+
+#ifdef __USE_GNU
+#  include <execinfo.h>
+#endif
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -38,6 +41,8 @@ void __cimple_assert(
     // Print general assertion failure message:
 
     fprintf(stderr, "%s(%d): %s(): assert: %s\n\n", file, line, function, cond);
+
+#ifdef __USE_GNU
 
     // Print backtrace:
 
@@ -53,6 +58,8 @@ void __cimple_assert(
 
     free (strings);
     fflush(stderr);
+
+#endif /* __USE_GNU */
 
     // Abort!
     abort();

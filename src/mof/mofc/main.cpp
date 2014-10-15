@@ -25,11 +25,8 @@
 */
 #include <cstdio>
 #include <cstdlib>
-#include <unistd.h>
+#include <getopt.h>
 #include "MOF_Parser.h"
-
-extern FILE* MOF_in;
-extern int MOF_parse();
 
 //------------------------------------------------------------------------------
 //
@@ -161,28 +158,7 @@ int main(int argc, char** argv)
     //
 
     for (int i = first_non_option_index; i < argc; i++)
-    {
-	// Open MOF file:
-
-	if ((MOF_in = fopen(argv[i], "r")) == 0)
-	{
-	    fprintf(stderr, "failed to open file: \"%s\"\n", argv[i]);
-	    exit(1);
-	}
-
-	// Set line counter and file name:
-
-	MOF_line_num = 1;
-	MOF_file_name = strdup(argv[i]);
-
-	// Parse the file:
-
-	MOF_parse();
-
-	// Close the file:
-
-	fclose(MOF_in);
-    }
+	MOF_parse_file(argv[i]);
 
     //
     // Print out all the declarations:

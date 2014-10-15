@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     a.value = 99;
     a.null = false;
 
-    Property<boolean> b;
+    Property<cimple::boolean> b;
     b.value  = true;
     b.null = false;
 

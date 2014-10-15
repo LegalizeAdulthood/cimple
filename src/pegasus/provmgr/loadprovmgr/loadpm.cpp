@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     //// Load library
 
     void* handle = dlopen(argv[1], RTLD_NOW | RTLD_GLOBAL);
-    assert(handle);
+    assert(handle != 0);
 
     /// Load symbol:
 
@@ -28,4 +28,6 @@ int main(int argc, char** argv)
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     __libcimpleprovmgr();
+
+    return 0;
 }

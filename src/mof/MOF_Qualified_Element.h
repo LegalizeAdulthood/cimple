@@ -35,7 +35,7 @@
 class MOF_Qualifier_Info;
 class MOF_Qualifier;
 
-class MOF_Qualified_Element : public MOF_Named_Element
+class MOF_LINKAGE MOF_Qualified_Element : public MOF_Named_Element
 {
 public:
 
@@ -43,7 +43,7 @@ public:
 
     virtual ~MOF_Qualified_Element();
 
-    virtual MOF_Qualified_Element* clone() const = 0;
+    virtual MOF_Element* clone() const = 0;
 
     MOF_Qualifier* qualifiers;
     MOF_Qualifier_Info* all_qualifiers;

@@ -26,12 +26,17 @@
 
 #include "util.h"
 #include <sys/types.h>
+#include <cimple/config.h>
 #include <cstdarg>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <cstdlib>
 #include <cstdio>
 #include <cctype>
+
+#ifdef CIMPLE_WINDOWS
+# include <windows.h>
+#endif
 
 using namespace std;
 
@@ -92,28 +97,98 @@ void warn(const char* format, ...)
     fputc('\n', stderr);
 }
 
-string basename_of(const char* path)
+string base_name(const string& path)
 {
-    const char* p = strrchr(path, '/');
+    const char* p = strrchr(path.c_str(), '/');
 
     if (p)
-        return p + 1;
+        return string(p + 1);
     else
         return path;
 }
 
-bool exists(const char* path)
+bool exists(const string& path)
 {
-    struct stat st;
-    return stat(path, &st) == 0;
+    return access(path.c_str(), F_OK) == 0;
 }
 
 bool is_dir(const char* path)
 {
+#ifdef CIMPLE_WINDOWS
+
+    char cwd[1024];
+    DWORD r = GetCurrentDirectory(sizeof(cwd), cwd);
+
+    if (r == 0 || r > sizeof(cwd))
+	return false;
+
+    BOOL flag = SetCurrentDirectory(path);
+
+    if (flag)
+	SetCurrentDirectory(cwd);
+
+    return flag;
+
+#else
+
     struct stat st;
 
     if (stat(path, &st) != 0)
         return false;
 
     return S_ISDIR(st.st_mode);
+
+#endif
+}
+
+bool is_absolute(const char* p)
+{
+#ifdef CIMPLE_WINDOWS
+    return p[0] == '/' || (isalpha(p[0]) && p[1] == ':' && p[2] == '/');
+#else
+    return p[0] == '/';
+#endif
+}
+
+
+string shlib_name(const string& name)
+{
+#ifdef CIMPLE_WINDOWS
+    return name + string(".dll");
+#else
+    return string("lib") + name + string(".so");
+#endif
+}
+
+string shlib_dir(const string& root)
+{
+#ifdef CIMPLE_WINDOWS
+    return root + string("/bin/");
+#else
+    return root + string("/lib/");
+#endif
+}
+
+string full_shlib_name(const string& root, const string& name)
+{
+    return shlib_dir(root) + shlib_name(name);
+}
+
+string shlib_basename(const string& path)
+{
+    string base = base_name(path);
+
+    size_t dot = base.find('.');
+
+    if (dot != (size_t)-1)
+	base.erase(dot);
+
+#ifdef CIMPLE_UNIX
+
+    if (base.substr(0, 3) == "lib")
+	base.erase(0, 3);
+
+#endif
+
+    return base;
 }

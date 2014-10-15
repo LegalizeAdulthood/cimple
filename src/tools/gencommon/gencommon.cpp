@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <vector>
+#include <unistd.h>
 #include <string>
 #include <util/util.h>
 #include "MOF_Parser.h"

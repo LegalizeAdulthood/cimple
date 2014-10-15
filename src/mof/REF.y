@@ -175,7 +175,7 @@ value
 	$$ = new MOF_Literal();
 	MOF_ASSERT($$ != NULL);
 	$$->value_type = TOK_BOOL_VALUE;
-	$$->bool_value = $1;
+	$$->bool_value = $1 ? true : false;
     }
     | multi_string
     {

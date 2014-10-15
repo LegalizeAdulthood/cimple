@@ -32,13 +32,14 @@
 #include "Envelope.h"
 #include "Module.h"
 #include "Repository.h"
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
 /** This object caches modules (from module libraries). Each module library 
     has an entry point called cimple_module().
 */
-class Cache
+class CIMPLEDISP_LINKAGE Cache
 {
 public:
 
@@ -49,7 +50,7 @@ public:
 	@param prefix if non-null, only matches libraries with this prefix.
 	@return pointer to a new cache or null on error.
     */
-    CIMPLE_HIDE static Cache* create(const char* path, const char* prefix = 0);
+    static CIMPLE_HIDE Cache* create(const char* path, const char* prefix = 0);
 
     /** Find a provider with the given class name.
     */

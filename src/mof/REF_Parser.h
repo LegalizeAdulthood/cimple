@@ -42,11 +42,11 @@ extern  MOF_Object_Reference* ref_obj_ref;
  * obj_ref will point to an object of type MOF_Object_Reference. The
  * user is responsible for freeing it.
  */
-extern int REF_parse(
+MOF_LINKAGE extern int REF_parse(
     const char* asc7,
     MOF_Object_Reference** obj_ref); 
 
-void REF_error(
+MOF_LINKAGE void REF_error(
     const char* message);
 
 #endif /* _REF_Parser_h */

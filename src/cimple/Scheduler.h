@@ -27,9 +27,9 @@
 #ifndef _cimple_Scheduler_h
 #define _cimple_Scheduler_h
 
+#include <pthread.h>
 #include "config.h"
 #include "List.h"
-#include "Threads.h"
 #include "RMutex.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -44,7 +44,7 @@ typedef uint64 (*Timer_Proc)(void* arg);
 
 /** This class provides a thread safe interface for scheduling timers.
 */
-class Scheduler
+class CIMPLE_LIBCIMPLE_LINKAGE Scheduler
 {
 public:
 
@@ -79,7 +79,8 @@ private:
     List _list;
 
     // Timer thread:
-    Thread _thread;
+    pthread_attr_t _thread_attr;
+    pthread_t _thread;
 
     // Indications whether timer thread is running.
     bool _thread_running;

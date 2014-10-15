@@ -37,11 +37,11 @@ typedef void (*Ctor_Proc)(void* to, const void* from);
 typedef void (*Dtor_Proc)(void* ptr);
 typedef bool (*Equal_Proc)(const void* ptr1, const void* ptr2);
 
-class Instance;
-class Meta_Class;
-class Meta_Property;
+struct Instance;
+struct Meta_Class;
+struct Meta_Property;
 
-class Array_Base
+class CIMPLE_LIBCIMPLE_LINKAGE Array_Base
 {
 public:
 
@@ -125,7 +125,10 @@ protected:
     friend void __uninitialized_copy(Instance*, const Instance*);
     friend struct IO;
     friend void __copy(Instance*, const Instance*, bool);
+
+    CIMPLE_LIBCIMPLE_LINKAGE
     friend void copy_keys(Instance*, const Instance*);
+
     friend void _random_property_initialize(const Meta_Property*, void*);
     friend class Facade;
 
@@ -224,7 +227,7 @@ public:
 
     void insert(size_t pos, const T& elem)
     {
-	return _insert(pos, &elem, 1);
+	_insert(pos, &elem, 1);
     }
 
     void append(const T* data, size_t size)

@@ -34,7 +34,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 /** Non-recursive mutex.
 */
-class Mutex
+class CIMPLE_LIBCIMPLE_LINKAGE Mutex
 {
 public:
 

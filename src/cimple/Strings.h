@@ -34,23 +34,32 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 bool str_to_uint16(const char* s, uint16& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 bool str_to_uint16(const char* s, size_t n, uint16& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 bool str_to_uint32(const char* s, uint32& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 bool str_to_uint32(const char* s, size_t n, uint32& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 bool str_to_size_t(const char* s, size_t n, size_t& x);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 char* str_clone(const char* s, size_t n);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 char* str_clone(const char* s);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 CIMPLE_PRINTF_ATTR(1, 2)
 char* str_printf(const char* format, ...);
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 char* str_vprintf(const char* format, va_list ap);
 
 CIMPLE_NAMESPACE_END

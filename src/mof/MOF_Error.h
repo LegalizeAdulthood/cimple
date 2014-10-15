@@ -29,12 +29,12 @@
 
 #include <MOF_Config.h>
 
-MOF_PRINTF_ATTR(1, 2)
-extern void MOF_error_printf(const char *format, ...);
+extern MOF_PRINTF_ATTR(1, 2)
+MOF_LINKAGE void MOF_error_printf(const char *format, ...);
 
-MOF_PRINTF_ATTR(1, 2)
-extern void MOF_warning_printf(const char *format, ...);
+extern MOF_PRINTF_ATTR(1, 2)
+MOF_LINKAGE void MOF_warning_printf(const char *format, ...);
 
-extern void MOF_error(const char* message);
+MOF_LINKAGE extern void MOF_error(const char* message);
 
 #endif /* _MOF_Error_h */

@@ -29,7 +29,7 @@
 #include "MOF_Data_Type.h"
 #include "MOF_Reference_Decl.h"
 
-MOF_Property* MOF_Property::clone() const 
+MOF_Element* MOF_Property::clone() const 
 { 
     MOF_ASSERT("not implemented" == 0);
     return 0;

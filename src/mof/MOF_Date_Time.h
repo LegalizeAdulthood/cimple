@@ -29,7 +29,7 @@
 
 #include <MOF_Config.h>
 
-class MOF_Date_Time
+class MOF_LINKAGE MOF_Date_Time
 {
 public:
 

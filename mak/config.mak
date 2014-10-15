@@ -1,68 +1,86 @@
+##==============================================================================
+##
+## Check CIMPLE_PLATFORM definition.
+##
+##==============================================================================
 
-ifndef CXX
-  CXX = g++
+CIMPLE_PLATFORM=
+-include $(TOP)/mak/platform.mak
+
+ifeq ($(CIMPLE_PLATFORM),)
+  $(error "First type ./configure")
 endif
 
-ifndef AR
-  AR = ar
+include $(TOP)/mak/platform_$(CIMPLE_PLATFORM).mak
+
+##==============================================================================
+##
+## Be sure TOP refers to an actual directory
+##
+##==============================================================================
+
+ifeq ($(wildcard $(TOP)),)
+    $(error "TOP does not refer to a legal directory)
 endif
 
-ifndef CC
-  CC = gcc
-endif
+##==============================================================================
+##
+## CIMPLE_ROOT
+##
+##==============================================================================
 
-FLAGS = -Wall -Wno-unused
-#FLAGS += -Wswitch-enum -fPIC -Wno-unused-label
+CIMPLE_ROOT = $(call abs_path, $(TOP))
 
-ifdef CIMPLE_TREAT_WARNINGS_LIKE_ERRROS
-FLAGS += -Werror
-endif
-
-SIZE_OPTIMIZATION_FLAGS = -fno-rtti -fno-exceptions
-
-ifdef CIMPLE_DEBUG
-    FLAGS += -g -DCIMPLE_DEBUG
-else
-    FLAGS += -Os
-endif
-
-FLAGS += -fPIC
-
-DEFINES = -D_GNU_SOURCE
-INCLUDES = -I$(TOP)/src
-VALGRIND = valgrind --tool=memcheck --alignment=8 --leak-check=yes
-
-AR_OPTS = rv
+##==============================================================================
+##
+## BIN, LIB & SRC
+##
+##     If PEGASUS_HOME is defined, programs and libraries are placed under
+##     that directory.
+##
+##==============================================================================
 
 ifdef PEGASUS_HOME
- BIN = $(shell mkdir -p $(PEGASUS_HOME)/bin; cd $(PEGASUS_HOME)/bin; pwd)
- LIB = $(shell mkdir -p $(PEGASUS_HOME)/lib; cd $(PEGASUS_HOME)/lib; pwd)
+  BIN = $(PEGASUS_HOME)/bin
+  LIB = $(PEGASUS_HOME)/lib
 else
- BIN = $(shell mkdir -p $(TOP)/bin; cd $(TOP)/bin; pwd)
- LIB = $(shell mkdir -p $(TOP)/lib; cd $(TOP)/lib; pwd)
+  BIN = $(CIMPLE_ROOT)/bin
+  LIB = $(CIMPLE_ROOT)/lib
 endif
 
-SRC = $(shell cd $(TOP)/src; pwd)
+SRC = $(CIMPLE_ROOT)/src
 
-#export LD_LIBRARY_PATH=$(LIB)
+ifdef CIMPLE_WINDOWS
+  SHLIB = $(BIN)
+else
+  SHLIB = $(LIB)
+endif
 
-LINK_FLAGS += -L$(LIB)
+##==============================================================================
+##
+## CIMPLE_MOF_PATH
+##
+##==============================================================================
 
-#FLAGS += -fno-rtti -fno-exceptions
+ifndef CIMPLE_MOF_PATH
+  export CIMPLE_MOF_PATH = $(TOP)/schema
+endif
 
-CONFIG_MAK = 1
+##==============================================================================
+##
+## INCLUDES
+##
+##==============================================================================
 
-define NEWLINE
+INCLUDES += -I$(TOP)/src
+
+##==============================================================================
+##
+## NL - newline macro
+##
+##==============================================================================
+
+define NL
 
 
 endef
-
-ifndef CIMPLE_MOF_PATH
-export CIMPLE_MOF_PATH = $(shell cd $(TOP)/schema; pwd)
-endif
-
-RPATH_OPT = -Wl,-rpath=$(LIB)
-
--include $(TOP)/mak/defines.mak
-
-#STATIC_LIBSTDCXX=$(shell $(CXX) --print-file-name=libstdc++.a)

@@ -1,7 +1,7 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-LIBRARY = cimpledisp
+SH_LIBRARY = cimpledisp
 
 SOURCES = \
     Buffer.cpp \
@@ -21,11 +21,11 @@ SOURCES = \
     State.cpp \
     Status.cpp
 
-LIBRARIES = -lcimple -ldl -lpthread
+LIBRARIES = cimple
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
-DEFINES += -DCIMPLE_LIBCIMPLE_INTERNAL
+DEFINES += -DCIMPLEDISP_INTERNAL
 
 include $(TOP)/mak/rules.mak
 

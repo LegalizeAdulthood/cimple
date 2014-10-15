@@ -1,18 +1,20 @@
-TARGET = $(LIB)/lib$(SH_LIBRARY).so
+TARGET = $(call shlib_target,$(SH_LIBRARY))
 
 $(TARGET): $(OBJECTS)
-	mkdir -p $(LIB)
-ifdef STATIC_LIBSTDCXX
-	cp $(STATIC_LIBSTDCXX) $(LIB)
-endif
-	$(CXX) $(RPATH_OPT) $(LINK_FLAGS) -shared -o $(TARGET) $(OBJECTS) $(LIBRARIES)
+	$(MKDIRHIER) $(LIB)
+	$(call make_shlib,$(SH_LIBRARY),$(OBJECTS),$(LIBRARIES))
 
 size:
-	size $(TARGET)
+	$(SIZE) $(TARGET)
 
 gen:
 
 load:
 	$(BIN)/dlopen $(TARGET)
+
+_TARGET_LIST = $(call shlib_clean_targets,$(SH_LIBRARY))
+
+clean:
+	$(RM) $(OBJECTS) $(_TARGET_LIST) $(CLEAN) depend.mak
 
 include $(TOP)/mak/sub.mak

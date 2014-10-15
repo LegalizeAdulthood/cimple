@@ -29,7 +29,7 @@
 
 #include <MOF_Config.h>
 
-struct MOF_Options
+struct MOF_LINKAGE MOF_Options
 {
     static bool warn;
     static bool debug;

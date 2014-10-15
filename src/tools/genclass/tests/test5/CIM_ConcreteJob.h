@@ -61,13 +61,7 @@ public:
     CIMPLE_CLASS(CIM_ConcreteJob)
 };
 
-class CIM_ConcreteJob_KillJob_method : public Instance
-{
-public:
-    Property<boolean> DeleteOnKill;
-    Property<uint32> return_value;
-    CIMPLE_METHOD(CIM_ConcreteJob_KillJob_method)
-};
+typedef CIM_Job_KillJob_method CIM_ConcreteJob_KillJob_method;
 
 class CIM_ConcreteJob_RequestStateChange_method : public Instance
 {

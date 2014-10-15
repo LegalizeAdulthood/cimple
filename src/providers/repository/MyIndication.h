@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class MyIndication : public Instance
+class CIMPLE_LINKAGE MyIndication : public Instance
 {
 public:
     // CIM_Indication features:
@@ -28,7 +28,7 @@ public:
     CIMPLE_CLASS(MyIndication)
 };
 
-class MyIndication_DeliverIndications_method : public Instance
+class CIMPLE_LINKAGE MyIndication_DeliverIndications_method : public Instance
 {
 public:
     Property<uint32> return_value;

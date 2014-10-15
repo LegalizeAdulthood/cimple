@@ -41,7 +41,7 @@ CIMPLE_NAMESPACE_BEGIN
     get() never returns zero, so zero can be used to represent the "null" id.
     Both get() and put() are O(1) operations.
 */
-class Id_Pool
+class CIMPLE_LIBCIMPLE_LINKAGE Id_Pool
 {
 public:
 

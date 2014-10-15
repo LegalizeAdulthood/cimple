@@ -30,7 +30,6 @@
 #include <cimple/Strings.h>
 #include <cimple/RMutex.h>
 #include <cimple/Auto_RMutex.h>
-#include <cimple/Threads.h>
 #include <cimple/TLS.h>
 #include "Converter.h"
 
@@ -60,6 +59,7 @@ static TLS _context_tls;
 //
 //------------------------------------------------------------------------------
 
+//Removed thread support!
 uint64 Adapter::_timer(void* arg)
 {
     TRACE;
@@ -135,9 +135,7 @@ Adapter::Adapter(
     const char* provider_name, 
     Provider_Proc proc) :
     Provider_Handle(proc),
-    _indications_enabled(false),
-    _timer_id(0), 
-    _stop_timer_thread(false)
+    _indications_enabled(false)
 {
     TRACE;
 
@@ -196,7 +194,13 @@ Adapter::Adapter(
 	if (_sched == 0)
 	{
 	    _sched = new Scheduler;
-	    Threads::create_detached(_timer_thread, _timer_thread_proc, this);
+
+	    pthread_attr_init(&_timer_thread_attr);
+	    pthread_attr_setdetachstate(
+		&_timer_thread_attr, PTHREAD_CREATE_DETACHED);
+	    pthread_create(&_timer_thread, &_timer_thread_attr, 
+		_timer_thread_proc, this);
+
 	    _timer_context = CBPrepareAttachThread(broker, context);
 	}
 

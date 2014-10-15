@@ -31,13 +31,13 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-struct Time
+struct CIMPLE_LIBCIMPLE_LINKAGE Time
 {
 public:
 
-    static const uint64 USEC = 1;
-    static const uint64 MSEC = 1000;
-    static const uint64 SEC = 1000000;
+    static const uint64 USEC;
+    static const uint64 MSEC;
+    static const uint64 SEC;
     
     static uint64 now();
 

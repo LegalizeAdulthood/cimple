@@ -11,7 +11,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Arg : public Instance
+class CIMPLE_LINKAGE Arg : public Instance
 {
 public:
     // Arg features:

@@ -27,8 +27,8 @@
 #ifndef _cimple_Facade_h
 #define _cimple_Facade_h
 
-#include <pthread.h>
 #include <cimple/Instance.h>
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -51,7 +51,7 @@ CIMPLE_NAMESPACE_BEGIN
     indicates a type mismatch between field and the method (for example, 
     calling get_uint32() on a uint16 field is a type mismatch).
 */
-class Facade
+class CIMPLEDISP_LINKAGE Facade
 {
 public:
 

@@ -1,26 +1,23 @@
-TOP = ../../../..
-include $(TOP)/mak/config.mak
-include $(TOP)/mak/pegasus.mak
+ROOT = $(PEGASUS_ROOT)
+DIR = cimple/provmgr/loadpm
+include $(ROOT)/mak/config.mak
 
-BINARY = loadpm
+PROGRAM = loadprovmgr
 
 SOURCES = loadpm.cpp
 
-LINK_FLAGS += -L$(PEGASUS_HOME)/lib
-
 LIBRARIES = \
-    -lcimpleprovmgr \
-    -lcimpleutil \
-    -lpegprovidermanager \
-    -lpegprovider \
-    -lpegcommon \
-    -lcimpledisp \
-    -lcimple \
-    -lpthread
+    cimpleprovmgr \
+    cimpleutil \
+    pegprovidermanager \
+    pegprovider \
+    pegcommon \
+    cimpledisp \
+    cimple
 
-include $(TOP)/mak/rules.mak
+CIMPLE_ROOT = ../../../..
+include $(CIMPLE_ROOT)/mak/extras.mak
+
+include $(ROOT)/mak/program.mak
 
 tests:
-	$(TARGET) $(LIB)/libcimpleprovmgr.so
-
-genclass:

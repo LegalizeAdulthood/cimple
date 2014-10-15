@@ -32,13 +32,13 @@
 #include <MOF_Qualifier.h>
 #include <MOF_Qualifier_Info.h>
 
-class MOF_Parameter : public MOF_Qualified_Element
+class MOF_LINKAGE MOF_Parameter : public MOF_Qualified_Element
 {
 public:
 
     MOF_Parameter() : data_type(0), ref_name(0) { }
 
-    virtual MOF_Parameter* clone() const;
+    virtual MOF_Element* clone() const;
 
     /** Return zero if the two parameters are compatible or negative one if not.
     */

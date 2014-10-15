@@ -7,7 +7,7 @@ SH_LIBRARY = cmplfan
 
 SOURCES = Fan_Provider.cpp module.cpp
 
-LIBRARIES = -lcimple -lcmplrep
+LIBRARIES = cimple cmplrep
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 

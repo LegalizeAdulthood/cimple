@@ -7,3 +7,4 @@
 #pragma include ("UnixUser.mof")
 #pragma include ("MyEmbeddedClass.mof")
 #pragma include ("ComputerSystemDiskDrive.mof")
+#pragma include ("Thing.mof")

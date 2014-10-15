@@ -144,6 +144,7 @@ Meta_Class Instance_meta_class =
     sizeof(Instance), /* size */
     0, /* super_meta_class */
     0, /* num_keys */
+    0x00000000, /* crc */
 };
 
 CIMPLE_NAMESPACE_END

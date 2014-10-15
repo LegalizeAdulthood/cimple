@@ -8,7 +8,7 @@ SOURCES = Client.cpp
 
 LINK_FLAGS += -L$(PEGASUS_HOME)/lib
 
-LIBRARIES = -lpegclient -lpegcommon -lcimple
+LIBRARIES = pegclient pegcommon cimple
 
 FLAGS += -fno-enforce-eh-specs
 

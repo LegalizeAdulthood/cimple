@@ -37,7 +37,7 @@ struct List_Elem
     List_Elem* next;
 };
 
-struct List
+struct CIMPLE_LIBCIMPLE_LINKAGE List
 {
     List() : head(0), tail(0) { }
 

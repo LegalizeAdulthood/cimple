@@ -46,7 +46,7 @@ struct Meta_Class
     const char* name;
     Meta_Feature** meta_features; 
     size_t num_meta_features;
-    const uint32 size;
+    uint32 size;
 
     // Local fields:
     const Meta_Class* super_meta_class;
@@ -56,30 +56,40 @@ struct Meta_Class
     uint32 crc;
 };
 
+CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Feature* find_feature(
     const Meta_Class* mc, const char* name, uint32 type = 0xFFFFFFFF);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Property* find_property(const Meta_Class* mc, const char* name);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Reference* find_reference(const Meta_Class* mc, const char* name);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Method* find_method(const Meta_Class* mc, const char* name);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 bool has_methods(const Meta_Class* mc);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 bool has_references(const Meta_Class* mc);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 size_t count_keys(const Meta_Class* mc);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 extern Meta_Class Instance_meta_class;
 
 typedef void (*Repository_Proc)(const Meta_Class* const*&, size_t&);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 const Meta_Class* find_meta_class(
     const Meta_Class* const*meta_classes, 
     size_t num_meta_classes,
     const char* class_name);
 
+CIMPLE_LIBCIMPLE_LINKAGE
 bool is_local_feature(const Meta_Class* mc, const Meta_Feature* mf);
 
 CIMPLE_NAMESPACE_END

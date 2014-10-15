@@ -29,7 +29,7 @@
 
 #include <MOF_Config.h>
 
-class MOF_Data_Type
+class MOF_LINKAGE MOF_Data_Type
 {
 public:
 

@@ -34,8 +34,6 @@
 
 MOF_Instance_Decl* MOF_Instance_Decl::list = 0;
 
-extern "C" FILE* open_memstream(char **, size_t *);
-
 MOF_Instance_Decl::MOF_Instance_Decl() : inst_name(0), class_name(0), 
     class_decl(0), alias(0), properties(0), all_features(0)
 {
@@ -51,7 +49,7 @@ MOF_Instance_Decl::~MOF_Instance_Decl()
     all_features->delete_list();
 }
 
-MOF_Instance_Decl* MOF_Instance_Decl::clone() const
+MOF_Element* MOF_Instance_Decl::clone() const
 {
     MOF_ASSERT("not implemented" == 0);
     return 0;
@@ -332,7 +330,8 @@ static void _build_all_features_list(
 		 * Clone the feature (and initialize).
 		 */
 
-		prop_decl = ((MOF_Property_Decl*)feature)->clone();
+		prop_decl = (MOF_Property_Decl*)
+		    ((MOF_Property_Decl*)feature)->clone();
 
 		if (prop_decl == 0)
 		{
@@ -386,7 +385,8 @@ static void _build_all_features_list(
 		 * Clone the feature (and initialize).
 		 */
 
-		ref_decl = ((MOF_Reference_Decl*)feature)->clone();
+		ref_decl = (MOF_Reference_Decl*)
+		    ((MOF_Reference_Decl*)feature)->clone();
 
 		if (ref_decl == 0)
 		{

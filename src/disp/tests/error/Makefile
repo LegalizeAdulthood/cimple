@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_error
 SOURCES = main.cpp
-LIBRARIES = -lcimpledisp -lcimple
+LIBRARIES = cimpledisp cimple
 
 include $(TOP)/mak/rules.mak
 

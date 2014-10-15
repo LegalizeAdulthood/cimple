@@ -218,7 +218,8 @@ void process(const char* path, const char* class_name)
 
     if (!disp)
     {
-	fprintf(stderr, "%s: no such directory: %s\n", arg0, path);
+	fprintf(stderr, "%s: error in directory: %s: %s\n", arg0, path,
+	    Error::get());
 	exit(1);
     }
 

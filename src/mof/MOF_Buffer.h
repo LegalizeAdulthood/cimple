@@ -31,7 +31,7 @@
 
 /** Simple dynamic buffer.
 */
-class MOF_Buffer
+class MOF_LINKAGE MOF_Buffer
 {
 public:
 

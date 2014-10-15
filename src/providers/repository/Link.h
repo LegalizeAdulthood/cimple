@@ -13,7 +13,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Link : public Instance
+class CIMPLE_LINKAGE Link : public Instance
 {
 public:
     // Link features:

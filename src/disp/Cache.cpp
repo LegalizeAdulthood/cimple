@@ -32,7 +32,7 @@
 #include "string.h"
 #include "Error.h"
 
-// ATTN: implement destory() method.
+// ATTN: implement destroy() method.
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -64,23 +64,31 @@ Cache* Cache::create(const char* lib_dir, const char* prefix)
     if (!dir)
 	return 0;
 
+    // ATTN: readdir not thread safe!
+
     for (dirent* ent; (ent = readdir(dir)) != NULL; )
     {
 	String name(ent->d_name);
 
-	// Skip non-library modules (e.g., libXYZ.so). This logic also skips
-	// "." and "..".
-
-	if (name.size() <= 6 || 
-	    !name.is_prefix("lib", 3) || 
-	    !name.is_suffix(".so", 3))
+	if (name == "." || name == "..")
 	    continue;
 
-	// Ignore modules that don't have the prefix.
+	// Ignore modules without the "cmpl" prefix.
 
-	if (prefix && name.size() > 3 && !name.equal(3, prefix, strlen(prefix)))
+#ifdef CIMPLE_WINDOWS
+	String full_prefix = prefix;
+	String suffix = ".dll";
+#else
+	String full_prefix = "lib";
+	full_prefix.append(prefix);
+	String suffix = ".so";
+#endif
+
+	if (!name.is_prefix(full_prefix.c_str(), full_prefix.size()))
 	    continue;
 
+	if (!name.is_suffix(suffix.c_str(), suffix.size()))
+	    continue;
 
 	// Load the library.
 

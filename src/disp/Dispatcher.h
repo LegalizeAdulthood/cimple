@@ -29,21 +29,21 @@
 
 #include <cimple/Instance.h>
 #include <cimple/Provider.h>
-#include <pthread.h>
+#include <cimple/Scheduler.h>
 #include "Status.h"
 #include "State.h"
 #include "Error.h"
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Scheduler;
 class Cache;
 class Envelope;
 
 /** The dispacter is the main API to the CIMPLE CIM engine. It maintains a the 
     collection of providers and dispatches CIM operations to them.
 */
-class Dispatcher
+class CIMPLEDISP_LINKAGE Dispatcher
 {
 public:
 
@@ -173,6 +173,7 @@ private:
     CIMPLE_HIDE Envelope* _find_provider(const char* class_name);
 
     Cache* _cache;
+
     Scheduler* _sched;
 
     friend struct __Dummy;

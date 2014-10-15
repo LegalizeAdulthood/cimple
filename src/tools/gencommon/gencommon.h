@@ -27,13 +27,20 @@
 #ifndef _cimple_gencommon_h
 #define _cimple_gencommon_h
 
+#include <cimple/config.h>
 #include <vector>
 #include <string>
 
+#ifdef GENCOMMON_INTERNAL
+# define GENCOMMON_LINKAGE CIMPLE_EXPORT
+#else
+# define GENCOMMON_LINKAGE CIMPLE_IMPORT
+#endif
+
 using namespace std;
 
-void setup_mof_path();
-int find_file(const char* path);
-void load_repository(const vector<string>& extra_mof_files);
+GENCOMMON_LINKAGE void setup_mof_path();
+GENCOMMON_LINKAGE int find_file(const char* path);
+GENCOMMON_LINKAGE void load_repository(const vector<string>& extra_mof_files);
 
 #endif /* _cimple_gencommon_h */

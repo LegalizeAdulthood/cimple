@@ -7,7 +7,7 @@ INCLUDES += -I../repository
 
 SOURCES = Methods_Provider.cpp module.cpp
 
-LIBRARIES = -lcimple -lcmplrep
+LIBRARIES = cimple cmplrep
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 

@@ -11,7 +11,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Person : public Instance
+class CIMPLE_LINKAGE Person : public Instance
 {
 public:
     // Person features:

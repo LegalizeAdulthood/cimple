@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cctype>
-#include <unistd.h>
+#include <getopt.h>
 #include <util/util.h>
 
 const char USAGE[] = "\

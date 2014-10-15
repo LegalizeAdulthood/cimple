@@ -36,21 +36,11 @@ TLS::TLS() : _initialized(0)
 
 TLS::~TLS()
 {
-    Auto_Mutex auto_mutex(_lock);
     pthread_key_delete(_key);
 }
 
 void TLS::_create()
 {
-    // Using double-checked locking pattern. This function must be called
-    // like this:
-    // 
-    //     if (_initialized == 0)
-    //         _create();
-    //
-    // If _initialized is non-zero, we can avoid calling this function
-    // altogether.
-
     Auto_Mutex auto_mutex(_lock);
 
     if (_initialized == 0)

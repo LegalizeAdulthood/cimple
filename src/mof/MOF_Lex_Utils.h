@@ -33,7 +33,7 @@ typedef int (*MOF_input_proc)();
 
 typedef void (*MOF_error_proc)(const char*);
 
-extern char* MOF_read_string(
+MOF_LINKAGE extern char* MOF_read_string(
     MOF_input_proc input_proc,
     MOF_error_proc error_proc);
 

@@ -28,6 +28,7 @@
 #define _cimple_Buffer_h
 
 #include <cimple/config.h>
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -37,7 +38,7 @@ CIMPLE_NAMESPACE_BEGIN
 // fundamentals: insertion of a single element at the rear and removal of
 // a single element form the middle.
 //
-class Buffer
+class CIMPLEDISP_LINKAGE Buffer
 {
 public:
 

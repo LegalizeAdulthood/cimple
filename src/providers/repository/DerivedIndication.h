@@ -12,7 +12,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class DerivedIndication : public Instance
+class CIMPLE_LINKAGE DerivedIndication : public Instance
 {
 public:
     // CIM_Indication features:
@@ -30,12 +30,7 @@ public:
     CIMPLE_CLASS(DerivedIndication)
 };
 
-class DerivedIndication_DeliverIndications_method : public Instance
-{
-public:
-    Property<uint32> return_value;
-    CIMPLE_METHOD(DerivedIndication_DeliverIndications_method)
-};
+typedef MyIndication_DeliverIndications_method DerivedIndication_DeliverIndications_method;
 
 CIMPLE_NAMESPACE_END
 

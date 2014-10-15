@@ -98,7 +98,7 @@ void MOF_Reference_Decl::validate()
     validate_obj_ref(obj_ref);
 }
 
-MOF_Reference_Decl* MOF_Reference_Decl::clone() const
+MOF_Element* MOF_Reference_Decl::clone() const
 {
     MOF_Reference_Decl* tmp;
     

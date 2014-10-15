@@ -1,0 +1,11 @@
+class Thing
+{
+    [Key] uint32 key;
+};
+
+[Association]
+class ThingLink
+{
+    Thing ref left;
+    Thing ref right;
+};

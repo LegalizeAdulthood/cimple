@@ -38,6 +38,8 @@
 #include "CIM_SystemComponent.h"
 #include "CIM_SystemDevice.h"
 #include "ComputerSystemDiskDrive.h"
+#include "Thing.h"
+#include "ThingLink.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

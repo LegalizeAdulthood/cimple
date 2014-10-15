@@ -53,14 +53,18 @@ enum Type
     DATETIME,
 };
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 extern size_t type_size[];
 
+CIMPLE_LIBCIMPLE_LINKAGE 
 extern const char* type_name[];
 
 // Returns true if the index is one of the integer types defined above.
+CIMPLE_LIBCIMPLE_LINKAGE 
 extern char is_integer[];
 
 // Returns true if the index is one of the "raw" types.
+CIMPLE_LIBCIMPLE_LINKAGE 
 extern char is_raw[];
 
 CIMPLE_NAMESPACE_END

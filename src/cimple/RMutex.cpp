@@ -24,9 +24,6 @@
 **==============================================================================
 */
 
-#define __USE_UNIX98
-#define __USE_GNU
-#include <pthread.h>
 #include "RMutex.h"
 
 CIMPLE_NAMESPACE_BEGIN

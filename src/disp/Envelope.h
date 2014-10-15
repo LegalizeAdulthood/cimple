@@ -27,13 +27,13 @@
 #ifndef _cimple_Envelope_h
 #define _cimple_Envelope_h
 
-#include <pthread.h>
 #include <cimple/Provider.h>
 #include <cimple/Instance.h>
 #include <cimple/Registration.h>
 #include <cimple/Provider_Handle.h>
 #include <cimple/RMutex.h>
 #include <cimple/List.h>
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -42,7 +42,7 @@ CIMPLE_NAMESPACE_BEGIN
     procedure directly. The envelope synchronizes access to the provider
     through its mutex member (see Envelope::_mutex).
 */
-class Envelope : public List_Elem, public Provider_Handle
+class CIMPLEDISP_LINKAGE Envelope : public List_Elem, public Provider_Handle
 {
 public:
 

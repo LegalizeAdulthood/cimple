@@ -30,7 +30,7 @@
 #include <MOF_Config.h>
 #include <MOF_Element.h>
 
-class MOF_Literal : public MOF_Element
+class MOF_LINKAGE MOF_Literal : public MOF_Element
 {
 public:
 
@@ -40,7 +40,7 @@ public:
 
     virtual void print(FILE* stream, bool is_array) const;
 
-    virtual MOF_Literal* clone() const;
+    virtual MOF_Element* clone() const;
 
     void validate(
 	const char* object_type,

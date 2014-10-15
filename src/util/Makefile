@@ -1,15 +1,17 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-LIBRARY = cimpleutil
+SH_LIBRARY = cimpleutil
 
 SOURCES = \
     util.cpp \
     crc.cpp \
 
-LIBRARIES = -ldl -lpthread
+LIBRARIES =
 
-FLAGS += -fno-rtti -fno-exceptions
+FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+
+DEFINES += -DCIMPLEUTIL_INTERNAL
 
 include $(TOP)/mak/rules.mak
 

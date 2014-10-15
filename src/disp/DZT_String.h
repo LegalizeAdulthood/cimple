@@ -28,6 +28,7 @@
 #define _cimple_DZT_String_h
 
 #include <cimple/config.h>
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -55,7 +56,7 @@ CIMPLE_NAMESPACE_BEGIN
 	}
 	</pre>
 */
-class DZT_String
+class CIMPLEDISP_LINKAGE DZT_String
 {
 public:
 
@@ -141,7 +142,7 @@ inline void DZT_String::append(const char* s)
     append(s, strlen(s));
 }
 
-void dzt_next(const char*& str);
+CIMPLEDISP_LINKAGE void dzt_next(const char*& str);
 
 CIMPLE_NAMESPACE_END
 

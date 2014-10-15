@@ -36,7 +36,7 @@
 #define MOF_FEATURE_REF 2
 #define MOF_FEATURE_METHOD 3
 
-class MOF_Feature : public MOF_Qualified_Element
+class MOF_LINKAGE MOF_Feature : public MOF_Qualified_Element
 {
 public:
 
@@ -46,7 +46,7 @@ public:
 
     virtual void validate() = 0;
 
-    virtual MOF_Feature* clone() const = 0;
+    virtual MOF_Element* clone() const = 0;
 
     int type;
 };

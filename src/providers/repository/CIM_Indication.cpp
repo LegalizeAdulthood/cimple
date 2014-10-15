@@ -13,8 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_IndicationIdentifier;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationIdentifier;
 
 const Meta_Property _CIM_Indication_IndicationIdentifier =
 {
@@ -25,8 +24,7 @@ const Meta_Property _CIM_Indication_IndicationIdentifier =
     CIMPLE_OFF(CIM_Indication,IndicationIdentifier)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_CorrelatedIndications;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_CorrelatedIndications;
 
 const Meta_Property _CIM_Indication_CorrelatedIndications =
 {
@@ -37,8 +35,7 @@ const Meta_Property _CIM_Indication_CorrelatedIndications =
     CIMPLE_OFF(CIM_Indication,CorrelatedIndications)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_IndicationTime;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_IndicationTime;
 
 const Meta_Property _CIM_Indication_IndicationTime =
 {
@@ -49,8 +46,7 @@ const Meta_Property _CIM_Indication_IndicationTime =
     CIMPLE_OFF(CIM_Indication,IndicationTime)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_PerceivedSeverity;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_PerceivedSeverity;
 
 const Meta_Property _CIM_Indication_PerceivedSeverity =
 {
@@ -61,8 +57,7 @@ const Meta_Property _CIM_Indication_PerceivedSeverity =
     CIMPLE_OFF(CIM_Indication,PerceivedSeverity)
 };
 
-CIMPLE_HIDE
-extern const Meta_Property _CIM_Indication_OtherSeverity;
+extern CIMPLE_HIDE const Meta_Property _CIM_Indication_OtherSeverity;
 
 const Meta_Property _CIM_Indication_OtherSeverity =
 {

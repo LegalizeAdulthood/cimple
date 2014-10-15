@@ -27,7 +27,6 @@
 #ifndef _cimple_Auto_Mutex_h
 #define _cimple_Auto_Mutex_h
 
-#include <pthread.h>
 #include "config.h"
 #include "Mutex.h"
 

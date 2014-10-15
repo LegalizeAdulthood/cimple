@@ -32,7 +32,7 @@
 class MOF_Qualifier_Info;
 class MOF_Qualifier;
 
-class MOF_Element
+class MOF_LINKAGE MOF_Element
 {
 public:
 

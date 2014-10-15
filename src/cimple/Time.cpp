@@ -26,16 +26,27 @@
 
 #include <cimple/config.h>
 #include "Time.h"
+
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
+const uint64 Time::USEC = 1;
+const uint64 Time::MSEC = 1000;
+const uint64 Time::SEC = 1000000;
+
 uint64 Time::now()
 {
+#ifdef CIMPLE_WINDOWS
+    struct posix::timeval  tv;
+#else
     struct timeval  tv;
+#endif
     struct timezone ignore;
+    memset(&tv, 0, sizeof(tv));
+    memset(&ignore, 0, sizeof(ignore));
 
     gettimeofday(&tv, &ignore);
     return uint64(tv.tv_sec) * uint64(1000000) + uint64(tv.tv_usec);
@@ -43,8 +54,17 @@ uint64 Time::now()
 
 void Time::sleep(uint64 timeout_usec)
 {
+#ifdef CIMPLE_WINDOWS
+
+    Sleep((DWORD)(timeout_usec / 1000));
+
+#else
+
     timeval tv = { timeout_usec / 1000000, timeout_usec % 1000000 };
     select(0, 0, 0, 0, &tv);
+
+#endif
 }
+
 
 CIMPLE_NAMESPACE_END
