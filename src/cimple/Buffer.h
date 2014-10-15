@@ -37,7 +37,11 @@ CIMPLE_NAMESPACE_BEGIN
 // The Buffer class implements a simple array of raw types (types that do
 // not require construction and deconstruction). It only implements the
 // fundamentals: insertion of a single element at the rear and removal of
-// a single element form the middle.
+// a single element from the middle.
+// 
+// This class is intended for internal use within CIMPLE. The interface
+// definitions may change so any use by provider writers must accept that
+// limitation.
 //
 class CIMPLE_CIMPLE_LINKAGE Buffer
 {
@@ -57,6 +61,11 @@ public:
 
     const char* data() const;
 
+    /**
+     * return pointer to data component of buffer.  This function 
+     * applies '\0' at end of buffer. 
+     * @return char* to data in buffer 
+     */
     char* data();
 
     const char* end() const;

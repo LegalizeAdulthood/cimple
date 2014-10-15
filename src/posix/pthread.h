@@ -203,6 +203,9 @@ POSIX_LINKAGE int pthread_cond_wait(
 POSIX_LINKAGE int pthread_cond_signal(
     pthread_cond_t* cond);
 
+POSIX_LINKAGE int pthread_cond_broadcast(
+    pthread_cond_t* cond);
+
 POSIX_NAMESPACE_END
 
 #endif /* _cimple_posix_pthread_h */

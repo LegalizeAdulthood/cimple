@@ -51,6 +51,8 @@ int Converter::to_cimple_instance(
     if (rc != 0 || !inst)
         return -1;
 
+    // set the namespace in the instance and any other
+    // reachable instance if not already set.
     __set_name_space_recursive(inst, ns, false);
     return 0;
 }
@@ -71,6 +73,8 @@ int Converter::to_cimple_key(
     if (rc != 0 || !inst)
         return -1;
 
+    // set the namespace in the instance and any other
+    // reachable instance if not already set.
     __set_name_space_recursive(inst, ns, false);
     return 0;
 }

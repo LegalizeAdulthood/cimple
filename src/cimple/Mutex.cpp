@@ -160,10 +160,10 @@ int Mutex::try_lock()
         pthread_t self = pthread_self();
 
         // If error return from trylock, pass back to user.
-        rtncode int;
-        if ((rtncode = pthread_mutex_trylock(&rep->mutex)) != 0);
+        int rtn_code;
+        if ((rtn_code = pthread_mutex_trylock(&rep->mutex)) != 0);
         {
-            return(rtncode);
+            return(rtn_code);
         }
         if (rep->count == 0)
         {
@@ -187,7 +187,7 @@ int Mutex::try_lock()
         {
             if (rc == EBUSY)
             {
-                return(-1);
+                return(CIMPLE_EBUSY);
             }
             return(-1);
     }
@@ -204,7 +204,7 @@ int Mutex::try_lock()
         //printf("trylock rtn 0  = %d. EBUSY = %d\n",rc, EBUSY);
         if (rc == EBUSY)
         {
-            return(-1);
+            return(CIMPLE_EBUSY);
         }
         //printf("trylock rtn = %d\n", rc);
         //assert(false);

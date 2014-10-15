@@ -24,10 +24,12 @@ include $(TOP)/mak/rules.mak
 SOURCEPATH=$(subst /,\,$(TARGET))
 
 DESTPATH=c:\WINDOWS\system32\wbem\$(LIBRARY).dll
+NAMESPACE=root\default
 
 register:
+	mofcomp -N:$(NAMESPACE) providerclasses.mof
 	copy $(SOURCEPATH) $(DESTPATH)
-	mofcomp register.mof
+	mofcomp -N:$(NAMESPACE) register.mof
 	regsvr32 /s $(DESTPATH)
 
 unregister:

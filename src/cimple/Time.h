@@ -68,6 +68,9 @@ public:
      * \endcode
      */
     static void sleep(uint64 timeout_usec);
+private:
+    // Private constructor to keep user from using constructor
+    Time(){};
 };
 
 CIMPLE_NAMESPACE_END

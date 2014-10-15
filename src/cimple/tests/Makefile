@@ -6,7 +6,9 @@ DIRS = \
     atomicint \
     cast \
     class \
+    classes \
     clone \
+    Cond \
     cond_queue \
     cond_queue2 \
     datetime \

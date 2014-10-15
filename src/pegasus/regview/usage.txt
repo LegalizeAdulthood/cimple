@@ -1,4 +1,4 @@
-Usage: %s [-Vcvhm] [-c classname] [modules]
+Usage: %s [-Vcvhm] [-C classname] [modules]
 
 Where:
     -V           : Print the version
@@ -11,12 +11,22 @@ Where:
     -m           : Show only Provider Modules registered
 
 Synopsis: Display information about Pegasus CIMServer provider registration.
-     Displays registration provider registration settings and status.
+     Displays module registration settings and status, provider registration
+     settings and status including Classes registered. This information is
+     acquired from the provider registration information instances.
 
 Output form is:
-    <moduleName>: <InterfaceType> Ver[<InterfaceVersion>] Location[<Location>]
+    <moduleName>: <InterfaceType> Ver[<InterfaceVersion>] Loc[<Location>]
         <providerName>: <status>
             <class Name>: Namespaces[<Namespaces>] <Provider Types>
+    where: InterfaceType    Defines CMPI, C++Default, JMPI, etc. 
+           InterfaceVersion Defines the version for this interface
+	   Location         Defines the module name
+	   status           Current status for this provider
+	   Class Name       Name of class registered for this provider
+	   Namespaces       Namespaces for which this class registered
+	   Provider Types   Provider type (ex. Instance, Method, Assocation,
+	                    Indication)
 Example:
 %%<regview CMPL_Time_Module
     CMPL_Time_Module: C++Default Ver[2.5.0] Vendor[Pegasus] Loc[cimpletime]

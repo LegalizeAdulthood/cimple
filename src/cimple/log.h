@@ -24,6 +24,41 @@
 **==============================================================================
 */
 
+/** 
+*  This file defines APIs for creating calls to log information
+*  from CIMPLE providers.  The goal is to provide a standard
+*  means to include log call definitions within the user code
+*  and variable means to control execution and compilation of
+*  that code.
+*  The log mechanism includes multiple levels of logging (fatal,
+*  Error, Warning, Information, debug) that can be defined with
+*  each log to allow generation of log entries based on log
+*  level settings for CIMPLE. Each call includes its log level
+*  definition.
+* 
+*  Generally, the user should use only the macros defined in
+*  this file to create log calls and they provide the most
+*  control including:  Automatic fast-path bypass, automatic
+*  inclusion of file and line information, etc.  The macros use
+*  the same general format as C++ printf calls with a format
+*  string and list of variables.
+*  
+*  The macros defined are:
+*  \li \c CIMPLE_FATAL
+*  \li \c CIMPLE_ERR
+*  \li \c CIMPLE_WARN
+*  \li \c CIMPLE_INFO
+*  \li \c CIMPLE_DBG
+*  
+*  Setting the log level either through the cimple configuration
+*  file or the cimple_configure class to a specific level causes
+*  that level and all higher levels of log to be output.
+*  
+*   \code Example:
+       CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str())); 
+    \endcode
+*  
+*/
 #ifndef _cimple_log_h
 #define _cimple_log_h
 
@@ -34,11 +69,12 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-// Flag to control if logging is used at all.  When set false
+// Flag to control if log calls are executed.  When set false
 // logging is bypassed as part of each macro call.
 CIMPLE_CIMPLE_LINKAGE
 extern boolean _log_enabled_state;
 
+// Enumeration to define the possible log levels
 enum Log_Level
 {
     LL_FATAL,
@@ -90,10 +126,10 @@ void log(
  * @param fmt char* defines the format of the output using the printf 
  * formated output definitions.
  * @param ap va_list
- * /code 
+ * \code 
  * Example: 
  *     vlog(LL_DBG, __FILE__, __LINE__, "variable x = %u", x);
- * /endcode
+ * \endcode
  */
 CIMPLE_CIMPLE_LINKAGE
 void vlog(
@@ -117,8 +153,8 @@ CIMPLE_CIMPLE_LINKAGE
 void open_log(const char* name);
 
 /*
-    Structure defined as part of each macro generation for logs that
-    defines the level, file, line and invoke method for the call.
+    Structure defined as part of each macro generation for log calls. This
+    structure defines the level, file, line and invoke method for the call.
     This is used by the logging macros CIMPLE_FATAL, etc. defined
     below.
 */
@@ -142,16 +178,16 @@ struct Log_Call_Frame
 };
 
 /**
-    Macro to simplify definition of fatal log entry. the ARGS
+    Macro to simplify definition of fatal log entry. The ARGS
     consists of the fmt and argument components equivalent to
     the log method. The macro supplies the LL_FATAL, __FILE__
     and __LINE__ parameters WARNING: Invocations of this macro
     MUST USE double quotes for the ARGS.
-    /code
-    Example:
-       CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str())); 
-    /endcode
- */
+    \code Example:
+       CIMPLE_FATAL(("Invalid input Option %s", 
+           optionName.c_str()));
+    \endcode
+*/
 #define CIMPLE_FATAL(ARGS) \
     do \
     { \
@@ -170,10 +206,10 @@ struct Log_Call_Frame
     printf.
     WARNING: Invocations of this macro MUST USE double quotes
     for the ARGS.
-    /code
+    \code
     Example:
         CIMPLE_ERR(("no such method: %s", methodName.c_str()));
-    /endcode  
+    \endcode  
 */
 #define CIMPLE_ERR(ARGS) \
     do \
@@ -192,10 +228,10 @@ struct Log_Call_Frame
     printf.
     WARNING: Invocations of this macro MUST USE double quotes
     for the ARGS.
-    /code
+    \code
     Example:
         CIMPLE_WARN(("no such method: %s", methodName.c_str()));
-    /endcode  
+    \endcode  
 */
 #define CIMPLE_WARN(ARGS) \
     do \
@@ -214,10 +250,10 @@ struct Log_Call_Frame
     printf.
     WARNING: Invocations of this macro MUST USE double quotes
     for the ARGS.
-    /code
+    \code
     Example:
        CIMPLE_INFO(("ignored null CMPI string"));
-    /endcode  
+    \endcode  
 */
 #define CIMPLE_INFO(ARGS) \
     do \
@@ -235,10 +271,10 @@ struct Log_Call_Frame
 *   components equivalent to the log method and using definitons
 *   from printf. WARNING: Invocations of this macro MUST USE
 *   double quotes for the ARGS.
-    /code
+    \code
     Example:
        CIMPLE_DBG(("Enter Function"));
-    /endcode  
+    \endcode  
 */
 #define CIMPLE_DBG(ARGS) \
     do \

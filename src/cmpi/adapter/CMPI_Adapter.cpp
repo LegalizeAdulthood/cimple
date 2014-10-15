@@ -290,8 +290,18 @@ CMPIStatus CMPI_Adapter::instanceCleanup(
 //
 //------------------------------------------------------------------------------
 
+// Define a data structure and processing function for enumerate instance
+// names operations and the CMPI adapter.  The following is a standard pattern 
+// used by CIMPLE to interface the generic enumerateInstanceNames functions
+// with each adapter. A struct Data is defined to contain adapter specific
+// information and a _proc function to process each instance.  Note that
+// this is defined in a specific namespace so that it does not conflict
+// with other symbols.
+
+// 
 namespace enum_instance_names
 {
+    // Response data structure
     struct Data
     {
         const CMPIBroker* broker;
@@ -300,6 +310,7 @@ namespace enum_instance_names
         CMPIrc rc;
     };
 
+    // response instance processor.  Called for each instance.
     static bool _proc(
         Instance* inst,
         Enum_Instances_Status status,
@@ -334,6 +345,8 @@ namespace enum_instance_names
         return true;
     }
 }
+
+// The enumerate Instance Names processor for CMPI
 
 CMPIStatus CMPI_Adapter::enumInstanceNames(
     CMPIInstanceMI* mi, 
@@ -415,6 +428,14 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
 // CMPI_Adapter::enumInstances()
 //
 //------------------------------------------------------------------------------
+
+// Define a data structure and processing function for enumerate instance
+// operations and the CMPI adapter.  The following is a standard pattern 
+// used by CIMPLE to interface the generic enumerateInstanceNames functions
+// with each adapter. A struct Data is defined to contain adapter specific
+// information and a _proc function to process each instance.  Note that
+// this is defined in a specific namespace so that it does not conflict
+// with other symbols.
 
 namespace enum_instances
 {
@@ -1167,6 +1188,8 @@ CMPIStatus CMPI_Adapter::mustPoll(
 //
 //------------------------------------------------------------------------------
 
+// Creates or updates an entry in name_spaces table for adapter with
+// the namespace from the class_path provided. 
 CMPIStatus CMPI_Adapter::activateFilter(
     CMPIIndicationMI* mi, 
     const CMPIContext* context,
@@ -1184,7 +1207,9 @@ CMPIStatus CMPI_Adapter::activateFilter(
 
     if (ns)
     {
-        // Create entry or update existing entry.
+        // Create entry or update existing entry. There is an entry
+        // in the namespaces table for each new name_space and a 
+        // count for the number of times it has been activated.
 
         Name_Space_Entry entry(ns, 1);
 
@@ -1222,7 +1247,8 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
 
     if (ns)
     {
-        // Create entry or update existing entry.
+        // Decrement count or remove entry from the name_space table for
+        // this namespace.
 
         Name_Space_Entry entry(ns, 1);
 
@@ -1243,19 +1269,23 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
 
 //------------------------------------------------------------------------------
 //
-// CMPI_Adapter::enableIndications()
+// _indication_proc()
 //
 //------------------------------------------------------------------------------
 
+// The address of this function is provided to the CIMPLE provider with the
+// enableIndications() call. 
+// This function is called by the CIMPLE Indication_Handler()
+// to deliver each indication.
+
 static bool _indication_proc(Instance* inst, void* client_data)
 {
-    // This function is called by the CIMPLE Indication_Handler<> in order to 
-    // deliver a single indication.
-
     CMPI_Adapter* adapter = (CMPI_Adapter*)client_data;
     Auto_Mutex auto_lock(adapter->lock);
 
-    // If this is the final call, just return.
+    // If this is the final call, just return. The only goad of this
+    // inst == 0 call is to clean up the adapter and there is no cleanup
+    // for this adapter after _indication_proc()
 
     if (inst == 0)
         return false;
@@ -1304,6 +1334,12 @@ static bool _indication_proc(Instance* inst, void* client_data)
     return true;
 }
 
+//------------------------------------------------------------------------------
+//
+// CMPI_Adapter::enableIndications()
+//
+//------------------------------------------------------------------------------
+// 
 FIX_RETURN_TYPE CMPI_Adapter::enableIndications(
     CMPIIndicationMI* mi, 
     const CMPIContext* context)
@@ -1324,7 +1360,8 @@ FIX_RETURN_TYPE CMPI_Adapter::enableIndications(
 
     adapter->indications_enabled = true;
 
-    // Invoke the provider:
+    // Invoke the provider and provide it with the address of
+    // the indication delivery function:
 
     Enable_Indications_Status status = adapter->enable_indications(
         _indication_proc, adapter);

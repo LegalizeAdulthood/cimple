@@ -35,6 +35,10 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+/*
+    Define enumerations with the allowed status retunrs for the
+    provider functions.
+*/
 enum Get_Meta_Class_Status
 {
     GET_META_CLASS_OK = 0,
@@ -75,7 +79,8 @@ enum Timer_Status
     so that we can be sure that they are all integrated into the
     various adapters. Today the CMPI adapter will report differences in
     the case statements from the error enums as warnings. The Pegasus
-    adapter will not.
+    adapter will not, ie. the CMPI adapter compile will report errors that
+    the pegasus adapter will not report.
     The provider developer can only return the error codes defined
     for the particular operation as responses to that operation.
 */
@@ -207,7 +212,8 @@ struct Instance;
 
 // This function is called repeatedly by an indication provider to deliver 
 // indications. It is called one final time with instance equal to zero,
-// allowing a chance to perform clean up.
+// allowing a chance to perform clean up. Some adapters make use of this
+// return but it should not be used by the provider
 typedef bool (*Indication_Proc)(Instance* instance, void* client_data);
 
 /** This class is used by providers to deliver indications.

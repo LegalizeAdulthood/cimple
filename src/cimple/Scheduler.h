@@ -76,7 +76,7 @@ typedef uint64 (*Timer_Proc)(void* arg);
  *  attempts to evaluate the next function in the timer queue.
  *  
  *  EXAMPLE:
- *  /code
+ *  \code
  *  Scheduler sched;
  *
  *  static uint64 _timer(void* arg)
@@ -98,7 +98,8 @@ typedef uint64 (*Timer_Proc)(void* arg);
  *  sched.add_timer(30 * SEC, _stop_scheduler, value);
  *  
  *  sched.start_dispatcher();
- *  Thread::join(sched.thread_id(), value); /endcode
+ *  Thread::join(sched.thread_id(), value); 
+ *  \endcode
 */
 class CIMPLE_CIMPLE_LINKAGE Scheduler
 {

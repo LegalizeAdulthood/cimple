@@ -57,3 +57,76 @@ class OutOfOfficeNotice
     [EmbeddedObject]
     string employee;
 };
+
+// Define each property type and corresponding array except
+// embedded.
+class Everything
+{
+    boolean a;
+    uint8 b;
+    uint16 c;
+    uint32 d;
+    uint64 e;
+    real32 f;
+    real64 g;
+    char16 h;
+    string i;
+    datetime j;
+    string k;
+    uint32 l;
+    boolean m;
+
+    boolean aa[];
+    uint8 bb[];
+    uint16 cc[];
+    uint32 dd[];
+    uint64 ee[];
+    real32 ff[];
+    real64 gg[];
+    char16 hh[];
+    string ii[];
+    datetime jj[];
+    string kk[];
+    uint32 ll[];
+    boolean mm[];
+};
+
+// Define each property type and corresponding array except
+// embedded but with default values defined for each
+class EverythingDefaults
+{
+    boolean a = false;
+    uint8 b = 8;
+    uint16 c = 32;
+    uint32 d = 9999;
+    uint64 e = 99999;
+    real32 f = 2936.88;
+    real64 g;
+    char16 h;
+    string i = "hello";
+    datetime j = "00000001020304.000005:000";
+    string k = "";
+    uint32 l = 0;
+    boolean m = true;
+
+    boolean aa[] = {true, false, true};
+    uint8 bb[] = {0, 255};
+    uint16 cc[] = {0, 65535};
+    uint32 dd[] = {0, 8192, 4294967295};
+    // Issue.  the max should be 18446744073709551615 but when we
+    // use this, we get back 9223372036854775807
+    uint64 ee[] = {0, 99999, 9223372036854775807 };
+    real32 ff[] = {1.5, 1.5};
+    real64 gg[] = {1.5, 1.5};
+    char16 hh[] = {'A', 'a'};   
+    // NOTE: Use of 4 backslashes to achieve a pair in the .cpp file.
+    string ii[] = {"",
+		 "abcdefghijklmnopqurstuvwxyz0123456789", 
+                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                 "!\"#$%\'()*+`-,/:;<=>?@[\\\\]^_{|}~" };
+                    
+    datetime jj[] = {"00000001020304.000005:000", "00000001020304.000005:000"};
+    string kk[];
+    uint32 ll[];
+    boolean mm[];
+};

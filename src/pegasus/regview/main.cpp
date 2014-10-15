@@ -666,7 +666,7 @@ int find_capabilities(CIMClient& client,
     
     if (capabilities.size() == 0)
     {
-        printf("Error: No capability found for %s %s\n",
+        printf("Warning: No capability instance found for %s %s\n",
                *cimple::Str(targetProviderName),
                *cimple::Str(targetProviderModuleName));
         return(-1);
@@ -866,7 +866,7 @@ int main(int argc, char** argv)
     }
 
     // Add any entries from the -c option to the list of potential 
-    // provider modules by callint the find_provider_modules function
+    // provider modules by calling the find_provider_modules function
     // to map from capabilities back to provider module name.
 
     for (Uint32 i = 0 ; i < target_classlist.size() ; i++)
@@ -885,6 +885,7 @@ int main(int argc, char** argv)
 
     for(Uint32 i = 0 ; i < providerModules.size() ; i++)
     {
+        cout << "ProvidersModules " << i << endl;
         Uint32 pos;
         String providerModuleName;
 
@@ -977,18 +978,19 @@ int main(int argc, char** argv)
         }
 
         // For each Provider Object
-        for (Uint32 i = 0 ; i < providers.size() ; i++)
+        for (Uint32 j = 0 ; j < providers.size() ; j++)
         {
+            cout << "providers " << j << endl;
             String providerName =
-                get_property_value(providers[i],String("Name"));
+                get_property_value(providers[j],String("Name"));
 
             // TODO move this one into the output definition
             Array<String> status_descriptions;
-            get_property_value(providers[i],String("StatusDescriptions"),
+            get_property_value(providers[j],String("StatusDescriptions"),
                                status_descriptions);
 
             String this_provider_module_name = 
-            get_property_value(providers[i],String("ProviderModuleName"));
+            get_property_value(providers[j],String("ProviderModuleName"));
 
             // test to be sure we have good linkage to instance
             // of provider module name.  This is probably not needed.
@@ -1013,10 +1015,10 @@ int main(int argc, char** argv)
                 // output the provider information line
                 cout << _spaces(4)
                      << providerName << ":"
-                     << _property_value(providers[i], "Status", "Status")
-                     << _property_value(providers[i], "HealthState",
+                     << _property_value(providers[j], "Status", "Status")
+                     << _property_value(providers[j], "HealthState",
                                         "HealthState")
-                     << _property_value(providers[i], "OperationalStatus",
+                     << _property_value(providers[j], "OperationalStatus",
                                         "OperationalStatus")
                      << endl;
             }
@@ -1025,21 +1027,18 @@ int main(int argc, char** argv)
             if(find_capabilities(client, providerName, providerModuleName, caps)
                != 0)
             {
-                err("Capabilities instance for %s %s not found",
-                    (const char *)providerName.getCString(),
-                    (const char*) providerModuleName.getCString());
-                exit(1);
+                continue;
             }
 
             // for each capability returned print out the capabilities
             // line
-            for (Uint32 j = 0 ; j < caps.size(); j++)
+            for (Uint32 k = 0 ; k < caps.size(); k++)
             {
                 // get the Provider type and map the value and value map
                 // qualifiers
                 
                 Array<Uint16> provider_types;
-                get_property_value(caps[j], String("ProviderType"),
+                get_property_value(caps[k], String("ProviderType"),
                                    provider_types);
     
                 String pt = _toString(provider_types);
@@ -1062,19 +1061,19 @@ int main(int argc, char** argv)
                     cout << "ProviderModule:Provider = " 
                         << providerModuleName 
                         << ":" << providerName << endl;
-                    print(caps[j]);
+                    print(caps[k]);
                 }
                 else
                 {
                     // Display the capabilities information
                     cout << _spaces(8)
-                        << _property_value(caps[j], "ClassName") << ": "
-                        << _property_value(caps[j], "NameSpaces", "NameSpaces")
+                        << _property_value(caps[k], "ClassName") << ": "
+                        << _property_value(caps[k], "NameSpaces", "NameSpaces")
                         << _spaces(1)
                         << providerTypeString
-                        << _property_value(caps[j], "supportedProperties",
+                        << _property_value(caps[k], "supportedProperties",
                                             "Properties")
-                        << _property_value(caps[j], "supportedMethods",
+                        << _property_value(caps[k], "supportedMethods",
                                             "Methods")
                         << endl;
                 }

@@ -29,6 +29,7 @@ The following functions are implemented.
 	pthread_cond_destroy()
 	pthread_cond_wait()
 	pthread_cond_signal()
+    pthread_cond_broadcast()
 
     dirent.h
 	opendir()

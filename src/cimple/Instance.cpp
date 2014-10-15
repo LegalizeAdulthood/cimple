@@ -150,13 +150,13 @@ void __default_construct(
                         }
                     }
                 }
-                else
+                else  // not mp->value or !defaults
                 {
                     if (defaults)
                         null_of(mp, prop) = 1;
                 }
             }
-            else
+            else   // not subscript (i.e. scalar)
             {
                 if (defaults && mp->value)
                 {
@@ -188,10 +188,11 @@ void __default_construct(
                             break;
                     }
                 }
-                else
+                else  // else for defaults & mp->value
                 {
                     if (mp->type == STRING)
                         new(prop) String();
+
                     else if (mp->type == DATETIME)
                         new(prop) Datetime();
 
@@ -200,6 +201,7 @@ void __default_construct(
                 }
             }
         }
+
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = 

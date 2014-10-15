@@ -49,11 +49,11 @@ unregister:
 	$(BINDIR)/regmod -v -u -c $(Target)
 
 	
-##==============================================================================
+##============================================================================
 ##
 ## The following rule registers this provider with the SFCB.
 ##
-##==============================================================================
+##============================================================================
 
 ## This may change per users needs
 SFCB_MOFSDIR=/usr/local/var/lib/sfcb/stage/mofs/root/cimv2
@@ -66,25 +66,37 @@ register-sfcb:
 	cp All_Class.reg $(SFCB_REGSDIR)/All_Class.reg
 	sfcbrepos
 
-##==============================================================================
+##============================================================================
 ##
 ## Live manual tests using Pegasus cimcli
 ## These tests are simply a demonstration that the provider works.  They
 ## do not tests the results today, simply assure that there is no exception
 ## on response
-##==============================================================================	
+##===========================================================================	
 manual-test:
 	cimcli ns -l localhost
 	cimcli gc All_Class -l localhost -n $(TEST_NAMESPACE)
 	cimcli ni All_Class -l localhost -n $(TEST_NAMESPACE)
 	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE)
-	
-propertylist:
-	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE) -pl Key,uint8Scalar,booleanScalar
+
+ei:
+	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE)
+		
+pl1:
+	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE) -niq -pl Key,uint8Scalar,booleanScalar
 
 pl2:
-	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE) -pl uint8Scalar,booleanScalar
-		
+	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE) -niq -pl uint8Scalar,booleanScalar
+
+pl3:
+	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE) -pl uint8Scalar
+
+gi:
+	cimcli gi All_Class -l localhost -n $(TEST_NAMESPACE) -pl Key,uint8Scalar
+
+##===========================================================================
+## Manual commands to make this CMPI provider
+##===========================================================================
 cmpi:
 	$(MAKE) clean
 	-cimserver -s

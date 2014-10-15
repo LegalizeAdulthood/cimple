@@ -24,6 +24,19 @@
 **==============================================================================
 */
 
+/** 
+ * List class the defines a double-linked list mechanism in 
+ * CIMPLE. Note that this class by iteself is incomplete (ex. 
+ * there is no standard compare mechanism) and is intended to be 
+ * extended by the CIMPLE provider developer for specific 
+ * functionality. This class provides the basic structure for 
+ * list elements and the methods for inserting, removing, 
+ * clearing, get the list size, etc. Examples of the use of the 
+ * List class are in the cimple/tests/lists/main.cpp and 
+ * cimple/Scheduler.cpp files. 
+ *
+*/
+
 #ifndef _cimple_List_h
 #define _cimple_List_h
 
@@ -34,8 +47,7 @@ CIMPLE_NAMESPACE_BEGIN
 /**
  * Defines the basic structure  of a single element of a list. 
  * The user can create inherited structures incorporating user 
- * data as subclasses of #List_Elem. An example of the use of 
- * list is in the Scheduler.cpp class 
+ * data as subclasses of #List_Elem. 
  */
 struct List_Elem
 {
@@ -45,11 +57,11 @@ struct List_Elem
 
 /** 
  * This Class implements a list mechanism within the CIMPLE 
- * environment. The List mechanism includes methods for 
+ * environment. The List class includes methods for 
  * inserting #List_Elem entities, removing them, clearing the
  * list, and determing if there are any elements in the list( 
  * #empty) and the number of items in the list. The list is 
- * build as a double linked list mechanism. Note that by itself, 
+ * built as a double linked list mechanism. Note that by itself, 
  * this class is incomplete and is intended to be extended by 
  * the user. Thus, for example, there is no compare function to 
  * find any particlar position in the list. 

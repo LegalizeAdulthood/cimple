@@ -33,25 +33,28 @@
  * and instantiated through CIMPLE genclass, the user uses the 
  * create method of the CIMPLE_CLASS template. 
  *     #include myClass.h
- *     myClass* myclass = myClass.create.create(true);
+ *     myClass* myclass = myClass.create(true);
  *  
  * This template includes corresponding methods for clone and 
- * destroy 
+ * destroy. 
  *  
  * The CIMPLE_METHOD template provides the basis for create, 
  * clone, and destroy for methods. 
  *  
  * Note that many functions are public despite the fact that the 
  * provider writer will probably never neeed them since they are 
- * part of the generation. 
+ * part of the generation mechanism and support for those parts 
+ * of CIMPLE that dynamically manage instances (ex. the 
+ * interface adapters). 
  *  
  * Some of the function that should be used include: 
- *     key_eq - test for key equality between instances
- *     copy - copy non-null properties from one instance to
- *     another
- *     copy_keys
- *     identical
- *     The cast operator defined below
+ *     \li \c key_eq - test for key equality between instances
+ *     \li \c identical - compare two instances for equality
+ *     \li \c copy - copy non-null properties from one instance
+ *     to another instance.
+ *     \li \c copy_keys identical to copy except it copies only
+ *         key properties
+ *     \li \c The cast operator defined below
  */
 #ifndef _cimple_Instance_h
 #define _cimple_Instance_h
@@ -174,14 +177,14 @@ void destroy(Instance* instance);
 *   @return Instance* The exact copy of the input instance.
 *  
 *   EXAMPLE
-*   /code
+*   \code
 *       Instance* new = clone(oldInstance);
-*   /endcode
+*   \endcode
 */
 CIMPLE_CIMPLE_LINKAGE
 Instance* clone(const Instance* instance);
 
-/** Similar to clone() but only copies over the key fields. The
+/** Similar to clone() but only copies the key fields. The
     caller must eventually pass the new instance to destroy().
 */
 CIMPLE_CIMPLE_LINKAGE
@@ -331,8 +334,11 @@ inline const Instance*& __ref_of(
     return (const Instance*&)__ref_of((Instance*)inst, mr);
 }
 
-/** Returns true if two instances are identical, that is they have the
-    same meta class and the property values.
+/** Compare two instances of the same meta class.
+*  @param i1 Instance* to first instance
+*  @param i2 Instance* to second instance
+*  @return Returns true if the two instances are identical, that
+*   is they have the same meta class and the property values.
 */
 CIMPLE_CIMPLE_LINKAGE
 bool identical(const Instance* i1, const Instance* i2);
@@ -523,6 +529,26 @@ void __print_aux(
     size_t level, 
     bool keys_only);
 
+/** 
+ * sets default information into a CIMPLE instance.  Depending 
+ * on the clear and defaults parameters this function sets 
+ * information into the instance, clears the whole instance and 
+ * moves default feature information from the meta-class to the 
+ * instnace. 
+ * 
+ * @param mc - pointer ot the meta-class
+ * @param inst - instance to be cleaned
+ * @param clear - bool variable that determines if the function 
+ *              clears the instance to zero.  If true, the
+ *              instance is memset to zero. This also clears the
+ *              __name_space variable and sets refs to 1. 
+ * @param defaults - bool. If true, default values from the meta 
+ *                 class are set into the instance if they are
+ *                 non-null. If false, the values are set to
+ *                 NULL.
+ * 
+ * @return CIMPLE_CIMPLE_LINKAGE void
+ */
 CIMPLE_CIMPLE_LINKAGE
 void __default_construct(
     const Meta_Class* mc,

@@ -99,7 +99,7 @@ public:
      *         many systems this is pthread, these codes often
      *         correspond the the pthread_create error return codes.
      * EXAMPLE: 
-     * /code 
+     * \code 
      *     static void* _thread_proc(void* arg)
      *     {
      *         ... code that will execute on thread
@@ -109,7 +109,7 @@ public:
      *     Thread _thread;
      *     Thread::create_joinable(_thread,
      *         (Thread_Proc)_thread_proc, this);
-     * /endcode
+     * \endcode
      */
     static int create_joinable(Thread& thread, Thread_Proc proc, void* arg);
 
@@ -139,7 +139,7 @@ public:
      *     thread
      *  
      * EXAMPLE: 
-     * /code 
+     * \code 
      * // Thread processor that performs a simple function, sleeps 
      * // and then exits returning the argument from the creation. 
      *  static void* _proc(void* arg)
@@ -150,7 +150,7 @@ public:
      *      Thread::exit(arg);
      *      return arg;
      *  } 
-     * /endcode 
+     * \endcode 
      */
     static void exit(void* return_value);
 
@@ -166,7 +166,7 @@ public:
      *         there was an error.
      *  
      * EXAMPLE: 
-     * /code 
+     * \code 
      *   static void* _proc(void* arg)
      *  {
      *      char* str = (char*)arg;
@@ -183,7 +183,7 @@ public:
      *     void* value_ptr;
      *     int r = Thread::join(_thread, value_ptr);
      *     assert(r == 0);
-     * /endcode
+     * \endcode
      */
     static int join(Thread& thread, void*& value_ptr);
 

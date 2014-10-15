@@ -11,8 +11,12 @@ SOURCES = \
     A.cpp \
     B.cpp \
     C.cpp \
+    AA.cpp \
+    BB.cpp \
     repository.cpp \
     OutOfOfficeNotice.cpp \
+    Everything.cpp \
+    EverythingDefaults.cpp
 
 LIBRARIES = cimple
 
@@ -22,4 +26,5 @@ tests:
 	$(TARGET)
 
 genclass:
-	genclass Employee Manager Link A B C OutOfOfficeNotice
+	genclass Employee Manager Link A B C AA BB OutOfOfficeNotice Everything \
+	EverythingDefaults

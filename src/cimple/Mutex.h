@@ -31,6 +31,11 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+//
+// Mutex return codes used by CIMPLE
+//
+
+#define CIMPLE_EBUSY 16
 
 /**
  * Class defining Mutex with lock and unlock similar to Posix

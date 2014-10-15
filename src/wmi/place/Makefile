@@ -38,7 +38,7 @@ genproj:
 register:
 SOURCEPATH=$(subst /,\,$(TARGET))
 DESTPATH=c:\WINDOWS\system32\wbem\$(LIBRARY).dll
-NAMESPACE=root\cimv2
+NAMESPACE=root\default
 
 register: install
 	mofcomp -N:$(NAMESPACE) providerclasses.mof

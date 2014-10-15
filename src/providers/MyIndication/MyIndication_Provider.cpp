@@ -41,7 +41,7 @@ Enable_Indications_Status MyIndication_Provider::enable_indications(
     Indication_Handler<MyIndication>* indication_handler)
 {
     // printf("=== MyIndication_Provider::enable_indications()\n");
-
+	// This is part of genprov generatedskeleton
     _indication_handler = indication_handler;
 
     return ENABLE_INDICATIONS_OK;
@@ -51,7 +51,14 @@ Disable_Indications_Status MyIndication_Provider::disable_indications()
 {
     // printf("=== MyIndication_Provider::disable_indications()\n");
 
-    delete _indication_handler;
+    // Delete indication handler. The Provider MUST delete this handler
+    // This is installed as part of genprov  generated skeleton
+    if(_indication_handler)
+        delete _indication_handler;
+
+    // Destroy pointer to indication handler. This serves as a flag
+    // for the indication generation method
+    // Part of standard genprov generated skeleton
     _indication_handler = 0;
 
     return DISABLE_INDICATIONS_OK;
@@ -65,6 +72,9 @@ Invoke_Method_Status MyIndication_Provider::DeliverIndications(
     return_value.value = 99;
     return_value.null = false;
 
+    // The existence of _indication_handler is used to determine of
+    // indications are enabled.
+    
     if (_indication_handler)
     {
         MyIndication* indic = MyIndication_create("777", "seven");

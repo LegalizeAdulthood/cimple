@@ -52,5 +52,10 @@ void Cond::wait(Mutex& lock)
     pthread_cond_wait((pthread_cond_t*)_rep, (pthread_mutex_t*)lock._rep);
 }
 
+void Cond::broadcast()
+{
+    pthread_cond_broadcast((pthread_cond_t*)_rep);
+}
+
 CIMPLE_NAMESPACE_END
 

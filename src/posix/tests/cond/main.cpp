@@ -37,16 +37,17 @@ const size_t MAX = 100000;
 size_t count = 0;
 pthread_mutex_t count_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+// function that waits on condition and then 
 static void* start_routine(void* arg)
 {
     for (;;)
     {
-	// printf("wait %s\n", (char*)arg);
-	pthread_cond_wait(&cond, &mutex);
-
-	pthread_mutex_lock(&count_mutex);
-	count++;
-	pthread_mutex_unlock(&count_mutex);
+    	// printf("wait %s\n", (char*)arg);
+    	pthread_cond_wait(&cond, &mutex);
+    
+    	pthread_mutex_lock(&count_mutex);
+    	count++;
+    	pthread_mutex_unlock(&count_mutex);
     }
 
     return 0;
@@ -69,32 +70,52 @@ int main(int argc, char** argv)
 
     for (int i = 0; i < N; i++)
     {
-	pthread_t thread;
-	char buffer[32];
-	sprintf(buffer, "thread-%d", i);
-	int r = pthread_create(&thread, &attr, start_routine, strdup(buffer));
-	assert(r == 0);
+    	pthread_t thread;
+    	char buffer[32];
+    	sprintf(buffer, "thread-%d", i);
+    	int r = pthread_create(&thread, &attr, start_routine, strdup(buffer));
+    	assert(r == 0);
     }
 
     sleep(1);
 
     // Signal threads until count reaches MAX.
 
+    printf("Test Signal\n");
     for (;;)
     {
-	pthread_mutex_lock(&count_mutex);
-
-	if (count >= MAX)
-	{
-	    pthread_mutex_unlock(&count_mutex);
-	    break;
-	}
-
-	pthread_mutex_unlock(&count_mutex);
-
-	pthread_cond_signal(&cond);
+    	pthread_mutex_lock(&count_mutex);
+    
+    	if (count >= MAX)
+    	{
+    	    pthread_mutex_unlock(&count_mutex);
+    	    break;
+    	}
+    
+    	pthread_mutex_unlock(&count_mutex);
+    
+    	pthread_cond_signal(&cond);
     }
+    assert(count == MAX);
 
+    // Broadcast to threads until count reaches Max
+
+    printf("Test Broaadcast\n");
+    for (;;)
+    {
+    	pthread_mutex_lock(&count_mutex);
+    
+    	if (count >= MAX)
+    	{
+    	    pthread_mutex_unlock(&count_mutex);
+    	    break;
+    	}
+    
+    	pthread_mutex_unlock(&count_mutex);
+    
+    	pthread_cond_broadcast(&cond);
+    }
+    //assert(count == MAX);
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;

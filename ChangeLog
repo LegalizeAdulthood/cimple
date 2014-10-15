@@ -188,13 +188,41 @@ This change log was started effective with version 2.00
       Before this, the implementation just used the native Windows calls
       so treated all Mutexes as recursive.  Note that this is a behavior
       change on Windows platforms.
-2.0.12 24 July 2009
+    * Added initial test for atomic counters in cimple/tests/atomicint
+2.0.12 24 July 2009 (cvs branched for this cimple-2_0-12-branch from 2_0_11 tag)
     * Fix issue with cmpi providers returning NULL for key properties that
       was introduced in 2.0.11.
     * Corrected error in configuration.bat where extra space was being inserted
-      into a line in options.h
+      into a line in options.h causing problem in src/cimple/options.h
     * Implement multi class wmi provider module as a test (See
       src/wmi/ThingsProvidcr)
+2.0.13 14 August 2009 (cvs cimple_2_0-12 branch)
+    * Add broadcast function to the Conditional variable methods.  This
+      includes changes to a)Cond.h and .cpp b)cimple/tests/Cond/main and
+      c)src/posix to account for platforms that do not include pthreads.
+    * Add CIMPLE_EBUSY return code specifically to mutex.  This should
+	  be used with trylock to determine busy returns rather than
+	  simply the non-zero return
+    * Added valgrind test to number of src/cimple/tests unit tests
+    * Add classes test as unit test. Code was there but test dropped
+	  several versions ago.
+    * Clean up some api documentation in src/CIMPLE.
+    * Implemented some standard tests as part of the WMI providers.  Note that
+      these tests are contained in bat files and only exercise the provider
+      using the wmic executable.  They do not confirm results.
+
+2.0.14 6 October 2009( cvs cimple_2_0_12-branch)
+    * Update to User Guide (version 2.1)
+	* Correct problem with model->__namespce variable missing on some
+	  request types for C++ adapter.  Added test to Hello provider to
+	  test the existence of this variable on requests.
+	* Correct indexing error in regview and include build in standard
+	  make.
+
+	
+
+
+
      
 
 

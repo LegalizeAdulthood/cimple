@@ -1,19 +1,16 @@
 TOP = ../../../..
 include $(TOP)/mak/config.mak
 
-BINARY = test_print
+BINARY = test_cond
 
-SOURCES = main.cpp SomeClass.cpp OtherClass.cpp
+SOURCES = main.cpp
 
 LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
 
-genclass:
-	genclass SomeClass OtherClass
-
 tests:
-	$(BINDIR)/test_print
+	$(TARGET)
 
 vg:
 	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)

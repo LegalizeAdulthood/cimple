@@ -51,7 +51,7 @@ inline void __log(const char* format, ...)
 }
 
 #if 1
-#  define LOG_DATA(ARGS) __log(ARGS)
+#  define LOG_DATA(ARGS) __log ARGS
 #  define LOG_TRACE __log("LOG_TRACE: %s(%d)", __FILE__, __LINE__)
 #  define LOG_ENTER __log("LOG_ENTER: %s(%d) %s", __FILE__, __LINE__, CIMPLE_FUNCTION)
 #  define LOG_EXIT __log("LOG_EXIT: %s(%d) %s", __FILE__, __LINE__, CIMPLE_FUNCTION)

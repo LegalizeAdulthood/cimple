@@ -309,6 +309,12 @@ void Pegasus_Adapter::getInstance(
     handler.complete();
 }
 
+
+//------------------------------------------------------------------------------
+//
+// Pegasus_Adapter::enumInstances()
+//
+//------------------------------------------------------------------------------
 struct Enum_Instance_Data
 {
     P_InstanceResponseHandler* handler;
@@ -365,6 +371,8 @@ void Pegasus_Adapter::enumerateInstances(
     // Create the model.
 
     Instance* model = create(mc);
+    Str ns(objectPath.getNameSpace());
+    model->__name_space = ns;
     Ref<Instance> model_d(model);
     nullify_properties(model);
 
@@ -455,6 +463,8 @@ void Pegasus_Adapter::enumerateInstanceNames(
     // Create the model (nullify non-key properties).
 
     Instance* model = create(mc);
+    Str ns(objectPath.getNameSpace());
+    model->__name_space = ns;
     Ref<Instance> model_d(model);
     nullify_non_keys(model);
 
@@ -1280,6 +1290,17 @@ struct Indication_Proc_Data
     Pegasus_Adapter* adapter;
 };
 
+/*
+    Indication processor for the Pegasus adapter.  This processor
+    handles a single indication upon each call from the provider.
+    Returns true if the request was accepted and more can be delivered.
+    NOTE: Today there is an issue with the false return.  It is used
+    as the return when indication == 0 which was planned to provide a
+    means for the adapter itself to clean up.  Therefore, the false return
+    should NEVER be seen by the provider unless it makes an error and sends
+    an empty indication.  In that case, the adapter destroys the client_data
+    which leaves the adapter in a mess. KS 4 Aug 09
+*/
 static bool _indication_proc(Instance* indication, void* client_data)
 {
     Indication_Proc_Data* data = (Indication_Proc_Data*)client_data;
@@ -1309,7 +1330,8 @@ static bool _indication_proc(Instance* indication, void* client_data)
             return false;
         }
 
-        // Build an object path for this indication.
+        // Build an object path for this indication. Do nothing
+        // if there is an exception
 
         try
         {
@@ -1337,7 +1359,9 @@ void Pegasus_Adapter::enableIndications(
         _handler = &handler;
         _handler->processing();
 
-        // Invoke the provider.
+        // Invoke the provider enable_indications() method with the pointer
+        // to the indication processor and the indication_proc
+        // data structure
 
         Indication_Proc_Data* data = new Indication_Proc_Data;
         data->handler = _handler;
@@ -1360,12 +1384,15 @@ void Pegasus_Adapter::disableIndications()
 
         _handler->complete();
 
-        // Invoke the provider.
+        // Invoke the provider disable_indications method.
 
         _provider->disable_indications();
     }
 }
 
+/*
+    Saves the source namespace
+*/
 void Pegasus_Adapter::createSubscription(
     const P_OperationContext& context,
     const P_CIMObjectPath& subscriptionName,

@@ -37,8 +37,9 @@ Enum_Instances_Status Hello_Provider::enum_instances(
     //
     // test the acquisition of username from the cimom.  This code
     // gets the username and if valid adds the name to the test of
-    // the message property for the first instance.
-    // 
+    // the message property for the first instance. NOTE: This
+    // Test should be moved to more permanent place in future
+    //
     String username;
 
     String firstMessage("First Message");
@@ -49,18 +50,28 @@ Enum_Instances_Status Hello_Provider::enum_instances(
         if (username.size() != 0)
         {
             CIMPLE_INFO(("Hello Provider. username = %s\n", username.c_str()));
-            firstMessage.append(". User name = ");
+            firstMessage.append(". User name = ");   
             firstMessage.append(username);
         }
-        else
+        else    // returned username but empty
         {
             firstMessage.append(". User name empty\n");
         }
+        
     }
-    else
+    else    // get_username returned error code
     {
-        CIMPLE_INFO(("Hello Provider.No username found\n"));
+        CIMPLE_INFO(("Hello Provider.No username found. Error rtnd\n"));
     }
+    
+    // 
+    // As a demonstration attach the input namespace from the model for the
+    // request to the Message text and log the information.
+    //
+
+    CIMPLE_INFO(("Hello Request Namespace %s\n", model->__name_space.c_str()));
+    firstMessage.append(", Request in Namespace ");
+    firstMessage.append(model->__name_space);
 
     {
         Hello* instance = Hello::create();
@@ -71,14 +82,14 @@ Enum_Instances_Status Hello_Provider::enum_instances(
     {
         Hello* instance = Hello::create();
         instance->Key.value = "Key02";
-        instance->Message.value = "Second Message";
+        instance->Message.value = "Second Message.";
         handler->handle(instance);
     }
 
     {
         Hello* instance = Hello::create();
         instance->Key.value = "Key03";
-        instance->Message.value = "Third Message";
+        instance->Message.value = "Third Message.";
         handler->handle(instance);
     }
     return ENUM_INSTANCES_OK;

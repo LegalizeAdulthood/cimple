@@ -127,7 +127,7 @@ cmpiworld:
 # NOTE: Developers. src/cimple/config.h version definition MUST match this one
 MAJOR=2
 MINOR=0
-REVISION=12
+REVISION=14
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 

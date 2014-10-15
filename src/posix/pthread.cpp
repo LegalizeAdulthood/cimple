@@ -205,7 +205,7 @@ int pthread_mutex_trylock(
         // Avoid double lock on non-recursive mutex.
         assert(ReleaseMutex(rep->handle));
         //printf("pthread returning EBUSY\n");
-        return(-1);
+        return(EBUSY);
     }
 
     rep->count++;
@@ -773,6 +773,21 @@ int pthread_cond_signal(
         }
 
         pthread_mutex_unlock(&rep->lock);
+    }
+
+    return 0;
+}
+
+int pthread_cond_broadcast(
+    pthread_cond_t* cond)
+{
+    pthread_cond_rep_t* rep = (pthread_cond_rep_t*)cond;
+
+    // Remove thread waiting at front of queue.
+
+    while (rep->front)
+    {
+        pthread_cond_signal(cond);
     }
 
     return 0;
