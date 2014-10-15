@@ -34,3 +34,6 @@ CIMPLE_PROVIDER(Person_Provider);
 CIMPLE_PROVIDER(Link_Provider);
 
 CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
+
+// By defining this, this class will be automatically loaded by regmod.
+CIMPLE_CLASS_DEPENDENCY(Persistent);

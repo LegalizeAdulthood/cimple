@@ -5,6 +5,7 @@ SHARED_LIBRARY = cimple
 STATIC_LIBRARY = cimple_s
 
 SOURCES = \
+    TSD.cpp \
     Thread_Context.cpp \
     Ref.cpp \
     cimom.cpp \

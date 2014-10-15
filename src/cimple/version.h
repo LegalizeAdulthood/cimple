@@ -35,8 +35,8 @@
 
 #define CIMPLE_MAJOR 0
 #define CIMPLE_MINOR 99
-#define CIMPLE_REVISION 18
-#define CIMPLE_VERSION_STRING "0.99.18"
+#define CIMPLE_REVISION 20
+#define CIMPLE_VERSION_STRING "0.99.20"
 
 //==============================================================================
 

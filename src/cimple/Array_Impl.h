@@ -241,7 +241,9 @@ template<> struct __Array_Traits_Factory<struct Instance*> :
 //
 //==============================================================================
 
-template<> struct __Array_Traits_Factory<struct Meta_Class*> : 
+struct Meta_Class;
+
+template<> struct __Array_Traits_Factory<const Meta_Class*> : 
     public __Array_Traits_Factory_Raw<void*> { };
 
 //==============================================================================
@@ -250,7 +252,9 @@ template<> struct __Array_Traits_Factory<struct Meta_Class*> :
 //
 //==============================================================================
 
-template<> struct __Array_Traits_Factory<const struct Instance*> : 
+struct Instance;
+
+template<> struct __Array_Traits_Factory<const Instance*> : 
     public __Array_Traits_Factory_Raw<void*> { };
 
 //==============================================================================
@@ -259,7 +263,9 @@ template<> struct __Array_Traits_Factory<const struct Instance*> :
 //
 //==============================================================================
 
-template<> struct __Array_Traits_Factory<const struct Meta_Class*> : 
+struct Meta_Class;
+
+template<> struct __Array_Traits_Factory<Meta_Class*> : 
     public __Array_Traits_Factory_Raw<void*> { };
 
 //==============================================================================

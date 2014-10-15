@@ -44,6 +44,12 @@ static CMPI_Thread_Context* _top()
     return context;
 }
 
+//==============================================================================
+//
+// CMPI_Thread_Context:
+//
+//==============================================================================
+
 CMPI_Thread_Context::~CMPI_Thread_Context()
 {
 }
@@ -116,8 +122,23 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
     const char* name_space,
     const Instance* model)
 {
-    if (!model)
+    Error::clear();
+
+    if (!name_space)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::instance_enumerator_create(): "
+            "null name_space parameter");
 	return 0;
+    }
+
+    if (!model)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::instance_enumerator_create(): "
+            "null model parameter");
+	return 0;
+    }
 
     // Get thread context.
 
@@ -134,7 +155,10 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
 	object_path);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propgate error.
 	return 0;
+    }
 
     // Create the enumeration object.
 
@@ -148,7 +172,10 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
 	&status);
 
     if (status.rc != CMPI_RC_OK)
+    {
+        set_cmpi_error(status);
 	return 0;
+    }
 
     Instance_Enumerator_Rep* rep = new Instance_Enumerator_Rep;
     rep->cmpi_enumeration = enumeration;
@@ -196,8 +223,23 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
     const char* name_space,
     const Instance* model)
 {
-    if (!model)
+    Error::clear();
+
+    if (!name_space)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED,
+            "CMPI_Thread_Context::get_instance(): "
+            "null name_space parameter");
 	return Ref<Instance>();
+    }
+
+    if (!model)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED,
+            "CMPI_Thread_Context::get_instance(): "
+            "null model parameter");
+	return Ref<Instance>();
+    }
 
     // Get thread context.
 
@@ -214,7 +256,10 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
 	cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propgate error!
 	return Ref<Instance>();
+    }
 
     // Get the instance.
 
@@ -228,7 +273,10 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
 	&status);
 
     if (status.rc != CMPI_RC_OK)
+    {
+        set_cmpi_error(status);
 	return Ref<Instance>();
+    }
 
     // Create CIMPLE instance.
 
@@ -237,7 +285,10 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
     rc = make_cimple_instance(model->meta_class, cmpi_instance, instance);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propagate error!
 	return Ref<Instance>();
+    }
 
     return Ref<Instance>(instance);
 }
@@ -246,8 +297,23 @@ int CMPI_Thread_Context::create_instance(
     const char* name_space,
     const Instance* instance)
 {
-    if (!instance)
+    Error::clear();
+
+    if (!name_space)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::create_instance(): "
+            "null name_space parameter");
 	return -1;
+    }
+
+    if (!instance)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::create_instance(): "
+            "null instance parameter");
+	return -1;
+    }
 
     // Get thread context.
 
@@ -264,7 +330,10 @@ int CMPI_Thread_Context::create_instance(
 	cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propagate error!
 	return -1;
+    }
 
     // Create CMPI instance.
 
@@ -278,7 +347,10 @@ int CMPI_Thread_Context::create_instance(
 	cmpi_instance);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propagate error!
 	return -1;
+    }
 
     // Create instance.
 
@@ -292,7 +364,10 @@ int CMPI_Thread_Context::create_instance(
 	&status);
 
     if (status.rc != CMPI_RC_OK)
+    {
+        set_cmpi_error(status);
 	return -1;
+    }
 
     return 0;
 }
@@ -301,8 +376,23 @@ int CMPI_Thread_Context::delete_instance(
     const char* name_space,
     const Instance* instance)
 {
+    Error::clear();
+
+    if (name_space)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::delete_instance(): "
+            "null name_space paramter");
+        return -1;
+    }
+
     if (!instance)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::delete_instance(): "
+            "null instance paramter");
 	return -1;
+    }
 
     // Get thread context.
 
@@ -319,7 +409,10 @@ int CMPI_Thread_Context::delete_instance(
 	cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propagate error!
 	return -1;
+    }
 
     // Delete instance.
 
@@ -329,7 +422,10 @@ int CMPI_Thread_Context::delete_instance(
 	cmpi_object_path);
 
     if (status.rc != CMPI_RC_OK)
+    {
+        set_cmpi_error(status);
 	return -1;
+    }
 
     return 0;
 }
@@ -338,8 +434,23 @@ int CMPI_Thread_Context::modify_instance(
     const char* name_space,
     const Instance* instance)
 {
-    if (!instance)
+    Error::clear();
+
+    if (!name_space)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::modify_instance(): "
+            "null name_space parameter");
 	return -1;
+    }
+
+    if (!instance)
+    {
+        set_cmpi_error(CMPI_RC_ERR_FAILED, 
+            "CMPI_Thread_Context::modify_instance(): "
+            "null instance parameter");
+	return -1;
+    }
 
     // Get thread context.
 
@@ -356,7 +467,10 @@ int CMPI_Thread_Context::modify_instance(
 	cmpi_object_path);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propagate error!
 	return -1;
+    }
 
     // Create CMPI instance.
 
@@ -370,7 +484,10 @@ int CMPI_Thread_Context::modify_instance(
 	cmpi_instance);
 
     if (rc != CMPI_RC_OK)
+    {
+        // Propagate error!
 	return -1;
+    }
 
     // Create instance.
 
@@ -382,7 +499,10 @@ int CMPI_Thread_Context::modify_instance(
 	NULL);
 
     if (status.rc != CMPI_RC_OK)
+    {
+        set_cmpi_error(status);
 	return -1;
+    }
 
     return 0;
 }

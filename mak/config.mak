@@ -1,5 +1,37 @@
 ##==============================================================================
 ##
+## Check Pegasus environment if present.
+##
+##==============================================================================
+
+ifdef PEGASUS_PLATFORM
+  ifndef PEGASUS_HOME
+    $(error PEGASUS_PLATFORM defined but PEGASUS_HOME is not)
+  endif
+  ifndef PEGASUS_ROOT
+    $(error PEGASUS_PLATFORM defined but PEGASUS_ROOT is not)
+  endif
+endif
+
+##==============================================================================
+##
+## CIMPLE_DEBUG
+##
+##==============================================================================
+
+ifdef PEGASUS_PLATFORM
+  ifdef PEGASUS_DEBUG
+    export CIMPLE_DEBUG=1
+    DEFINES += -DPEGASUS_DEBUG
+  endif
+endif
+
+ifdef CIMPLE_DEBUG
+  DEFINES += -DCIMPLE_DEBUG
+endif
+
+##==============================================================================
+##
 ## Check CIMPLE_PLATFORM definition.
 ##
 ##==============================================================================
@@ -20,7 +52,7 @@ include $(TOP)/mak/platform_$(CIMPLE_PLATFORM).mak
 ##==============================================================================
 
 ifeq ($(wildcard $(TOP)),)
-    $(error "TOP does not refer to a legal directory)
+    $(error "TOP does not refer to a legal directory")
 endif
 
 ##==============================================================================
@@ -33,30 +65,14 @@ CIMPLE_ROOT = $(call abs_path, $(TOP))
 
 ##==============================================================================
 ##
-## CIMPLE_DEBUG
-##
-##==============================================================================
-
-ifdef PEGASUS_HOME
-  ifdef PEGASUS_DEBUG
-    export CIMPLE_DEBUG=1
-  endif
-endif
-
-ifdef CIMPLE_DEBUG
-  DEFINES += -DCIMPLE_DEBUG
-endif
-
-##==============================================================================
-##
 ## BIN_DIR, LIB_DIR & SRC_DIR
 ##
-##     If PEGASUS_HOME is defined, programs and libraries are placed under
+##     If PEGASUS_PLATFORM is defined, programs and libraries are placed under
 ##     that directory.
 ##
 ##==============================================================================
 
-ifdef PEGASUS_HOME
+ifdef PEGASUS_PLATFORM
   BIN_DIR = $(PEGASUS_HOME)/bin
   LIB_DIR = $(PEGASUS_HOME)/lib
 else

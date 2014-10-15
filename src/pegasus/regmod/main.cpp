@@ -1466,6 +1466,75 @@ void validate_class(
 
 //------------------------------------------------------------------------------
 //
+// _load_class_deps()
+//
+//------------------------------------------------------------------------------
+
+static void _load_class_deps(const char* lib_path, vector<string>& class_deps)
+{
+    // Open the input file.
+
+    FILE* fp = fopen(lib_path, "rb");
+
+    if (!fp)
+    {
+        err("failed to open %s", lib_path);
+	exit(1);
+    }
+
+    // Read library into memory.
+
+    char buf[1024];
+    vector<char> v;
+    size_t n;
+
+    while ((n = fread(buf, 1, sizeof(buf), fp)) > 0)
+	v.insert(v.end(), buf, buf + n);
+
+    v.push_back('\0');
+
+    // Close the file:
+
+    fclose(fp);
+
+    // Search for tags:
+
+    const char* p = &v[0];
+    n = v.size();
+
+    while (n)
+    {
+	if (n >= 4 && p[0] == '@' && p[1] == '(' && p[2] == '#' && p[3] == ')')
+	{
+	    p += 4;
+	    string str;
+
+	    while (n && *p)
+	    {
+		str += p[0];
+		n--;
+		p++;
+	    }
+
+            size_t pos = str.find('=');
+
+            if (pos != string::npos)
+            {
+                string name = str.substr(0, pos);
+                string value = str.substr(pos+1);
+
+                if (name == "CLASS_DEPENDENCY")
+                    class_deps.push_back(value);
+            }
+	}
+
+	n--;
+	p++;
+    }
+}
+
+//------------------------------------------------------------------------------
+//
 // main()
 //
 //------------------------------------------------------------------------------
@@ -1575,6 +1644,10 @@ int main(int argc, char** argv)
     check_pegasus_environment(g_pegasus_home);
     g_pegasus_repository_dir = g_pegasus_home + string("/repository/");
 
+    // Get class dependency list:
+    static vector<string> class_deps;
+    _load_class_deps(lib_path, class_deps);
+
     // Get information from provider.
 
     cimple::Registration* module = load_module(
@@ -1602,8 +1675,35 @@ int main(int argc, char** argv)
 
 		validate_class(providing_namespaces[i], p->meta_class);
 	    }
-
 	}
+
+        // Create class dependencies:
+
+        for (size_t i = 0; i < providing_namespaces.size(); i++)
+        {
+            // Create class dependency.
+
+            for (size_t j = 0; j < class_deps.size(); j++)
+            {
+                const char* class_name = class_deps[j].c_str();
+
+                const cimple::Meta_Class* mc = cimple::find_meta_class(
+                    module->meta_class, class_name);
+
+                if (!mc)
+                {
+                    err("Unknown class (%s) given by CIMPLE_CLASS_DEPENENCY() "
+                        "macro within provider library. Verify that the class "
+                        "name is spelled correctly and that genclass was given "
+                        "the -r option along with the complete list of "
+                        "required classes. To see a complete list of class "
+                        "dependencies for your library, use the cwhat "
+                        "utility.", class_name);
+                }
+
+                validate_class(providing_namespaces[i], mc);
+            }
+        }
     }
 
     // Step #4: copy library to Pegasus library directory.

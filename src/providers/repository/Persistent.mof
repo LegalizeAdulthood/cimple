@@ -1,0 +1,4 @@
+class Persistent
+{
+    [Key] uint32 key;
+};

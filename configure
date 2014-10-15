@@ -22,32 +22,37 @@ if [ "$#" = "1" ]
 then
     PLATFORM=$1
 else
-    ARCH=`uname -m`
-    OS=`uname -s`
-    TOKEN="$OS-$ARCH"
+    if [ "$PEGASUS_PLATFORM" = "" ]
+    then
+        ARCH=`uname -m`
+        OS=`uname -s`
+        TOKEN="$OS-$ARCH"
 
-    case "$TOKEN" in
+        case "$TOKEN" in
 
-	Linux-i686)
-	    export PLATFORM=LINUX_IX86_GNU
-	    ;;
+            Linux-i686)
+                export PLATFORM=LINUX_IX86_GNU
+                ;;
 
-	Linux-x86_64)
-	    export PLATFORM=LINUX_X86_64_GNU
-	    ;;
+            Linux-x86_64)
+                export PLATFORM=LINUX_X86_64_GNU
+                ;;
 
-	Linux-ppc)
+            Linux-ppc)
 
-	    export PLATFORM=LINUX_PPC_GNU
-	    ;;
+                export PLATFORM=LINUX_PPC_GNU
+                ;;
 
-	*)
-	    echo "Failed to automatically detect platform"
-	    exit 1
-	    ;;
+            *)
+                echo "Failed to automatically detect platform"
+                exit 1
+                ;;
 
-    esac
-
+        esac
+    else
+        echo "Deduced platform from \$PEGASUS_PLATFORM environment variable"
+        PLATFORM=$PEGASUS_PLATFORM
+    fi
 fi
 
 ##==============================================================================
@@ -68,7 +73,7 @@ case "$PLATFORM" in
     LINUX_X86_64_GNU)
 	;;
 
-    L64)
+    l64)
 	PLATFORM=LINUX_X86_64_GNU
 	;;
 
@@ -84,7 +89,7 @@ esac
 
 ##==============================================================================
 ##
-## Determine platform
+## Create platform makefile and header.
 ##
 ##==============================================================================
 

@@ -1,4 +1,5 @@
 #include "Person_Provider.h"
+#include "Persistent.h"
 #include "Fan.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -99,6 +100,38 @@ Load_Status Person_Provider::load()
 #if USE_THREAD
     Thread::create_joinable(_thread, _thread_proc, &_stop);
 #endif
+
+    // Create 100 persistent instances (in the repository).
+    {
+        const char NAMESPACE[] = "/root/cimv2";
+
+        for (uint32 i = 0; i < 100; i++)
+        {
+            Ref<Persistent> inst(Persistent::create());
+            inst->key.value = i;
+
+            // Create instance if it does not exist:
+
+            Ref<Instance> tmp(cimom::get_instance(NAMESPACE, inst.ptr()));
+
+            if (tmp)
+            {
+                printf("Persistent.key=%u already exists\n", i);
+            }
+            else
+            {
+                int rc = cimom::create_instance(NAMESPACE, inst.ptr());
+
+                if (rc == 0)
+                    printf("Created Persistent.key=%u\n", i);
+                else
+                {
+                    fprintf(stderr,
+                    "ERROR: Failed to create Persistent.key=%u\n", i);
+                }
+            }
+        }
+    }
 
     {
 	Person* instance = Person::create();

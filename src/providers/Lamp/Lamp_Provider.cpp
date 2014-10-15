@@ -1,5 +1,6 @@
 #include "Lamp_Provider.h"
 #include "Fan.h"
+#include "Persistent.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -92,6 +93,40 @@ Lamp_Provider::~Lamp_Provider()
 Load_Status Lamp_Provider::load()
 {
     TRACE;
+
+    // Create 100 persistent instances (in the repository).
+    {
+        const char NAMESPACE[] = "/root/cimv2";
+
+        for (uint32 i = 100; i < 200; i++)
+        {
+            Ref<Persistent> inst(Persistent::create());
+            inst->key.value = i;
+
+            // Create instance if it does not exist:
+
+            Ref<Instance> tmp(cimom::get_instance(NAMESPACE, inst.ptr()));
+
+            if (tmp)
+            {
+                printf("Persistent.key=%u already exists\n", i);
+            }
+            else
+            {
+                int rc = cimom::create_instance(NAMESPACE, inst.ptr());
+
+                if (rc == 0)
+                    printf("Created Persistent.key=%u\n", i);
+                else
+                {
+                    fprintf(stderr,
+                    "ERROR: Failed to create Persistent.key=%u\n", i);
+                }
+            }
+        }
+    }
+
+
     Lamp* instance;
     
     instance = Lamp::create();
@@ -131,6 +166,7 @@ Enum_Instances_Status Lamp_Provider::enum_instances(
     Enum_Instances_Handler<Lamp>* handler)
 {
     TRACE;
+
     return _map.enum_instances(model, handler);
 }
 

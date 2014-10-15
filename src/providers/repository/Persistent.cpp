@@ -7,7 +7,7 @@
 #include <cimple/Meta_Class.h>
 #include <cimple/Meta_Property.h>
 #include <cimple/Meta_Reference.h>
-#include "Arrays.h"
+#include "Persistent.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -15,53 +15,40 @@ using namespace cimple;
 
 extern const Meta_Repository __meta_repository_11737B1039C317579F5467253A6F1AFD;
 
-extern const Meta_Property _Arrays_key;
+extern const Meta_Property _Persistent_key;
 
-const Meta_Property _Arrays_key =
+const Meta_Property _Persistent_key =
 {
     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
     "key",
-    STRING,
+    UINT32,
     0,
-    CIMPLE_OFF(Arrays,key)
+    CIMPLE_OFF(Persistent,key)
 };
 
-extern const Meta_Property _Arrays_arr;
-
-const Meta_Property _Arrays_arr =
+static Meta_Feature* _Persistent_meta_features[] =
 {
-    CIMPLE_FLAG_PROPERTY,
-    "arr",
-    UINT16,
-    -1,
-    CIMPLE_OFF(Arrays,arr)
-};
-
-static Meta_Feature* _Arrays_meta_features[] =
-{
-    (Meta_Feature*)&_Arrays_key,
-    (Meta_Feature*)&_Arrays_arr,
+    (Meta_Feature*)&_Persistent_key,
 };
 
 static const Meta_Feature_Local _locals[] =
 {
     {1},
-    {1},
 };
 
-const Meta_Class Arrays::static_meta_class =
+const Meta_Class Persistent::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
-    "Arrays",
-    _Arrays_meta_features,
-    CIMPLE_ARRAY_SIZE(_Arrays_meta_features),
-    sizeof(Arrays),
+    "Persistent",
+    _Persistent_meta_features,
+    CIMPLE_ARRAY_SIZE(_Persistent_meta_features),
+    sizeof(Persistent),
     _locals,
     0, /* super_class */ 
     0, /* super_classes */
     0, /* num_super_classes */
     1, /* num_keys */
-    0xDE9EBA7F,/* crc */
+    0x99A937AB,/* crc */
     &__meta_repository_11737B1039C317579F5467253A6F1AFD,
 };
 

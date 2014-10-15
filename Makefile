@@ -73,3 +73,19 @@ regress:
 	$(MAKE) __start_cimserver
 	$(MAKE) live-tests
 	$(MAKE) __stop_cimserver
+
+##==============================================================================
+##
+## release:
+##
+##==============================================================================
+
+VERSION=0.99.20-beta
+PREFIX=$(HOME)/inova/www.cimple.org
+PACKAGE=$(PREFIX)/cimple-$(VERSION).tar.gz
+
+release:
+	$(MAKE) distclean > /dev/null
+	@ ( cd ..; tar zcf $(PACKAGE) cimple )
+	@ cp doc/release-notes-$(VERSION).txt $(PREFIX)
+	@ echo "Created $(PACKAGE)..."

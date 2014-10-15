@@ -24,81 +24,71 @@
 **==============================================================================
 */
 
-#include <cctype>
-#include <cstring>
-#include <cstdio>
-#include "getopt.h"
+#include "TSD.h"
 
-POSIX_NAMESPACE_BEGIN
+CIMPLE_NAMESPACE_BEGIN
 
-char *optarg = NULL;
-int optind = 1;
-int opterr = 1;
-int optopt = 0;
-
-int getopt(int argc, char** argv, const char* optstring)
+struct TSD_Entry
 {
-    for (int i = optind; i < argc; i++)
-    {
-	char* arg = argv[i];
+    pthread_t self;
+    void* data;
+};
 
-	// Check for option:
-
-	if (arg[0] == '-' && arg[1] != '\0')
-	{
-	    // Check option and option argument (if any).
-
-	    int opt = arg[1];
-	    const char* p = strchr(optstring, opt);
-	    optarg = NULL;
-
-	    if (p == NULL)
-	    {
-		if (opterr)
-		    fprintf(stderr, "%s: invalid option -- %c\n", argv[0], opt);
-
-		optopt = opt;
-		opt = '?';
-	    }
-	    else if (p[1] == ':')
-	    {
-		if ((optarg = argv[i+1]) == NULL)
-		{
-		    if (opterr)
-		    {
-			fprintf(stderr, 
-			    "%s: option requires an argument -- %c\n", 
-			    argv[0], opt);
-		    }
-
-		    optopt = opt;
-
-		    if (*optstring == ':')
-			opt = ':';
-		    else
-			opt = '?';
-		}
-	    }
-
-	    // Move arguments leftward to optind.
-
-	    int n = optarg ? 2 : 1;
-
-	    memmove(
-		argv + optind + n, 
-		argv + optind, 
-		(i - optind) * sizeof(char*));
-
-	    argv[optind++] = arg;
-
-	    if (optarg)
-		argv[optind++] = optarg;
-
-	    return opt;
-	}
-    }
-
-    return -1;
+TSD::TSD() : _entries(0), _num_entries(0)
+{
+    pthread_mutex_init(&_mutex, NULL);
 }
 
-POSIX_NAMESPACE_END
+TSD::~TSD()
+{
+    pthread_mutex_destroy(&_mutex);
+    free(_entries);
+}
+
+void TSD::set(void* data)
+{
+    pthread_mutex_lock(&_mutex);
+    {
+	pthread_t self = pthread_self();
+
+	for (size_t i = 0; i < _num_entries; i++)
+	{
+	    if (pthread_equal(self, _entries[i].self))
+	    {
+		_entries[i].data = data;
+		pthread_mutex_unlock(&_mutex);
+		return;
+	    }
+	}
+
+	_entries = (TSD_Entry*)realloc(
+	    _entries, (_num_entries + 1) * sizeof(TSD_Entry));
+	_entries[_num_entries].self = self;
+	_entries[_num_entries].data = data;
+	_num_entries++;
+    }
+    pthread_mutex_unlock(&_mutex);
+}
+
+void* TSD::get()
+{
+    pthread_mutex_lock(&_mutex);
+    {
+	pthread_t self = pthread_self();
+
+	for (size_t i = 0; i < _num_entries; i++)
+	{
+	    if (pthread_equal(self, _entries[i].self))
+	    {
+		void* data = _entries[i].data;
+		pthread_mutex_unlock(&_mutex);
+		return data;
+	    }
+	}
+    }
+    pthread_mutex_unlock(&_mutex);
+
+    return 0;
+}
+
+CIMPLE_NAMESPACE_END

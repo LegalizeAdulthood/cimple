@@ -14,3 +14,6 @@ CIMPLE_CMPI_INDICATION_PROVIDER(LampIndic_Provider);
 
 /* Support for Pegasus C++ Interface */
 // CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
+
+// By defining this, this class will be automatically loaded by regmod.
+CIMPLE_CLASS_DEPENDENCY(Persistent);

@@ -35,6 +35,10 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+void set_cmpi_error(const CMPIStatus &status);
+
+void set_cmpi_error(const CMPIrc &rc, const char* msg);
+
 inline const char* name_space(const CMPIObjectPath* op)
 {
     return CMGetCharsPtr(CMGetNameSpace(op, NULL), NULL);

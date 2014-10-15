@@ -81,7 +81,7 @@ ifdef CIMPLE_TREAT_WARNINGS_LIKE_ERRROS
 endif
 
 ifdef CIMPLE_DEBUG
-  FLAGS += -g -DCIMPLE_DEBUG
+  FLAGS += -g
 else
   FLAGS += -O2
 endif

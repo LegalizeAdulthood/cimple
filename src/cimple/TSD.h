@@ -24,81 +24,35 @@
 **==============================================================================
 */
 
-#include <cctype>
-#include <cstring>
-#include <cstdio>
-#include "getopt.h"
+#ifndef _cimple_TSD_h
+#define _cimple_TSD_h
 
-POSIX_NAMESPACE_BEGIN
+#include "config.h"
+#include <pthread.h>
 
-char *optarg = NULL;
-int optind = 1;
-int opterr = 1;
-int optopt = 0;
+CIMPLE_NAMESPACE_BEGIN
 
-int getopt(int argc, char** argv, const char* optstring)
+struct TSD_Entry;
+
+class CIMPLE_CIMPLE_LINKAGE TSD
 {
-    for (int i = optind; i < argc; i++)
-    {
-	char* arg = argv[i];
+public:
 
-	// Check for option:
+    TSD();
 
-	if (arg[0] == '-' && arg[1] != '\0')
-	{
-	    // Check option and option argument (if any).
+    ~TSD();
 
-	    int opt = arg[1];
-	    const char* p = strchr(optstring, opt);
-	    optarg = NULL;
+    void set(void* data);
 
-	    if (p == NULL)
-	    {
-		if (opterr)
-		    fprintf(stderr, "%s: invalid option -- %c\n", argv[0], opt);
+    void* get();
 
-		optopt = opt;
-		opt = '?';
-	    }
-	    else if (p[1] == ':')
-	    {
-		if ((optarg = argv[i+1]) == NULL)
-		{
-		    if (opterr)
-		    {
-			fprintf(stderr, 
-			    "%s: option requires an argument -- %c\n", 
-			    argv[0], opt);
-		    }
+private:
 
-		    optopt = opt;
+    TSD_Entry* _entries;
+    size_t _num_entries;
+    pthread_mutex_t _mutex;
+};
 
-		    if (*optstring == ':')
-			opt = ':';
-		    else
-			opt = '?';
-		}
-	    }
+CIMPLE_NAMESPACE_END
 
-	    // Move arguments leftward to optind.
-
-	    int n = optarg ? 2 : 1;
-
-	    memmove(
-		argv + optind + n, 
-		argv + optind, 
-		(i - optind) * sizeof(char*));
-
-	    argv[optind++] = arg;
-
-	    if (optarg)
-		argv[optind++] = optarg;
-
-	    return opt;
-	}
-    }
-
-    return -1;
-}
-
-POSIX_NAMESPACE_END
+#endif /* _cimple_TSD_h */

@@ -13,3 +13,4 @@
 #pragma include ("Lamp.mof")
 #pragma include ("Arrays.mof")
 #pragma include ("XYZ_Lamp.mof")
+#pragma include ("Persistent.mof")

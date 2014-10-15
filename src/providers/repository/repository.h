@@ -8,6 +8,7 @@
 #define _repository_h
 
 #include <cimple/cimple.h>
+#include "Persistent.h"
 #include "Fan.h"
 #include "Arrays.h"
 #include "CIM_Indication.h"

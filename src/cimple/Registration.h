@@ -107,6 +107,15 @@
 
 //==============================================================================
 //
+// CIMPLE_CLASS_DEPENDENCY()
+//
+//==============================================================================
+
+#define CIMPLE_CLASS_DEPENDENCY(CLASS) \
+    static const char __class_##CLASS[] = "@(#)CLASS_DEPENDENCY=" #CLASS;
+
+//==============================================================================
+//
 // CIMPLE adapter entry point (all CIMPLE adapters implement this interface).
 // The only pre-defined operation is 'T', which returns the provider type
 // which (so far) is one of the following:

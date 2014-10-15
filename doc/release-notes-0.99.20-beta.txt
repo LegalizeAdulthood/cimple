@@ -1,0 +1,30 @@
+                        Version 0.99.20 Release Notes
+                        =============================
+
+    1.  Added provider examples showing how to create persistent instances in 
+        the OpenPegasus repository.
+
+    2.  Added CIMPLE_CLASS_DEPENDENCY() macro so providers can declare MOF
+        classes that will be registered by regmod. For example, the following
+        can be added to a provider's module source file.
+
+            CIMPLE_CLASS_DEPENDENCY(MyClass);
+
+        Note that it is not necessary to define class dependencies for the
+        provided classes or any of its related classes since these are
+        deduced automatically. This mechanism is mainly used to register
+        unrelated classess.
+
+    3.  Added TSD class (thread-specific data).
+
+    4.  Added error reporting scheme to cimom:: interface so the underlying
+        error message can be retrieved (CMPI adapter only). For example:
+
+            if (cimom::create_instance(...) != 0)
+            {
+                printf("Error messagse: %s\n", Error::get());
+            }
+
+
+    5.  Fixed compiler error on GNU C++ 3.X (in Array_Impl.h).
+

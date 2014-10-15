@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_7E50A1B19DE218BAB02DA17EE255C350;
+extern const Meta_Repository __meta_repository_11737B1039C317579F5467253A6F1AFD;
 
 extern const Meta_Property _XYZ_Lamp_model;
 
@@ -134,7 +134,7 @@ const Meta_Class XYZ_Lamp::static_meta_class =
     0, /* num_super_classes */
     1, /* num_keys */
     0x9076B604,/* crc */
-    &__meta_repository_7E50A1B19DE218BAB02DA17EE255C350,
+    &__meta_repository_11737B1039C317579F5467253A6F1AFD,
 };
 
 CIMPLE_NAMESPACE_END

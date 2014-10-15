@@ -44,5 +44,6 @@
 #include "Thread.h"
 #include "Time.h"
 #include "Atomic_Counter.h"
+#include "Error.h"
 
 #endif /* _cimple_h */

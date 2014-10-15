@@ -45,7 +45,7 @@
 CIMPLE_NAMESPACE_BEGIN
 
 // This class implements a simple scheme for setting and getting the error 
-// message for the current thread. It uses thread-specific-data (TLS) so that 
+// message for the current thread. It uses thread-specific-data (TSD) so that 
 // each thread may have its own error message.
 class CIMPLE_CIMPLE_LINKAGE Error
 {

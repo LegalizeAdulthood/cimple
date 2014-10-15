@@ -4,6 +4,7 @@ include $(TOP)/mak/config.mak
 SHARED_LIBRARY = cmplrep
 
 CLASSES = \
+    Persistent \
     Fan  \
     Arrays \
     MyIndication \
@@ -57,6 +58,7 @@ SOURCES = \
     DerivedIndication.cpp \
     Example.cpp \
     Fan.cpp \
+    Persistent.cpp \
     Arrays.cpp \
     House.cpp \
     Link.cpp \
