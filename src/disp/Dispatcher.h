@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -113,12 +113,9 @@ public:
 
     /** Creates Dispatcher instance.
 	@param path directory holding provider libraries.
-	@param prefix only load libraries with this prefix (if non-null).
 	@return new dispatcher instance.
     */
-    static Dispatcher* create(
-	const char* path, 
-	const char* prefix = 0);
+    static Dispatcher* create(const char* path);
 
     void dump() const;
 

@@ -9,6 +9,8 @@ SOURCES = Fan_Provider.cpp module.cpp
 
 LIBRARIES = cimple cmplrep
 
+LIBRARIES += cimplepegadap
+
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 include $(TOP)/mak/rules.mak

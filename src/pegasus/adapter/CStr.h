@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -27,27 +27,28 @@
 #ifndef _converter_CStr_h
 #define _converter_CStr_h
 
+#include <cimple/cimple.h>
 #include <Pegasus/Common/Config.h>
 #include <Pegasus/Common/String.h>
 #include <Pegasus/Common/CIMName.h>
 
-PEGASUS_NAMESPACE_BEGIN
+CIMPLE_NAMESPACE_BEGIN
 
 /** An internal class to make it easier to convert Pegasus strings to
     C strings. For example, the following is safe:
 
-        String tmp;
+        Pegasus::String tmp;
 	printf("tmp: %s\n", CStr(tmp).c_str());
 
-    A constructor is also provided for CIMName.
+    A constructor is also provided for Pegasus::CIMName.
 */
 class CStr
 {
 public:
 
-    CStr(const String& str);
+    CStr(const Pegasus::String& str);
 
-    CStr(const CIMName& name);
+    CStr(const Pegasus::CIMName& name);
 
     const char* c_str() { return _cstr; }
 
@@ -55,9 +56,18 @@ public:
 
 public:
 
-    CString _cstr;
+    Pegasus::CString _cstr;
 };
 
-PEGASUS_NAMESPACE_END
+inline CStr::CStr(const Pegasus::String& str) : _cstr(str.getCString())
+{
+}
+
+inline CStr::CStr(const Pegasus::CIMName& name) 
+    : _cstr(name.getString().getCString())
+{
+}
+
+CIMPLE_NAMESPACE_END
 
 #endif /* _converter_CStr_h */

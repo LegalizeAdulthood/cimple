@@ -1,0 +1,36 @@
+
+CIMPLE 0.99.0:
+==============
+
+    1. 	Implemented Pegasus adapter, allowing CIMPLE providers to masquerade 
+	as Pegasus C++ providers. This eliminates the need for the Pegasus
+	provider manager as well as the patches to the Pegasus provider
+	manager loader. It is no longer necessary to patch Pegasus in order
+	to load providers.
+
+    2.	Load/Unload of providers now works.
+
+    3.	There are no longer special naming requirements for provider library
+	(previous version required that they start with "cmpl").
+
+    4.	Regmod now automatically detects the provider interface to use
+	while registering the provider. A provider either links to
+	libcimplepegadap.so or libcimplecmpiadap.so. Regmod searches
+	for entry points within these libraries to determine which 
+	has been linked.
+
+    5.	The provider timer() operation has been disabled for now until
+	a workable CMPI threading model can be found.
+
+    6.	There is no longer any need for a provider to include any CMPI-
+	specific header files.
+
+    7.	It is no longer necessary to inject the following macro into the
+	provider's module.cpp file:
+
+	    CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
+
+    8.	The size of the CMPI adapter library was reduced by hiding all
+	of the symbols expect for the single entry point called
+	cimple_cmpi_adapter().
+

@@ -2,8 +2,7 @@ TOP = ../..
 include $(TOP)/mak/config.mak
 
 DIRS = \
-    provmgr \
-    provmgr/loadprovmgr \
+    adapter \
     regmod \
     clients
 

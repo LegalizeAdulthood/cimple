@@ -13,3 +13,8 @@ class Link
     [key] Person ref parent;
     [key] Person ref child;
 };
+
+class Salesman : Person
+{
+    uint32 budget;
+};

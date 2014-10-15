@@ -1,7 +1,7 @@
 
 class Example
 {
-    string key;
+    [Key] string key;
     uint32 prop1;
     real32 prop2;
 

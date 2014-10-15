@@ -18,12 +18,12 @@ DIRS += \
     disp/tests \
     util \
     tools \
-    cimple/tests \
-    providers
+    cimple/tests
 
 ifdef PEGASUS_HOME
     DIRS += pegasus
-    DIRS += CMPI
+    DIRS += cmpi
+    DIRS += providers
 endif
 
 include $(TOP)/mak/dir.mak

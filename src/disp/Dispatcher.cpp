@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -72,12 +72,12 @@ static uint64 _timer(void* arg)
 //
 //------------------------------------------------------------------------------
 
-Dispatcher* Dispatcher::create(const char* path, const char* prefix)
+Dispatcher* Dispatcher::create(const char* path)
 {
     // Create cache (caller should call Error::get() to inquire about
     // error if zero returned).
 
-    Cache* cache = Cache::create(path, prefix);
+    Cache* cache = Cache::create(path);
 
     if (!cache)
 	return 0;

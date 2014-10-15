@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -28,17 +28,15 @@
 #define _cimple_version_h
 
 #define CIMPLE_MAJOR 0
-
-#define CIMPLE_MINOR 98
-
-#define CIMPLE_REVISION 6
+#define CIMPLE_MINOR 99
+#define CIMPLE_REVISION 0
+#define CIMPLE_VERSION_STRING "0.99.0"
 
 #define CIMPLE_VERSION \
     ((CIMPLE_MAJOR << 24) | \ (CIMPLE_MINOR << 16) | \ (CIMPLE_REVISION << 8))
 
-#define CIMPLE_VERSION_STRING "0.98.1"
 
 #define CIMPLE_INJECT_VERSION_TAG \
-    const char* CIMPLE_VERSION_TAG = "@(#)CIMPLE_VERSION=" CIMPLE_VERSION_STRING
+    const char* CIMPLE_VERSION_TAG = "@(#)CIMPLE_VERSION="CIMPLE_VERSION_STRING
 
 #endif /* _cimple_version_h */

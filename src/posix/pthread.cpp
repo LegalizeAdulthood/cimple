@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -92,7 +92,9 @@ int pthread_mutex_unlock(
 {
     pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
 
-    assert(rep->count > 0);
+    // ATTN: FIX: MEB: this asserts on Windows on shutdown of cimserver.
+    // assert(rep->count > 0);
+
     rep->count--;
 
     if (!ReleaseMutex(rep->handle))

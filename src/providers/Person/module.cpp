@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -32,3 +32,10 @@ using namespace cimple;
 CIMPLE_MODULE(Person_Module);
 CIMPLE_PROVIDER(Person_Provider);
 CIMPLE_PROVIDER(Link_Provider);
+
+/* Support for CMPI entry points */
+// CIMPLE_CMPI_INSTANCE_PROVIDER(Person_Provider);
+// CIMPLE_CMPI_ASSOCIATION_PROVIDER(Link_Provider);
+
+/* Support for Pegasus C++ Interface */
+CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;

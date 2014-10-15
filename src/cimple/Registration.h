@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -43,13 +43,78 @@
 	&cimple::PROVIDER::Class::static_meta_class, \
 	_cimple_registration_head);
 
+//==============================================================================
+//
+// Pegasus provider entry point macro.
+//
+//==============================================================================
+
 #define CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT \
-    extern "C" extern void* __cimple_create_pegasus_adapter(void*, void*); \
-    extern "C" void* PegasusCreateProvider(void* arg) \
+    extern "C" int cimple_pegasus_adapter( \
+        void* arg0, void* arg1, void* arg2, void* arg3, \
+        void* arg4, void* arg5, void* arg6, void* arg7); \
+    extern "C" CIMPLE_EXPORT void* PegasusCreateProvider(void* arg) \
     { \
-	return __cimple_create_pegasus_adapter( \
-	    arg, _cimple_registration_head); \
-    } \
+	void* adapter = 0; \
+	cimple_pegasus_adapter( \
+	    (void*)'P', arg, _cimple_registration_head, &adapter, 0, 0, 0, 0); \
+	return adapter; \
+    }
+
+//==============================================================================
+//
+// CMPI provider entry point macros.
+//
+//==============================================================================
+
+#define __CIMPLE_CMPI_PROVIDER(TYPE,TYPE_NAME,PROVIDER) \
+    extern "C" int cimple_cmpi_adapter( \
+        void* arg0, void* arg1, void* arg2, void* arg3, \
+        void* arg4, void* arg5, void* arg6, void* arg7); \
+    extern "C" CIMPLE_EXPORT void* PROVIDER##_Create_##TYPE_NAME##MI( \
+	void* cmpi_broker, \
+	void* cmpi_context, \
+	void* cmpi_status) \
+    { \
+	static void* _mi = 0; \
+	cimple_cmpi_adapter( \
+	    (void*)'C', \
+	    (void*)&_adapter##PROVIDER, \
+	    (void*)&_cimple_registration_##PROVIDER, \
+	    (void*)cmpi_broker, \
+	    (void*)cmpi_context, \
+	    (void*)#PROVIDER, \
+	    (void*)TYPE, \
+	    (void*)&_mi); \
+	return _mi; \
+    }
+
+#define CIMPLE_CMPI_INSTANCE_PROVIDER(PROVIDER)  \
+    static void* _adapter##PROVIDER = 0; \
+    __CIMPLE_CMPI_PROVIDER('I', Instance, PROVIDER) \
+    __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER)
+
+#define CIMPLE_CMPI_ASSOCIATION_PROVIDER(PROVIDER)  \
+    static void* _adapter##PROVIDER = 0; \
+    __CIMPLE_CMPI_PROVIDER('I', Instance, PROVIDER) \
+    __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER) \
+    __CIMPLE_CMPI_PROVIDER('A', Association, PROVIDER)
+
+#define CIMPLE_CMPI_INDICATION_PROVIDER(PROVIDER)  \
+    static void* _adapter##PROVIDER = 0; \
+    __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER) \
+    __CIMPLE_CMPI_PROVIDER('I', Indication, PROVIDER)
+
+//==============================================================================
+//
+// CIMPLE adapter entry point (all CIMPLE adapters implement this interface).
+// The only pre-defined operation is 'T', which returns the provider type
+// which (so far) is one of the following:
+//
+//     'P' - Pegasus C++ Provider
+//     'C' - CMPI Provider
+//
+//==============================================================================
 
 CIMPLE_NAMESPACE_BEGIN
 

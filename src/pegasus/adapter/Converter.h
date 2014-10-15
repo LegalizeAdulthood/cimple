@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -33,59 +33,59 @@
 #include <Pegasus/Common/CIMParamValue.h>
 #include <cimple/cimple.h>
 
-PEGASUS_NAMESPACE_BEGIN
+CIMPLE_NAMESPACE_BEGIN
 
-typedef Array<CIMKeyBinding> Key_Bindings;
+typedef Pegasus::Array<Pegasus::CIMKeyBinding> Key_Bindings;
 
 class Converter
 {
 public:
 
-    static CIMPLE_HIDE int to_pegasus_instance(
-	const String& host_name,
-	const CIMNamespaceName& name_space,
+    CIMPLE_HIDE static int to_pegasus_instance(
+	const Pegasus::String& host_name,
+	const Pegasus::CIMNamespaceName& name_space,
 	const cimple::Instance* cimple_instance,
-	CIMInstance& pegasus_instance);
+	Pegasus::CIMInstance& pegasus_instance);
 
-    static CIMPLE_HIDE int to_cimple_instance(
-	const CIMInstance& pegasus_instance,
+    CIMPLE_HIDE static int to_cimple_instance(
+	const Pegasus::CIMInstance& pegasus_instance,
 	const cimple::Meta_Class* meta_class,
 	cimple::Instance*& cimple_instance);
 
-    static CIMPLE_HIDE int to_cimple_key(
+    CIMPLE_HIDE static int to_cimple_key(
 	const Key_Bindings& bindings,
 	const cimple::Meta_Class* meta_class,
 	cimple::Instance*& cimple_key);
 
-    static CIMPLE_HIDE int to_pegasus_object_path(
-	const String& host_name,
-	const CIMNamespaceName& name_space,
+    CIMPLE_HIDE static int to_pegasus_object_path(
+	const Pegasus::String& host_name,
+	const Pegasus::CIMNamespaceName& name_space,
 	const cimple::Instance* cimple_key,
-	CIMObjectPath& object_path);
+	Pegasus::CIMObjectPath& object_path);
 
-    static CIMPLE_HIDE int to_cimple_method(
+    CIMPLE_HIDE static int to_cimple_method(
 	const char* meth_name,
-	const Array<CIMParamValue>& in_params,
+	const Pegasus::Array<Pegasus::CIMParamValue>& in_params,
 	const cimple::Meta_Class* meta_class,
 	cimple::Instance*& meth);
 
-    static CIMPLE_HIDE int to_pegasus_method(
-	const String& host_name,
-	const CIMNamespaceName& name_space,
+    CIMPLE_HIDE static int to_pegasus_method(
+	const Pegasus::String& host_name,
+	const Pegasus::CIMNamespaceName& name_space,
 	const cimple::Instance* meth,
-	Array<CIMParamValue>& out_params,
-	CIMValue& return_value);
+	Pegasus::Array<Pegasus::CIMParamValue>& out_params,
+	Pegasus::CIMValue& return_value);
 
-    static CIMPLE_HIDE int de_nullify_properties(
-	const CIMPropertyList& propertyList,
+    CIMPLE_HIDE static int de_nullify_properties(
+	const Pegasus::CIMPropertyList& propertyList,
 	cimple::Instance* cimple_instance);
 
-    static CIMPLE_HIDE int _to_cimple_ref(
-	const CIMValue& v,
+    CIMPLE_HIDE static int _to_cimple_ref(
+	const Pegasus::CIMValue& v,
 	cimple::Instance* ci,
 	const cimple::Meta_Reference* mr);
 };
 
-PEGASUS_NAMESPACE_END
+CIMPLE_NAMESPACE_END
 
 #endif /* _provmgr_Converter_h */

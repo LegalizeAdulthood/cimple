@@ -1,0 +1,23 @@
+class Lamp
+{
+    [key] string model;
+    string vendor;
+    uint32 wattage;
+    string color;
+
+    uint32 foo(string arg1, string arg2);
+};
+
+[Association]
+class LampLink
+{
+    [key] Lamp ref left;
+    [key] Lamp ref right;
+};
+
+[Indication]
+class LampIndic : CIM_Indication
+{
+    string message;
+    [Static] uint32 DeliverIndications();
+};

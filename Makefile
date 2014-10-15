@@ -41,3 +41,11 @@ endif
 distclean: clean
 	$(RM) mak/platform.mak
 	$(RM) src/platform.h
+
+regress:
+	( cimserver -s; sleep 1 )
+	( cd $(PEGASUS_ROOT); make repository )
+	$(MAKE) reg
+	( cimserver; sleep 3 )
+	$(MAKE) live-tests
+	cimserver -s

@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -49,7 +49,18 @@ Cache::~Cache()
 	delete _repositories[i];
 }
 
-Cache* Cache::create(const char* lib_dir, const char* prefix)
+static bool _is_lib_name(const String& name)
+{
+    // Return true if name is the name of a library.
+
+#ifdef CIMPLE_WINDOWS
+    return name.is_suffix(".dll", 4);
+#else
+    return name.is_prefix("lib", 3) && name.is_suffix(".so", 3);
+#endif
+}
+
+Cache* Cache::create(const char* lib_dir)
 {
     Error::clear();
 
@@ -73,22 +84,12 @@ Cache* Cache::create(const char* lib_dir, const char* prefix)
 	if (name == "." || name == "..")
 	    continue;
 
-	// Ignore modules without the "cmpl" prefix.
+	// Ignore non-libraries:
 
-#ifdef CIMPLE_WINDOWS
-	String full_prefix = prefix;
-	String suffix = ".dll";
-#else
-	String full_prefix = "lib";
-	full_prefix.append(prefix);
-	String suffix = ".so";
-#endif
-
-	if (!name.is_prefix(full_prefix.c_str(), full_prefix.size()))
+	if (!_is_lib_name(name.c_str()))
 	    continue;
 
-	if (!name.is_suffix(suffix.c_str(), suffix.size()))
-	    continue;
+printf("[%s]\n", name.c_str());
 
 	// Load the library.
 
@@ -137,13 +138,9 @@ Cache* Cache::create(const char* lib_dir, const char* prefix)
 	    continue;
 	}
 
-	// It was neither a module nor a repository:
+	// It was neither a module nor a repository (so just ignore it).
 
-	CIMPLE_ERROR(("%s is neither a module nor a directory", path.c_str()));
-	closedir(dir);
-	delete cache;
-	return 0;
-
+	dlclose(handle);
     }
 
     // Close directory:

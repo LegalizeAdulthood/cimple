@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -44,13 +44,13 @@ class CIMPLEDISP_LINKAGE Cache
 public:
 
     /** Creates a new cache by scanning the given directory for modules
-	and repositories. This causes every library with entry points to 
-	be loaded (whether they are module or repository libraries or not).
+	and repositories. This causes every library to be loaded (whether 
+	it has the cimple_module() or cimple_repository() entry points or
+	not).
 	@param path directory containing the providers or repositories.
-	@param prefix if non-null, only matches libraries with this prefix.
 	@return pointer to a new cache or null on error.
     */
-    static CIMPLE_HIDE Cache* create(const char* path, const char* prefix = 0);
+    static CIMPLE_HIDE Cache* create(const char* path);
 
     /** Find a provider with the given class name.
     */

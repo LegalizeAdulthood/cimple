@@ -27,6 +27,7 @@ static const Meta_Class* _meta_classes[] =
     &CIM_ComputerSystem::static_meta_class,
     &LinuxComputerSystem::static_meta_class,
     &Person::static_meta_class,
+    &Salesman::static_meta_class,
     &Link::static_meta_class,
     &Person2::static_meta_class,
     &Link2::static_meta_class,
@@ -46,6 +47,9 @@ static const Meta_Class* _meta_classes[] =
     &ComputerSystemDiskDrive::static_meta_class,
     &Thing::static_meta_class,
     &ThingLink::static_meta_class,
+    &Lamp::static_meta_class,
+    &LampLink::static_meta_class,
+    &LampIndic::static_meta_class,
 };
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);

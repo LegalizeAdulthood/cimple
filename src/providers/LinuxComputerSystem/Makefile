@@ -13,6 +13,8 @@ FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 LIBRARIES = cimple cmplrep
 
+LIBRARIES += cimplepegadap
+
 include $(TOP)/mak/rules.mak
 
 reg:

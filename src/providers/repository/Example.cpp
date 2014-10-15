@@ -17,7 +17,7 @@ extern CIMPLE_HIDE const Meta_Property _Example_key;
 
 const Meta_Property _Example_key =
 {
-    CIMPLE_FLAG_PROPERTY,
+    CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY,
     "key",
     STRING,
     0,
@@ -300,8 +300,8 @@ const Meta_Class Example::static_meta_class =
     CIMPLE_ARRAY_SIZE(_Example_meta_features),
     sizeof(Example),
     0,
-    0,
-    0x3A25353C,
+    1,
+    0x27F5848A,
 };
 
 CIMPLE_NAMESPACE_END

@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -317,6 +317,9 @@ void ref(const Instance* instance);
 
 CIMPLE_LIBCIMPLE_LINKAGE
 void unref(const Instance* instance);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+int filter_properties(Instance* instance, const char* const* properties);
 
 CIMPLE_NAMESPACE_END
 

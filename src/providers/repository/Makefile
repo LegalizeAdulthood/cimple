@@ -10,6 +10,7 @@ CLASSES = \
     Example \
     LinuxComputerSystem \
     Person \
+    Salesman \
     Link \
     Person2 \
     Link2 \
@@ -21,7 +22,10 @@ CLASSES = \
     ComputerSystem \
     ComputerSystemDiskDrive \
     Thing \
-    ThingLink
+    ThingLink \
+    Lamp \
+    LampLink \
+    LampIndic
 
 SOURCES = \
     DiskDrive.cpp \
@@ -54,12 +58,16 @@ SOURCES = \
     MyEmbeddedClass.cpp \
     MyIndication.cpp \
     Person.cpp \
+    Salesman.cpp \
     Person2.cpp \
     repository.cpp \
     UnixUser.cpp \
     User.cpp \
     Thing.cpp \
-    ThingLink.cpp
+    ThingLink.cpp \
+    Lamp.cpp \
+    LampLink.cpp \
+    LampIndic.cpp
 
 LIBRARIES = cimple
 

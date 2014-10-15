@@ -22,6 +22,8 @@ CLEAN += \
     Test2Link_Provider.h \
     Test2Link_Provider.cpp \
 
+export CIMPLE_MOF_PATH=$(TOP)/schema
+
 include $(TOP)/mak/rules.mak
 
 tests:

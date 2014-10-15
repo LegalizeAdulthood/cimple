@@ -24,6 +24,7 @@
 #include "CIM_ComputerSystem.h"
 #include "LinuxComputerSystem.h"
 #include "Person.h"
+#include "Salesman.h"
 #include "Link.h"
 #include "Person2.h"
 #include "Link2.h"
@@ -43,6 +44,9 @@
 #include "ComputerSystemDiskDrive.h"
 #include "Thing.h"
 #include "ThingLink.h"
+#include "Lamp.h"
+#include "LampLink.h"
+#include "LampIndic.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

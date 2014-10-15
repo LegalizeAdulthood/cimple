@@ -5,21 +5,7 @@
     ?
     ????????????????????????????????????????????????????????????????????????????
 
-    (A) Should CIMPLE provider errors be more consistent with CIM errors
-	(e.g., NOT_FOUND, FAILED, etc.).
-
-    (A) Is it possible to get rid of the notion of a repository to simplify
-	provider development? The provider can be self-contained.
-
-    (A) Implement cached provider concept.
-
-    (A) Should all properties be initially null?
-
-    (A) Should we create the Pegasus C++ interface adapter?
-
-    (A) Should we switch to using Class references to manage memory?
-
-    (A) Should we switch to using Prpert_Ref<> type?
+    (?) How should the CGI provider find its provider scripts.
 
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
     N
@@ -27,68 +13,45 @@
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
-    (A) Can the Pegasus and CMPI entry points be consolidated so that there
-	is a single entry point for each?
-
-    (A) Modify CIMPLE errors to match CIM errors (e.g.,
-	MODIFY_INSTANCE_UNSUPPORTED and CIM_ERR_NOT_SUPPORTED).
-
-    (A) Introduce smart pointer around instances?
-
-    (A) Remove providers from CIMPLE namespace.
-
-    (A) Create Pegasus/CIMPLE Adapter
-
-    (A) Multi-tennant CIMOM
-
-    (A) Be sure dynamic module registration is possible (right now we use
-	static registration objects).
-
-    (A) How would the CGI provider find its provider scripts.
-
-    (A) Consider versioning of providers.
-
-    (A) Test whole property-list filtering scheme throughout CIMPLE. Be sure
-	to clear properties that the CIMOM did not ask for.
-
-    (A) Lifecycle indications broken.
-
-    (A) Create user threading model.
-
-    (A) Test overriding of properties.
-
-    (A) Verify that genclass handles property overrides correctly (when
-	for example an override adds a key qualifier).
-
-    (A) Test associator-names for case in which actual referent is a subclass
-	of the class of the reference property.
-
-    (A) Handle conversion from CIMPLE to CMPI embedded instances.
-
-    (A) Test inheritance on get_instance().
-
-    (A) Implement provider unloading.
-
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     A
     A A-priorities
     A
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
+    (A) Implement reference-counted handle for CIMPLE instances.
+
+    (A) Consolidate standard CIM error codes with provider error codes.
+
+    (A) Remove providers and meta-class data from CIMPLE namespace.
+
+    (A) Enhance regmod to interact with CIMOM rather than repository
+	directly.
+
+    (A) Consider versioning of providers.
+
+    (A) Test whole property-list filtering scheme throughout CIMPLE. Be sure
+	to clear properties that the CIMOM did not ask for.
+
+    (A) Lifecycle indications are broken on CMPI because embedded instance
+	properties are of type string. Handle conversion from CIMPLE to CMPI 
+	embedded instances.
+
+    (A) Extend CIMPLE threading to provider developers.
+
+    (A) Test associator-names for case in which actual referent is a subclass
+	of the class of the reference property.
+
     (A) Test with SFCB (Small-Footprint CIM Broker)
 
-    (A) Rename "string" and "datetime".
+    (A) Test CMPI versioning.
 
-    (A) Modify Array_Base to use an opaque representation.
+    (A) Modify Array_Base to use an opaque representation (needed to support
+	binary compatibility in the future).
 
     (A) Implement inter-provider communication.
 
-    (A) Work on binary compatibility of libcimple.so.
-
-    (A) Implement association filtering (to prevent discovering a large 
-	number of associations).
-
-    (A) Implement enum tags for CIM classes (VALUEMAPS/VALUES qualifiers).
+    (A) Implement binary compatibility of the provider interface.
 
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
     B
@@ -96,52 +59,48 @@
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 
+    (B) Make generation of property enum tags (corresponding to 
+	values/valuemap qualifiers) the default for genclass (rather than 
+	requiring the -e option).
+
+    (B) Finish CIMCGI work (enhance error messages and handle array
+	properties).
+
+    (B) Implement default property initializers (as defined in MOF class).
+
+    (B) Cache instances for some period to reduce provider overhead. Provider
+	would set timeout during registration or loading.
+
     (B) Add -u option to regmod (-u means unregister provider).
 
-    (B) Add -m option to regmod to show final MOF.
-
-    (B) Add version tag to meta-data.
-
-    (B) Make copy() and copy_keys() work on instances of different classes.
-
-    (B) Check for schema version incompatibility in regmod?
-
-    (B) Implement cimple_module_construct() and cimple_module_destruct().
+    (B) Handle conflicts between CIM schema versions (should regmod check
+	for CIM schema version compatibility?).
 
     (B) Improve error reporting in CMPI adapter (include error description).
 
-    (B) Move random_initialize() function out of cimple runtime.
-
-    (B) Rethink the meaning of null properties/reference. The model uses null
-	to specify which properties are desired or not. The instance uses null
-	to indicate the value is null. The instance should be filtered by the
-	model. Let's call this "filtering by model".
-
-    (B)	Handle namespaces in CIMPLE_ProviderManaer.cpp:_deliver_proc.
-
-    (B) Create dispatcher sooner than first request.
-
-    (B) Demarcate public interfaces.
-
-    (B) Reference-counted array class.
-
     (B) Work through ATTNs.
 
-    (B) Filter properties by property-list (after getting them from provider).
-
     (B) Should "CLI an Person.ssn=99" for non-existent Person produce an error?
+	(Karl).
 
-    (B) Binary compatibility.
+    (B) Implement CIM error.
 
-    (B) Initialize default property values when creating CIM instances.
+    (B) WMI Adapter
 
-    (B) Implement specialized Array<> in terms of Raw_Array.
+    (B) Implement embeddedobject for parameters and methods.
+
+    (B) Revisit provider reentrancy (i.e., thread safety, synchronization).
 
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
     C
     C C priorities
     C
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+    (C) Move random_initialize() function out of cimple runtime.
+
+    (C) Make copy() and copy_keys() work on instances of different classes
+	with common ancestory.
 
     (C)	Implement pthread_exit().
 
@@ -158,94 +117,15 @@
 
     (C) Implement static TLS initializers.
 
-    (C) Implement serialization.
-
-    (C) Implement adapater for WMI.
-
-    (C) Implement adapter for Pegasus C++ provider interface.
+    (C) Implement instance serialization.
 
     (C) Query providers.
 
     (C) Implement embeddedinstance qualifier.
 
-    (C) Implement embeddedobject for parameters and methods.
-
-    (C) Implement module-level initialization.
-
     (C) Implement arrays of references (for parameters)? Not used in standard.
 
-    (C) Implement reentrant provider scheme (all requests are serialized now).
-
-    (C) Implement provider manager unloading.
-
-    (C) Support for fixed-length arrays CIM arrays.
-
-    (C) Determine whether references can be null (in which case a Reference
-	type is needed to hold the null flag).
+    (C) Support for fixed-length CIM arrays.
 
     (C) Consolidate the error scheme (Error.h, Status.h, etc.).
 
-    (C) Implement _handleModifySubscriptionRequest().
-
-    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    X
-    X Completed items
-    X
-    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-    (X) Implement repository library scheme (expose in cache).
-
-    (X) Add CRC checking when loading classes.
-
-    (X) Reorganize library into libcimple.so and libcimpledisp.so (cut in half).
-
-    (X) Modify Cache to load classes from repositories instead of providers.
-
-    ---
-
-    (X) Change non-provider libraries to have "libcimple" prefix so that they
-	will not conflict with providers, which have the "libcmpl" prefix.
-
-    (X) Fix it so CIMPLE will still build without Pegasus.
-
-    (X) Implement repository library scheme (create repository library that
-	is shared by all providers?).
-
-    (X) Add simple CRC to each generated class (to detect mismatch).
-
-    (X) delivery procs should be able to say "no more"! (e.g., 
-	Enum_Instances_Proc).
-
-    (X) Extended regmod to support CMPI registration.
-
-    (X) Reworked module scheme to support CMPI.
-
-    (X) CIMPLE does not allow overrides of reference class features to change 
-        the class type. For example:
-
-	    [Association]
-	    class A1
-	    {
-		R1 ref r;
-	    };
-
-	    [Association]
-	    class A2 : A1
-	    {
-		R2 ref r;
-	    };
-
-	Since it is impossible to change the type of a property, figure out
-	how this can be handled.
-
-    (X) Reworked entire CIMPLE inheritance model to employ "flat" classes.
-
-    (X) Add behavior to implement get_instance() in terms of enum_instance().
-
-    (X) Genprov should have same MOF search rules as genclass.
-
-
-    (X) Removed checking for root#cimv2 directories in regmod (not all clients
-	create this).
-
-    (X) Heed the PEGASUS_REPOSITORY_MODE environment variable in regmod.

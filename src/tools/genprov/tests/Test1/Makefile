@@ -6,6 +6,8 @@ SOURCES = main.cpp Test1.cpp Test1_Provider.cpp
 LIBRARIES = cimple
 CLEAN += Test1.cpp Test1.h Test1_Provider.cpp Test1_Provider.h
 
+export CIMPLE_MOF_PATH=$(TOP)/schema
+
 include $(TOP)/mak/rules.mak
 
 tests:

@@ -243,6 +243,8 @@ void check_pegasus_environment(string& pegasus_home)
 
     // Check whether libcimpleprovmgr.so has been installed.
 
+// ATTN:
+#if 0
     string cimpleprovmgr = full_shlib_name(pegasus_home, "cimpleprovmgr");
 
     if (!exists(cimpleprovmgr))
@@ -253,7 +255,9 @@ void check_pegasus_environment(string& pegasus_home)
 
     // Check for CIMPLE provider manager patch.
 
-    check_cimple_provider_manager_patch(shlib_dir(pegasus_home));
+    if (!cmpi_opt && !pegasus_cxx_opt)
+	check_cimple_provider_manager_patch(shlib_dir(pegasus_home));
+#endif
 }
 
 //------------------------------------------------------------------------------
@@ -270,6 +274,45 @@ cimple::Registration* load_module(const string& path)
 
     if (!g_handle)
 	err("cannot load library: %s: %s", path.c_str(), dlerror());
+
+    // Figure out which adapter is being used (pegasus or cmpi).
+
+#if 0
+    if (dlsym(g_handle, "cimple_pegasus_adapter"))
+    {
+	pegasus_cxx_opt = true;
+	printf("Using Pegasus C++ provider interface\n");
+
+	if (!dlsym(g_handle, "PegasusCreateProvider"))
+	    err("missing PegasusCreateProvider() entry point: %s: %s",
+		path.c_str(), dlerror());
+    }
+    else if (dlsym(g_handle, "cimple_cmpi_adapter"))
+    {
+	cmpi_opt = true;
+	printf("Using CMPI provider interface\n");
+    }
+    else
+    {
+	err("cannot locate adapter entry point (neither %s nor %s found)",
+	    "cimple_pegasus_adapter()", "cimple_cmpi_adapter()");
+    }
+#endif
+
+    if (dlsym(g_handle, "PegasusCreateProvider"))
+    {
+	pegasus_cxx_opt = true;
+	printf("Using Pegasus C++ provider interface\n");
+
+	if (!dlsym(g_handle, "PegasusCreateProvider"))
+	    err("missing PegasusCreateProvider() entry point: %s: %s",
+		path.c_str(), dlerror());
+    }
+    else
+    {
+	cmpi_opt = true;
+	printf("Using CMPI provider interface\n");
+    }
 
     // Get symbol:
 
@@ -345,7 +388,7 @@ void unregister_provider(
     // Delete the PG_Provider instance.
 
     try
-    {
+	{
 	char buf[1024];
 	sprintf(buf, 
 	    "PG_Provider.Name=\"%s\","
@@ -1124,7 +1167,7 @@ void create_class(
 
 	// Complain if no keys:
 
-	if (num_keys == 0)
+	if (!(mc->flags & CIMPLE_FLAG_INDICATION) && num_keys == 0)
 	    err("class has no keys: %s", mc->name);
 
 	// Create the class.
@@ -1223,7 +1266,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "bdcvhn:mp")) != -1)
+    while ((opt = getopt(argc, argv, "bdcvhn:")) != -1)
     {
 	switch (opt)
 	{
@@ -1256,16 +1299,6 @@ int main(int argc, char** argv)
                 err("unknown option: -%c\n", opt);
                 break;
             }
-
-	    case 'm':
-	    {
-		cmpi_opt = true;
-	    }
-
-	    case 'p':
-	    {
-		pegasus_cxx_opt = true;
-	    }
 	}
     }
 

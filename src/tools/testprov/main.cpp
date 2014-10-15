@@ -215,7 +215,7 @@ void process(const char* path, const char* class_name)
 {
     // Create the dispatcher:
 
-    Dispatcher* disp = Dispatcher::create(path, "cmpl");
+    Dispatcher* disp = Dispatcher::create(path);
 
     if (!disp)
     {

@@ -10,7 +10,10 @@ DIRS = \
     Methods \
     MyIndication \
     DerivedIndication \
-    ComputerSystemDiskDrive
+    ComputerSystemDiskDrive \
+    Lamp \
+    Thing \
+    Salesman
 
 ifdef CIMPLE_UNIX
     DIRS += UnixUser
@@ -32,11 +35,8 @@ reg:
 	$(MAKE) -C $(TOP)/src/providers/Fan reg
 	$(MAKE) -C $(TOP)/src/providers/Methods reg
 	$(MAKE) -C $(TOP)/src/providers/ComputerSystemDiskDrive reg
-	$(MAKE) -C $(TOP)/src/CMPI/providers/Thing reg
-
-xreg:
-	$(MAKE) -C $(TOP)/src/providers/MyIndication reg
-	$(MAKE) -C $(TOP)/src/providers/DerivedIndication reg
+	$(MAKE) -C $(TOP)/src/providers/Thing reg
+	$(MAKE) -C $(TOP)/src/providers/Lamp reg
 
 live-tests:
 	CLI gi Person.ssn=1
@@ -77,6 +77,12 @@ live-tests:
 	CLI an Thing.key=100
 	CLI r Thing.key=100
 	CLI rn Thing.key=100
+	CLI ei Lamp
+	CLI gi 'Lamp.model="A"'
+	CLI an 'Lamp.model="A"'
+	CLI rn 'Lamp.model="A"'
+	CLI a 'Lamp.model="A"'
+	CLI r 'Lamp.model="A"'
 
 endif
 

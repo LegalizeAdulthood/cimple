@@ -10,3 +10,4 @@
 #pragma include ("Thing.mof")
 #pragma include ("Person2.mof")
 #pragma include ("User.mof")
+#pragma include ("Lamp.mof")
