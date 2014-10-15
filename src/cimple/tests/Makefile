@@ -11,6 +11,7 @@ DIRS = \
     cast \
     sizes \
     time \
+    join
 
 BROKEN_TESTS = \
     datetime \

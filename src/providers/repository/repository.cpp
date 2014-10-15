@@ -12,6 +12,7 @@ CIMPLE_NAMESPACE_BEGIN
 static const Meta_Class* _meta_classes[] =
 {
     &Fan::static_meta_class,
+    &Arrays::static_meta_class,
     &CIM_Indication::static_meta_class,
     &MyIndication::static_meta_class,
     &DerivedIndication::static_meta_class,
@@ -50,6 +51,9 @@ static const Meta_Class* _meta_classes[] =
     &Lamp::static_meta_class,
     &LampLink::static_meta_class,
     &LampIndic::static_meta_class,
+    &XYZ_Lamp::static_meta_class,
+    &XYZ_LampLink::static_meta_class,
+    &XYZ_LampIndic::static_meta_class,
 };
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);

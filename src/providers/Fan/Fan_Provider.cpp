@@ -96,7 +96,9 @@ Invoke_Method_Status Fan_Provider::SetSpeed(
     const Property<uint64>& DesiredSpeed,
     Property<uint32>& return_value)
 {
-    return INVOKE_METHOD_UNSUPPORTED;
+    return_value.null = false;
+    return_value.value = 99;
+    return INVOKE_METHOD_OK;
 }
 
 int Fan_Provider::proc(

@@ -1,6 +1,7 @@
 #include <Pegasus/Common/System.h>
 #include <cimple/version.h>
 #include <cimple/Registration.h>
+#include <cimple/Error.h>
 #include "Pegasus_Adapter.h"
 #include "Converter.h"
 #include "CStr.h"
@@ -17,7 +18,8 @@ CIMPLE_NAMESPACE_BEGIN
 
 static void _throw(Pegasus::CIMStatusCode code)
 {
-    throw Pegasus::CIMException(code);
+    // printf("Error: [%s]\n", Error::get());
+    throw Pegasus::CIMException(code, Error::get());
 }
 
 static void _check(int cimple_error)

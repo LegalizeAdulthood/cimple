@@ -45,9 +45,13 @@ public:
 
     Thread& operator=(const Thread& x);
 
-    static int create(Thread& thread, Thread_Proc proc, void* arg);
+    static int create_joinable(Thread& thread, Thread_Proc proc, void* arg);
+
+    static int create_detached(Thread& thread, Thread_Proc proc, void* arg);
 
     static void exit(void* return_value);
+
+    static int join(Thread& thread, void*& value_ptr);
 
     static bool equal(const Thread& thread1, const Thread& thread2);
 

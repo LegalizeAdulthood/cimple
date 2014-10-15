@@ -46,13 +46,14 @@ void* g_handle = 0;
 //
 //------------------------------------------------------------------------------
 
-bool create_class_opt = false;
+bool class_opt = false;
 bool verbose_opt = false;
 bool dump_opt = false;
 bool help_opt = false;
 bool cmpi_opt = false;
 bool pegasus_cxx_opt = false;
 bool unregister_opt = false;
+bool indirect_opt = false;
 Array<String> providing_namespaces;
 
 //------------------------------------------------------------------------------
@@ -82,19 +83,85 @@ void print(CIMClass& c)
 //
 //------------------------------------------------------------------------------
 
-void print(CIMInstance& i)
+static void _print_elem(const String& x)
 {
-#if defined(Pegasus_Buffer_h)
-    Buffer out;
-    MofWriter::appendInstanceElement(out, i);
-    out.append('\0');
-    printf("%s\n", out.getData());
-#else
-    CIMObject obj(i);
-    String str = obj.toString();
-    CString cstr = str.getCString();
-    printf("%s\n", (const char*)cstr);
-#endif
+    cout << '"' << x << '"';
+}
+
+static void _print_elem(Uint16 x)
+{
+    cout << x;
+}
+
+template<class T>
+static void _print_value(const CIMValue& v, T*)
+{
+    if (v.isNull())
+    {
+	cout << "NULL;";
+	return;
+    }
+
+    if (v.isArray())
+    {
+	Array<T> x;
+	v.get(x);
+
+	cout << "{";
+
+	for (Uint32 i = 0; i < x.size(); i++)
+	{
+	    _print_elem(x[i]);
+
+	    if (i + 1 != x.size())
+		cout << ", ";
+	}
+
+	cout << "};";
+    }
+    else
+    {
+	T x;
+	v.get(x);
+	_print_elem(x);
+	cout << ';';
+    }
+}
+
+void print(CIMInstance& inst)
+{
+    cout << "instance of " << inst.getClassName().getString() << endl;
+    cout << "{" << endl;
+
+    for (Uint32 i = 0; i < inst.getPropertyCount(); i++)
+    {
+	CIMProperty prop = inst.getProperty(i);
+
+	// Output the name:
+
+	cout << "    " << prop.getName().getString() << " = ";
+
+	const CIMValue& v = prop.getValue();
+
+	switch (prop.getType())
+	{
+	    case CIMTYPE_STRING:
+		_print_value(v, (String*)0);
+		break;
+
+	    case CIMTYPE_UINT16:
+		_print_value(v, (Uint16*)0);
+		break;
+
+	    default:
+		printf("[%d]\n", prop.getType());
+		assert(0);
+	}
+
+	cout << endl;
+    }
+
+    cout << "};\n" << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -480,11 +547,11 @@ void register_module(
     catch (CIMException& e)
     {
 	CString msg = e.getMessage().getCString();
-	err("unexpected repository error: %s", (const char*)msg);
+	err("xxx1 unexpected repository error: %s", (const char*)msg);
     }
     catch (...)
     {
-	err("unexpected repository error");
+	err("xxx2 unexpected repository error");
     }
 }
 
@@ -512,6 +579,141 @@ static void check_cmpi_entry_point(
 
 //------------------------------------------------------------------------------
 //
+// compute_closure()
+//
+//     Compute the closure with respect to the given class. The output includes
+//     all classes reachable from this class (via the superclass, references,
+//     or methods).
+//
+//------------------------------------------------------------------------------
+
+void compute_closure(
+    const cimple::Meta_Class* mc,
+    vector<string>& closure)
+{
+    // Ignore if already in list (to prevent recursion).
+
+    for (size_t i = 0; i < closure.size(); i++)
+    {
+	if (mc->name == closure[i])
+	    return;
+    }
+
+    // Add this class to closure.
+
+    closure.push_back(mc->name);
+
+    // Return now unless -f option was given.
+
+    if (!indirect_opt)
+	return;
+
+    // Add super class to closure.
+
+    if (mc->super_meta_class)
+	compute_closure(mc->super_meta_class, closure);
+
+    // Add any classes reachable via class features to closure.
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+	const cimple::Meta_Feature* mf = mc->meta_features[i];
+
+	if (mf->flags & CIMPLE_FLAG_REFERENCE)
+	{
+	    const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
+	    compute_closure(mr->meta_class, closure);
+	}
+
+	if (mf->flags & CIMPLE_FLAG_METHOD)
+	{
+	    const cimple::Meta_Method* mm = (cimple::Meta_Method*)mf;
+
+	    for (size_t j = 0; j < mm->num_meta_features; j++)
+	    {
+		const cimple::Meta_Feature* mf = mm->meta_features[j];
+
+		if (mf->flags & CIMPLE_FLAG_REFERENCE)
+		{
+		    const cimple::Meta_Reference* mr = 
+			(cimple::Meta_Reference*)mf;
+
+		    compute_closure(mr->meta_class, closure);
+		}
+	    }
+	}
+    }
+}
+
+//------------------------------------------------------------------------------
+//
+// delete_class()
+//
+//------------------------------------------------------------------------------
+
+void delete_class(
+    CIMRepository& rep,
+    const String& ns,
+    const string& class_name)
+{
+    try
+    {
+	rep.deleteClass(ns, String(class_name.c_str()));
+    }
+    catch (...)
+    {
+	return;
+    }
+
+    if (!dump_opt)
+	printf("Deleted class %s\n", class_name.c_str());
+}
+
+//------------------------------------------------------------------------------
+//
+// uninstall_classes()
+//
+//------------------------------------------------------------------------------
+
+void uninstall_classes(
+    CIMRepository& repository,
+    const cimple::Meta_Class* meta_class)
+{
+    // Find closure and remove classes with the same prefix as the one 
+    // installed by this provider (assuming thre prefix is not "CIM_").
+
+    vector<string> closure;
+    compute_closure(meta_class, closure);
+
+    string cn = meta_class->name;
+    size_t pos = cn.find('_');
+    string prefix;
+
+    if (pos != size_t(-1))
+	prefix = cn.substr(0, pos);
+
+    if (prefix != "CIM_")
+    {
+	for (size_t i = 0; i < closure.size(); i++)
+	{
+	    string tmp = closure[i];
+
+	    if (tmp.substr(0, 4) == "CIM_")
+		continue;
+
+	    if (tmp.substr(0, prefix.size()) != prefix)
+		continue;
+
+	    for (size_t j = 0; j < providing_namespaces.size(); j++)
+	    {
+		delete_class(repository, providing_namespaces[j], tmp);
+	    }
+	}
+    }
+}
+
+//------------------------------------------------------------------------------
+//
 // register_provider()
 //
 //------------------------------------------------------------------------------
@@ -526,8 +728,14 @@ void register_provider(
     // Print message:
 
     if (!dump_opt)
-	printf("Registering %s (class %s)\n", 
-	provider_name.c_str(), meta_class->name);
+    {
+	if (unregister_opt)
+	    printf("Unregistering ");
+	else
+	    printf("Registering ");
+
+	printf("%s (class %s)\n", provider_name.c_str(), meta_class->name);
+    }
 
     // Open repository.
 
@@ -540,6 +748,11 @@ void register_provider(
 
 	unregister_provider(
 	    repository, module_name, provider_name, class_name);
+
+	if (unregister_opt && class_opt)
+	    uninstall_classes(repository, meta_class);
+
+	// Return if unregister option given.
 
 	if (unregister_opt)
 	    return;
@@ -669,11 +882,11 @@ void register_provider(
     catch (CIMException& e)
     {
 	CString msg = e.getMessage().getCString();
-	err("unexpected repository error: %s", (const char*)msg);
+	err("xxx3 unexpected repository error: %s", (const char*)msg);
     }
     catch (...)
     {
-	err("unexpected repository error");
+	err("xxx4 unexpected repository error");
     }
 }
 
@@ -870,7 +1083,7 @@ void check_class_compatibility(
 
 	    if (pos == (Uint32)-1)
 	    {
-		err(INCOMPATIBLE "Properties have difference types: %s",
+		err(INCOMPATIBLE "Properties have different types: %s",
 		    mc->name, mf->name);
 	    }
 	}
@@ -984,6 +1197,12 @@ void add_method(
 	    CIMParameter param(
 		mp->name, CIMType(mp->type), is_array, array_size);
 
+	    if (mp->flags & CIMPLE_FLAG_IN)
+		param.addQualifier(CIMQualifier("in", Boolean(true)));
+
+	    if (mp->flags & CIMPLE_FLAG_OUT)
+		param.addQualifier(CIMQualifier("out", Boolean(true)));
+
 	    cm.addParameter(param);
 	}
 	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
@@ -995,6 +1214,13 @@ void add_method(
 
 	    CIMParameter param(
 		mr->name, CIMTYPE_REFERENCE, false, 0, mr->meta_class->name);
+
+	    if (mr->flags & CIMPLE_FLAG_IN)
+		param.addQualifier(CIMQualifier("in", Boolean(true)));
+
+	    if (mr->flags & CIMPLE_FLAG_OUT)
+		param.addQualifier(CIMQualifier("out", Boolean(true)));
+
 	    cm.addParameter(param);
 	}
     }
@@ -1170,7 +1396,7 @@ void validate_class(
 
 	// Create class:
 
-	if (create_class_opt)
+	if (class_opt)
 	{
 	    if (!class_exists(ns, repository, meta_class->name))
 		create_class(repository, ns, meta_class);
@@ -1223,12 +1449,12 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "bdcvhn:u")) != -1)
+    while ((opt = getopt(argc, argv, "bdcvhn:ui")) != -1)
     {
 	switch (opt)
 	{
 	    case 'c':
-		create_class_opt = true;
+		class_opt = true;
 		break;
 
 	    case 'v':
@@ -1253,6 +1479,10 @@ int main(int argc, char** argv)
 
 	    case 'u':
 		unregister_opt = true;
+		break;
+
+	    case 'i':
+		indirect_opt = true;
 		break;
 
             default:
@@ -1313,10 +1543,13 @@ int main(int argc, char** argv)
 
     // validate CIMPLE classes against Pegasus classes in each namespace.
 
-    for (cimple::Registration* p = module; p; p = p->next)
+    if (!unregister_opt)
     {
-	for (size_t i = 0; i < providing_namespaces.size(); i++)
-	    validate_class(providing_namespaces[i], p->meta_class);
+	for (cimple::Registration* p = module; p; p = p->next)
+	{
+	    for (size_t i = 0; i < providing_namespaces.size(); i++)
+		validate_class(providing_namespaces[i], p->meta_class);
+	}
     }
 
     // Step #4: copy library to Pegasus library directory.

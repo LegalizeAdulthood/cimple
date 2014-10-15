@@ -1,7 +1,8 @@
 Usage: %s [-cvh] provider-module-library
 
 Where:
-    -c : adds provider class to Pegasus repository if it does not exist
+    -c : create classes (or delete them when -u present)
+    -i : delete indirect classes (when -u and -c present).
     -v : verbose mode
     -n : provider namespace (may occur multiple times)
     -d : dump the MOF registration instances to standard output
@@ -10,8 +11,9 @@ Where:
     -h : print this help text
 
 Synopsis:
-    This utility registers a CIMPLE provider with the Pegasus CIMOM by
-    performing the following steps:
+    This utility registers (or unregisters) all providers contained in a
+    CIMPLE provider module library, with the Pegasus CIMOM. Registration 
+    performs the following steps:
 
     1.  Checks to see if PEGASUS_HOME is defined.
     2.  Checks to see if the Pegasus repository exists.
@@ -19,4 +21,11 @@ Synopsis:
     4.  Checks compatiblity between provider classes and Pegasus classes.
     5.  Creates provider classes in Pegasus repository if they do not exist.
     6.  Registers all providers in the module with the Pegasus repository
+
+    There are three ways to unregister:
+
+    1. regmod -u (delete registration instances only).
+    2. regmod -u -c (delete registration instances and direct classes).
+    3. regmod -u -c -i (delete registration instances, direct classes, and
+       indirect classes).
 

@@ -4,7 +4,6 @@ include $(TOP)/mak/config.mak
 SH_LIBRARY = cimple
 
 SOURCES = \
-    Predicate.cpp \
     Atomic_Counter.cpp \
     Cond.cpp \
     Cond_Queue.cpp \

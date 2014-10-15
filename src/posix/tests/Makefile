@@ -5,6 +5,7 @@ DIRS = \
     dirent \
     libgen \
     cond \
-    access
+    access \
+    join
 
 include $(TOP)/mak/rules.mak

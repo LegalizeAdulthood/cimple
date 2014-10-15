@@ -136,7 +136,7 @@ POSIX_LINKAGE void* pthread_getspecific(
 //
 //==============================================================================
 
-//#define PTHREAD_CREATE_JOINABLE 1
+#define PTHREAD_CREATE_JOINABLE 1
 #define PTHREAD_CREATE_DETACHED 2
 
 typedef long pthread_t;
@@ -165,6 +165,8 @@ POSIX_LINKAGE int pthread_attr_setdetachstate(
     int detachstate);
 
 POSIX_LINKAGE void pthread_exit(void*);
+
+POSIX_LINKAGE int pthread_join(pthread_t thread, void** value_ptr);
 
 POSIX_LINKAGE int pthread_equal(pthread_t t1, pthread_t t2);
 

@@ -76,10 +76,10 @@ int main(int argc, char** argv)
     Cond_Queue queue(16);
 
     Thread thread2;
-    Thread::create(thread2, _writer, &queue);
+    Thread::create_detached(thread2, _writer, &queue);
 
     Thread thread1;
-    Thread::create(thread1, _reader, &queue);
+    Thread::create_detached(thread1, _reader, &queue);
 
     _finished_lock.lock();
     _finished.wait(_finished_lock);

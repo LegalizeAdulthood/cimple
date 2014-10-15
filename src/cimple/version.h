@@ -27,10 +27,18 @@
 #ifndef _cimple_version_h
 #define _cimple_version_h
 
+//==============================================================================
+//
+// Version macros.
+//
+//==============================================================================
+
 #define CIMPLE_MAJOR 0
 #define CIMPLE_MINOR 99
-#define CIMPLE_REVISION 7
-#define CIMPLE_VERSION_STRING "0.99.7"
+#define CIMPLE_REVISION 11
+#define CIMPLE_VERSION_STRING "0.99.11"
+
+//==============================================================================
 
 #define CIMPLE_VERSION \
     ((CIMPLE_MAJOR << 24) | \ (CIMPLE_MINOR << 16) | \ (CIMPLE_REVISION << 8))

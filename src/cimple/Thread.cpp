@@ -30,6 +30,12 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+//==============================================================================
+//
+// Thread hooks
+//
+//==============================================================================
+
 void* (*thread_create_hook)(void*);
 void* (*thread_start_hook)(void*);
 void* (*thread_exit_hook)(void*);
@@ -87,7 +93,8 @@ Thread& Thread::operator=(const Thread& x)
     return *this;
 }
 
-int Thread::create(Thread& thread, Thread_Proc user_proc, void* user_arg)
+int _create(
+    Thread& thread, Thread_Proc user_proc, void* user_arg, bool detached)
 {
     Arg* arg = new Arg;
     arg->proc = user_proc;
@@ -95,7 +102,11 @@ int Thread::create(Thread& thread, Thread_Proc user_proc, void* user_arg)
 
     pthread_attr_t attr;
     pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
+    if (detached)
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    else
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
     if (thread_create_hook)
 	arg->create_hook_return_value = (*thread_create_hook)(user_arg);
@@ -103,7 +114,7 @@ int Thread::create(Thread& thread, Thread_Proc user_proc, void* user_arg)
 	arg->create_hook_return_value = 0;
 
     int status = pthread_create(
-	((pthread_t*)thread._rep), &attr, _thread_proc, arg);
+	(pthread_t*)&thread, &attr, _thread_proc, arg);
 
     pthread_attr_destroy(&attr);
 
@@ -113,9 +124,27 @@ int Thread::create(Thread& thread, Thread_Proc user_proc, void* user_arg)
     return status;
 }
 
+int Thread::create_joinable(
+    Thread& thread, Thread_Proc user_proc, void* user_arg)
+{
+    return _create(thread, user_proc, user_arg, false);
+}
+
+int Thread::create_detached(
+    Thread& thread, Thread_Proc user_proc, void* user_arg)
+{
+    return _create(thread, user_proc, user_arg, true);
+}
+
 void Thread::exit(void* return_value)
 {
     pthread_exit(return_value);
+}
+
+int Thread::join(Thread& thread, void*& value_ptr)
+{
+    value_ptr = 0;
+    return pthread_join(*((pthread_t*)thread._rep), &value_ptr);
 }
 
 Thread Thread::self()

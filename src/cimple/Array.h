@@ -54,7 +54,7 @@ public:
 
     const void* get_raw(size_t i) const
     {
-	return _data + (_esize * _size);
+	return _data + (_esize * i);
     }
 
     void append_raw(const void* data, size_t size)

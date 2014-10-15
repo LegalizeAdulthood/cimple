@@ -176,14 +176,14 @@ void Datetime::set_timestamp(
     tm.tm_hour = hours;
     tm.tm_min = minutes;
     tm.tm_sec = seconds;
-    tm.tm_isdst = 0;
+    tm.tm_isdst = 1;
 
     time_t t = mktime(&tm);
     _usec = uint64(t) * uint64(1000000) + microseconds;
     _offset = utc;
 }
 
-void Datetime::print(FILE* os, bool prettify)
+void Datetime::print(FILE* os, bool prettify) const
 {
     char buffer[32];
     ascii(buffer, prettify);

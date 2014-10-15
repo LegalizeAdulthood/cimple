@@ -11,3 +11,5 @@
 #pragma include ("Person2.mof")
 #pragma include ("User.mof")
 #pragma include ("Lamp.mof")
+#pragma include ("Arrays.mof")
+#pragma include ("XYZ_Lamp.mof")

@@ -1,27 +1,34 @@
 #include "Methods_Provider.h"
 
+#define TRACE /* CIMPLE_TRACE */
+
 CIMPLE_NAMESPACE_BEGIN
 
 Methods_Provider::Methods_Provider()
 {
+    TRACE;
 }
 
 Methods_Provider::~Methods_Provider()
 {
+    TRACE;
 }
 
 Load_Status Methods_Provider::load()
 {
+    TRACE;
     return LOAD_OK;
 }
 
 Unload_Status Methods_Provider::unload()
 {
+    TRACE;
     return UNLOAD_OK;
 }
 
 Timer_Status Methods_Provider::timer(uint64& timeout)
 {
+    TRACE;
     return TIMER_CANCEL;
 }
 
@@ -29,6 +36,15 @@ Get_Instance_Status Methods_Provider::get_instance(
     const Methods* model,
     Methods*& instance)
 {
+    TRACE;
+
+    if (model->key.value == 99)
+    {
+	instance = Methods::create();
+	instance->key.value = 99;
+	return GET_INSTANCE_OK;
+    }
+
     return GET_INSTANCE_NOT_FOUND;
 }
 
@@ -36,24 +52,31 @@ Enum_Instances_Status Methods_Provider::enum_instances(
     const Methods* model,
     Enum_Instances_Handler<Methods>* handler)
 {
-    return ENUM_INSTANCES_FAILED;
+    Methods* methods = Methods::create();
+    methods->key.value = 99;
+    handler->handle(methods);
+
+    return ENUM_INSTANCES_OK;
 }
 
 Create_Instance_Status Methods_Provider::create_instance(
     const Methods* instance)
 {
+    TRACE;
     return CREATE_INSTANCE_UNSUPPORTED;
 }
 
 Delete_Instance_Status Methods_Provider::delete_instance(
     const Methods* instance)
 {
+    TRACE;
     return DELETE_INSTANCE_UNSUPPORTED;
 }
 
 Modify_Instance_Status Methods_Provider::modify_instance(
     const Methods* instance)
 {
+    TRACE;
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
@@ -67,6 +90,7 @@ Invoke_Method_Status Methods_Provider::foo(
     Property<boolean>& arg6,
     Property<String>& return_value)
 {
+    TRACE;
 #if 0
     printf("===== Methods_Provider::foo()\n");
     printf("[in] arg1: %u\n", arg1.value);
@@ -95,6 +119,8 @@ Invoke_Method_Status Methods_Provider::foo2(
     Arg* arg2,
     Property<String>& return_value)
 {
+    TRACE;
+
     if (arg2)
     {
 	arg2->key.value = 12345;
@@ -120,6 +146,8 @@ int Methods_Provider::proc(
     void* arg6,
     void* arg7)
 {
+    TRACE;
+
     // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
     // GENERATED.
 

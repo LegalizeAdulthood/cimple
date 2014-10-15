@@ -211,7 +211,7 @@ struct CIMPLE_LIBCIMPLE_LINKAGE Datetime
 
     /** Print object to stream parameter.
     */
-    void print(FILE* os = stdout, bool prettify = false);
+    void print(FILE* os = stdout, bool prettify = false) const;
 
     /** Factory method that produces the current timestamp().
     */

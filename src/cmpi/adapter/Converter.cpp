@@ -579,9 +579,10 @@ CMPIrc make_cimple_reference(
 
 	if (!mf)
 	{
-	    destroy(inst);
-	    inst = 0;
-	    RETURN(CMPI_RC_ERR_NO_SUCH_PROPERTY);
+	    // Ignore properties that appear in the source class but not
+	    // in the target class. These properties may be introduced by
+	    // subclasses or by newer versions.
+	    continue;
 	}
 
 	if (!(mf->flags & CIMPLE_FLAG_KEY))
@@ -919,6 +920,8 @@ CMPIrc make_cimple_instance(
 CMPIrc make_method(
     const Meta_Method* mm,
     const CMPIArgs* in,
+    const Meta_Class* find_meta_class(const char*, void*),
+    void* client_data,
     Instance*& cimple_meth)
 {
     // ATTN: are some argument required in the model?
@@ -952,8 +955,15 @@ CMPIrc make_method(
 	}
 	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
 	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-	    CMPIrc rc = _set_cimple_reference(meth, mr, data);
+	    Meta_Reference mr = *((Meta_Reference*)mf);
+
+	    const Meta_Class* mc = find_meta_class(
+		class_name(data.value.ref), client_data);
+
+	    if (mc)
+		mr.meta_class = mc;
+
+	    CMPIrc rc = _set_cimple_reference(meth, &mr, data);
 
 	    if (rc != CMPI_RC_OK)
 		RETURN(rc);

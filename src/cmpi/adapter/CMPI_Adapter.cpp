@@ -786,7 +786,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     // Create the method:
 
     Instance* cimple_meth = 0;
-    rc = make_method(mm, in, cimple_meth);
+    rc = make_method(mm, in, find_meta_class_callback, adapter, cimple_meth);
 
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
@@ -1634,6 +1634,12 @@ extern "C" CIMPLE_EXPORT int cimple_cmpi_adapter(
 
     // Success!
     return 0;
+}
+
+const Meta_Class* CMPI_Adapter::find_meta_class_callback(
+    const char* class_name, void* client_data)
+{
+    return ((CMPI_Adapter*)client_data)->_find_meta_class(class_name);
 }
 
 CIMPLE_INJECT_VERSION_TAG;

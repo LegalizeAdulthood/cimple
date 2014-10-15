@@ -9,6 +9,7 @@
 
 #include <cimple/cimple.h>
 #include "Fan.h"
+#include "Arrays.h"
 #include "CIM_Indication.h"
 #include "MyIndication.h"
 #include "DerivedIndication.h"
@@ -47,6 +48,9 @@
 #include "Lamp.h"
 #include "LampLink.h"
 #include "LampIndic.h"
+#include "XYZ_Lamp.h"
+#include "XYZ_LampLink.h"
+#include "XYZ_LampIndic.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

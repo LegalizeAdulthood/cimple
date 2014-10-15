@@ -3,7 +3,11 @@
 #include <unistd.h>
 #include "LampIndic_Provider.h"
 
-#define TRACE /* CIMPLE_TRACE */
+#if 0
+# define TRACE CIMPLE_TRACE
+#else
+# define TRACE
+#endif
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -50,7 +54,7 @@ void* LampIndic_Provider::_thread_proc(void* arg)
 	    {
 		// The main thread is waiting on this signal. Signal it so
 		// it can continue.
-		provider->_predicate.signal();
+		Thread::exit(0);
 		return 0;
 	    }
 
@@ -114,8 +118,7 @@ Enable_Indications_Status LampIndic_Provider::enable_indications(
     // to indicate that the worker thread has been created.
 
     _counter.inc();
-    _predicate.reset();
-    Thread::create(_thread, (Thread_Proc)_thread_proc, this);
+    Thread::create_joinable(_thread, (Thread_Proc)_thread_proc, this);
 
     return ENABLE_INDICATIONS_OK;
 }
@@ -197,9 +200,8 @@ void LampIndic_Provider::_stop_thread()
 	// Signal the other thread by decrementing the counter to zero.
 	_counter.dec();
 
-	// Wait for the other thread to exit.
-	_predicate.wait();
-	sleep(1);
+	void* value_ptr;
+	Thread::join(_thread, value_ptr);
     }
 }
 

@@ -12,8 +12,10 @@ DIRS = \
     DerivedIndication \
     ComputerSystemDiskDrive \
     Lamp \
+    XYZ_Lamp \
     Thing \
-    Salesman
+    Salesman \
+    Arrays
 
 ifdef CIMPLE_UNIX
     DIRS += UnixUser

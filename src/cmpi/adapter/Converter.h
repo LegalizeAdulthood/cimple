@@ -76,6 +76,8 @@ CIMPLE_HIDE CMPIrc make_cmpi_instance(
 CIMPLE_HIDE CMPIrc make_method(
     const Meta_Method* mm,
     const CMPIArgs* in,
+    const Meta_Class* find_meta_class(const char*, void*),
+    void* client_data,
     Instance*& cimple_meth);
 
 CIMPLE_HIDE CMPIrc make_method_out(

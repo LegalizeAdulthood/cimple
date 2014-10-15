@@ -5,6 +5,7 @@ SH_LIBRARY = cmplrep
 
 CLASSES = \
     Fan  \
+    Arrays \
     MyIndication \
     DerivedIndication \
     Example \
@@ -25,7 +26,10 @@ CLASSES = \
     ThingLink \
     Lamp \
     LampLink \
-    LampIndic
+    LampIndic \
+    XYZ_Lamp \
+    XYZ_LampLink \
+    XYZ_LampIndic
 
 SOURCES = \
     DiskDrive.cpp \
@@ -50,6 +54,7 @@ SOURCES = \
     DerivedIndication.cpp \
     Example.cpp \
     Fan.cpp \
+    Arrays.cpp \
     House.cpp \
     Link.cpp \
     Link2.cpp \
@@ -67,7 +72,10 @@ SOURCES = \
     ThingLink.cpp \
     Lamp.cpp \
     LampLink.cpp \
-    LampIndic.cpp
+    LampIndic.cpp \
+    XYZ_Lamp.cpp \
+    XYZ_LampLink.cpp \
+    XYZ_LampIndic.cpp
 
 LIBRARIES = cimple
 

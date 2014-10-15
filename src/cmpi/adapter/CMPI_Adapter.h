@@ -224,6 +224,9 @@ public:
     // for different provider types (instance, method, indication, association).
     size_t load_count;
 
+    static CIMPLE_HIDE const Meta_Class* find_meta_class_callback(
+	const char* class_name, void* client_data);
+
 private:
 
     const Meta_Class* _mc;

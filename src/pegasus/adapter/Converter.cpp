@@ -811,6 +811,7 @@ static Instance* _make_cimple_instance(
 
 	    if (_to_cimple_property(value, instance, mp) != 0)
 	    {
+		CIMPLE_ERROR(("type mismatch on %s", mp->name));
 		destroy(instance);
 		return 0;
 	    }
@@ -1031,14 +1032,16 @@ int Converter::de_nullify_properties(
 
     // Nullify all properties.
 
-    nullify_properties(ci);
+    nullify_non_keys(ci);
 
-    // Denullifty requested properties:
+    // Denullify requested properties:
 
     const Meta_Class* mc = ci->meta_class;
 
     for (size_t i = 0; i < pl.size(); i++)
     {
+	// Do not denullify keys.
+
 	CStr name(pl[i]);
 
 	const Meta_Property* mp = (Meta_Property*)find_feature(mc, name);
@@ -1048,7 +1051,10 @@ int Converter::de_nullify_properties(
 	    CIMPLE_ERROR(("no such property: %s", name.c_str()));
 	    return -1;
 	}
-	    
+
+	if (mp->flags & CIMPLE_FLAG_KEY)
+	    continue;
+
 	if (mp->flags & CIMPLE_FLAG_PROPERTY)
 	    null_of(mp, (char*)ci + mp->offset) = 0;
     }
@@ -1087,6 +1093,9 @@ int Converter::to_cimple_method(
 
     meth = _make_cimple_instance(&in_params, in_params.size(),
 	_params_get_name, _params_get_value, (Meta_Class*)mm, false);
+
+    if (!meth)
+	return -1;
 
     // Create reference output parameters.
 

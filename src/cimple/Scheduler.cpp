@@ -196,6 +196,8 @@ void* Scheduler::_thread_proc(void* arg)
 
 int Scheduler::start_thread()
 {
+    // ATTN: use Thread class so that these go through the handlers.
+
     Auto_Mutex auto_lock(_lock);
 
     if (_thread_running)
@@ -203,9 +205,7 @@ int Scheduler::start_thread()
 
     _thread_running = true;
 
-    pthread_attr_init(&_thread_attr);
-    pthread_attr_setdetachstate(&_thread_attr, PTHREAD_CREATE_DETACHED);
-    return pthread_create(&_thread, &_thread_attr, _thread_proc, this);
+    return Thread::create_joinable(_thread, _thread_proc, this);
 
     return 0;
 }
@@ -222,7 +222,6 @@ int Scheduler::stop_thread()
 
     _thread_running = false;
 
-    // pthread_attr_destroy(&_thread_attr);
 
     return 0;
 }

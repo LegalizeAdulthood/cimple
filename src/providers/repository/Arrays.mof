@@ -1,0 +1,6 @@
+
+class Arrays
+{
+    [key] string key;
+    uint16 arr[];
+};

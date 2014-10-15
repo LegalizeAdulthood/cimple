@@ -6,7 +6,6 @@
 #include <cimple/Mutex.h>
 #include <cimple/Thread.h>
 #include <cimple/Atomic_Counter.h>
-#include <cimple/Predicate.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -58,10 +57,6 @@ private:
 
     // This counter is used to signal the worker thread to exit (or return).
     Atomic_Counter _counter;
-
-    // The main provider thread blocks on this object until the worker
-    // thread signals it.
-    Predicate _predicate;
 };
 
 CIMPLE_NAMESPACE_END

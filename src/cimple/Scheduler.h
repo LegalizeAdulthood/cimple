@@ -31,6 +31,7 @@
 #include "config.h"
 #include "List.h"
 #include "Mutex.h"
+#include "Thread.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -79,8 +80,7 @@ private:
     List _list;
 
     // Timer thread:
-    pthread_attr_t _thread_attr;
-    pthread_t _thread;
+    Thread _thread;
 
     // Indications whether timer thread is running.
     bool _thread_running;

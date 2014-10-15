@@ -25,9 +25,12 @@
 */
 
 #include "pthread.h"
+#include "unistd.h"
 #include <cassert>
 #include <cstdio>
 #include <windows.h>
+
+#define for if (0) ; else for
 
 POSIX_NAMESPACE_BEGIN
 
@@ -93,7 +96,7 @@ int pthread_mutex_unlock(
     pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
 
     // ATTN: FIX: MEB: this asserts on Windows on shutdown of cimserver.
-    // assert(rep->count > 0);
+    assert(rep->count > 0);
 
     rep->count--;
 
@@ -102,7 +105,6 @@ int pthread_mutex_unlock(
 
     return 0;
 }
-
 
 int pthread_mutexattr_init(
     pthread_mutexattr_t* attr)
@@ -177,8 +179,6 @@ int pthread_once(
 //
 //==============================================================================
 
-// ATTN: Implement pthread_once() behavior
-
 struct pthread_key_rep_t
 {
     DWORD index;
@@ -239,133 +239,14 @@ void* pthread_getspecific(
 
 //==============================================================================
 //
-// pthread_t
+// pthread_attr_t
 //
 //==============================================================================
-
-// For the main thread, start_routine and arg are NULL.
-struct pthread_rep_t
-{
-    void* (*start_routine)(void*);
-    void* arg;
-    HANDLE event;
-    HANDLE handle;
-    pthread_rep_t* next;
-};
 
 struct pthread_attr_rep_t
 {
     int detachstate;
 };
-
-static pthread_once_t _pthread_self_once = PTHREAD_ONCE_INIT;
-static pthread_key_t _pthread_self_key;
-
-static void _create_pthread_self_key()
-{
-    pthread_key_create(&_pthread_self_key, NULL);
-}
-
-static DWORD WINAPI _proc(LPVOID arg) 
-{
-    pthread_rep_t* rep = (pthread_rep_t*)arg;
-
-    // Set rep into thread local storage.
-
-    if (pthread_setspecific(_pthread_self_key, rep) != 0)
-    {
-	assert(0);
-	CloseHandle(rep->event);
-	delete rep;
-	return 0;
-    }
-
-    // Run thread procedure passed to Threads::create().
-
-    void* return_value = (*rep->start_routine)(rep->arg);
-
-    // ATTN: clean up!
-
-    delete rep;
-
-    return (DWORD)return_value;
-}
-
-int pthread_create(
-    pthread_t* thread, 
-    const pthread_attr_t* attr,
-    void* (*start_routine)(void*), 
-    void* arg)
-{
-    // Only detached threads are supported.
-
-    pthread_attr_rep_t* attr_rep = (pthread_attr_rep_t*)attr;
-
-    if (!attr_rep || attr_rep->detachstate != PTHREAD_CREATE_DETACHED)
-	return -1;
-
-    // Initialize _pthread_self_key.
-
-    if (pthread_once(&_pthread_self_once, _create_pthread_self_key) != 0)
-	return -1;
-
-    // Create rep object.
-
-    pthread_rep_t* rep = new pthread_rep_t;
-
-    // Save start_routine and arg.
-
-    rep->start_routine = start_routine;
-    rep->arg = arg;
-    rep->next = 0;
-
-    // Create an event to be used by the condition variable implementation.
-
-    if ((rep->event = CreateEvent(0, TRUE, FALSE, 0)) == NULL)
-    {
-	delete rep;
-	return -1;
-    }
-
-    // Create thread:
-
-    if ((rep->handle = CreateThread(NULL, 0, _proc, rep, 0, NULL)) == NULL)
-    {
-	CloseHandle(rep->event);
-	delete rep;
-	return -1;
-    }
-
-    *thread = (long)rep;
-    return 0;
-}
-
-pthread_t pthread_self()
-{
-    pthread_rep_t* rep = (pthread_rep_t*)pthread_getspecific(_pthread_self_key);
-
-    // This thread has a null _pthread_self_key slot, which means
-    // it was not created by pthread_create(). It is probably the main
-    // thread but could be a thread that was created outside this
-    // thread package. In either case, we must create a rep for it.
-
-    if (!rep)
-    {
-	rep = new pthread_rep_t;
-	rep->start_routine = NULL;
-	rep->arg = NULL;
-	rep->event = CreateEvent(0, TRUE, FALSE, 0);
-	rep->handle = GetCurrentThread();
-	rep->next = 0;
-
-	assert(rep->event != NULL);
-	assert(rep->handle != NULL);
-
-	pthread_setspecific(_pthread_self_key, rep);
-    }
-
-    return (long)rep;
-}
 
 int pthread_attr_init(
     pthread_attr_t* attr)
@@ -389,18 +270,282 @@ int pthread_attr_setdetachstate(
     return 0;
 }
 
-void pthread_exit(void*)
+//==============================================================================
+//
+// pthread_t
+//
+//==============================================================================
+
+struct pthread_rep_t
 {
-    pthread_rep_t* rep = (pthread_rep_t*)pthread_getspecific(_pthread_self_key);
+    void* (*start_routine)(void*);
+    void* arg;
+    HANDLE event;
+    HANDLE handle;
+    pthread_rep_t* next;
+
+    int joined;
+    void* value_ptr;
+    pthread_mutex_t join_mutex;
+    HANDLE join_event;
+    pthread_rep_t* join_next;
+};
+
+static pthread_rep_t* _join_list = 0;
+static pthread_mutex_t _join_list_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+static pthread_once_t _self_once = PTHREAD_ONCE_INIT;
+static pthread_key_t _self_key;
+
+static void _create_self_key()
+{
+    pthread_key_create(&_self_key, NULL);
+}
+
+static DWORD WINAPI _proc(LPVOID arg) 
+{
+    pthread_rep_t* rep = (pthread_rep_t*)arg;
+
+    // Set thread rep into thread-specific storage.
+
+    if (pthread_setspecific(_self_key, rep) != 0)
+    {
+	assert(0);
+	CloseHandle(rep->event);
+
+        if (rep->join_event != NULL)
+        {
+	    CloseHandle(rep->join_event);
+
+	    pthread_mutex_destroy(&rep->join_mutex);
+	}
+
+	delete rep;
+	return 0;
+    }
+
+    // Run thread procedure passed to Threads::create().
+
+    void* return_value = (*rep->start_routine)(rep->arg);
+
+    pthread_exit(return_value);
+
+    // Unreachable!
+    assert(0);
+
+    return (DWORD)0;
+}
+
+static void _destroy_thread_rep(pthread_rep_t* rep)
+{
+    if (rep)
+    {
+	if (rep->event != NULL)
+	    CloseHandle(rep->event);
+
+        if (rep->join_event != NULL)
+	    CloseHandle(rep->join_event);
+
+	pthread_mutex_destroy(&rep->join_mutex);
+
+	delete rep;
+    }
+}
+
+int pthread_create(
+    pthread_t* thread, 
+    const pthread_attr_t* attr,
+    void* (*start_routine)(void*), 
+    void* arg)
+{
+    pthread_attr_rep_t* attr_rep = (pthread_attr_rep_t*)attr;
+
+    //
+    // Initialize _self_key.
+    //
+
+    if (pthread_once(&_self_once, _create_self_key) != 0)
+	return -1;
+
+    //
+    // Create rep object.
+    //
+
+    pthread_rep_t* rep = new pthread_rep_t;
+    memset(rep, 0, sizeof(*rep));
+    rep->start_routine = start_routine;
+    rep->arg = arg;
+
+    // Create an event to be used by the condition variable implementation.
+
+    if ((rep->event = CreateEvent(0, TRUE, FALSE, 0)) == NULL)
+    {
+	_destroy_thread_rep(rep);
+	return -1;
+    }
+
+    // For joinable events, create a join event.
+
+    if (attr_rep == 0 || attr_rep->detachstate == PTHREAD_CREATE_JOINABLE)
+    {
+	if ((rep->join_event = CreateEvent(0, TRUE, FALSE, 0)) == NULL)
+	{
+	    _destroy_thread_rep(rep);
+	    return -1;
+	}
+
+	pthread_mutex_init(&rep->join_mutex, NULL);
+    }
+
+    // Create thread:
+
+    if ((rep->handle = CreateThread(NULL, 0, _proc, rep, 0, NULL)) == NULL)
+    {
+	_destroy_thread_rep(rep);
+	return -1;
+    }
+
+    // Stick this rep into the join list (if joinable).
+
+    if (attr_rep == 0 || attr_rep->detachstate == PTHREAD_CREATE_JOINABLE)
+    {
+	pthread_mutex_lock(&_join_list_mutex);
+        rep->join_next = _join_list;
+	_join_list = rep;
+	pthread_mutex_unlock(&_join_list_mutex);
+    }
+
+    *thread = (long)rep;
+
+    return 0;
+}
+
+pthread_t pthread_self()
+{
+    pthread_rep_t* self = (pthread_rep_t*)pthread_getspecific(_self_key);
+
+    // This thread has a null _self_key slot, which means
+    // it was not created by pthread_create(). It is probably the main
+    // thread but could be a thread that was created outside this
+    // thread package. In either case, we must create a self for it.
+
+    if (!self)
+    {
+	self = new pthread_rep_t;
+        memset(self, 0, sizeof(*self));
+	self->event = CreateEvent(0, TRUE, FALSE, 0);
+	self->handle = GetCurrentThread();
+
+	assert(self->event != NULL);
+	assert(self->handle != NULL);
+
+	pthread_setspecific(_self_key, self);
+    }
+
+    return (long)self;
+}
+
+void pthread_exit(void* value_ptr)
+{
+    //
+    // Get thread rep (if none, then just exit).
+    //
+
+    pthread_rep_t* rep = (pthread_rep_t*)pthread_getspecific(_self_key);
 
     if (!rep)
     {
-	rep->event = CreateEvent(0, TRUE, FALSE, 0);
-	CloseHandle(rep->event);
-	delete rep;
+	ExitThread(0);
+	return;
     }
 
+    //
+    // Handle join operation (if thread is joinable)
+    //
+
+    if (rep->join_event != NULL)
+    {
+        pthread_mutex_lock(&rep->join_mutex);
+        rep->joined = 1;
+        rep->value_ptr = value_ptr;
+	SetEvent(rep->join_event);
+        pthread_mutex_unlock(&rep->join_mutex);
+    }
+    else
+	_destroy_thread_rep(rep);
+
+    //
+    // Exit thread.
+    //
+
     ExitThread(0);
+}
+
+int pthread_join(pthread_t thread, void** value_ptr)
+{
+    pthread_rep_t* rep = (pthread_rep_t*)thread;
+
+    //
+    // Clear value.
+    //
+
+    if (value_ptr)
+        *value_ptr = 0;
+
+    //
+    // Remove join list.
+    //
+
+    pthread_mutex_lock(&_join_list_mutex);
+
+    pthread_rep_t* prev = 0;
+    bool found = false;
+
+    for (pthread_rep_t* p = _join_list; p; p = p->join_next)
+    {
+	if (p == rep)
+	{
+	    if (prev)
+		prev->join_next = p->join_next;
+	    else
+		_join_list = p->join_next;
+
+	    found = true;
+	}
+
+	prev = p;
+    }
+
+    pthread_mutex_unlock(&_join_list_mutex);
+
+    if (!found)
+    {
+	// This thread is not joinable or has already been joined.
+	return -1;
+    }
+
+    //
+    // Wait for thread to finish.
+    //
+
+    pthread_mutex_lock(&rep->join_mutex);
+
+    if (rep->joined == 0)
+    {
+        pthread_mutex_unlock(&rep->join_mutex);
+	DWORD rc = WaitForSingleObject(rep->join_event, INFINITE);
+        pthread_mutex_lock(&rep->join_mutex);
+
+	assert(rc == WAIT_OBJECT_0);
+    }
+
+    pthread_mutex_unlock(&rep->join_mutex);
+
+    assert(rep->joined == 1);
+    *value_ptr = rep->value_ptr;
+    _destroy_thread_rep(rep);
+
+    return 0;
 }
 
 int pthread_equal(pthread_t t1, pthread_t t2)
@@ -450,9 +595,14 @@ int pthread_cond_wait(
 {
     pthread_cond_rep_t* rep = (pthread_cond_rep_t*)cond;
 
+    if (!cond || ! mutex)
+	return -1;
+
     // Get current thread.
 
-    pthread_rep_t* self = (pthread_rep_t*)pthread_self();
+    pthread_self();
+    pthread_rep_t* self = (pthread_rep_t*)pthread_getspecific(_self_key);
+    assert(self != 0);
     assert(self->next == 0);
 
     // Add to rear of queue.

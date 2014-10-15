@@ -1,4 +1,4 @@
-    static CIMPLE_HIDDEN int proc(
+    static CIMPLE_HIDE int proc(
 	const Registration* registration,
 	int operation, 
 	void* arg0, 

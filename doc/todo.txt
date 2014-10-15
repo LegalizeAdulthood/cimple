@@ -19,6 +19,13 @@
     A
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
+    (A) Resolve bug with Pegasus adapter which occurs in response to asking
+	for a non existent instance with CLI gi.
+
+    (A) Properly handle property lists in adapter.
+
+    (A) Remove timer() method from providers (use threading instead).
+
     (A) Implement reference-counted handle for CIMPLE instances.
 
     (A) Consolidate standard CIM error codes with provider error codes.
