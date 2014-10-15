@@ -22,7 +22,7 @@ else
     CIMPLE_PEGASUS_MODULE=1
 endif
 
-## required to ecpand CIMPLE_***_MODULE definitions
+## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak
 
 include $(TOP)/mak/rules.mak
@@ -46,7 +46,7 @@ genproj:
 	$(BINDIR)/genproj EA All_Class
 	
 unregister:
-	$(BINDIR)/regmod -v -u -c $(Target)
+	$(BINDIR)/regmod -v -u -c $(TARGET)
 
 	
 ##============================================================================

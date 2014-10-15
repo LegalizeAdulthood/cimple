@@ -9,6 +9,7 @@ DIRS = \
     CIM_DiskDrive \
     ComputerSystemDiskDrive \
     Cross \
+    DerivedAssoc \
     DerivedIndication \
     Example \
     Fan \

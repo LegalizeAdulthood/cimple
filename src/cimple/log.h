@@ -93,8 +93,6 @@ enum Log_Level
     LL_DBG,
 };
 
-CIMPLE_CIMPLE_LINKAGE
-
 /* INTERNAL ONLY
  * Create a log entry with the defined parameters formatting the
  * the output from input parameters. This call creates a single 
@@ -116,6 +114,7 @@ CIMPLE_CIMPLE_LINKAGE
  *         "my name is %s; my age is %d", "John", 12);
  */
 CIMPLE_PRINTF_ATTR(4, 5)
+CIMPLE_CIMPLE_LINKAGE
 void log(
     Log_Level level, 
     const char* file, 

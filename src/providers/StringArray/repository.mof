@@ -2,4 +2,5 @@ class StringArrayClass
 {
     [Key] uint32 Key;
     string Colors[];
+    Uint32 sizes[];
 };

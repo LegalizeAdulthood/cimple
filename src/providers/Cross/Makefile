@@ -21,7 +21,7 @@ SOURCES = \
 ## Changing Provider interfaces requires reregistering the provider. Default Pegasus
 ##
 ifndef CIMPLE_PROVIDER_TYPE
-   CIMPLE_PEGASUS_MODULE=1
+   CIMPLE_PEGASUS_MODULE = 1
 endif
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE

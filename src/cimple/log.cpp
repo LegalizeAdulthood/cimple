@@ -881,7 +881,7 @@ void vlog(
     // enable this and there should be an entry in the emergency log output
     // for every log call. Enable with caution and only to confirm that
     // logs are being called.
-#ifdef CIMPLE_LOG_DIAG
+#ifdef CIMPLE_LOG_DIAG_ENABLE
     //LOG_DIAG(("vlog called to output log file %s line %u", file, line));
 #endif
 

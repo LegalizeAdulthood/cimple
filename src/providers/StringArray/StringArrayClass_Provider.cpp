@@ -36,11 +36,27 @@ StringArrayClass_Provider::~StringArrayClass_Provider()
 
 Load_Status StringArrayClass_Provider::load()
 {
+    {
+        StringArrayClass* instance = StringArrayClass::create();
+        instance->Key.value = 1;
+        Array<String> a;
+        a.append("Red");
+        a.append("Green");
+        a.append("Blue");
+        instance->Colors.set(a);
+        Array<uint32> b;
+        b.append(1);
+        b.append(2);
+        b.append(3);
+        instance->sizes.set(b);
+        _map.insert(instance);
+    }
     return LOAD_OK;
 }
 
 Unload_Status StringArrayClass_Provider::unload()
 {
+    _map.clear();
     return UNLOAD_OK;
 }
 
@@ -48,36 +64,30 @@ Get_Instance_Status StringArrayClass_Provider::get_instance(
     const StringArrayClass* model,
     StringArrayClass*& instance)
 {
-    return GET_INSTANCE_UNSUPPORTED;
+    return _map.get_instance(model, instance);
 }
 
 Enum_Instances_Status StringArrayClass_Provider::enum_instances(
     const StringArrayClass* model,
     Enum_Instances_Handler<StringArrayClass>* handler)
 {
-    StringArrayClass* inst = StringArrayClass::create();
-
-    Array<String> a;
-    a.append("Red");
-    a.append("Green");
-    a.append("Blue");
-    inst->Colors.set(a);
-
-    handler->handle(inst);
-
-    return ENUM_INSTANCES_OK;
+    return _map.enum_instances(model, handler);
 }
 
 Create_Instance_Status StringArrayClass_Provider::create_instance(
     StringArrayClass* instance)
 {
-    return CREATE_INSTANCE_UNSUPPORTED;
+    if (instance->Key.null == true)
+    {
+        return CREATE_INSTANCE_FAILED;
+    }
+    return _map.create_instance(instance);
 }
 
 Delete_Instance_Status StringArrayClass_Provider::delete_instance(
     const StringArrayClass* instance)
 {
-    return DELETE_INSTANCE_UNSUPPORTED;
+    return _map.delete_instance(instance);
 }
 
 Modify_Instance_Status StringArrayClass_Provider::modify_instance(

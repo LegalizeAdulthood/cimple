@@ -14,7 +14,7 @@ SOURCES = \
 # Allow building providers for either CMPI or Pegasus C++ provider interface
 # Changing Provider interfaces requires reregistering the provider. Default is PEGASUS
 ifndef CIMPLE_PROVIDER_TYPE
-    CIMPLE_PEGASUS_MODULE=1
+   CIMPLE_PEGASUS_MODULE = 1
 endif
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE

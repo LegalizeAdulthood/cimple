@@ -398,16 +398,19 @@ This change log was started effective with version 2.00
       Pegasus for a couple of command line functions (diff and.  This only affects
       test and will be removed.
 
-2.0.22 - 31 May 2011  (cimple_2_0_12-branch, tag cimple cimple_2_0_20)
+2.0.22 - 31 May 2011  (cimple_2_0_12-branch, tag cimple cimple_2_0_22)
     * Extend the capability to display errors that occur in log.cpp when
       logging is intialized (config file errors, log file create/write errors,
       etc) to both stdout and to an emergency log file. The emergency log
-      file is located at either \ for windows or /tmp for *nix systems
-      and only contains entries that represent errors in the logging process
-      itself. In the previous release this was only enabled in CIMPLE_DEBUG
-      mode.  This has been modified to be enabled unless specifically disabled
-      in log.cpp because the errors can be generated in both development
-      and production (inability to write logs, config errors, etc.)
+      file is located at either %SystemDir%\Temp (typically C:\Windows\Temp)
+      for windows or /tmp for *nix systems and only contains entries that
+      represents errors in the logging process itself. In the previous release
+      this was only enabled in CIMPLE_DEBUG mode.  This has been modified to
+      be enabled unless specifically disabled in log.cpp because the errors
+      can be generated in both development and production (inability to
+      write logs, config errors, etc.). Normally this log file should never
+      be created unless there are problems with the CIMPLE config file or in
+      creating/writing to a log file.
     * Modify log.cpp to set log level to DBG if the configuration parameter
       in .cimplrc (LOG_LEVEL=<value>) value is not one of the defined
       values. Before this caused the log not to be output at all.
@@ -417,22 +420,50 @@ This change log was started effective with version 2.00
       CIMPLE_LOG_DIAG_ENABLE in src/cimple/log.cpp (it is not part of the
       configuration file) and should be used only in development mode and if
       there are real issues outputting logs.
-    * Extend the
     * Add capability to configure.bat to include configure command line in
       the config.options file, and to backup the file to config.options.bat
       if the file exists when configure is executed.
-      Add capability to configure to the *nix configure file to create a
-      backup file (config.options.bak)
+      Add capability to configure script to the *nix configure file to create
+      abackup file (config.options.bak) whenever configure is called.
+
+2.0.23 - Not released   (cimple_2_0_12-branch, tag cimple cimple_2_0_23)
+    * Correct error in Pegasus Adapter where it was ingoring error response
+      from function in Associators operation.  This caused crash in
+      cimple where invalid Class was provided with input Object path.
+    * Correct issue with associator, associatorNames, references, and 
+      referenceNames operation in that they were returning
+      CIM_ERR_INVALID_CLASS when the class in the objectpath parameter was
+      not found in the provider meta_repository.  This error propagates
+      up to the operation and fails the operation.  At least in Pegasus
+      this simply indicates that this class is not in the provider. NOTE:
+      the implication of this is that while the provider is registered for
+      the association class, the class in the object path must also exist
+      in the provider to be processed by CIMPLE.
+    * Correct error in test providers unregister target where Target was used
+      as makefile define rather than TARGET
+
+2.0.24 - 8 Nov 2011
+     * Correct Error introduced in 2.0.22 in genmod where it was placing
+       incorrect information into  the CIMPLE_MODULE entry in the module.cpp
+       file. This error would cause registration errors when the provider
+       was registered with pegasus if module.cpp was generated with genmod
+       v 2.0.22.
+     * add test for -F option on genclass, genprov, genmod, genproj
+     * add -v (verbose display) option to genmod.
+     * Editorial changes
+     
 
 ====================================================================
 
-    TODO- Open work list for post 2.0 18
+    TODO- Open work list for post Current Release
 
     * Add capability to display current thread id in logs. (Move to future version)
     * Test with gcc option -Weffc++
     * Look into CIMPLE_ASSERT and release build. Extend this so we have a
       way to turn off all asserts except those that are really fatal in
       release mode.
+    * Clean out any printf statements from the CIMPLE infrastructure except
+      in unit tests, providers and the command line utilities.
     * get rid of asserts in favor of some type of CIMPLE_ASSERT so that the
       asserts are controlable on build basis.
     * Add more tests for Thread APIs.
@@ -440,11 +471,3 @@ This change log was started effective with version 2.00
       compile trace code in all adapters. Currently only impacts Pegasus C++
       adapter.
     
-
-
-
-
-
-
-
-

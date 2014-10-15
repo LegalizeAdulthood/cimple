@@ -36,13 +36,22 @@ LIBRARIES += cimple
 include $(TOP)/mak/rules.mak
 
 genproj:
-	genproj cmplderivedassoc CMPL_Base CMPL_Derived CMPL_Other CMPL_Assoc
+	genproj cmplderivedassoc -F classlist.txt
+
+genclass:
+	$(BINDIR)/genclass -r  -F classlist.txt
+
+genprov:
+	$(BINDIR)/genprov -F classlist.txt
+
+genmod:
+	$(BINDIR)/genmod  -v cmplderivedassoc -F classlist.txt
 
 regmod:
-	$(BINDIR)/regmod -n root/cimv2 -s -c $(TARGET)
+	$(BINDIR)/regmod -n root/cimv2 -c $(TARGET)
 
 unregister:
-	$(BINDIR)/regmod -v -n root/cimv2 -u -i $(Target)
+	$(BINDIR)/regmod -v -n root/cimv2 -u -i $(TARGET)
 
 
 live:
@@ -51,6 +60,7 @@ live:
 	$(CIMCLI) ei CMPL_Other -count 2 --sum
 	$(CIMCLI) ei CMPL_Assoc -count 2 --sum
 	$(CIMCLI) r CMPL_Base.Key=1 -count 1 --sum
+	$(CIMCLI) rn CMPL_Base.Key=1 -count 1 --sum
 
 live2:
 	$(CIMCLI) r CMPL_Derived.Key=10 -count 1 --sum

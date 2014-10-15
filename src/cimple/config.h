@@ -415,7 +415,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 2
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 20
+#define CIMPLE_REVISION 24
 
 //==============================================================================
 //

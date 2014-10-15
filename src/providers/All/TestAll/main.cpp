@@ -665,8 +665,8 @@ public:
             {
                 _pos = 1;
                 if (++_spacing >= (_maxPropertyList - 1))
-            {
-                _done = true;
+                {
+                    _done = true;
                 }
             }
         }

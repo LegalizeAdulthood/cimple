@@ -24,6 +24,7 @@
 **==============================================================================
 */
 
+#include <cassert>
 #include <cstdlib>
 #include "String.h"
 #include "flags.h"

@@ -28,6 +28,7 @@
     portability options.
 */
 
+#include <cassert>
 #include <cstdlib>
 #include <sys/stat.h>
 #include <fstream>

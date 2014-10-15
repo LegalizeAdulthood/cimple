@@ -1,10 +1,12 @@
-Usage: genclass [OPTIONS] <class-names>...
+Usage: genclass [OPTIONS] [CLASS_NAME]...
 
 This utility generates C++ definitions from MOF classes. For each class-name
 argument, it generates at least two files: CLASSNAME.h (containing the 
 corresponding C++ class) and CLASSNAME.cpp (containing opaque meta-data for
 the class). It also generates header and source files for any dependent 
-classes (ancestor and reference classes).
+classes (ancestor and reference classes). The list of class names can be
+provided either on the command line and/or with the -F option pointing to
+a file containing the class names.
 
 Genclass to process the following MOF files:
 

@@ -1,9 +1,10 @@
-Usage: %s [OPTIONS] CLASSNAME...
+Usage: %s [OPTIONS] [CLASSNAME]...
 
 This utility generates the skeleton code for one or more providers. It 
 generates two files (<CLASSNAME>_Provider.h and <CLASSNAME>_Provider.cpp)
-for each CLASSNAME argument. If these files already exist, then genprov 
-patches them, by updating the intrinsic and extrinsic method prototypes.
+for each CLASSNAME argument provided on the command line or with the -F
+option. If these files already exist, then genprov patches them, by updating
+the intrinsic and extrinsic method prototypes.
 
 OPTIONS:
     -V      -- print the version.

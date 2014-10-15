@@ -22,7 +22,7 @@ SOURCES = \
 # Changing Provider interfaces requires reregistering the provider.
 # Default is CMPI Provider
 ifndef CIMPLE_PROVIDER_TYPE
-    CIMPLE_CMPI_MODULE=1
+   CIMPLE_CMPI_MODULE = 1
 endif
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
@@ -47,3 +47,14 @@ genproj:
 
 regmod-dump:
 	$(BINDIR)/regmod -d -c $(TARGET)
+
+
+## manual tests
+
+eiemployee:
+	cimcli ei employee
+
+miemployee:
+	cimcli mi employee Id=4001 Hobbies="running","sleeping","playing" \
+    -pl Id,Hobbies
+	cimcli gi employee Id=4001

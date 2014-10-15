@@ -276,7 +276,7 @@ void Pegasus_Adapter::getInstance(
     P_InstanceResponseHandler& handler)
 {
 
-    PENTRY("getInstance");
+    PENTRY("Pegasus_Adapter::getInstance");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -655,6 +655,7 @@ void Pegasus_Adapter::deleteInstance(
     const P_CIMObjectPath& objectPath,
     P_ResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::deleteInstance");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -665,12 +666,21 @@ void Pegasus_Adapter::deleteInstance(
 
     const Meta_Class* mc = find_model_meta_class(objectPath);
 
+    if (!mc)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_INVALID_CLASS);
+        _throw(Pegasus::CIM_ERR_INVALID_CLASS);
+    }
+
     // Create CIMPLE instance (initialize key properties).
 
     Instance* ci = 0;
 
     if (Converter::to_cimple_key(*ns, objectPath, mc, ci) != 0)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     Ref<Instance> ci_d(ci);
 
@@ -684,6 +694,7 @@ void Pegasus_Adapter::deleteInstance(
 
     handler.processing();
     handler.complete();
+    PEXIT();
 }
 
 void Pegasus_Adapter::invokeMethod(
@@ -994,6 +1005,21 @@ void Pegasus_Adapter::associators(
 
     const Meta_Class* source_mc = find_meta_class(objectPath);
 
+    if (!source_mc)
+    {
+        // If class in object path not found simply return, no error.
+        // This is consistent with the concept in Pegasus at least that
+        // the association provider may be called based on the association
+        // class and may be called for objects that it does not comprehend.
+        // The implication of this is that the association class provider 
+        // and the provider for the target instance MUST exist in the
+        // same provider module so that both are available with
+        // find_meta_class
+        //handler.processing();
+        //handler.complete();
+        PEXIT();
+        return;
+    }
     // Convert object name to CIMPLE key.
 
     Instance* ck = 0;
@@ -1003,6 +1029,7 @@ void Pegasus_Adapter::associators(
         PEXITTHROW(Pegasus::CIM_ERR_FAILED );
         _throw(Pegasus::CIM_ERR_FAILED);
     }
+
     //printf("Pegasus_Adapter::associators %s %u \n", __FILE__, __LINE__);
     //print(ck);
     Ref<Instance> ck_d(ck);
@@ -1037,7 +1064,6 @@ void Pegasus_Adapter::associators(
         {
             if (data.error)
             {
-
                 PEXITTHROW(Pegasus::CIM_ERR_FAILED );
                 _throw(Pegasus::CIM_ERR_FAILED);
             }
@@ -1159,8 +1185,9 @@ void Pegasus_Adapter::associatorNames(
 
     if (!source_mc)
     {
-        PEXITTHROW(Pegasus::CIM_ERR_INVALID_CLASS );
-        _throw(Pegasus::CIM_ERR_INVALID_CLASS);
+        // See associators for explanation
+        PEXIT();
+        return;
     }
 
     Instance* ck = 0;
@@ -1266,6 +1293,7 @@ void Pegasus_Adapter::references(
     const P_CIMPropertyList& propertyList,
     P_ObjectResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::references");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -1281,7 +1309,11 @@ void Pegasus_Adapter::references(
     const Meta_Class* source_mc = find_meta_class(objectPath);
 
     if (!source_mc)
-        _throw(Pegasus::CIM_ERR_INVALID_CLASS);
+    {
+        // See associators for explanation
+        PEXIT();
+        return;
+    }
 
     // Convert source object name to CIMPLE key.
 
@@ -1289,6 +1321,7 @@ void Pegasus_Adapter::references(
 
     if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED );
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
     }
 
@@ -1313,12 +1346,18 @@ void Pegasus_Adapter::references(
         _enumerate_references_proc, 
         &data);
 
+    // KS_TODO - Check why this does not include the
+    // ENUM_REFERENCES_UNSUPPORTED that is in associators
     if (data.error)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED );
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     _check(status);
 
     handler.complete();
+    PEXIT();
 }
 
 struct Handle_Reference_Names_Request_Data
@@ -1400,8 +1439,9 @@ void Pegasus_Adapter::referenceNames(
 
     if (!source_mc)
     {
-        PEXITTHROW(Pegasus::CIM_ERR_INVALID_CLASS);
-        _throw(Pegasus::CIM_ERR_INVALID_CLASS);
+        // See associators for explanation
+        PEXIT();
+        return;
     }
 
     // Convert object name to CIMPLE key.
@@ -1644,7 +1684,7 @@ const Meta_Class* Pegasus_Adapter::find_meta_class(
 
     if (!repository)
     {
-        PEXIT();
+        PEXITUINT32(0);
         return 0;
     }
 
@@ -1662,13 +1702,13 @@ const Meta_Class* Pegasus_Adapter::find_model_meta_class(
 
     if (!mc)
     {
-        PEXIT();
+        PEXITTHROW(Pegasus::CIM_ERR_NOT_FOUND);
         _throw(Pegasus::CIM_ERR_NOT_FOUND);
     }
 
     if (!is_subclass(_mc, mc))
     {
-        PEXIT();
+        PEXITTHROW(Pegasus::CIM_ERR_NOT_FOUND);
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
     }
 

@@ -50,7 +50,6 @@ using namespace cimple;
 
 void test01()
 {
-
     // test file exists
 
     assert(FileSystem::exists("Makefile"));

@@ -68,7 +68,7 @@ Enum_Instances_Status All_Class_Provider::enum_instances(
 {
     CIMPLE_DBG(("enum_instances"));
 
-    // This test simple returns a single predefined instance
+    // This test returns a single predefined instance
     All_Class* inst = All_Class::create(true);
     inst->Key.set(99);
     inst->booleanScalar.set(false);

@@ -7,11 +7,8 @@ MODULE=1
 
 SHARED_LIBRARY = cimplePerson
 
-## Define list of classes we want to gen and corresponding list of
-## providers we want to build into module.  Note that here they are
-## the same.
-CLASSES = Person PersonLink Salesman SalesmanLink
-PROVIDERS = $(CLASSES)
+## List of classes for this provider is in a file classlist in the provider
+## directory
 
 SOURCES = \
     repository.cpp \
@@ -29,7 +26,7 @@ SOURCES = \
 ## Changing Provider interfaces requires reregistering the provider. Default Pegasus
 ##
 ifndef CIMPLE_PROVIDER_TYPE
-   CIMPLE_PEGASUS_MODULE=1
+   CIMPLE_PEGASUS_MODULE = 1
 endif
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
@@ -44,18 +41,18 @@ include $(TOP)/mak/rules.mak
 ###############################################################################
 
 genclass:
-	$(BINDIR)/genclass -r $(CLASSES)
+	$(BINDIR)/genclass -r -F classlist
 
 genprov:
-	$(BINDIR)/genprov $(CLASSES)	
+	$(BINDIR)/genprov -F classlist	
 
 genmod:
-	$(BINDIR)/genmod Person  $(CLASSES)
+	$(BINDIR)/genmod Person -F classlist
 
 ## As an alternate to getclass, genprov, and genproj you can use the
 ## following which does all three commands.
 genproj:
-	$(BINDIR)/genmod Person $(CLASSES)
+	$(BINDIR)/genproj Person -F classlist
 
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
@@ -136,30 +133,38 @@ live:
 	$(CIMCLI) ei PersonLink --sum -count 7
 	$(CIMCLI) ei Salesman --sum -count 2
 	$(CIMCLI) ei SalesmanLink --sum -count 1
-	
-	$(CIMCLI) an Person 
+
+	$(CIMCLI) an Person --sum -count 1
 	$(CIMCLI) an Person.ssn=1 --sum -count 3
 	$(CIMCLI) an Person.ssn=2 --sum -count 3
 	$(CIMCLI) an Person.ssn=3 --sum -count 2
 	$(CIMCLI) an Person.ssn=4 --sum -count 2
 	$(CIMCLI) an Person.ssn=5 --sum -count 2
-	
+
+## duplicate requests to test reported issue concerning
+## differences in response in subsequent requests.
+	$(CIMCLI) a Person.ssn=1 --sum -count 3
 	$(CIMCLI) a Person.ssn=1 --sum -count 3
 	$(CIMCLI) a Person.ssn=2 --sum -count 3
+	$(CIMCLI) a Person.ssn=2 --sum -count 3
+	$(CIMCLI) a Person.ssn=3 --sum -count 2
 	$(CIMCLI) a Person.ssn=3 --sum -count 2
 	$(CIMCLI) a Person.ssn=4 --sum -count 2
+	$(CIMCLI) a Person.ssn=4 --sum -count 2
 	$(CIMCLI) a Person.ssn=5 --sum -count 2
-	
-	$(CIMCLI) r Person.ssn=1
-	$(CIMCLI) r Person.ssn=2
-	$(CIMCLI) r Person.ssn=3
-	$(CIMCLI) r Person.ssn=4
-	$(CIMCLI) r Person.ssn=5
-	
+	$(CIMCLI) a Person.ssn=5 --sum -count 2
+	$(CIMCLI) a Person.ssn=4 --sum -count 2
+
 	$(CIMCLI) rn Person.ssn=1 --sum -count 3
 	$(CIMCLI) rn Person.ssn=2 --sum -count 3
 	$(CIMCLI) rn Person.ssn=3 --sum -count 2
 	$(CIMCLI) rn Person.ssn=4 --sum -count 2
 	$(CIMCLI) rn Person.ssn=5 --sum -count 2
+
+	$(CIMCLI) r Person.ssn=1 --sum -count 3
+	$(CIMCLI) r Person.ssn=2 --sum -count 3
+	$(CIMCLI) r Person.ssn=3 --sum -count 2
+	$(CIMCLI) r Person.ssn=4 --sum -count 2
+	$(CIMCLI) r Person.ssn=5 --sum -count 2
 	@echo +++++++++ Passed Person Provider live test
 

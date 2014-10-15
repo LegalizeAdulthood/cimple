@@ -1,11 +1,11 @@
-Usage: %s [OPTIONS] MODULE_NAME CLASS_NAME...
+Usage: %s [OPTIONS] MODULE_NAME [CLASS_NAME]...
 
 This utility generates an entire "project" by running the following programs:
 
-    genclass -- to genereate classes.
+    genclass -- to generate classes.
     genprov  -- to generate providers.
     genmod   -- to generate module.cpp.
-    genmak   -- to generate the Makefile (this is optional based on options set)
+    genmak   -- to generate the Makefile (optional based on options set)
 
 OPTIONS:
     -V      -- print the version.

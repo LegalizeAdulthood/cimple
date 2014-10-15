@@ -63,6 +63,7 @@ public:
         const StringArrayClass* instance);
 
     /*@END@*/
+    Instance_Map<StringArrayClass> _map;
 };
 
 CIMPLE_NAMESPACE_END

@@ -135,7 +135,7 @@ server_vg:
 # definition or execution of providers will fail
 MAJOR=2
 MINOR=0
-REVISION=22
+REVISION=24
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 

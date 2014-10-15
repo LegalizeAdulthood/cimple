@@ -46,6 +46,7 @@ bool cmpi_opt = false;
 bool pegasus_opt = false;
 static string class_list_file;
 
+static bool verbose = false;
 
 void gen_comment_line(FILE* os, size_t n)
 {
@@ -494,6 +495,10 @@ static void gen_module_file(const char* module_name, vector<string>& classes)
     // Module:
 
     fprintf(os, "CIMPLE_MODULE(%s_Module);\n", module_name);
+    if (verbose)
+    {
+        printf("Provider module %s\n", module_name);
+    }
 
     // Providers:
 
@@ -508,6 +513,19 @@ static void gen_module_file(const char* module_name, vector<string>& classes)
             fprintf(os, "CIMPLE_ASSOCIATION_PROVIDER(%s_Provider);\n", cn);
         else
             fprintf(os, "CIMPLE_INSTANCE_PROVIDER(%s_Provider);\n", cn);
+
+        if (verbose)
+        {
+            const char * type;
+            if (mask & MOF_QT_INDICATION)
+                type = "indication";
+            else if (mask & MOF_QT_ASSOCIATION)
+                type = "association";
+            else
+                type = "instance";
+            
+            printf("Provider type %s Class %s\n",type, cn);
+        }
     }
 
     fprintf(os, "\n");
@@ -615,7 +633,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "I:M:f:F:hV")) != -1)
+    while ((opt = getopt(argc, argv, "I:M:f:F:hVv")) != -1)
     {
         switch (opt)
         {
@@ -652,7 +670,7 @@ int main(int argc, char** argv)
             // we claim it for all the others also.
             case 'f':
             case 'F':
-			 {
+			{
                 if (!optarg)
                 {
                     err("missing argument on -f or -F option");
@@ -674,6 +692,11 @@ int main(int argc, char** argv)
                 exit(0);
             }
 
+
+            case 'v':
+                verbose = true;
+                break;
+
             default:
                 err("unknown option: %c", opt);
                 break;
@@ -682,12 +705,13 @@ int main(int argc, char** argv)
 
     // Check usage.
 
-    //argc -= optind;
-    //argv += optind;
+    argc -= optind;
+    argv += optind;
 
-    if (argc < 2)
+    if (argc < 1)
     {
-        fprintf(stderr, "Error: Module Name argument required\n");
+        fprintf(stderr, "Error: Module Name argument required "
+                        "as first non-option argument\n");
         fprintf(stderr,"%s %s",(char*)USAGE, arg0);
         exit(1);
     }

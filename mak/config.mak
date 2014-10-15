@@ -153,11 +153,12 @@ ifndef RM
 endif
 
 ifndef RMDIRHIER
-  RM = rm -r -f
+  RMDIRHIER = rm -rf
 endif
 
 ifndef COPY
   COPY = cp
+  CP = cp
 endif
 
 ifndef CUT

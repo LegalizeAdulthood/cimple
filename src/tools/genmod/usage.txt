@@ -1,15 +1,19 @@
-Usage: %s [OPTIONS] MODULE_NAME CLASS_NAME...
+Usage: %s [OPTIONS] MODULE_NAME [CLASS_NAME]...
 
 This utility generates module.cpp required by provider modules. This file
 contains the CIMPLE entry point as well as entry points for CMPI, Pegasus,
 and OpenWBEM, which must be enabled during compile by defining one of the
 these: CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, or CIMPLE_OPENWEBEM_MODULE.
+At least one CLASS_NAME is required unless the -F options is used to supply
+a list of class names.
 
 OPTIONS:
     -V      -- print the version.
     -I      -- add to MOF include path (can be repeated).
     -M file -- add to list of MOF files to be parsed (can be repeated).
     -f file -- Read class names from this file (one per line).(Deprecate)
-    -F file -- Read class names from this file (one per line). Same as -f option.
+    -F file -- Read class names from this file (one per line). Same as -f
+               option.
     -h      -- print this message.
+    -v      -- Verbose output - Displays classes and module name.
 

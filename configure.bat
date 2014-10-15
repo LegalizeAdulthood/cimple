@@ -306,7 +306,7 @@ if "%with_pegasus_env%" == "1" (
 
   if not "%PEGASUS_DEBUG%" == "" (
     if "%enable_debug%" == "" (
-       echo Enable CIMPLE debug becasue PEGASUS_DEBUG set
+       echo Enable CIMPLE debug because PEGASUS_DEBUG set
        set enable_debug=2
     )
   )
@@ -506,7 +506,6 @@ if not "%enable_embedded_instances%" == "" (
 if not "%enable_scheduler%" == "" (
     echo WIN_ENABLE_SCHEDULER_OPT=TRUE>> config.options
 )
-
 
 if not "%enable_adapter_trace%" == "" (
     echo ENABLE_ADAPTER_TRACE_OPT=TRUE>> config.options

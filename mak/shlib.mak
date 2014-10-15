@@ -32,7 +32,7 @@ $(TARGET): $(OBJECTS)
 
 CLEAN += $(OBJECTS)
 
-clean: 
+clean:
 	$(call rm,$(CLEAN))
 	$(call clean_shlib,$(SHARED_LIBRARY))
 	$(ECHONL)

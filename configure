@@ -548,10 +548,6 @@ if [ ! -z "$disable_log_macros" ]; then
     echo "DISABLE_LOG_MACROS_OPT=$disable_log_macros" >> $fn
 fi
 
-if [ ! -z "$enable_repository" ]; then
-    echo "ENABLE_REPOSITORY_OPT=$enable_repository" >> $fn
-fi
-
 if [ ! -z "$enable_adapter_trace" ]; then
 echo "ENABLE_ADAPTER_TRACE_OPT=$enable_adapter_trace" >>$fn
 fi
