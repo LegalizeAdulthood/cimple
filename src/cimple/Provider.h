@@ -417,13 +417,13 @@ public:
         const Registration* registration,
         int operation, 
         void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3, 
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
-        void* arg7)
+        void* /*arg1*/, 
+        void* /*arg2*/, 
+        void* /*arg3*/, 
+        void* /*arg4*/, 
+        void* /*arg5*/, 
+        void* /*arg6*/, 
+        void* /*arg7*/)
     {
         switch (operation)
         {
