@@ -39,7 +39,7 @@ CIMPLE_NAMESPACE_BEGIN
     The reset() method restores thte object to its unsignaled state so that
     the scenario can be repeated again.
 */
-class CIMPLE_LIBCIMPLE_LINKAGE Predicate
+class CIMPLE_CIMPLE_LINKAGE Predicate
 {
 public:
     

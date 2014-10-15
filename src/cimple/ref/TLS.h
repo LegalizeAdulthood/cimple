@@ -34,7 +34,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 /** Thread-Local Storage (TLS) class. Implements a single TLS slot.
 */
-class CIMPLE_LIBCIMPLE_LINKAGE TLS
+class CIMPLE_CIMPLE_LINKAGE TLS
 {
 public:
 

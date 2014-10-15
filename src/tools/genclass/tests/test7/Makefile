@@ -1,8 +1,6 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-export CIMPLE_MOF_PATH:=$(TOP)/schema
-
 BINARY = genclass_test7
 
 SOURCES = main.cpp EmbeddedClass.cpp MyClass.cpp YourClass.cpp

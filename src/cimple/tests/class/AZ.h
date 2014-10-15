@@ -17,8 +17,8 @@ class AZ : public Instance
 {
 public:
     // AX features:
-    CIMPLE_REF(Z,left);
-    CIMPLE_REF(Y,right);
+    Z* left;
+    Y* right;
 
     // AY features:
 

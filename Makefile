@@ -43,16 +43,33 @@ distclean: clean
 	$(RM) mak/platform.mak
 	$(RM) src/platform.h
 
+##==============================================================================
+##
+## regress:
+##
+##==============================================================================
+
+__stop_cimserver:
+ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
+	- cimserver -stop
+else
+	- cimserver -s
+endif
+	csleep 3
+
+__start_cimserver:
+ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
+	- cimserver -start
+else
+	- cimserver
+endif
+	csleep 3
+
 regress:
 	$(MAKE) tests
-	( cimserver -s; sleep 3 )
-	( cd $(PEGASUS_ROOT); make repository )
+	$(MAKE) __stop_cimserver
+	$(MAKE) -C $(PEGASUS_ROOT) repository
 	$(MAKE) reg
-	( cimserver; sleep 3 )
+	$(MAKE) __start_cimserver
 	$(MAKE) live-tests
-	cimserver -s
-
-full-regress:
-	$(MAKE) clean
-	$(MAKE)
-	$(MAKE) regress
+	$(MAKE) __stop_cimserver

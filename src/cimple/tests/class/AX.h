@@ -17,8 +17,8 @@ class AX : public Instance
 {
 public:
     // AX features:
-    CIMPLE_REF(X,left);
-    CIMPLE_REF(X,right);
+    X* left;
+    X* right;
 
     CIMPLE_CLASS(AX)
 };

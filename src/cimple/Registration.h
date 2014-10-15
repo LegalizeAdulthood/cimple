@@ -118,7 +118,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-struct CIMPLE_LIBCIMPLE_LINKAGE Registration
+struct CIMPLE_CIMPLE_LINKAGE Registration
 {
     const char* module_name;
     const char* provider_name;

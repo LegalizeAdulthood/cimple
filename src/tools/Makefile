@@ -11,9 +11,9 @@ DIRS = \
     genclass/tests \
     genprov \
     genprov/tests \
-    testprov \
     apriori \
     cwhat \
-    cgenuuid
+    cgenuuid \
+    csleep
 
 include $(TOP)/mak/dir.mak

@@ -9,14 +9,12 @@ endif
 DIRS += \
     tools/dlopen \
     cimple \
-    disp \
     mof \
     mof/mofc \
     mof/mof2html \
     mof/tests \
     util \
     tools \
-    disp/tests \
     cimple/tests \
     providers/repository \
     providers/Person2

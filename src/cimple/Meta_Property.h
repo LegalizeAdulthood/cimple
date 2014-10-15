@@ -34,10 +34,9 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** This structure defines meta-data for a CIM class property. It shares first 
-    two fields with the Meta_Feature structure, which functions as a base type.
-    That is, Meta_Property pointer can be cast to a Meta_Feature pointer.
-*/
+// This structure defines meta-data for a CIM class property. It shares first 
+// two fields with the Meta_Feature structure, which functions as a base type.
+// That is, Meta_Property pointer can be cast to a Meta_Feature pointer.
 struct Meta_Property
 {
     /* Meta_Feature fields */
@@ -54,7 +53,7 @@ struct Meta_Property
 */
 inline size_t type_size_of(const Meta_Property* mp)
 {
-    return mp->subscript ? sizeof(Array_Base) : type_size[mp->type];
+    return mp->subscript ? sizeof(__Array_Base) : type_size[mp->type];
 }
 
 /** Returns the null flag of the given property.
@@ -64,7 +63,7 @@ inline uint8& null_of(const Meta_Property* mp, const void* prop)
     return *((uint8*)prop + type_size_of(mp));
 }
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool property_eq(const Meta_Property* mp, const void* prop1, const void* prop2);
 
 CIMPLE_NAMESPACE_END

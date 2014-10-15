@@ -1,0 +1,10 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_AuthorizationService
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "CIM_AuthorizationService determines whether an Identity, "
+       "established by an AuthorizationService, is permitted access to "
+       "a resource or set of resources.")]
+class CIM_AuthorizationService : CIM_SecurityService {
+};

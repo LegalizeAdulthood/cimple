@@ -36,7 +36,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIMPLE_LIBCIMPLE_LINKAGE String
+class CIMPLE_CIMPLE_LINKAGE String
 {
 public:
 
@@ -141,12 +141,7 @@ private:
 
     static Rep _empty;
 
-    union
-    {
-	// Pad to make sizeof(String) exactly 8 bytes.
-	uint64 padding;
-	Rep* _rep;
-    };
+    Rep* _rep;
 };
 
 inline void String::_ref(const String::Rep* rep)

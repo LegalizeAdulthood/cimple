@@ -1,0 +1,18 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_SystemSettingContext
+// ==================================================================
+   [Association, Aggregation, Version ( "2.6.0" ), Description (
+       "This relationship associates System-specific Configuration "
+       "objects with System-specific Setting objects, similar to the "
+       "SettingContext association.")]
+class CIM_SystemSettingContext {
+
+      [Key, Aggregate, Description (
+          "The Configuration object that aggregates the Setting.")]
+   CIM_SystemConfiguration REF Context;
+
+      [Key, Description (
+          "An aggregated Setting.")]
+   CIM_SystemSetting REF Setting;
+};

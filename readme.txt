@@ -1,5 +1,5 @@
-This subdirectory tree contains the CIMPLE distribution. It is currently 
-a work in progress. It comprises the following components:
+This subdirectory tree contains the CIMPLE distribution. It comprises the 
+following components:
 
     1. Full MOF compiler.
 
@@ -7,15 +7,22 @@ a work in progress. It comprises the following components:
 
     3. Provider generator (generates a provider skeleton for a MOF class).
 
-    4. The CIMPLE provider layer.
+    4. The CIMPLE provider engine.
 
-    5. Sample CIMPLE providers.
+    5. CIMPLE-Pegasus-C++ provider adapter.
 
-Currently only Linux is supported. But Unix POSIX platforms are easy to support
-as well.
+    6. CIMPLE-CMPI provider adapter.
 
-Today documentation is in a preliminary form. The documentation is contained in
-the CIMPLE doc directory. The documentation includes :
+    7. Sample CIMPLE providers.
 
-    build-howto.txt - Building and integration instructions for CIMPLE.
-    provider-howto.txt - Overview on writing a provider in CIMPLE
+    8. Several command line utilities.
+
+CIMPLE supports several Linux distributions and Windows.
+
+The doc directory contains several useful documents including these:
+
+    Build How-To (doc/build-howto.txt)
+    The CIMPLE Whiltepaper (doc/whitepaper.pdf)
+    The CIMPLE Provider Development Manual (doc/provdevman.pdf)
+
+

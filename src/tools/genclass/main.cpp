@@ -51,6 +51,8 @@ static FILE* _os = 0;
 bool linkage_opt = false;
 bool enum_opt = false;
 bool gen_repository_opt = false;
+bool schema_opt = false;
+
 string meta_repository_name;
 
 char data_type_tag(int data_type)
@@ -510,7 +512,7 @@ void gen_feature_decls(
 	if (prop)
 	{
 	    if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-		out("    CIMPLE_REF(Instance,%s);\n", prop->name);
+		out("    Instance* %s;\n", prop->name);
 	    else
 		gen_property_decl(class_decl, prop);
 
@@ -538,7 +540,7 @@ void gen_feature_decls(
 
 		    if (qref)
 		    {
-			out("    CIMPLE_REF(%s,%s);\n", 
+			out("    %s* %s;\n", 
 			    qref->class_name, qref->name);
 			found = true;
 			break;
@@ -612,7 +614,7 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
 
 void gen_param_ref_decl(const MOF_Parameter* param)
 {
-    out("    CIMPLE_REF(%s,%s);\n", param->ref_name, param->name);
+    out("    %s* %s;\n", param->ref_name, param->name);
 }
 
 void gen_param_prop_decl(
@@ -1715,7 +1717,7 @@ int main(int argc, char** argv)
 
     // Process command-line options.
 
-    for (int opt; (opt = getopt(argc, argv, "I:M:hrvle")) != -1; )
+    for (int opt; (opt = getopt(argc, argv, "I:M:hrvles")) != -1; )
     {
         switch (opt)
         {
@@ -1771,6 +1773,10 @@ int main(int argc, char** argv)
 		enum_opt = true;
 		break;
 
+            case 's':
+		schema_opt = true;
+		break;
+
 	    default:
 		err("invalid option: %c; try -h for help", opt);
 		break;
@@ -1788,9 +1794,9 @@ int main(int argc, char** argv)
 	meta_repository_name = string("__meta_repository_") + string(uuid_str);
     }
 
-    // We expect at least one argument.
+    // We expect at least one argument (or -c option)
 
-    if (optind == argc)
+    if (optind == argc && !schema_opt)
     {
 	printf((char*)USAGE);
 	exit(1);
@@ -1810,6 +1816,18 @@ int main(int argc, char** argv)
 
     for (int i = optind; i < argc; i++)
 	append_unique(classes, argv[i]);
+
+    if (schema_opt)
+    {
+	// Generate entire CIM schema:
+
+	for (const MOF_Class_Decl* p = MOF_Class_Decl::list; 
+	    p; 
+	    p = (const MOF_Class_Decl*)(p->next))
+	{
+	    generate_class(p->name);
+	}
+    }
 
     for (size_t i = 0; i < classes.size(); i++)
 	generate_class(classes[i].c_str());

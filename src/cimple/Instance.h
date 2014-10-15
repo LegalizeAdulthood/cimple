@@ -31,10 +31,8 @@
 #include "Meta_Class.h"
 #include "Array.h"
 #include "Atomic.h"
-#include "Buffer.h"
 
 #define CIMPLE_MAX_REFERENCES_PER_CLASS 16
-#define CIMPLE_REF(CLASS,NAME) union { uint64 _padding##NAME; CLASS* NAME; }
 
 #define CIMPLE_CLASS(CLASS) \
     public: \
@@ -85,62 +83,58 @@ struct Meta_Property;
 /** Base class for all generated CIM classes and CIM method objects.
     Note: sizeof(Instance) == 24 on all platforms.
 */
-struct CIMPLE_LIBCIMPLE_LINKAGE Instance
+struct CIMPLE_CIMPLE_LINKAGE Instance
 {
     uint32 magic;
-    uint32 __padding1;
-
-    union
-    {
-	uint64 __padding2;
-	Atomic refs;
-    };
-
-    union
-    {
-	uint64 __padding3;
-	const Meta_Class* meta_class;
-    };
-
+    Atomic refs;
+    const Meta_Class* meta_class;
     static const Meta_Class static_meta_class;
 };
+
+/** Private function to construct a instance.
+*/
+CIMPLE_CIMPLE_LINKAGE
+void __construct(
+    const Meta_Class* mc,
+    Instance* inst,
+    bool clear = true);
 
 /** Creates an instance from the given meta class. For each property, the 
     null flag is set to false. The caller must eventually pass the new object 
     to destroy().
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 Instance* create(const Meta_Class* meta_class);
 
 /** Creates an instance from the given meta method. Sets all null flags to
     false. The caller must eventually pass the new object to destroy.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 Instance* create(const Meta_Method* meta_meth);
 
 /** Releases all memory held by this instance and and then passes it to 
     delete.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void destroy(Instance* instance);
 
 /** Makes an exact copy of the given instance. The caller must eventually pass
     the new instance to destroy().
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 Instance* clone(const Instance* instance);
 
 /** Similar to clone() but only copies over the key fields.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 Instance* key_clone(const Instance* instance);
 
 /** Print this instance to the standard output device.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void print(const Instance* instance, bool keys_only = false);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void __set_null_flags(
     const Instance* inst, bool include_keys, bool include_non_keys, uint8 flag);
 
@@ -173,17 +167,17 @@ inline void de_nullify_keys(const Instance* inst)
     (i.e., have the same names, types, values, and null fields). The 
     instances can be of different classes.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool key_eq(const Instance* instance1, const Instance* instance2);
 
 /** Copies all properties from instance2 to instance1.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void copy(Instance* instance1, const Instance* instance2);
 
 /** Copy all key properties from instance1 to instance2.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void copy_keys(Instance* instance1, const Instance* instance2);
 
 /** Returns a pointer to the given property.
@@ -218,14 +212,14 @@ inline const Instance*& reference_of(
 /** Returns true if two instances are identical, that is they have the
     same meta class and the property values.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool identical(const Instance* i1, const Instance* i2);
 
 #ifdef CIMPLE_NEED_RANDOM_INITIALIZE
 
 /** Initialize an instance with random values.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void random_initialize(Instance* instance);
 
 #endif /* CIMPLE_NEED_RANDOM_INITIALIZE */
@@ -234,7 +228,7 @@ void random_initialize(Instance* instance);
     instance. Returns the number of associators or negative one if this 
     association instance does not refer to the instance at all.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 ssize_t get_associators(
     const Instance* instance,
     const Instance* association_instance,
@@ -247,7 +241,7 @@ ssize_t get_associators(
     then the reference must refer to the instance through a property of
     that name.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool is_reference_of(
     const Instance* instance,
     const Instance* reference,
@@ -255,23 +249,25 @@ bool is_reference_of(
 
 /** Return true if all of the keys are non-null.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool keys_non_null(const Instance* instance);
 
 /** Returns true if *ancestor* is a ancestor-class of *descendant*.
 */
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool __is_a(const Meta_Class* ancestor, const Meta_Class* descendant);
 
 /** The is_a operator is used to determine wether an instance is a subclass
     of a given class. For example:
 
-	Derived* inst = Derived::create();
+    \code
+    Derived* inst = Derived::create();
 
-	if (is_a<Base>(inst))
-	{
-	    // inst is descendant from Base.
-	}
+    if (is_a<Base>(inst))
+    {
+	// inst is descendant from Base.
+    }
+    \endcode
 
     This operator returns false if the instance is not descendant from the given
     class.
@@ -293,14 +289,16 @@ private:
 
     For example:
 
-	Instance* inst = Descendent::create();
+    \code
+    Instance* inst = Descendent::create();
 
-	Derived* descendant = cast<Descendent*>(inst);
+    Derived* descendant = cast<Descendent*>(inst);
 
-	if (descendant)
-	{
-	    // inst must refer to an instance of Derived.
-	}
+    if (descendant)
+    {
+	// inst must refer to an instance of Derived.
+    }
+    \endcode
 
     The cast operator returns null if the instance is not in fact an 
     instance of the given class.
@@ -323,37 +321,17 @@ private:
     const Instance* _ptr;
 };
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void destroyer(Instance* p);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void ref(const Instance* instance);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void unref(const Instance* instance);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 int filter_properties(Instance* instance, const char* const* properties);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-void pack_instance(Buffer& out, const Instance* inst, bool keys_only = false);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-void pack_instance_local(Buffer& out, const Instance* inst);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-Instance* unpack_instance(
-    const Buffer& in, 
-    size_t& pos, 
-    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
-    void* client_data);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-Instance* unpack_instance_local(
-    const Buffer& in, 
-    size_t& pos, 
-    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
-    void* client_data);
 
 // This function parses a CIM model path of the following form.
 //
@@ -366,7 +344,7 @@ Instance* unpack_instance_local(
 // to an array of all other classes, which is only true if the -r option was
 // passed to genclass when the source class was generated.
 //
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 Instance* model_path_to_instance(
     const Meta_Class* source_meta_class, 
     const char* path);
@@ -378,7 +356,7 @@ Instance* model_path_to_instance(
 //
 // It does the reverse of model_path_to_instance() defined above.
 //
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 int instance_to_model_path(
     const Instance* instance, 
     String& model_path);

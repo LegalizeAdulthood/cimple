@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
+extern const Meta_Repository __meta_repository_7E50A1B19DE218BAB02DA17EE255C350;
 
 extern const Meta_Property _CIM_Indication_IndicationIdentifier;
 
@@ -81,7 +81,7 @@ const Meta_Class LampIndicB::static_meta_class =
     CIMPLE_ARRAY_SIZE(_super_classes),
     0, /* num_keys */
     0xC8E0BCBC,/* crc */
-    &__meta_repository_B91863F7A56D16BB82F3EE00F1B6B434,
+    &__meta_repository_7E50A1B19DE218BAB02DA17EE255C350,
 };
 
 CIMPLE_NAMESPACE_END

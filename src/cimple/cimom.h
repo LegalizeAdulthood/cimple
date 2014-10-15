@@ -41,7 +41,7 @@ struct Instance_Enumerator_Rep;
 //
 //==============================================================================
 
-class CIMPLE_LIBCIMPLE_LINKAGE Instance_Enumerator
+class CIMPLE_CIMPLE_LINKAGE Instance_Enumerator
 {
 public:
 
@@ -69,7 +69,7 @@ private:
 //
 //==============================================================================
 
-struct CIMPLE_LIBCIMPLE_LINKAGE cimom
+struct CIMPLE_CIMPLE_LINKAGE cimom
 {
 public:
 

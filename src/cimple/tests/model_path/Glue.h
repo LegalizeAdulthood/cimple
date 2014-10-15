@@ -17,8 +17,8 @@ class Glue : public Instance
 {
 public:
     // Glue features:
-    CIMPLE_REF(Part,left);
-    CIMPLE_REF(Part,right);
+    Part* left;
+    Part* right;
     Property<String> message;
 
     CIMPLE_CLASS(Glue)

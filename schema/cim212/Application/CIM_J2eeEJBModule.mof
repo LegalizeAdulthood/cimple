@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeEJBModule
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "CIM_J2eeEJBModule identifies a deployed EJB module and is a "
+       "container for CIM_J2eeEJBs.")]
+class CIM_J2eeEJBModule : CIM_J2eeModule {
+};

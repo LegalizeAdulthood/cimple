@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_RebootAction
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "RebootAction causes a reboot of the computer system that "
+       "defines the Action's environment.")]
+class CIM_RebootAction : CIM_Action {
+};

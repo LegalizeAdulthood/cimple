@@ -295,7 +295,7 @@ static CMPIrc _set_cimple_array(
     // Get size of array and reserve memory in new array.
 
     CMPICount n = CMGetArrayCount(data.value.array, NULL);
-    ((Array_Base*)prop)->reserve(n);
+    __reserve(((__Array_Base*)prop)->rep, n);
 
     // Reserve memory for n elements:
 
@@ -327,7 +327,7 @@ static CMPIrc _set_cimple_array(
 	    for (CMPICount i = 0; i < n; i++)
 	    {
 		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_Base*)prop)->append_raw(&t.value, 1);
+		__append(((__Array_Base*)prop)->rep, &t.value, 1);
 	    }
 
 	    break;
@@ -394,7 +394,7 @@ static CMPIrc _set_cimple_array_key(
 
     // Reserve memory for n elements:
 
-    ((Array_Base*)prop)->reserve(n);
+    __reserve(((__Array_Base*)prop)->rep, n);
 
     // Check for type compatibility:
 
@@ -680,13 +680,13 @@ static void _to_cmpi_value(
     }
     else
     {
-	const Array_Base* array = (const Array_Base*)prop;
-	value.array = CMNewArray(broker, array->size(), type, NULL);
+	const __Array_Base* array = (const __Array_Base*)prop;
+	value.array = CMNewArray(broker, array->rep->size, type, NULL);
 
 	if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
 	{
-	    for (size_t i = 0; i < array->size(); i++)
-		CMSetArrayElementAt(value.array, i, array->get_raw(i), type);
+	    for (size_t i = 0, n = array->rep->size; i < n; i++)
+		CMSetArrayElementAt(value.array, i, __at(array->rep, i), type);
 	}
 	else switch (mp->type)
 	{

@@ -4,7 +4,6 @@ include $(TOP)/mak/config.mak
 BINARY = test_model_path
 SOURCES = main.cpp Part.cpp Glue.cpp repository.cpp
 LIBRARIES = cimple
-DEFINES += -DCIMPLE_LINK_STATIC_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 

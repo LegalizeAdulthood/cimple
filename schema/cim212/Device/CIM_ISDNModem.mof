@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_ISDNModem
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "The ISDNModem class, a kind of call-based Modem. Properties "
+       "will be defined in a future release of the model.")]
+class CIM_ISDNModem : CIM_CallBasedModem {
+};

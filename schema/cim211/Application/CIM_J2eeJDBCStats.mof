@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeJDBCStats
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "The J2eeJDBCStats class defines the performance statistics "
+       "that are provided by a JDBC resource.")]
+class CIM_J2eeJDBCStats : CIM_J2eeStatistic {
+};

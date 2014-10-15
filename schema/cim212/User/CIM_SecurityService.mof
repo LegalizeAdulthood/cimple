@@ -1,0 +1,8 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_SecurityService
+// ==================================================================
+   [Abstract, Version ( "2.6.0" ), Description (
+       "A service providing security functionaity.")]
+class CIM_SecurityService : CIM_Service {
+};

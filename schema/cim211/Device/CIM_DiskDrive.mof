@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_DiskDrive
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "Capabilities and managment of a DiskDrive, a subtype of "
+       "MediaAccessDevice.")]
+class CIM_DiskDrive : CIM_MediaAccessDevice {
+};

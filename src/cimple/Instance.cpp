@@ -35,7 +35,6 @@
 #include "Meta_Property.h"
 #include "Meta_Reference.h"
 #include "Strings.h"
-#include "Enc.h"
 #include "Ref.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -43,7 +42,7 @@ CIMPLE_NAMESPACE_BEGIN
 void __construct(
     const Meta_Class* mc,
     Instance* inst,
-    bool clear = true)
+    bool clear)
 {
     // Zero-fill the object (clearing the null).
 
@@ -75,7 +74,13 @@ void __construct(
 		if (mp->type == STRING)
 		    new (prop) Array_String();
 		else
-		    new (prop) Array_Base(type_size[mp->type]);
+		{
+		    __Array_Base* array = (__Array_Base*)prop;
+
+		    static __Array_Traits traits = 
+			{ type_size[mp->type], 0, 0, 0 };
+		    __construct(array->rep, &traits);
+		}
 	    }
 	    else
 	    {
@@ -117,9 +122,7 @@ void __destruct(Instance* inst)
 	    void* field = property_of(inst, mp);
 
 	    if (mp->subscript)
-	    {
-		((Array_Base*)field)->~Array_Base();
-	    }
+		__destruct(((__Array_Base*)field)->rep);
 	    else
 	    {
 		if (mp->type == STRING)
@@ -310,7 +313,11 @@ void __copy(Instance* i1, const Instance* i2, bool keys_only)
 	    null_of(mp, p1) = null_of(mp, p2);
 
 	    if (mp->subscript)
-		((Array_Base*)p1)->_assign(*((Array_Base*)p2));
+	    {
+		__assign(
+		    ((__Array_Base*)p1)->rep,
+		    (((const __Array_Base*)p2))->rep);
+	    }
 	    else
 	    {
 		if (mp->type == STRING)
@@ -382,7 +389,11 @@ void __uninitialized_copy(Instance* i1, const Instance* i2)
 	    // Note: the null flags were copied above with memcpy().
 
 	    if (mp->subscript)
-		new(p1) Array_Base(*((Array_Base*)p2));
+	    {
+		__construct(
+		    ((__Array_Base*)p1)->rep,
+		    ((const __Array_Base*)p2)->rep);
+	    }
 	    else
 	    {
 		if (mp->type == STRING)
@@ -947,797 +958,6 @@ void unref(const Instance* instance)
 
 //==============================================================================
 //
-// pack()
-//
-//==============================================================================
-
-static void _pack_value(
-    Buffer& out, 
-    const Instance* inst,
-    const Meta_Property* mp)
-{
-    const void* prop = property_of(inst, mp);
-
-    // Put null flag.
-
-    if (null_of(mp, prop))
-    {
-	pack_boolean(out, true);
-	return;
-    }
-
-    pack_boolean(out, false);
-
-    // Put value:
-
-    if (mp->subscript == 0)
-    {
-	switch (mp->type)
-	{
-	    case BOOLEAN:
-	    {
-		pack_boolean(out, *((boolean*)prop));
-		break;
-	    }
-
-	    case UINT8:
-	    case SINT8:
-	    {
-		pack_uint8(out, *((uint8*)prop));
-		break;
-	    }
-
-	    case UINT16:
-	    case SINT16:
-	    case CHAR16:
-	    {
-		pack_uint16(out, *((uint16*)prop));
-		break;
-	    }
-
-	    case UINT32:
-	    case SINT32:
-	    {
-		pack_uint32(out, *((uint32*)prop));
-		break;
-	    }
-
-	    case UINT64:
-	    case SINT64:
-	    {
-		pack_uint64(out, *((uint64*)prop));
-		break;
-	    }
-
-	    case REAL32:
-	    {
-		pack_real32(out, *((real32*)prop));
-		break;
-	    }
-
-	    case REAL64:
-	    {
-		pack_real64(out, *((real64*)prop));
-		break;
-	    }
-
-	    case DATETIME:
-	    {
-		pack_datetime(out, *((Datetime*)prop));
-		break;
-	    }
-
-	    case STRING:
-	    {
-		pack_string(out, *((String*)prop));
-		break;
-	    }
-	}
-    }
-    else
-    {
-	switch (mp->type)
-	{
-	    case BOOLEAN:
-	    {
-		pack_boolean_array(out, *((Array<boolean>*)prop));
-		break;
-	    }
-
-	    case UINT8:
-	    case SINT8:
-	    {
-		pack_uint8_array(out, *((Array<uint8>*)prop));
-		break;
-	    }
-
-	    case UINT16:
-	    case SINT16:
-	    case CHAR16:
-	    {
-		pack_uint16_array(out, *((Array<uint16>*)prop));
-		break;
-	    }
-
-	    case UINT32:
-	    case SINT32:
-	    {
-		pack_uint32_array(out, *((Array<uint32>*)prop));
-		break;
-	    }
-
-	    case UINT64:
-	    case SINT64:
-	    {
-		pack_uint64_array(out, *((Array<uint64>*)prop));
-		break;
-	    }
-
-	    case REAL32:
-	    {
-		pack_real32_array(out, *((Array<real32>*)prop));
-		break;
-	    }
-
-	    case REAL64:
-	    {
-		pack_real64_array(out, *((Array<real64>*)prop));
-		break;
-	    }
-
-	    case DATETIME:
-	    {
-		pack_datetime_array(out, *((Array<Datetime>*)prop));
-		break;
-	    }
-
-	    case STRING:
-	    {
-		pack_string_array(out, *((Array<String>*)prop));
-		break;
-	    }
-	}
-    }
-}
-
-static void _pack_value_local(
-    Buffer& out, 
-    const Instance* inst,
-    const Meta_Property* mp)
-{
-    // ATTN: consolidate with _pack_value().
-
-    const void* prop = property_of(inst, mp);
-
-    if (mp->subscript == 0 && mp->type == STRING)
-    {
-	pack_string(out, *((String*)prop));
-	return;
-    }
-
-    switch (mp->type)
-    {
-	case BOOLEAN:
-	{
-	    pack_boolean_array(out, *((Array<boolean>*)prop));
-	    break;
-	}
-
-	case UINT8:
-	case SINT8:
-	{
-	    pack_uint8_array(out, *((Array<uint8>*)prop));
-	    break;
-	}
-
-	case UINT16:
-	case SINT16:
-	case CHAR16:
-	{
-	    pack_uint16_array(out, *((Array<uint16>*)prop));
-	    break;
-	}
-
-	case UINT32:
-	case SINT32:
-	{
-	    pack_uint32_array(out, *((Array<uint32>*)prop));
-	    break;
-	}
-
-	case UINT64:
-	case SINT64:
-	{
-	    pack_uint64_array(out, *((Array<uint64>*)prop));
-	    break;
-	}
-
-	case REAL32:
-	{
-	    pack_real32_array(out, *((Array<real32>*)prop));
-	    break;
-	}
-
-	case REAL64:
-	{
-	    pack_real64_array(out, *((Array<real64>*)prop));
-	    break;
-	}
-
-	case DATETIME:
-	{
-	    pack_datetime_array(out, *((Array<Datetime>*)prop));
-	    break;
-	}
-
-	case STRING:
-	{
-	    pack_string_array(out, *((Array<String>*)prop));
-	    break;
-	}
-    }
-}
-
-static void _unpack_value(
-    const Buffer& in, 
-    size_t& pos,
-    Instance* inst,
-    const Meta_Property* mp)
-{
-    void* prop = property_of(inst, mp);
-
-    boolean null_flag;
-    unpack_boolean(in, pos, null_flag);
-
-    if (null_flag)
-    {
-	null_of(mp, prop) = 1;
-	return;
-    }
-
-    null_of(mp, prop) = 0;
-
-    if (mp->subscript == 0)
-    {
-	switch (mp->type)
-	{
-	    case BOOLEAN:
-	    {
-		unpack_boolean(in, pos, *((boolean*)prop));
-		break;
-	    }
-
-	    case UINT8:
-	    case SINT8:
-	    {
-		unpack_uint8(in, pos, *((uint8*)prop));
-		break;
-	    }
-
-	    case UINT16:
-	    case SINT16:
-	    case CHAR16:
-	    {
-		unpack_uint16(in, pos, *((uint16*)prop));
-		break;
-	    }
-
-	    case UINT32:
-	    case SINT32:
-	    {
-		unpack_uint32(in, pos, *((uint32*)prop));
-		break;
-	    }
-
-	    case UINT64:
-	    case SINT64:
-	    {
-		unpack_uint64(in, pos, *((uint64*)prop));
-		break;
-	    }
-
-	    case REAL32:
-	    {
-		unpack_real32(in, pos, *((real32*)prop));
-		break;
-	    }
-
-	    case REAL64:
-	    {
-		unpack_real64(in, pos, *((real64*)prop));
-		break;
-	    }
-
-	    case DATETIME:
-	    {
-		unpack_datetime(in, pos, *((Datetime*)prop));
-		break;
-	    }
-
-	    case STRING:
-	    {
-		unpack_string(in, pos, *((String*)prop));
-		break;
-	    }
-	}
-    }
-    else
-    {
-	switch (mp->type)
-	{
-	    case BOOLEAN:
-	    {
-		unpack_boolean_array(in, pos, *((Array<boolean>*)prop));
-		break;
-	    }
-
-	    case UINT8:
-	    case SINT8:
-	    {
-		unpack_uint8_array(in, pos, *((Array<uint8>*)prop));
-		break;
-	    }
-
-	    case UINT16:
-	    case SINT16:
-	    case CHAR16:
-	    {
-		unpack_uint16_array(in, pos, *((Array<uint16>*)prop));
-		break;
-	    }
-
-	    case UINT32:
-	    case SINT32:
-	    {
-		unpack_uint32_array(in, pos, *((Array<uint32>*)prop));
-		break;
-	    }
-
-	    case UINT64:
-	    case SINT64:
-	    {
-		unpack_uint64_array(in, pos, *((Array<uint64>*)prop));
-		break;
-	    }
-
-	    case REAL32:
-	    {
-		unpack_real32_array(in, pos, *((Array<real32>*)prop));
-		break;
-	    }
-
-	    case REAL64:
-	    {
-		unpack_real64_array(in, pos, *((Array<real64>*)prop));
-		break;
-	    }
-
-	    case DATETIME:
-	    {
-		unpack_datetime_array(in, pos, *((Array<Datetime>*)prop));
-		break;
-	    }
-
-	    case STRING:
-	    {
-		unpack_string_array(in, pos, *((Array<String>*)prop));
-		break;
-	    }
-	}
-    }
-}
-
-static void _unpack_value_local(
-    const Buffer& in, 
-    size_t& pos,
-    Instance* inst,
-    const Meta_Property* mp)
-{
-    void* prop = property_of(inst, mp);
-
-    if (mp->subscript == 0 && mp->type == STRING)
-    {
-	unpack_string(in, pos, *((String*)prop));
-	return;
-    }
-
-    switch (mp->type)
-    {
-	case BOOLEAN:
-	{
-	    unpack_boolean_array(in, pos, *((Array<boolean>*)prop));
-	    break;
-	}
-
-	case UINT8:
-	case SINT8:
-	{
-	    unpack_uint8_array(in, pos, *((Array<uint8>*)prop));
-	    break;
-	}
-
-	case UINT16:
-	case SINT16:
-	case CHAR16:
-	{
-	    unpack_uint16_array(in, pos, *((Array<uint16>*)prop));
-	    break;
-	}
-
-	case UINT32:
-	case SINT32:
-	{
-	    unpack_uint32_array(in, pos, *((Array<uint32>*)prop));
-	    break;
-	}
-
-	case UINT64:
-	case SINT64:
-	{
-	    unpack_uint64_array(in, pos, *((Array<uint64>*)prop));
-	    break;
-	}
-
-	case REAL32:
-	{
-	    unpack_real32_array(in, pos, *((Array<real32>*)prop));
-	    break;
-	}
-
-	case REAL64:
-	{
-	    unpack_real64_array(in, pos, *((Array<real64>*)prop));
-	    break;
-	}
-
-	case DATETIME:
-	{
-	    unpack_datetime_array(in, pos, *((Array<Datetime>*)prop));
-	    break;
-	}
-
-	case STRING:
-	{
-	    unpack_string_array(in, pos, *((Array<String>*)prop));
-	    break;
-	}
-    }
-}
-
-void pack_instance(Buffer& out, const Instance* inst, bool keys_only)
-{
-    CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
-    const Meta_Class* mc = inst->meta_class;
-
-    // Class name:
-
-    pack_c_str(out, mc->name);
-
-    // Features:
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-	const Meta_Feature* mf = (Meta_Feature*)mc->meta_features[i];
-
-	// Skip non keys (if requested).
-
-	if (keys_only && !(mf->flags & CIMPLE_FLAG_KEY))
-	    continue;
-
-	// Flags:
-
-	pack_uint32(out, mf->flags);
-
-	// Name:
-
-	pack_c_str(out, mf->name);
-
-	// Index:
-
-#if 0
-	pack_uint16(out, i);
-#endif
-
-	// Property/Reference.
-
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (Meta_Property*)mf;
-
-	    // Pack property type.
-
-	    pack_uint16(out, mp->type);
-	    pack_uint16(out, mp->subscript);
-
-	    // Pack property value:
-
-	    _pack_value(out, inst, mp);
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-
-	    // Pack reference type.
-
-	    pack_c_str(out, mr->meta_class->name);
-
-	    // Pack reference itself.
-
-	    Instance* tmp = *((Instance**)((uint8*)inst + mr->offset));
-
-	    if (tmp)
-	    {
-		// Null flag:
-		pack_boolean(out, false);
-
-		if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
-		    pack_instance(out, tmp, false);
-		else
-		    pack_instance(out, tmp, true);
-	    }
-	    else
-	    {
-		// Null flag:
-		pack_boolean(out, true);
-	    }
-	}
-    }
-
-    // Features terminated with null flags.
-
-    pack_uint32(out, 0xFFFFFFFF);
-}
-
-void pack_instance_local(Buffer& out, const Instance* inst)
-{
-    CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
-    const Meta_Class* mc = inst->meta_class;
-
-    // Class name:
-
-    pack_c_str(out, mc->name);
-
-    // CRC:
-
-    pack_uint32(out, mc->crc);
-
-    // Pack footprint first:
-
-    out.append((const char*)inst, mc->size);
-
-    // Pack non-flat features:
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-	const Meta_Feature* mf = (Meta_Feature*)mc->meta_features[i];
-
-	// Property/Reference.
-
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    // ATTN: Skip nulls?
-
-	    const Meta_Property* mp = (Meta_Property*)mf;
-
-	    if (mp->subscript || mp->type == STRING)
-		_pack_value_local(out, inst, mp);
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-	    Instance* tmp = *((Instance**)((uint8*)inst + mr->offset));
-
-	    if (tmp)
-	    {
-		if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
-		    pack_instance_local(out, tmp);
-		else
-		    pack_instance_local(out, tmp);
-	    }
-	}
-    }
-}
-
-Instance* unpack_instance(
-    const Buffer& in, 
-    size_t& pos, 
-    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
-    void* client_data)
-{
-    // Class name:
-
-    const char* class_name;
-    size_t class_name_size;
-    unpack_c_str(in, pos, class_name, class_name_size);
-
-    // Lookup the class:
-
-    const Meta_Class* mc = (*lookup)(class_name, client_data);
-
-    if (!mc)
-	return 0;
-
-    // Create the inst:
-
-    Ref<Instance> inst(create(mc));
-
-    // Pack each feature.
-
-    for (;;)
-    {
-	// Flags:
-
-	uint32 flags;
-	unpack_uint32(in, pos, flags);
-
-	if (flags == 0xFFFFFFFF)
-	    break;
-
-	// Name:
-
-	const char* name;
-	size_t size;
-	unpack_c_str(in, pos, name, size);
-
-	// Index:
-
-#if 0
-	uint16 index;
-	unpack_uint16(in, pos, index);
-#endif
-
-	// Find meta feature.
-
-#if 0
-	const Meta_Feature* mf;
-
-	if (index < mc->num_meta_features && 
-	    eqi(name, mc->meta_features[index]->name))
-	{
-	    mf = mc->meta_features[index];
-	}
-	else
-	    mf = find_feature(mc, name);
-#else
-	const Meta_Feature* mf = find_feature(mc, name);
-#endif
-
-	if (!mf || mf->flags != flags)
-	    return 0;
-
-	// Property/Reference.
-
-	if (flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (Meta_Property*)mf;
-
-	    // Type:
-
-	    uint16 type;
-	    unpack_uint16(in, pos, type);
-
-	    if (type != mp->type)
-		return 0;
-
-	    // Subscript:
-
-	    sint16 subscript;
-	    unpack_uint16(in, pos, *((uint16*)&subscript));
-
-	    if (subscript != mp->subscript)
-		return 0;
-
-	    // Unpack property value.
-
-	    _unpack_value(in, pos, inst.ptr(), mp);
-	}
-	else if (flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-
-	    // Reference class name.
-
-	    const char* class_name;
-	    size_t class_name_size;
-	    unpack_c_str(in, pos, class_name, class_name_size);
-
-	    const Meta_Class* rc = (*lookup)(class_name, client_data);
-
-	    if (!rc)
-		return 0;
-
-	    // Null flag:
-
-	    boolean null_flag;
-	    unpack_boolean(in, pos, null_flag);
-
-	    Instance*& ri = *((Instance**)((uint8*)inst.ptr() + mr->offset));
-
-	    if (null_flag)
-		ri = 0;
-	    else
-	    {
-		if (!(ri = unpack_instance(in, pos, lookup, client_data)))
-		    return 0;
-	    }
-	}
-    }
-
-    return inst.steal();
-}
-
-Instance* unpack_instance_local(
-    const Buffer& in, 
-    size_t& pos, 
-    const Meta_Class* (*lookup)(const char* class_name, void* client_data),
-    void* client_data)
-{
-    // Unpack class_name:
-
-    const char* class_name;
-    size_t class_name_size;
-    unpack_c_str(in, pos, class_name, class_name_size);
-
-    // Lookup the class:
-
-    const Meta_Class* mc = (*lookup)(class_name, client_data);
-
-    if (!mc)
-	return 0;
-
-    // Unpack the CRC:
-
-    uint32 crc;
-    unpack_uint32(in, pos, crc);
-
-    if (crc != mc->crc)
-	return 0;
-
-    // Unpack the footprint:
-
-    Instance* footprint = (Instance*)::operator new(mc->size);
-    memcpy(footprint, in.data() + pos, mc->size);
-    pos += mc->size;
-    __construct(mc, footprint, false);
-    Ref<Instance> inst((Instance*)footprint);
-
-    // Unpack non-flat features.
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-	const Meta_Feature* mf = mc->meta_features[i];
-
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    // ATTN: Skip nulls?
-	    const Meta_Property* mp = (Meta_Property*)mf;
-
-	    if (mp->subscript || mp->type == STRING)
-		_unpack_value_local(in, pos, inst.ptr(), mp);
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-
-	    Instance*& ri = *((Instance**)((uint8*)inst.ptr() + mr->offset));
-
-	    if (ri)
-	    {
-		ri = unpack_instance_local(in, pos, lookup, client_data);
-
-		if (!ri)
-		    return 0;
-	    }
-	}
-    }
-
-    return inst.steal();
-}
-
-//==============================================================================
-//
 // model_path_to_instance()
 //
 //==============================================================================
@@ -2220,6 +1440,224 @@ int instance_to_model_path(const Instance* inst, String& model_path)
     }
 
     return 0;
+}
+
+struct IO
+{
+    static void _print_scalar(uint32 type, const void* ptr)
+    {
+	switch (Type(type))
+	{
+	    case BOOLEAN:
+	    {
+		printf(*((boolean*)ptr) ?  "true" : "false");
+		break;
+	    }
+
+	    case UINT8:
+	    {
+		printf("%u", *((uint8*)ptr));
+		break;
+	    }
+
+	    case SINT8:
+	    {
+		printf("%d", *((sint8*)ptr));
+		break;
+	    }
+
+	    case UINT16:
+	    {
+		printf("%u", *((uint16*)ptr));
+		break;
+	    }
+
+	    case SINT16:
+	    {
+		printf("%d", *((sint16*)ptr));
+		break;
+	    }
+
+	    case UINT32:
+	    {
+		printf("%u", *((uint32*)ptr));
+		break;
+	    }
+
+	    case SINT32:
+	    {
+		printf("%d", *((sint32*)ptr));
+		break;
+	    }
+
+	    case UINT64:
+	    {
+		printf(CIMPLE_LLU, *((uint64*)ptr));
+		break;
+	    }
+
+	    case SINT64:
+	    {
+		printf(CIMPLE_LLD, *((sint64*)ptr));
+		break;
+	    }
+
+	    case REAL32:
+	    {
+		printf("%f", *((real32*)ptr));
+		break;
+	    }
+
+	    case REAL64:
+	    {
+		printf("%f", *((real64*)ptr));
+		break;
+	    }
+
+	    case CHAR16:
+	    {
+		uint16 c = *((uint16*)ptr);
+
+		if (c >= ' ' && c <= '~')
+		    printf("'%c'", c);
+		else
+		    printf("0x%04X", c);
+		break;
+	    }
+
+	    case DATETIME:
+	    {
+		char buffer[32];
+		((Datetime*)ptr)->ascii(buffer);
+		printf("%s", buffer);
+		break;
+	    }
+
+	    case STRING:
+	    {
+		printf("\"%s\"", ((String*)ptr)->c_str());
+		break;
+	    }
+	}
+    }
+
+    static void _print_array(uint32 type, const void* ptr, size_t depth)
+    {
+	printf("{ ");
+
+	__Array_Base* base = (__Array_Base*)ptr;
+	const char* data = base->rep->data;
+	size_t size = base->rep->size;
+
+	for (size_t i = 0; i < size; i++)
+	{
+	    _print_scalar(type, data);
+
+	    if (i + 1 != size)
+		putchar(',');
+
+	    putchar(' ');
+	    data += type_size[type];
+	}
+
+	printf("}");
+    }
+
+    // Indented printf().
+    static int iprintf(size_t level, const char* format, ...)
+    {
+	printf("%*s", int(level * 4), "");
+
+	va_list ap;
+	va_start(ap, format);
+	int r = vprintf(format, ap);
+	va_end(ap);
+
+	return r;
+    }
+
+    static void _print_property(
+	const Meta_Property* mp, const void* prop, size_t level)
+    {
+	iprintf(level, "%s %s", type_name[mp->type], mp->name);
+
+	if (mp->subscript)
+	    printf("[]");
+
+	printf(" = ");
+
+	if (null_of(mp, prop))
+	    printf("null");
+	else if (mp->subscript == 0)
+	    _print_scalar(mp->type, prop);
+	else
+	    _print_array(mp->type, prop, 0);
+
+	printf(";\n");
+    }
+
+    static void _print_aux(
+	const Instance* inst, const char* name, size_t level, bool keys_only)
+    {
+	CIMPLE_ASSERT(inst != 0);
+	CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+
+	const Meta_Class* mc = inst->meta_class;
+
+	if (name)
+	    iprintf(level, "%s %s =\n", inst->meta_class->name, name);
+	else
+	    iprintf(level, "%s \n", inst->meta_class->name);
+
+	iprintf(level, "{\n");
+
+	for (size_t i = 0; i < mc->num_meta_features; i++)
+	{
+	    uint32 flags = mc->meta_features[i]->flags;
+
+	    if (keys_only && !(flags & CIMPLE_FLAG_KEY))
+		continue;
+
+	    // Skip non-keys if we are not at the top level.
+
+	    if (!(level == 0 || 
+		(flags & CIMPLE_FLAG_KEY) || 
+		(flags & CIMPLE_FLAG_EMBEDDED_OBJECT)))
+	    {
+		continue;
+	    }
+
+	    level++;
+
+	    if (flags & CIMPLE_FLAG_PROPERTY)
+	    {
+		const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+		const void* prop = property_of(inst, mp);
+		_print_property(mp, prop, level);
+	    }
+	    else if (flags & CIMPLE_FLAG_REFERENCE)
+	    {
+		const Meta_Reference* mr = 
+		    (Meta_Reference*)mc->meta_features[i];
+		Instance* tmp = *((Instance**)((uint8*)inst + mr->offset));
+
+		if (tmp)
+		    _print_aux(tmp, mr->name, level, keys_only);
+		else
+		    iprintf(level, "%s %s = null;\n", 
+			mr->meta_class->name, mr->name);
+	    }
+
+	    level--;
+	}
+
+	iprintf(level, "}\n");
+    }
+};
+
+void print(const Instance* inst, bool keys_only)
+{
+    IO::_print_aux(inst, 0, 0, keys_only);
 }
 
 CIMPLE_NAMESPACE_END

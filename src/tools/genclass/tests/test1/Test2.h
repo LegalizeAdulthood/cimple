@@ -20,8 +20,8 @@ public:
     Property<boolean> ref_field1;
     Property<sint8> ref_field2;
     Property<String> ref_field3;
-    CIMPLE_REF(Test1,ref1);
-    CIMPLE_REF(Test1,ref2);
+    Test1* ref1;
+    Test1* ref2;
 
     CIMPLE_CLASS(Test2)
 };

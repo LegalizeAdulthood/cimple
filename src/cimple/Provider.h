@@ -169,13 +169,12 @@ enum Provider_Operation
 
 struct Instance;
 
-/** This function is called repeatedly by an indication provider to deliver 
-    indications. It is called one final time with instance equal to zero,
-    allowing a chance to perform clean up.
-*/
+// This function is called repeatedly by an indication provider to deliver 
+// indications. It is called one final time with instance equal to zero,
+// allowing a chance to perform clean up.
 typedef bool (*Indication_Proc)(Instance* instance, void* client_data);
 
-/** The providers uses this class to deliver indications to listeners.
+/** This class is used by providers to deliver indications.
 */
 template<class CLASS>
 class Indication_Handler
@@ -192,6 +191,8 @@ public:
 	_proc(0, _client_data);
     }
 
+    /**
+    */
     bool handle(CLASS* indication)
     {
 	return _proc(indication, _client_data);
@@ -242,12 +243,11 @@ public:
 //
 //==============================================================================
 
-/** Called each time a qualifying associator name is found. A null value for
-    associator_name indicates the final call (in which status is set). This 
-    callback must NOT pass associator_name to destroy(). Also, associator_name 
-    is not valid beyond the scope of this function (it is destroyed immediately
-    after this callback is invoked).
-*/
+// Called each time a qualifying associator name is found. A null value for
+// associator_name indicates the final call (in which status is set). This 
+// callback must NOT pass associator_name to destroy(). Also, associator_name 
+// is not valid beyond the scope of this function (it is destroyed immediately
+// after this callback is invoked).
 typedef bool (*Enum_Associator_Names_Proc)(
     const Instance* associator_name,
     Enum_Associator_Names_Status status,
@@ -279,10 +279,9 @@ public:
 //
 //==============================================================================
 
-/** Called each time a qualifying reference is found. A null value for
-    reference indicates the final call. This callback must pass
-    reference to destroy().
-*/
+// Called each time a qualifying reference is found. A null value for
+// reference indicates the final call. This callback must pass
+// reference to destroy().
 typedef bool (*Enum_References_Proc)(
     Instance* reference,
     Enum_References_Status status,
@@ -327,9 +326,8 @@ typedef int (*Provider_Proc)(
     void* arg6,
     void* arg7);
 
-/** Operations common to all provider types (i.e., instance providers and
-    association providers).
-*/
+// Operations common to all provider types (i.e., instance providers and
+// association providers).
 template<class PROVIDER>
 class Provider_Proc_Common_T
 {
@@ -402,8 +400,7 @@ public:
     }
 };
 
-/** Instance/Method provider proc.
-*/
+// Instance/Method provider proc.
 template<class PROVIDER>
 class Provider_Proc_T
 {
@@ -485,8 +482,6 @@ public:
     }
 };
 
-/** Indicaiton/Method provider proc.
-*/
 template<class PROVIDER>
 class Indication_Provider_Proc_T
 {
@@ -546,8 +541,6 @@ public:
     }
 };
 
-/** Instance/Method provider proc.
-*/
 template<class PROVIDER>
 class Association_Provider_Proc_T
 {

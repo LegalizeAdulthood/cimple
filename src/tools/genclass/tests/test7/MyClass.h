@@ -18,12 +18,12 @@ public:
     // YourClass features:
     Property<String> str1;
     Property<String> str2;
-    CIMPLE_REF(Instance,obj1);
-    CIMPLE_REF(Instance,obj2);
+    Instance* obj1;
+    Instance* obj2;
 
     // MyClass features:
     Property<String> str3;
-    CIMPLE_REF(Instance,obj3);
+    Instance* obj3;
 
     CIMPLE_CLASS(MyClass)
 };

@@ -38,8 +38,8 @@ public:
 class CIMPLE_LINKAGE Methods_foo2_method : public Instance
 {
 public:
-    CIMPLE_REF(Arg,arg1);
-    CIMPLE_REF(Arg,arg2);
+    Arg* arg1;
+    Arg* arg2;
     Property<String> return_value;
     CIMPLE_METHOD(Methods_foo2_method)
 };

@@ -29,7 +29,6 @@
 #include "Meta_Property.h"
 #include "Instance.h"
 #include "flags.h"
-#include "Enc.h"
 #include "Strings.h"
 
 #define BEGIN_TAG 0xBBBBBBBB
@@ -138,324 +137,6 @@ static void _check_flags(uint32 flags, const char* file, size_t line)
 	fprintf(stderr, "%s(%u): _check_flags() failed\n", file, uint32(line));
 	abort();
     }
-}
-
-static Meta_Class* _lookup(Array<const Meta_Class*>& cache, const char* name)
-{
-    for (size_t i = 0; i < cache.size(); i++)
-    {
-	if (eqi(cache[i]->name, name))
-	    return (Meta_Class*)cache[i];
-    }
-
-    // Not found!
-    return 0;
-}
-
-static void _pack_meta_class(
-    Buffer& out, 
-    const Meta_Class* mc,
-    Array<const Meta_Class*>& cache);
-
-static void _pack_meta_class_base(
-    Buffer& out, 
-    const Meta_Class* mc,
-    Array<const Meta_Class*>& cache,
-    bool& in_cache_out)
-{
-    in_cache_out = false;
-
-    // If already in cache, just pack flags and name.
-
-    if (!(mc->flags & CIMPLE_FLAG_METHOD) && _lookup(cache, mc->name))
-    {
-	pack_uint32(out, mc->flags | CIMPLE_FLAG_REDUNDANT);
-	pack_c_str(out, mc->name);
-	in_cache_out = true;
-	return;
-    }
-
-    // flags:
-    pack_uint32(out, mc->flags);
-
-    // name:
-    pack_c_str(out, mc->name);
-
-    // meta_features:
-
-    pack_size_t(out, mc->num_meta_features);
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-	const Meta_Feature* mf = (Meta_Feature*)mc->meta_features[i];
-
-	// Pack feature.
-
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (Meta_Property*)mf;
-	    pack_uint32(out, mp->flags);
-	    pack_c_str(out, mp->name);
-	    pack_uint16(out, mp->type);
-	    pack_uint16(out, mp->subscript);
-	    pack_uint32(out, mp->offset);
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-	    pack_uint32(out, mr->flags);
-	    pack_c_str(out, mr->name);
-	    _pack_meta_class(out, mr->meta_class, cache);
-	    pack_uint32(out, mr->offset);
-	}
-	else if (mf->flags & CIMPLE_FLAG_METHOD)
-	{
-	    const Meta_Method* mm = (Meta_Method*)mf;
-	    bool flag;
-	    _pack_meta_class_base(out, (const Meta_Class*)mm, cache, flag);
-	    assert(flag == false);
-	    pack_uint16(out, mm->return_type);
-	}
-	else 
-	{
-	    assert(0);
-	}
-    }
-
-    // size:
-    pack_uint32(out, mc->size);
-
-    // Add to cache:
-
-    if (!(mc->flags & CIMPLE_FLAG_METHOD))
-	cache.append(mc);
-}
-
-static void _pack_meta_class(
-    Buffer& out, 
-    const Meta_Class* mc,
-    Array<const Meta_Class*>& cache)
-{
-    // base:
-    bool in_cache;
-    _pack_meta_class_base(out, mc, cache, in_cache);
-
-    if (in_cache)
-	return;
-
-    // locals:
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-	pack_uint8(out, mc->locals[i].local);
-
-    // super_classes:
-
-    pack_size_t(out, mc->num_super_classes);
-
-    for (size_t i = 0; i < mc->num_super_classes; i++)
-	pack_c_str(out, mc->super_classes[i]);
-
-    // Number of keys:
-    pack_size_t(out, mc->num_keys);
-
-    // CRC:
-    pack_uint32(out, mc->crc);
-}
-
-void pack_meta_class(Buffer& out, const Meta_Class* mc)
-{
-    Array<const Meta_Class*> cache;
-    return _pack_meta_class(out, mc, cache);
-}
-
-static void _dump_flags(uint32 flags, size_t level);
-
-static inline char* _unpack_c_str(const Buffer& in, size_t& pos)
-{
-    const char* str;
-    size_t size;
-    unpack_c_str(in, pos, str, size);
-
-    return (char*)memcpy(new char[size + 1], str, size + 1);
-}
-
-static Meta_Class* _unpack_meta_class(
-    Buffer& in,
-    size_t& pos,
-    Array<const Meta_Class*>& cache);
-
-Meta_Class* _unpack_meta_class_base(
-    Buffer& in,
-    size_t& pos,
-    Array<const Meta_Class*>& cache,
-    bool& in_cache_out)
-{
-    in_cache_out = false;
-
-    // flags:
-
-    uint32 flags;
-    unpack_uint32(in, pos, flags);
-
-    // name:
-
-    char* name = _unpack_c_str(in, pos);
-
-    // Is it already in cache!
-
-    if (!(flags & CIMPLE_FLAG_METHOD) && (flags & CIMPLE_FLAG_REDUNDANT))
-    {
-	Meta_Class* mc = _lookup(cache, name);
-
-	if (mc)
-	{
-	    delete [] name;
-	    in_cache_out = true;
-	    return mc;
-	}
-
-	// Should have been in cache!
-	assert(0);
-    }
-
-    // Create object.
-
-    Meta_Class* mc;
-
-    if (flags & CIMPLE_FLAG_METHOD)
-    {
-	mc = (Meta_Class*)new Meta_Method;
-	memset(mc, 0, sizeof(Meta_Method));
-    }
-    else
-    {
-	mc = new Meta_Class;
-	memset(mc, 0, sizeof(Meta_Class));
-    }
-
-    mc->flags = flags;
-    mc->name = name;
-
-    // Meta-features:
-
-    unpack_size_t(in, pos, mc->num_meta_features);
-
-    if (mc->num_meta_features)
-	mc->meta_features = new Meta_Feature*[mc->num_meta_features];
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-	// Peek at the flags (do not advance position).
-	uint32 flags;
-	unpack_uint32(in, pos, flags);
-	pos -= sizeof(uint32);
-
-	// pos -= sizeof(uint64);
-
-	// property:
-
-	if (flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    Meta_Property* mp = new Meta_Property;
-	    unpack_uint32(in, pos, mp->flags);
-	    mp->name = _unpack_c_str(in, pos);
-	    unpack_uint16(in, pos, mp->type);
-	    unpack_uint16(in, pos, *((uint16*)&mp->subscript));
-	    unpack_uint32(in, pos, mp->offset);
-	    mc->meta_features[i] = (Meta_Feature*)mp;
-	}
-	else if (flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    Meta_Reference* mr = new Meta_Reference;
-	    unpack_uint32(in, pos, mr->flags);
-	    mr->name = _unpack_c_str(in, pos);
-	    mr->meta_class = _unpack_meta_class(in, pos, cache);
-	    unpack_uint32(in, pos, mr->offset);
-	    mc->meta_features[i] = (Meta_Feature*)mr;
-	}
-	else if (flags & CIMPLE_FLAG_METHOD)
-	{
-	    bool flag;
-	    Meta_Method* mm = 
-		(Meta_Method*)_unpack_meta_class_base(in, pos, cache, flag);
-	    assert(flag == false);
-	    unpack_uint16(in, pos, mm->return_type);
-	    mc->meta_features[i] = (Meta_Feature*)mm;
-	}
-	else
-	{
-	    assert(0);
-	}
-    }
-
-    unpack_uint32(in, pos, mc->size);
-
-    // Add to cache.
-
-    if (!(mc->flags & CIMPLE_FLAG_METHOD))
-	cache.append(mc);
-
-    return mc;
-}
-
-static Meta_Class* _unpack_meta_class(
-    Buffer& in,
-    size_t& pos,
-    Array<const Meta_Class*>& cache)
-{
-    // base:
-    bool in_cache = false;
-    Meta_Class* mc = _unpack_meta_class_base(in, pos, cache, in_cache);
-
-    if (in_cache)
-	return mc;
-
-    // locals:
-
-    if (mc->num_meta_features)
-    {
-	Meta_Feature_Local* locals =
-	    new Meta_Feature_Local[mc->num_meta_features];
-
-	memset(locals, 0, mc->num_meta_features * sizeof(Meta_Feature_Local));
-
-	for (size_t i = 0; i < mc->num_meta_features; i++)
-	    unpack_uint8(in, pos, locals[i].local);
-
-	mc->locals = locals;
-    }
-    else
-	mc->locals = 0;
-
-    // super_classes:
-
-    unpack_size_t(in, pos, mc->num_super_classes);
-
-    if (mc->num_super_classes)
-    {
-	char** super_classes = new char*[mc->num_super_classes];
-
-	for (size_t i = 0; i < mc->num_super_classes; i++)
-	    super_classes[i] = _unpack_c_str(in, pos);
-
-	mc->super_classes = super_classes;
-    }
-    else
-	mc->super_classes = 0;
-
-    unpack_size_t(in, pos, mc->num_keys);
-
-    unpack_uint32(in, pos, mc->crc);
-
-    return mc;
-}
-
-Meta_Class* unpack_meta_class(
-    Buffer& in,
-    size_t& pos)
-{
-    Array<const Meta_Class*> cache;
-    return _unpack_meta_class(in, pos, cache);
 }
 
 static int _iprintf(size_t level, const char* format, ...)
@@ -932,29 +613,29 @@ static void _destroy_base(
     if (!mc)
 	return;
 
-    delete [] mc->name;
+    delete [] (char*)(mc->name);
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mc->meta_features[i];
+	Meta_Feature* mf = mc->meta_features[i];
 
 
 	if (mf->flags & CIMPLE_FLAG_PROPERTY)
 	{
-	    const Meta_Property* mp = (const Meta_Property*)mf;
-	    delete [] mp->name;
+	    Meta_Property* mp = (Meta_Property*)mf;
+	    delete [] (char*)(mp->name);
 	    delete mp;
 	}
 	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
 	{
-	    const Meta_Reference* mr = (const Meta_Reference*)mf;
-	    delete [] mr->name;
+	    Meta_Reference* mr = (Meta_Reference*)mf;
+	    delete [] (char*)(mr->name);
 	    _destroy((Meta_Class*)mr->meta_class, cache);
 	    delete mr;
 	}
 	else if (mf->flags & CIMPLE_FLAG_METHOD)
 	{
-	    const Meta_Method* mm = (const Meta_Method*)mf;
+	    Meta_Method* mm = (Meta_Method*)mf;
 	    _destroy_base((Meta_Class*)mm, cache);
 	    delete mm;
 	}
@@ -969,7 +650,7 @@ static void _destroy(
 {
     // Don't destroy anything twice!
 
-    if (find(cache, (const Meta_Class*)mc) != (size_t)-1)
+    if (cache.find((const Meta_Class*)mc) != (size_t)-1)
 	return;
 
     if (!mc)
@@ -978,10 +659,10 @@ static void _destroy(
     _destroy_base(mc, cache);
 
     for (size_t i = 0; i < mc->num_super_classes; i++)
-	delete [] mc->super_classes[i];
+	delete [] (char*)(mc->super_classes[i]);
 
-    delete [] mc->locals;
-    delete [] mc->super_classes;
+    delete [] (Meta_Feature_Local*)(mc->locals);
+    delete [] (char**)mc->super_classes;
 
     cache.append(mc);
     delete mc;

@@ -18,8 +18,8 @@ class CIMPLE_LINKAGE ComputerSystemDiskDrive : public Instance
 {
 public:
     // CIM_Component features:
-    CIMPLE_REF(ComputerSystem,GroupComponent);
-    CIMPLE_REF(DiskDrive,PartComponent);
+    ComputerSystem* GroupComponent;
+    DiskDrive* PartComponent;
 
     // CIM_SystemComponent features:
 

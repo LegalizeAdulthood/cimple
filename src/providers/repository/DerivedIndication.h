@@ -23,7 +23,7 @@ public:
     Property<String> OtherSeverity;
 
     // MyIndication features:
-    CIMPLE_REF(Instance,object);
+    Instance* object;
 
     // DerivedIndication features:
 

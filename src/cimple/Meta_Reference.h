@@ -34,10 +34,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 struct Meta_Class;
 
-/** This structure defines meta-data for a CIM class reference. It shares first 
-    two fields with the Meta_Feature structure, which functions as a base type.
-    That is, Meta_Reference pointer can be cast to a Meta_Feature pointer.
-*/
+// This structure defines meta-data for a CIM class reference. It shares first 
+// two fields with the Meta_Feature structure, which functions as a base type.
+// That is, Meta_Reference pointer can be cast to a Meta_Feature pointer.
 struct Meta_Reference
 {
     // Meta_Feature fields

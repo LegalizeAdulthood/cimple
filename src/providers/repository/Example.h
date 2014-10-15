@@ -69,7 +69,7 @@ public:
 class CIMPLE_LINKAGE Example_foo5_method : public Instance
 {
 public:
-    CIMPLE_REF(House,house);
+    House* house;
     Property<String> return_value;
     CIMPLE_METHOD(Example_foo5_method)
 };

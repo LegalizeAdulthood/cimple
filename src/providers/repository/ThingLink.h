@@ -17,8 +17,8 @@ class CIMPLE_LINKAGE ThingLink : public Instance
 {
 public:
     // ThingLink features:
-    CIMPLE_REF(Thing,left);
-    CIMPLE_REF(Thing,right);
+    Thing* left;
+    Thing* right;
 
     CIMPLE_CLASS(ThingLink)
 };

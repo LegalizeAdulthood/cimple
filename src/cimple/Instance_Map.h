@@ -28,12 +28,11 @@
 #define _cimple_Instance_Map_h
 
 #include "Meta_Class.h"
-#include "Raw_Array.h"
 #include "Provider.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIMPLE_LIBCIMPLE_LINKAGE Instance_Map_Base
+class CIMPLE_CIMPLE_LINKAGE Instance_Map_Base
 {
 public:
 
@@ -55,7 +54,7 @@ protected:
 
     const Meta_Class* _meta_class;
 
-    Raw_Array<Instance*> _instances;
+    Array<Instance*> _instances;
 
     Get_Instance_Status _get_instance(
 	const Instance* model, 

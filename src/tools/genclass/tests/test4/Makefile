@@ -1,8 +1,6 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-export CIMPLE_MOF_PATH:=$(TOP)/schema
-
 BINARY = genclass_test4
 SOURCES = Erp2.cpp main.cpp
 LIBRARIES = cimple

@@ -1,0 +1,8 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeJavaMailResource
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "CIM_J2eeJavaMailResource identifies a JavaMail resource.")]
+class CIM_J2eeJavaMailResource : CIM_J2eeResource {
+};

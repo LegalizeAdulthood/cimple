@@ -18,8 +18,8 @@ class AAA : public Instance
 {
 public:
     // AAA features:
-    CIMPLE_REF(CCC,left);
-    CIMPLE_REF(DDD,right);
+    CCC* left;
+    DDD* right;
 
     CIMPLE_CLASS(AAA)
 };
@@ -27,7 +27,7 @@ public:
 class AAA_fool_method : public Instance
 {
 public:
-    CIMPLE_REF(CCC,c);
+    CCC* c;
     Property<uint32> return_value;
     CIMPLE_METHOD(AAA_fool_method)
 };

@@ -32,16 +32,28 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIMPLE_LIBCIMPLE_LINKAGE Cond
+/** Cond implements a conditional variable, similar to the POSIX-threads 
+    conditional variable.
+*/
+class CIMPLE_CIMPLE_LINKAGE Cond
 {
 public:
     
+    /** Constructor.
+    */
     Cond();
 
+    /** Destructor.
+    */
     ~Cond();
 
+    /** Wakes up one of the threads that is blocking on the wait() method.
+    */
     void signal();
 
+    /** Blocks until a thread calls signal(). The mutex is unlocked while
+	the thread is waiting and relocked upon wakeup.
+    */
     void wait(Mutex& lock);
 
 private:

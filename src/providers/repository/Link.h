@@ -17,8 +17,8 @@ class CIMPLE_LINKAGE Link : public Instance
 {
 public:
     // Link features:
-    CIMPLE_REF(Person,parent);
-    CIMPLE_REF(Person,child);
+    Person* parent;
+    Person* child;
 
     CIMPLE_CLASS(Link)
 };

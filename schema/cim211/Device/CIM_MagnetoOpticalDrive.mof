@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_MagnetoOpticalDrive
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "Capabilities and managment of a MagnetoOpticalDrive, a subtype "
+       "of MediaAccessDevice.")]
+class CIM_MagnetoOpticalDrive : CIM_MediaAccessDevice {
+};

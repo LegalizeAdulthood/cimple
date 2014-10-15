@@ -44,7 +44,7 @@ class CIMPLE_LINKAGE CIM_EnabledLogicalElement_RequestStateChange_method : publi
 {
 public:
     Property<uint16> RequestedState;
-    CIMPLE_REF(CIM_ConcreteJob,Job);
+    CIM_ConcreteJob* Job;
     Property<Datetime> TimeoutPeriod;
     Property<uint32> return_value;
     CIMPLE_METHOD(CIM_EnabledLogicalElement_RequestStateChange_method)

@@ -1,4 +1,4 @@
-Usage: genclass [OPTIONS] class-name...
+Usage: genclass [OPTIONS] <class-names>...
 
 This utility generates C++ definitions from MOF classes. For each class-name
 argument, it generates at least two files: CLASSNAME.h (containing the 
@@ -17,7 +17,7 @@ it expects to find CIM_Schema.mof (which contains the CIM schema). The syntax
 of CIMPLE_MOF_PATH is similar to the Linux/Unix PATH environment variable 
 (i.e., a list of directories separated by colons). For example:
 
-    export CIMPLE_MOF_PATH=/opt/cimple/schema:/tmp/cim:
+    export CIMPLE_MOF_PATH=/opt/cimple/schema/cim211:/tmp/cim
 
 Genclass searches for user-defined MOF files in the following way:
 
@@ -32,5 +32,6 @@ OPTIONS:
     -v      -- print the version number.
     -h      -- Print this message.
     -e      -- Generate enum tags for Values/ValueMap qualifiers.
-    -l      -- Generate linkage specifiers for Windows DLLs.
+    -s      -- Generate classes for entire CIM schema.
+    -l      -- Export class symbols (for shared libraries).
 

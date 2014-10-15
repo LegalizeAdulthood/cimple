@@ -1,0 +1,18 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_RelatedStatistics
+// ==================================================================
+   [Association, Version ( "2.6.0" ), Description (
+       "CIM_RelatedStatistics is an association that defines "
+       "hierarchies and/or dependencies of related CIM_Statistical "
+       "Information classes.")]
+class CIM_RelatedStatistics {
+
+      [Key, Description (
+          "The statistic information/object.")]
+   CIM_StatisticalInformation REF Stats;
+
+      [Key, Description (
+          "The related statistics or metrics.")]
+   CIM_StatisticalInformation REF RelatedStats;
+};

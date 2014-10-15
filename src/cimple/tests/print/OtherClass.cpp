@@ -41,6 +41,12 @@ static Meta_Feature* _OtherClass_meta_features[] =
     (Meta_Feature*)&_OtherClass_num,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+};
+
 const Meta_Class OtherClass::static_meta_class =
 {
     CIMPLE_FLAG_CLASS,
@@ -48,9 +54,12 @@ const Meta_Class OtherClass::static_meta_class =
     _OtherClass_meta_features,
     CIMPLE_ARRAY_SIZE(_OtherClass_meta_features),
     sizeof(OtherClass),
-    0,
-    1,
-    0xA69A6950,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    1, /* num_keys */
+    0xA69A6950,/* crc */
     0,
 };
 

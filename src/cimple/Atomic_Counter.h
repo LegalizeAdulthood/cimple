@@ -32,7 +32,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** Atomic counter implementation.
+/** Atomic_Counter is an integer counter whose methods can be invoked safely
+    by multiple threads.
 */
 class Atomic_Counter
 {

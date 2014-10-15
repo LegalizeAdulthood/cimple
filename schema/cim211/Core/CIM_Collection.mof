@@ -1,0 +1,10 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_Collection
+// ==================================================================
+   [Abstract, Version ( "2.6.0" ), Description (
+       "Collection is an abstract class that provides a common "
+       "superclass for data elements that represent collections of "
+       "ManagedElements and its subclasses.")]
+class CIM_Collection : CIM_ManagedElement {
+};

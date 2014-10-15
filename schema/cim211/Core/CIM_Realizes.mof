@@ -1,0 +1,16 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_Realizes
+// ==================================================================
+   [Association, Version ( "2.6.0" ), Description (
+       "CIM_Realizes is the association that defines the mapping "
+       "between LogicalDevices and the PhysicalElements that implement "
+       "them.")]
+class CIM_Realizes : CIM_Dependency {
+      [Override ( "Antecedent" ), Description (
+          "The physical component that implements the Device.")]
+   CIM_PhysicalElement REF Antecedent;
+      [Override ( "Dependent" ), Description (
+          "The LogicalDevice.")]
+   CIM_LogicalDevice REF Dependent;
+};

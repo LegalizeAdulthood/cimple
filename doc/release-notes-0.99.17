@@ -1,0 +1,11 @@
+In this release:
+
+    1.	Added support for multiple-schemas (including experimental).
+
+    2.	Reorganized distribution (to simplify and reduce size).
+
+    3.	Eliminated dispatcher library.
+
+    4.	Improved build documentatin.
+
+    5.	Restored support for PPC cross-compiling.

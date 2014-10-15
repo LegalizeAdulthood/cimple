@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_CreateDirectoryAction
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "CreateDirectoryAction creates empty directories for "
+       "SoftwareElements to be installed locally.")]
+class CIM_CreateDirectoryAction : CIM_DirectoryAction {
+};

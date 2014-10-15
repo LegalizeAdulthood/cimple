@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_Modem
+// ==================================================================
+   [Abstract, Version ( "2.6.0" ), Description (
+       "CIM_Modem is the superclass for grouping the numerous types of "
+       "Modems.")]
+class CIM_Modem : CIM_LogicalDevice {
+};

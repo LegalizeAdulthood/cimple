@@ -99,32 +99,6 @@ int main(int argc, char** argv)
     assert(sizeof(sint64) == 8);
     assert(sizeof(real32) == 4);
     assert(sizeof(real64) == 8);
-    assert(sizeof(String) == 8);
-    assert(sizeof(Datetime) == 16);
-
-    assert(sizeof(Property<boolean>) == 8);
-    assert(sizeof(Property<uint8>) == 8);
-    assert(sizeof(Property<uint16>) == 8);
-    assert(sizeof(Property<uint32>) == 8);
-    assert(sizeof(Property<uint64>) == 16);
-    assert(sizeof(Property<real32>) == 8);
-    assert(sizeof(Property<real64>) == 16);
-    assert(sizeof(Property<char16>) == 8);
-    assert(sizeof(Property<String>) == 16);
-    assert(sizeof(Property<Datetime>) == 24);
-
-    assert(sizeof(Property<Array_boolean>) == 16);
-    assert(sizeof(Property<Array_uint8>) == 16);
-    assert(sizeof(Property<Array_uint16>) == 16);
-    assert(sizeof(Property<Array_uint32>) == 16);
-    assert(sizeof(Property<Array_uint64>) == 16);
-    assert(sizeof(Property<Array_real32>) == 16);
-    assert(sizeof(Property<Array_real64>) == 16);
-    assert(sizeof(Property<Array_char16>) == 16);
-    assert(sizeof(Property<Array_String>) == 16);
-    assert(sizeof(Property<Array_Datetime>) == 16);
-
-    assert(sizeof(Instance) == 24);
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 

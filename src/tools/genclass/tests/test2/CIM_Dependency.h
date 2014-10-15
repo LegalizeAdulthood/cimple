@@ -17,8 +17,8 @@ class CIM_Dependency : public Instance
 {
 public:
     // CIM_Dependency features:
-    CIMPLE_REF(CIM_ManagedElement,Antecedent);
-    CIMPLE_REF(CIM_ManagedElement,Dependent);
+    CIM_ManagedElement* Antecedent;
+    CIM_ManagedElement* Dependent;
 
     CIMPLE_CLASS(CIM_Dependency)
 };

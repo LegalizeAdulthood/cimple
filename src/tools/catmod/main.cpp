@@ -3,13 +3,12 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cimple/cimple.h>
-#include <disp/Module.h>
 
 using namespace cimple;
 
 const char* arg0;
 
-int process(const char* path)
+void process(const char* path)
 {
     printf("%s:\n", path);
 
@@ -20,7 +19,7 @@ int process(const char* path)
     if (!handle)
     {
 	fprintf(stderr, "%s: %s\n", arg0, dlerror());
-	exit(1);
+	return;
     }
 
     // Get symbol:
@@ -31,15 +30,16 @@ int process(const char* path)
     if (!module_proc)
     {
 	fprintf(stderr, "%s: %s\n", arg0, dlerror());
-	exit(1);
+	dlclose(handle);
+	return;
     }
 
-    // Create the module:
+    // Dump information about the module.
 
-    Module* module = new Module(handle, module_proc);
-    module->dump();
+    for (const Registration* p = (*module_proc)(); p; p = p->next)
+        printf("    provider(%s, %s)\n", p->provider_name, p->meta_class->name);
 
-    return 0;
+    return;
 }
 
 CIMPLE_INJECT_VERSION_TAG;

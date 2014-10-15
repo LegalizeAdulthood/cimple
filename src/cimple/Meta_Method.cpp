@@ -27,7 +27,6 @@
 #include "Meta_Method.h"
 #include "Meta_Class.h"
 #include "flags.h"
-#include "Enc.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

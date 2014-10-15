@@ -2,6 +2,7 @@ TOP = ../../..
 include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = cimplegencommon
+STATIC_LIBRARY = cimplegencommon_s
 SOURCES = gencommon.cpp
 LIBRARIES = mof cimpleutil cimple
 INCLUDES += -I$(SRC_DIR)/mof

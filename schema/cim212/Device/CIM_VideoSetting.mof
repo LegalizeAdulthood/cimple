@@ -1,0 +1,18 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_VideoSetting
+// ==================================================================
+   [Association, Version ( "2.6.0" ), Description (
+       "VideoSetting associates the VideoControllerResolution Setting "
+       "with the Controller(s) to which it applies.")]
+class CIM_VideoSetting : CIM_ElementSetting {
+
+      [Override ( "Element" ), Description (
+          "The VideoController.")]
+   CIM_VideoController REF Element;
+
+      [Override ( "Setting" ), Description (
+          "The resolutions, refresh rates, scan mode and number of "
+          "colors that can be set for the Controller.")]
+   CIM_VideoControllerResolution REF Setting;
+};

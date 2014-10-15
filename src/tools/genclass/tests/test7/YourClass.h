@@ -17,8 +17,8 @@ public:
     // YourClass features:
     Property<String> str1;
     Property<String> str2;
-    CIMPLE_REF(Instance,obj1);
-    CIMPLE_REF(Instance,obj2);
+    Instance* obj1;
+    Instance* obj2;
 
     CIMPLE_CLASS(YourClass)
 };

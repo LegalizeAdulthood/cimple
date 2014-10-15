@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_InstDeletion
+// ==================================================================
+   [Indication, Version ( "2.6.0" ), Description (
+       "CIM_InstDeletion notifies when an existing instance is "
+       "deleted.")]
+class CIM_InstDeletion : CIM_InstIndication {
+};

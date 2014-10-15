@@ -1,0 +1,19 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_VLANFor
+// ==================================================================
+   [Association, Deprecated { "No Value" }, Version ( "2.8.0" ), 
+    Description (
+       "The VLAN for the VLAN Service.")]
+class CIM_VLANFor : CIM_ServiceSAPDependency {
+
+      [Deprecated { "No Value" }, Override ( "Antecedent" ), 
+       Description (
+          "The VLAN for the VLANService.")]
+   CIM_VLAN REF Antecedent;
+
+      [Deprecated { "No Value" }, Override ( "Dependent" ), Min ( 1 ), 
+       Description (
+          "The VLANService which uses the VLAN for processing.")]
+   CIM_VLANService REF Dependent;
+};

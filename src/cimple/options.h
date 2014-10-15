@@ -29,43 +29,6 @@
 
 //------------------------------------------------------------------------------
 //
-// CIMPLE_USE_SYNCHRONOUS_DISPATCHER_METHODS
-//
-//     Controls whether the synchronous Dispatcher methods are defined. These
-//     include:
-//
-//         Dispatcher::enum_instance()
-//         Dispatcher::enum_associator_name()
-//         Dispatcher::enum_reference_name()
-//
-//     Their total object size is around 2.5 kilobytes.
-//
-//------------------------------------------------------------------------------
-
-// #define CIMPLE_USE_SYNCHRONOUS_DISPATCHER_METHODS
-
-//------------------------------------------------------------------------------
-//
-// CIMPLE_USE_FACADE
-//
-//     Controls whether the Facade class is defined (Facade.h and Facade.cpp).
-//
-//------------------------------------------------------------------------------
-
-// #define CIMPLE_USE_FACADE
-
-//------------------------------------------------------------------------------
-//
-// CIMPLE_USE_CLIENT
-//
-//     Controls whether source needed by clients is included.
-//
-//------------------------------------------------------------------------------
-
-#define CIMPLE_USE_CLIENT
-
-//------------------------------------------------------------------------------
-//
 // CIMPLE_NEED_RANDOM_INITIALIZE
 //
 //     Controls whether the random_initialize() function is compiled.

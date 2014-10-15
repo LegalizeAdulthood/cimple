@@ -34,9 +34,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** This structure defines meta-data for a CIM method. It shares initial
-    fields with the Meta_Class structure.
-*/
+// This structure defines meta-data for a CIM method. It shares initial
+// fields with the Meta_Class structure.
 struct Meta_Method
 {
     // Fields common with Meta_Class.
@@ -50,16 +49,16 @@ struct Meta_Method
     uint16 return_type;
 };
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 const Meta_Feature* find_feature(
     const Meta_Method* mm, 
     const char* name, 
     uint32 type = CIMPLE_FLAG_ANY_FEATURE);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 const Meta_Property* find_parameter(const Meta_Method* mm, const char* name);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 const Meta_Reference* find_reference(const Meta_Method* mm, const char* name);
 
 class Buffer;

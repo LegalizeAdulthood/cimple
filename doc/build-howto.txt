@@ -1,92 +1,123 @@
 		    HOW TO BUILD AND CONFIGURE CIMPLE
+		    =================================
 
 INTRODUCTION:
+=============
 
-    This document explains how to build CIMPLE. It supports two build modes:
+This document explains how to build CIMPLE. It supports two build modes:
 
-	    1. 	Standalone mode (CIMPLE proper)
-	    2.  Pegasus mode (CIMPLE proper Pegasus integration and CMPI
-		integration support).
+    1.  Standalone mode (builds only CIMPLE components).
+    2.  Pegasus mode (builds additional support for Pegasus and CMPI).
 
-    CIMPLE supports the following platforms:
+CIMPLE supports the following platforms:
 
-    	LINUX_IX86_GNU (Linux, 32-bit Intel X86, GNU C++)
-    	LINUX_X86_64_GNU (Linux, 64-bit Intel X86, GNU C++)
-    	LINUX_PPC_GNU (Linux, PowerPC, GNU C++)
-    	WIN32_IX86 (Windows, 32-bit Intel X86, Microsoft Visual C++)
+    LINUX_IX86_GNU (Linux, 32-bit Intel X86, GNU C++)
+    LINUX_X86_64_GNU (Linux, 64-bit Intel X86, GNU C++)
+    LINUX_PPC_GNU (Linux, PowerPC, GNU C++)
+    WIN32_IX86_MSVC (Windows, 32-bit Intel X86, Microsoft Visual C++)
 
-    Note that these correspond to the Pegasus platform names.
+For convenience, these these correspond to the Pegasus platform names.
+
 
 BUILDING PEGASUS IN STANDALONE MODE:
+====================================
 
-    Building standalone is easy. Just type "./configure" in the CIMPLE
-    root directory and then type "make". Like this:
+To build standalone, be sure the PEGASUS_HOME is *not* defined. Then
+execute these commands:
 
-    	% ./configure
-	configured for LINUX_X86_64_GNU
-	% make
+    % ./configure
+    configured for LINUX_X86_64_GNU
+    % make
 
-    This builds all CIMPLE modules (these are referred to as CIMPLE
-    proper).
+Binaries are placed in these directories:
 
-    Binaries are placed in these directories:
+    <cimple-root>/bin
+    <cimple-root>/lib
 
-	<cimple-root>/bin
-	<cimple-root>/lib
+To force a 32-bit build on a Linux 64-bit platform, do this instead:
+
+    % ./configure LINUX_IX86_GNU
+    configured for LINUX_IX86_GNU
+    % make
+
 
 BUILDING FOR PEGASUS:
+=====================
 
-    If you want to use CIMPLE with Pegasus, you must define the usual
-    Pegasus environment variables:
+To build CIMPLE for Pegasus, sure that the following environment variables 
+are defined (as required by Pegasus) and that Pegasus has already been 
+built.
 
-	PEGASUS_PLATFORM
-	PEGASUS_ROOT
-	PEGASUS_HOME
+    PEGASUS_PLATFORM
+    PEGASUS_ROOT
+    PEGASUS_HOME
 
-    If these are defined, CIMPLE automatically builds in Pegasus mode. Now
-    type "./configure" in the directories CIMPLE root directory. And then
-    type "make". Like this:
+Then execute these commands:
 
-    	% ./configure
-	configured for LINUX_X86_64_GNU
-	% make
+    % ./configure
+    configured for LINUX_X86_64_GNU
+    % make
 
-    Binaries are placed in these directories:
+Binaries are placed in these directories:
 
-	$PEGASUS_HOME/bin
-	$PEGASUS_HOME/lib
+    $PEGASUS_HOME/bin
+    $PEGASUS_HOME/lib
 
-    If you are cross-compiling for PowerPC, see the document
-    entitled "cross-compile-ppc.txt"
 
 TESTING THE CIMPLE BUILD:
+=========================
 
-    Whether you build for Pegasus or standalone, you can test the build by
-    typing 'make -s tests' from the root of the distribution. For example,
-    you might see something like this:
+Whether you build for Pegasus or standalone, you can test the build by
+typing 'make tests' from the root of the distribution. For example,
+you might see something like this:
 
-	+++++ passed all tests (mofc)
-	+++++ passed all tests (genclass_test1)
-	+++++ passed all tests (genclass_test2)
-	+++++ passed all tests (genclass_test3)
-	+++++ passed all tests (genclass_test3)
-	+++++ passed all tests (test_ptrsize)
-	+++++ passed all tests (test_vla)
-	+++++ passed all tests (test_string)
-	+++++ passed all tests (test_property)
-	+++++ passed all tests (test_meta)
-	+++++ passed all tests (test_datetime)
-	+++++ passed all tests (test_facade)
-	+++++ passed all tests (loadpm)
-	.
-	.
-	.
-	.
+    +++++ passed all tests (mofc)
+    +++++ passed all tests (genclass_test1)
+    +++++ passed all tests (genclass_test2)
+    +++++ passed all tests (genclass_test3)
+    +++++ passed all tests (genclass_test3)
+    +++++ passed all tests (test_ptrsize)
+    +++++ passed all tests (test_vla)
+    +++++ passed all tests (test_string)
+    +++++ passed all tests (test_property)
+    +++++ passed all tests (test_meta)
+    +++++ passed all tests (test_datetime)
+    +++++ passed all tests (test_facade)
+    +++++ passed all tests (loadpm)
+    .
+    .
+    .
+    .
 
-APPLYING CIMPLE PATCH TO PEGASUS:
+USING A DIFFERENT CIM SCHEMA:
+=============================
 
-    To use CIMPLE providers with Pegasus you must apply the CIMPLE provider
-    manager patch. Read the instructions in the following file:
+ATTN: write this!
 
-	<cimple-root>/src/pegasus/patch/patch.txt
+CROSS-COMPILING CIMPLE FOR PowerPPC:
+====================================
+
+Cautionary note: if your Pegasus environment is set up (i.e., the Pegasus
+environment variables are present), CIMPLE will attempt to build Pegasus-
+related components. Be sure PEGASUS has been properly cross-compiled before
+proceeding. If none of the Pegasus environment variables are defined, then
+you can build a standalone CIMPLE environment with these instructions as
+well.
+
+This section explains how to cross-compile CIMPLE for the PowerPC, with 
+HardHat Linux (from MonteVista).
+
+First, define three environment variables as shown:
+
+    % export CXX=/opt/hardhat/devkit/ppc/82xx/bin/ppc_82xx-g++
+    % export CC=/opt/hardhat/devkit/ppc/82xx/bin/ppc_82xx-gcc
+    % export AR=/opt/hardhat/devkit/ppc/82xx/bin/ppc_82xx-ar
+
+This is to override the native tool-chain with the cross-compiler tool
+chain.
+
+Next type this from the the CIMPLE root diretory:
+
+    % ./configure LINUX_PPC_GNU
+    % make
 

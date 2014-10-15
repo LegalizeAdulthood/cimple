@@ -116,5 +116,3 @@ void load_repository(const vector<string>& extra_mof_files)
     for (size_t i = 0; i < mof_files.size(); i++)
 	MOF_parse_file(mof_files[i].c_str());
 }
-
-CIMPLE_INJECT_VERSION_TAG;

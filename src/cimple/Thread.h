@@ -33,7 +33,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 typedef void* (*Thread_Proc)(void* arg);
 
-class CIMPLE_LIBCIMPLE_LINKAGE Thread
+class CIMPLE_CIMPLE_LINKAGE Thread
 {
 public:
 

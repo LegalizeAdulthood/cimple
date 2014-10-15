@@ -37,8 +37,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 struct Meta_Feature;
 
-/** This structure defines meta-data for a particular CIM class.
-*/
+// This structure defines meta-data for a particular CIM class.
 struct Meta_Class
 {
     // Fields common with Meta_Method.
@@ -64,7 +63,7 @@ struct Meta_Repository
     size_t num_meta_classes;
 };
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 const Meta_Feature* find_feature(
     const Meta_Class* mc, 
     const char* name, 
@@ -91,7 +90,7 @@ inline const Meta_Method* find_method(
     return (const Meta_Method*)find_feature(mc, name, CIMPLE_FLAG_METHOD);
 }
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool __has_feature(const Meta_Class* mc, uint32 type);
 
 inline bool has_methods(const Meta_Class* mc)
@@ -104,43 +103,43 @@ inline bool has_references(const Meta_Class* mc)
     return __has_feature(mc, CIMPLE_FLAG_REFERENCE);
 }
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool is_subclass(
     const Meta_Class* super_class, 
     const Meta_Class* sub_class);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 const Meta_Class* find_meta_class(
     const Meta_Repository* meta_repository,
     const char* class_name);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 const Meta_Class* find_meta_class(
     const Meta_Class* source_meta_class,
     const char* class_name);
 
 class Buffer;
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void pack_meta_class(
     Buffer& out, 
     const Meta_Class* mc);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 Meta_Class* unpack_meta_class(
     Buffer& in,
     size_t& pos);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void dump(const Meta_Class* mc);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void print(const Meta_Class* mc);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 bool identical(const Meta_Class* mc1, const Meta_Class* mc2);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void destroy(Meta_Class* mc);
 
 CIMPLE_NAMESPACE_END

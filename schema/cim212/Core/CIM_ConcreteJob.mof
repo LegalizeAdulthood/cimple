@@ -1,0 +1,148 @@
+// ==================================================================
+//  CIM_ConcreteJob
+// ==================================================================
+   [Version ( "2.9.0" ), Description (
+       "A concrete version of Job. This class represents a generic and "
+       "instantiable unit of work, such as a batch or a print job.")]
+class CIM_ConcreteJob : CIM_Job {
+
+      [Key, Description (
+          "Within the scope of the instantiating Namespace, InstanceID "
+          "opaquely and uniquely identifies an instance of this class. "
+          "In order to ensure uniqueness within the NameSpace, the "
+          "value of InstanceID SHOULD be constructed using the "
+          "following 'preferred' algorithm: \n"
+          "<OrgID>:<LocalID> \n"
+          "Where <OrgID> and <LocalID> are separated by a colon ':', "
+          "and where <OrgID> MUST include a copyrighted, trademarked "
+          "or otherwise unique name that is owned by the business "
+          "entity creating/defining the InstanceID, or is a registered "
+          "ID that is assigned to the business entity by a recognized "
+          "global authority (This is similar to the <Schema "
+          "Name>_<Class Name> structure of Schema class names.) In "
+          "addition, to ensure uniqueness <OrgID> MUST NOT contain a "
+          "colon (':'). When using this algorithm, the first colon to "
+          "appear in InstanceID MUST appear between <OrgID> and "
+          "<LocalID>. \n"
+          "<LocalID> is chosen by the business entity and SHOULD not "
+          "be re-used to identify different underlying (real-world) "
+          "elements. If the above 'preferred' algorithm is not used, "
+          "the defining entity MUST assure that the resultant "
+          "InstanceID is not re-used across any InstanceIDs produced "
+          "by this or other providers for this instance's NameSpace. \n"
+          "For DMTF defined instances, the 'preferred' algorithm MUST "
+          "be used with the <OrgID> set to 'CIM'.")]
+   string InstanceID;
+
+      [Required, Override ( "Name" ), Description (
+          "The user friendly name for this instance of Job. In "
+          "addition, the user friendly name can be used as a property "
+          "for a search or query. (Note: Name does not have to be "
+          "unique within a namespace.)")]
+   string Name;
+
+      [Description (
+          "JobState is an integer enumeration that indicates the "
+          "operational state of a Job. It can also indicate "
+          "transitions between these states, for example, 'Shutting "
+          "Down' and 'Starting'. Following is a brief description of "
+          "the states: \n"
+          "New (2) indicates that the job has never been started. \n"
+          "Starting (3) indicates that the job is moving from the "
+          "'New', 'Suspended', or 'Service' states into the 'Running' "
+          "state. \n"
+          "Running (4) indicates that the Job is running. \n"
+          "Suspended (5) indicates that the Job is stopped, but may be "
+          "restarted in a seamless manner. \n"
+          "Shutting Down (6) indicates the job is moving to a "
+          "'Completed', 'Terminated', or 'Killed' state. \n"
+          "Completed (7) indicates that the job has completed "
+          "normally. \n"
+          "Terminated (8) indicates that the job has been stopped by a "
+          "'Terminate' state change request. The job and all its "
+          "underlying processes are ended and may be restarted (this "
+          "is job-specific) only as a new job. \n"
+          "Killed (9) indicates that the job has been stopped by a "
+          "'Kill' state change request. Underlying processes may have "
+          "been left running and cleanup may be required to free up "
+          "resources. \n"
+          "Exception (10) indicates that the Job is in an abnormal "
+          "state that may be indicative of an error condition. Actual "
+          "status may be surfaced though job-specific objects. \n"
+          "Service (11) indicates that the Job is in a vendor-specific "
+          "state that supports problem discovery and/or resolution."), 
+       ValueMap { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
+          "12..32767", "32768..65535" }, 
+       Values { "New", "Starting", "Running", "Suspended",
+          "Shutting Down", "Completed", "Terminated", "Killed",
+          "Exception", "Service", "DMTF Reserved", "Vendor Reserved" }]
+   uint16 JobState;
+
+      [Description (
+          "The date/time when the Job's State last changed. If the "
+          "state of the Job has not changed and this property is "
+          "populated, then it MUST be set to a 0 interval value. If a "
+          "state change was requested, but rejected or not yet "
+          "processed, the property MUST NOT be updated.")]
+   datetime TimeOfLastStateChange;
+
+      [Description (
+          "Requests that the job's state be changed to the value "
+          "specified in the RequestedState parameter. Invoking the "
+          "RequestStateChange method multiple times could result in "
+          "earlier requests being overwritten/lost. \n"
+          "If 0 is returned, then the task completed successfully. Any "
+          "other return code indicates an error condition."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "..", "4096",
+          "4097", "4098", "4099", "4100..32767", "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported",
+          "Unknown/Unspecified Error",
+          "Can NOT complete within Timeout Period", "Failed",
+          "Invalid Parameter", "In Use", "DMTF Reserved",
+          "Method Parameters Checked - Transition Started",
+          "Invalid State Transition",
+          "Use of Timeout Parameter Not Supported", "Busy",
+          "Method Reserved", "Vendor Specific" }]
+   uint32 RequestStateChange( 
+         [IN, Description (
+             "Changes the state of a job. \n"
+             "Start (2) changes the state to 'Running'. \n"
+             "Suspend (3) stops the job temporarily. The intention is "
+             "to subsequently restart the job with 'Start'. It may be "
+             "possible to enter the 'Service' state while suspended - "
+             "this is job-specific. \n"
+             "Terminate (4) stops the job cleanly, saving data, "
+             "preserving state, and shutting down all underlying "
+             "processes in an orderly manner. \n"
+             "Kill (5) terminates the job immediately with no "
+             "requirement to save data or preserve state. Service (6) "
+             "puts the job into a vendor-specific service state. The "
+             "job may be able to be restarted."), 
+          ValueMap { "2", "3", "4", "5", "6", "7..32767",
+             "32768..65535" }, 
+          Values { "Start", "Suspend", "Terminate", "Kill", "Service",
+             "DMTF Reserved", "Vendor Reserved" }]
+      uint16 RequestedState, 
+         [IN, Description (
+             "A timeout period that specifies the maximum amount of "
+             "time that the client expects the transition to the new "
+             "state to take. The interval format MUST be used to "
+             "specify the TimeoutPeriod. A value of 0 or a null "
+             "parameter indicates that the client has no time "
+             "requirements for the transition. \n"
+             "If this property does not contain 0 or null and the "
+             "implementation doesn't support this parameter. A return "
+             "code of 'Use Of Timeout Parameter Not Supported' MUST be "
+             "returned.")]
+      datetime TimeoutPeriod); 
+
+      [Required, Write, Description (
+          "The amount of time the Job is retained after it has "
+          "finished executing, either succeeding or failing in that "
+          "execution. The job MUST remain in existence for some period "
+          "of time regardless of the value of the DeleteOnCompletion "
+          "property. \n"
+          "The default is five minutes.")]
+   datetime TimeBeforeRemoval = "00000000000500.000000:000";
+
+};

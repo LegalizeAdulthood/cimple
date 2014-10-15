@@ -5,8 +5,6 @@ SHARED_LIBRARY = cimple
 STATIC_LIBRARY = cimple_s
 
 SOURCES = \
-    Enc.cpp \
-    Buffer.cpp \
     Thread_Context.cpp \
     Ref.cpp \
     cimom.cpp \
@@ -20,13 +18,12 @@ SOURCES = \
     Auto_Mutex.cpp \
     Provider_Handle.cpp \
     Array.cpp \
-    Raw_Array.cpp \
+    Array_Impl.cpp \
     Atomic.cpp \
     cimple.cpp \
     config.cpp \
     Datetime.cpp \
     Instance.cpp \
-    Instance_IO.cpp \
     Instance_Map.cpp \
     Meta_Class.cpp \
     Meta_Feature.cpp \
@@ -49,3 +46,10 @@ DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
 include $(TOP)/mak/rules.mak
 
 genclass:
+
+doc:
+	rm -rf doxygen
+	doxygen Doxyfile
+
+create-Doxyfile:
+	doxygen -g

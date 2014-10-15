@@ -5,6 +5,16 @@
     ?
     ????????????????????????????????????????????????????????????????????????????
 
+    (AAA-?) Should we change the provider interface to use references?
+
+    (B-?) Can references be null?
+
+    (B-?) Is it necessary to implement 
+         CIMPLE_Provider_Manager::_handleModifySubscription(). Can it enable
+	 or disable indications. What if the type changes in the subscription.
+
+	 CLI an Person.ssn=99999
+
     (A-?) Should instance packing exclude name and type since the meta-data
 	  should be available to client?
 
@@ -29,6 +39,8 @@
     N Now
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+
+    (A) Consider removing Meta_Feature_Local.
 
     (A) Remove encodings and dispatcher from CIMPLE (unused now that there is
 	no provider manager).
@@ -60,6 +72,8 @@
     B B-priorities
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+    (B) Implement array reference counting (refs member already present).
 
     (B) Logging and tracing.
 

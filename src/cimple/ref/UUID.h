@@ -44,10 +44,10 @@ struct UUID
     uint8 node[6];
 };
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 int create_uuid(UUID& uuid);
 
-CIMPLE_LIBCIMPLE_LINKAGE
+CIMPLE_CIMPLE_LINKAGE
 void uuid_to_string(const UUID& uuid, char str[CIMPLE_UUID_STRING_SIZE]);
 
 CIMPLE_NAMESPACE_END

@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeJDBCResource
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "CIM_J2eeJDBCResource identifies a JDBC resource. A JDBC "
+       "resource manages one or more JDBC data sources.")]
+class CIM_J2eeJDBCResource : CIM_J2eeResource {
+};

@@ -35,7 +35,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 struct Instance_Enumerator_Rep;
 
-struct CIMPLE_LIBCIMPLE_LINKAGE Thread_Context
+struct CIMPLE_CIMPLE_LINKAGE Thread_Context
 {
     virtual ~Thread_Context();
 

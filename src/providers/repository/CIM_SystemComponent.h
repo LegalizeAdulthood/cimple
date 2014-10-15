@@ -18,8 +18,8 @@ class CIMPLE_LINKAGE CIM_SystemComponent : public Instance
 {
 public:
     // CIM_Component features:
-    CIMPLE_REF(CIM_System,GroupComponent);
-    CIMPLE_REF(CIM_ManagedSystemElement,PartComponent);
+    CIM_System* GroupComponent;
+    CIM_ManagedSystemElement* PartComponent;
 
     // CIM_SystemComponent features:
 

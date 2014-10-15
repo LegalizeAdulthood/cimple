@@ -34,17 +34,17 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-CIMPLE_LIBCIMPLE_LINKAGE 
+CIMPLE_CIMPLE_LINKAGE 
 CIMPLE_PRINTF_ATTR(1, 2)
 char* str_printf(const char* format, ...);
 
-CIMPLE_LIBCIMPLE_LINKAGE 
+CIMPLE_CIMPLE_LINKAGE 
 char* str_vprintf(const char* format, va_list ap);
 
-CIMPLE_LIBCIMPLE_LINKAGE 
+CIMPLE_CIMPLE_LINKAGE 
 extern const uint8 __lower[256];
 
-CIMPLE_LIBCIMPLE_LINKAGE 
+CIMPLE_CIMPLE_LINKAGE 
 bool __eqi(const char* s1, const char* s2);
 
 inline bool eqi(const char* s1, const char* s2)

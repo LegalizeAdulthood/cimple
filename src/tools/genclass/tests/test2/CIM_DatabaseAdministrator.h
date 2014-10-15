@@ -18,8 +18,8 @@ class CIM_DatabaseAdministrator : public Instance
 {
 public:
     // CIM_Dependency features:
-    CIMPLE_REF(CIM_CommonDatabase,Antecedent);
-    CIMPLE_REF(CIM_UserEntity,Dependent);
+    CIM_CommonDatabase* Antecedent;
+    CIM_UserEntity* Dependent;
 
     // CIM_DatabaseAdministrator features:
 

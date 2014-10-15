@@ -111,6 +111,18 @@ static Meta_Feature* _SomeClass_meta_features[] =
     (Meta_Feature*)&_SomeClass_other2,
 };
 
+static const Meta_Feature_Local _locals[] =
+{
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+    {1},
+};
+
 const Meta_Class SomeClass::static_meta_class =
 {
     CIMPLE_FLAG_ASSOCIATION,
@@ -118,9 +130,12 @@ const Meta_Class SomeClass::static_meta_class =
     _SomeClass_meta_features,
     CIMPLE_ARRAY_SIZE(_SomeClass_meta_features),
     sizeof(SomeClass),
-    0,
-    0,
-    0xB0044D87,
+    _locals,
+    0, /* super_class */ 
+    0, /* super_classes */
+    0, /* num_super_classes */
+    0, /* num_keys */
+    0xB0044D87,/* crc */
     0,
 };
 

@@ -12,33 +12,15 @@ SOURCES = \
 
 LIBRARIES = cimple
 
-CLEAN += \
-    Test2.h \
-    Test2.cpp \
-    Test2_Provider.h \
-    Test2_Provider.cpp \
-    Test2Link.h \
-    Test2Link.cpp \
-    Test2Link_Provider.h \
-    Test2Link_Provider.cpp \
-
-export CIMPLE_MOF_PATH=$(TOP)/schema
-
 include $(TOP)/mak/rules.mak
 
 tests:
 	@ $(BIN_DIR)/test_genprov2
 
-Test2_Provider.cpp:
-	$(BIN_DIR)/genprov  -f Test2
-
-Test2.cpp:
+genclass:
 	$(BIN_DIR)/genclass Test2
-
-Test2Link_Provider.cpp:
-	$(BIN_DIR)/genprov  -f Test2Link
-
-Test2Link.cpp:
 	$(BIN_DIR)/genclass Test2Link
 
-genclass:
+genprov:
+	$(BIN_DIR)/genprov  -f Test2
+	$(BIN_DIR)/genprov  -f Test2Link

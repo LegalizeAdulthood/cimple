@@ -23,8 +23,8 @@ public:
     Property<Array_String> prop4;
     Property<Array_uint32> prop5;
     Property<Array_boolean> prop6;
-    CIMPLE_REF(OtherClass,other1);
-    CIMPLE_REF(OtherClass,other2);
+    OtherClass* other1;
+    OtherClass* other2;
 
     CIMPLE_CLASS(SomeClass)
 };

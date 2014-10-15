@@ -11,8 +11,6 @@ CIMPLE_NAMESPACE_BEGIN
 
 static const Meta_Class* _meta_classes[] =
 {
-    &Person::static_meta_class,
-    &Person2::static_meta_class,
     &Fan::static_meta_class,
     &Arrays::static_meta_class,
     &CIM_Indication::static_meta_class,
@@ -29,8 +27,10 @@ static const Meta_Class* _meta_classes[] =
     &CIM_System::static_meta_class,
     &CIM_ComputerSystem::static_meta_class,
     &LinuxComputerSystem::static_meta_class,
+    &Person::static_meta_class,
     &Salesman::static_meta_class,
     &Link::static_meta_class,
+    &Person2::static_meta_class,
     &Link2::static_meta_class,
     &Arg::static_meta_class,
     &Methods::static_meta_class,
@@ -61,9 +61,9 @@ static const Meta_Class* _meta_classes[] =
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);
 
-extern const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434;
+extern const Meta_Repository __meta_repository_7E50A1B19DE218BAB02DA17EE255C350;
 
-const Meta_Repository __meta_repository_B91863F7A56D16BB82F3EE00F1B6B434 =
+const Meta_Repository __meta_repository_7E50A1B19DE218BAB02DA17EE255C350 =
 {
     _meta_classes,
     _num_meta_classes,

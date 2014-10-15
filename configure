@@ -61,7 +61,7 @@ case "$PLATFORM" in
     LINUX_IX86_GNU)
 	;;
 
-    L32)
+    l32)
 	PLATFORM=LINUX_IX86_GNU
 	;;
 

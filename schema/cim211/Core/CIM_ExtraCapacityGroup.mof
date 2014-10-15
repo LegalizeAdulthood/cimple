@@ -1,0 +1,23 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_ExtraCapacityGroup
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "A class derived from RedundancyGroup indicating that the "
+       "aggregated elements have more capacity or capability than is "
+       "needed. An example of this type of redundancy is the "
+       "installation of N+1 power supplies or fans in a system.")]
+class CIM_ExtraCapacityGroup : CIM_RedundancyGroup {
+
+      [Description (
+          "MinNumberNeeded indicates the smallest number of elements "
+          "that must be operational in order to have redundancy. For "
+          "example, in an N+1 redundancy relationship, the "
+          "MinNumberNeeded property should be set equal to N.")]
+   uint32 MinNumberNeeded;
+
+      [Description (
+          "Boolean indicating whether load balancing is supported by "
+          "the ExtraCapacityGroup.")]
+   boolean LoadBalancedGroup;
+};

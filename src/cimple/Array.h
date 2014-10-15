@@ -27,373 +27,434 @@
 #ifndef _cimple_Array_h
 #define _cimple_Array_h
 
-#include <cstddef>
 #include "config.h"
-#include "Type.h"
+#include "Array_Impl.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-typedef void (*Ctor_Proc)(void* to, const void* from);
-typedef void (*Dtor_Proc)(void* ptr);
-typedef bool (*Equal_Proc)(const void* ptr1, const void* ptr2);
+/** The #Array class manages a sequence of elements located on the heap. 
 
-struct Instance;
-struct Meta_Class;
-struct Meta_Property;
+    \section section1 Introduction
 
-struct Array_Base_Rep
-{
-    Ctor_Proc ctor;
-    Dtor_Proc dtor;
-    size_t esize;
-    char* data;
-    size_t size;
-    size_t cap;
-};
+    The #Array class has functions for inserting, accessing, and removing 
+    elements. This class is similar to the STL #vector class but offers three 
+    major advantages.
 
-class Array_Base;
+	- It causes virtually no code bloat due to template usage.
+	- It offers binary compatibility from one release to the next.
+	- It provides a simplified index-oriented interface (no iterators).
 
-class CIMPLE_LIBCIMPLE_LINKAGE Array_Base
-{
-public:
+    The snippet below creates an array with three integers.
 
-    void reserve(size_t cap);
+    \code
+    Array<int> a;
+    a.append(1);
+    a.append(2);
+    a.append(3);
+    \endcode
 
-    size_t size() const 
-    {
-	return _rep->size; 
-    }
+    Continuing with this example, the following snippet prints the contents
+    of the array we just built.
 
-    const void* get_raw(size_t i) const
-    {
-	return _rep->data + (_rep->esize * i);
-    }
+    \code
+    for (size_t i = 0; i < a.size(); i++)
+	printf("%d\n", a[i]);
+    \endcode
 
-    void append_raw(const void* data, size_t size)
-    {
-	_append(data, size);
-    }
+    Arrays can also be used to manage sequences of class objects. For example,
+    the following snippet builds an array with three String objects.
 
-protected:
+    \code
+    Array<String> a;
+    a.append("apple");
+    a.append("orange");
+    a.append("banana");
+    \endcode
 
-    Array_Base(size_t esize);
+    \section section2 Inserting Elements
 
-    Array_Base(size_t esize, Ctor_Proc ctor, Dtor_Proc dtor);
+    The following functions are used to add elements to an array.
 
-    Array_Base(size_t esize, const void* data, size_t size);
+	- #insert()
+	- #prepend()
+	- #append()
 
-    Array_Base(size_t esize, 
-	Ctor_Proc ctor, Dtor_Proc dtor, const void* data, size_t size);
+    Prepend() adds elements to the beginning of the array and append() adds
+    them to the end. Insert() adds elements at a given position. The example
+    below builds an array with two elements and then inserts an element in 
+    the middle.
 
-    Array_Base(const Array_Base& x);
+    \code
+    Array<int> a;
+    a.append(200);
+    a.prepend(100);
+    a.insert(1, 300);
+    \endcode
 
-    ~Array_Base();
+    There are also forms of these three functions for adding more than one 
+    element as shown below.
 
-    void _resize(size_t size, const void* elem);
+    \code
+    Array<int> a;
+    int elements[] = { 10, 20, 30, 40, 50 };
+    a.append(elements, 5);
+    \endcode
 
-    void _assign(const Array_Base& x);
+    \section section3 Removing Elements
 
-    void _assign(const void* data, size_t size);
+    The #Array class provides two methods for removing elements from an array:
+    one that removes a single element and one that removes one or more elements.
+    The following snippet illustrates both.
 
-    void _swap(Array_Base& x);
+    \code
+    Array<int> a;
+    a.append(0);
+    a.append(1);
+    a.append(2);
+    a.append(3);
+    a.append(4);
 
-    void _insert(size_t pos, const void* data, size_t size);
+    // Remove first element:
+    a.remove(0);
 
-    void _append(const void* data, size_t size);
+    // Remove last element:
+    a.remove(a.size()-1);
 
-    void _prepend(const void* data, size_t size);
+    // Remove last two elements.
+    a.remove(1, 2);
+    \endcode
 
-    void _remove(size_t pos, size_t size);
 
-    Array_Base& operator=(const Array_Base& x) 
-    {
-	_assign(x);
-	return *this; 
-    }
+    \section section4 Clearing an Array
 
-    void _release();
+    The clear() function removes all elements from an array. After calling 
+    clear(), the size() function will return zero. But clearing an array does
+    not necessarily reclaim any memory used by the array. The memory is 
+    retained to reduce overhead associated with any future insertions. To
+    reclaim the memory, the array itself must be destructed.
 
-    void _assign_no_release(const char* data, size_t size);
+    \section section5 Reserving Memory
 
-    void _destroy(char* data, size_t size);
+    The #Array class automatically expands the internal memory allocation as
+    elements are added. Extra space may be reserved for future additions to
+    limit resource usage. For example, an array with five elements may have
+    space for as many as eight. In general, allocations are rounded up
+    to the next power of two. Like STL vectors, the #Array class provides
+    a reserve() function that makes space for so many elements. But note that
+    reserve() does not change the size of the array. If you know you are about
+    to create an array with 100 elements, it will reduce allocation and copying
+    by reserving the memory up front. The following snippet will incur at most
+    one allocation.
 
-    void _copy(char* p, const char* q, size_t size);
+    \code
+    Array<uint32> a;
+    a.reserve(100);
 
-    void _fill(char* p, size_t size, const void* elem);
+    for (size_t i = 0; i < 100; i++)
+	a.append(i);
+    \endcode
 
-    void _construct(size_t esize, 
-	Ctor_Proc ctor, Dtor_Proc dtor, const void* data, size_t size);
+    \section section6 Error Checking
 
-    union
-    {
-	// Pad to make sizeof(Array_Base) exactly 8 bytes.
-	uint64 padding;
-	Array_Base_Rep* _rep;
-    };
+    The #Array class (like the functions in the standard C library) performs
+    no error checking on input arguments. For example, passing a null pointer 
+    to a member function will result in a crash. Similary, passing an 
+    out-of-range index will have unpredictable results. It is the caller's 
+    responsibility to avoid these errors. Explict error checking would make 
+    the implementation bigger and slower, which is mainly why the C library 
+    routines do not check for errors either. For example, the following use 
+    of strcpy() will surely cause a crash.
 
-    friend void __construct(const Meta_Class*, Instance*, bool);
-    friend void __destruct(Instance* instance);
-    friend void __uninitialized_copy(Instance*, const Instance*);
-    friend struct IO;
-    friend void __copy(Instance*, const Instance*, bool);
-
-    CIMPLE_LIBCIMPLE_LINKAGE
-    friend void copy_keys(Instance*, const Instance*);
-
-    friend void _random_property_initialize(const Meta_Property*, void*);
-    friend class Facade;
-
-/*
-ATTN: get rid of all these friends and use Array_Friend
+    \code
+    // core dump!
+    strcpy(NULL, NULL);
+    \endcode
 */
-
-    friend struct Array_Friend;
-};
-
-CIMPLE_LIBCIMPLE_LINKAGE
-bool __equal(const Array_Base& x, const Array_Base& y);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-bool __equal(const Array_Base& x, const Array_Base& y, Equal_Proc equal);
-
-CIMPLE_LIBCIMPLE_LINKAGE
-size_t __find(const Array_Base& x, const void* elem, Equal_Proc equal);
-
 template<class T>
-class Array : public Array_Base
+class Array
 {
 public:
 
-    Array() : Array_Base(sizeof(T), _ctor, _dtor) 
-    {
-    }
+    /** Default constructor.
+    */
+    Array();
 
-    Array(const T* data, size_t size) : Array_Base(sizeof(T), data, size) 
-    {
-    }
+    /** Copy constructor.
+    */
+    Array(const Array& x);
 
-    Array(const Array& x) : Array_Base(x) 
-    {
-    }
+    /** Initializes an array with size elements.
+    */
+    Array(const T* data, size_t size);
 
-    Array<T>& operator=(const Array<T>& x)
-    {
-	_assign(x);
-	return *this;
-    }
+    /** Destructor
+    */
+    ~Array();
 
-    void clear()
-    {
-	remove(0, _rep->size);
-    }
+    /** Assignment operator.
+    */
+    Array<T>& operator=(const Array<T>& x);
 
-    size_t capacity() const 
-    { 
-	return _rep->cap; 
-    }
+    /** Assignment.
+    */
+    void assign(const Array& x);
 
-    const T* data() const 
-    { 
-	return (T*)_rep->data; 
-    }
+    /** Assigns size elements to the array.
+    */
+    void assign(const T* data, size_t size);
 
-    T* data() 
-    { 
-	return (T*)_rep->data; 
-    }
+    /** Returns the number of elements in the array.
+    */
+    size_t size() const;
 
-    T& operator[](size_t pos) 
-    { 
-	return ((T*)_rep->data)[pos]; 
-    }
+    /** Returns the number of elements the array has room for. The following
+	invariant is always true: capacity() >= size().
+    */
+    size_t capacity() const;
 
-    const T& operator[](size_t pos) const 
-    { 
-	return ((T*)_rep->data)[pos]; 
-    }
+    /** Returns a pointer to the first element in the array (const form).
+    */
+    const T* data() const;
 
-#if 0
-    void reserve(size_t cap) 
-    { 
-	_reserve(cap); 
-    }
-#endif
+    /** Returns a pointer to the last element in the array.
+    */
+    T* data();
 
-    void resize(size_t size) 
-    {
-	static T x;
-	_resize(size, &x); 
-    }
+    /** Index operator for obtaining the i-th element of the array.
+    */
+    T& operator[](size_t pos);
 
-    void assign(const Array& x) 
-    { 
-	_assign(x); 
-    }
+    /** Index operator for obtaining the i-th element of the array (const form).
+    */
+    const T& operator[](size_t pos) const;
 
-    void assign(const T* data, size_t size) 
-    {
-	_assign(data, size); 
-    }
+    /** Increases the internal allocation to accomodate the given number of
+        elements if capacity is greater than capacity(). Note that this function
+	has no effect on the size() of the array.
+    */
+    void reserve(size_t capacity);
 
-    void swap(Array& x) 
-    { 
-	_swap(x); 
-    }
+    /** Change the size of the array. If size is less than size(), elements are
+	removed. If size() is greater than size(), then new elements are added.
+	Upon return, size() is the same as size.
+    */
+    void resize(size_t size);
 
-    void insert(size_t pos, const T* data, size_t size)
-    {
-	_insert(pos, data, size);
-    }
+    /** Insert size elements at the given position.
+    */
+    void insert(size_t pos, const T* data, size_t size);
 
-    void insert(size_t pos, const T& elem)
-    {
-	_insert(pos, &elem, 1);
-    }
+    /** Insert one element at the given position.
+    */
+    void insert(size_t pos, const T& elem);
 
-    void append(const T* data, size_t size)
-    {
-	_append(data, size);
-    }
+    /** Append size elements to the end of the arrray.
+    */
+    void append(const T* data, size_t size);
 
-    void append(const T& elem)
-    {
-	_append(&elem, 1);
-    }
+    /** Append one element to the end of the array.
+    */
+    void append(const T& elem);
 
-    void prepend(const T* data, size_t size)
-    {
-	_prepend(data, size);
-    }
+    /** Prepend size elements to the beginning of the array.
+    */
+    void prepend(const T* data, size_t size);
 
-    void prepend(const T& elem)
-    {
-	_prepend(&elem, 1);
-    }
+    /** Prepend one element to the beginning of the array.
+    */
+    void prepend(const T& elem);
 
-    void remove(size_t pos, size_t size)
-    {
-	_remove(pos, size);
-    }
+    /** Remove size elements from the array starting at the given position.
+    */
+    void remove(size_t pos, size_t size);
 
-    void remove(size_t pos)
-    {
-	_remove(pos, 1);
-    }
+    /** Remove one element from the array at the given position.
+    */
+    void remove(size_t pos);
+
+    /** Remove all elements. This function does not change the capacity.
+    */
+    void clear();
+
+    /** Swaps the internal implementation of this array with another array.
+    */
+    void swap(Array& x);
+
+    /** Attempts to find the an element that is equal to x.
+	@return position matching element or size_t(-1) if not found.
+    */
+    size_t find(const T& x) const;
 
 private:
 
-    static void _ctor(void* x, const void* y) 
-    {
-	new(x) T(*((T*)y)); 
-    }
-
-    static void _dtor(void* x) 
-    { 
-	((T*)x)->~T(); 
-    }
+    __Array_Rep* _rep;
 };
 
 template<class T>
-struct Equal
+inline Array<T>::Array() 
 {
-    static bool proc(const void* x, const void* y)
-    {
-	return *((T*)x) == *((T*)y);
-    }
-};
-
-template<>
-struct CIMPLE_LIBCIMPLE_LINKAGE Equal<String>
-{
-    static bool proc(const void* x, const void* y);
-};
-
-template<>
-struct CIMPLE_LIBCIMPLE_LINKAGE Equal<real32>
-{
-    static bool proc(const void* x, const void* y);
-};
-
-template<>
-struct CIMPLE_LIBCIMPLE_LINKAGE Equal<real64>
-{
-    static bool proc(const void* x, const void* y);
-};
-
-template<class T>
-bool operator==(const Array<T>& x, const Array<T>& y)
-{
-    return __equal(x, y, Equal<T>::proc);
+    __construct(_rep, __Array_Traits_Factory<T>::traits());
 }
 
 template<class T>
-size_t find(const Array<T>& x, const T& elem)
+inline Array<T>::Array(const Array& x)
 {
-    return __find(x, &elem, Equal<T>::proc);
+    __construct(_rep, x._rep);
 }
 
-template<class T> 
-inline void clear(Array<T>& x) 
+template<class T>
+inline Array<T>::Array(const T* data, size_t size)
+{
+    __construct(_rep, __Array_Traits_Factory<T>::traits(), data, size);
+}
+
+template<class T>
+inline Array<T>::~Array()
+{
+    __destruct(_rep);
+}
+
+template<class T>
+inline Array<T>& Array<T>::operator=(const Array<T>& x)
+{
+    __assign(_rep, x._rep);
+    return *this;
+}
+
+template<class T>
+inline void Array<T>::assign(const Array& x) 
 { 
-    x.clear(); 
+    __assign(_rep, x); 
 }
 
-#define CIMPLE_T boolean
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline void Array<T>::assign(const T* data, size_t size) 
+{
+    __assign(_rep, data, size); 
+}
 
-#define CIMPLE_T uint8
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline size_t Array<T>::size() const 
+{
+    return _rep->size;
+}
 
-#define CIMPLE_T sint8
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline size_t Array<T>::capacity() const 
+{
+    return _rep->capacity;
+}
 
-#define CIMPLE_T uint16
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline const T* Array<T>::data() const 
+{ 
+    return (const T*)_rep->data;
+}
 
-#define CIMPLE_T sint16
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline T* Array<T>::data() 
+{ 
+    return (T*)_rep->data;
+}
 
-#define CIMPLE_T uint32
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline T& Array<T>::operator[](size_t pos) 
+{
+    return data()[pos];
+}
 
-#define CIMPLE_T sint32
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline const T& Array<T>::operator[](size_t pos) const 
+{
+    return data()[pos];
+}
 
-#define CIMPLE_T uint64
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline void Array<T>::reserve(size_t capacity) 
+{
+    __reserve(_rep, capacity); 
+}
 
-#define CIMPLE_T sint64
-#include "Array_Special.h"
-#include "Array_Equal.h"
-#undef CIMPLE_T
+template<class T>
+inline void Array<T>::resize(size_t size) 
+{
+    static T x;
+    __resize(_rep, size, &x); 
+}
 
-#define CIMPLE_T real32
-#include "Array_Special.h"
-#undef CIMPLE_T
+template<class T>
+inline void Array<T>::insert(size_t pos, const T* data, size_t size)
+{
+    __insert(_rep, pos, data, size);
+}
 
-#define CIMPLE_T real64
-#include "Array_Special.h"
-#undef CIMPLE_T
+template<class T>
+inline void Array<T>::insert(size_t pos, const T& elem)
+{
+    __insert(_rep, pos, &elem, 1);
+}
 
-#define CIMPLE_T Datetime
-#include "Array_Special.h"
-#undef CIMPLE_T
+template<class T>
+inline void Array<T>::append(const T* data, size_t size)
+{
+    __append(_rep, data, size);
+}
+
+template<class T>
+inline void Array<T>::append(const T& elem)
+{
+    __append(_rep, &elem, 1);
+}
+
+template<class T>
+inline void Array<T>::prepend(const T* data, size_t size)
+{
+    __prepend(_rep, data, size);
+}
+
+template<class T>
+inline void Array<T>::prepend(const T& elem)
+{
+    __prepend(_rep, &elem, 1);
+}
+
+template<class T>
+inline void Array<T>::remove(size_t pos, size_t size)
+{
+    __remove(_rep, pos, size);
+}
+
+template<class T>
+inline void Array<T>::remove(size_t pos)
+{
+    __remove(_rep, pos, 1);
+}
+
+template<class T>
+inline void Array<T>::clear()
+{
+    __remove(_rep, 0, _rep->size);
+}
+
+template<class T>
+inline void Array<T>::swap(Array& x) 
+{
+    __Array_Rep* tmp = _rep;
+    _rep = x._rep;
+    x._rep = tmp;
+}
+
+template<class T>
+inline size_t Array<T>::find(const T& x) const
+{
+    return __find(_rep, &x);
+}
+
+template<class T>
+inline bool operator==(const Array<T>& x, const Array<T>& y)
+{
+    return __equal(((__Array_Base*)&x)->rep, ((__Array_Base*)&y)->rep);
+}
 
 typedef Array<cimple::boolean> Array_boolean;
 typedef Array<cimple::uint8> Array_uint8;

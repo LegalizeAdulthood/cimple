@@ -92,17 +92,19 @@
 #define CIMPLE_SINT64_MAX 9223372036854775807LL
 
 #ifdef __USE_GNU
-# define CIMPLE_TRACE cimple::__cimple_trace(__FILE__, __LINE__, __FUNCTION__)
+# define CIMPLE_FUNCTION __FUNCTION__
 #else
-# define CIMPLE_TRACE cimple::__cimple_trace(__FILE__, __LINE__, "unknown")
+# define CIMPLE_FUNCTION "unknown"
 #endif
+
+#define CIMPLE_TRACE cimple::__cimple_trace(__FILE__, __LINE__, CIMPLE_FUNCTION)
 
 #ifdef CIMPLE_DEBUG
 # define CIMPLE_ASSERT(COND) \
     do \
     { \
 	if (!(COND)) \
-	    __cimple_assert(__FILE__, __LINE__, __FUNCTION__, #COND); \
+	    __cimple_assert(__FILE__, __LINE__, CIMPLE_FUNCTION, #COND); \
     } \
     while (0)
 #else
@@ -133,19 +135,16 @@
 #define CIMPLE_RETURN(X) \
     do \
     { \
-        printf("CIMPLE_RETURN: %s(%d): %s\n", __FILE__,__LINE__,__FUNCTION__); \
+        printf("CIMPLE_RETURN: %s(%d): %s\n", \
+	    __FILE__, __LINE__, CIMPLE_FUNCTION); \
         return X; \
     } \
     while (0)
 
 #ifdef CIMPLE_BUILDING_LIBCIMPLE
-# define CIMPLE_LIBCIMPLE_LINKAGE CIMPLE_EXPORT
+# define CIMPLE_CIMPLE_LINKAGE CIMPLE_EXPORT
 #else
-# ifdef CIMPLE_LINK_STATIC_LIBCIMPLE
-#   define CIMPLE_LIBCIMPLE_LINKAGE /* empty */
-#else
-#   define CIMPLE_LIBCIMPLE_LINKAGE CIMPLE_IMPORT
-# endif
+# define CIMPLE_CIMPLE_LINKAGE CIMPLE_IMPORT
 #endif
 
 // These definitions are for generated classes to use:

@@ -33,6 +33,22 @@ CIMPLE_ROOT = $(call abs_path, $(TOP))
 
 ##==============================================================================
 ##
+## CIMPLE_DEBUG
+##
+##==============================================================================
+
+ifdef PEGASUS_HOME
+  ifdef PEGASUS_DEBUG
+    export CIMPLE_DEBUG=1
+  endif
+endif
+
+ifdef CIMPLE_DEBUG
+  DEFINES += -DCIMPLE_DEBUG
+endif
+
+##==============================================================================
+##
 ## BIN_DIR, LIB_DIR & SRC_DIR
 ##
 ##     If PEGASUS_HOME is defined, programs and libraries are placed under
@@ -58,12 +74,26 @@ endif
 
 ##==============================================================================
 ##
+## CIMPLE_SCHEMA_PATH
+##
+##     Location of schema to be used by various programs.
+##
+##==============================================================================
+
+ifndef CIMPLE_SCHEMA_PATH
+    CIMPLE_SCHEMA_PATH=$(TOP)/schema/cim211
+endif
+
+##==============================================================================
+##
 ## CIMPLE_MOF_PATH
+##
+##     Used by genclass and genprov utilities to find MOF files.
 ##
 ##==============================================================================
 
 ifndef CIMPLE_MOF_PATH
-  export CIMPLE_MOF_PATH = $(TOP)/schema
+  export CIMPLE_MOF_PATH=$(CIMPLE_SCHEMA_PATH)
 endif
 
 ##==============================================================================

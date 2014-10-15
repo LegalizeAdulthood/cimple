@@ -59,6 +59,7 @@ bool pegasus_cxx_opt = false;
 bool unregister_opt = false;
 bool indirect_opt = false;
 Array<String> providing_namespaces;
+bool absolute_opt = false;
 
 //------------------------------------------------------------------------------
 //
@@ -508,6 +509,7 @@ void unregister_module(
 //------------------------------------------------------------------------------
 
 void register_module(
+    const char* lib_path,
     const string& short_lib_name,
     const string& module_name)
 {
@@ -523,7 +525,12 @@ void register_module(
 	CIMRepository repository(
 	    g_pegasus_repository_dir.c_str(), g_repository_mode);
 
-	string sln = short_lib_name;
+	string location;
+	
+	if (absolute_opt)
+	    location = lib_path;
+	else
+	    location = short_lib_name;
 
 	unregister_module(repository, module_name);
 
@@ -554,7 +561,7 @@ void register_module(
 		i.addProperty(CIMProperty("InterfaceType", String("CIMPLE")));
 
 	    i.addProperty(CIMProperty("InterfaceVersion", String("2.0.0")));
-	    i.addProperty(CIMProperty("Location", String(sln.c_str())));
+	    i.addProperty(CIMProperty("Location", String(location.c_str())));
 
 	    if (dump_opt)
 		print(i);
@@ -1477,7 +1484,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "bdcvhn:uis")) != -1)
+    while ((opt = getopt(argc, argv, "bdcvhn:uisa")) != -1)
     {
 	switch (opt)
 	{
@@ -1499,6 +1506,10 @@ int main(int argc, char** argv)
 
 	    case 'n':
 		providing_namespaces.append(optarg);
+		break;
+
+	    case 'a':
+		absolute_opt = true;
 		break;
 
 	    case 'h':
@@ -1609,7 +1620,7 @@ int main(int argc, char** argv)
     // Step #6: register provider module Pegasus repository.
 
     string module_name = module->module_name;
-    register_module(short_lib_name, module_name);
+    register_module(lib_path, short_lib_name, module_name);
 
     // Step #7: register provider module Pegasus repository.
 

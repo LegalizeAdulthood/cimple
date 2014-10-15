@@ -17,8 +17,8 @@ class CIMPLE_LINKAGE LampLink : public Instance
 {
 public:
     // LampLink features:
-    CIMPLE_REF(Lamp,left);
-    CIMPLE_REF(Lamp,right);
+    Lamp* left;
+    Lamp* right;
 
     CIMPLE_CLASS(LampLink)
 };

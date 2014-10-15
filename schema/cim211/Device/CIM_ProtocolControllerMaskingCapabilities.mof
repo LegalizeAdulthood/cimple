@@ -1,0 +1,91 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_ProtocolControllerMaskingCapabilities
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "A subclass of Capabilities that defines the Masking-related "
+       "capabilities of a ProtocolController.")]
+class CIM_ProtocolControllerMaskingCapabilities : CIM_Capabilities {
+
+      [Description (
+          "A list of the valid values for StrorageHardwareID.IDType."), 
+       ValueMap { "1", "2", "3", "4" }, 
+       Values { "Other", "Port WWN", "Node WWN", "Host Name" },
+       ArrayType ( "Indexed" )]
+   uint16 ValidHardwareIdTypes[];
+
+      [Description (
+          "An array of strings describing types for valid "
+          "StorageHardwareID.IDType. Used when the "
+          "ValidHardwareIdTypes includes 1 (\"Other\")."), 
+       ArrayType ( "Indexed" )]
+   string OtherValidHardwareIDTypes[];
+
+      [Description (
+          "An integer enumeration indicating the way that ports per "
+          "view (ProtocolController) are handled by the underlying "
+          "storage system."), 
+       ValueMap { "2", "3", "4" }, 
+       Values { "One Port per View", "Multiple Ports per View",
+          "All Ports share the same View" }]
+   uint16 PortsPerView = 2;
+
+      [Description (
+          "Set to true if this storage system allows the client to "
+          "specify the DeviceNumber parameter when calling "
+          "ControllerConfigurationService.AttachDevice() and "
+          "ControllerConfigurationService.AttachDevice() and Set to "
+          "false if the implementation does not allow unit numbers to "
+          "vary for a ProtocolController. However, if set to false and "
+          "a Device is not the Dependent of a "
+          "ProtocolControllerForUnit association, the client must "
+          "provide a DeviceNumber parameter in "
+          "ControllerConfigurationService.AttachDevice. If set to "
+          "false and the Device is already the Dependent of a "
+          "ProtocolControllerForUnit association, then the client can "
+          "omit the DeviceNumber parameter (or supply the same value) "
+          "in subsequent ControllerConfigurationService.AttachDevice "
+          "calls.")]
+   boolean ClientSelectableDeviceNumbers = TRUE;
+
+      [Description (
+          "Set to true if this storage system supports the "
+          "AttachDevice method.")]
+   boolean AttachDeviceSupported;
+
+      [Description (
+          "Set to true if this storage system limits configurations to "
+          "a single subject hardware ID per view. Otherwise, multiple "
+          "hardware ID types can be used. The default is FALSE, that "
+          "multiple ID types may be used in a single view.")]
+   boolean OneHardwareIDPerView = FALSE;
+
+      [Description (
+          "When set to false, different ProtocolContollers attached to "
+          "a LogicalPort can expose the same unit numbers. If true, "
+          "then this storage system requires unique unit numbers "
+          "across all the ProtocolControllers connected to a "
+          "LogicalPort.")]
+   boolean UniqueUnitNumbersPerPort = FALSE;
+
+      [Description (
+          "Set to true if this storage system allows a client to "
+          "create a Privilege instance with PrivilegeGranted set to "
+          "FALSE.")]
+   boolean PrivilegeDeniedSupported = FALSE;
+
+      [Description (
+          "If true, this property indicates that a Privilege/Identity "
+          "pair MUST be specified when "
+          "CreateProtocolControllerWithPorts() is called. If false, "
+          "then the Privilege/Identity pair in "
+          "CreateProtocolControllerWithPorts() MUST NOT be set.")]
+   boolean ProtocolControllerRequiresAuthorizedIdentity = FALSE;
+
+      [Description (
+          "If true, this property indicates that the Identity "
+          "parameter of CreateProtocolConntrollerWithPorts() MUST "
+          "contain a reference to a CIM_Collection (or subclass) or to "
+          "a CIM_Identity (or subclass).")]
+   boolean ProtocolControllerSupportsCollections = FALSE;
+};

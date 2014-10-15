@@ -31,20 +31,18 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** This structure defines meta-data for a CIM class feature. It is a 
-    pseudo-base type of Meta_Property, Meta_Reference, and Meta_Method. 
-    These structures share the same two fields with this structure.
-*/
+// This structure defines meta-data for a CIM class feature. It is a 
+// pseudo-base type of Meta_Property, Meta_Reference, and Meta_Method. 
+// These structures share the same two fields with this structure.
 struct Meta_Feature
 {
     uint32 flags;
     const char* name;
 };
 
-/** This structure defines feature-related attributes that are specific to
-    one class. Recall that a Meta_Feature may be shared two or more classes
-    in the class hierarchy.
-*/
+// This structure defines feature-related attributes that are specific to
+// one class. Recall that a Meta_Feature may be shared two or more classes
+// in the class hierarchy.
 struct Meta_Feature_Local
 {
     uint8 local;

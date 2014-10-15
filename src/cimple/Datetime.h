@@ -49,9 +49,9 @@ CIMPLE_NAMESPACE_BEGIN
     The Datetime::now() method constructs a timestamp with the current 
     time. For example,
 
-    	<pre>
+    	\code
 	Datetime dt = Datetime::now();
-    	</pre>
+	\endcode
 
     This class was designed to interact easily with the POSIX date/time
     routines. For example, time() obtains the number of seconds transpired
@@ -63,7 +63,7 @@ CIMPLE_NAMESPACE_BEGIN
     by a larger integer that holds the number of microseconds. This makes 
     it easier to find the difference between two times and to compare them.
 */
-struct CIMPLE_LIBCIMPLE_LINKAGE Datetime
+struct CIMPLE_CIMPLE_LINKAGE Datetime
 {
     static const uint64 USEC;
     static const uint64 MSEC;
@@ -185,25 +185,27 @@ struct CIMPLE_LIBCIMPLE_LINKAGE Datetime
     /** Converts to ASCII representation. Intervals are printed with the 
 	following format.
 
-	    <pre>
+	    \verbatim
 	    ddddddddhhmmss.mmmmmm:000
-	    <pre>
+	    \endverbatim
 
 	For example,
 
-	    <pre>
+	    \verbatim
 	    00000000112233.444444:000
-	    <pre>
+	    \endverbatim
 
 	Timestamps are formatted like this.
 
-	    <pre>
+	    \verbatim
 	    yyyymmddhhmmss.mmmmmmsutc
-	    </pre>
+	    \endverbatim
 
 	For example,
 
+	    \verbatim
 	    20050710170840.899256+300
+	    \endverbatim
 
 	If the prettify flag is true, the format is somewhat more readable.
     */
@@ -219,18 +221,13 @@ struct CIMPLE_LIBCIMPLE_LINKAGE Datetime
 
 private:
 
-    /** Microseconds since the epoch if timestamp. Otherwise, this is the
-        microseconds elapsed since an arbitrary time.
-    */
+    // Microseconds since the epoch if timestamp. Otherwise, this is the
+    // microseconds elapsed since an arbitrary time.
     uint64 _usec;
 
-    /** For timestamps, this field is the UTC offset in minutes. For intervals,
-	the field is equal to CIMPLE_SINT32_MAX.
-    */
+    // For timestamps, this field is the UTC offset in minutes. For intervals,
+    // the field is equal to CIMPLE_SINT32_MAX.
     sint32 _offset;
-
-    // Pad to make sizeof(Datetime) exactly 16.
-    uint32 _padding;
 };
 
 inline Datetime::Datetime() : _usec(0), _offset(CIMPLE_SINT32_MAX) 

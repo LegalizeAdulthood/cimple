@@ -18,8 +18,8 @@ class AY : public Instance
 {
 public:
     // AX features:
-    CIMPLE_REF(Y,left);
-    CIMPLE_REF(Y,right);
+    Y* left;
+    Y* right;
 
     // AY features:
 

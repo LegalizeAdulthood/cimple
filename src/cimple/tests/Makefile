@@ -10,9 +10,7 @@ DIRS = \
     sizes \
     time \
     join \
-    meta_class \
     model_path \
-    encoding \
     cast \
     class
 

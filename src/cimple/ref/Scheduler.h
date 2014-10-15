@@ -45,7 +45,7 @@ typedef uint64 (*Timer_Proc)(void* arg);
 
 /** This class provides a thread safe interface for scheduling timers.
 */
-class CIMPLE_LIBCIMPLE_LINKAGE Scheduler
+class CIMPLE_CIMPLE_LINKAGE Scheduler
 {
 public:
 

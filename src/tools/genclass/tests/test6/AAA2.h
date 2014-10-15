@@ -16,8 +16,8 @@ class AAA2 : public Instance
 {
 public:
     // AAA features:
-    CIMPLE_REF(CCC,left);
-    CIMPLE_REF(DDD,right);
+    CCC* left;
+    DDD* right;
 
     // AAA2 features:
     Property<uint32> aaa;

@@ -1,0 +1,55 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_StorageRedundancyGroup
+// ==================================================================
+   [Version ( "2.7.0" ), Description (
+       "A class derived from RedundancyGroup containing mass "
+       "storage-related redundancy information. StorageRedundancy "
+       "Groups are used to protect user data. They act on one or more "
+       "underlying StorageExtents, associated via "
+       "ExtentRedundancyComponent and produce one or more protected "
+       "StorageExtents that are associated to the underlying "
+       "StorageExtents via ProtectedExtentBasedOn or "
+       "CompositeExtentBasedOn. StorageRedundancyGroups may overlap. "
+       "However, the underlying StorageExtents within the overlap "
+       "should not contain any check data.")]
+class CIM_StorageRedundancyGroup : CIM_RedundancyGroup {
+
+      [Description (
+          "The TypeOfAlgorithm specifies the algorithm used for data "
+          "redundancy and reconstruction. For example, \"P+Q\" (value "
+          "=5) or \"P+S\" (7) may be specified. The value of 0, is "
+          "defined as \"None\" to indicate that data redundancy is not "
+          "active. An inactive redundancy should only be instantiated "
+          "if data striping or concatenation are active. These are "
+          "indicated by the IsStriped or IsConcatentated boolean "
+          "properties of this RedundancyGroup."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7" }, 
+       Values { "None", "Other", "Unknown", "Copy", "XOR", "P+Q", "S",
+          "P+S" }, 
+       MappingStrings { "MIF.DMTF|Redundancy Group|001.2" }]
+   uint16 TypeOfAlgorithm;
+
+      [Description (
+          "StorageRedundancy provides additional information on the "
+          "state of the RedundancyGroup, beyond the RedundancyStatus "
+          "property. Information like \"Reconfig In Progress\" (value "
+          "=1) or \"Redundancy Disabled\" can be specified using this "
+          "property."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8" }, 
+       Values { "No Additional Status", "Reconfig In Progress",
+          "Data Lost", "Not Currently Configured", "Protected Rebuild",
+          "Redundancy Disabled", "Unprotected Rebuild",
+          "Recalculating", "Verifying" }]
+   uint16 StorageRedundancy;
+
+      [Description (
+          "True indicates that the data is striped across the various "
+          "StorageExtents in the Group.")]
+   boolean IsStriped;
+
+      [Description (
+          "True indicates that the data is concatenated across the "
+          "various StorageExtents in the Group.")]
+   boolean IsConcatenated;
+};

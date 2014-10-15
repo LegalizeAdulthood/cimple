@@ -15,7 +15,8 @@ DIRS = \
     XYZ_Lamp \
     Thing \
     Salesman \
-    Arrays
+    Arrays \
+    CIM_DiskDrive
 
 ifdef CIMPLE_UNIX
     DIRS += UnixUser
@@ -39,6 +40,7 @@ reg:
 	$(MAKE) -C $(TOP)/src/providers/ComputerSystemDiskDrive reg
 	$(MAKE) -C $(TOP)/src/providers/Thing reg
 	$(MAKE) -C $(TOP)/src/providers/Lamp reg
+	$(MAKE) -C $(TOP)/src/providers/CIM_DiskDrive
 
 live-tests:
 	CLI gi Person.ssn=1

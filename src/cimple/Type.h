@@ -53,10 +53,10 @@ enum Type
     DATETIME,
 };
 
-CIMPLE_LIBCIMPLE_LINKAGE 
+CIMPLE_CIMPLE_LINKAGE 
 extern size_t const type_size[];
 
-CIMPLE_LIBCIMPLE_LINKAGE 
+CIMPLE_CIMPLE_LINKAGE 
 extern const char* const type_name[];
 
 inline void clear(boolean& x) { x = false; }

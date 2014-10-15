@@ -122,6 +122,7 @@ int main(int argc, char** argv)
 	z.append(String("one"));
 	z.append(String("two"));
 	assert(z.size() == 3);
+
 	assert(z[0] == "zero");
 	assert(z[1] == "one");
 	assert(z[2] == "two");
@@ -164,9 +165,7 @@ int main(int argc, char** argv)
 	// print(w);
     }
 
-    assert(sizeof(Array_Base) == 8);
-
-    assert(sizeof(Array_Base) == sizeof(Array<String>));
+    assert(sizeof(Array<String>) == sizeof(__Array_Base));
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
