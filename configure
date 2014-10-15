@@ -28,6 +28,7 @@ else
         OS=`uname -s`
         TOKEN="$OS-$ARCH"
 
+
         case "$TOKEN" in
 
             Linux-i686)
@@ -38,9 +39,32 @@ else
                 export PLATFORM=LINUX_X86_64_GNU
                 ;;
 
-            Linux-ppc)
+	    Linux-ia64)
+		export PLATFORM=LINUX_IA64_GNU
+		;;
 
+	    Linux-s390)
+		export PLATFORM=LINUX_S390_GNU
+		;;
+
+	    Linux-s390x)
+		export PLATFORM=LINUX_S390X_GNU
+		;;
+
+            Linux-ppc)
                 export PLATFORM=LINUX_PPC_GNU
+                ;;
+
+            Linux-ppc64)
+                export PLATFORM=LINUX_PPC64_GNU
+                ;;
+
+            "Darwin-Power Macintosh")
+                export PLATFORM=DARWIN_PPC_GNU
+                ;;
+
+            Darwin-i386)
+                export PLATFORM=DARWIN_IX86_GNU
                 ;;
 
             *)
@@ -66,18 +90,39 @@ case "$PLATFORM" in
     LINUX_IX86_GNU)
 	;;
 
+    LINUX_X86_64_GNU)
+	;;
+
+    LINUX_PPC_GNU)
+	;;
+
+    LINUX_PPC64_GNU)
+	;;
+
+    LINUX_IX86_GNU)
+	;;
+
+    DARWIN_IX86_GNU)
+	;;
+
+    DARWIN_PPC_GNU)
+	;;
+
     l32)
 	PLATFORM=LINUX_IX86_GNU
 	;;
 
-    LINUX_X86_64_GNU)
+    LINUX_IA64_GNU)
+	;;
+
+    LINUX_S390_GNU)
+	;;
+
+    LINUX_S390X_GNU)
 	;;
 
     l64)
 	PLATFORM=LINUX_X86_64_GNU
-	;;
-
-    LINUX_PPC_GNU)
 	;;
 
     *)

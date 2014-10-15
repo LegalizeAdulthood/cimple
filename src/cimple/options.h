@@ -51,21 +51,13 @@
 
 //------------------------------------------------------------------------------
 //
-// CIMPLE_HAVE_CMPI_ENABLE_INDICATIONS_FIX
+// CIMPLE_HAVE_CMPI_VOID_RETURN_BUG
 //
-//     Whether Pegasus has the fix to the CMPI enableIndications (and 
-//     disableIndications) that corrects the faulty prototype from
-// 
-//         void (*enableIndications)(...)
-//
-//     to
-//
-//         CMPIStatus (*enableIndications)(...)
+//     Whether CMPI has faulty prototypes for enableIndications() and 
+//     disableIndications(), which return "void" instead of "CMPIStatus".
 //
 //------------------------------------------------------------------------------
 
-#if defined(PEGASUS_VERSION_NUMBER) && PEGASUS_VERSION_NUMBER >= 0x02060000
-# define CIMPLE_HAVE_CMPI_ENABLE_INDICATIONS_FIX
-#endif
+// #define CIMPLE_HAVE_CMPI_VOID_RETURN_BUG
 
 #endif /* _cimple_options_h */

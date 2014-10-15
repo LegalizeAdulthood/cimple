@@ -143,4 +143,56 @@ static const uint8 __lower2[256] =
     0xF8,0xF9,0xFA,0xFB,0xFC,0xFD,0xFE,0xFF,
 };
 
+size_t strlcpy(char* dest, const char* src, size_t size)
+{
+    size_t i;
+
+    for (i = 0; src[i] && i + 1 < size; i++)
+        dest[i] = src[i];
+
+    if (size > 0)
+        dest[i] = '\0';
+
+    while (src[i])
+        i++;
+
+    return i;
+}
+
+size_t strlcat(char* dest, const char* src, size_t size)
+{
+    size_t i;
+    size_t j;
+
+    /* Find dest null terminator. */
+
+    for (i = 0; i < size && dest[i]; i++)
+        ;
+
+    /* If no-null terminator found, return size. */
+
+    if (i == size)
+        return size;
+
+    /* Copy src characters to dest. */
+
+    for (j = 0; src[j] && i + 1 < size; i++, j++)
+        dest[i] = src[j];
+
+    /* Null terminate size non-zero. */
+
+    if (size > 0)
+        dest[i] = '\0';
+
+    while (src[j])
+    {
+        j++;
+        i++;
+    }
+
+    return i;
+}
+
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Strings.cpp,v 1.24 2007/03/07 18:41:15 mbrasher-public Exp $");

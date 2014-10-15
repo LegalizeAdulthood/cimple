@@ -40,62 +40,62 @@ int getopt(int argc, char** argv, const char* optstring)
 {
     for (int i = optind; i < argc; i++)
     {
-	char* arg = argv[i];
+        char* arg = argv[i];
 
-	// Check for option:
+        // Check for option:
 
-	if (arg[0] == '-' && arg[1] != '\0')
-	{
-	    // Check option and option argument (if any).
+        if (arg[0] == '-' && arg[1] != '\0')
+        {
+            // Check option and option argument (if any).
 
-	    int opt = arg[1];
-	    const char* p = strchr(optstring, opt);
-	    optarg = NULL;
+            int opt = arg[1];
+            const char* p = strchr(optstring, opt);
+            optarg = NULL;
 
-	    if (p == NULL)
-	    {
-		if (opterr)
-		    fprintf(stderr, "%s: invalid option -- %c\n", argv[0], opt);
+            if (p == NULL)
+            {
+                if (opterr)
+                    fprintf(stderr, "%s: invalid option -- %c\n", argv[0], opt);
 
-		optopt = opt;
-		opt = '?';
-	    }
-	    else if (p[1] == ':')
-	    {
-		if ((optarg = argv[i+1]) == NULL)
-		{
-		    if (opterr)
-		    {
-			fprintf(stderr, 
-			    "%s: option requires an argument -- %c\n", 
-			    argv[0], opt);
-		    }
+                optopt = opt;
+                opt = '?';
+            }
+            else if (p[1] == ':')
+            {
+                if ((optarg = argv[i+1]) == NULL)
+                {
+                    if (opterr)
+                    {
+                        fprintf(stderr, 
+                            "%s: option requires an argument -- %c\n", 
+                            argv[0], opt);
+                    }
 
-		    optopt = opt;
+                    optopt = opt;
 
-		    if (*optstring == ':')
-			opt = ':';
-		    else
-			opt = '?';
-		}
-	    }
+                    if (*optstring == ':')
+                        opt = ':';
+                    else
+                        opt = '?';
+                }
+            }
 
-	    // Move arguments leftward to optind.
+            // Move arguments leftward to optind.
 
-	    int n = optarg ? 2 : 1;
+            int n = optarg ? 2 : 1;
 
-	    memmove(
-		argv + optind + n, 
-		argv + optind, 
-		(i - optind) * sizeof(char*));
+            memmove(
+                argv + optind + n, 
+                argv + optind, 
+                (i - optind) * sizeof(char*));
 
-	    argv[optind++] = arg;
+            argv[optind++] = arg;
 
-	    if (optarg)
-		argv[optind++] = optarg;
+            if (optarg)
+                argv[optind++] = optarg;
 
-	    return opt;
-	}
+            return opt;
+        }
     }
 
     return -1;

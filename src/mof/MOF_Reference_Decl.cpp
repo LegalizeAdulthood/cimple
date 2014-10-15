@@ -39,7 +39,7 @@ void MOF_Reference_Decl::print() const
 {
     MOF_Indent(1);
     printf("+ ref %s %s alias(%s) obj_ref(%p)\n", 
-	class_name, name, alias, obj_ref);
+        class_name, name, alias, obj_ref);
     qualifiers->print_list(3);
 }
 
@@ -49,23 +49,23 @@ void MOF_Reference_Decl::validate_obj_ref(MOF_Object_Reference* obj_ref)
     MOF_Class_Decl* ref_init_class_decl;
 
     if (!obj_ref)
-	return;
+        return;
     
     if ((ref_init_class_decl = 
-	MOF_Class_Decl::find(obj_ref->class_name)) == 0)
+        MOF_Class_Decl::find(obj_ref->class_name)) == 0)
     {
-	MOF_error_printf("undefined class (%s) in ref initializer (%s)",
-	    obj_ref->class_name, class_name);
-	return;
+        MOF_error_printf("undefined class (%s) in ref initializer (%s)",
+            obj_ref->class_name, class_name);
+        return;
     }
 
     if (!ref_init_class_decl->is_a(class_decl))
     {
-	MOF_error_printf(
-	    "reference initializer refers to a class (%s) "
-	    "which is not a sub-type of the reference (%s)",
-	    ref_init_class_decl->name, class_decl->name);
-	return;
+        MOF_error_printf(
+            "reference initializer refers to a class (%s) "
+            "which is not a sub-type of the reference (%s)",
+            ref_init_class_decl->name, class_decl->name);
+        return;
     }
 }
 
@@ -79,9 +79,9 @@ void MOF_Reference_Decl::validate()
 
     if ((ref_class_decl = MOF_Class_Decl::find(class_name)) == 0)
     {
-	MOF_error_printf(
-	    "class referred to by ref \"%s\" is undefined: \"%s\"",
-	    name, class_name);
+        MOF_error_printf(
+            "class referred to by ref \"%s\" is undefined: \"%s\"",
+            name, class_name);
     }
 
     /*
@@ -103,7 +103,7 @@ MOF_Element* MOF_Reference_Decl::clone() const
     MOF_Reference_Decl* tmp;
     
     if ((tmp = new MOF_Reference_Decl()) == 0)
-	return 0;
+        return 0;
 
     tmp->type = type;
     tmp->name = name;
@@ -116,3 +116,5 @@ MOF_Element* MOF_Reference_Decl::clone() const
 
     return tmp;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Reference_Decl.cpp,v 1.5 2007/03/07 18:57:15 mbrasher-public Exp $");

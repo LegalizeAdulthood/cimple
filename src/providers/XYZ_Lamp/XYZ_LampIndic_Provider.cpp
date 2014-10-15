@@ -32,8 +32,8 @@ Disable_Indications_Status XYZ_LampIndic_Provider::disable_indications()
 {
     if (_indication_handler)
     {
-	delete _indication_handler;
-	_indication_handler = 0;
+        delete _indication_handler;
+        _indication_handler = 0;
     }
 
     return DISABLE_INDICATIONS_OK;
@@ -65,7 +65,7 @@ int XYZ_LampIndic_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Indication_Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -82,3 +82,5 @@ int XYZ_LampIndic_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampIndic_Provider.cpp,v 1.4 2007/03/07 20:25:29 mbrasher-public Exp $");

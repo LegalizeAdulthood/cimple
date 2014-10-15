@@ -31,4 +31,6 @@
 
 #define CIMPLE_BIG_ENDIAN
 
+#define CIMPLE_PLATFORM_ID "LINUX_PPC_GNU"
+
 #endif /* _cimple_platform_LINUX_PPC_GNU_h */

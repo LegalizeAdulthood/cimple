@@ -8,6 +8,6 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN_DIR)/genclass SomeClass OtherClass
+	genclass SomeClass OtherClass
 
 tests:

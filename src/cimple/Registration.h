@@ -63,9 +63,43 @@
 
 //==============================================================================
 //
+// OpenWBEM provider entry point macro.
+//
+//==============================================================================
+
+#define CIMPLE_OPENWBEM_PROVIDER(module) \
+    extern "C" CIMPLE_EXPORT const char* \
+    getOWVersion()  {  return OW_VERSION;  } \
+    extern "C" int cimple_openwbem_adapter( \
+        void* arg0, void* arg1, void* arg2, void* arg3,  \
+        void* arg4, void* arg5, void* arg6, void* arg7); \
+    extern "C" CIMPLE_EXPORT OW_NAMESPACE::CppProviderBaseIFC* \
+    createProvider##module() \
+    { \
+        OW_NAMESPACE::CppProviderBaseIFC* createProvider##module(); \
+        OW_NAMESPACE::CppProviderBaseIFC* adapter = 0; \
+        cimple_openwbem_adapter( \
+            (void*)'O', (void*)#module, _cimple_registration_head, \
+                &adapter, 0, 0, 0, 0); \
+        return adapter; \
+    }
+
+//==============================================================================
+//
 // CMPI provider entry point macros.
 //
 //==============================================================================
+
+// This structure defines enough space for all static data needed to lay down
+// CMPI MI and MIFT structures.
+struct __CMPI_Static_Data
+{
+    union
+    {
+        double align;
+        char data[2048];
+    };
+};
 
 #define __CIMPLE_CMPI_PROVIDER(TYPE,TYPE_NAME,PROVIDER) \
     extern "C" int cimple_cmpi_adapter( \
@@ -79,7 +113,7 @@
         void* _mi = 0; \
         cimple_cmpi_adapter( \
             (void*)'C', \
-            (void*)&_adapter##PROVIDER, \
+            (void*)&_cmpi_static_data##PROVIDER, \
             (void*)&_cimple_registration_##PROVIDER, \
             (void*)cmpi_broker, \
             (void*)cmpi_context, \
@@ -90,18 +124,18 @@
     }
 
 #define CIMPLE_CMPI_INSTANCE_PROVIDER(PROVIDER)  \
-    static void* _adapter##PROVIDER = 0; \
+    static __CMPI_Static_Data _cmpi_static_data##PROVIDER; \
     __CIMPLE_CMPI_PROVIDER('I', Instance, PROVIDER) \
     __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER)
 
 #define CIMPLE_CMPI_ASSOCIATION_PROVIDER(PROVIDER)  \
-    static void* _adapter##PROVIDER = 0; \
+    static __CMPI_Static_Data _cmpi_static_data##PROVIDER; \
     __CIMPLE_CMPI_PROVIDER('I', Instance, PROVIDER) \
     __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER) \
     __CIMPLE_CMPI_PROVIDER('A', Association, PROVIDER)
 
 #define CIMPLE_CMPI_INDICATION_PROVIDER(PROVIDER)  \
-    static void* _adapter##PROVIDER = 0; \
+    static __CMPI_Static_Data _cmpi_static_data##PROVIDER; \
     __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER) \
     __CIMPLE_CMPI_PROVIDER('N', Indication, PROVIDER)
 

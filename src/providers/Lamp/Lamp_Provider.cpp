@@ -10,76 +10,6 @@ CIMPLE_NAMESPACE_BEGIN
 # define TRACE
 #endif
 
-static void _test_cimom_ops()
-{
-    Ref<Fan> fan(Fan::create());
-    Instance_Enumerator e;
-
-    printf("===== cimom::enum_instances()\n");
-    
-    if (cimom::enum_instances("root/cimv2", fan.ptr(), e) == 0)
-    {
-	for (; e; e++)
-	    print(e().ptr());
-    }
-
-    printf("===== cimom::get_instance()\n");
-
-    {
-	Ref<Fan> keys(Fan::create());
-	keys->DeviceID.value = "FAN01";
-	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys.ptr());
-	print(inst.ptr());
-    }
-
-    printf("===== cimom::modify_instance()\n");
-
-    {
-	Ref<Fan> inst(Fan::create());
-
-	inst->DeviceID.value = "FAN01";
-	inst->Speed.value = 1111;
-	inst->DesiredSpeed.value = 1111;
-	int result = cimom::modify_instance("root/cimv2", inst.ptr());
-
-	if (result != 0)
-	    printf("failed\n");
-    }
-
-    printf("===== cimom::get_instance()\n");
-
-    {
-	Ref<Fan> keys(Fan::create());
-	keys->DeviceID.value = "FAN01";
-	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys.ptr());
-	print(inst.ptr());
-    }
-
-    printf("===== cimom::delete_instance()\n");
-
-    {
-	Ref<Fan> key(Fan::create());
-	key->DesiredSpeed.value = 1111;
-	int result = cimom::delete_instance("root/cimv2", key.ptr());
-
-	if (result != 0)
-	    printf("cimom::delete_instance() failed\n");
-    }
-
-    printf("===== cimom::get_instance()\n");
-
-    {
-	Ref<Fan> keys(Fan::create());
-	keys->DeviceID.value = "FAN01";
-	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys.ptr());
-
-	if (inst)
-	    print(inst.ptr());
-	else
-	    printf("cimom::get_instance() failed\n");
-    }
-}
-
 Lamp_Provider::Lamp_Provider()
 {
     TRACE;
@@ -93,39 +23,6 @@ Lamp_Provider::~Lamp_Provider()
 Load_Status Lamp_Provider::load()
 {
     TRACE;
-
-    // Create 100 persistent instances (in the repository).
-    {
-        const char NAMESPACE[] = "/root/cimv2";
-
-        for (uint32 i = 100; i < 200; i++)
-        {
-            Ref<Persistent> inst(Persistent::create());
-            inst->key.value = i;
-
-            // Create instance if it does not exist:
-
-            Ref<Instance> tmp(cimom::get_instance(NAMESPACE, inst.ptr()));
-
-            if (tmp)
-            {
-                printf("Persistent.key=%u already exists\n", i);
-            }
-            else
-            {
-                int rc = cimom::create_instance(NAMESPACE, inst.ptr());
-
-                if (rc == 0)
-                    printf("Created Persistent.key=%u\n", i);
-                else
-                {
-                    fprintf(stderr,
-                    "ERROR: Failed to create Persistent.key=%u\n", i);
-                }
-            }
-        }
-    }
-
 
     Lamp* instance;
     
@@ -166,7 +63,6 @@ Enum_Instances_Status Lamp_Provider::enum_instances(
     Enum_Instances_Handler<Lamp>* handler)
 {
     TRACE;
-
     return _map.enum_instances(model, handler);
 }
 
@@ -226,7 +122,7 @@ int Lamp_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -246,3 +142,5 @@ int Lamp_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/Lamp_Provider.cpp,v 1.20 2007/03/09 03:40:59 mbrasher-public Exp $");

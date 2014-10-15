@@ -81,24 +81,15 @@ CIMPLE_NAMESPACE_BEGIN
 struct Meta_Property;
 
 /** Base class for all generated CIM classes and CIM method objects.
-    Note: sizeof(Instance) == 24 on all platforms.
 */
 struct CIMPLE_CIMPLE_LINKAGE Instance
 {
-    uint32 magic;
-    Atomic refs;
+    uint32 __magic;
+    Atomic __refs;
     const Meta_Class* meta_class;
+    String __name_space;
     static const Meta_Class static_meta_class;
 };
-
-/** Private function to construct a instance.
-*/
-CIMPLE_CIMPLE_LINKAGE
-void __construct(
-    const Meta_Class* mc,
-    Instance* inst,
-    bool clear,
-    bool defaults);
 
 /** Creates an instance from the given meta class. For each property, the 
     null flag is set to false. The caller must eventually pass the new object 
@@ -183,31 +174,48 @@ void copy_keys(Instance* instance1, const Instance* instance2);
 
 /** Returns a pointer to the given property.
 */
-inline void* property_of(Instance* inst, const Meta_Property* mp)
+inline void* __property_of(Instance* inst, const Meta_Property* mp)
 {
     return (uint8*)inst + mp->offset;
 }
 
-/** Const version of property_of().
+/** Const version of __property_of().
 */
-inline const void* property_of(const Instance* inst, const Meta_Property* mp)
+inline const void* __property_of(const Instance* inst, const Meta_Property* mp)
 {
-    return property_of((Instance*)inst, mp);
+    return __property_of((Instance*)inst, mp);
 }
 
 /** Returns a pointer to the given reference.
 */
-inline Instance*& reference_of(Instance* inst, const Meta_Reference* mr)
+inline Array_Ref& __array_ref_of(Instance* inst, const Meta_Reference* mr)
+{
+    return *((Array_Ref*)((uint8*)inst + mr->offset));
+}
+
+/** Returns a pointer to the given reference.
+*/
+inline const Array_Ref& __array_ref_of(
+    const Instance* inst, const Meta_Reference* mr)
+{
+    return *((const Array_Ref*)((uint8*)inst + mr->offset));
+}
+
+/** Returns a pointer to the given reference.
+*/
+inline Instance*& __ref_of(Instance* inst, const Meta_Reference* mr)
 {
     return *((Instance**)((uint8*)inst + mr->offset));
 }
 
-/** Const version of reference_of().
+typedef Array<Instance*> __Reference_Array;
+
+/** Const version of __ref_of().
 */
-inline const Instance*& reference_of( 
+inline const Instance*& __ref_of( 
     const Instance* inst, const Meta_Reference* mr)
 {
-    return (const Instance*&)reference_of((Instance*)inst, mr);
+    return (const Instance*&)__ref_of((Instance*)inst, mr);
 }
 
 /** Returns true if two instances are identical, that is they have the
@@ -350,6 +358,10 @@ CIMPLE_CIMPLE_LINKAGE
 int instance_to_model_path(
     const Instance* instance, 
     String& model_path);
+
+// Create non-null refs for all ref properties of this instance.
+CIMPLE_CIMPLE_LINKAGE
+void __create_refs(Instance* inst);
 
 CIMPLE_NAMESPACE_END
 

@@ -383,3 +383,5 @@ const __Array_Traits* __cim_array_traits[] =
 };
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Array_Impl.cpp,v 1.14 2007/03/07 18:41:14 mbrasher-public Exp $");

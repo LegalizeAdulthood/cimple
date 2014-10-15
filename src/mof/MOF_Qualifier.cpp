@@ -103,7 +103,7 @@ void MOF_Qualifier::print_list(size_t nesting) const
     const MOF_Qualifier* p;
 
     for (p = this ; p; p = (MOF_Qualifier*)p->next)
-	p->print(nesting);
+        p->print(nesting);
 }
 
 /*
@@ -125,7 +125,7 @@ void MOF_Qualifier::validate()
      */
 
     if ((qual_decl = MOF_Qualifier_Decl::find(name)) == 0)
-	MOF_error_printf("undefined qualifier: \"%s\"\n", name);
+        MOF_error_printf("undefined qualifier: \"%s\"\n", name);
 
     /*
      * The presence of a scalar boolean qualifier without arguments implies
@@ -137,8 +137,8 @@ void MOF_Qualifier::validate()
         (params == 0 || params->value_type == TOK_NULL_VALUE))
     {
         params->delete_list();
-	params = new MOF_Literal();
-	params->value_type = TOK_BOOL_VALUE;
+        params = new MOF_Literal();
+        params->value_type = TOK_BOOL_VALUE;
         params->bool_value = true;
     }
 
@@ -148,8 +148,8 @@ void MOF_Qualifier::validate()
 
     if (params)
     {
-	params->validate("qualifier", name, qual_decl->data_type,
-	    qual_decl->array_index);
+        params->validate("qualifier", name, qual_decl->data_type,
+            qual_decl->array_index);
     }
 
     /*
@@ -163,17 +163,17 @@ void MOF_Qualifier::validate()
 
     if (MOF_stricmp(name, "description") == 0)
     {
-	if (params && params->u.string_value)
-	{
-	    free (params->u.string_value);
-	    params->u.string_value = 0;
+        if (params && params->u.string_value)
+        {
+            free (params->u.string_value);
+            params->u.string_value = 0;
 
-	    free (params);
-	    params = 0;
-	}
+            free (params);
+            params = 0;
+        }
 
-	free (name);
-	name = (char*)DESCRIPTION;
+        free (name);
+        name = (char*)DESCRIPTION;
     }
 
 #endif
@@ -199,11 +199,11 @@ void MOF_Qualifier::validate_list(int expected_scope)
 
     for (p = this; p != 0; p = (MOF_Qualifier*)p->next)
     {
-	for (q = this; q != p; q = (MOF_Qualifier*)q->next)
-	{
-	    if (strcmp(p->name, q->name) == 0)
-		MOF_error_printf("duplicate qualifier: \"%s\"", p->name);
-	}
+        for (q = this; q != p; q = (MOF_Qualifier*)q->next)
+        {
+            if (strcmp(p->name, q->name) == 0)
+                MOF_error_printf("duplicate qualifier: \"%s\"", p->name);
+        }
     }
 
     /*
@@ -212,20 +212,22 @@ void MOF_Qualifier::validate_list(int expected_scope)
 
     for (p = this; p != 0; p = (MOF_Qualifier*)p->next)
     {
-	MOF_Qualifier_Decl* qual_decl;
+        MOF_Qualifier_Decl* qual_decl;
 
-	/*
-	 * Find qualifier declaration:
-	 */
+        /*
+         * Find qualifier declaration:
+         */
 
-	if ((qual_decl = MOF_Qualifier_Decl::find(p->name)) == 0)
-	    MOF_error_printf("undefined qualifier \"%s\"", p->name);
+        if ((qual_decl = MOF_Qualifier_Decl::find(p->name)) == 0)
+            MOF_error_printf("undefined qualifier \"%s\"", p->name);
 
-	/*
-	 * Check the scope:
-	 */
+        /*
+         * Check the scope:
+         */
 
-	if (!(qual_decl->scope & expected_scope))
-	    MOF_error_printf("invalid scope for qualifier \"%s\"", p->name);
+        if (!(qual_decl->scope & expected_scope))
+            MOF_error_printf("invalid scope for qualifier \"%s\"", p->name);
     }
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier.cpp,v 1.8 2007/03/07 18:57:15 mbrasher-public Exp $");

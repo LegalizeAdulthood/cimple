@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Reference
 _ThingLink_left;
@@ -27,6 +27,7 @@ _ThingLink_left =
     "left",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &Thing::static_meta_class,
     CIMPLE_OFF(ThingLink,left)
 };
@@ -42,6 +43,7 @@ _ThingLink_right =
     "right",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &Thing::static_meta_class,
     CIMPLE_OFF(ThingLink,right)
 };
@@ -72,8 +74,9 @@ const Meta_Class ThingLink::static_meta_class =
     0, /* super_class */ 
     2, /* num_keys */
     0x32F93684, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/ThingLink.cpp,v 1.49 2007/03/13 22:53:19 mbrasher-public Exp $");

@@ -23,7 +23,7 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN_DIR)/genclass CIM_DatabaseAdministrator
+	genclass CIM_DatabaseAdministrator
 
 tests:
-	$(BIN_DIR)/$(BINARY)
+	$(BINARY)

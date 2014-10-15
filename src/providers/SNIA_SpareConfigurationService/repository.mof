@@ -1,0 +1,284 @@
+#pragma include ("SNIA_SparingSubprofile.mof")
+
+class MyStorageExtent : CIM_StorageExtent
+{
+    [Override ( "SystemCreationClassName" ),
+     Propagated ( "CIM_System.CreationClassName" ), 
+     Description (
+          "The CreationClassName of the scoping system."
+          " "
+          " Aristos_ControllerSystem ")
+    ]
+  string SystemCreationClassName;
+
+    [Override ( "SystemName" ),
+     Propagated ( "CIM_System.Name" ), Description (
+          "The System Name of the scoping system."
+          " "
+          " serial number ")
+    ]
+  string SystemName;
+
+    [Override ( "CreationClassName" ),
+     Description (
+          "CreationClassName indicates the name of the class or the "
+          "subclass used in the creation of an instance. When used "
+          "with the other key properties of this class, this property "
+          "allows all instances of this class and its subclasses to be "
+          "uniquely identified."
+          " "
+          " Aristos_ControllerSystem ")
+    ]
+  string CreationClassName;
+
+    [Override ( "DeviceID" ),
+     Description (
+          "An address or other identifying information used to "
+          "uniquely name the LogicalDevice."
+          " "
+          " serial id ")
+    ]
+  string DeviceID;
+
+    [Override ("BlockSize"),
+     Description (
+          "Size in bytes of the blocks which form this StorageExtent. "
+          "If variable block size, then the maximum block size in "
+          "bytes should be specified. If the block size is unknown or "
+          "if a block concept is not valid (for example, for "
+          "AggregateExtents, Memory or LogicalDisks), enter a 1."), 
+     Units ( "Bytes" ), 
+     MappingStrings { "MIF.DMTF|Host Storage|001.4",
+          "MIB.IETF|HOST-RESOURCES-MIB.hrStorageAllocationUnits",
+          "MIF.DMTF|Storage Devices|001.5" }
+    ]
+  uint64 BlockSize;
+
+    [Override ("NumberOfBlocks"),
+     Description (
+          "Total number of logically contiguous blocks, of size Block "
+          "Size, which form this Extent. The total size of the Extent "
+          "can be calculated by multiplying BlockSize by "
+          "NumberOfBlocks. If the BlockSize is 1, this property is the "
+          "total size of the Extent."), 
+     MappingStrings { "MIF.DMTF|Host Storage|001.5",
+          "MIB.IETF|HOST-RESOURCES-MIB.hrStorageSize" }
+    ]
+  uint64 NumberOfBlocks;
+
+    [Override ("ConsumableBlocks"),
+     Description (
+          "The maximum number of blocks, of size BlockSize, which are "
+          "available for consumption when layering StorageExtents "
+          "using the BasedOn association. This property only has "
+          "meaning when this StorageExtent is an Antecedent reference "
+          "in a BasedOn relationship. For example, a StorageExtent "
+          "could be composed of 120 blocks. However, the Extent itself "
+          "may use 20 blocks for redundancy data. If another "
+          "StorageExtent is BasedOn this Extent, only 100 blocks would "
+          "be available to it. This information ('100 blocks is "
+          "available for consumption') is indicated in the "
+          "ConsumableBlocks property.")
+    ]
+  uint64 ConsumableBlocks;
+
+
+    [Override ( "Name" ), 
+     Description (
+          "A unique identifier for the Extent."
+          " "
+          " device ID "), 
+     MappingStrings { "SPC.INCITS-T10| VPD 83, Association 0 | "
+           "Identifier" }, 
+     ModelCorrespondence { "CIM_StorageExtent.NameFormat",
+          "CIM_StorageExtent.NameNamespace" }
+    ]
+  string Name;
+
+
+    [Override ( "Primordial" ),
+     Description (
+          "If true, \"Primordial\" indicates that this StoragePool is "
+          "the base from which storage capacity is drawn and returned "
+          "in the activity of storage management. Being primordial "
+          "means that this StoragePool shall not be created or deleted "
+          "by consumers of this model. However, other actions, modeled "
+          "or not, may affect the characteristics or size of "
+          "primordial StoragePools. If false, \"Primordial\" indicated "
+          "that the StoragePool, a concrete Storage Pool, is subject "
+          "to storage services functions. This distinction is "
+          "important because higher-level StoragePools may be "
+          "assembled using the Component or AllocatedFromStoragePool "
+          "associations. Although the higher-level abstractions can be "
+          "created and deleted, the most basic, (i.e. primordial), "
+          "hardware-based StoragePools cannot. They are physically "
+          "realized as part of the System, or are actually managed by "
+          "some other System and imported as if they were physically "
+          "realized.")
+    ]
+  boolean Primordial;
+
+
+    [Override,
+     Description (
+          "Indicates the current statuses of the element. Various "
+          "operational statuses are defined. Many of the enumeration's "
+          "values are self-explanatory. However, a few are not and are "
+          "described here in more detail. \n"
+          "\"Stressed\" indicates that the element is functioning, but "
+          "needs attention. Examples of \"Stressed\" states are "
+          "overload, overheated, and so on. \n"
+          "\"Predictive Failure\" indicates that an element is "
+          "functioning nominally but predicting a failure in the near "
+          "future. \n"
+          "\"In Service\" describes an element being configured, "
+          "maintained, cleaned, or otherwise administered. \n"
+          "\"No Contact\" indicates that the monitoring system has "
+          "knowledge of this element, but has never been able to "
+          "establish communications with it. \n"
+          "\"Lost Communication\" indicates that the ManagedSystem "
+          "Element is known to exist and has been contacted "
+          "successfully in the past, but is currently unreachable. \n"
+          "\"Stopped\" and \"Aborted\" are similar, although the "
+          "former implies a clean and orderly stop, while the latter "
+          "implies an abrupt stop where the state and configuration of "
+          "the element might need to be updated. \n"
+          "\"Dormant\" indicates that the element is inactive or "
+          "quiesced. \n"
+          "\"Supporting Entity in Error\" indicates that this element "
+          "might be \"OK\" but that another element, on which it is "
+          "dependent, is in error. An example is a network service or "
+          "endpoint that cannot function due to lower-layer networking "
+          "problems. \n"
+          "\"Completed\" indicates that the element has completed its "
+          "operation. This value should be combined with either OK, "
+          "Error, or Degraded so that a client can tell if the "
+          "complete operation Completed with OK (passed), Completed "
+          "with Error (failed), or Completed with Degraded (the "
+          "operation finished, but it did not complete OK or did not "
+          "report an error). \n"
+          "\"Power Mode\" indicates that the element has additional "
+          "power model information contained in the Associated "
+          "PowerManagementService association. \n"
+          "OperationalStatus replaces the Status property on "
+          "ManagedSystemElement to provide a consistent approach to "
+          "enumerations, to address implementation needs for an array "
+          "property, and to provide a migration path from today's "
+          "environment to the future. This change was not made earlier "
+          "because it required the deprecated qualifier. Due to the "
+          "widespread use of the existing Status property in "
+          "management applications, it is strongly recommended that "
+          "providers or instrumentation provide both the Status and "
+          "OperationalStatus properties. Further, the first value of "
+          "OperationalStatus should contain the primary status for the "
+          "element. When instrumented, Status (because it is "
+          "single-valued) should also provide the primary status of "
+          "the element."
+          " "
+          " OK "), 
+     ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+          "10", "11", "12", "13", "14", "15", "16", "17", "18", "..",
+          "0x8000.." }, 
+     Values { "Unknown", "Other", "OK", "Degraded", "Stressed",
+          "Predictive Failure", "Error", "Non-Recoverable Error",
+          "Starting", "Stopping", "Stopped", "In Service",
+          "No Contact", "Lost Communication", "Aborted", "Dormant",
+          "Supporting Entity in Error", "Completed", "Power Mode",
+          "DMTF Reserved", "Vendor Reserved" }, ArrayType ( "Indexed" ), 
+     ModelCorrespondence { 
+          "CIM_ManagedSystemElement.StatusDescriptions" }
+    ]
+  uint16 OperationalStatus[];
+
+    [Override ("HealthState"),
+     Description (
+          "Indicates the current health of the element. This attribute "
+          "expresses the health of this element but not necessarily "
+          "that of its subcomponents. The possible values are 0 to 30, "
+          "where 5 means the element is entirely healthy and 30 means "
+          "the element is completely non-functional. The following "
+          "continuum is defined: \n"
+          "\"Non-recoverable Error\" (30) - The element has completely "
+          "failed, and recovery is not possible. All functionality "
+          "provided by this element has been lost. \n"
+          "\"Critical Failure\" (25) - The element is non-functional "
+          "and recovery might not be possible. \n"
+          "\"Major Failure\" (20) - The element is failing. It is "
+          "possible that some or all of the functionality of this "
+          "component is degraded or not working. \n"
+          "\"Minor Failure\" (15) - All functionality is available but "
+          "some might be degraded. \n"
+          "\"Degraded/Warning\" (10) - The element is in working order "
+          "and all functionality is provided. However, the element is "
+          "not working to the best of its abilities. For example, the "
+          "element might not be operating at optimal performance or it "
+          "might be reporting recoverable errors. \n"
+          "\"OK\" (5) - The element is fully functional and is "
+          "operating within normal operational parameters and without "
+          "error. \n"
+          "\"Unknown\" (0) - The implementation cannot report on "
+          "HealthState at this time. \n"
+          "DMTF has reserved the unused portion of the continuum for "
+          "additional HealthStates in the future."), 
+     ValueMap { "0", "5", "10", "15", "20", "25", "30", ".." }, 
+     Values { "Unknown", "OK", "Degraded/Warning", "Minor failure",
+          "Major failure", "Critical failure", "Non-recoverable error",
+          "DMTF Reserved" }
+    ]
+  uint16 HealthState;
+
+    [Experimental, 
+     Override ("LocationIndicator"),
+     Write, Description (
+          "An integer that reflects the state of an indicator (e.g., "
+          "LED) that is part of a device. Reading the value gives the "
+          "current state. Writing the value with 'On'/'Off' turns the "
+          "indicator on/off, other values may not be written."), 
+     ValueMap { "0", "2", "3", "4" }, 
+     Values { "Unknown", "On", "Off", "Not Supported" }, 
+     ModelCorrespondence { "CIM_AlarmDevice.AlarmState",
+          "CIM_AlarmDevice.AudioIndicatorIsDisabled",
+          "CIM_AlarmDevice.VisualIndicatorIsDisabled",
+          "CIM_AlarmDevice.MotionIndicatorIsDisabled" }
+    ]
+  uint16 LocationIndicator;
+
+    [Override ( "ElementName" ),
+     Description (
+          "A user-friendly name for the object. This property allows "
+          "each instance to define a user-friendly name in addition to "
+          "its key properties, identity data, and description "
+          "information. \n"
+          "Note that the Name property of ManagedSystemElement is also "
+          "defined as a user-friendly name. But, it is often "
+          "subclassed to be a Key. It is not reasonable that the same "
+          "property can convey both identity and a user-friendly name, "
+          "without inconsistencies. Where Name exists and is not a Key "
+          "(such as for instances of LogicalDevice), the same "
+          "information can be present in both the Name and ElementName "
+          "properties."
+          " "
+          " device id ")
+    ]
+  string ElementName;
+
+    [Override ( "Caption" ),
+     Description (
+          "The Caption property is a short textual description (one- "
+          "line string) of the object."
+          " "
+          " Disk Drive Extent "), 
+     MaxLen ( 64 )
+    ]
+  string Caption;
+
+    [Override ( "Description" ),
+     Description (
+          "The Description property provides a textual description of "
+          "the object."
+          " "
+          " Disk Drive Extent ")
+    ]
+  string Description;
+
+};

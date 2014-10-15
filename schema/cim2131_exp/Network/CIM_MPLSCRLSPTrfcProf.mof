@@ -1,0 +1,38 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_MPLSCRLSPTrfcProf
+// ==================================================================
+   [Experimental, UMLPackagePath ( "CIM::Network::MPLS" ),
+       Version ( "2.8.1000" ), Description (
+       "Class to represent the Constraint-based Routed LSP (CR-LSP) "
+       "traffic parameters as specified in [RFC3212].")]
+class CIM_MPLSCRLSPTrfcProf : CIM_MPLSQosPRTrfcProf {
+
+      [Description (
+          "Property to indicate at what granularity the CDR (allocated "
+          "to the CR-LSP) is made available."), 
+       ValueMap { "0", "1", "2" }, 
+       Values { "Unspecified", "Frequently", "Very Frequently" }]
+   uint16 CRLSPFrequency;
+
+      [Description (
+          "Property to indicate the CR-LSP's relative share (in "
+          "percent) of the possible excess bandwidth above its "
+          "committed rate."), 
+       Units ( "Percent" ), MinValue ( 0 ), MaxValue ( 100 )]
+   uint8 CRLSPWeight;
+
+      [Description (
+          "Property to indicate the CR-LSP's committed data rate in "
+          "bytes per second."), 
+       Units ( "Bytes per Second" )]
+   uint16 CRLSPCommitedDataRate;
+
+      [Description (
+          "Property to indicate the CR-LSP's committed burst size in "
+          "bytes."), 
+       Units ( "Bytes" )]
+   uint16 CRLSPCommitedBurstSize;
+};

@@ -1,0 +1,9 @@
+#pragma include ("SNIA_SparingSubprofile.mof")
+
+class MySpareConfigurationService : SNIA_SpareConfigurationService
+{
+};
+
+class MyStorageExtent : CIM_StorageExtent
+{
+};

@@ -26,6 +26,7 @@ ifneq ("$(_SHARED_LIBRARY)$(_STATIC_LIBRARY)","")
   include $(TOP)/mak/lib.mak
   include $(TOP)/mak/object.mak
   include $(TOP)/mak/depend.mak
+  include $(TOP)/mak/chksrc.mak
 endif
 
 ifdef BINARY
@@ -34,6 +35,7 @@ ifdef BINARY
   include $(TOP)/mak/bin.mak
   include $(TOP)/mak/object.mak
   include $(TOP)/mak/depend.mak
+  include $(TOP)/mak/chksrc.mak
 endif
 
 ifdef DIRS

@@ -32,3 +32,5 @@ using namespace cimple;
 CIMPLE_MODULE(Person2_Module);
 CIMPLE_PROVIDER(Person2_Provider);
 CIMPLE_PROVIDER(Link2_Provider);
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person2/module.cpp,v 1.2 2007/03/07 20:25:27 mbrasher-public Exp $");

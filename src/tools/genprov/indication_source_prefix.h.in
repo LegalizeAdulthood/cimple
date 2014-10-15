@@ -32,8 +32,8 @@ Disable_Indications_Status <CLASS>_Provider::disable_indications()
 {
     if (_indication_handler)
     {
-	delete _indication_handler;
-	_indication_handler = 0;
+        delete _indication_handler;
+        _indication_handler = 0;
     }
 
     return DISABLE_INDICATIONS_OK;

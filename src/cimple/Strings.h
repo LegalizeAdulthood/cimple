@@ -47,6 +47,12 @@ inline bool eqi(const char* s1, const char* s2)
         strcasecmp(s1, s2) == 0;
 }
 
+CIMPLE_CIMPLE_LINKAGE
+size_t strlcpy(char* dest, const char* src, size_t size);
+
+CIMPLE_CIMPLE_LINKAGE
+size_t strlcat(char* dest, const char* src, size_t size);
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Strings_h */

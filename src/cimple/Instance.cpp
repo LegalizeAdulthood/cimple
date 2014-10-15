@@ -40,7 +40,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-void __construct(
+static void __default_construct(
     const Meta_Class* mc,
     Instance* inst,
     bool clear,
@@ -56,11 +56,15 @@ void __construct(
         memset(inst, 0, mc->size);
 
     inst->meta_class = mc;
-    inst->magic = CIMPLE_INSTANCE_MAGIC;
+    inst->__magic = CIMPLE_INSTANCE_MAGIC;
 
     // Initialize the reference count to one.
 
-    Atomic_create(&inst->refs, 1);
+    Atomic_create(&inst->__refs, 1);
+
+    // Initialize __name_space string.
+
+    new(&inst->__name_space) String();
 
     // The create() function has already zero-filled the object, which suffices
     // to initialize most properties. Others must be default constructed.
@@ -73,7 +77,7 @@ void __construct(
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            void* prop = property_of(inst, mp);
+            void* prop = __property_of(inst, mp);
 
             if (mp->subscript)
             {
@@ -192,25 +196,103 @@ void __construct(
                 }
             }
         }
+        else if (flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = 
+                (const Meta_Reference*)mc->meta_features[i];
+
+            if (mr->subscript)
+            {
+                Array_Ref& r = __array_ref_of(inst, mr);
+                new(&r) Array_Ref;
+            }
+        }
     }
 }
 
-Instance* create(const Meta_Class* mc, bool defaults)
+static void __uninitialized_copy(Instance* i1, const Instance* i2)
 {
-    Instance* inst = (Instance*)operator new(mc->size);
-    __construct(mc, inst, true, defaults);
-    return inst;
+    CIMPLE_ASSERT(i1 != 0);
+    CIMPLE_ASSERT(i2 != 0);
+    CIMPLE_ASSERT(i2->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    const Meta_Class* mc = i2->meta_class;
+
+    // Copy the raw objects using memcpy().
+
+    memcpy(i1, i2, mc->size);
+
+    // Initialize reference count to 1.
+
+    Atomic_create(&i1->__refs, 1);
+
+    // Copy __name_space member.
+
+    new(&i1->__name_space) String(i2->__name_space);
+
+    // Copy features.
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+        uint32 flags = mc->meta_features[i]->flags;
+
+        if (flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            void* p1 = __property_of(i1, mp);
+            const void* p2 = __property_of(i2, mp);
+
+            // Note: the null flags were copied above with memcpy().
+
+            if (mp->subscript)
+            {
+                __construct(
+                    ((__Array_Base*)p1)->rep,
+                    ((const __Array_Base*)p2)->rep);
+            }
+            else
+            {
+                if (mp->type == STRING)
+                    new(p1) String(*((String*)p2));
+                else if (mp->type == DATETIME)
+                    new(p1) Datetime(*((Datetime*)p2));
+            }
+        }
+        else if (flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+
+            if (mr->subscript)
+            {
+                Array_Ref& r1 = __array_ref_of(i1, mr);
+                const Array_Ref& r2 = __array_ref_of(i2, mr);
+
+                new(&r1) Array_Ref;
+
+                for (size_t i = 0; i < r2.size(); i++)
+                {
+                    if (r2[i])
+                        r1.append(clone(r2[i]));
+                    else
+                        r1.append(0);
+                }
+            }
+            else
+            {
+                Instance*& r1 = __ref_of(i1, mr);
+                const Instance*& r2 = __ref_of(i2, mr);
+
+                if (r2)
+                    r1 = clone(r2);
+            }
+        }
+    }
 }
 
-Instance* create(const Meta_Method* meta_meth)
-{
-    return create((const Meta_Class*)meta_meth);
-}
-
-void __destruct(Instance* inst)
+static void __destruct(Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = inst->meta_class;
 
@@ -223,7 +305,7 @@ void __destruct(Instance* inst)
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            void* field = property_of(inst, mp);
+            void* field = __property_of(inst, mp);
 
             if (mp->subscript)
                 __destruct(((__Array_Base*)field)->rep);
@@ -239,10 +321,18 @@ void __destruct(Instance* inst)
         {
             const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
 
-            Instance* instance = reference_of(inst, mr);
+            if (mr->subscript)
+            {
+                Array_Ref& r = __array_ref_of(inst, mr);
+                r.~Array_Ref();
+            }
+            else
+            {
+                Instance* instance = __ref_of(inst, mr);
 
-            if (instance)
-                unref(instance);
+                if (instance)
+                    unref(instance);
+            }
         }
     }
 
@@ -252,13 +342,29 @@ void __destruct(Instance* inst)
 
     // Release the atomic reference count.
 
-    Atomic_destroy(&inst->refs);
+    Atomic_destroy(&inst->__refs);
+
+    // Destroy __name_space string.
+
+    inst->__name_space.~String();
+}
+
+Instance* create(const Meta_Class* mc, bool defaults)
+{
+    Instance* inst = (Instance*)operator new(mc->size);
+    __default_construct(mc, inst, true, defaults);
+    return inst;
+}
+
+Instance* create(const Meta_Method* meta_meth)
+{
+    return create((const Meta_Class*)meta_meth);
 }
 
 void destroy(Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     __destruct(inst);
 
@@ -276,12 +382,17 @@ bool identical(const Instance* i1, const Instance* i2)
 {
     CIMPLE_ASSERT(i1 != 0);
     CIMPLE_ASSERT(i2 != 0);
-    CIMPLE_ASSERT(i1->magic == CIMPLE_INSTANCE_MAGIC);
-    CIMPLE_ASSERT(i2->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(i1->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(i2->__magic == CIMPLE_INSTANCE_MAGIC);
 
     // They must have the same meta class.
 
     if (i1->meta_class != i2->meta_class)
+        return false;
+
+    // Check namespace field.
+
+    if (i1->__name_space != i2->__name_space)
         return false;
 
     // Compare each feature.
@@ -300,7 +411,7 @@ bool identical(const Instance* i1, const Instance* i2)
                 (const Meta_Property*)mc->meta_features[i];
 
             if (!property_eq((const Meta_Property*)mp, 
-                property_of(i1, mp), property_of(i2, mp)))
+                __property_of(i1, mp), __property_of(i2, mp)))
                 return false;
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
@@ -308,14 +419,37 @@ bool identical(const Instance* i1, const Instance* i2)
             const Meta_Reference* mr = 
                 (const Meta_Reference*)mc->meta_features[i];
 
-            const Instance* tmp1 = reference_of(i1, mr);
-            const Instance* tmp2 = reference_of(i2, mr);
+            if (mr->subscript)
+            {
+                const Array_Ref& r1 = __array_ref_of(i1, mr);
+                const Array_Ref& r2 = __array_ref_of(i2, mr);
 
-            if (tmp1 && tmp2 && !identical(tmp1, tmp2))
-                return false;
+                if (r1.size() != r2.size())
+                    return false;
 
-            if (tmp1 && !tmp2 || !tmp1 && tmp2)
-                return false;
+                for (size_t i = 0; i < r1.size(); i++)
+                {
+                    const Instance* tmp1 = r1[i];
+                    const Instance* tmp2 = r2[i];
+
+                    if (tmp1 && tmp2 && !identical(tmp1, tmp2))
+                        return false;
+
+                    if (tmp1 && !tmp2 || !tmp1 && tmp2)
+                        return false;
+                }
+            }
+            else
+            {
+                const Instance* tmp1 = __ref_of(i1, mr);
+                const Instance* tmp2 = __ref_of(i2, mr);
+
+                if (tmp1 && tmp2 && !identical(tmp1, tmp2))
+                    return false;
+
+                if (tmp1 && !tmp2 || !tmp1 && tmp2)
+                    return false;
+            }
         }
     }
 
@@ -328,8 +462,8 @@ bool key_eq(const Instance* i1, const Instance* i2)
 {
     CIMPLE_ASSERT(i1 != 0);
     CIMPLE_ASSERT(i2 != 0);
-    CIMPLE_ASSERT(i1->magic == CIMPLE_INSTANCE_MAGIC);
-    CIMPLE_ASSERT(i2->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(i1->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(i2->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc1 = i1->meta_class;
     const Meta_Class* mc2 = i2->meta_class;
@@ -357,13 +491,19 @@ bool key_eq(const Instance* i1, const Instance* i2)
                 return false;
 
             if (!property_eq((const Meta_Property*)mp1, 
-                property_of(i1, mp1), property_of(i2, mp2)))
+                __property_of(i1, mp1), __property_of(i2, mp2)))
                 return false;
         }
         else if (mf1->flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr2 = find_reference(mc2, mf1->name);
             const Meta_Reference* mr1 = (const Meta_Reference*)mf1;
+
+            if (mr1->subscript)
+            {
+                // Unreachable since reference arrays cannot be keys.
+                continue;
+            }
 
             if (!mr2 || !(mr2->flags & CIMPLE_FLAG_KEY))
                 return false;
@@ -374,8 +514,8 @@ bool key_eq(const Instance* i1, const Instance* i2)
                 return false;
             }
 
-            const Instance* ti1 = reference_of(i1, mr1);
-            const Instance* ti2 = reference_of(i2, mr2);
+            const Instance* ti1 = __ref_of(i1, mr1);
+            const Instance* ti2 = __ref_of(i2, mr2);
 
             if (ti1 && ti2 && !key_eq(ti1, ti2))
                 return false;
@@ -390,14 +530,14 @@ bool key_eq(const Instance* i1, const Instance* i2)
 }
 
 // ATTN: fix copy to work between instances of different classes.
-void __copy(Instance* i1, const Instance* i2, bool keys_only)
+static void __copy(Instance* i1, const Instance* i2, bool keys_only)
 {
     // Check preconditions.
 
     CIMPLE_ASSERT(i1 != 0);
     CIMPLE_ASSERT(i2 != 0);
-    CIMPLE_ASSERT(i1->magic == CIMPLE_INSTANCE_MAGIC);
-    CIMPLE_ASSERT(i2->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(i1->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(i2->__magic == CIMPLE_INSTANCE_MAGIC);
     CIMPLE_ASSERT(i1->meta_class == i2->meta_class);
 
     if (i1->meta_class != i2->meta_class)
@@ -417,8 +557,8 @@ void __copy(Instance* i1, const Instance* i2, bool keys_only)
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            void* p1 = property_of(i1, mp);
-            const void* p2 = property_of(i2, mp);
+            void* p1 = __property_of(i1, mp);
+            const void* p2 = __property_of(i2, mp);
 
             null_of(mp, p1) = null_of(mp, p2);
 
@@ -441,17 +581,36 @@ void __copy(Instance* i1, const Instance* i2, bool keys_only)
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
-            Instance*& r1 = reference_of(i1, mr);
-            const Instance* r2 = reference_of(i2, mr);
 
-            if (r1)
+            if (mr->subscript)
             {
-                unref(r1);
-                r1 = 0;
-            }
+                Array_Ref& r1 = __array_ref_of(i1, mr);
+                const Array_Ref& r2 = __array_ref_of(i2, mr);
 
-            if (r2)
-                r1 = clone(r2);
+                r1.clear();
+
+                for (size_t i = 0; i < r2.size(); i++)
+                {
+                    if (r2[i])
+                        r1.append(clone(r2[i]));
+                    else
+                        r1.append(0);
+                }
+            }
+            else
+            {
+                Instance*& r1 = __ref_of(i1, mr);
+                const Instance* r2 = __ref_of(i2, mr);
+
+                if (r1)
+                {
+                    unref(r1);
+                    r1 = 0;
+                }
+
+                if (r2)
+                    r1 = clone(r2);
+            }
         }
     }
 }
@@ -466,70 +625,10 @@ void copy_keys(Instance* i1, const Instance* i2)
     __copy(i1, i2, true);
 }
 
-void __uninitialized_copy(Instance* i1, const Instance* i2)
-{
-    CIMPLE_ASSERT(i1 != 0);
-    CIMPLE_ASSERT(i2 != 0);
-    CIMPLE_ASSERT(i2->magic == CIMPLE_INSTANCE_MAGIC);
-
-    const Meta_Class* mc = i2->meta_class;
-
-    // Initialize magic number.
-
-    i1->magic = CIMPLE_INSTANCE_MAGIC;
-
-    // Initialize meta class.
-
-    i1->meta_class = mc;
-
-    // Copy the raw objects using memcpy().
-
-    memcpy(i1, i2, mc->size);
-
-    // Copy objects requiring construction.
-
-    for (size_t i = 0; i < mc->num_meta_features; i++)
-    {
-        uint32 flags = mc->meta_features[i]->flags;
-
-        if (flags & CIMPLE_FLAG_PROPERTY)
-        {
-            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            void* p1 = property_of(i1, mp);
-            const void* p2 = property_of(i2, mp);
-
-            // Note: the null flags were copied above with memcpy().
-
-            if (mp->subscript)
-            {
-                __construct(
-                    ((__Array_Base*)p1)->rep,
-                    ((const __Array_Base*)p2)->rep);
-            }
-            else
-            {
-                if (mp->type == STRING)
-                    new(p1) String(*((String*)p2));
-                else if (mp->type == DATETIME)
-                    new(p1) Datetime(*((Datetime*)p2));
-            }
-        }
-        else if (flags & CIMPLE_FLAG_REFERENCE)
-        {
-            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
-            Instance*& r1 = reference_of(i1, mr);
-            const Instance*& r2 = reference_of(i2, mr);
-
-            if (r2)
-                r1 = clone(r2);
-        }
-    }
-}
-
 Instance* clone(const Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     Instance* new_inst = (Instance*)operator new(inst->meta_class->size);
     __uninitialized_copy(new_inst, inst);
@@ -540,7 +639,7 @@ Instance* clone(const Instance* inst)
 Instance* key_clone(const Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     Instance* new_inst = create(inst->meta_class);
     copy_keys(new_inst, inst);
@@ -552,7 +651,7 @@ void __set_null_flags(
     const Instance* inst, bool include_keys, bool include_non_keys, uint8 flag)
 {
     CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = inst->meta_class;
 
@@ -563,7 +662,7 @@ void __set_null_flags(
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            uint8* prop = (uint8*)property_of(inst, mp);
+            uint8* prop = (uint8*)__property_of(inst, mp);
 
             if (flags & CIMPLE_FLAG_KEY)
             {
@@ -589,8 +688,8 @@ ssize_t get_associators(
 {
     CIMPLE_ASSERT(inst != 0);
     CIMPLE_ASSERT(assoc_inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
-    CIMPLE_ASSERT(assoc_inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(assoc_inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = assoc_inst->meta_class;
     bool found_inst = false;
@@ -603,7 +702,14 @@ ssize_t get_associators(
         if (flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
-            const Instance* tmp = reference_of(assoc_inst, mr);
+
+            if (mr->subscript)
+            {
+                // Assocations may not contain arrays of references.
+                continue;
+            }
+
+            const Instance* tmp = __ref_of(assoc_inst, mr);
 
             if (is_subclass(mr->meta_class, inst->meta_class) && 
                 key_eq(inst, tmp))
@@ -667,8 +773,8 @@ bool is_reference_of(
 {
     CIMPLE_ASSERT(inst != 0);
     CIMPLE_ASSERT(ref != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
-    CIMPLE_ASSERT(ref->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(ref->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = ref->meta_class;
 
@@ -679,7 +785,14 @@ bool is_reference_of(
         if (flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
-            const Instance* tmp = reference_of(ref, mr);
+
+            if (mr->subscript)
+            {
+                // Unreachable!
+                continue;
+            }
+
+            const Instance* tmp = __ref_of(ref, mr);
 
             if (key_eq(inst, tmp))
             {
@@ -702,7 +815,7 @@ bool is_reference_of(
 bool keys_non_null(const Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = inst->meta_class;
 
@@ -718,7 +831,7 @@ bool keys_non_null(const Instance* inst)
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            const void* field = property_of(inst, mp);
+            const void* field = __property_of(inst, mp);
 
             if (null_of(mp, field))
                 return false;
@@ -726,7 +839,14 @@ bool keys_non_null(const Instance* inst)
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
-            const Instance* tmp = reference_of(inst, mr);
+
+            if (mr->subscript)
+            {
+                // Unreachable!
+                continue;
+            }
+
+            const Instance* tmp = __ref_of(inst, mr);
 
             if (!tmp)
                 return false;
@@ -740,7 +860,7 @@ bool keys_non_null(const Instance* inst)
 int filter_properties(Instance* instance, const char* const* properties)
 {
     CIMPLE_ASSERT(instance != 0);
-    CIMPLE_ASSERT(instance->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(instance->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = instance->meta_class;
 
@@ -778,12 +898,19 @@ int filter_properties(Instance* instance, const char* const* properties)
         if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (const Meta_Property*)mf;
-            null_of(mp, property_of(instance, mp)) = 0;
+            null_of(mp, __property_of(instance, mp)) = 0;
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = (const Meta_Reference*)mf;
-            Instance*& ref = reference_of(instance, mr);
+
+            if (mr->subscript)
+            {
+                // Unreachable!
+                continue;
+            }
+
+            Instance*& ref = __ref_of(instance, mr);
 
             if (!ref)
                 ref = create(mr->meta_class);
@@ -807,12 +934,12 @@ void destroyer(Instance* p)
 void ref(const Instance* instance)
 {
     if (instance)
-        Atomic_inc(&((Instance*)instance)->refs);
+        Atomic_inc(&((Instance*)instance)->__refs);
 }
 
 void unref(const Instance* instance)
 {
-    if (instance && Atomic_dec_and_test(&((Instance*)instance)->refs))
+    if (instance && Atomic_dec_and_test(&((Instance*)instance)->__refs))
         destroy((Instance*)instance);
 }
 
@@ -979,6 +1106,12 @@ Instance* model_path_to_instance(
         {
             const Meta_Reference* mr = (const Meta_Reference*)mf;
 
+            if (mr->subscript)
+            {
+                // Unreachable!
+                continue;
+            }
+
             String value;
 
             if (!_parse_string_literal(p, value))
@@ -990,12 +1123,12 @@ Instance* model_path_to_instance(
             if (!tmp)
                 return 0;
 
-            reference_of(inst.ptr(), mr) = tmp.steal();
+            __ref_of(inst.ptr(), mr) = tmp.steal();
         }
         else if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (const Meta_Property*)mf;
-            void* prop = property_of(inst.ptr(), mp);
+            void* prop = __property_of(inst.ptr(), mp);
 
             switch (mp->type)
             {
@@ -1218,7 +1351,7 @@ int instance_to_model_path(const Instance* inst, String& model_path)
     model_path.clear();
 
     CIMPLE_ASSERT(inst != 0);
-    CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = inst->meta_class;
 
@@ -1256,7 +1389,7 @@ int instance_to_model_path(const Instance* inst, String& model_path)
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mf;
-            const void* prop = property_of(inst, mp);
+            const void* prop = __property_of(inst, mp);
 
             // Arrays cannot be keys.
 
@@ -1274,7 +1407,14 @@ int instance_to_model_path(const Instance* inst, String& model_path)
         if (flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = (Meta_Reference*)mf;
-            const Instance* tmp_instance = reference_of(inst, mr);
+
+            if (mr->subscript)
+            {
+                // Unreachable!
+                continue;
+            }
+
+            const Instance* tmp_instance = __ref_of(inst, mr);
 
             // ATTN: is this assumption correct?
             // A null reference cannot be a key.
@@ -1303,7 +1443,7 @@ int instance_to_model_path(const Instance* inst, String& model_path)
     return 0;
 }
 
-struct IO
+namespace IO
 {
     static void _print_scalar(uint32 type, const void* ptr)
     {
@@ -1448,16 +1588,19 @@ struct IO
         const Instance* inst, const char* name, size_t level, bool keys_only)
     {
         CIMPLE_ASSERT(inst != 0);
-        CIMPLE_ASSERT(inst->magic == CIMPLE_INSTANCE_MAGIC);
+        CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
         const Meta_Class* mc = inst->meta_class;
 
         if (name)
             iprintf(level, "%s %s =\n", inst->meta_class->name, name);
         else
-            iprintf(level, "%s \n", inst->meta_class->name);
+            iprintf(level, "%s\n", inst->meta_class->name);
 
         iprintf(level, "{\n");
+
+        iprintf(level, 
+            "    string __name_space = \"%s\";\n", inst->__name_space.c_str());
 
         for (size_t i = 0; i < mc->num_meta_features; i++)
         {
@@ -1480,20 +1623,45 @@ struct IO
             if (flags & CIMPLE_FLAG_PROPERTY)
             {
                 const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-                const void* prop = property_of(inst, mp);
+                const void* prop = __property_of(inst, mp);
                 _print_property(mp, prop, level);
             }
             else if (flags & CIMPLE_FLAG_REFERENCE)
             {
                 const Meta_Reference* mr = 
                     (Meta_Reference*)mc->meta_features[i];
-                Instance* tmp = *((Instance**)((uint8*)inst + mr->offset));
 
-                if (tmp)
-                    _print_aux(tmp, mr->name, level, keys_only);
+                if (mr->subscript)
+                {
+                    const Array_Ref& r = __array_ref_of(inst, mr);
+
+                    iprintf(level, "%s %s =\n", mr->meta_class->name, mr->name);
+                    iprintf(level, "{\n");
+                    level++;
+
+                    for (size_t i = 0; i < r.size(); i++)
+                    {
+                        const Instance* tmp = r[i];
+
+                        if (tmp)
+                            _print_aux(tmp, 0, level, false);
+                        else
+                            iprintf(level, "NULL\n");
+                    }
+
+                    level--;
+                    iprintf(level, "};\n");
+                }
                 else
-                    iprintf(level, "%s %s = NULL;\n", 
-                        mr->meta_class->name, mr->name);
+                {
+                    const Instance*& tmp = __ref_of(inst, mr);
+
+                    if (tmp)
+                        _print_aux(tmp, mr->name, level, keys_only);
+                    else
+                        iprintf(level, "%s %s = NULL;\n", 
+                            mr->meta_class->name, mr->name);
+                }
             }
 
             level--;
@@ -1501,11 +1669,40 @@ struct IO
 
         iprintf(level, "}\n");
     }
-};
+}
 
 void print(const Instance* inst, bool keys_only)
 {
     IO::_print_aux(inst, 0, 0, keys_only);
 }
 
+void __create_refs(Instance* inst)
+{
+    CIMPLE_ASSERT(inst != 0);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    const Meta_Class* mc = inst->meta_class;
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+        uint32 flags = mc->meta_features[i]->flags;
+
+        if (flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = 
+                (const Meta_Reference*)mc->meta_features[i];
+
+            if (mr->subscript == 0)
+            {
+                Instance*& r = __ref_of(inst, mr);
+
+                if (r == 0)
+                    r = create(mr->meta_class, true);
+            }
+        }
+    }
+}
+
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Instance.cpp,v 1.119 2007/03/13 21:05:20 mbrasher-public Exp $");

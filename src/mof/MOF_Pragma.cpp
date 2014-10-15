@@ -36,8 +36,10 @@ void MOF_Pragma::handle(
     const char* pragma_arg)
 {
     if (strcmp(pragma_name, "include") == 0)
-	push_include_file(pragma_arg);
+        push_include_file(pragma_arg);
 
     if (strcmp(pragma_name, "generate") == 0)
-	MOF_generate_classes[MOF_num_generate_classes++] = strdup(pragma_arg);
+        MOF_generate_classes[MOF_num_generate_classes++] = strdup(pragma_arg);
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Pragma.cpp,v 1.5 2007/03/07 18:57:15 mbrasher-public Exp $");

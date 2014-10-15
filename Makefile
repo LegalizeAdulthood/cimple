@@ -1,3 +1,4 @@
+
 CIMPLE_PLATFORM=
 
 -include mak/platform.mak
@@ -27,6 +28,9 @@ sub: mut
 genclass: mut
 	$(MAKE) -C src genclass
 
+chksrc: mut
+	$(MAKE) -C src chksrc
+
 reg: mut
 	$(MAKE) -C src/providers reg
 
@@ -42,6 +46,7 @@ endif
 distclean: clean
 	$(RM) mak/platform.mak
 	$(RM) src/platform.h
+	$(RM) cimpleinfo.out
 
 ##==============================================================================
 ##
@@ -74,23 +79,44 @@ regress:
 	$(MAKE) live-tests
 	$(MAKE) __stop_cimserver
 
+setup:
+	$(MAKE) -C $(PEGASUS_ROOT) repository
+	$(MAKE) reg
+
 ##==============================================================================
 ##
 ## release:
 ##
 ##==============================================================================
 
-VERSION=0.99.40
-TAG=cimple_0_99_40
+MAJOR=0
+MINOR=99
+REVSION=56
+VERSION=$(MAJOR).$(MINOR).$(REVSION)
+DISTROOT=cimple-$(VERSION)
+TARDIST=$(DISTROOT).tar.gz
+ZIPDIST=$(DISTROOT).zip
+TAG=cimple_$(MAJOR)_$(MINOR)_$(REVSION)
 
-TARBALL=cimple-$(VERSION).tar.gz
-DIFF_FILE=cimple-$(VERSION).diff
-RELEASE_NOTES=cimple-$(VERSION)-release-notes.txt
-PREFIX=$(HOME)/websites/www.cimple.org
+tag:
+	@ cvs tag -F $(TAG) > /dev/null
+	@ echo "Added $(TAG) tag"
 
 dist:
-	$(MAKE) distclean > /dev/null
-	cvs tag -F $(TAG)
-	( cd ..; tar zcvf $(PREFIX)/$(TARBALL) cimple )
-	@ echo done
+	@ rm -f /tmp/$(TARDIST)
+	@ rm -f /tmp/$(ZIPDIST)
+	@ rm -rf /tmp/$(DISTROOT)
+	@ cp -r . /tmp/$(DISTROOT)
+	@ ( cd /tmp/$(DISTROOT); $(MAKE) distclean > /dev/null )
+	@ rm -rf `find /tmp/$(DISTROOT) -name CVS`
+	@ echo "Creating /tmp/$(TARDIST)..."
+	@ ( cd /tmp ; tar zcf $(TARDIST) $(DISTROOT) )
+	@ echo "Creating /tmp/$(ZIPDIST)..."
+	@ ( cd /tmp/$(DISTROOT) ; zip -q -R ../$(ZIPDIST) '*' )
+	@ rm -rf /tmp/$(DISTROOT)
 
+publish:
+	cp /tmp/$(TARDIST) $(HOME)/websites/www.cimple.org
+	cp /tmp/$(ZIPDIST) $(HOME)/websites/www.cimple.org
+	rm -rf /tmp/$(TARDIST)
+	rm -rf /tmp/$(ZIPDIST)

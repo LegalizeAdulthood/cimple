@@ -93,6 +93,8 @@ public:
     static int modify_instance(
         const char* name_space, 
         const Instance* instance);
+
+    static void allow_unload(bool flag);
 };
 
 CIMPLE_NAMESPACE_END

@@ -12,4 +12,4 @@ tests:
 	$(BINARY_TARGET)
 
 genclass:
-	@ $(BIN_DIR)/genclass -I ../mof Erp
+	genclass -I ../mof Erp

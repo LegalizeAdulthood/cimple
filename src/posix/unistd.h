@@ -30,15 +30,21 @@
 #include "linkage.h"
 #include <io.h>
 
-#define F_OK 00
-#define W_OK 02
-#define R_OK 04
-#define RW_OK (W_OK | R_OK)
+#define F_OK 00 /* Existence-only */
+#define W_OK 02 /* Write-only */
+#define R_OK 04 /* Read-only */
+#define X_OK R_OK /* Execute (if you can read it you can execute it). */
+#define RW_OK 06 /* Read and write */
+
 #define S_ISDIR(mode) ((0040000 & mode) ? 1 : 0)
 
 POSIX_NAMESPACE_BEGIN
 
 POSIX_LINKAGE unsigned int sleep(unsigned int seconds);
+
+POSIX_LINKAGE int chdir(const char* path);
+
+POSIX_LINKAGE char* getcwd(char* buffer, size_t size);
 
 POSIX_NAMESPACE_END
 

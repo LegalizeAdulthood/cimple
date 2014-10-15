@@ -30,6 +30,8 @@
 #  include <execinfo.h>
 #endif
 
+int __CIMPLE_VERSION_SYMBOL(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION);
+
 CIMPLE_NAMESPACE_BEGIN
 
 void __cimple_assert(
@@ -43,7 +45,7 @@ void __cimple_assert(
     fprintf(stderr, "%s(%d): %s(): assert: %s\n\n", 
         file, int(line), function, cond);
 
-#ifdef __USE_GNU
+#if defined(USE_BACKTRACE) && defined(__USE_GNU)
 
     // Print backtrace:
 
@@ -77,3 +79,5 @@ void __cimple_trace(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/config.cpp,v 1.34 2007/03/07 18:41:03 mbrasher-public Exp $");

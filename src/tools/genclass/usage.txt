@@ -17,7 +17,7 @@ it expects to find CIM_Schema.mof (which contains the CIM schema). The syntax
 of CIMPLE_MOF_PATH is similar to the Linux/Unix PATH environment variable 
 (i.e., a list of directories separated by colons). For example:
 
-    export CIMPLE_MOF_PATH=/opt/cimple/schema/cim211:/tmp/cim
+    export CIMPLE_MOF_PATH=/opt/cimple/schema/cim2131:/tmp/cim
 
 Genclass searches for user-defined MOF files in the following way:
 
@@ -26,10 +26,10 @@ Genclass searches for user-defined MOF files in the following way:
     3. 	Finally, under directories given by the -I options.
 
 OPTIONS:
+    -V      -- print the version number.
     -I path -- add to MOF include path (can be repeated).
     -M file -- add to list of MOF files to be parsed (can be repeated).
     -r      -- generate repository.h and repository.cpp.
-    -v      -- print the version number.
     -h      -- Print this message.
     -e      -- Generate enum tags for Values/ValueMap qualifiers.
     -s      -- Generate classes for entire CIM schema.
@@ -37,4 +37,5 @@ OPTIONS:
     -q      -- Generate non-boolean qualifiers and non-description qualifiers.
     -d      -- Generate Description qualifiers.
     -b      -- Generate boolean qualifiers (in addition to bit mask).
+    -f file -- Read class names from this file (one per line).
 

@@ -14,35 +14,35 @@ Person2_Provider::~Person2_Provider()
 Load_Status Person2_Provider::load()
 {
     {
-	Person2* instance = Person2::create();
-	instance->ssn.value = 1;
-	instance->first.value = "Mike";
-	instance->last.value = "Brasher";
-	_person1 = instance;
+        Person2* instance = Person2::create();
+        instance->ssn.value = 1;
+        instance->first.value = "Mike";
+        instance->last.value = "Brasher";
+        _person1 = instance;
     }
 
     {
-	Person2* instance = Person2::create();
-	instance->ssn.value = 2;
-	instance->first.value = "Saara";
-	instance->last.value = "Silva-Brasher";
-	_person2 = instance;
+        Person2* instance = Person2::create();
+        instance->ssn.value = 2;
+        instance->first.value = "Saara";
+        instance->last.value = "Silva-Brasher";
+        _person2 = instance;
     }
 
     {
-	Person2* instance = Person2::create();
-	instance->ssn.value = 3;
-	instance->first.value = "Sofia";
-	instance->last.value = "Brasher";
-	_person3 = instance;
+        Person2* instance = Person2::create();
+        instance->ssn.value = 3;
+        instance->first.value = "Sofia";
+        instance->last.value = "Brasher";
+        _person3 = instance;
     }
 
     {
-	Person2* instance = Person2::create();
-	instance->ssn.value = 4;
-	instance->first.value = "Andrea";
-	instance->last.value = "Brasher";
-	_person4 = instance;
+        Person2* instance = Person2::create();
+        instance->ssn.value = 4;
+        instance->first.value = "Andrea";
+        instance->last.value = "Brasher";
+        _person4 = instance;
     }
 
     return LOAD_OK;
@@ -59,20 +59,20 @@ Get_Instance_Status Person2_Provider::get_instance(
 {
     switch (model->ssn.value)
     {
-	case 1:
-	    instance = _person1->clone();
-	    return GET_INSTANCE_OK;
-	case 2:
-	    instance = _person2->clone();
-	    return GET_INSTANCE_OK;
-	case 3:
-	    instance = _person3->clone();
-	    return GET_INSTANCE_OK;
-	case 4:
-	    instance = _person4->clone();
-	    return GET_INSTANCE_OK;
-	default:
-	    return GET_INSTANCE_NOT_FOUND;
+        case 1:
+            instance = _person1->clone();
+            return GET_INSTANCE_OK;
+        case 2:
+            instance = _person2->clone();
+            return GET_INSTANCE_OK;
+        case 3:
+            instance = _person3->clone();
+            return GET_INSTANCE_OK;
+        case 4:
+            instance = _person4->clone();
+            return GET_INSTANCE_OK;
+        default:
+            return GET_INSTANCE_NOT_FOUND;
     }
 }
 
@@ -124,7 +124,9 @@ int Person2_Provider::proc(
     typedef Person2 Class;
     typedef Person2_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person2/Person2_Provider.cpp,v 1.5 2007/03/07 20:25:27 mbrasher-public Exp $");

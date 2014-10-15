@@ -24,3 +24,6 @@ run:
 tests:
 
 genclass:
+
+chksrc:
+	chksrc $(SOURCES)

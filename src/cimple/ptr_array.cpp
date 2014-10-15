@@ -36,3 +36,5 @@ void append_ptr_array(void**& array, size_t& size, void* ptr)
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/ptr_array.cpp,v 1.4 2007/03/07 18:41:16 mbrasher-public Exp $");

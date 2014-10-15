@@ -10,7 +10,7 @@ SOURCES = \
     UUID.cpp \
     MAC.cpp
 
-LIBRARIES =
+LIBRARIES += cimple
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 

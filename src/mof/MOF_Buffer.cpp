@@ -31,7 +31,7 @@ inline MOF_uint32 _next_pow_2(MOF_uint32 x)
     MOF_uint32 r = 1;
 
     while (r < x)
-	r <<= 1;
+        r <<= 1;
 
     return r;
 }
@@ -45,9 +45,9 @@ void MOF_Buffer::reserve(size_t capacity)
 {
     if (capacity > _capacity)
     {
-	capacity = _round_capacity(capacity);
-	_data = (char*)realloc(_data, capacity);
-	_capacity = capacity;
+        capacity = _round_capacity(capacity);
+        _data = (char*)realloc(_data, capacity);
+        _capacity = capacity;
     }
 }
 
@@ -66,3 +66,5 @@ char* MOF_Buffer::steal_data()
     _capacity = 0;
     return data;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Buffer.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

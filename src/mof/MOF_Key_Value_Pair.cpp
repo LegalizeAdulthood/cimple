@@ -62,26 +62,26 @@ void MOF_Key_Value_Pair::validate(MOF_Class_Decl* class_decl)
 
     for (p = class_decl->all_features; p; p = (MOF_Feature_Info*)p->next)
     {
-	if (MOF_stricmp(p->feature->name, key) == 0)
-	{
-	    if (p->feature->type == MOF_FEATURE_PROP)
-	    {
-		MOF_Property_Decl* prop_decl = (MOF_Property_Decl*)p->feature;
-		data_type = prop_decl->data_type;
-		array_index = prop_decl->array_index;
-		is_key = (p->feature->qual_mask & MOF_QT_KEY) ? true : false;
-		is_ref = false;
-		break;
-	    }
-	    else if (p->feature->type == MOF_FEATURE_REF)
-	    {
-		data_type = TOK_STRING;
-		array_index = 0;
-		is_key = (p->feature->qual_mask & MOF_QT_KEY) ? true : false;
-		is_ref = true;
-		break;
-	    }
-	}
+        if (MOF_stricmp(p->feature->name, key) == 0)
+        {
+            if (p->feature->type == MOF_FEATURE_PROP)
+            {
+                MOF_Property_Decl* prop_decl = (MOF_Property_Decl*)p->feature;
+                data_type = prop_decl->data_type;
+                array_index = prop_decl->array_index;
+                is_key = (p->feature->qual_mask & MOF_QT_KEY) ? true : false;
+                is_ref = false;
+                break;
+            }
+            else if (p->feature->type == MOF_FEATURE_REF)
+            {
+                data_type = TOK_STRING;
+                array_index = 0;
+                is_key = (p->feature->qual_mask & MOF_QT_KEY) ? true : false;
+                is_ref = true;
+                break;
+            }
+        }
     }
 
     /*
@@ -90,9 +90,9 @@ void MOF_Key_Value_Pair::validate(MOF_Class_Decl* class_decl)
 
     if (data_type == 0)
     {
-	MOF_error_printf(
-	    "undefined property name in reference initializer \"%s\"",
-	    key);
+        MOF_error_printf(
+            "undefined property name in reference initializer \"%s\"",
+            key);
     }
 
     /*
@@ -101,9 +101,9 @@ void MOF_Key_Value_Pair::validate(MOF_Class_Decl* class_decl)
 
     if (!is_key)
     {
-	MOF_error_printf(
-	    "reference initializer contains a non-key property: \"%s\"",
-	    key);
+        MOF_error_printf(
+            "reference initializer contains a non-key property: \"%s\"",
+            key);
     }
 
     /*
@@ -112,25 +112,27 @@ void MOF_Key_Value_Pair::validate(MOF_Class_Decl* class_decl)
 
     if (value)
     {
-	/*
-	 * Validate the value.
-	 */
+        /*
+         * Validate the value.
+         */
 
-	value->validate(
-	    "reference initializer key", key, data_type, array_index);
+        value->validate(
+            "reference initializer key", key, data_type, array_index);
 
-	/*
-	 * If it's a reference we must normalize.
-	 */
+        /*
+         * If it's a reference we must normalize.
+         */
 
-	if (is_ref && value->string_value)
-	{
-	    MOF_ASSERT(data_type == TOK_STRING);
-	    char* str = MOF_Object_Reference::normalize(value->string_value);
-	    MOF_ASSERT(str != 0);
+        if (is_ref && value->string_value)
+        {
+            MOF_ASSERT(data_type == TOK_STRING);
+            char* str = MOF_Object_Reference::normalize(value->string_value);
+            MOF_ASSERT(str != 0);
 
-	    free(value->string_value);
-	    value->string_value = str;
-	}
+            free(value->string_value);
+            value->string_value = str;
+        }
     }
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Key_Value_Pair.cpp,v 1.7 2007/03/07 18:57:14 mbrasher-public Exp $");

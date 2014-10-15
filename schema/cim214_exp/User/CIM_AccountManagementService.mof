@@ -1,0 +1,51 @@
+// Copyright (c) 2005-2006 DMTF.  All rights reserved.
+// <change cr="WIPCR00327.001" type="add">
+// Add IdentityManagementService</change>
+// <change cr="WIPCR00316.003" type="add">Add extrinsics to
+// AccountManagementService and define Capabilities.</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_AccountManagementService
+// ==================================================================
+   [Version ( "2.14.0" ), UMLPackagePath ( "CIM::User::Account" ), 
+    Description (
+       "CIM_AccountManagementService creates, manages, and if "
+       "necessary destroys Accounts on behalf of other "
+       "SecuritySerices.")]
+class CIM_AccountManagementService : CIM_IdentityManagementService {
+
+      [Experimental, Description (
+          "CreateAccount creates an Account on the specified "
+          "ComputerSystem. Upon successful completion of the method, "
+          "there shall be a newly created instance of CIM_Account "
+          "associated through the CIM_AccountOnSystem association with "
+          "the instance of ComputerSystem identified by the System "
+          "parameter such that each property of the CIM_Account "
+          "instance has the value of the corresponding property of the "
+          "template instance specified by the AccountTemplate "
+          "parameter and the CIM_Account instance is associated with "
+          "this instance of CIM_AccountManagementService through the "
+          "CIM_ServiceAffectsElement association."), 
+       ValueMap { "0", "1", "2", "..", "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported", "Failed",
+          "Method Reserved", "Vendor Specific" }]
+   uint32 CreateAccount (
+      
+         [Required, IN, Description (
+             "The scoping ComputerSystem in which to create the "
+             "Account.")]
+      CIM_ComputerSystem REF System,
+      
+         [Required, IN, Description (
+             "AccountTemplate is a template for the desired Account to "
+             "be created."), 
+          EmbeddedInstance ( "CIM_Account" )]
+      string AccountTemplate,
+      
+         [IN ( False ), OUT, Description (
+             "Reference to the instance of CIM_Account created when "
+             "the method returns a value of 0.")]
+      CIM_Account REF Account); 
+
+};

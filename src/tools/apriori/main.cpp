@@ -1,5 +1,5 @@
+#define CIMPLE_NO_VERSION_SYMBOL
 #include <cimple/config.h>
-#include <cimple/version.h>
 #include <cstdio>
 #include <algorithm>
 #include <iostream>
@@ -27,7 +27,7 @@ struct Spec
 
     friend bool operator<(const Spec& x, const Spec& y)
     {
-	return 0;
+        return 0;
     }
 };
 
@@ -44,7 +44,7 @@ struct Info
 
     friend bool operator<(const Info& x, const Info& y)
     {
-	return x.code < y.code;
+        return x.code < y.code;
     }
 };
 
@@ -93,7 +93,7 @@ void emit_code(vector<Info>& v)
 
     for (size_t i = 0; i < v.size(); i++)
     {
-	printf("    %s = %d,\n", v[i].ident.c_str(), int(v[i].id));
+        printf("    %s = %d,\n", v[i].ident.c_str(), int(v[i].id));
     }
 
     printf("};\n\n");
@@ -113,15 +113,15 @@ void emit_code(vector<Info>& v)
 
     switch (hash_algorithm)
     {
-	case 1: hash_str = HASH1; break;
-	case 2: hash_str = HASH2; break;
-	case 3: hash_str = HASH3; break;
-	case 4: hash_str = HASH4; break;
-	case 5: hash_str = HASH5; break;
-	case 6: hash_str = HASH6; break;
-	default: assert(0);
+        case 1: hash_str = HASH1; break;
+        case 2: hash_str = HASH2; break;
+        case 3: hash_str = HASH3; break;
+        case 4: hash_str = HASH4; break;
+        case 5: hash_str = HASH5; break;
+        case 6: hash_str = HASH6; break;
+        default: assert(0);
     }; 
-	
+        
     printf("    size_t code = %s;\n", hash_str);
 
     printf("\n");
@@ -130,27 +130,27 @@ void emit_code(vector<Info>& v)
 
     for (size_t i = 0; i < v.size(); i++)
     {
-	const Info& info = v[i];
+        const Info& info = v[i];
 
-	if (info.code != code)
-	{
-	    code = info.code;
-	    printf("        ");
-	    printf("case %d:\n", int(code));
-	}
-	printf("            ");
+        if (info.code != code)
+        {
+            code = info.code;
+            printf("        ");
+            printf("case %d:\n", int(code));
+        }
+        printf("            ");
 
-	const char* str = info.str.c_str();
-	size_t length = info.str.size();
+        const char* str = info.str.c_str();
+        size_t length = info.str.size();
 
-	const char* func = ignore_case ? "equali" : "equal";
+        const char* func = ignore_case ? "equali" : "equal";
 
-	printf("if (%s(\"%s\", %u, p, n))\n", func, str, int(length));
-	printf("                ");
-	printf("return %s;\n", info.ident.c_str());
+        printf("if (%s(\"%s\", %u, p, n))\n", func, str, int(length));
+        printf("                ");
+        printf("return %s;\n", info.ident.c_str());
 
-	if (i + 1 == v.size() || info.code != v[i+1].code)
-	    printf("            break;\n");
+        if (i + 1 == v.size() || info.code != v[i+1].code)
+            printf("            break;\n");
     }
 
     printf("    }\n");
@@ -161,10 +161,10 @@ void emit_code(vector<Info>& v)
 bool valid_ident(const char* ident)
 {
     if (!isalpha(*ident) && *ident != '_')
-	return false;
+        return false;
 
     while (isalnum(*ident) || *ident == '_')
-	ident++;
+        ident++;
 
     return *ident == '\0' ? true : false;
 }
@@ -179,9 +179,9 @@ void load_spec_file(const char* filename, vector<Spec>& v)
 
     if (!is)
     {
-	cerr << argv0 << ": error: ";
-	cerr << "cannot open file: \"" << filename << "\"" << endl;
-	exit(1);
+        cerr << argv0 << ": error: ";
+        cerr << "cannot open file: \"" << filename << "\"" << endl;
+        exit(1);
     }
 
     //
@@ -192,39 +192,39 @@ void load_spec_file(const char* filename, vector<Spec>& v)
 
     for (size_t line_num = 1; getline(is, line); line_num++)
     {
-	size_t pos = line.find(separator);
+        size_t pos = line.find(separator);
 
-	if (pos == (size_t)-1)
-	{
-	    cerr << argv0 << ": error: ";
-	    cerr << filename << "(" << line_num << "): ";
-	    cerr << "separator missing" << endl;
-	    exit(1);
-	}
+        if (pos == (size_t)-1)
+        {
+            cerr << argv0 << ": error: ";
+            cerr << filename << "(" << line_num << "): ";
+            cerr << "separator missing" << endl;
+            exit(1);
+        }
 
-	string str = line.substr(0, pos);
-	string ident = line.substr(pos + 1);
+        string str = line.substr(0, pos);
+        string ident = line.substr(pos + 1);
 
-	if (str.size() < 1)
-	{
-	    cerr << argv0 << ": error: ";
-	    cerr << filename << "(" << line_num << "): ";
-	    cerr << "separator missing" << endl;
-	    exit(1);
-	}
+        if (str.size() < 1)
+        {
+            cerr << argv0 << ": error: ";
+            cerr << filename << "(" << line_num << "): ";
+            cerr << "separator missing" << endl;
+            exit(1);
+        }
 
-	if (!valid_ident(ident.c_str()))
-	{
-	    cerr << argv0 << ": error: ";
-	    cerr << filename << "(" << line_num << "): ";
-	    cerr << "illegal identifier: \"" << ident << "\"" << endl;
-	    exit(1);
-	}
+        if (!valid_ident(ident.c_str()))
+        {
+            cerr << argv0 << ": error: ";
+            cerr << filename << "(" << line_num << "): ";
+            cerr << "illegal identifier: \"" << ident << "\"" << endl;
+            exit(1);
+        }
 
-	Spec spec;
-	spec.str = str;
-	spec.ident = ident;
-	v.push_back(spec);
+        Spec spec;
+        spec.str = str;
+        spec.ident = ident;
+        v.push_back(spec);
     }
 }
 
@@ -238,17 +238,17 @@ int get_opt(
 
     for (int i = 0; i < argc; i++)
     {
-	if (strcmp(argv[i], opt_name) == 0) 
-	{
-	    if (i + 1 == argc)
-		return -1;
+        if (strcmp(argv[i], opt_name) == 0) 
+        {
+            if (i + 1 == argc)
+                return -1;
 
-	    opt_value = argv[i+1];
+            opt_value = argv[i+1];
 
-	    memmove(&argv[i], &argv[i+2], (argc - i - 1) * sizeof(char*));
-	    argc  -= 2;
-	    return 0;
-	}
+            memmove(&argv[i], &argv[i+2], (argc - i - 1) * sizeof(char*));
+            argc  -= 2;
+            return 0;
+        }
     }
 
     return 0;
@@ -261,18 +261,16 @@ int get_switch_opt(
 {
     for (int i = 0; i < argc; i++)
     {
-	if (strcmp(argv[i], opt_name) == 0) 
-	{
-	    memmove(&argv[i], &argv[i+1], (argc - i) * sizeof(char*));
-	    argc--;
-	    return 0;
-	}
+        if (strcmp(argv[i], opt_name) == 0) 
+        {
+            memmove(&argv[i], &argv[i+1], (argc - i) * sizeof(char*));
+            argc--;
+            return 0;
+        }
     }
 
     return -1;
 }
-
-CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {
@@ -282,39 +280,39 @@ int main(int argc, char** argv)
 
     if (get_opt(argc, argv, "-s", value) == -1)
     {
-	cerr << argv0 << ": error: missing option argument" << endl;
-	exit(1);
+        cerr << argv0 << ": error: missing option argument" << endl;
+        exit(1);
     }
 
     if (get_switch_opt(argc, argv, "-i") == 0)
-	ignore_case = true;
+        ignore_case = true;
 
     if (get_switch_opt(argc, argv, "-1") == 0)
-	hash_algorithm = 1;
+        hash_algorithm = 1;
 
     if (get_switch_opt(argc, argv, "-2") == 0)
-	hash_algorithm = 2;
+        hash_algorithm = 2;
 
     if (get_switch_opt(argc, argv, "-3") == 0)
-	hash_algorithm = 3;
+        hash_algorithm = 3;
 
     if (get_switch_opt(argc, argv, "-4") == 0)
-	hash_algorithm = 4;
+        hash_algorithm = 4;
 
     if (get_switch_opt(argc, argv, "-5") == 0)
-	hash_algorithm = 5;
+        hash_algorithm = 5;
 
     if (get_switch_opt(argc, argv, "-6") == 0)
-	hash_algorithm = 6;
+        hash_algorithm = 6;
 
     if (value)
     {
-	if (strlen(value) != 1)
-	{
-	    cerr << argv0 << ": error: bad argument for -s option" << endl;
-	    exit(1);
-	}
-	separator = value[0];
+        if (strlen(value) != 1)
+        {
+            cerr << argv0 << ": error: bad argument for -s option" << endl;
+            exit(1);
+        }
+        separator = value[0];
     }
 
     //
@@ -323,18 +321,18 @@ int main(int argc, char** argv)
 
     if (argc != 2)
     {
-	cerr << "usage: " << argv0 << " [options] spec-file" << endl;
-	cerr << "options:" << endl;
-	cerr << "   -s char -- use character as spec file separator" << endl;
-	cerr << "   -i -- ignore case" << endl;
-	cerr << "   -1 -- use hash algorithm 1" << endl;
-	cerr << "   -2 -- use hash algorithm 2" << endl;
-	cerr << "   -3 -- use hash algorithm 3" << endl;
-	cerr << "   -4 -- use hash algorithm 4" << endl;
-	cerr << "   -5 -- use hash algorithm 5 (default)" << endl;
-	cerr << "   -6 -- use hash algorithm 6" << endl;
-	cerr << endl;
-	exit(1);
+        cerr << "usage: " << argv0 << " [options] spec-file" << endl;
+        cerr << "options:" << endl;
+        cerr << "   -s char -- use character as spec file separator" << endl;
+        cerr << "   -i -- ignore case" << endl;
+        cerr << "   -1 -- use hash algorithm 1" << endl;
+        cerr << "   -2 -- use hash algorithm 2" << endl;
+        cerr << "   -3 -- use hash algorithm 3" << endl;
+        cerr << "   -4 -- use hash algorithm 4" << endl;
+        cerr << "   -5 -- use hash algorithm 5 (default)" << endl;
+        cerr << "   -6 -- use hash algorithm 6" << endl;
+        cerr << endl;
+        exit(1);
     }
 
     //
@@ -352,25 +350,25 @@ int main(int argc, char** argv)
 
     for (size_t i = 0; i < specs.size(); i++)
     {
-	const Spec& spec = specs[i];
-	Info info;
-	info.str = spec.str;
-	info.ident = spec.ident;
-	info.id = i;
+        const Spec& spec = specs[i];
+        Info info;
+        info.str = spec.str;
+        info.ident = spec.ident;
+        info.id = i;
 
-	const char* p = spec.str.c_str();
-	size_t n = spec.str.size();
+        const char* p = spec.str.c_str();
+        size_t n = spec.str.size();
 
-	switch (hash_algorithm)
-	{
-	    case 1: info.code = hash1(p,n);; break;
-	    case 2: info.code = hash2(p,n); break;
-	    case 3: info.code = hash3(p,n); break;
-	    case 4: info.code = hash4(p,n); break;
-	    case 5: info.code = hash5(p,n); break;
-	    case 6: info.code = hash6(p,n); break;
-	}
-	v.push_back(info);
+        switch (hash_algorithm)
+        {
+            case 1: info.code = hash1(p,n);; break;
+            case 2: info.code = hash2(p,n); break;
+            case 3: info.code = hash3(p,n); break;
+            case 4: info.code = hash4(p,n); break;
+            case 5: info.code = hash5(p,n); break;
+            case 6: info.code = hash6(p,n); break;
+        }
+        v.push_back(info);
     }
 
     //
@@ -381,3 +379,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/apriori/main.cpp,v 1.7 2007/03/07 18:49:10 mbrasher-public Exp $");

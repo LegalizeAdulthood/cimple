@@ -34,15 +34,15 @@ void MOF_fix_case(char* p, const char* q)
 {
     if (MOF_stricmp(p, q) == 0 && strcmp(p, q) != 0)
     {
-	strcpy(p, q);
-	MOF_warning_printf("changed case of \"%s\" to \"%s\"", p, q);
+        strcpy(p, q);
+        MOF_warning_printf("changed case of \"%s\" to \"%s\"", p, q);
     }
 }
 
 void MOF_strtolower(char* s)
 {
     for (; *s; s++)
-	*s = tolower(*s);
+        *s = tolower(*s);
 }
 
 size_t MOF_count_char(
@@ -55,8 +55,8 @@ size_t MOF_count_char(
 
     for (i = 0; i < length; i++)
     {
-	if (str[i] == ch)
-	    count++;
+        if (str[i] == ch)
+            count++;
     }
 
     return count;
@@ -68,12 +68,12 @@ size_t MOF_char16_to_asc7(
 {
     if(ch < 0x80) 
     {
-	str[0] = (char)ch;
-	str[1] = '\0';
-	return 1;
+        str[0] = (char)ch;
+        str[1] = '\0';
+        return 1;
     }
     else
-	return sprintf(str, "\\X%04X", ch);
+        return sprintf(str, "\\X%04X", ch);
 }
 
 size_t MOF_asc7_to_char16(
@@ -84,44 +84,44 @@ size_t MOF_asc7_to_char16(
 
     if (p[0] == '\\' && (p[1] == 'X' || p[1] == 'x'))
     {
-	char hex_digits[5];
-	size_t i;
-	unsigned long x;
-	char* end = 0;
+        char hex_digits[5];
+        size_t i;
+        unsigned long x;
+        char* end = 0;
 
-	p += 2;
+        p += 2;
 
-	/* 
-	 * Count the number of hex digits (but not more than four).
-	 */
+        /* 
+         * Count the number of hex digits (but not more than four).
+         */
 
-	for (i = 0; i < 4; i++, p++)
-	{
-	    if (!isxdigit(*p))
-		break;
+        for (i = 0; i < 4; i++, p++)
+        {
+            if (!isxdigit(*p))
+                break;
 
-	    hex_digits[i] = *p;
-	}
+            hex_digits[i] = *p;
+        }
 
-	if (i == 0)
-	    return (size_t)-1;
+        if (i == 0)
+            return (size_t)-1;
 
-	hex_digits[i] = '\0';
+        hex_digits[i] = '\0';
 
-	/*
-	 * Convert to unsigned long:
-	 */
+        /*
+         * Convert to unsigned long:
+         */
 
-	x = strtoul(hex_digits, &end, 16);
-	MOF_ASSERT(end != 0 && *end == '\0');
+        x = strtoul(hex_digits, &end, 16);
+        MOF_ASSERT(end != 0 && *end == '\0');
 
-	*ch = (MOF_char16)x;
-	return 2 + i;
+        *ch = (MOF_char16)x;
+        return 2 + i;
     }
     else
     {
-	*ch = *p;
-	return 1;
+        *ch = *p;
+        return 1;
     }
 }
 
@@ -130,89 +130,89 @@ char* MOF_unescape(const char* asc7)
     char* result = (char*)malloc(strlen(asc7) + 1);
 
     if (result == 0)
-	return 0;
+        return 0;
 
     char* p = result;
 
     for (; *asc7; asc7++)
     {
-	if (*asc7 == '\\')
-	{
-	    asc7++;
+        if (*asc7 == '\\')
+        {
+            asc7++;
 
-	    if (*asc7 == '\0')
-	    {
-		free(result);
-		return 0;
-	    }
+            if (*asc7 == '\0')
+            {
+                free(result);
+                return 0;
+            }
 
-	    switch (*asc7)
-	    {
-		case 'b':
-		    *p++ = '\b';
-		    break;
+            switch (*asc7)
+            {
+                case 'b':
+                    *p++ = '\b';
+                    break;
 
-		case 't':
-		    *p++ = '\t';
-		    break;
+                case 't':
+                    *p++ = '\t';
+                    break;
 
-		case 'n':
-		    *p++ = '\n';
-		    break;
+                case 'n':
+                    *p++ = '\n';
+                    break;
 
-		case 'f':
-		    *p++ = '\f';
-		    break;
+                case 'f':
+                    *p++ = '\f';
+                    break;
 
-		case 'r':
-		    *p++ = '\r';
-		    break;
+                case 'r':
+                    *p++ = '\r';
+                    break;
 
-		case '"':
-		    *p++ = '"';
-		    break;
+                case '"':
+                    *p++ = '"';
+                    break;
 
-		case '\'':
-		    *p++ = '\'';
-		    break;
+                case '\'':
+                    *p++ = '\'';
+                    break;
 
-		case '\\':
-		    *p++ = '\\';
-		    break;
+                case '\\':
+                    *p++ = '\\';
+                    break;
 
-		case 'X':
-		case 'x':
-		{
-		    MOF_char16 ch;
+                case 'X':
+                case 'x':
+                {
+                    MOF_char16 ch;
 
-		    /*
-		     * Convert asc7 to char16. The asc7 points to the 'X'
-		     * character (not the '\' as the next routine expects).
-		     */
+                    /*
+                     * Convert asc7 to char16. The asc7 points to the 'X'
+                     * character (not the '\' as the next routine expects).
+                     */
 
-		    size_t m = MOF_asc7_to_char16(&asc7[-1], &ch);
+                    size_t m = MOF_asc7_to_char16(&asc7[-1], &ch);
 
-		    if (m == (size_t)-1)
-			return 0;
+                    if (m == (size_t)-1)
+                        return 0;
 
-		    /*
-		     * Convert char16 to asc7:
-		     */
+                    /*
+                     * Convert char16 to asc7:
+                     */
 
-		    size_t n = MOF_char16_to_asc7(ch, p);
+                    size_t n = MOF_char16_to_asc7(ch, p);
 
-		    p += n;
-		    asc7 += m - 2;
+                    p += n;
+                    asc7 += m - 2;
 
-		    break;
-		}
+                    break;
+                }
 
-		default:
-		    *p++ = *asc7;
-	    }
-	}
-	else
-	    *p++ = *asc7;
+                default:
+                    *p++ = *asc7;
+            }
+        }
+        else
+            *p++ = *asc7;
     }
 
     *p++ = '\0';
@@ -227,61 +227,63 @@ char* MOF_escape(const char* asc7)
 
     for (const char* p = asc7; *p; )
     {
-	MOF_char16 ch;
-	
-	p += MOF_asc7_to_char16(p, &ch);
+        MOF_char16 ch;
+        
+        p += MOF_asc7_to_char16(p, &ch);
 
-	switch (ch)
-	{
-	    case '\b':
-		buf.append('\\');
-		buf.append('b');
-		break;
+        switch (ch)
+        {
+            case '\b':
+                buf.append('\\');
+                buf.append('b');
+                break;
 
-	    case '\t':
-		buf.append('\\');
-		buf.append('t');
-		break;
+            case '\t':
+                buf.append('\\');
+                buf.append('t');
+                break;
 
-	    case '\n':
-		buf.append('\\');
-		buf.append('n');
-		break;
+            case '\n':
+                buf.append('\\');
+                buf.append('n');
+                break;
 
-	    case '\f':
-		buf.append('\\');
-		buf.append('f');
-		break;
+            case '\f':
+                buf.append('\\');
+                buf.append('f');
+                break;
 
-	    case '\r':
-		buf.append('\\');
-		buf.append('r');
-		break;
+            case '\r':
+                buf.append('\\');
+                buf.append('r');
+                break;
 
-	    case '"':
-		buf.append('\\');
-		buf.append('"');
-		break;
+            case '"':
+                buf.append('\\');
+                buf.append('"');
+                break;
 
-	    case '\'':
-		buf.append('\\');
-		buf.append('\'');
-		break;
+            case '\'':
+                buf.append('\\');
+                buf.append('\'');
+                break;
 
-	    case '\\':
-		buf.append('\\');
-		buf.append('\\');
-		break;
+            case '\\':
+                buf.append('\\');
+                buf.append('\\');
+                break;
 
-	    default:
-	    {
-		char tmp[7];
-		MOF_char16_to_asc7(ch, tmp);
-		buf.append(tmp, strlen(tmp));
-	    }
-	}
+            default:
+            {
+                char tmp[7];
+                MOF_char16_to_asc7(ch, tmp);
+                buf.append(tmp, strlen(tmp));
+            }
+        }
     }
 
     buf.append('\0');
     return buf.steal_data();
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_String.cpp,v 1.6 2007/03/07 18:57:15 mbrasher-public Exp $");

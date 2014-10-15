@@ -240,7 +240,7 @@ inline bool operator==(const Datetime& x, const Datetime& y)
         x.is_timestamp() == y.is_timestamp();
 }
 
-inline void clear(Datetime& x) 
+inline void __clear(Datetime& x) 
 { 
     x.clear(); 
 }

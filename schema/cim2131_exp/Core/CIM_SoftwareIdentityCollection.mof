@@ -1,0 +1,19 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR01180.006" type ="new">Addition of
+// SoftwareUpdateService and related classes</change>
+
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+// SoftwareIdentityCollection
+// ==================================================================
+   [Experimental, UMLPackagePath ( "CIM::Core::Software" ),
+       Version ( "2.10.0" ), Description (
+       "A subclass of SystemSpecificCollection which collects together "
+       "Software Identities for a single system, to be managed or "
+       "manipulated together. The collection MAY be populated as "
+       "software is downloaded using the SoftwareInstallationService "
+       "or MAY be automatically populated by the management system "
+       "from, say, a web service.")]
+class CIM_SoftwareIdentityCollection : CIM_SystemSpecificCollection {
+};

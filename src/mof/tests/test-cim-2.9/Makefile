@@ -6,7 +6,7 @@ depend:
 gen:
 
 tests:
-	$(BIN_DIR)/mofc -I $(CIMPLE_SCHEMA_PATH) tests.mof
+	$(BIN_DIR)/mofc -I $(TOP)/schema/cim2131 tests.mof
 	@ $(ECHO) "+++++ passed all tests ($(BIN_DIR)/mofc)"
 
 sub:
@@ -17,3 +17,5 @@ CLEAN += memstream.tmp
 
 clean:
 	$(RM) $(CLEAN)
+
+chksrc:

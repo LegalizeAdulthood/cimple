@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <cimple/version.h>
+#define CIMPLE_NO_VERSION_SYMBOL
+#include <cimple/config.h>
 #include <Pegasus/Provider/CIMInstanceProvider.h>
 
 using namespace Pegasus;
@@ -21,7 +22,7 @@ int main(int argc, char** argv)
 
     if (!handle)
     {
-	fprintf(stderr, "%s: dlopen() failed on %s\n", argv[0], argv[1]);
+        fprintf(stderr, "%s: dlopen() failed on %s\n", argv[0], argv[1]);
         exit(1);
     }
 
@@ -29,7 +30,7 @@ int main(int argc, char** argv)
 
     if (!symbol)
     {
-	fprintf(stderr, 
+        fprintf(stderr, 
             "%s: dlsym() failed on symbol \"PegasusCreateProvider\"\n", 
             argv[0]);
         exit(1);
@@ -41,7 +42,7 @@ int main(int argc, char** argv)
 
     if (provider == 0)
     {
-	fprintf(stderr, "%s: PegasusCreateProvider() returned null\n", argv[0]);
+        fprintf(stderr, "%s: PegasusCreateProvider() returned null\n", argv[0]);
         exit(1);
     }
 
@@ -56,4 +57,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_INJECT_VERSION_TAG;
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/loadmod/main.cpp,v 1.6 2007/03/07 18:50:09 mbrasher-public Exp $");

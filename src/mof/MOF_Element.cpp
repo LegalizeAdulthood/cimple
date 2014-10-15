@@ -38,12 +38,12 @@ void MOF_Element::append(MOF_Element* element)
 
     for (MOF_Element* p = this; p; p = p->next)
     {
-	if (!p->next)
-	{
-	    p->next = element;
-	    element->next = 0;
-	    break;
-	}
+        if (!p->next)
+        {
+            p->next = element;
+            element->next = 0;
+            break;
+        }
     }
 }
 
@@ -52,7 +52,7 @@ size_t MOF_Element::list_size() const
     size_t size = 0;
 
     for (const MOF_Element* p = this; p; p = p->next)
-	size++;
+        size++;
 
     return size;
 }
@@ -69,10 +69,10 @@ MOF_Element* MOF_Element::clone_list() const
 
     for (const MOF_Element* p = this; p; p = p->next)
     {
-	if (list == 0)
-	    list = clone();
-	else
-	    list->append(clone());
+        if (list == 0)
+            list = clone();
+        else
+            list->append(clone());
     }
 
     return list;
@@ -82,8 +82,10 @@ void MOF_Element::delete_list()
 {
     for (MOF_Element* p = this; p; )
     {
-	MOF_Element* next = p->next;
-	delete p;
-	p = next;
+        MOF_Element* next = p->next;
+        delete p;
+        p = next;
     }
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Element.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

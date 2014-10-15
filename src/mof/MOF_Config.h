@@ -27,6 +27,8 @@
 #ifndef _MOF_Config_h
 #define _MOF_Config_h
 
+#define CIMPLE_NO_VERSION_SYMBOL
+#include <cimple/config.h>
 #include <platform.h>
 
 #ifdef CIMPLE_PLATFORM_WIN32_IX86_MSVC

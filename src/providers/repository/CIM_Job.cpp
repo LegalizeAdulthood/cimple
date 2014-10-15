@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -39,6 +39,9 @@ _CIM_ManagedSystemElement_StatusDescriptions;
 
 extern const Meta_Property
 _CIM_ManagedSystemElement_Status;
+
+extern const Meta_Property
+_CIM_ManagedSystemElement_HealthState;
 
 extern const Meta_Property
 _CIM_Job_JobStatus;
@@ -461,6 +464,7 @@ static Meta_Feature* _CIM_Job_MFA[] =
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
     (Meta_Feature*)&_CIM_Job_JobStatus,
     (Meta_Feature*)&_CIM_Job_TimeSubmitted,
     (Meta_Feature*)&_CIM_Job_ScheduledStartTime,
@@ -487,6 +491,7 @@ static Meta_Feature* _CIM_Job_MFA[] =
 
 static const Meta_Feature_Local _locals[] =
 {
+    {0},
     {0},
     {0},
     {0},
@@ -532,9 +537,10 @@ const Meta_Class CIM_Job::static_meta_class =
     _locals,
     &CIM_LogicalElement::static_meta_class,
     0, /* num_keys */
-    0x0BC3279B, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    0xAA7F75B2, /* crc */
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/CIM_Job.cpp,v 1.51 2007/03/13 22:53:16 mbrasher-public Exp $");

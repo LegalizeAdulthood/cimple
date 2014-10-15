@@ -14,7 +14,7 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN_DIR)/genclass -q -d Thing
+	genclass -q -d Thing
 
 tests:
 	@ $(BINARY_TARGET)

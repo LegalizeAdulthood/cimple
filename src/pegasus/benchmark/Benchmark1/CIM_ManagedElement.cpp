@@ -99,3 +99,4 @@ const Meta_Class CIM_ManagedElement::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/benchmark/Benchmark1/CIM_ManagedElement.cpp,v 1.3 2007/03/07 20:22:58 mbrasher-public Exp $");

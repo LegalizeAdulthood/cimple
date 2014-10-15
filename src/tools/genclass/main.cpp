@@ -27,7 +27,6 @@
 // Truncated debugger symbols.
 
 #include <cimple/config.h>
-#include <cimple/version.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <getopt.h>
@@ -48,13 +47,15 @@ using namespace std;
 
 const char* arg0;
 static FILE* _os = 0;
-bool linkage_opt = false;
-bool enum_opt = false;
-bool gen_repository_opt = false;
-bool schema_opt = false;
-bool qualifier_opt = false;
-bool descriptions_opt = false;
-bool boolean_qualifiers_opt = false;
+static bool linkage_opt = false;
+static bool enum_opt = false;
+static bool gen_repository_opt = false;
+static bool schema_opt = false;
+static bool qualifier_opt = false;
+static bool descriptions_opt = false;
+static bool boolean_qualifiers_opt = false;
+static string class_list_file;
+static bool gen_handles = false;
 
 string meta_repository_name;
 
@@ -315,8 +316,9 @@ void nl()
     fputc('\n', _os);
 }
 
+static
 CIMPLE_PRINTF_ATTR(1, 2)
-static void out(const char* format, ...)
+void out(const char* format, ...)
 {
     va_list ap;
     va_start(ap, format);
@@ -946,7 +948,12 @@ void gen_property_decl(
     if (i == 0)
     {
         /* Scalar */
-        out("    Property<%s> %s;\n", tmp, prop->name);
+        out("    Property<%s> %s;", tmp, prop->name);
+
+        if (prop->qual_mask & MOF_QT_KEY)
+            out(" // KEY\n");
+        else
+            out("\n");
     }
     else
     {
@@ -1092,9 +1099,298 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
     nl();
 }
 
+void gen_handle_decl(const MOF_Class_Decl* cd, bool ref)
+{
+    const char* ext = ref ? "_Ref" : "_Hnd";
+
+    // Class name:
+
+    string cn = string(cd->name) + ext;
+
+    // Super class name:
+
+    string scn;
+    
+    if (cd->super_class)
+        scn = string(cd->super_class->name) + ext;
+    else
+        scn = "Hnd";
+
+    // Class header:
+
+    if (linkage_opt)
+        out("class CIMPLE_LINKAGE %s : public %s\n", cn.c_str(), scn.c_str());
+    else
+        out("class %s : public %s\n", cn.c_str(), scn.c_str());
+
+    // Class body:
+
+    out("{\n");
+    out("public:\n");
+    nl();
+
+    out("    %s();\n", cn.c_str());
+    out("    %s(const %s& x);\n", cn.c_str(), cn.c_str());
+    out("    %s(%s* inst);\n", cn.c_str(), cd->name);
+    out("    ~%s();\n", cn.c_str());
+    out("    %s& operator=(const %s& x);\n", cn.c_str(), cn.c_str());
+
+    const MOF_Feature* p = cd->features;
+
+    for (; p; p = (const MOF_Feature*)p->next)
+    {
+        const char* fn = p->name;
+
+        // Skip non-keys?
+
+        if (ref && !(p->qual_mask & MOF_QT_KEY))
+            continue;
+
+        // Property.
+
+        const MOF_Property_Decl* prop = 
+            dynamic_cast<const MOF_Property_Decl*>(p);
+
+        if (prop)
+        {
+            nl();
+            out("    // %s:\n", fn);
+
+            if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            {
+                out("    Hnd %s() const;\n", fn);
+                out("    void %s(const Hnd& x);\n", fn);
+            }
+            else
+            {
+                const char* pt = _to_string(prop->data_type);
+
+                string t;
+
+                if (prop->array_index == 0)
+                    t = pt;
+                else
+                    t = "Array<" + string(pt) + ">";
+
+                out("    const %s& %s() const;\n", t.c_str(), fn);
+                out("    void %s(const %s& x);\n", fn, t.c_str());
+                out("    bool %s_null() const;\n", fn);
+                out("    void %s_null(bool x);\n", fn);
+            }
+
+            continue;
+        }
+
+        // Reference?
+
+        const MOF_Reference_Decl* ref = 
+            dynamic_cast<const MOF_Reference_Decl*>(p);
+
+        if (ref)
+        {
+            nl();
+            out("    // %s:\n", fn);
+            out("    %s_Ref %s() const;\n", ref->class_name, fn);
+            out("    void %s(const %s_Ref& x);\n", fn, ref->class_name);
+            continue;
+        }
+    }
+
+    out("};\n");
+
+    nl();
+}
+
+void gen_handle_def(const MOF_Class_Decl* cd, bool ref)
+{
+    const char* ext = ref ? "_Ref" : "_Hnd";
+
+    // Class name:
+
+    string cn = string(cd->name) + ext;
+
+    // Super class name:
+
+    string scn;
+    
+    if (cd->super_class)
+        scn = string(cd->super_class->name) + ext;
+    else
+        scn = "Hnd";
+
+    // T::T()
+
+    out("%s::%s()\n", cn.c_str(), cn.c_str());
+    out("{\n");
+    out("    _inst = %s::create(true);\n", cd->name);
+
+    if (cd->qual_mask & MOF_QT_ASSOCIATION)
+        out("    __create_refs(_inst);\n");
+
+    out("    _ref = %s;\n", ref ? "true" : "false");
+    out("}\n");
+    nl();
+
+    // T::T(const T& x)
+
+    out("%s::%s(const %s& x) : %s(x)\n", 
+        cn.c_str(), cn.c_str(), cn.c_str(), scn.c_str());
+    out("{\n");
+    out("}\n");
+    nl();
+
+    // T::T(const I* inst)
+
+    out("%s::%s(%s* inst)\n", cn.c_str(), cn.c_str(), cd->name);
+    out("{\n");
+    out("    _inst = inst;\n");
+
+    if (cd->qual_mask & MOF_QT_ASSOCIATION)
+        out("    __create_refs(_inst);\n");
+
+    out("    _ref = %s;\n", ref ? "true" : "false");
+    out("}\n");
+    nl();
+
+    // T::~T()
+
+    out("%s::~%s()\n", cn.c_str(), cn.c_str());
+    out("{\n");
+    out("}\n");
+    nl();
+
+    // T& operator=(const T& x)
+
+    out("%s& %s::operator=(const %s& x)\n", 
+        cn.c_str(), cn.c_str(), cn.c_str());
+    out("{\n");
+    out("    Hnd::operator=(x);\n");
+    out("    return *this;\n");
+    out("}\n");
+    nl();
+
+    // Features.
+
+    const MOF_Feature* p = cd->features;
+
+    for (; p; p = (const MOF_Feature*)p->next)
+    {
+        const char* fn = p->name;
+
+        // Skip non-keys?
+
+        if (ref && !(p->qual_mask & MOF_QT_KEY))
+            continue;
+
+        // Property.
+
+        const MOF_Property_Decl* prop = 
+            dynamic_cast<const MOF_Property_Decl*>(p);
+
+        if (prop)
+        {
+            if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            {
+                out("Hnd %s::%s() const\n", cn.c_str(), fn);
+                out("{\n");
+                out("    ref(((%s*)_inst)->%s);\n", cd->name, fn);
+                out("    return Hnd(((%s*)_inst)->%s);\n", cd->name, fn);
+                out("}\n");
+                nl();
+
+                out("void %s::%s(const Hnd& x)\n", cn.c_str(), fn);
+                out("{\n");
+                out("    _cow();\n");
+                out("    unref(((%s*)_inst)->%s);\n", 
+                    cd->name, fn);
+                out("    ref(((%s*)_inst)->%s = (Instance*)x.instance());\n",
+                    cd->name, fn);
+                out("}\n");
+                nl();
+
+                continue;
+            }
+            else
+            {
+                const char* pt = _to_string(prop->data_type);
+
+                string t;
+
+                if (prop->array_index == 0)
+                    t = pt;
+                else
+                    t = "Array<" + string(pt) + ">";
+
+                out("const %s& %s::%s() const\n", 
+                    t.c_str(), cn.c_str(), fn);
+                out("{\n");
+                out("    return ((%s*)_inst)->%s.value;\n", cd->name, fn);
+                out("}\n");
+                nl();
+
+                out("void %s::%s(const %s& x)\n", cn.c_str(), fn, t.c_str());
+                out("{\n");
+                out("    _cow();\n");
+                out("    ((%s*)_inst)->%s.null = false;\n", cd->name, fn);
+                out("    ((%s*)_inst)->%s.value = x;\n", cd->name, fn);
+                out("}\n");
+                nl();
+
+                out("bool %s::%s_null() const\n", cn.c_str(), fn);
+                out("{\n");
+                out("    return ((%s*)_inst)->%s.null;\n", cd->name, fn);
+                out("}\n");
+                nl();
+
+                out("void %s::%s_null(bool x)\n", cn.c_str(), fn);
+                out("{\n");
+                out("    _cow();\n");
+                out("    ((%s*)_inst)->%s.null = x;\n", cd->name, fn);
+                out("    __clear(((%s*)_inst)->%s.value);\n", cd->name, fn);
+                out("}\n");
+                nl();
+            }
+
+            continue;
+        }
+
+        // Reference?
+
+        const MOF_Reference_Decl* ref = 
+            dynamic_cast<const MOF_Reference_Decl*>(p);
+
+        if (ref)
+        {
+            out("%s_Ref %s::%s() const\n", ref->class_name, cn.c_str(), fn);
+            out("{\n");
+            out("    ref(((%s*)_inst)->%s);\n", cd->name, fn);
+            out("    return %s_Ref(((%s*)_inst)->%s);\n", 
+                ref->class_name, cd->name, fn);
+            out("}\n");
+            nl();
+
+            out("void %s::%s(const %s_Ref& x)\n", 
+                cn.c_str(), fn, ref->class_name);
+            out("{\n");
+            out("    _cow();\n");
+            out("    unref(((%s*)_inst)->%s);\n", 
+                cd->name, fn);
+            out("    ref(((%s*)_inst)->%s = (%s*)x.instance());\n",
+                cd->name, fn, ref->class_name);
+            out("}\n");
+            nl();
+
+            continue;
+        }
+    }
+}
+
 void gen_param_ref_decl(const MOF_Parameter* param)
 {
-    out("    %s* %s;\n", param->ref_name, param->name);
+    if (param->array_index)
+        out("    Array<%s*> %s;\n", param->ref_name, param->name);
+    else
+        out("    %s* %s;\n", param->ref_name, param->name);
 }
 
 void gen_param_prop_decl(
@@ -1225,6 +1521,37 @@ void generate_param_ref_includes(const MOF_Class_Decl* class_decl)
     }
 }
 
+void generate_version_check()
+{
+    {
+        const char FORMAT[] =
+            "# error \""
+            "The version of genclass used to generate this file (%s) is newer "
+            "than the version of <cimple/cimple.h> found on the include path. "
+            "Please place the matching version of <cimple/cimple.h> on "
+            "the include path.\"\n";
+
+        out ("#if (0x%08X > CIMPLE_VERSION)\n", CIMPLE_VERSION);
+        out (FORMAT, CIMPLE_VERSION_STRING);
+        out ("#endif\n");
+        nl();
+    }
+
+    {
+        const char FORMAT[] =
+            "# error \""
+            "The version of genclass used to generate this file (%s) is older "
+            "than the version of <cimple/cimple.h> found on the include path. "
+            "Please regenerate the sources with the matching version of "
+            "genclass.\"\n";
+
+        out ("#if (0x%08X < CIMPLE_VERSION)\n", CIMPLE_VERSION);
+        out (FORMAT, CIMPLE_VERSION_STRING);
+        out ("#endif\n");
+        nl();
+    }
+}
+
 void gen_header_file(const MOF_Class_Decl* class_decl)
 {
     gen_comment_block();
@@ -1243,11 +1570,19 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
     generate_param_ref_includes(class_decl);
 
     nl();
+    generate_version_check();
+    nl();
 
     out("CIMPLE_NAMESPACE_BEGIN\n");
     nl();
 
     gen_class_decl(class_decl);
+
+    if (gen_handles)
+    {
+        gen_handle_decl(class_decl, true);
+        gen_handle_decl(class_decl, false);
+    }
 
     gen_meth_decls(class_decl);
 
@@ -1417,23 +1752,24 @@ void gen_reference_def(
     out("const Meta_Reference\n_%s_%s =\n", class_name, mr->name);
     out("{\n");
 
-    // Refs:
+    // Meta_Reference.refs:
     out("    { 0 }, /* refs */\n");
 
-    // Flags field:
+    // Meta_Reference.flags:
     {
         out("    CIMPLE_FLAG_REFERENCE");
         gen_bool_qual_list(mr->qual_mask, false);
         out(",\n");
     }
 
-    // Name:
+    // Meta_Reference.name:
 
     {
         out("    \"%s\",\n", mr->name);
     }
 
-    // Qualifiers:
+    // Meta_Reference.qualifiers:
+    // Meta_Reference.num_qualifiers:
 
     if (qualifier_opt && mr->all_qualifiers)
     {
@@ -1446,15 +1782,18 @@ void gen_reference_def(
         out("    0, /* num_meta_qaulifiers */\n");
     }
 
-    // Meta class:
+    // Meta_Reference.subscript (as class features, these cannot be arrays).
 
-    {
-        out("    &%s::static_meta_class,\n" , mr->class_name);
-    }
+    out("    0, /* subscript */\n");
 
-    // Print offset to field.
+    // Print meta class:
+
+    out("    &%s::static_meta_class,\n" , mr->class_name);
+
+    // Meta_Reference.offset:
 
     out("    CIMPLE_OFF(%s,%s)\n", class_name, mr->name);
+
     out("};\n");
     nl();
 }
@@ -1499,6 +1838,10 @@ void gen_param_ref_def(
         out("    0, /* meta_qualifiers */\n");
         out("    0, /* num_meta_qaulifiers */\n");
     }
+
+    // Subscript:
+
+    out("    %d, /* subscript */\n", param->array_index);
 
     // Meta class:
     {
@@ -1784,6 +2127,9 @@ void gen_embedded_object_def(
         out("    0, /* num_meta_qualifiers */\n");
     }
 
+    // Meta_Reference.subscript:
+    out("    0, /* subscript */\n");
+
     // Meta_Reference.super_meta_class:
     out("    &Instance::static_meta_class,\n");
 
@@ -1891,16 +2237,19 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
 {
     // Generate _locals[] array.
 
-    out("static const Meta_Feature_Local _locals[] =\n");
-    out("{\n");
+    if (class_decl->all_features)
+    {
+        out("static const Meta_Feature_Local _locals[] =\n");
+        out("{\n");
 
-    MOF_Feature_Info* p = class_decl->all_features;
+        MOF_Feature_Info* p = class_decl->all_features;
 
-    for (; p; p = (MOF_Feature_Info*)p->next)
-        out("    {%u},\n", p->propagated ? 0 : 1);
+        for (; p; p = (MOF_Feature_Info*)p->next)
+            out("    {%u},\n", p->propagated ? 0 : 1);
 
-    out("};\n");
-    nl();
+        out("};\n");
+        nl();
+    }
 
     // qualifiers:
 
@@ -1948,9 +2297,16 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
     }
 
     // Features:
+
+    if (class_decl->all_features)
     {
         out("    _%s_MFA,\n", class_decl->name);
         out("    CIMPLE_ARRAY_SIZE(_%s_MFA),\n", class_decl->name);
+    }
+    else
+    {
+        out("    0, /* meta_features*/\n");
+        out("    0, /* num_meta_features */\n");
     }
 
     // Size:
@@ -1959,7 +2315,11 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
     }
 
     // Local:
-    out("    _locals,\n");
+
+    if (class_decl->all_features)
+        out("    _locals,\n");
+    else
+        out("    0, /* locals */\n");
 
     // Superclass:
 
@@ -2025,11 +2385,21 @@ void gen_source_file(const MOF_Class_Decl* class_decl)
     // Generate class meta data.
 
     gen_feature_defs(class_decl);
-    gen_feature_array(class_decl);
+
+    if (class_decl->all_features)
+        gen_feature_array(class_decl);
+
     gen_class_def(class_decl);
+
+    if (gen_handles)
+    {
+        gen_handle_def(class_decl, true);
+        gen_handle_def(class_decl, false);
+    }
 
     out("CIMPLE_NAMESPACE_END\n");
     nl();
+    out("CIMPLE_ID(\"%cHeader%c\");\n", '$', '$');
 }
 
 void generate_ancestor_classes(const char* class_name);
@@ -2068,7 +2438,7 @@ void generate_class(const char* class_name)
 
     if (!class_decl)
     {
-        err("error: no such class: \"%s\"", class_name);
+        err("error: [1] no such class: \"%s\"", class_name);
         exit(1);
     }
 
@@ -2137,7 +2507,7 @@ void generate_ancestor_classes(const char* class_name)
 
     if (!class_decl)
     {
-        err("error: no such class: \"%s\"", class_name);
+        err("error: [2] no such class: \"%s\"", class_name);
         exit(1);
     }
 
@@ -2161,7 +2531,7 @@ void generate_ref_clases(const char* class_name)
 
     if (!class_decl)
     {
-        err("error: no such class: \"%s\"", class_name);
+        err("error: [3] no such class: \"%s\"", class_name);
         exit(1);
     }
 
@@ -2188,7 +2558,7 @@ void generate_param_ref_clases(const char* class_name)
 
     if (!class_decl)
     {
-        err("error: no such class: \"%s\"", class_name);
+        err("error: [4] no such class: \"%s\"", class_name);
         exit(1);
     }
 
@@ -2349,7 +2719,70 @@ void gen_repository(const vector<string>& classes)
     }
 }
 
-CIMPLE_INJECT_VERSION_TAG;
+static bool legal_class_name(const string& ident)
+{
+    const char* p = ident.c_str();
+
+    if (!isalpha(*p) && *p != '_')
+        return false;
+
+    while (isalnum(*p) || *p == '_')
+        p++;
+
+    return *p == '\0';
+}
+
+void load_class_list_file(vector<string>& classes, const string& path)
+{
+    FILE* is = fopen(path.c_str(), "r");
+
+    if (!is)
+        err("failed to open \"%s\"", path.c_str());
+
+    char buffer[1024];
+
+    for (int line = 1; fgets(buffer, sizeof(buffer), is) != NULL; line++)
+    {
+        if (buffer[0] == '#')
+            continue;
+
+        char* start = buffer;
+
+        /* Remove leading whitespace. */
+
+        while (isspace(*start))
+            start++;
+
+        /* Remove trailing whitespace. */
+
+        char* p = start;
+
+        while (*p)
+            p++;
+
+        while (p != start && isspace(p[-1]))
+            *--p = '\0';
+
+        /* Skip empty lines. */
+
+        if (*start == '\0')
+            continue;
+
+        /* Check whether legal class name. */
+
+        if (!legal_class_name(start))
+        {
+            err("illegal class name on line %d of %s: \"%s\"", 
+                line, path.c_str(), start);
+        }
+
+        /* Append class to list. */
+
+        append_unique(classes, start);
+    }
+
+    fclose(is);
+}
 
 int main(int argc, char** argv)
 {
@@ -2358,13 +2791,14 @@ int main(int argc, char** argv)
     vector<string> mof_files;
     vector<string> extra_mof_files;
 
+
     // Add the current directory to the search path:
 
     MOF_include_paths[MOF_num_include_paths++] = ".";
 
     // Process command-line options.
 
-    for (int opt; (opt = getopt(argc, argv, "I:M:hrvlesqdb")) != -1; )
+    for (int opt; (opt = getopt(argc, argv, "I:M:hrVlesqdbf:H")) != -1; )
     {
         switch (opt)
         {
@@ -2403,8 +2837,13 @@ int main(int argc, char** argv)
                 exit(0);
                 break;
 
-            case 'v':
-                printf("genclass: version 0.91\n\n");
+            case 'H':
+                gen_handles = true;
+                qualifier_opt = true;
+                break;
+
+            case 'V':
+                printf("%s\n", CIMPLE_VERSION_STRING);
                 exit(0);
                 break;
 
@@ -2436,6 +2875,10 @@ int main(int argc, char** argv)
                 boolean_qualifiers_opt = true;
                 break;
 
+            case 'f':
+                class_list_file = optarg;
+                break;
+
             default:
                 err("invalid option: %c; try -h for help", opt);
                 break;
@@ -2455,7 +2898,7 @@ int main(int argc, char** argv)
 
     // We expect at least one argument (or -c option)
 
-    if (optind == argc && !schema_opt)
+    if (optind == argc && !schema_opt && class_list_file.size() == 0)
     {
         printf((char*)USAGE);
         exit(1);
@@ -2469,9 +2912,14 @@ int main(int argc, char** argv)
 
     load_repository(extra_mof_files);
 
-    // Generate classes:
+    // Read class list file given by -f (if any).
 
     vector<string> classes;
+
+    if (class_list_file.size())
+        load_class_list_file(classes, class_list_file);
+
+    // Generate classes:
 
     for (int i = optind; i < argc; i++)
         append_unique(classes, argv[i]);
@@ -2498,3 +2946,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/main.cpp,v 1.138 2007/03/13 21:05:16 mbrasher-public Exp $");

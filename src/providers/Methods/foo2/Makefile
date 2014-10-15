@@ -14,3 +14,6 @@ include $(ROOT)/mak/program.mak
 tests:
 
 genclass:
+
+chksrc:
+	chksrc $(SOURCES)

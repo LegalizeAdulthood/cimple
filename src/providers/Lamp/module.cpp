@@ -20,3 +20,5 @@ CIMPLE_CMPI_INDICATION_PROVIDER(LampIndic_Provider);
 
 // By defining this, this class will be automatically loaded by regmod.
 CIMPLE_CLASS_DEPENDENCY(Persistent);
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/module.cpp,v 1.9 2007/03/07 20:25:25 mbrasher-public Exp $");

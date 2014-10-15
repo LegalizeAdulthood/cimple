@@ -31,3 +31,5 @@ int main(int argc, char** argv)
     printf("+++++ passed all tests (%s)\n", argv[0]);
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test2/main.cpp,v 1.5 2007/03/07 20:25:30 mbrasher-public Exp $");

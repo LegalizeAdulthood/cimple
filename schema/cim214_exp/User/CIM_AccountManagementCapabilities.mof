@@ -1,0 +1,30 @@
+// <change cr="WIPCR00316.003" type="add">new class.</change>
+// ==================================================================
+//  CIM_AccountManagementCapabilities
+// ==================================================================
+   [Experimental, Version ( "2.14.0" ),
+       UMLPackagePath ( "CIM::User::Account" ), Description (
+       "AccountManagementCapabilities describes the capabilities "
+       "supported for managing Accounts associated with an instance of "
+       "AccountManagementService. AccountManagementCapabilities is "
+       "associated with an instance of AccountManagementService "
+       "through the ElementCapabilities association.")]
+class CIM_AccountManagementCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description (
+          "OperationsSupported describes the type of operations that "
+          "are supported for an Account associated with the "
+          "AccountManagementService. \n"
+          "\"Create\" indicates the AccountManagementService may be "
+          "used to create new accounts. \n"
+          "\"Modify\" indicates that the associated Accounts may be "
+          "modified. \n"
+          "\"Delete\" indicates that associated Accounts may be "
+          "deleted."), 
+       ValueMap { "2", "3", "4", "..", "0x8000..0xFFFF" }, 
+       Values { "Create", "Modify", "Delete", "DMTF Reserved",
+          "Vendor Reserved" }]
+   uint16 OperationsSupported[];
+
+};
+

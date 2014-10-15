@@ -51,56 +51,56 @@ int main(int argc, char** argv)
 
     // Create a Part instance name from an instance path.
     {
-	const char PATH[] = 
-	    "Part.key1=true,key2=9999,key3=\"Seriously?\"";
+        const char PATH[] = 
+            "Part.key1=true,key2=9999,key3=\"Seriously?\"";
 
-	Ref<Instance> part2 =
-	    model_path_to_instance(&Part::static_meta_class, PATH);
-	assert(part2 != 0);
-	// print(part2, true);
+        Ref<Instance> part2 =
+            model_path_to_instance(&Part::static_meta_class, PATH);
+        assert(part2 != 0);
+        // print(part2, true);
 
-	assert(identical(part1.ptr(), part2.ptr()));
+        assert(identical(part1.ptr(), part2.ptr()));
     }
 
     // Create a Glue instance name from an instance path.
     {
-	// Convert CIM model path to an instance.
+        // Convert CIM model path to an instance.
 
-	const char PATH[] = "Glue."
-	    "left="
-	    "\"Part.key1=true,key2=9999,key3=\\\"Seriously?\\\"\","
-	    "right="
-	    "\"Part.key1=true,key2=9999,key3=\\\"Seriously?\\\"\"";
+        const char PATH[] = "Glue."
+            "left=\"Part.key1=true,key2=9999,key3=\\\"Seriously?\\\"\","
+            "right=\"Part.key1=true,key2=9999,key3=\\\"Seriously?\\\"\"";
 
-	Ref<Instance> glue2 =
-	    model_path_to_instance(&Glue::static_meta_class, PATH);
-	assert(glue2 != 0);
+        Ref<Instance> glue2 =
+            model_path_to_instance(&Glue::static_meta_class, PATH);
+        assert(glue2 != 0);
 
-	Ref<Instance> tmp(glue2);
-	Ref<Instance> tmp2(glue2);
-	Ref<Glue> glue3(glue2);
+        Ref<Instance> tmp(glue2);
+        Ref<Instance> tmp2(glue2);
+        Ref<Glue> glue3(glue2);
 
 #if 0
-	print(glue1.ptr());
-	print(glue2.ptr());
-	print(glue3.ptr());
+        print(glue1.ptr());
+        print(glue2.ptr());
+        print(glue3.ptr());
 #endif
 
-	assert(identical(glue2.ptr(), glue1.ptr()));
-	assert(identical(glue2.ptr(), glue3.ptr()));
-	assert(identical(glue1.ptr(), glue3.ptr()));
+        assert(identical(glue2.ptr(), glue1.ptr()));
+        assert(identical(glue2.ptr(), glue3.ptr()));
+        assert(identical(glue1.ptr(), glue3.ptr()));
 
-	// Convert the instance back to a CIM model path:
+        // Convert the instance back to a CIM model path:
 
-	String path;
+        String path;
 
-	int result = instance_to_model_path(glue2.ptr(), path);
-	assert(result == 0);
+        int result = instance_to_model_path(glue2.ptr(), path);
+        assert(result == 0);
 
-	assert(path == PATH);
+        assert(path == PATH);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/model_path/main.cpp,v 1.11 2007/03/07 20:18:13 mbrasher-public Exp $");

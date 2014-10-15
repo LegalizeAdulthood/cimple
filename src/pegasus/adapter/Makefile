@@ -1,3 +1,8 @@
+# ATTN: This is dangerous to mix debug Pegasus builds with non debug builds.
+#ifdef CIMPLE_DEBUG
+#  export PEGASUS_DEBUG=1
+#endif
+
 ROOT = $(PEGASUS_ROOT)
 DIR = cimple/adapater
 include $(ROOT)/mak/config.mak
@@ -10,7 +15,7 @@ SOURCES = \
     Pegasus_Thread_Context.cpp \
     Pegasus_Adapter.cpp \
     Converter.cpp \
-    CStr.cpp
+    pegasus_unsupported.cpp
 
 LIBRARIES = \
     pegprm \
@@ -28,3 +33,6 @@ include $(CIMPLE_ROOT)/mak/extras.mak
 include $(ROOT)/mak/library.mak
 
 genclass:
+
+chksrc:
+	chksrc $(SOURCES)

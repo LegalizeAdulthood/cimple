@@ -27,6 +27,7 @@
 #include <cassert>
 #include <cctype>
 #include <cimple/String.h>
+#include <cimple/config.h>
 
 using namespace cimple;
 
@@ -37,3 +38,5 @@ int main(int argc, char** argv)
     printf("+++++ passed all tests (%s)\n", argv[0]);
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/static/main.cpp,v 1.5 2007/03/07 20:18:13 mbrasher-public Exp $");

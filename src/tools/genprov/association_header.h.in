@@ -1,13 +1,13 @@
     Enum_Associator_Names_Status enum_associator_names(
-	const Instance* instance,
-	const String& result_class,
-	const String& role,
-	const String& result_role,
-	Enum_Associator_Names_Handler<Instance>* handler);
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associator_Names_Handler<Instance>* handler);
 
     Enum_References_Status enum_references(
-	const Instance* instance,
-	const <CLASS>* model,
-	const String& role,
-	Enum_References_Handler<<CLASS>>* handler);
+        const Instance* instance,
+        const <CLASS>* model,
+        const String& role,
+        Enum_References_Handler<<CLASS>>* handler);
 

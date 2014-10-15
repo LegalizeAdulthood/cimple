@@ -15,3 +15,6 @@ tests:
 poststarttests:
 
 genclass:
+
+chksrc:
+	chksrc $(SOURCES)

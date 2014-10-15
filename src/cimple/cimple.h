@@ -27,7 +27,6 @@
 #ifndef _cimple_h
 #define _cimple_h
 
-#include "version.h"
 #include "config.h"
 #include "flags.h"
 #include "Type.h"
@@ -49,5 +48,6 @@
 #include "io.h"
 #include "flavor.h"
 #include "scope.h"
+#include "Hnd.h"
 
 #endif /* _cimple_h */

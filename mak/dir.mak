@@ -1,4 +1,11 @@
+.PHONY: all 
+.PHONY: depend 
+.PHONY: clean 
+.PHONY: tests
+.PHONY: gen
+.PHONY: sub
 .PHONY: genclass
+.PHONY: chksrc
 
 all:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i $(NL) )
@@ -20,3 +27,6 @@ sub:
 
 genclass:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i genclass $(NL) )
+
+chksrc:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i chksrc $(NL) )

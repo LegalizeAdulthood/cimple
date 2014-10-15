@@ -1,13 +1,15 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INCLUDES += -I../repository
-
 SHARED_LIBRARY = cmplfan
 
-SOURCES = Fan_Provider.cpp module.cpp
+SOURCES = \
+    repository.cpp \
+    Fan.cpp \
+    Fan_Provider.cpp \
+    module.cpp
 
-LIBRARIES = cimple cmplrep
+LIBRARIES = cimple
 
 LIBRARIES += cimplepegadap
 
@@ -17,8 +19,11 @@ include $(TOP)/mak/rules.mak
 
 tests:
 
+genclass:
+	genclass -r Fan
+
 reg:
-	regmod -n root/cimv2 -c $(SHARED_LIBRARY_TARGET)
+	regmod -c $(SHARED_LIBRARY_TARGET)
 
 tests:
 	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)

@@ -41,26 +41,26 @@ char* MOF_read_string(
 
     while (((ch = (*input_proc)()) != -1) && ch != '"')
     {
-	int next_char = '\0';
+        int next_char = '\0';
 
-	buf.append(ch);
+        buf.append(ch);
 
-	if (ch == '\\')
-	{
-	    if ((next_char = (*input_proc)()) == -1)
-	    {
-		(*error_proc)("out of memory");
-		return 0;
-	    }
+        if (ch == '\\')
+        {
+            if ((next_char = (*input_proc)()) == -1)
+            {
+                (*error_proc)("out of memory");
+                return 0;
+            }
 
-	    buf.append(next_char);
-	}
+            buf.append(next_char);
+        }
     }
 
     if (ch == -1)
     {
-	(*error_proc)("unterminated string literal");
-	return 0;
+        (*error_proc)("unterminated string literal");
+        return 0;
     }
 
     buf.append('\0');
@@ -73,9 +73,11 @@ char* MOF_read_string(
 
     if (asc7 == 0)
     {
-	(*error_proc)("bad string literal");
-	return 0;
+        (*error_proc)("bad string literal");
+        return 0;
     }
 
     return asc7;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Lex_Utils.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

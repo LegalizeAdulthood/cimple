@@ -48,7 +48,7 @@ string toupper(const char* str)
     r.reserve(strlen((char*)str));
 
     while (*str)
-	r += char(::toupper(*str++));
+        r += char(::toupper(*str++));
 
     return r;
 }
@@ -76,7 +76,7 @@ void err(const char* format, ...)
 {
     fputc('\n', stderr);
     va_list ap;
-    fprintf(stderr, "%s: ", _arg0);
+    fprintf(stderr, "%s[%s]: ", _arg0, CIMPLE_VERSION_STRING);
     va_start(ap, format);
     vfprintf(stderr, format, ap);
     va_end(ap);
@@ -120,12 +120,12 @@ bool is_dir(const char* path)
     DWORD r = GetCurrentDirectory(sizeof(cwd), cwd);
 
     if (r == 0 || r > sizeof(cwd))
-	return false;
+        return false;
 
     BOOL flag = SetCurrentDirectory(path);
 
     if (flag)
-	SetCurrentDirectory(cwd);
+        SetCurrentDirectory(cwd);
 
     return flag;
 
@@ -181,14 +181,16 @@ string shlib_basename(const string& path)
     size_t dot = base.find('.');
 
     if (dot != (size_t)-1)
-	base.erase(dot);
+        base.erase(dot);
 
 #ifdef CIMPLE_UNIX
 
     if (base.substr(0, 3) == "lib")
-	base.erase(0, 3);
+        base.erase(0, 3);
 
 #endif
 
     return base;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/util/util.cpp,v 1.18 2007/03/07 19:06:39 mbrasher-public Exp $");

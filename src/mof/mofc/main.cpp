@@ -24,7 +24,8 @@
 **==============================================================================
 */
 
-#include <cimple/version.h>
+#define CIMPLE_NO_VERSION_SYMBOL
+#include <cimple/config.h>
 #include <cstdio>
 #include <cstdlib>
 #include <getopt.h>
@@ -34,7 +35,7 @@
 //
 // _process_command_line_options()
 //
-// 	Process argc/argv for command line options. Reorder argv[], placing 
+//      Process argc/argv for command line options. Reorder argv[], placing 
 //      the options before the non-options. Returns the index of the first 
 //      non-option.
 //
@@ -52,46 +53,46 @@ static int _process_command_line_options(int& argc, char**& argv)
 
     while ((opt = getopt(argc, argv, "I:dw")) != -1)
     {
-	switch (opt)
-	{
-	    case 'I':
-	    {
-		if (!optarg)
-		{
-		    fprintf(stderr, "missing argument on -I option\n");
-		    exit(1);
-		}
+        switch (opt)
+        {
+            case 'I':
+            {
+                if (!optarg)
+                {
+                    fprintf(stderr, "missing argument on -I option\n");
+                    exit(1);
+                }
 
-		if (MOF_num_include_paths == MAX_INCLUDES)
-		{
-		    fprintf(stderr, "too many -I options\n");
-		    exit(1);
-		}
+                if (MOF_num_include_paths == MAX_INCLUDES)
+                {
+                    fprintf(stderr, "too many -I options\n");
+                    exit(1);
+                }
 
-		MOF_include_paths[MOF_num_include_paths++] = optarg;
-		break;
-	    }
-	    case 'd':
-	    {
-		MOF_Options::debug = true;
-		break;
-	    }
-	    case 'w':
-	    {
-		MOF_Options::warn = true;
-		break;
-	    }
-	    case '?':
-	    {
-		// Option argument missing!
-		return -1;
-	    }
-	    default:
-	    {
-		fprintf(stderr, "unknown option: -%c\n", opt);
-		break;
-	    }
-	}
+                MOF_include_paths[MOF_num_include_paths++] = optarg;
+                break;
+            }
+            case 'd':
+            {
+                MOF_Options::debug = true;
+                break;
+            }
+            case 'w':
+            {
+                MOF_Options::warn = true;
+                break;
+            }
+            case '?':
+            {
+                // Option argument missing!
+                return -1;
+            }
+            default:
+            {
+                fprintf(stderr, "unknown option: -%c\n", opt);
+                break;
+            }
+        }
     }
 
     return optind;
@@ -106,7 +107,7 @@ static int _process_command_line_options(int& argc, char**& argv)
 static void _print_include_paths()
 {
     for (size_t i = 0; i < MOF_num_include_paths; i++)
-	printf("MOF_include_paths[%d]=\"%s\"\n", (int)i, MOF_include_paths[i]);
+        printf("MOF_include_paths[%d]=\"%s\"\n", (int)i, MOF_include_paths[i]);
 }
 
 //------------------------------------------------------------------------------
@@ -120,9 +121,9 @@ static void _print_include_paths()
 Usage: %s [-Idw] mof-files\n\
 \n\
 Where:\n\
-	-I path -- include path\n\
-	-d -- enabled debug printing\n\
-	-w -- enable warnings\n\
+        -I path -- include path\n\
+        -d -- enabled debug printing\n\
+        -w -- enable warnings\n\
 \n"
 
 int main(int argc, char** argv)
@@ -136,14 +137,14 @@ int main(int argc, char** argv)
     int first_non_option_index = _process_command_line_options(argc, argv);
 
     if (first_non_option_index == -1)
-	exit(1);
+        exit(1);
 
     //
     // Print includes paths (if -d option given)
     //
 
     if (MOF_Options::debug)
-	_print_include_paths();
+        _print_include_paths();
 
     //
     // Check arguments (be sure there are non-option arguments remaining.
@@ -151,8 +152,8 @@ int main(int argc, char** argv)
 
     if (first_non_option_index  == argc)
     {
-	fprintf(stderr, USAGE, argv[0]);
-	exit(1);
+        fprintf(stderr, USAGE, argv[0]);
+        exit(1);
     }
 
     //
@@ -160,7 +161,7 @@ int main(int argc, char** argv)
     //
 
     for (int i = first_non_option_index; i < argc; i++)
-	MOF_parse_file(argv[i]);
+        MOF_parse_file(argv[i]);
 
     //
     // Print out all the declarations:
@@ -168,9 +169,9 @@ int main(int argc, char** argv)
 
     if (MOF_Options::debug)
     {
-	MOF_Class_Decl::print_static_list();
-	MOF_Instance_Decl::print_static_list();
-	MOF_Qualifier_Decl::print_static_list();
+        MOF_Class_Decl::print_static_list();
+        MOF_Instance_Decl::print_static_list();
+        MOF_Qualifier_Decl::print_static_list();
     }
 
     // MOF_Class_Decl::print_nested_refs();
@@ -178,4 +179,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_INJECT_VERSION_TAG;
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/mofc/main.cpp,v 1.12 2007/03/07 20:25:23 mbrasher-public Exp $");

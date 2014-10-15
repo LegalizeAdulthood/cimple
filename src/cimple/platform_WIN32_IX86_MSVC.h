@@ -73,4 +73,6 @@ typedef __int32 ssize_t;
 
 #define CIMPLE_BIG_ENDIAN
 
+#define CIMPLE_PLATFORM_ID "WIN32_IX86_MSVC"
+
 #endif /* _cimple_WIN32_IX86_MSVC_h */

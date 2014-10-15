@@ -27,3 +27,6 @@ usage:
 tests:
 
 genclass:
+
+chksrc:
+	chksrc $(SOURCES)

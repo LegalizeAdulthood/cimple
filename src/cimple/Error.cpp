@@ -71,7 +71,7 @@ const char* Error::get()
 {
     const char* message = (const char*)_tsd.get();
 
-    return message ? message : "<unitialized error message>";
+    return message ? message : "";
 }
 
 void Error::set_prefix(
@@ -96,3 +96,5 @@ void Error::clear()
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Error.cpp,v 1.17 2007/03/07 18:41:14 mbrasher-public Exp $");

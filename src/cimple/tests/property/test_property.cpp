@@ -64,7 +64,7 @@ int main(int argc, char** argv)
     printf("%s\n", c.value.c_str());
 
     for (size_t i = 0; i < d.value.size(); i++)
-	printf("%s\n", d()[i].c_str());
+        printf("%s\n", d()[i].c_str());
 
 
     printf("e: %d %d\n", e()[0], e()[1]);
@@ -135,3 +135,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/property/test_property.cpp,v 1.19 2007/03/07 20:18:13 mbrasher-public Exp $");

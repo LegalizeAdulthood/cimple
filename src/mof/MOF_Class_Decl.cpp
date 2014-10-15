@@ -56,7 +56,7 @@ MOF_Element* MOF_Class_Decl::clone() const
 static void _print_all_features(const MOF_Class_Decl* class_decl)
 {
     if (class_decl->all_features)
-	class_decl->all_features->print_list();
+        class_decl->all_features->print_list();
 }
 
 void MOF_Class_Decl::print() const
@@ -89,7 +89,7 @@ void MOF_Class_Decl::print() const
      */
 
     for (p = features; p; p = p->next)
-	MOF_Feature_print(p);
+        MOF_Feature_print(p);
 #endif
 
     /*
@@ -107,11 +107,11 @@ static void _check_duplicate_features(
     
     for (p = (MOF_Feature*)class_decl->features; p; p = (MOF_Feature*)p->next)
     {
-	for (q = class_decl->features; q != p; q = (MOF_Feature*)q->next)
-	{
-	    if (MOF_stricmp(p->name, q->name) == 0)
-		MOF_error_printf("duplicate class feature: \"%s\"", p->name);
-	}
+        for (q = class_decl->features; q != p; q = (MOF_Feature*)q->next)
+        {
+            if (MOF_stricmp(p->name, q->name) == 0)
+                MOF_error_printf("duplicate class feature: \"%s\"", p->name);
+        }
     }
 }
 
@@ -121,65 +121,65 @@ static void _validate_feature_compatibility(
     MOF_Feature* q)
 {
     const char MESSAGE[] =
-	"feature incompatible with inherited feature with same name: \"%s\"\n";
+        "feature incompatible with inherited feature with same name: \"%s\"\n";
 
     if (p->type != q->type)
-	MOF_error_printf(MESSAGE, p->name);
+        MOF_error_printf(MESSAGE, p->name);
 
     if (p->type == MOF_FEATURE_METHOD)
     {
-	MOF_Method_Decl* pp = (MOF_Method_Decl*)p;
-	MOF_Method_Decl* qq = (MOF_Method_Decl*)q;
+        MOF_Method_Decl* pp = (MOF_Method_Decl*)p;
+        MOF_Method_Decl* qq = (MOF_Method_Decl*)q;
 
-	MOF_Method_Decl::check_compatibility(class_name, pp, qq);
+        MOF_Method_Decl::check_compatibility(class_name, pp, qq);
     }
     else if (p->type == MOF_FEATURE_REF)
     {
-	MOF_Reference_Decl* pp = (MOF_Reference_Decl*)p;
-	MOF_Reference_Decl* qq = (MOF_Reference_Decl*)q;
+        MOF_Reference_Decl* pp = (MOF_Reference_Decl*)p;
+        MOF_Reference_Decl* qq = (MOF_Reference_Decl*)q;
 
-	// Validate that if the reference changes the class, that the new
-	// class decends from the old class.
+        // Validate that if the reference changes the class, that the new
+        // class decends from the old class.
 
-	if (MOF_stricmp(pp->class_name, qq->class_name) != 0)
-	{
-	    const char* descendent = pp->class_name;
-	    const char* ancestor = pp->class_name;
+        if (MOF_stricmp(pp->class_name, qq->class_name) != 0)
+        {
+            const char* descendent = pp->class_name;
+            const char* ancestor = pp->class_name;
 
-	    // Be sure that descendent descends from ancestor.
+            // Be sure that descendent descends from ancestor.
 
-	    const MOF_Class_Decl* tmp_class_decl =
-		MOF_Class_Decl::find((char*)pp->class_name);
+            const MOF_Class_Decl* tmp_class_decl =
+                MOF_Class_Decl::find((char*)pp->class_name);
 
-	    if (!tmp_class_decl)
-	    {
-		MOF_error_printf(
-		    "class used in reference %s does not exist: %s\n",
-		    pp->name, pp->class_name);
-	    }
+            if (!tmp_class_decl)
+            {
+                MOF_error_printf(
+                    "class used in reference %s does not exist: %s\n",
+                    pp->name, pp->class_name);
+            }
 
-	    if (!tmp_class_decl->find_ancestor(qq->class_name))
-	    {
-		MOF_error_printf(
-		    "illegal override of reference \"%s\": overriden reference "
-		    "class (%s) must descend from inherited reference "
-		    "class (%s)", pp->name, pp->class_name, qq->class_name);
-	    }
-	}
+            if (!tmp_class_decl->find_ancestor(qq->class_name))
+            {
+                MOF_error_printf(
+                    "illegal override of reference \"%s\": overriden reference "
+                    "class (%s) must descend from inherited reference "
+                    "class (%s)", pp->name, pp->class_name, qq->class_name);
+            }
+        }
     }
     else if (p->type == MOF_FEATURE_PROP)
     {
-	MOF_Property_Decl* pp = (MOF_Property_Decl*)p;
-	MOF_Property_Decl* qq = (MOF_Property_Decl*)q;
+        MOF_Property_Decl* pp = (MOF_Property_Decl*)p;
+        MOF_Property_Decl* qq = (MOF_Property_Decl*)q;
 
-	if (pp->data_type != qq->data_type)
-	    MOF_error_printf(MESSAGE, p->name);
+        if (pp->data_type != qq->data_type)
+            MOF_error_printf(MESSAGE, p->name);
 
-	if (pp->array_index != qq->array_index)
-	    MOF_error_printf(MESSAGE, p->name);
+        if (pp->array_index != qq->array_index)
+            MOF_error_printf(MESSAGE, p->name);
     }
     else 
-	MOF_ASSERT(0);
+        MOF_ASSERT(0);
 }
 
 static void _build_param_qual_info_list(
@@ -191,39 +191,39 @@ static void _build_param_qual_info_list(
     MOF_Parameter* param2;
 
     if (feature1->type != MOF_FEATURE_METHOD)
-	return;
+        return;
 
     param1 = ((MOF_Method_Decl*)feature1)->parameters;
     param2 = feature2 ? ((MOF_Method_Decl*)feature2)->parameters : 0;
 
     while (param1)
     {
-	MOF_Qualifier_Info* all_qualifiers;
+        MOF_Qualifier_Info* all_qualifiers;
 
-	if (param2)
-	    all_qualifiers = param2->all_qualifiers;
-	else
-	    all_qualifiers = 0;
+        if (param2)
+            all_qualifiers = param2->all_qualifiers;
+        else
+            all_qualifiers = 0;
 
-	param1->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
-	    class_name,
-	    0, /* instance name */
-	    feature1->name, /* feature name */
-	    param1->name, /* parameter name */
-	    param1->qualifiers, /* local qualifiers */
-	    all_qualifiers, /* inherited qualifiers */
-	    &param1->qual_mask,
+        param1->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
+            class_name,
+            0, /* instance name */
+            feature1->name, /* feature name */
+            param1->name, /* parameter name */
+            param1->qualifiers, /* local qualifiers */
+            all_qualifiers, /* inherited qualifiers */
+            &param1->qual_mask,
             false); /* prop */
 
 #if 0
-	printf("class_name[%s]\n", class_name);
-	MOF_Qualifier_info_print_list(param1->all_qualifiers, 0);
+        printf("class_name[%s]\n", class_name);
+        MOF_Qualifier_info_print_list(param1->all_qualifiers, 0);
 #endif
 
-	param1 = (MOF_Parameter*)param1->next;
+        param1 = (MOF_Parameter*)param1->next;
 
-	if (param2)
-	    param2 = (MOF_Parameter*)param2->next;
+        if (param2)
+            param2 = (MOF_Parameter*)param2->next;
     }
 }
 
@@ -235,27 +235,27 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
 
     if (class_decl->super_class)
     {
-	MOF_Feature_Info* p = class_decl->super_class->all_features;
+        MOF_Feature_Info* p = class_decl->super_class->all_features;
 
-	for (; p; p = (MOF_Feature_Info*)p->next)
-	{
-	    MOF_Feature_Info* info;
-	    
-	    if ((info = new MOF_Feature_Info()) == 0)
-	    {
-		MOF_error("out of memory");
-		return;
-	    }
+        for (; p; p = (MOF_Feature_Info*)p->next)
+        {
+            MOF_Feature_Info* info;
+            
+            if ((info = new MOF_Feature_Info()) == 0)
+            {
+                MOF_error("out of memory");
+                return;
+            }
 
-	    info->class_origin = p->class_origin;
-	    info->propagated = true;
-	    info->feature = p->feature;
+            info->class_origin = p->class_origin;
+            info->propagated = true;
+            info->feature = p->feature;
 
-	    if (class_decl->all_features == 0)
-		class_decl->all_features = info;
-	    else
-		class_decl->all_features->append(info);
-	}
+            if (class_decl->all_features == 0)
+                class_decl->all_features = info;
+            else
+                class_decl->all_features->append(info);
+        }
     }
 
     /*
@@ -263,127 +263,127 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
      */
 
     {
-	MOF_Feature* p;
-	MOF_Feature_Info* q;
+        MOF_Feature* p;
+        MOF_Feature_Info* q;
 
-	for (p = class_decl->features; p; p = (MOF_Feature*)p->next)
-	{
-	    bool override = false;
+        for (p = class_decl->features; p; p = (MOF_Feature*)p->next)
+        {
+            bool override = false;
 
-	    /*
-	     * If all features already contains this feature, override it.
-	     */
+            /*
+             * If all features already contains this feature, override it.
+             */
 
-	    for (q = class_decl->all_features; q; q =(MOF_Feature_Info*)q->next)
-	    {
-		if (MOF_stricmp(p->name, q->feature->name) == 0)
-		{
-		    /*
-		     * Fix case to match original case.
-		     */
+            for (q = class_decl->all_features; q; q =(MOF_Feature_Info*)q->next)
+            {
+                if (MOF_stricmp(p->name, q->feature->name) == 0)
+                {
+                    /*
+                     * Fix case to match original case.
+                     */
 
-		    MOF_fix_case(p->name, q->feature->name);
+                    MOF_fix_case(p->name, q->feature->name);
 
-		    /*
-		     * Validate two features are compatible.
-		     */
+                    /*
+                     * Validate two features are compatible.
+                     */
 
-		    _validate_feature_compatibility(class_decl->name,
-			p, q->feature);
+                    _validate_feature_compatibility(class_decl->name,
+                        p, q->feature);
 
-		    /*
-		     * Build the all-qualifiers list.
-		     */
+                    /*
+                     * Build the all-qualifiers list.
+                     */
 
-		    p->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
-			class_decl->name,
-			0, /* instance name */
-			p->name, /* feature name */
-			0, /* parameter name */
-			p->qualifiers, /* local qualifiers */
-			q->feature->all_qualifiers, /* inherited qualifiers */
-			&p->qual_mask,
+                    p->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
+                        class_decl->name,
+                        0, /* instance name */
+                        p->name, /* feature name */
+                        0, /* parameter name */
+                        p->qualifiers, /* local qualifiers */
+                        q->feature->all_qualifiers, /* inherited qualifiers */
+                        &p->qual_mask,
                         p->type == MOF_FEATURE_PROP);
 
 #if 0
-		printf("=== class_name[%s]\n", class_decl->name);
-		MOF_Qualifier_info_print_list(p->all_qualifiers, 0);
+                printf("=== class_name[%s]\n", class_decl->name);
+                MOF_Qualifier_info_print_list(p->all_qualifiers, 0);
 #endif
 
-		    /*
-		     * Build the all-qualifiers list for each parameter (for
-		     * methods only).
-		     */
+                    /*
+                     * Build the all-qualifiers list for each parameter (for
+                     * methods only).
+                     */
 
-		    _build_param_qual_info_list(
-			class_decl->name, p, q->feature);
-		    
-		    /*
-		     * Override the feature.
-		     */
+                    _build_param_qual_info_list(
+                        class_decl->name, p, q->feature);
+                    
+                    /*
+                     * Override the feature.
+                     */
 
-		    q->propagated = false;
-		    q->feature = p;
-		    override = true;
-		    break;
-		}
-	    }
+                    q->propagated = false;
+                    q->feature = p;
+                    override = true;
+                    break;
+                }
+            }
 
-	    /*
-	     * If not an overriding feature, then append new feature.
-	     */
+            /*
+             * If not an overriding feature, then append new feature.
+             */
 
-	    if (!override)
-	    {
-		MOF_Feature_Info* info;
+            if (!override)
+            {
+                MOF_Feature_Info* info;
 
-		/*
-		 * Build the qualifier list.
-		 */
+                /*
+                 * Build the qualifier list.
+                 */
 
-		p->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
-		    class_decl->name,
-		    0, /* instance name */
-		    p->name, /* feature name */
-		    0, /* parameter name */
-		    p->qualifiers, /* local qualifiers */
-		    0, /* inherited qualifiers */
-		    &p->qual_mask,
+                p->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
+                    class_decl->name,
+                    0, /* instance name */
+                    p->name, /* feature name */
+                    0, /* parameter name */
+                    p->qualifiers, /* local qualifiers */
+                    0, /* inherited qualifiers */
+                    &p->qual_mask,
                     p->type == MOF_FEATURE_PROP);
 
 #if 0
-		printf("=== class_name[%s]\n", class_decl->name);
-		MOF_Qualifier_info_print_list(p->all_qualifiers, 0);
+                printf("=== class_name[%s]\n", class_decl->name);
+                MOF_Qualifier_info_print_list(p->all_qualifiers, 0);
 #endif
 
-		/*
-		 * Build the all-qualifiers list for each parameter (for
-		 * methods only).
-		 */
+                /*
+                 * Build the all-qualifiers list for each parameter (for
+                 * methods only).
+                 */
 
-		_build_param_qual_info_list(class_decl->name, p, 0);
+                _build_param_qual_info_list(class_decl->name, p, 0);
 
-		/*
-		 * Create a new class feature info entry and insert it.
-		 */
-		
-		if ((info = new MOF_Feature_Info()) == 0)
-		{
-		    MOF_error("out of memory");
-		    return;
-		}
+                /*
+                 * Create a new class feature info entry and insert it.
+                 */
+                
+                if ((info = new MOF_Feature_Info()) == 0)
+                {
+                    MOF_error("out of memory");
+                    return;
+                }
 
-		info->class_origin = class_decl;
-		info->propagated = false;
-		info->feature = p;
+                info->class_origin = class_decl;
+                info->propagated = false;
+                info->feature = p;
 
-		if (class_decl->all_features == 0)
-		    class_decl->all_features = info;
-		else
-		    class_decl->all_features->append(info);
-	    }
+                if (class_decl->all_features == 0)
+                    class_decl->all_features = info;
+                else
+                    class_decl->all_features->append(info);
+            }
 
-	}
+        }
     }
 }
 
@@ -395,16 +395,16 @@ MOF_Class_Decl* MOF_Class_Decl::find(
 
     for (p = MOF_Class_Decl::list; p; p = (MOF_Class_Decl*)p->next)
     {
-	if (MOF_stricmp(p->name, class_name) == 0)
-	{
-	    if (fix_case && strcmp(p->name, class_name) != 0)
-	    {
-		MOF_warning_printf("changing case of \"%s\" to \"%s\"",
-		    class_name, p->name);
-		strcpy(class_name, p->name);
-	    }
-	    return p;
-	}
+        if (MOF_stricmp(p->name, class_name) == 0)
+        {
+            if (fix_case && strcmp(p->name, class_name) != 0)
+            {
+                MOF_warning_printf("changing case of \"%s\" to \"%s\"",
+                    class_name, p->name);
+                strcpy(class_name, p->name);
+            }
+            return p;
+        }
     }
 
     return 0;
@@ -417,20 +417,20 @@ MOF_Class_Decl* MOF_Class_Decl::find_by_alias(
     MOF_Class_Decl* p;
 
     if (!alias)
-	return 0;
+        return 0;
 
     for (p = MOF_Class_Decl::list; p; p = (MOF_Class_Decl*)p->next)
     {
-	if (p->alias && MOF_stricmp(p->alias, alias) == 0)
-	{
-	    if (fix_case && strcmp(p->alias, alias) != 0)
-	    {
-		MOF_warning_printf("changing case of \"%s\" to \"%s\"",
-		    alias, p->alias);
-		strcpy(alias, p->alias);
-	    }
-	    return p;
-	}
+        if (p->alias && MOF_stricmp(p->alias, alias) == 0)
+        {
+            if (fix_case && strcmp(p->alias, alias) != 0)
+            {
+                MOF_warning_printf("changing case of \"%s\" to \"%s\"",
+                    alias, p->alias);
+                strcpy(alias, p->alias);
+            }
+            return p;
+        }
     }
 
     return 0;
@@ -447,8 +447,8 @@ void MOF_Class_Decl::validate()
 
     if (MOF_Class_Decl::find(name))
     {
-	MOF_error_printf(
-	    "class already defined: \"%s\"", name);
+        MOF_error_printf(
+            "class already defined: \"%s\"", name);
     }
 
     /*
@@ -457,12 +457,12 @@ void MOF_Class_Decl::validate()
 
     if (alias)
     {
-	if (MOF_Class_Decl::find_by_alias(alias) ||
-	    MOF_Instance_Decl::find_by_alias(alias))
-	{
-	    MOF_error_printf(
-		"alias name already defined: \"%s\"", alias);
-	}
+        if (MOF_Class_Decl::find_by_alias(alias) ||
+            MOF_Instance_Decl::find_by_alias(alias))
+        {
+            MOF_error_printf(
+                "alias name already defined: \"%s\"", alias);
+        }
     }
 
     /*
@@ -472,18 +472,18 @@ void MOF_Class_Decl::validate()
 
     if (super_class_name)
     {
-	MOF_Class_Decl* super_class_decl;
+        MOF_Class_Decl* super_class_decl;
 
-	super_class_decl = MOF_Class_Decl::find(super_class_name, true);
+        super_class_decl = MOF_Class_Decl::find(super_class_name, true);
 
-	if (super_class_decl == 0)
-	{
-	    MOF_error_printf("no such super class: \"%s\"", 
-		super_class_name);
-	}
+        if (super_class_decl == 0)
+        {
+            MOF_error_printf("no such super class: \"%s\"", 
+                super_class_name);
+        }
 
-	super_class = super_class_decl;
-	super_class_qualifiers = super_class_decl->all_qualifiers;
+        super_class = super_class_decl;
+        super_class_qualifiers = super_class_decl->all_qualifiers;
     }
 
     /*
@@ -492,11 +492,11 @@ void MOF_Class_Decl::validate()
 
     if (super_class)
     {
-	if (super_class->qual_mask & MOF_QT_TERMINAL)
-	{
-	    MOF_error("attempt to inherit from a terminal class");
-	    return;
-	}
+        if (super_class->qual_mask & MOF_QT_TERMINAL)
+        {
+            MOF_error("attempt to inherit from a terminal class");
+            return;
+        }
     }
 
     /*
@@ -509,17 +509,17 @@ void MOF_Class_Decl::validate()
      */
 
     all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
-	name, 
-	0, 
-	0, 
-	0,
-	qualifiers, 
-	super_class_qualifiers,
-	&qual_mask,
+        name, 
+        0, 
+        0, 
+        0,
+        qualifiers, 
+        super_class_qualifiers,
+        &qual_mask,
         false); /* prop */
 
 #if 0
-	MOF_Qualifier_info_print_list(all_qualifiers, 0);
+        MOF_Qualifier_info_print_list(all_qualifiers, 0);
 #endif
 
     /*
@@ -533,10 +533,10 @@ void MOF_Class_Decl::validate()
      */
 
     {
-	MOF_Feature* p;
+        MOF_Feature* p;
 
-	for (p = features; p; p = (MOF_Feature*)p->next)
-	    p->validate();
+        for (p = features; p; p = (MOF_Feature*)p->next)
+            p->validate();
     }
 
     /*
@@ -547,11 +547,11 @@ void MOF_Class_Decl::validate()
     _build_all_features(this);
 
     if (qual_mask & MOF_QT_ASSOCIATION)
-	expected_scope |= MOF_SCOPE_ASSOCIATION;
+        expected_scope |= MOF_SCOPE_ASSOCIATION;
     else if (qual_mask & MOF_QT_INDICATION)
-	expected_scope |= MOF_SCOPE_INDICATION;
+        expected_scope |= MOF_SCOPE_INDICATION;
     else
-	expected_scope |= MOF_SCOPE_CLASS;
+        expected_scope |= MOF_SCOPE_CLASS;
 
     /*
      * Check for EmbeddedObject qualifier.
@@ -559,28 +559,28 @@ void MOF_Class_Decl::validate()
 
     for (MOF_Feature* p = features; p; p = (MOF_Feature*)p->next)
     {
-	if (p->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-	{
-	    if (!(qual_mask & MOF_QT_INDICATION))
-	    {
-		MOF_error_printf("EmbeddedObject qualifier allowed only on "
-		    "the properties of indications");
-	    }
+        if (p->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+        {
+            if (!(qual_mask & MOF_QT_INDICATION))
+            {
+                MOF_error_printf("EmbeddedObject qualifier allowed only on "
+                    "the properties of indications");
+            }
 
-	    if (p->type != MOF_FEATURE_PROP)
-	    {
-		MOF_error_printf(
-		    "EmbeddedObject qualifier applied to non-property");
-	    }
+            if (p->type != MOF_FEATURE_PROP)
+            {
+                MOF_error_printf(
+                    "EmbeddedObject qualifier applied to non-property");
+            }
 
-	    MOF_Property_Decl* prop = (MOF_Property_Decl*)p;
+            MOF_Property_Decl* prop = (MOF_Property_Decl*)p;
 
-	    if (prop->data_type != TOK_STRING)
-	    {
-		MOF_error_printf("EmbeddedObject qualifier allowed "
-		    "only on string properties");
-	    }
-	}
+            if (prop->data_type != TOK_STRING)
+            {
+                MOF_error_printf("EmbeddedObject qualifier allowed "
+                    "only on string properties");
+            }
+        }
     }
 
     /*
@@ -589,17 +589,17 @@ void MOF_Class_Decl::validate()
 
     if (expected_scope != MOF_SCOPE_ASSOCIATION)
     {
-	MOF_Feature* p;
+        MOF_Feature* p;
 
-	for (p = features; p; p = (MOF_Feature*)p->next)
-	{
-	    if (p->type == MOF_FEATURE_REF)
-	    {
-		MOF_error_printf(
-		    "only associations can have references: \"%s\"", 
-		    name);
-	    }
-	}
+        for (p = features; p; p = (MOF_Feature*)p->next)
+        {
+            if (p->type == MOF_FEATURE_REF)
+            {
+                MOF_error_printf(
+                    "only associations can have references: \"%s\"", 
+                    name);
+            }
+        }
     }
 
     /*
@@ -608,21 +608,21 @@ void MOF_Class_Decl::validate()
 
     if (qual_mask & MOF_QT_ASSOCIATION)
     {
-	size_t num_refs = 0;
-	MOF_Feature_Info* p;
+        size_t num_refs = 0;
+        MOF_Feature_Info* p;
 
-	for (p = all_features; p; p = (MOF_Feature_Info*)p->next)
-	{
-	    if (p->feature->type == MOF_FEATURE_REF)
-		num_refs++;
-	}
+        for (p = all_features; p; p = (MOF_Feature_Info*)p->next)
+        {
+            if (p->feature->type == MOF_FEATURE_REF)
+                num_refs++;
+        }
 
-	if (num_refs < 2)
-	{
-	    MOF_error_printf(
-		"associations must contain two or more references: \"%s\"", 
-		name);
-	}
+        if (num_refs < 2)
+        {
+            MOF_error_printf(
+                "associations must contain two or more references: \"%s\"", 
+                name);
+        }
     }
 
     /*
@@ -631,11 +631,11 @@ void MOF_Class_Decl::validate()
 
     if (qual_mask & MOF_QT_ASSOCIATION && super_class)
     {
-	if (!(super_class->qual_mask & MOF_QT_ASSOCIATION))
-	{
-	    MOF_error_printf("associations cannot be a subclass "
-	        "of a non-association: \"%s\"", name);
-	}
+        if (!(super_class->qual_mask & MOF_QT_ASSOCIATION))
+        {
+            MOF_error_printf("associations cannot be a subclass "
+                "of a non-association: \"%s\"", name);
+        }
     }
 
     /*
@@ -644,29 +644,29 @@ void MOF_Class_Decl::validate()
 
     if (qual_mask & MOF_QT_ASSOCIATION && super_class)
     {
-	MOF_Feature_Info* p;
-	size_t num_refs1 = 0;
-	size_t num_refs2 = 0;
+        MOF_Feature_Info* p;
+        size_t num_refs1 = 0;
+        size_t num_refs2 = 0;
 
-	for (p = all_features; p; p = (MOF_Feature_Info*)p->next)
-	{
-	    if (p->feature->type == MOF_FEATURE_REF)
-		num_refs1++;
-	}
+        for (p = all_features; p; p = (MOF_Feature_Info*)p->next)
+        {
+            if (p->feature->type == MOF_FEATURE_REF)
+                num_refs1++;
+        }
 
-	for (p = super_class->all_features; p; p = (MOF_Feature_Info*)p->next)
-	{
-	    if (p->feature->type == MOF_FEATURE_REF)
-		num_refs2++;
-	}
+        for (p = super_class->all_features; p; p = (MOF_Feature_Info*)p->next)
+        {
+            if (p->feature->type == MOF_FEATURE_REF)
+                num_refs2++;
+        }
 
-	if (num_refs1 != num_refs2)
-	{
-	    MOF_error_printf(
-		"an association sub-class cannot add new references: \"%s\"", 
-		name);
-	    return;
-	}
+        if (num_refs1 != num_refs2)
+        {
+            MOF_error_printf(
+                "an association sub-class cannot add new references: \"%s\"", 
+                name);
+            return;
+        }
     }
 
     /*
@@ -681,35 +681,35 @@ void MOF_Class_Decl::validate()
 
     if (super_class)
     {
-	size_t n1 = super_class->count_keys();
-	size_t n2 = count_keys();
+        size_t n1 = super_class->count_keys();
+        size_t n2 = count_keys();
 
-	if (n1 && n1 != n2)
-	{
-	    MOF_error_printf(
-		"a subclass cannot define any keys if the superclass has");
-	    return;
-	}
+        if (n1 && n1 != n2)
+        {
+            MOF_error_printf(
+                "a subclass cannot define any keys if the superclass has");
+            return;
+        }
     }
 
 #if 0
     // Track average number of features.
 
     {
-	static size_t _max_features = 0;
+        static size_t _max_features = 0;
 
-	MOF_Feature_Info* p;
+        MOF_Feature_Info* p;
 
-	size_t n = 0;
+        size_t n = 0;
 
-	for (p = all_features; p; p = (MOF_Feature_Info*)p->next)
-	    n++;
+        for (p = all_features; p; p = (MOF_Feature_Info*)p->next)
+            n++;
 
-	if (n > _max_features)
-	{
-	    _max_features = n;
-	    printf("new max features: %s: %zu\n", name, _max_features);
-	}
+        if (n > _max_features)
+        {
+            _max_features = n;
+            printf("new max features: %s: %zu\n", name, _max_features);
+        }
     }
 #endif
 }
@@ -723,9 +723,9 @@ void MOF_Class_Decl::handle(MOF_Class_Decl* class_decl)
      */
 
     if (MOF_Class_Decl::list)
-	MOF_Class_Decl::list->append(class_decl);
+        MOF_Class_Decl::list->append(class_decl);
     else
-	MOF_Class_Decl::list = class_decl;
+        MOF_Class_Decl::list = class_decl;
 
 #if 0
     class_decl->print();
@@ -738,8 +738,8 @@ bool MOF_Class_Decl::is_a(const MOF_Class_Decl* ancestor) const
 
     for (p = this; p; p = p->super_class)
     {
-	if (p == ancestor)
-	    return true;
+        if (p == ancestor)
+            return true;
     }
 
     return false;
@@ -752,8 +752,8 @@ size_t MOF_Class_Decl::count_keys() const
 
     for (p = all_features; p; p = (MOF_Feature_Info*)p->next)
     {
-	if (p->feature->qual_mask & MOF_QT_KEY)
-	    count++;
+        if (p->feature->qual_mask & MOF_QT_KEY)
+            count++;
     }
 
     return count;
@@ -764,7 +764,7 @@ void MOF_Class_Decl::print_static_list()
     MOF_Class_Decl* p = MOF_Class_Decl::list; 
 
     for (; p; p = (MOF_Class_Decl*)p->next)
-	p->print();
+        p->print();
 }
 
 const MOF_Class_Decl* MOF_Class_Decl::find_ancestor(
@@ -772,8 +772,8 @@ const MOF_Class_Decl* MOF_Class_Decl::find_ancestor(
 {
     for (const MOF_Class_Decl* p = this; p; p = p->super_class)
     {
-	if (strcasecmp(p->name, class_name) == 0)
-	    return p;
+        if (strcasecmp(p->name, class_name) == 0)
+            return p;
     }
 
     return 0;
@@ -790,8 +790,8 @@ static bool _is_assoc(MOF_Class_Decl* cd)
 
     for (; p; p = (MOF_Qualifier_Info*)(p->next))
     {
-	if (strcasecmp(p->qualifier->name, "association") == 0)
-	    return true;
+        if (strcasecmp(p->qualifier->name, "association") == 0)
+            return true;
     }
 
     return false;
@@ -809,49 +809,49 @@ void MOF_Class_Decl::print_nested_refs()
 
     for (; p; p = (MOF_Class_Decl*)p->next)
     {
-	// Ignore non-reference classes.
+        // Ignore non-reference classes.
 
-	if (p->qual_mask & MOF_QT_ASSOCIATION)
-	    v.push_back(p->name);
-	else if (_is_assoc(p))
-	{
-	    printf("************************* YES\n");
-	}
+        if (p->qual_mask & MOF_QT_ASSOCIATION)
+            v.push_back(p->name);
+        else if (_is_assoc(p))
+        {
+            printf("************************* YES\n");
+        }
     }
 
     p = MOF_Class_Decl::list; 
 
     for (; p; p = (MOF_Class_Decl*)p->next)
     {
-	// Ignore non-reference classes.
+        // Ignore non-reference classes.
 
-	if (!(p->qual_mask & MOF_QT_ASSOCIATION))
-	    continue;
+        if (!(p->qual_mask & MOF_QT_ASSOCIATION))
+            continue;
 
-	// printf("ASSOC[%s]\n", p->name);
+        // printf("ASSOC[%s]\n", p->name);
 
-	MOF_Feature_Info* fi = p->all_features;
+        MOF_Feature_Info* fi = p->all_features;
 
-	for (; fi; fi = (MOF_Feature_Info*)(fi->next))
-	{
-	    MOF_Feature* f = fi->feature;
+        for (; fi; fi = (MOF_Feature_Info*)(fi->next))
+        {
+            MOF_Feature* f = fi->feature;
 
-	    if (f->type == MOF_FEATURE_REF)
-	    {
-		MOF_Reference_Decl* ref = (MOF_Reference_Decl*)f;
+            if (f->type == MOF_FEATURE_REF)
+            {
+                MOF_Reference_Decl* ref = (MOF_Reference_Decl*)f;
 
-		// printf("REF[%s]\n", ref->class_name);
+                // printf("REF[%s]\n", ref->class_name);
 
-		for (size_t i = 0; i < v.size(); i++)
-		{
-		    if (v[i] == ref->class_name)
-		    {
-		        printf(
-			    "Nested assoc: %s %s\n", p->name, ref->class_name);
-		    }
-		}
-	    }
-	}
+                for (size_t i = 0; i < v.size(); i++)
+                {
+                    if (v[i] == ref->class_name)
+                    {
+                        printf(
+                            "Nested assoc: %s %s\n", p->name, ref->class_name);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -864,3 +864,5 @@ void MOF_Class_Decl::set_owning_class(const char* owning_class_)
     for (MOF_Feature* p = features; p; p = (MOF_Feature*)p->next)
         p->set_owning_class(owning_class_);
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Class_Decl.cpp,v 1.12 2007/03/07 18:57:14 mbrasher-public Exp $");

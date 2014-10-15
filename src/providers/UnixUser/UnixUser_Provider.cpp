@@ -145,3 +145,5 @@ int UnixUser_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/UnixUser/UnixUser_Provider.cpp,v 1.17 2007/03/07 20:25:28 mbrasher-public Exp $");

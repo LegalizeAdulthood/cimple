@@ -1,7 +1,9 @@
+/*NOCHKSRC*/
 /* A Bison parser, made by GNU Bison 1.875.  */
 
 /* Skeleton parser for Yacc-like parsing with Bison,
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002 Free Software Foundation, 
+   Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -230,15 +232,15 @@ typedef union YYSTYPE {
 
     struct _ref_init
     {
-	char* alias;
-	class MOF_Object_Reference* obj_ref;
+        char* alias;
+        class MOF_Object_Reference* obj_ref;
     }
     ref_init;
 
     struct _decl_init
     {
-	int array_index;
-	class MOF_Literal* initializer;
+        int array_index;
+        class MOF_Literal* initializer;
     }
     decl_init;
 } YYSTYPE;
@@ -291,7 +293,7 @@ typedef union YYSTYPE {
 
 #if (! defined (yyoverflow) \
      && (! defined (__cplusplus) \
-	 || (YYSTYPE_IS_TRIVIAL)))
+         || (YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -306,7 +308,7 @@ union yyalloc
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
 # define YYSTACK_BYTES(N) \
-     ((N) * (sizeof (short) + sizeof (YYSTYPE))				\
+     ((N) * (sizeof (short) + sizeof (YYSTYPE))                         \
       + YYSTACK_GAP_MAXIMUM)
 
 /* Copy COUNT objects from FROM to TO.  The source and destination do
@@ -316,13 +318,13 @@ union yyalloc
 #   define YYCOPY(To, From, Count) \
       __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
 #  else
-#   define YYCOPY(To, From, Count)		\
-      do					\
-	{					\
-	  register YYSIZE_T yyi;		\
-	  for (yyi = 0; yyi < (Count); yyi++)	\
-	    (To)[yyi] = (From)[yyi];		\
-	}					\
+#   define YYCOPY(To, From, Count)              \
+      do                                        \
+        {                                       \
+          register YYSIZE_T yyi;                \
+          for (yyi = 0; yyi < (Count); yyi++)   \
+            (To)[yyi] = (From)[yyi];            \
+        }                                       \
       while (0)
 #  endif
 # endif
@@ -332,15 +334,15 @@ union yyalloc
    elements in the stack, and YYPTR gives the new location of the
    stack.  Advance YYPTR to a properly aligned location for the next
    stack.  */
-# define YYSTACK_RELOCATE(Stack)					\
-    do									\
-      {									\
-	YYSIZE_T yynewbytes;						\
-	YYCOPY (&yyptr->Stack, Stack, yysize);				\
-	Stack = &yyptr->Stack;						\
-	yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
-	yyptr += yynewbytes / sizeof (*yyptr);				\
-      }									\
+# define YYSTACK_RELOCATE(Stack)                                        \
+    do                                                                  \
+      {                                                                 \
+        YYSIZE_T yynewbytes;                                            \
+        YYCOPY (&yyptr->Stack, Stack, yysize);                          \
+        Stack = &yyptr->Stack;                                          \
+        yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
+        yyptr += yynewbytes / sizeof (*yyptr);                          \
+      }                                                                 \
     while (0)
 
 #endif
@@ -369,7 +371,7 @@ union yyalloc
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   311
 
-#define YYTRANSLATE(YYX) 						\
+#define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
 /* YYTRANSLATE[YYLEX] -- Bison symbol number corresponding to YYLEX.  */
@@ -779,42 +781,42 @@ static const unsigned char yystos[] =
 # define YYSIZE_T unsigned int
 #endif
 
-#define yyerrok		(yyerrstatus = 0)
-#define yyclearin	(yychar = YYEMPTY)
-#define YYEMPTY		(-2)
-#define YYEOF		0
+#define yyerrok         (yyerrstatus = 0)
+#define yyclearin       (yychar = YYEMPTY)
+#define YYEMPTY         (-2)
+#define YYEOF           0
 
-#define YYACCEPT	goto yyacceptlab
-#define YYABORT		goto yyabortlab
-#define YYERROR		goto yyerrlab1
+#define YYACCEPT        goto yyacceptlab
+#define YYABORT         goto yyabortlab
+#define YYERROR         goto yyerrlab1
 
 /* Like YYERROR except do call yyerror.  This remains here temporarily
    to ease the transition to the new meaning of YYERROR, for GCC.
    Once GCC version 2 has supplanted version 1, this can go.  */
 
-#define YYFAIL		goto yyerrlab
+#define YYFAIL          goto yyerrlab
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)					\
-do								\
-  if (yychar == YYEMPTY && yylen == 1)				\
-    {								\
-      yychar = (Token);						\
-      yylval = (Value);						\
-      yytoken = YYTRANSLATE (yychar);				\
-      YYPOPSTACK;						\
-      goto yybackup;						\
-    }								\
-  else								\
-    { 								\
+#define YYBACKUP(Token, Value)                                  \
+do                                                              \
+  if (yychar == YYEMPTY && yylen == 1)                          \
+    {                                                           \
+      yychar = (Token);                                         \
+      yylval = (Value);                                         \
+      yytoken = YYTRANSLATE (yychar);                           \
+      YYPOPSTACK;                                               \
+      goto yybackup;                                            \
+    }                                                           \
+  else                                                          \
+    {                                                           \
       yyerror ("syntax error: cannot back up");\
-      YYERROR;							\
-    }								\
+      YYERROR;                                                  \
+    }                                                           \
 while (0)
 
-#define YYTERROR	1
-#define YYERRCODE	256
+#define YYTERROR        1
+#define YYERRCODE       256
 
 /* YYLLOC_DEFAULT -- Compute the default location (before the actions
    are run).  */
@@ -843,27 +845,27 @@ while (0)
 #  define YYFPRINTF fprintf
 # endif
 
-# define YYDPRINTF(Args)			\
-do {						\
-  if (yydebug)					\
-    YYFPRINTF Args;				\
+# define YYDPRINTF(Args)                        \
+do {                                            \
+  if (yydebug)                                  \
+    YYFPRINTF Args;                             \
 } while (0)
 
-# define YYDSYMPRINT(Args)			\
-do {						\
-  if (yydebug)					\
-    yysymprint Args;				\
+# define YYDSYMPRINT(Args)                      \
+do {                                            \
+  if (yydebug)                                  \
+    yysymprint Args;                            \
 } while (0)
 
-# define YYDSYMPRINTF(Title, Token, Value, Location)		\
-do {								\
-  if (yydebug)							\
-    {								\
-      YYFPRINTF (stderr, "%s ", Title);				\
-      yysymprint (stderr, 					\
-                  Token, Value);	\
-      YYFPRINTF (stderr, "\n");					\
-    }								\
+# define YYDSYMPRINTF(Title, Token, Value, Location)            \
+do {                                                            \
+  if (yydebug)                                                  \
+    {                                                           \
+      YYFPRINTF (stderr, "%s ", Title);                         \
+      yysymprint (stderr,                                       \
+                  Token, Value);        \
+      YYFPRINTF (stderr, "\n");                                 \
+    }                                                           \
 } while (0)
 
 /*------------------------------------------------------------------.
@@ -887,10 +889,10 @@ yy_stack_print (bottom, top)
   YYFPRINTF (stderr, "\n");
 }
 
-# define YY_STACK_PRINT(Bottom, Top)				\
-do {								\
-  if (yydebug)							\
-    yy_stack_print ((Bottom), (Top));				\
+# define YY_STACK_PRINT(Bottom, Top)                            \
+do {                                                            \
+  if (yydebug)                                                  \
+    yy_stack_print ((Bottom), (Top));                           \
 } while (0)
 
 
@@ -917,10 +919,10 @@ yy_reduce_print (yyrule)
   YYFPRINTF (stderr, "-> %s\n", yytname [yyr1[yyrule]]);
 }
 
-# define YY_REDUCE_PRINT(Rule)		\
-do {					\
-  if (yydebug)				\
-    yy_reduce_print (Rule);		\
+# define YY_REDUCE_PRINT(Rule)          \
+do {                                    \
+  if (yydebug)                          \
+    yy_reduce_print (Rule);             \
 } while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -936,7 +938,7 @@ int yydebug;
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
-#ifndef	YYINITDEPTH
+#ifndef YYINITDEPTH
 # define YYINITDEPTH 200
 #endif
 
@@ -1145,7 +1147,7 @@ yyparse ()
      to reallocate them elsewhere.  */
 
   /* The state stack.  */
-  short	yyssa[YYINITDEPTH];
+  short yyssa[YYINITDEPTH];
   short *yyss = yyssa;
   register short *yyssp;
 
@@ -1174,7 +1176,7 @@ yyparse ()
   yystate = 0;
   yyerrstatus = 0;
   yynerrs = 0;
-  yychar = YYEMPTY;		/* Cause a token to be read.  */
+  yychar = YYEMPTY;             /* Cause a token to be read.  */
 
   /* Initialize stack pointers.
      Waste one element of value and location stack
@@ -1205,25 +1207,25 @@ yyparse ()
 
 #ifdef yyoverflow
       {
-	/* Give user a chance to reallocate the stack. Use copies of
-	   these so that the &'s don't force the real ones into
-	   memory.  */
-	YYSTYPE *yyvs1 = yyvs;
-	short *yyss1 = yyss;
+        /* Give user a chance to reallocate the stack. Use copies of
+           these so that the &'s don't force the real ones into
+           memory.  */
+        YYSTYPE *yyvs1 = yyvs;
+        short *yyss1 = yyss;
 
 
-	/* Each stack pointer address is followed by the size of the
-	   data in use in that stack, in bytes.  This used to be a
-	   conditional around just the two extra args, but that might
-	   be undefined if yyoverflow is a macro.  */
-	yyoverflow ("parser stack overflow",
-		    &yyss1, yysize * sizeof (*yyssp),
-		    &yyvs1, yysize * sizeof (*yyvsp),
+        /* Each stack pointer address is followed by the size of the
+           data in use in that stack, in bytes.  This used to be a
+           conditional around just the two extra args, but that might
+           be undefined if yyoverflow is a macro.  */
+        yyoverflow ("parser stack overflow",
+                    &yyss1, yysize * sizeof (*yyssp),
+                    &yyvs1, yysize * sizeof (*yyvsp),
 
-		    &yystacksize);
+                    &yystacksize);
 
-	yyss = yyss1;
-	yyvs = yyvs1;
+        yyss = yyss1;
+        yyvs = yyvs1;
       }
 #else /* no yyoverflow */
 # ifndef YYSTACK_RELOCATE
@@ -1231,23 +1233,23 @@ yyparse ()
 # else
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
-	goto yyoverflowlab;
+        goto yyoverflowlab;
       yystacksize *= 2;
       if (YYMAXDEPTH < yystacksize)
-	yystacksize = YYMAXDEPTH;
+        yystacksize = YYMAXDEPTH;
 
       {
-	short *yyss1 = yyss;
-	union yyalloc *yyptr =
-	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
-	if (! yyptr)
-	  goto yyoverflowlab;
-	YYSTACK_RELOCATE (yyss);
-	YYSTACK_RELOCATE (yyvs);
+        short *yyss1 = yyss;
+        union yyalloc *yyptr =
+          (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
+        if (! yyptr)
+          goto yyoverflowlab;
+        YYSTACK_RELOCATE (yyss);
+        YYSTACK_RELOCATE (yyvs);
 
 #  undef YYSTACK_RELOCATE
-	if (yyss1 != yyssa)
-	  YYSTACK_FREE (yyss1);
+        if (yyss1 != yyssa)
+          YYSTACK_FREE (yyss1);
       }
 # endif
 #endif /* no yyoverflow */
@@ -1257,10 +1259,10 @@ yyparse ()
 
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-		  (unsigned long int) yystacksize));
+                  (unsigned long int) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
-	YYABORT;
+        YYABORT;
     }
 
   YYDPRINTF ((stderr, "Entering state %d\n", yystate));
@@ -1311,7 +1313,7 @@ yybackup:
   if (yyn <= 0)
     {
       if (yyn == 0 || yyn == YYTABLE_NINF)
-	goto yyerrlab;
+        goto yyerrlab;
       yyn = -yyn;
       goto yyreduce;
     }
@@ -1372,1297 +1374,1297 @@ yyreduce:
         case 2:
 #line 209 "MOF.y"
     {
-	/* printf("start rule reached\n"); */
+        /* printf("start rule reached\n"); */
     }
     break;
 
   case 3:
 #line 215 "MOF.y"
     {
-	MOF_trace("MOF_specification:1");
+        MOF_trace("MOF_specification:1");
     }
     break;
 
   case 4:
 #line 219 "MOF.y"
     {
-	MOF_trace("MOF_specification:2");
+        MOF_trace("MOF_specification:2");
     }
     break;
 
   case 5:
 #line 226 "MOF.y"
     {
-	MOF_trace("MOF_productions:1");
+        MOF_trace("MOF_productions:1");
     }
     break;
 
   case 6:
 #line 230 "MOF.y"
     {
-	MOF_trace("MOF_productions:2");
+        MOF_trace("MOF_productions:2");
     }
     break;
 
   case 7:
 #line 237 "MOF.y"
     {
-	MOF_trace("MOF_production:1");
-	MOF_warning_printf("pragma ignored");
+        MOF_trace("MOF_production:1");
+        MOF_warning_printf("pragma ignored");
     }
     break;
 
   case 8:
 #line 242 "MOF.y"
     {
-	MOF_trace("MOF_production:3");
-	MOF_Class_Decl::handle(yyvsp[0].class_decl);
+        MOF_trace("MOF_production:3");
+        MOF_Class_Decl::handle(yyvsp[0].class_decl);
     }
     break;
 
   case 9:
 #line 247 "MOF.y"
     {
-	MOF_trace("MOF_production:4");
-	MOF_Qualifier_Decl::handle(yyvsp[0].qual_decl);
+        MOF_trace("MOF_production:4");
+        MOF_Qualifier_Decl::handle(yyvsp[0].qual_decl);
     }
     break;
 
   case 10:
 #line 252 "MOF.y"
     {
-	MOF_trace("MOF_production:5");
-	MOF_Instance_Decl::handle(yyvsp[0].inst_decl);
+        MOF_trace("MOF_production:5");
+        MOF_Instance_Decl::handle(yyvsp[0].inst_decl);
     }
     break;
 
   case 11:
 #line 268 "MOF.y"
     {
-	MOF_Pragma::handle(yyvsp[-3].string_value, yyvsp[-1].string_value);
+        MOF_Pragma::handle(yyvsp[-3].string_value, yyvsp[-1].string_value);
     }
     break;
 
   case 12:
 #line 275 "MOF.y"
     {
-	yyval.string_value = yyvsp[0].string_value;
+        yyval.string_value = yyvsp[0].string_value;
     }
     break;
 
   case 13:
 #line 282 "MOF.y"
     {
-	yyval.string_value = yyvsp[0].string_value;
+        yyval.string_value = yyvsp[0].string_value;
     }
     break;
 
   case 14:
 #line 302 "MOF.y"
     {
-	MOF_trace("name:1");
-	/* heap string */
-	yyval.string_value = yyvsp[0].string_value;
+        MOF_trace("name:1");
+        /* heap string */
+        yyval.string_value = yyvsp[0].string_value;
     }
     break;
 
   case 15:
 #line 308 "MOF.y"
     {
-	MOF_trace("name:2");
-	yyval.string_value = strdup(yyvsp[0].string_value);
-	MOF_ASSERT(yyval.string_value != NULL);
+        MOF_trace("name:2");
+        yyval.string_value = strdup(yyvsp[0].string_value);
+        MOF_ASSERT(yyval.string_value != NULL);
     }
     break;
 
   case 16:
 #line 314 "MOF.y"
     {
-	MOF_trace("name:3");
-	yyval.string_value = strdup(yyvsp[0].string_value);
-	MOF_ASSERT(yyval.string_value != NULL);
+        MOF_trace("name:3");
+        yyval.string_value = strdup(yyvsp[0].string_value);
+        MOF_ASSERT(yyval.string_value != NULL);
     }
     break;
 
   case 17:
 #line 320 "MOF.y"
     {
-	MOF_trace("name:4");
-	yyval.string_value = strdup(yyvsp[0].string_value);
-	MOF_ASSERT(yyval.string_value != NULL);
+        MOF_trace("name:4");
+        yyval.string_value = strdup(yyvsp[0].string_value);
+        MOF_ASSERT(yyval.string_value != NULL);
     }
     break;
 
   case 18:
 #line 326 "MOF.y"
     {
-	MOF_trace("name:5");
-	yyval.string_value = strdup(yyvsp[0].string_value);
-	MOF_ASSERT(yyval.string_value != NULL);
+        MOF_trace("name:5");
+        yyval.string_value = strdup(yyvsp[0].string_value);
+        MOF_ASSERT(yyval.string_value != NULL);
     }
     break;
 
   case 19:
 #line 343 "MOF.y"
     {
-	MOF_trace("qual_decl:1");
-	yyval.qual_decl = yyvsp[-1].qual_decl;
+        MOF_trace("qual_decl:1");
+        yyval.qual_decl = yyvsp[-1].qual_decl;
     }
     break;
 
   case 20:
 #line 351 "MOF.y"
     {
-	MOF_trace("qual_decl_body:1");
-	yyval.qual_decl = new MOF_Qualifier_Decl();
-	MOF_ASSERT(yyval.qual_decl != NULL);
-	yyval.qual_decl->name = yyvsp[-5].string_value;
-	yyval.qual_decl->data_type = (int)yyvsp[-3].int_value;
-	yyval.qual_decl->array_index = yyvsp[-2].decl_init.array_index;
-	yyval.qual_decl->initializer = yyvsp[-2].decl_init.initializer;
-	yyval.qual_decl->scope = yyvsp[-1].scope;
-	yyval.qual_decl->flavor = MOF_Flavor::fixup(yyvsp[0].flavor, true);
+        MOF_trace("qual_decl_body:1");
+        yyval.qual_decl = new MOF_Qualifier_Decl();
+        MOF_ASSERT(yyval.qual_decl != NULL);
+        yyval.qual_decl->name = yyvsp[-5].string_value;
+        yyval.qual_decl->data_type = (int)yyvsp[-3].int_value;
+        yyval.qual_decl->array_index = yyvsp[-2].decl_init.array_index;
+        yyval.qual_decl->initializer = yyvsp[-2].decl_init.initializer;
+        yyval.qual_decl->scope = yyvsp[-1].scope;
+        yyval.qual_decl->flavor = MOF_Flavor::fixup(yyvsp[0].flavor, true);
     }
     break;
 
   case 21:
 #line 366 "MOF.y"
     {
-	MOF_trace("qual_decl_init:1");
-	yyval.decl_init = yyvsp[0].decl_init;
+        MOF_trace("qual_decl_init:1");
+        yyval.decl_init = yyvsp[0].decl_init;
     }
     break;
 
   case 22:
 #line 371 "MOF.y"
     {
-	MOF_trace("qual_decl_init:2");
-	yyval.decl_init = yyvsp[0].decl_init;
+        MOF_trace("qual_decl_init:2");
+        yyval.decl_init = yyvsp[0].decl_init;
     }
     break;
 
   case 23:
 #line 379 "MOF.y"
     {
-	MOF_trace("qual_decl_array_init:1");
-	yyval.decl_init.array_index = (int)yyvsp[-2].int_value;
-	yyval.decl_init.initializer = yyvsp[0].literal;
+        MOF_trace("qual_decl_array_init:1");
+        yyval.decl_init.array_index = (int)yyvsp[-2].int_value;
+        yyval.decl_init.initializer = yyvsp[0].literal;
     }
     break;
 
   case 24:
 #line 385 "MOF.y"
     {
-	MOF_trace("qual_decl_array_init:2");
-	yyval.decl_init.array_index = (int)yyvsp[0].int_value;
-	yyval.decl_init.initializer = NULL;
+        MOF_trace("qual_decl_array_init:2");
+        yyval.decl_init.array_index = (int)yyvsp[0].int_value;
+        yyval.decl_init.initializer = NULL;
     }
     break;
 
   case 25:
 #line 394 "MOF.y"
     {
-	MOF_trace("qual_decl_scalar_init:1");
-	yyval.decl_init.array_index = 0;
-	yyval.decl_init.initializer = yyvsp[0].literal;
+        MOF_trace("qual_decl_scalar_init:1");
+        yyval.decl_init.array_index = 0;
+        yyval.decl_init.initializer = yyvsp[0].literal;
     }
     break;
 
   case 26:
 #line 400 "MOF.y"
     {
-	MOF_trace("qual_decl_scalar_init:2");
-	yyval.decl_init.array_index = 0;
-	yyval.decl_init.initializer = NULL;
+        MOF_trace("qual_decl_scalar_init:2");
+        yyval.decl_init.array_index = 0;
+        yyval.decl_init.initializer = NULL;
     }
     break;
 
   case 27:
 #line 409 "MOF.y"
     {
-	MOF_trace("qual_decl_scope:1");
-	yyval.scope = yyvsp[-1].scope;
+        MOF_trace("qual_decl_scope:1");
+        yyval.scope = yyvsp[-1].scope;
     }
     break;
 
   case 28:
 #line 417 "MOF.y"
     {
-	MOF_trace("scope_list:1");
-	yyval.scope = yyvsp[0].scope;
+        MOF_trace("scope_list:1");
+        yyval.scope = yyvsp[0].scope;
     }
     break;
 
   case 29:
 #line 422 "MOF.y"
     {
-	MOF_trace("scope_list:2");
-	yyval.scope |= yyvsp[0].scope;
+        MOF_trace("scope_list:2");
+        yyval.scope |= yyvsp[0].scope;
     }
     break;
 
   case 30:
 #line 430 "MOF.y"
     {
-	MOF_trace("scope:1");
-	yyval.scope = MOF_SCOPE_SCHEMA;
+        MOF_trace("scope:1");
+        yyval.scope = MOF_SCOPE_SCHEMA;
     }
     break;
 
   case 31:
 #line 435 "MOF.y"
     {
-	MOF_trace("scope:2");
-	yyval.scope = MOF_SCOPE_CLASS;
+        MOF_trace("scope:2");
+        yyval.scope = MOF_SCOPE_CLASS;
     }
     break;
 
   case 32:
 #line 440 "MOF.y"
     {
-	MOF_trace("scope:3");
-	yyval.scope = MOF_SCOPE_ASSOCIATION;
+        MOF_trace("scope:3");
+        yyval.scope = MOF_SCOPE_ASSOCIATION;
     }
     break;
 
   case 33:
 #line 445 "MOF.y"
     {
-	MOF_trace("scope:4");
-	yyval.scope = MOF_SCOPE_INDICATION;
+        MOF_trace("scope:4");
+        yyval.scope = MOF_SCOPE_INDICATION;
     }
     break;
 
   case 34:
 #line 450 "MOF.y"
     {
-	MOF_trace("scope:5");
-	yyval.scope = MOF_SCOPE_PROPERTY;
+        MOF_trace("scope:5");
+        yyval.scope = MOF_SCOPE_PROPERTY;
     }
     break;
 
   case 35:
 #line 455 "MOF.y"
     {
-	MOF_trace("scope:6");
-	yyval.scope = MOF_SCOPE_REFERENCE;
+        MOF_trace("scope:6");
+        yyval.scope = MOF_SCOPE_REFERENCE;
     }
     break;
 
   case 36:
 #line 460 "MOF.y"
     {
-	MOF_trace("scope:7");
-	yyval.scope = MOF_SCOPE_METHOD;
+        MOF_trace("scope:7");
+        yyval.scope = MOF_SCOPE_METHOD;
     }
     break;
 
   case 37:
 #line 465 "MOF.y"
     {
-	MOF_trace("scope:8");
-	yyval.scope = MOF_SCOPE_PARAMETER;
+        MOF_trace("scope:8");
+        yyval.scope = MOF_SCOPE_PARAMETER;
     }
     break;
 
   case 38:
 #line 470 "MOF.y"
     {
-	MOF_trace("scope:9");
-	yyval.scope = MOF_SCOPE_ANY;
+        MOF_trace("scope:9");
+        yyval.scope = MOF_SCOPE_ANY;
     }
     break;
 
   case 39:
 #line 478 "MOF.y"
     {
-	MOF_trace("qual_decl_flavor:1");
-	yyval.flavor = yyvsp[-1].flavor;
+        MOF_trace("qual_decl_flavor:1");
+        yyval.flavor = yyvsp[-1].flavor;
     }
     break;
 
   case 40:
 #line 483 "MOF.y"
     {
-	MOF_trace("qual_decl_flavor:2");
-	yyval.flavor = 0;
+        MOF_trace("qual_decl_flavor:2");
+        yyval.flavor = 0;
     }
     break;
 
   case 41:
 #line 491 "MOF.y"
     {
-	MOF_trace("flavor_list:1");
-	yyval.flavor = yyvsp[0].flavor;
+        MOF_trace("flavor_list:1");
+        yyval.flavor = yyvsp[0].flavor;
     }
     break;
 
   case 42:
 #line 496 "MOF.y"
     {
-	MOF_trace("flavor_list:2");
-	yyval.flavor = yyvsp[-2].flavor;
-	yyval.flavor |= yyvsp[0].flavor;
+        MOF_trace("flavor_list:2");
+        yyval.flavor = yyvsp[-2].flavor;
+        yyval.flavor |= yyvsp[0].flavor;
     }
     break;
 
   case 43:
 #line 505 "MOF.y"
     {
-	MOF_trace("flavor:1");
-	yyval.flavor = MOF_FLAVOR_ENABLEOVERRIDE;
+        MOF_trace("flavor:1");
+        yyval.flavor = MOF_FLAVOR_ENABLEOVERRIDE;
     }
     break;
 
   case 44:
 #line 510 "MOF.y"
     {
-	MOF_trace("flavor:2");
-	yyval.flavor = MOF_FLAVOR_DISABLEOVERRIDE;
+        MOF_trace("flavor:2");
+        yyval.flavor = MOF_FLAVOR_DISABLEOVERRIDE;
     }
     break;
 
   case 45:
 #line 515 "MOF.y"
     {
-	MOF_trace("flavor:3");
-	yyval.flavor = MOF_FLAVOR_RESTRICTED;
+        MOF_trace("flavor:3");
+        yyval.flavor = MOF_FLAVOR_RESTRICTED;
     }
     break;
 
   case 46:
 #line 520 "MOF.y"
     {
-	MOF_trace("flavor:4");
-	yyval.flavor = MOF_FLAVOR_TOSUBCLASS;
+        MOF_trace("flavor:4");
+        yyval.flavor = MOF_FLAVOR_TOSUBCLASS;
     }
     break;
 
   case 47:
 #line 525 "MOF.y"
     {
-	MOF_trace("flavor:5");
-	yyval.flavor = MOF_FLAVOR_TRANSLATABLE;
+        MOF_trace("flavor:5");
+        yyval.flavor = MOF_FLAVOR_TRANSLATABLE;
     }
     break;
 
   case 48:
 #line 541 "MOF.y"
     {
-	yyval.qual = yyvsp[-1].qual;
-	MOF_trace("qual_list:1");
+        yyval.qual = yyvsp[-1].qual;
+        MOF_trace("qual_list:1");
     }
     break;
 
   case 49:
 #line 549 "MOF.y"
     {
-	MOF_trace("qual_list_body:1");
-	yyvsp[0].qual->validate();
-	yyval.qual = yyvsp[0].qual;
+        MOF_trace("qual_list_body:1");
+        yyvsp[0].qual->validate();
+        yyval.qual = yyvsp[0].qual;
     }
     break;
 
   case 50:
 #line 555 "MOF.y"
     {
-	MOF_trace("qual_list_body:2");
-	yyvsp[0].qual->validate();
-	yyvsp[-2].qual->append(yyvsp[0].qual);
-	yyval.qual = yyvsp[-2].qual;
+        MOF_trace("qual_list_body:2");
+        yyvsp[0].qual->validate();
+        yyvsp[-2].qual->append(yyvsp[0].qual);
+        yyval.qual = yyvsp[-2].qual;
     }
     break;
 
   case 51:
 #line 565 "MOF.y"
     {
-	MOF_trace("qual:1");
-	yyval.qual = new MOF_Qualifier();
-	MOF_ASSERT(yyval.qual != NULL);
-	yyval.qual->name = yyvsp[-2].string_value;
-	yyval.qual->params = yyvsp[-1].literal;
-	yyval.qual->flavor = MOF_Flavor::fixup(yyvsp[0].flavor, false);
+        MOF_trace("qual:1");
+        yyval.qual = new MOF_Qualifier();
+        MOF_ASSERT(yyval.qual != NULL);
+        yyval.qual->name = yyvsp[-2].string_value;
+        yyval.qual->params = yyvsp[-1].literal;
+        yyval.qual->flavor = MOF_Flavor::fixup(yyvsp[0].flavor, false);
     }
     break;
 
   case 52:
 #line 577 "MOF.y"
     {
-	MOF_trace("qual_param:1");
-	yyval.literal = yyvsp[-1].literal;
+        MOF_trace("qual_param:1");
+        yyval.literal = yyvsp[-1].literal;
     }
     break;
 
   case 53:
 #line 582 "MOF.y"
     {
-	MOF_trace("qual_param:2");
-	yyval.literal = yyvsp[0].literal;
+        MOF_trace("qual_param:2");
+        yyval.literal = yyvsp[0].literal;
     }
     break;
 
   case 54:
 #line 587 "MOF.y"
     {
-	MOF_trace("qual_param:3");
-	yyval.literal = NULL;
+        MOF_trace("qual_param:3");
+        yyval.literal = NULL;
     }
     break;
 
   case 55:
 #line 595 "MOF.y"
     {
-	MOF_trace("qual_flavor:1");
-	yyval.flavor = yyvsp[0].flavor;
+        MOF_trace("qual_flavor:1");
+        yyval.flavor = yyvsp[0].flavor;
     }
     break;
 
   case 56:
 #line 600 "MOF.y"
     {
-	MOF_trace("qual_flavor:2");
-	yyval.flavor = 0;
+        MOF_trace("qual_flavor:2");
+        yyval.flavor = 0;
     }
     break;
 
   case 57:
 #line 608 "MOF.y"
     {
-	MOF_trace("qual_flavor_list:1");
-	yyval.flavor = yyvsp[0].flavor;
+        MOF_trace("qual_flavor_list:1");
+        yyval.flavor = yyvsp[0].flavor;
     }
     break;
 
   case 58:
 #line 613 "MOF.y"
     {
-	MOF_trace("qual_flavor_list:2");
-	yyval.flavor = yyvsp[-1].flavor;
-	yyval.flavor |= yyvsp[0].flavor;
+        MOF_trace("qual_flavor_list:2");
+        yyval.flavor = yyvsp[-1].flavor;
+        yyval.flavor |= yyvsp[0].flavor;
     }
     break;
 
   case 59:
 #line 634 "MOF.y"
     {
-	MOF_trace("class_decl:1");
-	yyval.class_decl = yyvsp[-2].class_decl;
-	yyval.class_decl->qualifiers = NULL;
-	yyval.class_decl->features = yyvsp[-1].feature;
+        MOF_trace("class_decl:1");
+        yyval.class_decl = yyvsp[-2].class_decl;
+        yyval.class_decl->qualifiers = NULL;
+        yyval.class_decl->features = yyvsp[-1].feature;
     }
     break;
 
   case 60:
 #line 641 "MOF.y"
     {
-	MOF_trace("class_decl:2");
-	yyval.class_decl = yyvsp[-2].class_decl;
-	yyval.class_decl->qualifiers = yyvsp[-3].qual;
-	yyval.class_decl->features = yyvsp[-1].feature;
+        MOF_trace("class_decl:2");
+        yyval.class_decl = yyvsp[-2].class_decl;
+        yyval.class_decl->qualifiers = yyvsp[-3].qual;
+        yyval.class_decl->features = yyvsp[-1].feature;
     }
     break;
 
   case 61:
 #line 651 "MOF.y"
     {
-	MOF_trace("class_head:1");
-	yyval.class_decl = new MOF_Class_Decl();
-	MOF_ASSERT(yyval.class_decl != NULL);
-	yyval.class_decl->name = yyvsp[-2].string_value;
-	yyval.class_decl->alias = yyvsp[-1].string_value;
-	yyval.class_decl->super_class_name = yyvsp[0].string_value;
+        MOF_trace("class_head:1");
+        yyval.class_decl = new MOF_Class_Decl();
+        MOF_ASSERT(yyval.class_decl != NULL);
+        yyval.class_decl->name = yyvsp[-2].string_value;
+        yyval.class_decl->alias = yyvsp[-1].string_value;
+        yyval.class_decl->super_class_name = yyvsp[0].string_value;
     }
     break;
 
   case 62:
 #line 663 "MOF.y"
     {
-	MOF_trace("class_body:1");
-	yyval.feature = yyvsp[-1].feature;
+        MOF_trace("class_body:1");
+        yyval.feature = yyvsp[-1].feature;
     }
     break;
 
   case 63:
 #line 671 "MOF.y"
     {
-	MOF_trace("class_alias:1");
-	yyval.string_value = yyvsp[0].string_value;
+        MOF_trace("class_alias:1");
+        yyval.string_value = yyvsp[0].string_value;
     }
     break;
 
   case 64:
 #line 676 "MOF.y"
     {
-	MOF_trace("class_alias:2");
-	yyval.string_value = NULL;
+        MOF_trace("class_alias:2");
+        yyval.string_value = NULL;
     }
     break;
 
   case 65:
 #line 684 "MOF.y"
     {
-	MOF_trace("super_class_name:1");
-	yyval.string_value = yyvsp[0].string_value;
+        MOF_trace("super_class_name:1");
+        yyval.string_value = yyvsp[0].string_value;
     }
     break;
 
   case 66:
 #line 689 "MOF.y"
     {
-	MOF_trace("super_class_name:2");
-	yyval.string_value = NULL;
+        MOF_trace("super_class_name:2");
+        yyval.string_value = NULL;
     }
     break;
 
   case 67:
 #line 697 "MOF.y"
     {
-	MOF_trace("feature_list:1");
-	yyval.feature = NULL;
+        MOF_trace("feature_list:1");
+        yyval.feature = NULL;
     }
     break;
 
   case 68:
 #line 702 "MOF.y"
     {
-	MOF_trace("feature_list:2");
+        MOF_trace("feature_list:2");
 
-	if (yyvsp[-1].feature)
-	    yyvsp[-1].feature->append(yyvsp[0].feature);
-	else
-	    yyval.feature = yyvsp[0].feature;
+        if (yyvsp[-1].feature)
+            yyvsp[-1].feature->append(yyvsp[0].feature);
+        else
+            yyval.feature = yyvsp[0].feature;
     }
     break;
 
   case 69:
 #line 714 "MOF.y"
     {
-	MOF_trace("feature:1");
-	yyval.feature = (MOF_Feature*)yyvsp[0].prop_decl;
+        MOF_trace("feature:1");
+        yyval.feature = (MOF_Feature*)yyvsp[0].prop_decl;
     }
     break;
 
   case 70:
 #line 719 "MOF.y"
     {
-	MOF_trace("feature:2");
-	yyval.feature = (MOF_Feature*)yyvsp[0].ref_decl;
+        MOF_trace("feature:2");
+        yyval.feature = (MOF_Feature*)yyvsp[0].ref_decl;
     }
     break;
 
   case 71:
 #line 724 "MOF.y"
     {
-	MOF_trace("feature:3");
-	yyval.feature = (MOF_Feature*)yyvsp[0].method_decl;
+        MOF_trace("feature:3");
+        yyval.feature = (MOF_Feature*)yyvsp[0].method_decl;
     }
     break;
 
   case 72:
 #line 740 "MOF.y"
     {
-	MOF_trace("prop_decl:1");
-	yyval.prop_decl = yyvsp[-2].prop_decl;
-	yyval.prop_decl->array_index = yyvsp[-1].decl_init.array_index;
-	yyval.prop_decl->initializer = yyvsp[-1].decl_init.initializer;
+        MOF_trace("prop_decl:1");
+        yyval.prop_decl = yyvsp[-2].prop_decl;
+        yyval.prop_decl->array_index = yyvsp[-1].decl_init.array_index;
+        yyval.prop_decl->initializer = yyvsp[-1].decl_init.initializer;
     }
     break;
 
   case 73:
 #line 747 "MOF.y"
     {
-	MOF_trace("prop_decl:2");
-	yyvsp[-3].qual->validate_list(MOF_SCOPE_PROPERTY);
-	yyval.prop_decl = yyvsp[-2].prop_decl;
-	yyval.prop_decl->qualifiers = yyvsp[-3].qual;
-	yyval.prop_decl->array_index = yyvsp[-1].decl_init.array_index;
-	yyval.prop_decl->initializer = yyvsp[-1].decl_init.initializer;
+        MOF_trace("prop_decl:2");
+        yyvsp[-3].qual->validate_list(MOF_SCOPE_PROPERTY);
+        yyval.prop_decl = yyvsp[-2].prop_decl;
+        yyval.prop_decl->qualifiers = yyvsp[-3].qual;
+        yyval.prop_decl->array_index = yyvsp[-1].decl_init.array_index;
+        yyval.prop_decl->initializer = yyvsp[-1].decl_init.initializer;
     }
     break;
 
   case 74:
 #line 759 "MOF.y"
     {
-	MOF_trace("prop_decl_head:1");
-	yyval.prop_decl = new MOF_Property_Decl();
-	MOF_ASSERT(yyval.prop_decl != NULL);
-	yyval.prop_decl->type = MOF_FEATURE_PROP;
-	yyval.prop_decl->name = yyvsp[0].string_value;
-	yyval.prop_decl->data_type = (int)yyvsp[-1].int_value;
+        MOF_trace("prop_decl_head:1");
+        yyval.prop_decl = new MOF_Property_Decl();
+        MOF_ASSERT(yyval.prop_decl != NULL);
+        yyval.prop_decl->type = MOF_FEATURE_PROP;
+        yyval.prop_decl->name = yyvsp[0].string_value;
+        yyval.prop_decl->data_type = (int)yyvsp[-1].int_value;
     }
     break;
 
   case 75:
 #line 771 "MOF.y"
     {
-	MOF_trace("prop_decl_body:1");
-	yyval.decl_init = yyvsp[0].decl_init;
+        MOF_trace("prop_decl_body:1");
+        yyval.decl_init = yyvsp[0].decl_init;
     }
     break;
 
   case 76:
 #line 776 "MOF.y"
     {
-	MOF_trace("prop_decl_body:2");
-	yyval.decl_init = yyvsp[0].decl_init;
+        MOF_trace("prop_decl_body:2");
+        yyval.decl_init = yyvsp[0].decl_init;
     }
     break;
 
   case 77:
 #line 784 "MOF.y"
     {
-	MOF_trace("prop_decl_array_init:1");
-	yyval.decl_init.array_index = (int)yyvsp[-2].int_value;
-	yyval.decl_init.initializer = yyvsp[0].literal;
+        MOF_trace("prop_decl_array_init:1");
+        yyval.decl_init.array_index = (int)yyvsp[-2].int_value;
+        yyval.decl_init.initializer = yyvsp[0].literal;
     }
     break;
 
   case 78:
 #line 790 "MOF.y"
     {
-	MOF_trace("prop_decl_array_init:2");
-	yyval.decl_init.array_index = (int)yyvsp[0].int_value;
-	yyval.decl_init.initializer = NULL;
+        MOF_trace("prop_decl_array_init:2");
+        yyval.decl_init.array_index = (int)yyvsp[0].int_value;
+        yyval.decl_init.initializer = NULL;
     }
     break;
 
   case 79:
 #line 799 "MOF.y"
     {
-	MOF_trace("prop_decl_scalar_init:1");
-	yyval.decl_init.array_index = 0;
-	yyval.decl_init.initializer = yyvsp[0].literal;
+        MOF_trace("prop_decl_scalar_init:1");
+        yyval.decl_init.array_index = 0;
+        yyval.decl_init.initializer = yyvsp[0].literal;
     }
     break;
 
   case 80:
 #line 805 "MOF.y"
     {
-	MOF_trace("prop_decl_scalar_init:2");
-	yyval.decl_init.array_index = 0;
-	yyval.decl_init.initializer = NULL;
+        MOF_trace("prop_decl_scalar_init:2");
+        yyval.decl_init.array_index = 0;
+        yyval.decl_init.initializer = NULL;
     }
     break;
 
   case 81:
 #line 822 "MOF.y"
     {
-	MOF_trace("ref_decl:1");
-	yyval.ref_decl = yyvsp[-2].ref_decl;
+        MOF_trace("ref_decl:1");
+        yyval.ref_decl = yyvsp[-2].ref_decl;
 
-	yyval.ref_decl->alias = yyvsp[-1].ref_init.alias;
-	yyval.ref_decl->obj_ref = yyvsp[-1].ref_init.obj_ref;
-	yyval.ref_decl->qualifiers = NULL;
+        yyval.ref_decl->alias = yyvsp[-1].ref_init.alias;
+        yyval.ref_decl->obj_ref = yyvsp[-1].ref_init.obj_ref;
+        yyval.ref_decl->qualifiers = NULL;
     }
     break;
 
   case 82:
 #line 831 "MOF.y"
     {
-	MOF_trace("ref_decl:2");
-	yyvsp[-3].qual->validate_list(MOF_SCOPE_REFERENCE);
-	yyval.ref_decl = yyvsp[-2].ref_decl;
-	yyval.ref_decl->qualifiers = yyvsp[-3].qual;
-	yyval.ref_decl->alias = yyvsp[-1].ref_init.alias;
-	yyval.ref_decl->obj_ref = yyvsp[-1].ref_init.obj_ref;
+        MOF_trace("ref_decl:2");
+        yyvsp[-3].qual->validate_list(MOF_SCOPE_REFERENCE);
+        yyval.ref_decl = yyvsp[-2].ref_decl;
+        yyval.ref_decl->qualifiers = yyvsp[-3].qual;
+        yyval.ref_decl->alias = yyvsp[-1].ref_init.alias;
+        yyval.ref_decl->obj_ref = yyvsp[-1].ref_init.obj_ref;
     }
     break;
 
   case 83:
 #line 843 "MOF.y"
     {
-	MOF_trace("ref_head:1");
-	yyval.ref_decl = new MOF_Reference_Decl();
-	MOF_ASSERT(yyval.ref_decl != NULL);
-	yyval.ref_decl->class_name = yyvsp[-1].string_value;
-	yyval.ref_decl->type = MOF_FEATURE_REF;
-	yyval.ref_decl->name = yyvsp[0].string_value;
+        MOF_trace("ref_head:1");
+        yyval.ref_decl = new MOF_Reference_Decl();
+        MOF_ASSERT(yyval.ref_decl != NULL);
+        yyval.ref_decl->class_name = yyvsp[-1].string_value;
+        yyval.ref_decl->type = MOF_FEATURE_REF;
+        yyval.ref_decl->name = yyvsp[0].string_value;
     }
     break;
 
   case 84:
 #line 854 "MOF.y"
     {
-	MOF_trace("ref_body:1");
-	yyval.ref_init = yyvsp[0].ref_init;
+        MOF_trace("ref_body:1");
+        yyval.ref_init = yyvsp[0].ref_init;
     }
     break;
 
   case 85:
 #line 859 "MOF.y"
     {
-	MOF_trace("ref_body:2");
-	yyval.ref_init.alias = NULL;
-	yyval.ref_init.obj_ref = NULL;
+        MOF_trace("ref_body:2");
+        yyval.ref_init.alias = NULL;
+        yyval.ref_init.obj_ref = NULL;
     }
     break;
 
   case 86:
 #line 868 "MOF.y"
     {
-	MOF_trace("ref_init:1");
+        MOF_trace("ref_init:1");
 
-	/*
-	 * Create object reference for this alias (or at least try to):
-	 */
+        /*
+         * Create object reference for this alias (or at least try to):
+         */
 
-	yyval.ref_init.alias = NULL;
-	yyval.ref_init.obj_ref = MOF_Instance_Decl::alias_to_obj_ref(yyvsp[0].string_value);
+        yyval.ref_init.alias = NULL;
+        yyval.ref_init.obj_ref = MOF_Instance_Decl::alias_to_obj_ref(yyvsp[0].string_value);
     }
     break;
 
   case 87:
 #line 879 "MOF.y"
     {
-	MOF_trace("ref_init:2");
-	yyval.ref_init.alias = NULL;
-	yyval.ref_init.obj_ref = yyvsp[0].obj_ref;
+        MOF_trace("ref_init:2");
+        yyval.ref_init.alias = NULL;
+        yyval.ref_init.obj_ref = yyvsp[0].obj_ref;
     }
     break;
 
   case 88:
 #line 896 "MOF.y"
     {
-	MOF_trace("method_decl:1");
-	yyval.method_decl = yyvsp[-2].method_decl;
-	yyval.method_decl->qualifiers = NULL;
-	yyval.method_decl->parameters = yyvsp[-1].param;
+        MOF_trace("method_decl:1");
+        yyval.method_decl = yyvsp[-2].method_decl;
+        yyval.method_decl->qualifiers = NULL;
+        yyval.method_decl->parameters = yyvsp[-1].param;
     }
     break;
 
   case 89:
 #line 903 "MOF.y"
     {
-	MOF_trace("method_decl:2");
-	yyvsp[-3].qual->validate_list(MOF_SCOPE_METHOD);
-	yyval.method_decl = yyvsp[-2].method_decl;
-	yyval.method_decl->qualifiers = yyvsp[-3].qual;
-	yyval.method_decl->parameters = yyvsp[-1].param;
+        MOF_trace("method_decl:2");
+        yyvsp[-3].qual->validate_list(MOF_SCOPE_METHOD);
+        yyval.method_decl = yyvsp[-2].method_decl;
+        yyval.method_decl->qualifiers = yyvsp[-3].qual;
+        yyval.method_decl->parameters = yyvsp[-1].param;
     }
     break;
 
   case 90:
 #line 914 "MOF.y"
     {
-	MOF_trace("method_head:1");
-	yyval.method_decl = new MOF_Method_Decl();
-	MOF_ASSERT(yyval.method_decl != NULL);
-	yyval.method_decl->type = MOF_FEATURE_METHOD;
-	yyval.method_decl->name = yyvsp[0].string_value;
-	yyval.method_decl->data_type = (int)yyvsp[-1].int_value;
+        MOF_trace("method_head:1");
+        yyval.method_decl = new MOF_Method_Decl();
+        MOF_ASSERT(yyval.method_decl != NULL);
+        yyval.method_decl->type = MOF_FEATURE_METHOD;
+        yyval.method_decl->name = yyvsp[0].string_value;
+        yyval.method_decl->data_type = (int)yyvsp[-1].int_value;
     }
     break;
 
   case 91:
 #line 926 "MOF.y"
     {
-	MOF_trace("method_body:1");
-	yyval.param = yyvsp[-1].param;
+        MOF_trace("method_body:1");
+        yyval.param = yyvsp[-1].param;
     }
     break;
 
   case 92:
 #line 931 "MOF.y"
     {
-	MOF_trace("method_body:2");
-	yyval.param = NULL;
+        MOF_trace("method_body:2");
+        yyval.param = NULL;
     }
     break;
 
   case 93:
 #line 939 "MOF.y"
     {
-	MOF_trace("param_list:1");
-	yyval.param = yyvsp[0].param;
+        MOF_trace("param_list:1");
+        yyval.param = yyvsp[0].param;
     }
     break;
 
   case 94:
 #line 944 "MOF.y"
     {
-	MOF_trace("param_list:2");
-	yyval.param = yyvsp[-2].param;
-	yyval.param->append(yyvsp[0].param);
+        MOF_trace("param_list:2");
+        yyval.param = yyvsp[-2].param;
+        yyval.param->append(yyvsp[0].param);
     }
     break;
 
   case 95:
 #line 961 "MOF.y"
     {
-	MOF_trace("param:1");
-	yyval.param = yyvsp[-1].param;
-	yyval.param->array_index = (int)yyvsp[0].int_value;
+        MOF_trace("param:1");
+        yyval.param = yyvsp[-1].param;
+        yyval.param->array_index = (int)yyvsp[0].int_value;
     }
     break;
 
   case 96:
 #line 967 "MOF.y"
     {
-	MOF_trace("param:2");
-	yyvsp[-2].qual->validate_list(MOF_SCOPE_PARAMETER);
-	yyval.param = yyvsp[-1].param;
-	yyval.param->qualifiers = yyvsp[-2].qual;
-	yyval.param->array_index = (int)yyvsp[0].int_value;
+        MOF_trace("param:2");
+        yyvsp[-2].qual->validate_list(MOF_SCOPE_PARAMETER);
+        yyval.param = yyvsp[-1].param;
+        yyval.param->qualifiers = yyvsp[-2].qual;
+        yyval.param->array_index = (int)yyvsp[0].int_value;
     }
     break;
 
   case 97:
 #line 978 "MOF.y"
     {
-	MOF_trace("param_head:1");
-	yyval.param = yyvsp[-1].param;
-	yyval.param->name = yyvsp[0].string_value;
+        MOF_trace("param_head:1");
+        yyval.param = yyvsp[-1].param;
+        yyval.param->name = yyvsp[0].string_value;
     }
     break;
 
   case 98:
 #line 987 "MOF.y"
     {
-	MOF_trace("param_body:1");
-	yyval.int_value = yyvsp[0].int_value;
+        MOF_trace("param_body:1");
+        yyval.int_value = yyvsp[0].int_value;
     }
     break;
 
   case 99:
 #line 992 "MOF.y"
     {
-	MOF_trace("param_body:2");
-	/* It's not an array at all */
-	yyval.int_value = 0;
+        MOF_trace("param_body:2");
+        /* It's not an array at all */
+        yyval.int_value = 0;
     }
     break;
 
   case 100:
 #line 1001 "MOF.y"
     {
-	MOF_trace("param_data_type:1");
-	yyval.param = new MOF_Parameter();
-	yyval.param->data_type = (int)yyvsp[0].int_value;
-	yyval.param->ref_name = NULL;
+        MOF_trace("param_data_type:1");
+        yyval.param = new MOF_Parameter();
+        yyval.param->data_type = (int)yyvsp[0].int_value;
+        yyval.param->ref_name = NULL;
     }
     break;
 
   case 101:
 #line 1008 "MOF.y"
     {
-	MOF_trace("param_data_type:2");
-	yyval.param = new MOF_Parameter();
-	yyval.param->data_type = TOK_REF;
-	yyval.param->ref_name = yyvsp[0].string_value;
+        MOF_trace("param_data_type:2");
+        yyval.param = new MOF_Parameter();
+        yyval.param->data_type = TOK_REF;
+        yyval.param->ref_name = yyvsp[0].string_value;
     }
     break;
 
   case 102:
 #line 1026 "MOF.y"
     {
-	MOF_trace("inst_decl:1");
-	yyval.inst_decl = yyvsp[-2].inst_decl;
-	yyval.inst_decl->qualifiers = NULL;
-	yyval.inst_decl->properties = yyvsp[-1].prop;
+        MOF_trace("inst_decl:1");
+        yyval.inst_decl = yyvsp[-2].inst_decl;
+        yyval.inst_decl->qualifiers = NULL;
+        yyval.inst_decl->properties = yyvsp[-1].prop;
     }
     break;
 
   case 103:
 #line 1033 "MOF.y"
     {
-	MOF_trace("inst_decl:2");
-	yyvsp[-3].qual->validate_list(MOF_SCOPE_CLASS);
-	yyval.inst_decl = yyvsp[-2].inst_decl;
-	yyval.inst_decl->qualifiers = yyvsp[-3].qual;
-	yyval.inst_decl->properties = yyvsp[-1].prop;
+        MOF_trace("inst_decl:2");
+        yyvsp[-3].qual->validate_list(MOF_SCOPE_CLASS);
+        yyval.inst_decl = yyvsp[-2].inst_decl;
+        yyval.inst_decl->qualifiers = yyvsp[-3].qual;
+        yyval.inst_decl->properties = yyvsp[-1].prop;
     }
     break;
 
   case 104:
 #line 1044 "MOF.y"
     {
-	MOF_trace("inst_head:1");
-	yyval.inst_decl = new MOF_Instance_Decl();
-	MOF_ASSERT(yyval.inst_decl != NULL);
-	yyval.inst_decl->class_name = yyvsp[-1].string_value;
-	yyval.inst_decl->alias = yyvsp[0].string_value;
+        MOF_trace("inst_head:1");
+        yyval.inst_decl = new MOF_Instance_Decl();
+        MOF_ASSERT(yyval.inst_decl != NULL);
+        yyval.inst_decl->class_name = yyvsp[-1].string_value;
+        yyval.inst_decl->alias = yyvsp[0].string_value;
     }
     break;
 
   case 105:
 #line 1055 "MOF.y"
     {
-	MOF_trace("inst_body:1");
-	yyval.prop = yyvsp[-1].prop;
+        MOF_trace("inst_body:1");
+        yyval.prop = yyvsp[-1].prop;
     }
     break;
 
   case 106:
 #line 1063 "MOF.y"
     {
-	MOF_trace("inst_alias:1");
-	yyval.string_value = yyvsp[0].string_value;
+        MOF_trace("inst_alias:1");
+        yyval.string_value = yyvsp[0].string_value;
     }
     break;
 
   case 107:
 #line 1068 "MOF.y"
     {
-	MOF_trace("inst_alias:2");
-	yyval.string_value = NULL;
+        MOF_trace("inst_alias:2");
+        yyval.string_value = NULL;
     }
     break;
 
   case 108:
 #line 1084 "MOF.y"
     {
-	MOF_trace("prop_list:1");
-	yyval.prop = yyvsp[0].prop;
+        MOF_trace("prop_list:1");
+        yyval.prop = yyvsp[0].prop;
     }
     break;
 
   case 109:
 #line 1089 "MOF.y"
     {
-	MOF_trace("prop_list:2");
-	yyvsp[-1].prop->append(yyvsp[0].prop);
-	yyval.prop = yyvsp[-1].prop;
+        MOF_trace("prop_list:2");
+        yyvsp[-1].prop->append(yyvsp[0].prop);
+        yyval.prop = yyvsp[-1].prop;
     }
     break;
 
   case 110:
 #line 1098 "MOF.y"
     {
-	MOF_trace("prop:1");
-	yyval.prop = yyvsp[0].prop;
-	yyval.prop->qualifiers = NULL;
+        MOF_trace("prop:1");
+        yyval.prop = yyvsp[0].prop;
+        yyval.prop->qualifiers = NULL;
     }
     break;
 
   case 111:
 #line 1104 "MOF.y"
     {
-	MOF_trace("prop:2");
-	yyvsp[-1].qual->validate_list(MOF_SCOPE_PROPERTY);
-	yyval.prop = yyvsp[0].prop;
-	yyval.prop->qualifiers = yyvsp[-1].qual;
+        MOF_trace("prop:2");
+        yyvsp[-1].qual->validate_list(MOF_SCOPE_PROPERTY);
+        yyval.prop = yyvsp[0].prop;
+        yyval.prop->qualifiers = yyvsp[-1].qual;
     }
     break;
 
   case 112:
 #line 1114 "MOF.y"
     {
-	MOF_trace("prop_body:1");
+        MOF_trace("prop_body:1");
 
-	yyval.prop = new MOF_Property();
-	MOF_ASSERT(yyval.prop != NULL);
-	yyval.prop->name = yyvsp[-3].string_value;
-	yyval.prop->initializer = yyvsp[-1].literal;
+        yyval.prop = new MOF_Property();
+        MOF_ASSERT(yyval.prop != NULL);
+        yyval.prop->name = yyvsp[-3].string_value;
+        yyval.prop->initializer = yyvsp[-1].literal;
     }
     break;
 
   case 113:
 #line 1123 "MOF.y"
     {
-	MOF_trace("prop_body:2");
+        MOF_trace("prop_body:2");
 
-	yyval.prop = new MOF_Property();
-	MOF_ASSERT(yyval.prop != NULL);
-	yyval.prop->name = yyvsp[-3].string_value;
-	yyval.prop->initializer = NULL;
-	yyval.prop->alias = yyvsp[-1].string_value;
+        yyval.prop = new MOF_Property();
+        MOF_ASSERT(yyval.prop != NULL);
+        yyval.prop->name = yyvsp[-3].string_value;
+        yyval.prop->initializer = NULL;
+        yyval.prop->alias = yyvsp[-1].string_value;
     }
     break;
 
   case 114:
 #line 1144 "MOF.y"
     {
-	MOF_trace("object_ref:1");
-	yyval.string_value = yyvsp[-1].string_value;
+        MOF_trace("object_ref:1");
+        yyval.string_value = yyvsp[-1].string_value;
     }
     break;
 
   case 115:
 #line 1152 "MOF.y"
     {
-	MOF_trace("obj_ref:1");
+        MOF_trace("obj_ref:1");
 
-	if (REF_parse(yyvsp[0].string_value, &yyval.obj_ref) != 0)
-	{
-	    MOF_error_printf("malformed object reference: \"%s\": %s", 
-		yyvsp[0].string_value, ref_error_message);
-	}
+        if (REF_parse(yyvsp[0].string_value, &yyval.obj_ref) != 0)
+        {
+            MOF_error_printf("malformed object reference: \"%s\": %s", 
+                yyvsp[0].string_value, ref_error_message);
+        }
 
-	{
-	    char* p = MOF_Object_Reference::normalize(yyvsp[0].string_value);
-	    MOF_ASSERT(p != NULL);
-	    free(p);
-	}
+        {
+            char* p = MOF_Object_Reference::normalize(yyvsp[0].string_value);
+            MOF_ASSERT(p != NULL);
+            free(p);
+        }
 
-	free(yyvsp[0].string_value);
-	yyval.obj_ref->validate();
-	yyval.obj_ref->normalize();
-	/* MOF_obj_ref_print(stdout, $$); */
+        free(yyvsp[0].string_value);
+        yyval.obj_ref->validate();
+        yyval.obj_ref->normalize();
+        /* MOF_obj_ref_print(stdout, $$); */
     }
     break;
 
   case 116:
 #line 1184 "MOF.y"
     {
-	MOF_trace("array_index:1");
-	/* It's a varying length array (VLA) */
-	yyval.int_value = -1;
+        MOF_trace("array_index:1");
+        /* It's a varying length array (VLA) */
+        yyval.int_value = -1;
     }
     break;
 
   case 117:
 #line 1190 "MOF.y"
     {
-	MOF_trace("array_index:2");
+        MOF_trace("array_index:2");
 
-	/* subscript must be positive */
+        /* subscript must be positive */
 
-	if (yyvsp[-1].int_value <= 0)
-	    MOF_error("array subscript must be a positive number");
+        if (yyvsp[-1].int_value <= 0)
+            MOF_error("array subscript must be a positive number");
 
-	yyval.int_value = yyvsp[-1].int_value;
+        yyval.int_value = yyvsp[-1].int_value;
     }
     break;
 
   case 118:
 #line 1212 "MOF.y"
     {
-	MOF_trace("data_type:1");
-	yyval.int_value = TOK_UINT8;
+        MOF_trace("data_type:1");
+        yyval.int_value = TOK_UINT8;
     }
     break;
 
   case 119:
 #line 1217 "MOF.y"
     {
-	MOF_trace("data_type:2");
-	yyval.int_value = TOK_SINT8;
+        MOF_trace("data_type:2");
+        yyval.int_value = TOK_SINT8;
     }
     break;
 
   case 120:
 #line 1222 "MOF.y"
     {
-	MOF_trace("data_type:3");
-	yyval.int_value = TOK_UINT16;
+        MOF_trace("data_type:3");
+        yyval.int_value = TOK_UINT16;
     }
     break;
 
   case 121:
 #line 1227 "MOF.y"
     {
-	MOF_trace("data_type:4");
-	yyval.int_value = TOK_SINT16;
+        MOF_trace("data_type:4");
+        yyval.int_value = TOK_SINT16;
     }
     break;
 
   case 122:
 #line 1232 "MOF.y"
     {
-	MOF_trace("data_type:5");
-	yyval.int_value = TOK_UINT32;
+        MOF_trace("data_type:5");
+        yyval.int_value = TOK_UINT32;
     }
     break;
 
   case 123:
 #line 1237 "MOF.y"
     {
-	MOF_trace("data_type:6");
-	yyval.int_value = TOK_SINT32;
+        MOF_trace("data_type:6");
+        yyval.int_value = TOK_SINT32;
     }
     break;
 
   case 124:
 #line 1242 "MOF.y"
     {
-	MOF_trace("data_type:7");
-	yyval.int_value = TOK_UINT64;
+        MOF_trace("data_type:7");
+        yyval.int_value = TOK_UINT64;
     }
     break;
 
   case 125:
 #line 1247 "MOF.y"
     {
-	MOF_trace("data_type:8");
-	yyval.int_value = TOK_SINT64;
+        MOF_trace("data_type:8");
+        yyval.int_value = TOK_SINT64;
     }
     break;
 
   case 126:
 #line 1252 "MOF.y"
     {
-	MOF_trace("data_type:9");
-	yyval.int_value = TOK_REAL32;
+        MOF_trace("data_type:9");
+        yyval.int_value = TOK_REAL32;
     }
     break;
 
   case 127:
 #line 1257 "MOF.y"
     {
-	MOF_trace("data_type:10");
-	yyval.int_value = TOK_REAL64;
+        MOF_trace("data_type:10");
+        yyval.int_value = TOK_REAL64;
     }
     break;
 
   case 128:
 #line 1262 "MOF.y"
     {
-	MOF_trace("data_type:11");
-	yyval.int_value = TOK_CHAR16;
+        MOF_trace("data_type:11");
+        yyval.int_value = TOK_CHAR16;
     }
     break;
 
   case 129:
 #line 1267 "MOF.y"
     {
-	MOF_trace("data_type:12");
-	yyval.int_value = TOK_STRING;
+        MOF_trace("data_type:12");
+        yyval.int_value = TOK_STRING;
     }
     break;
 
   case 130:
 #line 1272 "MOF.y"
     {
-	MOF_trace("data_type:13");
-	yyval.int_value = TOK_BOOLEAN;
+        MOF_trace("data_type:13");
+        yyval.int_value = TOK_BOOLEAN;
     }
     break;
 
   case 131:
 #line 1277 "MOF.y"
     {
-	MOF_trace("data_type:14");
-	yyval.int_value = TOK_DATETIME;
+        MOF_trace("data_type:14");
+        yyval.int_value = TOK_DATETIME;
     }
     break;
 
   case 132:
 #line 1293 "MOF.y"
     {
-	MOF_trace("init:1");
-	yyval.literal = yyvsp[0].literal;
+        MOF_trace("init:1");
+        yyval.literal = yyvsp[0].literal;
     }
     break;
 
   case 133:
 #line 1298 "MOF.y"
     {
-	MOF_trace("init:2");
-	yyval.literal = yyvsp[0].literal;
+        MOF_trace("init:2");
+        yyval.literal = yyvsp[0].literal;
     }
     break;
 
   case 134:
 #line 1306 "MOF.y"
     {
-	MOF_trace("array_init:1");
-	yyval.literal = yyvsp[-1].literal;
+        MOF_trace("array_init:1");
+        yyval.literal = yyvsp[-1].literal;
     }
     break;
 
   case 135:
 #line 1314 "MOF.y"
     {
-	MOF_trace("scalar_init_list:1");
-	yyval.literal = yyvsp[0].literal;
+        MOF_trace("scalar_init_list:1");
+        yyval.literal = yyvsp[0].literal;
     }
     break;
 
   case 136:
 #line 1319 "MOF.y"
     {
-	MOF_trace("scalar_init_list:2");
-	yyvsp[-2].literal->append(yyvsp[0].literal);
-	yyval.literal = yyvsp[-2].literal;
+        MOF_trace("scalar_init_list:2");
+        yyvsp[-2].literal->append(yyvsp[0].literal);
+        yyval.literal = yyvsp[-2].literal;
     }
     break;
 
   case 137:
 #line 1336 "MOF.y"
     {
-	MOF_trace("literal:1");
-	yyval.literal = new MOF_Literal();
-	MOF_ASSERT(yyval.literal != NULL);
-	yyval.literal->value_type = TOK_INT_VALUE;
-	yyval.literal->int_value = yyvsp[0].int_value;
+        MOF_trace("literal:1");
+        yyval.literal = new MOF_Literal();
+        MOF_ASSERT(yyval.literal != NULL);
+        yyval.literal->value_type = TOK_INT_VALUE;
+        yyval.literal->int_value = yyvsp[0].int_value;
     }
     break;
 
   case 138:
 #line 1344 "MOF.y"
     {
-	MOF_trace("literal:2");
-	yyval.literal = new MOF_Literal();
-	MOF_ASSERT(yyval.literal != NULL);
-	yyval.literal->value_type = TOK_REAL_VALUE;
-	yyval.literal->real_value = yyvsp[0].real_value;
+        MOF_trace("literal:2");
+        yyval.literal = new MOF_Literal();
+        MOF_ASSERT(yyval.literal != NULL);
+        yyval.literal->value_type = TOK_REAL_VALUE;
+        yyval.literal->real_value = yyvsp[0].real_value;
     }
     break;
 
   case 139:
 #line 1352 "MOF.y"
     {
-	MOF_trace("literal:3");
-	yyval.literal = new MOF_Literal();
-	MOF_ASSERT(yyval.literal != NULL);
-	yyval.literal->value_type = TOK_CHAR_VALUE;
-	yyval.literal->char_value = yyvsp[0].char_value;
+        MOF_trace("literal:3");
+        yyval.literal = new MOF_Literal();
+        MOF_ASSERT(yyval.literal != NULL);
+        yyval.literal->value_type = TOK_CHAR_VALUE;
+        yyval.literal->char_value = yyvsp[0].char_value;
     }
     break;
 
   case 140:
 #line 1360 "MOF.y"
     {
-	MOF_trace("literal:4");
-	yyval.literal = new MOF_Literal();
-	MOF_ASSERT(yyval.literal != NULL);
-	yyval.literal->value_type = TOK_BOOL_VALUE;
-	yyval.literal->bool_value = yyvsp[0].bool_value ? true : false;
+        MOF_trace("literal:4");
+        yyval.literal = new MOF_Literal();
+        MOF_ASSERT(yyval.literal != NULL);
+        yyval.literal->value_type = TOK_BOOL_VALUE;
+        yyval.literal->bool_value = yyvsp[0].bool_value ? true : false;
     }
     break;
 
   case 141:
 #line 1368 "MOF.y"
     {
-	MOF_trace("literal:6");
-	yyval.literal = new MOF_Literal();
-	MOF_ASSERT(yyval.literal != NULL);
-	yyval.literal->value_type = TOK_STRING_VALUE;
-	yyval.literal->string_value = yyvsp[0].string_value;
+        MOF_trace("literal:6");
+        yyval.literal = new MOF_Literal();
+        MOF_ASSERT(yyval.literal != NULL);
+        yyval.literal->value_type = TOK_STRING_VALUE;
+        yyval.literal->string_value = yyvsp[0].string_value;
     }
     break;
 
   case 142:
 #line 1376 "MOF.y"
     {
-	MOF_trace("literal:5");
-	yyval.literal = new MOF_Literal();
-	MOF_ASSERT(yyval.literal != NULL);
-	yyval.literal->value_type = TOK_NULL_VALUE;
+        MOF_trace("literal:5");
+        yyval.literal = new MOF_Literal();
+        MOF_ASSERT(yyval.literal != NULL);
+        yyval.literal->value_type = TOK_NULL_VALUE;
     }
     break;
 
   case 143:
 #line 1394 "MOF.y"
     {
-	MOF_trace("string_value:1");
-	yyval.string_value = yyvsp[0].string_value;
+        MOF_trace("string_value:1");
+        yyval.string_value = yyvsp[0].string_value;
     }
     break;
 
   case 144:
 #line 1399 "MOF.y"
     {
-	size_t n1 = strlen(yyvsp[-1].string_value);
-	size_t n2 = strlen(yyvsp[0].string_value);
+        size_t n1 = strlen(yyvsp[-1].string_value);
+        size_t n2 = strlen(yyvsp[0].string_value);
 
-	MOF_trace("string_value:2");
+        MOF_trace("string_value:2");
 
-	yyval.string_value = (char*)realloc(yyvsp[-1].string_value, n1 + n2 + 16);
-	MOF_ASSERT(yyval.string_value != NULL);
+        yyval.string_value = (char*)realloc(yyvsp[-1].string_value, n1 + n2 + 16);
+        MOF_ASSERT(yyval.string_value != NULL);
 
-	strcat(yyval.string_value, yyvsp[0].string_value);
-	free(yyvsp[0].string_value);
+        strcat(yyval.string_value, yyvsp[0].string_value);
+        free(yyvsp[0].string_value);
     }
     break;
 
@@ -2708,50 +2710,50 @@ yyerrlab:
       yyn = yypact[yystate];
 
       if (YYPACT_NINF < yyn && yyn < YYLAST)
-	{
-	  YYSIZE_T yysize = 0;
-	  int yytype = YYTRANSLATE (yychar);
-	  char *yymsg;
-	  int yyx, yycount;
+        {
+          YYSIZE_T yysize = 0;
+          int yytype = YYTRANSLATE (yychar);
+          char *yymsg;
+          int yyx, yycount;
 
-	  yycount = 0;
-	  /* Start YYX at -YYN if negative to avoid negative indexes in
-	     YYCHECK.  */
-	  for (yyx = yyn < 0 ? -yyn : 0;
-	       yyx < (int) (sizeof (yytname) / sizeof (char *)); yyx++)
-	    if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-	      yysize += yystrlen (yytname[yyx]) + 15, yycount++;
-	  yysize += yystrlen ("syntax error, unexpected ") + 1;
-	  yysize += yystrlen (yytname[yytype]);
-	  yymsg = (char *) YYSTACK_ALLOC (yysize);
-	  if (yymsg != 0)
-	    {
-	      char *yyp = yystpcpy (yymsg, "syntax error, unexpected ");
-	      yyp = yystpcpy (yyp, yytname[yytype]);
+          yycount = 0;
+          /* Start YYX at -YYN if negative to avoid negative indexes in
+             YYCHECK.  */
+          for (yyx = yyn < 0 ? -yyn : 0;
+               yyx < (int) (sizeof (yytname) / sizeof (char *)); yyx++)
+            if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
+              yysize += yystrlen (yytname[yyx]) + 15, yycount++;
+          yysize += yystrlen ("syntax error, unexpected ") + 1;
+          yysize += yystrlen (yytname[yytype]);
+          yymsg = (char *) YYSTACK_ALLOC (yysize);
+          if (yymsg != 0)
+            {
+              char *yyp = yystpcpy (yymsg, "syntax error, unexpected ");
+              yyp = yystpcpy (yyp, yytname[yytype]);
 
-	      if (yycount < 5)
-		{
-		  yycount = 0;
-		  for (yyx = yyn < 0 ? -yyn : 0;
-		       yyx < (int) (sizeof (yytname) / sizeof (char *));
-		       yyx++)
-		    if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-		      {
-			const char *yyq = ! yycount ? ", expecting " : " or ";
-			yyp = yystpcpy (yyp, yyq);
-			yyp = yystpcpy (yyp, yytname[yyx]);
-			yycount++;
-		      }
-		}
-	      yyerror (yymsg);
-	      YYSTACK_FREE (yymsg);
-	    }
-	  else
-	    yyerror ("syntax error; also virtual memory exhausted");
-	}
+              if (yycount < 5)
+                {
+                  yycount = 0;
+                  for (yyx = yyn < 0 ? -yyn : 0;
+                       yyx < (int) (sizeof (yytname) / sizeof (char *));
+                       yyx++)
+                    if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
+                      {
+                        const char *yyq = ! yycount ? ", expecting " : " or ";
+                        yyp = yystpcpy (yyp, yyq);
+                        yyp = yystpcpy (yyp, yytname[yyx]);
+                        yycount++;
+                      }
+                }
+              yyerror (yymsg);
+              YYSTACK_FREE (yymsg);
+            }
+          else
+            yyerror ("syntax error; also virtual memory exhausted");
+        }
       else
 #endif /* YYERROR_VERBOSE */
-	yyerror ("syntax error");
+        yyerror ("syntax error");
     }
 
 
@@ -2759,21 +2761,21 @@ yyerrlab:
   if (yyerrstatus == 3)
     {
       /* If just tried and failed to reuse lookahead token after an
-	 error, discard it.  */
+         error, discard it.  */
 
       /* Return failure if at end of input.  */
       if (yychar == YYEOF)
         {
-	  /* Pop the error token.  */
+          /* Pop the error token.  */
           YYPOPSTACK;
-	  /* Pop the rest of the stack.  */
-	  while (yyss < yyssp)
-	    {
-	      YYDSYMPRINTF ("Error: popping", yystos[*yyssp], yyvsp, yylsp);
-	      yydestruct (yystos[*yyssp], yyvsp);
-	      YYPOPSTACK;
-	    }
-	  YYABORT;
+          /* Pop the rest of the stack.  */
+          while (yyss < yyssp)
+            {
+              YYDSYMPRINTF ("Error: popping", yystos[*yyssp], yyvsp, yylsp);
+              yydestruct (yystos[*yyssp], yyvsp);
+              YYPOPSTACK;
+            }
+          YYABORT;
         }
 
       YYDSYMPRINTF ("Error: discarding", yytoken, &yylval, &yylloc);
@@ -2807,25 +2809,25 @@ yyerrlab1:
 | yyerrlab2 -- pop states until the error token can be shifted.  |
 `---------------------------------------------------------------*/
 yyerrlab2:
-  yyerrstatus = 3;	/* Each real token shifted decrements this.  */
+  yyerrstatus = 3;      /* Each real token shifted decrements this.  */
 
   for (;;)
     {
       yyn = yypact[yystate];
       if (yyn != YYPACT_NINF)
-	{
-	  yyn += YYTERROR;
-	  if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
-	    {
-	      yyn = yytable[yyn];
-	      if (0 < yyn)
-		break;
-	    }
-	}
+        {
+          yyn += YYTERROR;
+          if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
+            {
+              yyn = yytable[yyn];
+              if (0 < yyn)
+                break;
+            }
+        }
 
       /* Pop the current state because it cannot handle the error token.  */
       if (yyssp == yyss)
-	YYABORT;
+        YYABORT;
 
       YYDSYMPRINTF ("Error: popping", yystos[*yyssp], yyvsp, yylsp);
       yydestruct (yystos[yystate], yyvsp);
@@ -2899,3 +2901,5 @@ static void MOF_trace(const char* str)
 }
 
 
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Yacc.cpp,v 1.6 2007/03/07 18:57:15 mbrasher-public Exp $");

@@ -96,6 +96,8 @@ CMPIrc make_method_out(
     CMPIValue& return_value,
     CMPIType& return_type);
 
+const char* rc_to_str(CMPIrc rc);
+
 #ifdef CIMPLE_NEED_CMPI_IO
 
 void print_scalar(const CMPIData& data);

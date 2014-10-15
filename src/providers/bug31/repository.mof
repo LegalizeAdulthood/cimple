@@ -1,0 +1,18 @@
+
+class BUG31_A
+{
+    uint32 prop1;
+};
+
+class BUG31_B : BUG31_A
+{
+    [Key] uint32 key;
+};
+
+class BUG31_C
+{
+    [Key] uint32 key;
+    uint32 meth(
+        [In] BUG31_A REF r, 
+        [In(false), Out] BUG31_A REF s);
+};

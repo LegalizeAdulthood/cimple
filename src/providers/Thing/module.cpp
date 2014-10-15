@@ -39,3 +39,5 @@ CIMPLE_CMPI_ASSOCIATION_PROVIDER(ThingLink_Provider);
 
 /* Support for Pegasus C++ Interface */
 // CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Thing/module.cpp,v 1.4 2007/03/07 20:25:28 mbrasher-public Exp $");

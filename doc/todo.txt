@@ -5,41 +5,24 @@
     A
     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-    (A) Modify print(const Instance*) to print MOF format.
+    (A) Figure out whether to add "present" flag to input/output extrinsic 
+        parameters.
 
-    (A) Add optional print function argument print() functions.
-
-            Print_Stream
-            {
-                void (*print)(void* client_data, const char* format, ...);
-                void* client_data;
-            };
-
-            void print(..., Print_Stream* out);
+    (A) Test that __name_space is being set correctly in both adapters.
 
     (A) Test multi-class providers that implement a family of classes derived
         from a single class.
-
-    (A) Implement identical() function.
 
     (A) Doxygen
 
     (A) Work through ATTNs.
 
-    (A) Fix lifecycle indications in the CMPI adapter.
+    (A) Implement lifecycle indications in the CMPI adapter.
 
     (A) Implement indication "SourceNamespace" in namespace handling in Pegasus
         adapter (already implemented in CMPI adapter).
 
-    (A) Implement validate(Instance*).
-
-    (A) Figure out how to handle namespaces.
-
-    (A) Consider requiring declaration of all qualifiers and then using
-        that to validate adding of qualifiers to objects.
-
-    (A) Consider removing qualifier setters for Indicaiton and Association
-        (these should be set during CIM_Class initialization). Same for key?
+    (A) Revisit handling of namespaces.
 
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
     B
@@ -47,19 +30,13 @@
     B
     BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 
-    (B) Honor DisableOverride flavor.
-
-    (B) Implement Restricted flavor in create_meta_class().
-
-    (B) Implement Restricted flavor in genclass.
-
-    (B) Copy-on-write properties.
+    (B) No way to get the FQDN for use in SystemName key field.
 
     (B) Implement binary compatibility.
 
     (B) Deprecate Provider::timer() method.
 
-    (B) Revisit need for Meta_Class.crc.
+    (B) Eliminate need for Meta_Class.crc field?
 
     (B) Implement array reference counting (refs member already present).
 
@@ -68,8 +45,6 @@
     (B) Validate property-list filtering.
 
     (B) Validate provider reentrancy.
-
-    (B) Implement MOF-compliant print() functions (Instance, Meta_Class).
 
     (B-NG) Implement automatic lifecycle indication generation.
 
@@ -84,6 +59,23 @@
     C C priorities
     C
     CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+
+    (C) Implement MOF-compliant print() functions (Instance, Meta_Class).
+
+    (C) Honor DisableOverride flavor.
+
+    (C) Implement Restricted flavor in create_meta_class().
+
+    (C) Implement Restricted flavor in genclass.
+
+    (C) Add FILE* parameter to print(Instance*).
+
+    (C) Implement validate(Instance*) to validate an instance against 
+        qualifiers in the meta-class.
+
+    (C) Implement identical() function.
+
+    (C) Modify print(const Instance*) to print MOF format.
 
     (C) Check "sub-scopes". For example, you should not be able to add a
         MinLen qualifier to a uint32 property.

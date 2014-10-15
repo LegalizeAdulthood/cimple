@@ -47,12 +47,20 @@
 # include "platform_LINUX_IX86_GNU.h"
 #elif defined(CIMPLE_PLATFORM_LINUX_X86_64_GNU)
 # include "platform_LINUX_X86_64_GNU.h"
-#elif defined(CIMPLE_PLATFORM_LINUX_PPC_GNU)
+#elif defined(CIMPLE_PLATFORM_LINUX_IA64_GNU)
+# include "platform_LINUX_IA64_GNU.h"
+#elif defined(CIMPLE_PLATFORM_LINUX_PPC_GNU) || \
+    defined(CIMPLE_PLATFORM_LINUX_PPC64_GNU)
 # include "platform_LINUX_PPC_GNU.h"
+#elif defined(CIMPLE_PLATFORM_LINUX_S390_GNU) || \
+    defined(CIMPLE_PLATFORM_LINUX_S390X_GNU)
+# include "platform_LINUX_S390_GNU.h"
 #elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
 # include "platform_WIN32_IX86_MSVC.h"
 #elif defined(CIMPLE_PLATFORM_DARWIN_PPC_GNU)
 # include "platform_DARWIN_PPC_GNU.h"
+#elif defined(CIMPLE_PLATFORM_DARWIN_IX86_GNU)
+# include "platform_DARWIN_IX86_GNU.h"
 #else
 # error "Unknown platform"
 #endif
@@ -182,6 +190,21 @@ CIMPLE_NAMESPACE_END
 # define CIMPLE_PRINTF_ATTR(A1, A2) __attribute__((format (printf, A1, A2)))
 #else
 # define CIMPLE_PRINTF_ATTR(A1, A2) /* empty */
+#endif
+
+//==============================================================================
+//
+// CIMPLE_UNUSED
+//
+//     This macro prevents the GNU compiler from removing unused static
+//     definitions.
+//
+//==============================================================================
+
+#ifdef __GNUC__
+# define CIMPLE_UNUSED __attribute__((__unused__))
+#else
+# define CIMPLE_UNUSED /* empty */
 #endif
 
 //==============================================================================
@@ -319,6 +342,105 @@ CIMPLE_NAMESPACE_END
 //==============================================================================
 
 #define CIMPLE_REALLOC(P, N, TYPE) ((TYPE*)realloc(P, (N) * sizeof(TYPE)))
+
+//==============================================================================
+//
+// CIMPLE_MAJOR
+// CIMPLE_MINOR
+// CIMPLE_REVISION
+//
+//==============================================================================
+
+#define CIMPLE_MAJOR 0
+#define CIMPLE_MINOR 99
+#define CIMPLE_REVISION 56
+
+//==============================================================================
+//
+// CIMPLE_VERSION
+//
+//==============================================================================
+
+#define CIMPLE_VERSION \
+    ((CIMPLE_MAJOR << 24) | (CIMPLE_MINOR << 16) | (CIMPLE_REVISION << 8))
+
+//==============================================================================
+//
+// __CIMPLE_VERSION_SYMBOL
+//
+//==============================================================================
+
+#define __CIMPLE_VERSION_SYMBOL1(MAJOR, MINOR, REVISION) \
+    __cimple_version_##MAJOR##_##MINOR##_##REVISION
+
+#define __CIMPLE_VERSION_SYMBOL(MAJOR, MINOR, REVISION) \
+    __CIMPLE_VERSION_SYMBOL1(MAJOR, MINOR, REVISION)
+
+CIMPLE_CIMPLE_LINKAGE
+extern int __CIMPLE_VERSION_SYMBOL(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION);
+
+//==============================================================================
+//
+// CIMPLE_VERSION_STRING
+//
+//==============================================================================
+
+#define __CIMPLE_VERSION_STRING2(MAJOR, MINOR, REVISION) \
+    #MAJOR"."#MINOR"."#REVISION
+
+#define __CIMPLE_VERSION_STRING1(MAJOR, MINOR, REVISION) \
+    __CIMPLE_VERSION_STRING2(MAJOR, MINOR, REVISION)
+
+#define CIMPLE_VERSION_STRING \
+    __CIMPLE_VERSION_STRING1(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION)
+
+//==============================================================================
+//
+// __cimple_version_tag[]
+//
+//     This definition injects the variable __cimple_version_tag[] into
+//     every compilation unit that includes this header.
+//
+//==============================================================================
+
+CIMPLE_UNUSED static const char __cimple_version_tag[] = \
+    "@(#)CIMPLE_VERSION="CIMPLE_VERSION_STRING;
+
+//==============================================================================
+//
+// CIMPLE_ID
+//
+//==============================================================================
+
+#ifdef __GNUC__
+# define CIMPLE_ID(STR) \
+    CIMPLE_UNUSED static const char __cimple_id[] = "@(#)" STR
+#else
+# define CIMPLE_ID(STR) \
+    CIMPLE_UNUSED static const char __cimple_id[] = "@(#)" STR; \
+    static const char* __cimple_id_func() { return __cimple_id; }
+#endif
+
+//==============================================================================
+//
+// __cimple_version_symbol
+//
+//     This definition injects the a variable called __cimple_version_symbol
+//     into every compilation unit that includes this header. This symbol
+//     references the global variable whose name has the form:
+//
+//         __cimple_version_<major>_<minor>_<revision>
+//
+//     This (intentionally) causes link and load errors when attempting to use
+//     objects compiled with an older version of CIMPLE with a newer CIMPLE
+//     version.
+//
+//==============================================================================
+
+#ifndef CIMPLE_NO_VERSION_SYMBOL
+    CIMPLE_UNUSED static int __cimple_version_symbol =
+        __CIMPLE_VERSION_SYMBOL(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION);
+#endif
 
 //==============================================================================
 //

@@ -1,0 +1,4 @@
+class Upcall
+{
+    [Key] uint32 key;
+};

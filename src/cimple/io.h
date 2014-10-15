@@ -27,6 +27,7 @@
 #ifndef _cimple_io_h
 #define _cimple_io_h
 
+#include <cstdarg>
 #include "config.h"
 #include "linkage.h"
 

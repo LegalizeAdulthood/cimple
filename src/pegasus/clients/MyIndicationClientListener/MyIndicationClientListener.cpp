@@ -27,7 +27,7 @@ class MyIndicationConsumer : public CIMIndicationConsumer
 public:
 
     virtual void consumeIndication(
-	const OperationContext& context,
+        const OperationContext& context,
         const String& url,
         const CIMInstance& indicationInstance);
 };
@@ -60,7 +60,7 @@ void MyIndicationConsumer::consumeIndication(
 #endif
 
     CIMConstProperty prop = indication.getProperty(
-	indication.findProperty("IndicationIdentifier"));
+        indication.findProperty("IndicationIdentifier"));
 
     String indicationIdentifier;
     prop.getValue().get(indicationIdentifier);
@@ -145,10 +145,10 @@ static bool _findFilterOrHandlerPath(
             if (keyBindings[j].getName().equal("Name"))
             {
                 if (keyBindings[j].getValue() == name)
-		{
-		    path = paths[i];
-		    return true;
-		}
+                {
+                    path = paths[i];
+                    return true;
+                }
             }
         }
     }
@@ -161,8 +161,8 @@ static CIMObjectPath _getFilterName(CIMClient& client)
     CIMObjectPath objectPath;
 
     if (_findFilterOrHandlerPath(
-	client, "CIM_IndicationFilter", "MyIndicationFilter", objectPath))
-	return objectPath;
+        client, "CIM_IndicationFilter", "MyIndicationFilter", objectPath))
+        return objectPath;
 
     return _createFilter(client);
 }
@@ -172,8 +172,8 @@ static CIMObjectPath _getHandlerName(CIMClient& client)
     CIMObjectPath objectPath;
 
     if (_findFilterOrHandlerPath(
-	client, "CIM_IndicationHandler", "MyIndicationHandler", objectPath))
-	return objectPath;
+        client, "CIM_IndicationHandler", "MyIndicationHandler", objectPath))
+        return objectPath;
 
     return _createHandler(client);
 }
@@ -186,14 +186,14 @@ static void _invokeMethod(CIMClient& client, const char* classname)
     Uint32 result;
 
     CIMObjectPath className(String::EMPTY, CIMNamespaceName(),
-	CIMName(classname), keyBindings);
+        CIMName(classname), keyBindings);
 
     CIMValue retValue = client.invokeMethod(
-	NAMESPACE,
-	className,
-	"DeliverIndications",
-	inParams,
-	outParams);
+        NAMESPACE,
+        className,
+        "DeliverIndications",
+        inParams,
+        outParams);
 
     retValue.get(result);
     // printf("result: %u\n", result);
@@ -208,60 +208,60 @@ int main(int argc, char ** argv)
 
     try
     {
-	// Create listener (and consumer).
+        // Create listener (and consumer).
 
-	CIMListener listener(9999);
-	MyIndicationConsumer* consumer = new MyIndicationConsumer();
-	listener.addConsumer(consumer);
-	listener.start();
+        CIMListener listener(9999);
+        MyIndicationConsumer* consumer = new MyIndicationConsumer();
+        listener.addConsumer(consumer);
+        listener.start();
 
-	// Connect to CIM server:
+        // Connect to CIM server:
 
-	client.connectLocal();
+        client.connectLocal();
 
-	CIMObjectPath filter = _getFilterName(client);
-	// cout << "FILTER[" << filter.toString() << "]\n" << endl;
+        CIMObjectPath filter = _getFilterName(client);
+        // cout << "FILTER[" << filter.toString() << "]\n" << endl;
 
-	CIMObjectPath handler = _getHandlerName(client);
-	// cout << "HANDLER[" << handler.toString() << "]\n" << endl;
+        CIMObjectPath handler = _getHandlerName(client);
+        // cout << "HANDLER[" << handler.toString() << "]\n" << endl;
 
-	try 
-	{
-	    _createSubscription(client, filter, handler);
-	}
-	catch (Exception& e)
-	{
-	    cerr << "Warning: " << e.getMessage() << endl;
-	}
+        try 
+        {
+            _createSubscription(client, filter, handler);
+        }
+        catch (Exception& e)
+        {
+            cerr << "Warning: " << e.getMessage() << endl;
+        }
 
-	// Send the method:
+        // Send the method:
 
 #if 1
-	for (int i = 0; i < 5; i++)
-	{
+        for (int i = 0; i < 5; i++)
+        {
 #if 0
-	    _invokeMethod(client, "DerivedIndication");
-	    System::sleep(1);
+            _invokeMethod(client, "DerivedIndication");
+            System::sleep(1);
 #endif
-	    _invokeMethod(client, "MyIndication");
-	    System::sleep(1);
-	}
+            _invokeMethod(client, "MyIndication");
+            System::sleep(1);
+        }
 #endif
 
-	// Wait for 1000 seconds.
+        // Wait for 1000 seconds.
 
-	printf("Sleeping...\n");
+        printf("Sleeping...\n");
 
-	System::sleep(1000000000);
+        System::sleep(1000000000);
 
-	listener.stop();
-	listener.removeConsumer(consumer);
-	delete consumer;
+        listener.stop();
+        listener.removeConsumer(consumer);
+        delete consumer;
     }
     catch(Exception& e)
     {
-	cerr << "Error: " << e.getMessage() << endl;
-	exit(1);
+        cerr << "Error: " << e.getMessage() << endl;
+        exit(1);
     }
 
     return 0;

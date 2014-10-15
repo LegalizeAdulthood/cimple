@@ -1,0 +1,26 @@
+
+class X
+{
+    [Key] uint32 Key;
+    string Names[] = { "One", "Two" };
+};
+
+class Y : X
+{
+    [Key] uint32 Key;
+    boolean Flag;
+};
+
+[Association]
+class A
+{
+    [Key] Y ref Left;
+    [Key] Y ref Right;
+};
+
+[Indication]
+class E
+{
+    [EmbeddedObject]
+    string e;
+};

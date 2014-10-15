@@ -9,7 +9,6 @@ all:
 	@ $(ECHO) "SHLIB=$(SHLIB)"
 	@ $(ECHO) "SRC_DIR=$(SRC_DIR)"
 	@ $(ECHO) "INCLUDES=$(INCLUDES)"
-	@ $(ECHO) "CIMPLE_MOF_PATH=$(CIMPLE_MOF_PATH)"
 	@ $(ECHO) "CXX=$(CXX)"
 	@ $(ECHO) "CC=$(CC)"
 	@ $(ECHO) "AR=$(AR)"

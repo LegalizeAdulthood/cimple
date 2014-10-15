@@ -19,7 +19,7 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN_DIR)/genclass -q -d CIM_Card
+	genclass -q -d CIM_Card
 
 tests:
 	@ $(BINARY_TARGET)

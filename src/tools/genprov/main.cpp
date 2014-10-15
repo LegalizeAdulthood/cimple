@@ -1,4 +1,4 @@
-#include <cimple/version.h>
+#include <cimple/config.h>
 #include <cassert>
 #include <getopt.h>
 #include <cstdlib>
@@ -39,9 +39,9 @@ using namespace std;
 static inline const char* _to_string(int data_type)
 {
     if (data_type == TOK_STRING)
-	return "String";
+        return "String";
     else if (data_type == TOK_DATETIME)
-	return "Datetime";
+        return "Datetime";
 
     return MOF_Data_Type::to_string(data_type);
 }
@@ -55,13 +55,13 @@ void write_file(
     size_t pos;
 
     while ((pos = tmp.find("<CLASS>")) != size_t(-1))
-	tmp = tmp.substr(0, pos) + string(class_name) + tmp.substr(pos + 7);
+        tmp = tmp.substr(0, pos) + string(class_name) + tmp.substr(pos + 7);
 
     size_t n = tmp.size();
     size_t r = 0;
 
     while ((n = fwrite(&tmp[r], 1, tmp.size() - r, os)) > 0)
-	r += n;
+        r += n;
 }
 
 void write_method(
@@ -76,70 +76,80 @@ void write_method(
     memset(indent_chars, ' ', sizeof(indent_chars));
 
     if (do_definition)
-	indent_chars[0] = '\0';
+        indent_chars[0] = '\0';
     else
-	indent_chars[4] = '\0';
+        indent_chars[4] = '\0';
 
     // Print method declaration/definition:
 
     if (do_definition)
     {
-	fprintf(os, "%sInvoke_Method_Status %s_Provider::%s(\n", indent_chars,
-	    class_name, meth->name);
+        fprintf(os, "%sInvoke_Method_Status %s_Provider::%s(\n", indent_chars,
+            class_name, meth->name);
     }
     else
     {
-	fprintf(os, "%sInvoke_Method_Status %s(\n", indent_chars,
-	    meth->name);
+        fprintf(os, "%sInvoke_Method_Status %s(\n", indent_chars,
+            meth->name);
     }
 
     // This:
 
     if (!(meth->qual_mask & MOF_QT_STATIC))
-	fprintf(os, "%s    const %s* self,\n", indent_chars, class_name);
+        fprintf(os, "%s    const %s* self,\n", indent_chars, class_name);
 
     // Parameters:
 
     for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
     {
-	fprintf(os, "%s    ", indent_chars);
+        fprintf(os, "%s    ", indent_chars);
 
-	if (!(p->qual_mask & MOF_QT_OUT))
-	    fprintf(os, "const ");
+        if (!(p->qual_mask & MOF_QT_OUT))
+            fprintf(os, "const ");
 
-	if (p->data_type == TOK_REF)
-	{
-	    fprintf(os, "%s* %s", p->ref_name, p->name);
-	}
-	else
-	{
-	    fprintf(os, "Property<");
+        if (p->data_type == TOK_REF)
+        {
+            if (p->array_index)
+            {
+                fprintf(os, "Array<%s*>& %s", p->ref_name, p->name);
+            }
+            else
+            {
+                if (p->qual_mask & MOF_QT_OUT)
+                    fprintf(os, "%s*& %s", p->ref_name, p->name);
+                else
+                    fprintf(os, "%s* %s", p->ref_name, p->name);
+            }
+        }
+        else
+        {
+            fprintf(os, "Property<");
 
-	    if (p->array_index)
-	    {
-		fprintf(os, "Array_");
-	    }
+            if (p->array_index)
+            {
+                fprintf(os, "Array_");
+            }
 
-	    fprintf(os, "%s>& %s", _to_string(p->data_type), p->name);
-	}
+            fprintf(os, "%s>& %s", _to_string(p->data_type), p->name);
+        }
 
-	fprintf(os, ",\n");
+        fprintf(os, ",\n");
     }
 
     // Return value:
 
     fprintf(os, "%s    Property<%s>& return_value)",
-	indent_chars, _to_string(meth->data_type));
+        indent_chars, _to_string(meth->data_type));
 
     if (do_definition)
     {
-	fprintf(os, "\n");
-	fprintf(os, "{\n");
-	fprintf(os, "    return INVOKE_METHOD_UNSUPPORTED;\n");
-	fprintf(os, "}\n");
+        fprintf(os, "\n");
+        fprintf(os, "{\n");
+        fprintf(os, "    return INVOKE_METHOD_UNSUPPORTED;\n");
+        fprintf(os, "}\n");
     }
     else
-	fprintf(os, ";\n");
+        fprintf(os, ";\n");
 
     fprintf(os, "\n");
 }
@@ -154,12 +164,12 @@ void write_methods(
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	MOF_Feature* feature = p->feature;
+        MOF_Feature* feature = p->feature;
 
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
 
-	if (meth)
-	    write_method(os, class_name, meth, do_definition);
+        if (meth)
+            write_method(os, class_name, meth, do_definition);
     }
 }
 
@@ -171,12 +181,12 @@ void write_provider_header(
     FILE* os = fopen(path.c_str(), "wb");
 
     if (!os)
-	err("cannot open %s\n", path.c_str());
+        err("cannot open %s\n", path.c_str());
 
     write_file(os, class_name, header_prefix);
 
     if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
-	write_file(os, class_name, association_header);
+        write_file(os, class_name, association_header);
 
     write_methods(os, class_name, class_decl, false);
     write_file(os, class_name, header_suffix);
@@ -193,7 +203,7 @@ void write_indication_provider_header(
     FILE* os = fopen(path.c_str(), "wb");
 
     if (!os)
-	err("cannot open %s\n", path.c_str());
+        err("cannot open %s\n", path.c_str());
 
     write_file(os, class_name, indication_header_prefix);
     write_methods(os, class_name, class_decl, false);
@@ -209,23 +219,23 @@ void write_skeleton(
     const MOF_Method_Decl* meth)
 {
     fprintf(os, "    if (strcasecmp(meth_name, \"%s\") == 0)\n", 
-	meth->name);
+        meth->name);
     fprintf(os, "    {\n");
 
     fprintf(os, "        typedef %s_%s_method Method;\n", 
-	class_name, meth->name);
+        class_name, meth->name);
 
     fprintf(os, "        Method* method = (Method*)arg2;\n");
 
     fprintf(os, "        return provider->%s(\n", meth->name);
 
     if (!(meth->qual_mask & MOF_QT_STATIC))
-	fprintf(os, "            self,\n");
+        fprintf(os, "            self,\n");
 
     for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
     {
-	fprintf(os, "            method->%s", p->name);
-	fprintf(os, ",\n");
+        fprintf(os, "            method->%s", p->name);
+        fprintf(os, ",\n");
     }
 
     fprintf(os, "            method->return_value);\n");
@@ -246,45 +256,45 @@ void write_proc(
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	if (dynamic_cast<MOF_Method_Decl*>(p->feature))
-	{
-	    has_methods = true;
-	    break;
-	}
+        if (dynamic_cast<MOF_Method_Decl*>(p->feature))
+        {
+            has_methods = true;
+            break;
+        }
     }
 
     // Write proc:
 
     if (!has_methods)
     {
-	if (class_decl->qual_mask & MOF_QT_INDICATION)
-	    write_file(os, class_name, indication_source_infix1);
-	else if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
-	    write_file(os, class_name, association_source_infix1);
-	else
-	    write_file(os, class_name, source_infix1);
+        if (class_decl->qual_mask & MOF_QT_INDICATION)
+            write_file(os, class_name, indication_source_infix1);
+        else if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
+            write_file(os, class_name, association_source_infix1);
+        else
+            write_file(os, class_name, source_infix1);
 
-	fprintf(os, "}\n");
-	return;
+        fprintf(os, "}\n");
+        return;
     }
 
     if (class_decl->qual_mask & MOF_QT_INDICATION)
-	write_file(os, class_name, indication_source_infix2);
+        write_file(os, class_name, indication_source_infix2);
     else if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
-	write_file(os, class_name, association_source_infix2);
+        write_file(os, class_name, association_source_infix2);
     else
-	write_file(os, class_name, source_infix2);
+        write_file(os, class_name, source_infix2);
 
     p = class_decl->all_features;
 
     for (; p; p = (MOF_Feature_Info*)p->next)
     {
-	MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p->feature);
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p->feature);
 
-	if (!meth)
-	    continue;
+        if (!meth)
+            continue;
 
-	write_skeleton(os, class_name, meth);
+        write_skeleton(os, class_name, meth);
     }
 
     fprintf(os, "    return -1;\n");
@@ -299,12 +309,12 @@ void write_provider_source(
     FILE* os = fopen(path.c_str(), "wb");
 
     if (!os)
-	err("cannot open %s\n", path.c_str());
+        err("cannot open %s\n", path.c_str());
 
     write_file(os, class_name, source_prefix);
 
     if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
-	write_file(os, class_name, association_source);
+        write_file(os, class_name, association_source);
 
     write_methods(os, class_name, class_decl, true);
     write_proc(os, class_name, class_decl);
@@ -322,7 +332,7 @@ void write_indication_provider_source(
     FILE* os = fopen(path.c_str(), "wb");
 
     if (!os)
-	err("cannot open %s\n", path.c_str());
+        err("cannot open %s\n", path.c_str());
 
     write_file(os, class_name, indication_source_prefix);
     write_methods(os, class_name, class_decl, true);
@@ -339,8 +349,8 @@ void generate_module_file(const char* class_name, bool force)
 
     if (!force)
     {
-	if (access(MODULE_CPP, F_OK) == 0)
-	    err("%s already exists; use -f to overwrite", MODULE_CPP);
+        if (access(MODULE_CPP, F_OK) == 0)
+            err("%s already exists; use -f to overwrite", MODULE_CPP);
     }
 
     FILE* os = fopen(MODULE_CPP, "wb");
@@ -360,7 +370,7 @@ void generate_provider(
     const MOF_Class_Decl* class_decl = MOF_Class_Decl::find((char*)class_name);
 
     if (!class_decl)
-	err("no such class in MOF repository: %s", class_name);
+        err("no such class in MOF repository: %s", class_name);
 
     // Check to see if files already exists.
 
@@ -369,30 +379,30 @@ void generate_provider(
 
     if (!force)
     {
-	if (access(header_file.c_str(), F_OK) == 0)
-	    err("%s already exists; use -f to overwrite", header_file.c_str());
+        if (access(header_file.c_str(), F_OK) == 0)
+            err("%s already exists; use -f to overwrite", header_file.c_str());
 
-	if (access(source_file.c_str(), F_OK) == 0)
-	    err("%s already exists; use -f to overwrite", source_file.c_str());
+        if (access(source_file.c_str(), F_OK) == 0)
+            err("%s already exists; use -f to overwrite", source_file.c_str());
     }
 
     // Write header and source files:
 
     if (class_decl->qual_mask & MOF_QT_INDICATION)
     {
-	write_indication_provider_header(class_name, header_file, class_decl);
-	write_indication_provider_source(class_name, source_file, class_decl);
+        write_indication_provider_header(class_name, header_file, class_decl);
+        write_indication_provider_source(class_name, source_file, class_decl);
     }
     else
     {
-	write_provider_header(class_name, header_file, class_decl);
-	write_provider_source(class_name, source_file, class_decl);
+        write_provider_header(class_name, header_file, class_decl);
+        write_provider_source(class_name, source_file, class_decl);
     }
 
     // Generate the module file:
 
     if (module)
-	generate_module_file(class_decl->name, force);
+        generate_module_file(class_decl->name, force);
 }
 
 bool is_dir(const string& path)
@@ -405,8 +415,6 @@ bool is_dir(const string& path)
     return S_ISDIR(st.st_mode);
 }
 
-CIMPLE_INJECT_VERSION_TAG;
-
 int main(int argc, char** argv)
 {
     vector<string> mof_files;
@@ -418,7 +426,7 @@ int main(int argc, char** argv)
     // Check options:
     int opt;
 
-    while ((opt = getopt(argc, argv, "I:M:fmhv")) != -1)
+    while ((opt = getopt(argc, argv, "I:M:fmhV")) != -1)
     {
         switch (opt)
         {
@@ -453,37 +461,37 @@ int main(int argc, char** argv)
             } 
 
             case 'f':
-		force = true;
-		break;
+                force = true;
+                break;
 
             case 'm':
-		module = true;
-		break;
+                module = true;
+                break;
 
-	    case 'h':
-	    {
-		fprintf(stderr, (char*)USAGE, argv[0]);
-		exit(0);
-	    }
+            case 'h':
+            {
+                fprintf(stderr, (char*)USAGE, argv[0]);
+                exit(0);
+            }
 
-	    case 'v':
-	    {
-		fprintf(stderr, "genprov: version 0.76\n\n");
-		exit(0);
-	    }
+            case 'V':
+            {
+                printf("%s\n", CIMPLE_VERSION_STRING);
+                exit(0);
+            }
 
-	    default:
-		err("unknown option: %c", opt);
-		break;
-	}
+            default:
+                err("unknown option: %c", opt);
+                break;
+        }
     }
 
     // Check usage.
 
     if (argc - optind != 1)
     {
-	fprintf(stderr, (char*)USAGE, argv[0]);
-	exit(1);
+        fprintf(stderr, (char*)USAGE, argv[0]);
+        exit(1);
     }
 
     const char* class_name = argv[optind];
@@ -498,3 +506,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/main.cpp,v 1.39 2007/03/07 18:49:10 mbrasher-public Exp $");

@@ -1,0 +1,16 @@
+class CMPL_Left
+{
+    [Key] uint32 key;
+};
+
+class CMPL_Right
+{
+    [Key] uint32 key;
+};
+
+[Association]
+class CMPL_Cross
+{
+    [Key] CMPL_Left REF left;
+    [Key] CMPL_Right REF right;
+};

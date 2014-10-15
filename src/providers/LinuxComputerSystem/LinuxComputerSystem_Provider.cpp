@@ -101,7 +101,7 @@ int LinuxComputerSystem_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -132,3 +132,5 @@ int LinuxComputerSystem_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/LinuxComputerSystem/LinuxComputerSystem_Provider.cpp,v 1.20 2007/03/07 20:25:25 mbrasher-public Exp $");

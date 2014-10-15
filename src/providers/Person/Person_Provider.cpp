@@ -1,91 +1,6 @@
 #include "Person_Provider.h"
-#include "Persistent.h"
-#include "Fan.h"
 
 CIMPLE_NAMESPACE_BEGIN
-
-static void _test_cimom_ops()
-{
-    Ref<Fan> fan(Fan::create());
-    Instance_Enumerator e;
-
-    printf("===== cimom::enum_instances()\n");
-    
-    if (cimom::enum_instances("root/cimv2", fan.ptr(), e) == 0)
-    {
-	for (; e; e++)
-	    print(e().ptr());
-    }
-
-    printf("===== cimom::get_instance()\n");
-
-    {
-	Ref<Fan> keys(Fan::create());
-	keys->DeviceID.value = "FAN01";
-	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys.ptr());
-	print(inst.ptr());
-    }
-
-    printf("===== cimom::modify_instance()\n");
-
-    {
-	Ref<Fan> inst(Fan::create());
-
-	inst->DeviceID.value = "FAN01";
-	inst->Speed.value = 1111;
-	inst->DesiredSpeed.value = 1111;
-	int result = cimom::modify_instance("root/cimv2", inst.ptr());
-
-	if (result != 0)
-	    printf("failed\n");
-    }
-
-    printf("===== cimom::get_instance()\n");
-
-    {
-	Ref<Fan> keys(Fan::create());
-	keys->DeviceID.value = "FAN01";
-	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys.ptr());
-	print(inst.ptr());
-    }
-
-    printf("===== cimom::delete_instance()\n");
-
-    {
-	Ref<Fan> key(Fan::create());
-	key->DesiredSpeed.value = 1111;
-	int result = cimom::delete_instance("root/cimv2", key.ptr());
-
-	if (result != 0)
-	    printf("cimom::delete_instance() failed\n");
-    }
-
-    printf("===== cimom::get_instance()\n");
-
-    {
-	Ref<Fan> keys(Fan::create());
-	keys->DeviceID.value = "FAN01";
-	Ref<Instance> inst = cimom::get_instance("root/cimv2", keys.ptr());
-
-	if (inst)
-	    print(inst.ptr());
-	else
-	    printf("cimom::get_instance() failed\n");
-    }
-}
-
-static void* _thread_proc(void* arg)
-{
-    Atomic_Counter& stop = *((Atomic_Counter*)arg);
-
-    while (stop.get() == 0)
-    {
-	Time::sleep(Time::SEC);
-	_test_cimom_ops();
-    }
-
-    return 0;
-}
 
 Person_Provider::Person_Provider()
 {
@@ -97,72 +12,36 @@ Person_Provider::~Person_Provider()
 
 Load_Status Person_Provider::load()
 {
-#if USE_THREAD
-    Thread::create_joinable(_thread, _thread_proc, &_stop);
-#endif
-
-    // Create 100 persistent instances (in the repository).
     {
-        const char NAMESPACE[] = "/root/cimv2";
-
-        for (uint32 i = 0; i < 100; i++)
-        {
-            Ref<Persistent> inst(Persistent::create());
-            inst->key.value = i;
-
-            // Create instance if it does not exist:
-
-            Ref<Instance> tmp(cimom::get_instance(NAMESPACE, inst.ptr()));
-
-            if (tmp)
-            {
-                printf("Persistent.key=%u already exists\n", i);
-            }
-            else
-            {
-                int rc = cimom::create_instance(NAMESPACE, inst.ptr());
-
-                if (rc == 0)
-                    printf("Created Persistent.key=%u\n", i);
-                else
-                {
-                    fprintf(stderr,
-                    "ERROR: Failed to create Persistent.key=%u\n", i);
-                }
-            }
-        }
+        Person* instance = Person::create();
+        instance->ssn.value = 1;
+        instance->first.value = "Mike";
+        instance->last.value = "Brasher";
+        _map.insert(instance);
     }
 
     {
-	Person* instance = Person::create();
-	instance->ssn.value = 1;
-	instance->first.value = "Mike";
-	instance->last.value = "Brasher";
-	_map.insert(instance);
+        Person* instance = Person::create();
+        instance->ssn.value = 2;
+        instance->first.value = "Saara";
+        instance->last.value = "Silva-Brasher";
+        _map.insert(instance);
     }
 
     {
-	Person* instance = Person::create();
-	instance->ssn.value = 2;
-	instance->first.value = "Saara";
-	instance->last.value = "Silva-Brasher";
-	_map.insert(instance);
+        Person* instance = Person::create();
+        instance->ssn.value = 3;
+        instance->first.value = "Sofia";
+        instance->last.value = "Brasher";
+        _map.insert(instance);
     }
 
     {
-	Person* instance = Person::create();
-	instance->ssn.value = 3;
-	instance->first.value = "Sofia";
-	instance->last.value = "Brasher";
-	_map.insert(instance);
-    }
-
-    {
-	Person* instance = Person::create();
-	instance->ssn.value = 4;
-	instance->first.value = "Andrea";
-	instance->last.value = "Brasher";
-	_map.insert(instance);
+        Person* instance = Person::create();
+        instance->ssn.value = 4;
+        instance->first.value = "Andrea";
+        instance->last.value = "Brasher";
+        _map.insert(instance);
     }
 
     return LOAD_OK;
@@ -189,8 +68,8 @@ Get_Instance_Status Person_Provider::get_instance(
 
     if (person)
     {
-	instance = person->clone();
-	return GET_INSTANCE_OK;
+        instance = person->clone();
+        return GET_INSTANCE_OK;
     }
 
     return GET_INSTANCE_NOT_FOUND;
@@ -202,8 +81,8 @@ Enum_Instances_Status Person_Provider::enum_instances(
 {
     for (size_t i = 0; i < _map.size(); i++)
     {
-	Person* person = _map[i]->clone();
-	handler->handle(person);
+        Person* person = _map[i]->clone();
+        handler->handle(person);
     }
 
     return ENUM_INSTANCES_OK;
@@ -212,7 +91,7 @@ Enum_Instances_Status Person_Provider::enum_instances(
 Create_Instance_Status Person_Provider::create_instance(const Person* instance)
 {
     if (_map.find(instance) != size_t(-1))
-	return CREATE_INSTANCE_DUPLICATE;
+        return CREATE_INSTANCE_DUPLICATE;
 
     _map.insert(instance->clone());
 
@@ -224,7 +103,7 @@ Delete_Instance_Status Person_Provider::delete_instance(const Person* instance)
     size_t pos = _map.find(instance);
 
     if (pos == size_t(-1))
-	return DELETE_INSTANCE_NOT_FOUND;
+        return DELETE_INSTANCE_NOT_FOUND;
 
     _map.remove(pos);
 
@@ -236,7 +115,7 @@ Modify_Instance_Status Person_Provider::modify_instance(const Person* instance)
     size_t pos = _map.find(instance);
 
     if (pos == size_t(-1))
-	return MODIFY_INSTANCE_NOT_FOUND;
+        return MODIFY_INSTANCE_NOT_FOUND;
 
     copy(_map[pos], instance);
 
@@ -261,7 +140,9 @@ int Person_Provider::proc(
     typedef Person Class;
     typedef Person_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person_Provider.cpp,v 1.36 2007/03/07 20:19:49 mbrasher-public Exp $");

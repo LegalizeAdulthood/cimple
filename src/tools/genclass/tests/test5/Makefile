@@ -28,4 +28,4 @@ tests:
 	@ $(BINARY_TARGET)
 
 genclass:
-	$(BIN_DIR)/genclass CIM_ComputerSystem
+	genclass CIM_ComputerSystem

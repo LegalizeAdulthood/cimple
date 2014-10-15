@@ -25,15 +25,25 @@
 */
 
 #include "Person_Provider.h"
-#include "Link_Provider.h"
+#include "PersonLink_Provider.h"
+#include "Salesman_Provider.h"
+#include "SalesmanLink_Provider.h"
 
 using namespace cimple;
 
 CIMPLE_MODULE(Person_Module);
 CIMPLE_PROVIDER(Person_Provider);
-CIMPLE_PROVIDER(Link_Provider);
+CIMPLE_PROVIDER(PersonLink_Provider);
+CIMPLE_PROVIDER(Salesman_Provider);
+CIMPLE_PROVIDER(SalesmanLink_Provider);
 
-CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
+#ifdef BUILD_CMPI_PROVIDER
+  CIMPLE_CMPI_INSTANCE_PROVIDER(Person_Provider);
+  CIMPLE_CMPI_ASSOCIATION_PROVIDER(PersonLink_Provider);
+  CIMPLE_CMPI_INSTANCE_PROVIDER(Salesman_Provider);
+  CIMPLE_CMPI_ASSOCIATION_PROVIDER(SalesmanLink_Provider);
+#else
+  CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
+#endif
 
-// By defining this, this class will be automatically loaded by regmod.
-CIMPLE_CLASS_DEPENDENCY(Persistent);
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/module.cpp,v 1.16 2007/03/07 20:19:49 mbrasher-public Exp $");

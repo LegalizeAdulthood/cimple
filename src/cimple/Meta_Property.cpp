@@ -175,3 +175,5 @@ void print(const Meta_Property* mp, bool is_parameter)
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Property.cpp,v 1.28 2007/03/07 18:41:15 mbrasher-public Exp $");

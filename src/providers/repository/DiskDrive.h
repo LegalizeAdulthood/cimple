@@ -11,6 +11,15 @@
 #include <cimple/cimple.h>
 #include "CIM_DiskDrive.h"
 
+#if (0x00633800 > CIMPLE_VERSION)
+# error "The version of genclass used to generate this file (0.99.56) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
+#endif
+
+#if (0x00633800 < CIMPLE_VERSION)
+# error "The version of genclass used to generate this file (0.99.56) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
+#endif
+
+
 CIMPLE_NAMESPACE_BEGIN
 
 class CIMPLE_LINKAGE DiskDrive : public Instance
@@ -27,6 +36,7 @@ public:
     Property<Array_uint16> OperationalStatus;
     Property<Array_String> StatusDescriptions;
     Property<String> Status;
+    Property<uint16> HealthState;
 
     // CIM_LogicalElement features:
 
@@ -38,10 +48,10 @@ public:
     Property<Datetime> TimeOfLastStateChange;
 
     // CIM_LogicalDevice features:
-    Property<String> SystemCreationClassName;
-    Property<String> SystemName;
-    Property<String> CreationClassName;
-    Property<String> DeviceID;
+    Property<String> SystemCreationClassName; // KEY
+    Property<String> SystemName; // KEY
+    Property<String> CreationClassName; // KEY
+    Property<String> DeviceID; // KEY
     Property<boolean> PowerManagementSupported;
     Property<Array_uint16> PowerManagementCapabilities;
     Property<uint16> Availability;

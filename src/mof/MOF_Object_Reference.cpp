@@ -39,10 +39,10 @@ extern "C" FILE* open_memstream(char **, size_t *);
 MOF_Object_Reference::~MOF_Object_Reference()
 {
     if (class_name)
-	free(class_name);
+        free(class_name);
 
     if (pairs)
-	pairs->delete_list();
+        pairs->delete_list();
 }
 
 void MOF_Object_Reference::validate()
@@ -56,8 +56,8 @@ void MOF_Object_Reference::validate()
 
     if ((class_decl = MOF_Class_Decl::find(class_name)) == 0)
     {
-	MOF_error_printf("class undefined in reference initializer: \"%s\"", 
-	    class_name);
+        MOF_error_printf("class undefined in reference initializer: \"%s\"", 
+            class_name);
     }
 
     /*
@@ -65,7 +65,7 @@ void MOF_Object_Reference::validate()
      */
 
     for (p = pairs; p; p = (MOF_Key_Value_Pair*)p->next)
-	p->validate(class_decl);
+        p->validate(class_decl);
 
     /*
      * Check to see that there are as many key-value pairs as keys in the
@@ -74,8 +74,8 @@ void MOF_Object_Reference::validate()
 
     if (class_decl->count_keys() != pairs->list_size())
     {
-	MOF_error("class contains keys which are missing "
-	    "from the reference initializer");
+        MOF_error("class contains keys which are missing "
+            "from the reference initializer");
     }
 }
 
@@ -97,61 +97,61 @@ void MOF_Object_Reference::normalize()
 
     if ((count = pairs->list_size()))
     {
-	MOF_Key_Value_Pair* p;
-	MOF_Key_Value_Pair** tmp_pairs;
-	size_t i;
+        MOF_Key_Value_Pair* p;
+        MOF_Key_Value_Pair** tmp_pairs;
+        size_t i;
 
-	/*
-	 * Allocate an array of pointers to the key-value pairs:
-	 */
+        /*
+         * Allocate an array of pointers to the key-value pairs:
+         */
 
-	if ((tmp_pairs = (MOF_Key_Value_Pair**)calloc(
-	    1, sizeof(MOF_Key_Value_Pair*) * count)) == 0)
-	{
-	    MOF_error("out of memory");
-	    return;
-	}
+        if ((tmp_pairs = (MOF_Key_Value_Pair**)calloc(
+            1, sizeof(MOF_Key_Value_Pair*) * count)) == 0)
+        {
+            MOF_error("out of memory");
+            return;
+        }
 
-	/*
-	 * Initialize the array of pointers and shift key names to lower
-	 * case as you go.
-	 */
+        /*
+         * Initialize the array of pointers and shift key names to lower
+         * case as you go.
+         */
 
-	for (p = pairs, i = 0; p; p = (MOF_Key_Value_Pair*)p->next, i++)
-	{
-	    tmp_pairs[i] = p;
-	    MOF_strtolower(p->key);
-	}
+        for (p = pairs, i = 0; p; p = (MOF_Key_Value_Pair*)p->next, i++)
+        {
+            tmp_pairs[i] = p;
+            MOF_strtolower(p->key);
+        }
 
-	/*
-	 * Sort the array (in ascending order by key):
-	 */
+        /*
+         * Sort the array (in ascending order by key):
+         */
 
-	qsort(tmp_pairs, count, sizeof(MOF_Key_Value_Pair*), _compare);
+        qsort(tmp_pairs, count, sizeof(MOF_Key_Value_Pair*), _compare);
 
-	/*
-	 * Reset the linked list pointers so the linked list is in sorted order.
-	 */
+        /*
+         * Reset the linked list pointers so the linked list is in sorted order.
+         */
 
-	for (i = 0; i < count; i++)
-	    tmp_pairs[i]->next = 0;
+        for (i = 0; i < count; i++)
+            tmp_pairs[i]->next = 0;
 
-	for (i = 1; i < count; i++)
-	    tmp_pairs[i-1]->append(tmp_pairs[i]);
+        for (i = 1; i < count; i++)
+            tmp_pairs[i-1]->append(tmp_pairs[i]);
 
-	MOF_ASSERT(tmp_pairs[0]->list_size() == count);
+        MOF_ASSERT(tmp_pairs[0]->list_size() == count);
 
-	/*
-	 * Set new pairs head:
-	 */
+        /*
+         * Set new pairs head:
+         */
 
-	pairs = tmp_pairs[0];
+        pairs = tmp_pairs[0];
 
-	/*
-	 * Release the temporary array.
-	 */
+        /*
+         * Release the temporary array.
+         */
 
-	free(tmp_pairs);
+        free(tmp_pairs);
     }
 
     /*
@@ -172,7 +172,7 @@ void MOF_Object_Reference::print(FILE* stream) const
     fprintf(stream, "%s", class_name);
 
     if (pairs)
-	fprintf(stream, ".");
+        fprintf(stream, ".");
 
     /*
      * Print key-value pairs:
@@ -180,19 +180,19 @@ void MOF_Object_Reference::print(FILE* stream) const
 
     for (p = pairs; p; p = (MOF_Key_Value_Pair*)p->next)
     {
-	/*
-	 * Print the name:
-	 */
+        /*
+         * Print the name:
+         */
 
-	fprintf(stream, "%s=", p->key);
+        fprintf(stream, "%s=", p->key);
 
-	if (p->value)
-	    p->value->print(stream, p->is_array);
-	else
-	    fprintf(stream, "NULL");
+        if (p->value)
+            p->value->print(stream, p->is_array);
+        else
+            fprintf(stream, "NULL");
 
-	if (p->next)
-	    fprintf(stream, ",");
+        if (p->next)
+            fprintf(stream, ",");
     }
 }
 
@@ -219,7 +219,7 @@ char* MOF_Object_Reference::to_string() const
     FILE* stream = fopen(FILE_NAME, "wb");
 
     if (!stream)
-	MOF_error_printf("failed to open %s for write", FILE_NAME);
+        MOF_error_printf("failed to open %s for write", FILE_NAME);
 
     print(stream);
     fclose(stream);
@@ -229,14 +229,14 @@ char* MOF_Object_Reference::to_string() const
     stream = fopen(FILE_NAME, "rb");
 
     if (!stream)
-	MOF_error_printf("failed to open %s for read", FILE_NAME);
+        MOF_error_printf("failed to open %s for read", FILE_NAME);
 
     size_t n;
     char buffer[4096];
     std::vector<char> v;
 
     while ((n = fread(buffer, 1, sizeof(buffer), stream)) > 0)
-	v.insert(v.end(), buffer, buffer + n);
+        v.insert(v.end(), buffer, buffer + n);
 
     v.push_back('\0');
     fclose(stream);
@@ -256,8 +256,8 @@ char* MOF_Object_Reference::normalize(const char* asc7)
 
     if (REF_parse(asc7, &obj_ref) != 0)
     {
-	MOF_error_printf(
-	    "malformed object reference: \"%s\"", ref_error_message);
+        MOF_error_printf(
+            "malformed object reference: \"%s\"", ref_error_message);
     }
 
     /*
@@ -282,3 +282,5 @@ char* MOF_Object_Reference::normalize(const char* asc7)
 
     return tmp;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Object_Reference.cpp,v 1.6 2007/03/07 18:57:14 mbrasher-public Exp $");

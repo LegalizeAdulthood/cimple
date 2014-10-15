@@ -1,0 +1,18 @@
+
+class BUG30_R
+{
+    [Key] uint32 key;
+};
+
+class BUG30_S : BUG30_R
+{
+};
+
+class BUG30_X
+{
+    [Key] uint32 key;
+
+    uint32 foo(
+        [In] BUG30_R REF r1[],
+        [Out] BUG30_R REF r2[]);
+};

@@ -110,3 +110,5 @@ int ModernLamp_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/ModernLamp_Provider.cpp,v 1.2 2007/03/07 20:25:25 mbrasher-public Exp $");

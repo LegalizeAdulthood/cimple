@@ -33,10 +33,18 @@
 # include "Atomic_LINUX_IX86_GNU.h"
 #elif defined(CIMPLE_PLATFORM_LINUX_X86_64_GNU)
 # include "Atomic_LINUX_IX86_GNU.h"
-#elif defined(CIMPLE_PLATFORM_LINUX_PPC_GNU)
+#elif defined(CIMPLE_PLATFORM_LINUX_IA64_GNU)
+# include "Atomic_LINUX_IA64_GNU.h"
+#elif defined(CIMPLE_PLATFORM_LINUX_PPC_GNU) || \
+    defined(CIMPLE_PLATFORM_LINUX_PPC64_GNU)
 # include "Atomic_LINUX_PPC_GNU.h"
+#elif defined(CIMPLE_PLATFORM_LINUX_S390_GNU) || \
+    defined(CIMPLE_PLATFORM_LINUX_S390X_GNU)
+# include "Atomic_LINUX_S390_GNU.h"
 #elif defined(CIMPLE_PLATFORM_DARWIN_PPC_GNU)
 # include "Atomic_DARWIN_PPC_GNU.h"
+#elif defined(CIMPLE_PLATFORM_DARWIN_IX86_GNU)
+# include "Atomic_DARWIN_IX86_GNU.h"
 #elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
 # include "Atomic_WIN32_IX86_MSVC.h"
 #else

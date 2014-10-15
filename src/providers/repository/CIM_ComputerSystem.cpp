@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -39,6 +39,9 @@ _CIM_ManagedSystemElement_StatusDescriptions;
 
 extern const Meta_Property
 _CIM_ManagedSystemElement_Status;
+
+extern const Meta_Property
+_CIM_ManagedSystemElement_HealthState;
 
 extern const Meta_Property
 _CIM_EnabledLogicalElement_EnabledState;
@@ -259,6 +262,7 @@ static Meta_Feature* _CIM_ComputerSystem_MFA[] =
     (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
     (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
     (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
     (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledState,
     (Meta_Feature*)&_CIM_EnabledLogicalElement_OtherEnabledState,
     (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestedState,
@@ -281,6 +285,7 @@ static Meta_Feature* _CIM_ComputerSystem_MFA[] =
 
 static const Meta_Feature_Local _locals[] =
 {
+    {0},
     {0},
     {0},
     {0},
@@ -322,9 +327,10 @@ const Meta_Class CIM_ComputerSystem::static_meta_class =
     _locals,
     &CIM_System::static_meta_class,
     2, /* num_keys */
-    0x18F2C8F2, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    0x94A14F0D, /* crc */
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/CIM_ComputerSystem.cpp,v 1.52 2007/03/13 22:53:15 mbrasher-public Exp $");

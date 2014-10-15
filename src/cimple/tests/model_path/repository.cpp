@@ -17,9 +17,9 @@ static const Meta_Class* _meta_classes[] =
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);
 
-extern const Meta_Repository __meta_repository_348EBB378EDF1C7685D9CEE1DD7A9546;
+extern const Meta_Repository __meta_repository_883E8F24EB4016D8933FCEE51577701E;
 
-const Meta_Repository __meta_repository_348EBB378EDF1C7685D9CEE1DD7A9546 =
+const Meta_Repository __meta_repository_883E8F24EB4016D8933FCEE51577701E =
 {
     _meta_classes,
     _num_meta_classes,

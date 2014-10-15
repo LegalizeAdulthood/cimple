@@ -279,3 +279,4 @@ const Meta_Class CIM_PhysicalElement::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/benchmark/Benchmark3/CIM_PhysicalElement.cpp,v 1.2 2007/03/07 20:23:55 mbrasher-public Exp $");

@@ -76,7 +76,7 @@ int pthread_mutex_init(
     rep->count = 0;
 
     if ((rep->handle = CreateMutex(NULL, FALSE, NULL)) == NULL)
-	return -1;
+        return -1;
 
     return 0;
 }
@@ -90,7 +90,7 @@ int pthread_mutex_destroy(
     {
         rep->handle = NULL;
         rep->count = 0;
-	return -1;
+        return -1;
     }
 
     rep->handle = NULL;
@@ -104,7 +104,7 @@ int pthread_mutex_lock(
     pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
 
     if (WaitForSingleObject(rep->handle, INFINITE) == WAIT_FAILED)
-	return -1;
+        return -1;
 
     rep->count++;
 
@@ -122,7 +122,7 @@ int pthread_mutex_unlock(
     rep->count--;
 
     if (!ReleaseMutex(rep->handle))
-	return -1;
+        return -1;
 
     return 0;
 }
@@ -186,15 +186,15 @@ int pthread_once(
 
     if (rep->initialized == 0)
     {
-	pthread_mutex_lock(&rep->mutex);
+        pthread_mutex_lock(&rep->mutex);
 
-	if (rep->initialized == 0)
-	{
-	    (*init_routine)();
-	    rep->initialized = 1;
-	}
+        if (rep->initialized == 0)
+        {
+            (*init_routine)();
+            rep->initialized = 1;
+        }
 
-	pthread_mutex_unlock(&rep->mutex);
+        pthread_mutex_unlock(&rep->mutex);
     }
 
     return 0;
@@ -223,12 +223,12 @@ int pthread_key_create(
     // No support for destructor.
 
     if (destructor)
-	return -1;
+        return -1;
 
     // Create TLS key.
 
     if ((rep->index = TlsAlloc()) == TLS_OUT_OF_INDEXES)
-	return -1;
+        return -1;
 
     return 0;
 }
@@ -239,7 +239,7 @@ int pthread_key_delete(
     pthread_key_rep_t* rep = (pthread_key_rep_t*)&key;
 
     if (!TlsFree(rep->index))
-	return -1;
+        return -1;
 
     return 0;
 }
@@ -251,7 +251,7 @@ int pthread_setspecific(
     pthread_key_rep_t* rep = (pthread_key_rep_t*)&key;
 
     if (!TlsSetValue(rep->index, (void*)value))
-	return -1;
+        return -1;
 
     return 0;
 }
@@ -337,18 +337,18 @@ static DWORD WINAPI _proc(LPVOID arg)
 
     if (pthread_setspecific(_self_key, rep) != 0)
     {
-	assert(0);
-	CloseHandle(rep->event);
+        assert(0);
+        CloseHandle(rep->event);
 
         if (rep->join_event != NULL)
         {
-	    CloseHandle(rep->join_event);
+            CloseHandle(rep->join_event);
 
-	    pthread_mutex_destroy(&rep->join_mutex);
-	}
+            pthread_mutex_destroy(&rep->join_mutex);
+        }
 
-	delete rep;
-	return 0;
+        delete rep;
+        return 0;
     }
 
     // Run thread procedure passed to Threads::create().
@@ -367,15 +367,15 @@ static void _destroy_thread_rep(pthread_rep_t* rep)
 {
     if (rep)
     {
-	if (rep->event != NULL)
-	    CloseHandle(rep->event);
+        if (rep->event != NULL)
+            CloseHandle(rep->event);
 
         if (rep->join_event != NULL)
-	    CloseHandle(rep->join_event);
+            CloseHandle(rep->join_event);
 
-	pthread_mutex_destroy(&rep->join_mutex);
+        pthread_mutex_destroy(&rep->join_mutex);
 
-	delete rep;
+        delete rep;
     }
 }
 
@@ -392,7 +392,7 @@ int pthread_create(
     //
 
     if (pthread_once(&_self_once, _create_self_key) != 0)
-	return -1;
+        return -1;
 
     //
     // Create rep object.
@@ -407,39 +407,39 @@ int pthread_create(
 
     if ((rep->event = CreateEvent(0, TRUE, FALSE, 0)) == NULL)
     {
-	_destroy_thread_rep(rep);
-	return -1;
+        _destroy_thread_rep(rep);
+        return -1;
     }
 
     // For joinable events, create a join event.
 
     if (attr_rep == 0 || attr_rep->detachstate == PTHREAD_CREATE_JOINABLE)
     {
-	if ((rep->join_event = CreateEvent(0, TRUE, FALSE, 0)) == NULL)
-	{
-	    _destroy_thread_rep(rep);
-	    return -1;
-	}
+        if ((rep->join_event = CreateEvent(0, TRUE, FALSE, 0)) == NULL)
+        {
+            _destroy_thread_rep(rep);
+            return -1;
+        }
 
-	pthread_mutex_init(&rep->join_mutex, NULL);
+        pthread_mutex_init(&rep->join_mutex, NULL);
     }
 
     // Create thread:
 
     if ((rep->handle = CreateThread(NULL, 0, _proc, rep, 0, NULL)) == NULL)
     {
-	_destroy_thread_rep(rep);
-	return -1;
+        _destroy_thread_rep(rep);
+        return -1;
     }
 
     // Stick this rep into the join list (if joinable).
 
     if (attr_rep == 0 || attr_rep->detachstate == PTHREAD_CREATE_JOINABLE)
     {
-	pthread_mutex_lock(&_join_list_mutex);
+        pthread_mutex_lock(&_join_list_mutex);
         rep->join_next = _join_list;
-	_join_list = rep;
-	pthread_mutex_unlock(&_join_list_mutex);
+        _join_list = rep;
+        pthread_mutex_unlock(&_join_list_mutex);
     }
 
     *thread = (long)rep;
@@ -458,15 +458,15 @@ pthread_t pthread_self()
 
     if (!self)
     {
-	self = new pthread_rep_t;
+        self = new pthread_rep_t;
         memset(self, 0, sizeof(*self));
-	self->event = CreateEvent(0, TRUE, FALSE, 0);
-	self->handle = GetCurrentThread();
+        self->event = CreateEvent(0, TRUE, FALSE, 0);
+        self->handle = GetCurrentThread();
 
-	assert(self->event != NULL);
-	assert(self->handle != NULL);
+        assert(self->event != NULL);
+        assert(self->handle != NULL);
 
-	pthread_setspecific(_self_key, self);
+        pthread_setspecific(_self_key, self);
     }
 
     return (long)self;
@@ -482,8 +482,8 @@ void pthread_exit(void* value_ptr)
 
     if (!rep)
     {
-	ExitThread(0);
-	return;
+        ExitThread(0);
+        return;
     }
 
     //
@@ -495,11 +495,11 @@ void pthread_exit(void* value_ptr)
         pthread_mutex_lock(&rep->join_mutex);
         rep->joined = 1;
         rep->value_ptr = value_ptr;
-	SetEvent(rep->join_event);
+        SetEvent(rep->join_event);
         pthread_mutex_unlock(&rep->join_mutex);
     }
     else
-	_destroy_thread_rep(rep);
+        _destroy_thread_rep(rep);
 
     //
     // Exit thread.
@@ -530,25 +530,25 @@ int pthread_join(pthread_t thread, void** value_ptr)
 
     for (pthread_rep_t* p = _join_list; p; p = p->join_next)
     {
-	if (p == rep)
-	{
-	    if (prev)
-		prev->join_next = p->join_next;
-	    else
-		_join_list = p->join_next;
+        if (p == rep)
+        {
+            if (prev)
+                prev->join_next = p->join_next;
+            else
+                _join_list = p->join_next;
 
-	    found = true;
-	}
+            found = true;
+        }
 
-	prev = p;
+        prev = p;
     }
 
     pthread_mutex_unlock(&_join_list_mutex);
 
     if (!found)
     {
-	// This thread is not joinable or has already been joined.
-	return -1;
+        // This thread is not joinable or has already been joined.
+        return -1;
     }
 
     //
@@ -560,10 +560,10 @@ int pthread_join(pthread_t thread, void** value_ptr)
     if (rep->joined == 0)
     {
         pthread_mutex_unlock(&rep->join_mutex);
-	DWORD rc = WaitForSingleObject(rep->join_event, INFINITE);
+        DWORD rc = WaitForSingleObject(rep->join_event, INFINITE);
         pthread_mutex_lock(&rep->join_mutex);
 
-	assert(rc == WAIT_OBJECT_0);
+        assert(rc == WAIT_OBJECT_0);
     }
 
     pthread_mutex_unlock(&rep->join_mutex);
@@ -623,7 +623,7 @@ int pthread_cond_wait(
     pthread_cond_rep_t* rep = (pthread_cond_rep_t*)cond;
 
     if (!cond || ! mutex)
-	return -1;
+        return -1;
 
     // Get current thread.
 
@@ -639,12 +639,12 @@ int pthread_cond_wait(
     pthread_rep_t* last = 0;
 
     for (pthread_rep_t* p = rep->front; p; p = p->next)
-	last = p;
+        last = p;
 
     if (last)
-	last->next = self;
+        last->next = self;
     else
-	rep->front = self;
+        rep->front = self;
 
     pthread_mutex_unlock(&rep->lock);
 
@@ -656,7 +656,7 @@ int pthread_cond_wait(
     size_t i;
 
     for (i = 0; i < lock_count; i++)
-	pthread_mutex_unlock(mutex);
+        pthread_mutex_unlock(mutex);
 
     // Wait to be signaled.
 
@@ -666,7 +666,7 @@ int pthread_cond_wait(
     // Relock the mutex.
 
     for (i = 0; i < lock_count; i++)
-	pthread_mutex_lock(mutex);
+        pthread_mutex_lock(mutex);
 
     // Reset the event.
 
@@ -684,18 +684,18 @@ int pthread_cond_signal(
 
     if (rep->front)
     {
-	pthread_mutex_lock(&rep->lock);
+        pthread_mutex_lock(&rep->lock);
 
-	pthread_rep_t* thread = (pthread_rep_t*)rep->front;
+        pthread_rep_t* thread = (pthread_rep_t*)rep->front;
 
-	if (thread)
-	{
-	    rep->front = thread->next;
-	    thread->next = 0;
-	    SetEvent(thread->event);
-	}
+        if (thread)
+        {
+            rep->front = thread->next;
+            thread->next = 0;
+            SetEvent(thread->event);
+        }
 
-	pthread_mutex_unlock(&rep->lock);
+        pthread_mutex_unlock(&rep->lock);
     }
 
     return 0;

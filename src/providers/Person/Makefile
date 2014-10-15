@@ -3,13 +3,28 @@ include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = cmplperson
 
-INCLUDES += -I../repository
+SOURCES = \
+    repository.cpp \
+    Person.cpp \
+    Salesman.cpp \
+    PersonLink.cpp \
+    SalesmanLink.cpp \
+    Person_Provider.cpp \
+    PersonLink_Provider.cpp \
+    Salesman_Provider.cpp \
+    SalesmanLink_Provider.cpp \
+    module.cpp
 
-SOURCES = Person_Provider.cpp Link_Provider.cpp module.cpp
+LIBRARIES = cimple
 
-LIBRARIES = cimple cmplrep
+#BUILD_CMPI_PROVIDER=1
 
-LIBRARIES += cimplepegadap
+ifdef BUILD_CMPI_PROVIDER
+  LIBRARIES += cimplecmpiadap
+  DEFINES += -DBUILD_CMPI_PROVIDER
+else
+  LIBRARIES += cimplepegadap
+endif
 
 include $(TOP)/mak/rules.mak
 
@@ -54,3 +69,6 @@ cat:
 
 tests:
 	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+
+genclass:
+	genclass -r Person PersonLink Salesman SalesmanLink

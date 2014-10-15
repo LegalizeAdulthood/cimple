@@ -458,7 +458,7 @@ public:
             case OPERATION_CREATE_INSTANCE:
             {
                 PROVIDER* provider = (PROVIDER*)arg0;
-                return provider->create_instance((const CLASS*)arg1);
+                return provider->create_instance((CLASS*)arg1);
             }
 
             case OPERATION_DELETE_INSTANCE:

@@ -13,7 +13,7 @@ const char* arg0;
 void draw_full_line()
 {
     for (size_t i = 0; i < 80; i++)
-	putchar('#');
+        putchar('#');
 
     putchar('\n');
 }
@@ -42,7 +42,7 @@ static bool _enum_instances_proc(
     void* client_data)
 {
     if (!instance)
-	return false;
+        return false;
 
     print(instance);
 
@@ -63,10 +63,10 @@ void enum_instances(
     Instance* model = create(meta_class);
 
     Status status = disp->enum_instances(
-	model, _enum_instances_proc, &instances);
+        model, _enum_instances_proc, &instances);
 
     if (status != STATUS_OK)
-	CIMPLE_ASSERT_STATUS(status);
+        CIMPLE_ASSERT_STATUS(status);
 
     printf("Enumerated %u instances\n", uint32(instances.size()));
 }
@@ -80,22 +80,22 @@ void get_instances(
 
     for (size_t i = 0; i < instances.size(); i++)
     {
-	Instance* inst = 0;
-	Status status = disp->get_instance(instances[i], inst);
+        Instance* inst = 0;
+        Status status = disp->get_instance(instances[i], inst);
 
-	CIMPLE_ASSERT_STATUS(status);
-	CIMPLE_ASSERT(inst != 0);
+        CIMPLE_ASSERT_STATUS(status);
+        CIMPLE_ASSERT(inst != 0);
 
-	if (!identical(inst, instances[i]))
-	{
-	    fprintf(stderr, "ERROR: %s: get_instance() failed to obtain the "
-	        "same instance produced by enum_instance()", arg0);
-	    exit(1);
-	}
+        if (!identical(inst, instances[i]))
+        {
+            fprintf(stderr, "ERROR: %s: get_instance() failed to obtain the "
+                "same instance produced by enum_instance()", arg0);
+            exit(1);
+        }
 
-	print(inst);
-	destroy(inst);
-	count++;
+        print(inst);
+        destroy(inst);
+        count++;
     }
 
     printf("Got %u instances\n", uint32(count));
@@ -112,22 +112,22 @@ void delete_instances(
 
     for (size_t i = 0; i < instances.size(); i++)
     {
-	Instance* inst = key_clone(instances[i]);
-	de_nullify_properties(inst);
+        Instance* inst = key_clone(instances[i]);
+        de_nullify_properties(inst);
 
-	Status status = disp->delete_instance(inst);
+        Status status = disp->delete_instance(inst);
 
-	if (status == STATUS_UNSUPPORTED)
-	{
-	    printf("delete_instance() unsupported\n");
-	    return;
-	}
+        if (status == STATUS_UNSUPPORTED)
+        {
+            printf("delete_instance() unsupported\n");
+            return;
+        }
 
-	CIMPLE_ASSERT_STATUS(status);
+        CIMPLE_ASSERT_STATUS(status);
 
-	count++;
+        count++;
 
-	destroy(inst);
+        destroy(inst);
     }
 
     // Be sure they are gone.
@@ -150,22 +150,22 @@ void create_instances(
 
     for (size_t i = 0; i < instances.size(); i++)
     {
-	Instance* inst = clone(instances[i]);
-	de_nullify_properties(inst);
+        Instance* inst = clone(instances[i]);
+        de_nullify_properties(inst);
 
-	Status status = disp->create_instance(inst);
+        Status status = disp->create_instance(inst);
 
-	if (status == STATUS_UNSUPPORTED)
-	{
-	    printf("create_instance() unsupported\n");
-	    return;
-	}
+        if (status == STATUS_UNSUPPORTED)
+        {
+            printf("create_instance() unsupported\n");
+            return;
+        }
 
-	CIMPLE_ASSERT_STATUS(status);
+        CIMPLE_ASSERT_STATUS(status);
 
-	count++;
+        count++;
 
-	destroy(inst);
+        destroy(inst);
     }
 
     // Be sure they were created.
@@ -186,22 +186,22 @@ void modify_instances(
 
     for (size_t i = 0; i < instances.size(); i++)
     {
-	Instance* inst = clone(instances[i]);
-	de_nullify_properties(inst);
+        Instance* inst = clone(instances[i]);
+        de_nullify_properties(inst);
 
-	Status status = disp->modify_instance(inst);
+        Status status = disp->modify_instance(inst);
 
-	if (status == STATUS_UNSUPPORTED)
-	{
-	    printf("create_instance() unsupported\n");
-	    return;
-	}
+        if (status == STATUS_UNSUPPORTED)
+        {
+            printf("create_instance() unsupported\n");
+            return;
+        }
 
-	CIMPLE_ASSERT_STATUS(status);
+        CIMPLE_ASSERT_STATUS(status);
 
-	count++;
+        count++;
 
-	destroy(inst);
+        destroy(inst);
     }
 
     // We didn't really change them but be sure they have not changed.
@@ -219,16 +219,16 @@ void process(const char* path, const char* class_name)
 
     if (!disp)
     {
-	fprintf(stderr, "%s: error in directory: %s: %s\n", arg0, path,
-	    Error::get());
-	exit(1);
+        fprintf(stderr, "%s: error in directory: %s: %s\n", arg0, path,
+            Error::get());
+        exit(1);
     }
 
     if (disp->num_modules() == 0)
     {
-	fprintf(stderr, "%s: no modules found in this directory: %s\n", 
-	    arg0, path);
-	exit(1);
+        fprintf(stderr, "%s: no modules found in this directory: %s\n", 
+            arg0, path);
+        exit(1);
     }
 
     // Find the meta class:
@@ -237,9 +237,9 @@ void process(const char* path, const char* class_name)
 
     if (!meta_class)
     {
-	fprintf(stderr, "%s: failed to find provider for class: %s\n", 
-	    arg0, class_name);
-	exit(1);
+        fprintf(stderr, "%s: failed to find provider for class: %s\n", 
+            arg0, class_name);
+        exit(1);
     }
 
     // Enumerate all instances in the provider.
@@ -277,11 +277,13 @@ int main(int argc, char** argv)
 
     if (argc != 3)
     {
-	fprintf(stderr, "Usage: %s path class\n", argv[0]);
-	exit(1);
+        fprintf(stderr, "Usage: %s path class\n", argv[0]);
+        exit(1);
     }
 
     process(argv[1], argv[2]);
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/testprov/main.cpp,v 1.21 2007/03/07 18:48:55 mbrasher-public Exp $");

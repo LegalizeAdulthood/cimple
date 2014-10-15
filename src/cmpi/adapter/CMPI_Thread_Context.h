@@ -32,13 +32,16 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+class CMPI_Adapter;
+
 class CMPI_Thread_Context : public Thread_Context
 {
 public:
 
     CMPI_Thread_Context(
         const CMPIBroker* cmpi_broker,
-        const CMPIContext* cmpi_context);
+        const CMPIContext* cmpi_context,
+        CMPI_Adapter* cmpi_adapter);
 
     virtual ~CMPI_Thread_Context();
 
@@ -50,6 +53,11 @@ public:
     const CMPIContext* cmpi_context() const
     {
         return _cmpi_context;
+    }
+
+    CMPI_Adapter* cmpi_adapter() const
+    {
+        return _cmpi_adapter;
     }
 
     virtual Thread_Context* thread_create_hook(void* arg);
@@ -90,10 +98,13 @@ public:
         const char* name_space, 
         const Instance* instance);
 
+    virtual void allow_unload(bool flag);
+
 private:
 
     const CMPIBroker* _cmpi_broker;
     const CMPIContext* _cmpi_context;
+    CMPI_Adapter* _cmpi_adapter;
 };
 
 class CMPI_Thread_Context_Pusher
@@ -102,11 +113,14 @@ public:
 
     CMPI_Thread_Context_Pusher(
         const CMPIBroker* cmpi_broker, 
-        const CMPIContext* cmpi_context)
+        const CMPIContext* cmpi_context,
+        CMPI_Adapter* cmpi_adpater)
     {
         CIMPLE_ASSERT(cmpi_broker);
         CIMPLE_ASSERT(cmpi_context);
-        _context = new CMPI_Thread_Context(cmpi_broker, cmpi_context);
+        CIMPLE_ASSERT(cmpi_adpater);
+        _context = new CMPI_Thread_Context(
+            cmpi_broker, cmpi_context, cmpi_adpater);
         Thread_Context::push(_context);
     }
 

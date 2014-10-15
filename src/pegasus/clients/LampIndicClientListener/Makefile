@@ -21,6 +21,9 @@ include $(PEGASUS_ROOT)/mak/program.mak
 tests:
 
 live-tests:
-	@ $(PROGRAM)
+	$(PROGRAM)
 
 genclass:
+
+chksrc:
+	chksrc $(SOURCES)

@@ -111,29 +111,29 @@ static MOF_mask _make_qual_mask(
 
     for (p = qual_info_list; p != 0; p = (MOF_Qualifier_Info*)p->next)
     {
-	for (i = 0; i < NUM_PAIRS; i++)
-	{
-	    if (MOF_stricmp(_pairs[i].name, p->qualifier->name) == 0)
-	    {
-		MOF_Literal* lit = p->qualifier->params;
-		bool flag = true;
+        for (i = 0; i < NUM_PAIRS; i++)
+        {
+            if (MOF_stricmp(_pairs[i].name, p->qualifier->name) == 0)
+            {
+                MOF_Literal* lit = p->qualifier->params;
+                bool flag = true;
 
-		/* 
-		 * Ignore errors (these are checked elsewhere). 
-		 */
+                /* 
+                 * Ignore errors (these are checked elsewhere). 
+                 */
 
-		if (lit && (lit->next || lit->value_type != TOK_BOOL_VALUE))
-		    continue;
+                if (lit && (lit->next || lit->value_type != TOK_BOOL_VALUE))
+                    continue;
 
-		if (lit && !lit->bool_value)
-		    flag = false;
+                if (lit && !lit->bool_value)
+                    flag = false;
 
-		if (flag)
-		    mask |= _pairs[i].mask;
-		else
-		    mask &= ~_pairs[i].mask;
-	    }
-	}
+                if (flag)
+                    mask |= _pairs[i].mask;
+                else
+                    mask &= ~_pairs[i].mask;
+            }
+        }
     }
 
     return mask;
@@ -147,8 +147,8 @@ MOF_Qualifier_Info* _find(
 
     for (p = qual_info_list; p; p = (MOF_Qualifier_Info*)p->next)
     {
-	if (strcmp(p->qualifier->name, name) == 0)
-	    return p;
+        if (strcmp(p->qualifier->name, name) == 0)
+            return p;
     }
 
     return 0;
@@ -160,7 +160,7 @@ static MOF_Qualifier_Info* _clone_propagated(
     MOF_Qualifier_Info* tmp;
 
     if ((tmp = new MOF_Qualifier_Info()) == 0)
-	return 0;
+        return 0;
 
     tmp->qualifier = info->qualifier;
     tmp->flavor = info->flavor;
@@ -190,57 +190,57 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
 
     for (q = local_qualifiers; q; q = (MOF_Qualifier*)q->next)
     {
-	MOF_Qualifier_Info* new_qi;
-	MOF_Qualifier_Decl* qual_decl;
+        MOF_Qualifier_Info* new_qi;
+        MOF_Qualifier_Decl* qual_decl;
 
-	/*
-	 * Find qualifier declaration for this qualifier:
-	 */
+        /*
+         * Find qualifier declaration for this qualifier:
+         */
 
-	if ((qual_decl = MOF_Qualifier_Decl::find(q->name)) == 0)
-	{
-	    /* This cannot happen since it is checked earlier */
-	    MOF_error_printf("undeclared qualifier: %s", q->name);
-	}
+        if ((qual_decl = MOF_Qualifier_Decl::find(q->name)) == 0)
+        {
+            /* This cannot happen since it is checked earlier */
+            MOF_error_printf("undeclared qualifier: %s", q->name);
+        }
 
-	/*
-	 * Was this qualifier overriden? If so, be sure there was no
-	 * attempt to change the value:
-	 */
+        /*
+         * Was this qualifier overriden? If so, be sure there was no
+         * attempt to change the value:
+         */
 
-	qi = _find(inherited_qual_info_list, q->name);
+        qi = _find(inherited_qual_info_list, q->name);
 
-	if (qi && 
-	    (qi->flavor & MOF_FLAVOR_DISABLEOVERRIDE) &&
-	    !MOF_Literal::identical(q->params, qi->qualifier->params))
-	{
-	    MOF_error_printf(
-		"attempt to override non-overridable qualifier: %s", 
-		q->name);
-	}
+        if (qi && 
+            (qi->flavor & MOF_FLAVOR_DISABLEOVERRIDE) &&
+            !MOF_Literal::identical(q->params, qi->qualifier->params))
+        {
+            MOF_error_printf(
+                "attempt to override non-overridable qualifier: %s", 
+                q->name);
+        }
 
-	/*
-	 * Create qualifier info object and append to list:
-	 */
+        /*
+         * Create qualifier info object and append to list:
+         */
 
-	if ((new_qi = new MOF_Qualifier_Info()) == 0)
-	    MOF_error_printf("out of memory");
+        if ((new_qi = new MOF_Qualifier_Info()) == 0)
+            MOF_error_printf("out of memory");
 
-	new_qi->qualifier = q;
+        new_qi->qualifier = q;
 
-	/* 
-	 * If overriding, else use declaration:
-	 */
+        /* 
+         * If overriding, else use declaration:
+         */
 
-	if (qi)
-	    new_qi->flavor = MOF_Flavor::merge(q->flavor, qi->flavor);
-	else
-	    new_qi->flavor = MOF_Flavor::merge(q->flavor, qual_decl->flavor);
+        if (qi)
+            new_qi->flavor = MOF_Flavor::merge(q->flavor, qi->flavor);
+        else
+            new_qi->flavor = MOF_Flavor::merge(q->flavor, qual_decl->flavor);
 
-	if (all_qualifiers_list == 0)
-	    all_qualifiers_list = new_qi;
-	else
-	    all_qualifiers_list->append(new_qi);
+        if (all_qualifiers_list == 0)
+            all_qualifiers_list = new_qi;
+        else
+            all_qualifiers_list->append(new_qi);
     }
 
     /*
@@ -249,24 +249,24 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
 
     for (qi = inherited_qual_info_list; qi; qi = (MOF_Qualifier_Info*)qi->next)
     {
-	/*
-	 * Propagate qualifier if necessary (if TOSUBCLASS flavor is present
-	 * and qualifier not already present locally).
-	 */
+        /*
+         * Propagate qualifier if necessary (if TOSUBCLASS flavor is present
+         * and qualifier not already present locally).
+         */
 
-	if ((qi->flavor & MOF_FLAVOR_TOSUBCLASS) && 
-	    !_find(all_qualifiers_list, qi->qualifier->name))
-	{
-	    MOF_Qualifier_Info* new_qi;
-	    
-	    if ((new_qi = _clone_propagated(qi)) == 0)
-		MOF_error_printf("out of memory");
+        if ((qi->flavor & MOF_FLAVOR_TOSUBCLASS) && 
+            !_find(all_qualifiers_list, qi->qualifier->name))
+        {
+            MOF_Qualifier_Info* new_qi;
+            
+            if ((new_qi = _clone_propagated(qi)) == 0)
+                MOF_error_printf("out of memory");
 
-	    if (all_qualifiers_list == 0)
-		all_qualifiers_list = new_qi;
-	    else
-		all_qualifiers_list->append(new_qi);
-	}
+            if (all_qualifiers_list == 0)
+                all_qualifiers_list = new_qi;
+            else
+                all_qualifiers_list->append(new_qi);
+        }
     }
 
     /*
@@ -290,5 +290,7 @@ void MOF_Qualifier_Info::print_list(size_t nesting) const
     const MOF_Qualifier_Info* p;
 
     for (p = this; p; p = (MOF_Qualifier_Info*)p->next)
-	p->print(nesting);
+        p->print(nesting);
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier_Info.cpp,v 1.6 2007/03/07 18:57:15 mbrasher-public Exp $");

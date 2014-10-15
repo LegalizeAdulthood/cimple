@@ -21,3 +21,6 @@ include $(TOP)/mak/rules.mak
 
 reg:
 	regmod -n root/cimv2 -c $(SHARED_LIBRARY_TARGET)
+
+genclass:
+	genclass -r Static

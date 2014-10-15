@@ -18,9 +18,9 @@ tests:
 	@ $(BIN_DIR)/test_genprov2
 
 genclass:
-	$(BIN_DIR)/genclass Test2
-	$(BIN_DIR)/genclass Test2Link
+	genclass Test2
+	genclass Test2Link
 
 genprov:
-	$(BIN_DIR)/genprov  -f Test2
-	$(BIN_DIR)/genprov  -f Test2Link
+	genprov  -f Test2
+	genprov  -f Test2Link

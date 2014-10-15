@@ -33,131 +33,133 @@ using namespace cimple;
 int main(int arc, char** argv)
 {
     {
-	Datetime dt1 = Datetime::now();
-	assert(!dt1.is_interval());
-	assert(dt1.is_timestamp());
+        Datetime dt1 = Datetime::now();
+        assert(!dt1.is_interval());
+        assert(dt1.is_timestamp());
 
-	char buffer1[32];
-	dt1.ascii(buffer1);
+        char buffer1[32];
+        dt1.ascii(buffer1);
 
-	uint32 year;
-	uint32 month;
-	uint32 day;
-	uint32 hours;
-	uint32 minutes;
-	uint32 seconds;
-	uint32 microseconds;
-	sint32 utc;
-	dt1.get_timestamp(
-	    year, month, day, hours, minutes, seconds, microseconds, utc);
+        uint32 year;
+        uint32 month;
+        uint32 day;
+        uint32 hours;
+        uint32 minutes;
+        uint32 seconds;
+        uint32 microseconds;
+        sint32 utc;
+        dt1.get_timestamp(
+            year, month, day, hours, minutes, seconds, microseconds, utc);
 
-	char buffer2[Datetime::BUFFER_SIZE];
-	sprintf(buffer2, "%04d%02d%02d%02d%02d%02d.%06d%c%03d",
-	    year, month, day, hours, minutes, seconds, microseconds, 
-	    utc < 0 ? '-' : '+', utc);
+        char buffer2[Datetime::BUFFER_SIZE];
+        sprintf(buffer2, "%04d%02d%02d%02d%02d%02d.%06d%c%03d",
+            year, month, day, hours, minutes, seconds, microseconds, 
+            utc < 0 ? '-' : '+', utc);
 
-	assert(strcmp(buffer1, buffer2) == 0);
+        assert(strcmp(buffer1, buffer2) == 0);
 
-	Datetime dt2;
+        Datetime dt2;
 
-	dt2.set_timestamp(
-	    year, month, day, hours, minutes, seconds, microseconds, utc);
+        dt2.set_timestamp(
+            year, month, day, hours, minutes, seconds, microseconds, utc);
 
-	dt2.get_timestamp(
-	    year, month, day, hours, minutes, seconds, microseconds, utc);
+        dt2.get_timestamp(
+            year, month, day, hours, minutes, seconds, microseconds, utc);
 
-	assert(dt2.is_timestamp());
-	char buffer3[Datetime::BUFFER_SIZE];
-	dt2.ascii(buffer3);
+        assert(dt2.is_timestamp());
+        char buffer3[Datetime::BUFFER_SIZE];
+        dt2.ascii(buffer3);
 
 
-	assert(strcmp(buffer1, buffer3) == 0);
-	assert(dt1 == dt2);
+        assert(strcmp(buffer1, buffer3) == 0);
+        assert(dt1 == dt2);
     }
 
     {
-	Datetime dt1 = Datetime::now();
-	assert(dt1.is_timestamp());
-	Time::sleep(1000 * 1000);
-	Datetime dt2 = Datetime::now();
-	assert(dt2.is_timestamp());
-	Datetime diff(dt2.usec() - dt1.usec());
-	assert(diff.is_interval());
-	uint64 msec = diff.usec() / Datetime::MSEC;
-	assert(msec >= 800 && msec <= 1200);
-	assert(diff.is_interval());
+        Datetime dt1 = Datetime::now();
+        assert(dt1.is_timestamp());
+        Time::sleep(1000 * 1000);
+        Datetime dt2 = Datetime::now();
+        assert(dt2.is_timestamp());
+        Datetime diff(dt2.usec() - dt1.usec());
+        assert(diff.is_interval());
+        uint64 msec = diff.usec() / Datetime::MSEC;
+        assert(msec >= 800 && msec <= 1200);
+        assert(diff.is_interval());
 
-	char buffer[Datetime::BUFFER_SIZE];
-	dt2.ascii(buffer);
-	Datetime dt3;
-	dt3.set(buffer);
+        char buffer[Datetime::BUFFER_SIZE];
+        dt2.ascii(buffer);
+        Datetime dt3;
+        dt3.set(buffer);
 
-	char buffer2[Datetime::BUFFER_SIZE];
-	dt3.ascii(buffer2);
+        char buffer2[Datetime::BUFFER_SIZE];
+        dt3.ascii(buffer2);
 
-	assert(strcmp(buffer, buffer2) == 0);
+        assert(strcmp(buffer, buffer2) == 0);
 
-	assert(dt2 == dt3);
+        assert(dt2 == dt3);
     }
 
     {
-	Datetime in1;
-	in1.usec(
-	    1 * Datetime::DAY +
-	    2 * Datetime::HOUR + 
-	    3 * Datetime::MIN +
-	    4 * Datetime::SEC +
-	    5 * Datetime::USEC);
-	assert(in1.is_interval());
+        Datetime in1;
+        in1.usec(
+            1 * Datetime::DAY +
+            2 * Datetime::HOUR + 
+            3 * Datetime::MIN +
+            4 * Datetime::SEC +
+            5 * Datetime::USEC);
+        assert(in1.is_interval());
 
-	uint32 days;
-	uint32 hours;
-	uint32 minutes;
-	uint32 seconds;
-	uint32 microseconds;
-	in1.get_interval(days, hours, minutes, seconds, microseconds);
+        uint32 days;
+        uint32 hours;
+        uint32 minutes;
+        uint32 seconds;
+        uint32 microseconds;
+        in1.get_interval(days, hours, minutes, seconds, microseconds);
 
-	assert(days == 1);
-	assert(hours == 2);
-	assert(minutes == 3);
-	assert(seconds == 4);
-	assert(microseconds == 5);
+        assert(days == 1);
+        assert(hours == 2);
+        assert(minutes == 3);
+        assert(seconds == 4);
+        assert(microseconds == 5);
 
-	Datetime in2;
-	in2.set_interval(days, hours, minutes, seconds, microseconds);
-	assert(in2.is_interval());
-	assert(in1 == in2);
+        Datetime in2;
+        in2.set_interval(days, hours, minutes, seconds, microseconds);
+        assert(in2.is_interval());
+        assert(in1 == in2);
 
-	uint32 tdays;
-	uint32 thours;
-	uint32 tminutes;
-	uint32 tseconds;
-	uint32 tmicroseconds;
-	in1.get_interval(tdays, thours, tminutes, tseconds, tmicroseconds);
-	assert(tdays == 1);
-	assert(thours == 2);
-	assert(tminutes == 3);
-	assert(tseconds == 4);
-	assert(tmicroseconds == 5);
+        uint32 tdays;
+        uint32 thours;
+        uint32 tminutes;
+        uint32 tseconds;
+        uint32 tmicroseconds;
+        in1.get_interval(tdays, thours, tminutes, tseconds, tmicroseconds);
+        assert(tdays == 1);
+        assert(thours == 2);
+        assert(tminutes == 3);
+        assert(tseconds == 4);
+        assert(tmicroseconds == 5);
 
-	char buffer[Datetime::BUFFER_SIZE];
-	in1.ascii(buffer, false);
+        char buffer[Datetime::BUFFER_SIZE];
+        in1.ascii(buffer, false);
 
-	assert(strcmp(buffer, "00000001020304.000005:000") == 0);
+        assert(strcmp(buffer, "00000001020304.000005:000") == 0);
 
-	Datetime in3;
-	bool flag = in3.set("00000001020304.000005:000");
-	assert(flag);
+        Datetime in3;
+        bool flag = in3.set("00000001020304.000005:000");
+        assert(flag);
 
-	char buffer2[Datetime::BUFFER_SIZE];
-	in3.ascii(buffer2, false);
+        char buffer2[Datetime::BUFFER_SIZE];
+        in3.ascii(buffer2, false);
 
-	assert(in3 == in1);
+        assert(in3 == in1);
 
-	assert(strcmp(buffer, buffer2) == 0);
+        assert(strcmp(buffer, buffer2) == 0);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/datetime/main.cpp,v 1.19 2007/03/07 20:17:20 mbrasher-public Exp $");

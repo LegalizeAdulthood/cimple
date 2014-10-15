@@ -14,6 +14,8 @@ DIRS = \
     apriori \
     cwhat \
     cgenuuid \
-    csleep
+    csleep \
+    cimpleinfo \
+    cimplefiles
 
 include $(TOP)/mak/dir.mak

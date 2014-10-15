@@ -32,7 +32,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** The #Array class manages a sequence of elements located on the heap. 
+/** The #Array# class manages a sequence of elements located on the heap. 
 
     \section section1 Introduction
 
@@ -457,6 +457,12 @@ inline bool operator==(const Array<T>& x, const Array<T>& y)
     return __equal(((__Array_Base*)&x)->rep, ((__Array_Base*)&y)->rep);
 }
 
+template<class T>
+inline void __clear(Array<T>& x)
+{
+    x.clear();
+}
+
 typedef Array<cimple::boolean> Array_boolean;
 typedef Array<cimple::uint8> Array_uint8;
 typedef Array<cimple::sint8> Array_sint8;
@@ -471,6 +477,7 @@ typedef Array<cimple::real64> Array_real64;
 typedef Array<cimple::char16> Array_char16;
 typedef Array<cimple::String> Array_String;
 typedef Array<cimple::Datetime> Array_Datetime;
+typedef Array<cimple::Instance*> Array_Ref;
 
 CIMPLE_NAMESPACE_END
 

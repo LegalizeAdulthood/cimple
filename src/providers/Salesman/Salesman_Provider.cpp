@@ -76,7 +76,9 @@ int Salesman_Provider::proc(
     typedef Salesman Class;
     typedef Salesman_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Salesman/Salesman_Provider.cpp,v 1.4 2007/03/07 20:25:28 mbrasher-public Exp $");

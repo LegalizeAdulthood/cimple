@@ -38,21 +38,21 @@ MOF_mask MOF_Flavor::merge(
      */
 
     if (!(mask & (MOF_FLAVOR_ENABLEOVERRIDE | MOF_FLAVOR_DISABLEOVERRIDE)))
-	mask |= from & (MOF_FLAVOR_ENABLEOVERRIDE | MOF_FLAVOR_DISABLEOVERRIDE);
+        mask |= from & (MOF_FLAVOR_ENABLEOVERRIDE | MOF_FLAVOR_DISABLEOVERRIDE);
 
     /*
      * If TOSUBCLASS or RESTRICTED not already set, then inherit it.
      */
 
     if (!(mask & (MOF_FLAVOR_TOSUBCLASS | MOF_FLAVOR_RESTRICTED)))
-	mask |= from & (MOF_FLAVOR_TOSUBCLASS | MOF_FLAVOR_RESTRICTED);
+        mask |= from & (MOF_FLAVOR_TOSUBCLASS | MOF_FLAVOR_RESTRICTED);
 
     /* 
      * If TRANSLATABLE not already set, inherit it:
      */
 
     if (!(mask & MOF_FLAVOR_TRANSLATABLE))
-	mask |= from & MOF_FLAVOR_TRANSLATABLE;
+        mask |= from & MOF_FLAVOR_TRANSLATABLE;
 
     return mask;
 }
@@ -63,19 +63,19 @@ void MOF_Flavor::print(
     printf("flavor(");
 
     if (flavor & MOF_FLAVOR_ENABLEOVERRIDE)
-	printf(" EnableOverride");
+        printf(" EnableOverride");
 
     if (flavor & MOF_FLAVOR_DISABLEOVERRIDE)
-	printf(" DisableOverride");
+        printf(" DisableOverride");
 
     if (flavor & MOF_FLAVOR_TOSUBCLASS)
-	printf(" ToSubclass");
+        printf(" ToSubclass");
 
     if (flavor & MOF_FLAVOR_RESTRICTED)
-	printf(" Restricted");
+        printf(" Restricted");
 
     if (flavor & MOF_FLAVOR_TRANSLATABLE)
-	printf(" Translatable");
+        printf(" Translatable");
 
     printf(" )\n");
 }
@@ -91,12 +91,12 @@ MOF_mask MOF_Flavor::fixup(
      */
 
     if ((flavor & MOF_FLAVOR_ENABLEOVERRIDE) &&
-	(flavor & MOF_FLAVOR_DISABLEOVERRIDE))
-	MOF_error("conflicting flavors: ENABLEOVERRIDE and DISABLEOVERRIDE");
+        (flavor & MOF_FLAVOR_DISABLEOVERRIDE))
+        MOF_error("conflicting flavors: ENABLEOVERRIDE and DISABLEOVERRIDE");
 
     if ((flavor & MOF_FLAVOR_TOSUBCLASS) &&
-	(flavor & MOF_FLAVOR_RESTRICTED))
-	MOF_error("conflicting flavors: TOSUBCLASS and RESTRICTED");
+        (flavor & MOF_FLAVOR_RESTRICTED))
+        MOF_error("conflicting flavors: TOSUBCLASS and RESTRICTED");
 
     /*
      * Set the flavors:
@@ -110,12 +110,14 @@ MOF_mask MOF_Flavor::fixup(
 
     if (provide_defaults)
     {
-	if (!(tmp & (MOF_FLAVOR_DISABLEOVERRIDE | MOF_FLAVOR_ENABLEOVERRIDE)))
-	    tmp |= MOF_FLAVOR_ENABLEOVERRIDE;
+        if (!(tmp & (MOF_FLAVOR_DISABLEOVERRIDE | MOF_FLAVOR_ENABLEOVERRIDE)))
+            tmp |= MOF_FLAVOR_ENABLEOVERRIDE;
 
-	if (!(tmp & (MOF_FLAVOR_TOSUBCLASS | MOF_FLAVOR_RESTRICTED)))
-	    tmp |= MOF_FLAVOR_TOSUBCLASS;
+        if (!(tmp & (MOF_FLAVOR_TOSUBCLASS | MOF_FLAVOR_RESTRICTED)))
+            tmp |= MOF_FLAVOR_TOSUBCLASS;
     }
 
     return tmp;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Flavor.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

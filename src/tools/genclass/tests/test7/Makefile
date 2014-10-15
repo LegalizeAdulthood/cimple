@@ -13,4 +13,4 @@ tests:
 	@ $(BINARY_TARGET)
 
 genclass:
-	$(BIN_DIR)/genclass YourClass MyClass EmbeddedClass
+	genclass YourClass MyClass EmbeddedClass

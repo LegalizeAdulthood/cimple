@@ -29,3 +29,5 @@
 CIMPLE_NAMESPACE_BEGIN
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Auto_Mutex.cpp,v 1.8 2007/03/07 18:41:14 mbrasher-public Exp $");

@@ -51,11 +51,13 @@ void MOF_Feature_Info::print_list() const
 
     for (p = this; p; p = (MOF_Feature_Info*)p->next)
     {
-	printf("  + %s origin=%s propagated=%d\n", 
-	    p->feature->name, 
-	    p->class_origin->name, 
-	    p->propagated);
+        printf("  + %s origin=%s propagated=%d\n", 
+            p->feature->name, 
+            p->class_origin->name, 
+            p->propagated);
     }
 
     printf("\n");
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Feature_Info.cpp,v 1.5 2007/03/07 18:57:14 mbrasher-public Exp $");

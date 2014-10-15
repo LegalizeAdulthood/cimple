@@ -1,16 +1,20 @@
 Usage: %s [-cvh] provider-module-library
 
 Where:
-    -c : create classes (or delete them when -u present)
-    -i : delete indirect classes (when -u and -c present)
-    -s : provide subclasses of the provided class (or delete them with -u)
-    -v : verbose mode
+    -V           : print the version
+    -c           : create classes (or delete them when -u present)
+    -i           : delete indirect classes (when -u and -c present)
+    -s           : provide subclasses of the provided class (or delete them 
+                   with -u)
+    -v           : verbose mode
     -n namespace : provider namespace (may occur multiple times)
-    -d : dump the MOF registration instances to standard output
-    -b : use binary repository mode
-    -u : unregister the module
-    -r path : Pegasus repository directory
-    -h : print this help text
+    -d           : dump the MOF registration instances to standard output
+    -b           : use binary repository mode
+    -u           : unregister the module
+    -r path      : Pegasus repository directory
+    -U username  : the user to run provider module as (user must be a system
+                   user, @requestor, @cimserver, or @privileged).
+    -h           : print this help text
 
 Synopsis:
     This utility registers (or unregisters) all providers contained in a

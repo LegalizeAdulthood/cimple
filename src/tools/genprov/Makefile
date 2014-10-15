@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = genprov
 SOURCES = main.cpp
-LIBRARIES = mof cimplegencommon cimpleutil
+LIBRARIES = cimplemof cimplegencommon cimpleutil cimple
 INCLUDES += -I$(SRC_DIR)/mof
 
 include $(TOP)/mak/rules.mak

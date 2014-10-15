@@ -155,4 +155,14 @@ int cimom::modify_instance(
     return -1;
 }
 
+void cimom::allow_unload(bool flag)
+{
+    Thread_Context* context = Thread_Context::top();
+
+    if (context)
+        context->allow_unload(flag);
+}
+
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/cimom.cpp,v 1.20 2007/03/07 18:41:15 mbrasher-public Exp $");

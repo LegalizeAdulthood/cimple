@@ -268,3 +268,5 @@ CIMPLE_NAMESPACE_END
         -  lexographical compare (for sorting).
         -  s/string/String/g?
 */
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/String.cpp,v 1.17 2007/03/07 18:41:15 mbrasher-public Exp $");

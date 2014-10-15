@@ -1,7 +1,7 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = mof
+SHARED_LIBRARY = cimplemof
 
 INCLUDES += -I.
 
@@ -15,7 +15,6 @@ LEX_AND_YACC_SOURCES = \
 
 SOURCES = \
     $(LEX_AND_YACC_SOURCES) \
-    version.cpp \
     MOF_Buffer.cpp \
     MOF_Class_Decl.cpp \
     MOF_Data_Type.cpp \

@@ -11,4 +11,4 @@ tests:
 	@ $(BINARY_TARGET)
 
 genclass:
-	$(BIN_DIR)/genclass -r Part Glue
+	genclass -r Part Glue

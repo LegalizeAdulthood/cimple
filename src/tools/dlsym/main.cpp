@@ -1,16 +1,15 @@
-#include <cimple/version.h>
+#define CIMPLE_NO_VERSION_SYMBOL
+#include <cimple/config.h>
 #include <dlfcn.h>
 #include <cstdlib>
 #include <cstdio>
-
-CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {
     if (argc != 3)
     {
-	fprintf(stderr, "Usage: %s path symbol\n", argv[0]);
-	exit(1);
+        fprintf(stderr, "Usage: %s path symbol\n", argv[0]);
+        exit(1);
     }
 
     //
@@ -21,9 +20,9 @@ int main(int argc, char** argv)
 
     if (!handle)
     {
-	fprintf(stderr, "%s: cannot load library: %s\n", argv[0], argv[1]);
-	fprintf(stderr, "%s\n", dlerror());
-	exit(1);
+        fprintf(stderr, "%s: cannot load library: %s\n", argv[0], argv[1]);
+        fprintf(stderr, "%s\n", dlerror());
+        exit(1);
     }
 
     //
@@ -34,9 +33,9 @@ int main(int argc, char** argv)
 
     if (!sym)
     {
-	fprintf(stderr, "%s: cannot find symbol: %s\n", argv[0], argv[2]);
-	fprintf(stderr, "%s\n", dlerror());
-	exit(1);
+        fprintf(stderr, "%s: cannot find symbol: %s\n", argv[0], argv[2]);
+        fprintf(stderr, "%s\n", dlerror());
+        exit(1);
     }
 
 #if 0
@@ -49,3 +48,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/dlsym/main.cpp,v 1.5 2007/03/07 18:49:10 mbrasher-public Exp $");

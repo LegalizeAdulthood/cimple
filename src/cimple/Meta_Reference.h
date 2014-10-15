@@ -47,6 +47,7 @@ struct Meta_Reference
     size_t num_meta_qualifiers;
 
     // Local fields
+    sint16 subscript;
     const Meta_Class* meta_class;
     uint32 offset;
 };

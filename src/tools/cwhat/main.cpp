@@ -1,4 +1,5 @@
-#include <cimple/version.h>
+#define CIMPLE_NO_VERSION_SYMBOL
+#include <cimple/config.h>
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
@@ -27,16 +28,14 @@ Examples:\n\
     0.98-beta\n\
 \n";
 
-CIMPLE_INJECT_VERSION_TAG;
-
 int main(int argc, char** argv)
 {
     // Check args.
 
     if (argc != 2)
     {
-	fprintf(stderr, USAGE, argv[0], "#");
-	exit(1);
+        fprintf(stderr, USAGE, argv[0], "#");
+        exit(1);
     }
 
     // Open the input file.
@@ -45,8 +44,8 @@ int main(int argc, char** argv)
 
     if (!fp)
     {
-	fprintf(stderr, "%s: failed to open file\n", argv[1]);
-	exit(1);
+        fprintf(stderr, "%s: failed to open file\n", argv[1]);
+        exit(1);
     }
 
     // Read the file into memory.
@@ -56,7 +55,7 @@ int main(int argc, char** argv)
     size_t n;
 
     while ((n = fread(buf, 1, sizeof(buf), fp)) > 0)
-	v.insert(v.end(), buf, buf + n);
+        v.insert(v.end(), buf, buf + n);
 
     v.push_back('\0');
 
@@ -71,24 +70,26 @@ int main(int argc, char** argv)
 
     while (n)
     {
-	if (n >= 4 && p[0] == '@' && p[1] == '(' && p[2] == '#' && p[3] == ')')
-	{
-	    p += 4;
-	    string str;
+        if (n >= 4 && p[0] == '@' && p[1] == '(' && p[2] == '#' && p[3] == ')')
+        {
+            p += 4;
+            string str;
 
-	    while (n && *p)
-	    {
-		str += p[0];
-		n--;
-		p++;
-	    }
+            while (n && *p)
+            {
+                str += p[0];
+                n--;
+                p++;
+            }
 
-	    printf("%s\n", str.c_str());
-	}
+            printf("%s\n", str.c_str());
+        }
 
-	n--;
-	p++;
+        n--;
+        p++;
     }
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/cwhat/main.cpp,v 1.3 2007/03/07 18:49:10 mbrasher-public Exp $");

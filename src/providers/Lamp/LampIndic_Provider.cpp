@@ -24,16 +24,16 @@ static void _send_indication(
 
     if (handler)
     {
-	LampIndicA* indic = LampIndicA::create();
-	indic->IndicationIdentifier.value = "GOODBYE";
-	indic->IndicationIdentifier.null = false;
-	indic->message.value = "Same old message";
-	indic->message.null = false;
+        LampIndicA* indic = LampIndicA::create();
+        indic->IndicationIdentifier.value = "GOODBYE";
+        indic->IndicationIdentifier.null = false;
+        indic->message.value = "Same old message";
+        indic->message.null = false;
 
-	LampIndic* tmp = cast<LampIndic*>(indic);
-	// print(tmp);
+        LampIndic* tmp = cast<LampIndic*>(indic);
+        // print(tmp);
 
-	handler->handle(cast<LampIndic*>(indic));
+        handler->handle(cast<LampIndic*>(indic));
     }
 }
 
@@ -43,33 +43,38 @@ void* LampIndic_Provider::_thread_proc(void* arg)
 
     TRACE;
 
+    // ATTN: This sleep prevents a "Recursive Use of CIMOMHandle Attempted" 
+    // message from Pegasus ClientCIMOMHandleAccessController() in
+    // ClientCIMOMHandleRep.cpp.
+    sleep(1);
+
     for (size_t i = 0; i < 500; i++)
     {
-	// We must synchronize access to the handler since the provider's
-	// main thread also accesses it.
+        // We must synchronize access to the handler since the provider's
+        // main thread also accesses it.
 
-	provider->_indication_handler_mutex.lock();
-	_send_indication("_thread_proc()", provider->_indication_handler);
-	provider->_indication_handler_mutex.unlock();
+        provider->_indication_handler_mutex.lock();
+        _send_indication("_thread_proc()", provider->_indication_handler);
+        provider->_indication_handler_mutex.unlock();
 
-	// Stay in this loop for one second.
+        // Stay in this loop for one second.
 
-	for (size_t i = 0; i < 100; i++)
-	{
-	    // See if main thread has asked us to quit by decrementing the
-	    // counter to zero.
+        for (size_t i = 0; i < 100; i++)
+        {
+            // See if main thread has asked us to quit by decrementing the
+            // counter to zero.
 
-	    if (provider->_counter.get() == 0)
-	    {
-		// The main thread is waiting on this signal. Signal it so
-		// it can continue.
-		Thread::exit(0);
-		return 0;
-	    }
+            if (provider->_counter.get() == 0)
+            {
+                // The main thread is waiting on this signal. Signal it so
+                // it can continue.
+                Thread::exit(0);
+                return 0;
+            }
 
-	    // Sleep no longer than 10 miliseconds.
-	    Time::sleep(10 * Time::MSEC);
-	}
+            // Sleep no longer than 10 miliseconds.
+            Time::sleep(10 * Time::MSEC);
+        }
     }
 
     return 0;
@@ -128,7 +133,7 @@ Disable_Indications_Status LampIndic_Provider::disable_indications()
     _indication_handler_mutex.lock();
 
     if (_indication_handler)
-	delete _indication_handler;
+        delete _indication_handler;
 
     _indication_handler_mutex.unlock();
 
@@ -171,7 +176,7 @@ int LampIndic_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Indication_Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -193,12 +198,14 @@ void LampIndic_Provider::_stop_thread()
 
     if (_counter.get() == 1)
     {
-	// Signal the other thread by decrementing the counter to zero.
-	_counter.dec();
+        // Signal the other thread by decrementing the counter to zero.
+        _counter.dec();
 
-	void* value_ptr;
-	Thread::join(_thread, value_ptr);
+        void* value_ptr;
+        Thread::join(_thread, value_ptr);
     }
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampIndic_Provider.cpp,v 1.20 2007/03/07 20:25:24 mbrasher-public Exp $");

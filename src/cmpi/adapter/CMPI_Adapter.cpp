@@ -28,17 +28,16 @@
 #include <string.h>
 #include <time.h>
 #include <cimple/Strings.h>
-#include <cimple/version.h>
+#include <cimple/config.h>
 #include <cimple/Mutex.h>
 #include <cimple/Auto_Mutex.h>
+#include <cimple/Tracer.h>
 #include "Converter.h"
 #include "CMPI_Thread_Context.h"
 
-#if 0
-# define TRACE printf("===== %s(%d): %s()\n", __FILE__, __LINE__, __FUNCTION__)
-#else
-# define TRACE
-#endif
+#define STATIC_DATA_MAGIC 0x5DE2B131
+
+#define FL __FILE__, __LINE__
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -51,81 +50,122 @@ CIMPLE_NAMESPACE_BEGIN
 CMPI_Adapter::CMPI_Adapter(
     const CMPIBroker* broker_, 
     const CMPIContext* context,
-    const char* provider_name, 
+    const char* prov_name, 
     const Registration* registration,
-    CMPI_Adapter*& adapter_back_pointer) :
+    CMPI_Static_Data* static_data)
+    :
     Provider_Handle(registration),
-    _indications_enabled(false),
-    _adapter_back_pointer(adapter_back_pointer)
+    sd(static_data),
+    allow_unload(true),
+    indications_enabled(false)
 {
-    TRACE;
+#ifdef CIMPLE_DEBUG
+    tracer = new Tracer(TRC_DEBUG, prov_name);
+#endif
 
-    CMPI_Thread_Context_Pusher pusher(broker_, context);
+    ent(FL, "CMPI_Adapter");
 
-    instance_ft.ftVersion = 100;
-    instance_ft.miVersion = 100;
-    instance_ft.miName = str_printf("instance%s", provider_name);
-    instance_ft.cleanup = CMPI_Adapter::cleanup;
-    instance_ft.enumInstanceNames = CMPI_Adapter::enumInstanceNames;
-    instance_ft.enumInstances = CMPI_Adapter::enumInstances;
-    instance_ft.getInstance = CMPI_Adapter::getInstance;
-    instance_ft.createInstance = CMPI_Adapter::createInstance;
-    instance_ft.modifyInstance = CMPI_Adapter::modifyInstance;
-    instance_ft.deleteInstance = CMPI_Adapter::deleteInstance;
-    instance_ft.execQuery = CMPI_Adapter::execQuery;
+    CMPI_Thread_Context_Pusher pusher(broker_, context, this);
 
-    method_ft.ftVersion = 100;
-    method_ft.miVersion = 100;
-    method_ft.miName = str_printf("method%s", provider_name);
-    method_ft.cleanup = CMPI_Adapter::methodCleanup;
-    method_ft.invokeMethod = CMPI_Adapter::invokeMethod;
+    // Set magic number.
 
-    indication_ft.ftVersion = 100;
-    indication_ft.miVersion = 100;
-    indication_ft.miName = str_printf("indication%s", provider_name);
-    indication_ft.cleanup = CMPI_Adapter::indicationCleanup;
-    indication_ft.authorizeFilter = CMPI_Adapter::authorizeFilter;
-    indication_ft.mustPoll = CMPI_Adapter::mustPoll;
-    indication_ft.activateFilter = CMPI_Adapter::activateFilter;
-    indication_ft.deActivateFilter = CMPI_Adapter::deactivateFilter;
+    sd->magic = STATIC_DATA_MAGIC;
 
-    *((void**)&indication_ft.enableIndications) = 
-        (void*)CMPI_Adapter::enableIndications;
+    // Save adapter pointer into static data.
 
-    *((void**)&indication_ft.disableIndications) = 
-        (void*)CMPI_Adapter::disableIndications;
+    sd->adapter = this;
 
-    association_ft.ftVersion = 100;
-    association_ft.miVersion = 100;
-    association_ft.miName = str_printf("association%s", provider_name);
-    association_ft.cleanup = CMPI_Adapter::associationCleanup;
-    association_ft.associators = CMPI_Adapter::associators;
-    association_ft.associatorNames = CMPI_Adapter::associatorNames;
-    association_ft.references = CMPI_Adapter::references;
-    association_ft.referenceNames = CMPI_Adapter::referenceNames;
+    // Instance FT:
+
+    sd->instance_ft.ftVersion = 100;
+    sd->instance_ft.miVersion = 100;
+
+    strlcpy(sd->inst_mi_name, "instance", sizeof(sd->inst_mi_name));
+    strlcat(sd->inst_mi_name, prov_name, sizeof(sd->inst_mi_name));
+    sd->instance_ft.miName = sd->inst_mi_name;
+
+    sd->instance_ft.cleanup = CMPI_Adapter::instanceCleanup;
+    sd->instance_ft.enumInstanceNames = CMPI_Adapter::enumInstanceNames;
+    sd->instance_ft.enumInstances = CMPI_Adapter::enumInstances;
+    sd->instance_ft.getInstance = CMPI_Adapter::getInstance;
+    sd->instance_ft.createInstance = CMPI_Adapter::createInstance;
+    sd->instance_ft.modifyInstance = CMPI_Adapter::modifyInstance;
+    sd->instance_ft.deleteInstance = CMPI_Adapter::deleteInstance;
+    sd->instance_ft.execQuery = CMPI_Adapter::execQuery;
+
+    // Method FT:
+
+    sd->method_ft.ftVersion = 100;
+    sd->method_ft.miVersion = 100;
+
+    strlcpy(sd->meth_mi_name, "method", sizeof(sd->meth_mi_name));
+    strlcat(sd->meth_mi_name, prov_name, sizeof(sd->meth_mi_name));
+    sd->instance_ft.miName = sd->meth_mi_name;
+
+    sd->method_ft.cleanup = CMPI_Adapter::methodCleanup;
+    sd->method_ft.invokeMethod = CMPI_Adapter::invokeMethod;
+
+    // Indication FT:
+
+    sd->indication_ft.ftVersion = 100;
+    sd->indication_ft.miVersion = 100;
+
+    strlcpy(sd->indic_mi_name, "indication", sizeof(sd->indic_mi_name));
+    strlcat(sd->indic_mi_name, prov_name, sizeof(sd->indic_mi_name));
+    sd->instance_ft.miName = sd->indic_mi_name;
+
+    sd->indication_ft.cleanup = CMPI_Adapter::indicationCleanup;
+    sd->indication_ft.authorizeFilter = CMPI_Adapter::authorizeFilter;
+    sd->indication_ft.mustPoll = CMPI_Adapter::mustPoll;
+    sd->indication_ft.activateFilter = CMPI_Adapter::activateFilter;
+    sd->indication_ft.deActivateFilter = CMPI_Adapter::deactivateFilter;
+
+    /*
+     * If the following two lines fail to compile, then you need to do one
+     * of the following.
+     *
+     *     1. Undefine CIMPLE_HAVE_CMPI_VOID_RETURN_BUG (if defined).
+     *     2. Define CIMPLE_HAVE_CMPI_VOID_RETURN_BUG (if not defined).
+     *
+     * CIMPLE_HAVE_CMPI_VOID_RETURN_BUG is defined here:
+     *
+     *     cimple/src/cimple/options.h
+     */
+    sd->indication_ft.enableIndications = CMPI_Adapter::enableIndications;
+    sd->indication_ft.disableIndications = CMPI_Adapter::disableIndications;
+
+    // Assocication FT:
+
+    sd->association_ft.ftVersion = 100;
+    sd->association_ft.miVersion = 100;
+
+    strlcpy(sd->assoc_mi_name, "association", sizeof(sd->assoc_mi_name));
+    strlcat(sd->assoc_mi_name, prov_name, sizeof(sd->assoc_mi_name));
+    sd->instance_ft.miName = sd->assoc_mi_name;
+
+    sd->association_ft.cleanup = CMPI_Adapter::associationCleanup;
+    sd->association_ft.associators = CMPI_Adapter::associators;
+    sd->association_ft.associatorNames = CMPI_Adapter::associatorNames;
+    sd->association_ft.references = CMPI_Adapter::references;
+    sd->association_ft.referenceNames = CMPI_Adapter::referenceNames;
+
+    // Save broker.
 
     broker = broker_;
 
+    // This provider has been loaded one time so far.
+
     load_count = 1;
 
-    // Invoke provider load() method:
+    // Invoke provider load() method.
 
     load();
 
     // Save meta-class:
 
-    get_meta_class(_mc);
+    get_meta_class(mc);
 
-    // Obtain PG_ProviderCapabilities for this provider.
-
-#if 0
-    char path[1024];
-
-    sprintf(path, 
-        "PG_ProviderCapabilities."
-        "CapabilityID=\"1\","
-        "ProviderModuleName=\"\","
-#endif
+    ret(FL, "CMPI_Adapter");
 }
 
 //------------------------------------------------------------------------------
@@ -136,38 +176,55 @@ CMPI_Adapter::CMPI_Adapter(
 
 CMPI_Adapter::~CMPI_Adapter()
 {
-    TRACE;
+    ent(FL, "~CMPI_Adapter");
 
-    // ATTN: cannot get a context here so cimom::operations are not supported 
-    // from the unload method.
-    //
-    // CMPI_Thread_Context_Pusher pusher(broker_, cmpi_context);
+    CIMPLE_ASSERT(sd->adapter == this);
+    CIMPLE_ASSERT(sd->magic == STATIC_DATA_MAGIC);
 
-    unload();
+    sd->magic = 0xDDDDDDDD;
+    sd->adapter = 0;
 
-    // Release these!
+    ret(FL, "~CMPI_Adapter");
 
-    free((char*)instance_ft.miName);
-    free((char*)method_ft.miName);
-    free((char*)indication_ft.miName);
-
-    // Null this out so that next time cimple_cmpi_adapter() is called, it
-    // will find a null adapter.
-    _adapter_back_pointer = 0;
+#ifdef CIMPLE_DEBUG
+    delete tracer;
+#endif
 }
 
 //------------------------------------------------------------------------------
 //
-// CMPI_Adapter::cleanup()
+// _adapter()
 //
 //------------------------------------------------------------------------------
 
-CMPIStatus CMPI_Adapter::cleanup(
+template<class MI>
+static CMPI_Adapter* _adapter(MI* mi)
+{
+    CIMPLE_ASSERT(mi != 0);
+    CMPI_Static_Data* sd = (CMPI_Static_Data*)mi->hdl;
+    CIMPLE_ASSERT(sd != 0);
+    CIMPLE_ASSERT(sd->magic == STATIC_DATA_MAGIC);
+    CIMPLE_ASSERT(sd->adapter);
+    CIMPLE_ASSERT(sd->adapter->magic);
+
+    return sd->adapter;
+}
+
+//------------------------------------------------------------------------------
+//
+// CMPI_Adapter::instanceCleanup()
+//
+//------------------------------------------------------------------------------
+
+CMPIStatus CMPI_Adapter::instanceCleanup(
     CMPIInstanceMI* mi, 
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
-    return _cleanup((CMPI_Adapter*)mi->hdl, context, terminating);
+    CMPI_Adapter* adapter = _adapter(mi);
+
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    return cleanup(adapter, context, terminating);
 }
 
 //------------------------------------------------------------------------------
@@ -227,24 +284,30 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "enumInstanceNames");
 
     // Convert to CIMPLE reference:
 
     const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "enumInstanceNames", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "enumInstanceNames", rc);
         CMReturn(rc);
+    }
 
     Ref<Instance> cimple_ref_d(cimple_ref);
 
@@ -265,14 +328,22 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
     switch (status)
     {
         case ENUM_INSTANCES_OK:
+        {
             CMReturnDone(result);
+            adapter->ret(FL, "enumInstanceNames", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
+        }
 
         case ENUM_INSTANCES_FAILED:
+        {
+            adapter->ret(FL, "enumInstanceNames", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
+        }
     }
 
+
     // Unreachable!
+    adapter->ret(FL, "enumInstanceNames", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -339,25 +410,31 @@ CMPIStatus CMPI_Adapter::enumInstances(
     const CMPIObjectPath* cmpi_op, 
     const char** properties)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "enumInstances");
 
     // Convert to CIMPLE reference:
 
     const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "enumInstances", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "enumInstances", rc);
         CMReturn(rc);
+    }
 
     // Filter properties:
 
@@ -378,10 +455,15 @@ CMPIStatus CMPI_Adapter::enumInstances(
             break;
 
         case ENUM_INSTANCES_FAILED:
+        {
+            adapter->ret(FL, "enumInstances", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
+        }
     }
 
     CMReturnDone(result);
+
+    adapter->ret(FL, "enumInstances", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -398,25 +480,32 @@ CMPIStatus CMPI_Adapter::getInstance(
     const CMPIObjectPath* cmpi_op, 
     const char** properties)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    const CMPIBroker* broker = adapter->broker;
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "getInstance");
 
     // Convert to CIMPLE reference:
 
     const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "getInstance", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "getInstance", rc);
         CMReturn(rc);
+    }
 
     // Filter properties:
 
@@ -436,9 +525,11 @@ CMPIStatus CMPI_Adapter::getInstance(
             break;
 
         case GET_INSTANCE_NOT_FOUND:
+            adapter->ret(FL, "getInstance", CMPI_RC_ERR_NOT_FOUND);
             CMReturn(CMPI_RC_ERR_NOT_FOUND);
 
         case GET_INSTANCE_UNSUPPORTED:
+            adapter->ret(FL, "getInstance", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
     }
 
@@ -453,9 +544,11 @@ CMPIStatus CMPI_Adapter::getInstance(
     {
         CMReturnInstance(result, cmpi_inst);
         CMReturnDone(result);
+        adapter->ret(FL, "getInstance", CMPI_RC_OK);
         CMReturn(CMPI_RC_OK);
     }
 
+    adapter->ret(FL, "getInstance", rc);
     CMReturn(rc);
 }
 
@@ -472,24 +565,30 @@ CMPIStatus CMPI_Adapter::createInstance(
     const CMPIObjectPath* cmpi_op, 
     const CMPIInstance* cmpi_inst)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "createInstance");
 
     // Create CIMPLE instance:
 
     const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "createInstance", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     Instance* cimple_inst = 0;
     CMPIrc rc = make_cimple_instance(mc, cmpi_inst, cimple_inst);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "createInstance", rc);
         CMReturn(rc);
+    }
 
     Ref<Instance> cmpi_inst_d(cimple_inst);
 
@@ -501,17 +600,34 @@ CMPIStatus CMPI_Adapter::createInstance(
     switch (status)
     {
         case CREATE_INSTANCE_OK:
-            CMReturnObjectPath(result, cmpi_op);
+        {
+            CMPIObjectPath* cmpi_op_out;
+
+            CMPIrc rc = make_cmpi_object_path(adapter->broker, cimple_inst, 
+                name_space(cmpi_op), cmpi_op_out);
+
+            if (rc != CMPI_RC_OK)
+            {
+                adapter->ret(FL, "createInstance", rc);
+                CMReturn(rc);
+            }
+
+            CMReturnObjectPath(result, cmpi_op_out);
             CMReturnDone(result);
+            adapter->ret(FL, "createInstance", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
+        }
 
         case CREATE_INSTANCE_DUPLICATE:
+            adapter->ret(FL, "createInstance", CMPI_RC_ERR_ALREADY_EXISTS);
             CMReturn(CMPI_RC_ERR_ALREADY_EXISTS);
 
         case CREATE_INSTANCE_UNSUPPORTED:
+            adapter->ret(FL, "createInstance", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
     }
 
+    adapter->ret(FL, "createInstance", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -529,24 +645,30 @@ CMPIStatus CMPI_Adapter::modifyInstance(
     const CMPIInstance* cmpi_inst,
     const char** properties)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "modifyInstance");
 
     // Create CIMPLE instance:
 
     const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     Instance* cimple_inst = 0;
     CMPIrc rc = make_cimple_instance(mc, cmpi_inst, cimple_inst);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "modifyInstance", rc);
         CMReturn(rc);
+    }
 
     Ref<Instance> cmpi_inst_d(cimple_inst);
 
@@ -560,15 +682,19 @@ CMPIStatus CMPI_Adapter::modifyInstance(
         case MODIFY_INSTANCE_OK:
             CMReturnObjectPath(result, cmpi_op);
             CMReturnDone(result);
+            adapter->ret(FL, "modifyInstance", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
 
         case MODIFY_INSTANCE_NOT_FOUND:
+            adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_NOT_FOUND);
             CMReturn(CMPI_RC_ERR_NOT_FOUND);
 
         case MODIFY_INSTANCE_UNSUPPORTED:
+            adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
     }
 
+    adapter->ret(FL, "modifyInstance", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -584,18 +710,21 @@ CMPIStatus CMPI_Adapter::deleteInstance(
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "deleteInstance");
 
     // Convert to CIMPLE reference:
 
     const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "deleteInstance", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
@@ -603,7 +732,10 @@ CMPIStatus CMPI_Adapter::deleteInstance(
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "deleteInstance", rc);
         CMReturn(rc);
+    }
 
     // Invoke provider:
 
@@ -616,13 +748,16 @@ CMPIStatus CMPI_Adapter::deleteInstance(
             break;
 
         case DELETE_INSTANCE_NOT_FOUND:
+            adapter->ret(FL, "deleteInstance", CMPI_RC_ERR_NOT_FOUND);
             CMReturn(CMPI_RC_ERR_NOT_FOUND);
 
         case DELETE_INSTANCE_UNSUPPORTED:
+            adapter->ret(FL, "deleteInstance", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
     }
 
     CMReturnDone(result);
+    adapter->ret(FL, "deleteInstance", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -640,6 +775,11 @@ CMPIStatus CMPI_Adapter::execQuery(
     const char* lang, 
     const char* query)
 {
+    CMPI_Adapter* adapter = _adapter(mi);
+
+    adapter->ent(FL, "execQuery");
+
+    adapter->ret(FL, "execQuery", CMPI_RC_ERR_NOT_SUPPORTED);
     CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
 }
 
@@ -654,7 +794,10 @@ CMPIStatus CMPI_Adapter::methodCleanup(
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
-    return _cleanup((CMPI_Adapter*)mi->hdl, context, terminating);
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+
+    return cleanup(adapter, context, terminating);
 }
 
 //------------------------------------------------------------------------------
@@ -672,33 +815,45 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     const CMPIArgs* in,
     CMPIArgs* out)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "invokeMethod");
 
     // Find CIMPLE method object:
 
     const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     const Meta_Method* mm = find_method(mc, method);
 
     if (!mm)
+    {
+        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_METHOD_NOT_FOUND);
         CMReturn(CMPI_RC_ERR_METHOD_NOT_FOUND);
+    }
 
     // Validate the object path:
 
     const char* cn = class_name(cmpi_op);
 
     if (!cn || strcasecmp(cn, mm->name) == 0)
+    {
+        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_INVALID_CLASS);
         CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+    }
 
     if (CMGetKeyCount(cmpi_op, NULL) > 0 && (mm->flags & CIMPLE_FLAG_STATIC))
+    {
+        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
+    }
 
     // Convert to CIMPLE reference:
 
@@ -706,7 +861,10 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "invokeMethod", rc);
         CMReturn(rc);
+    }
 
     Ref<Instance> cimple_ref_d(cimple_ref);
 
@@ -716,7 +874,10 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     rc = make_method(mm, in, find_meta_class_callback, adapter, cimple_meth);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "invokeMethod", rc);
         CMReturn(rc);
+    }
 
     Ref<Instance> cimple_meth_d(cimple_meth);
 
@@ -731,9 +892,11 @@ CMPIStatus CMPI_Adapter::invokeMethod(
             break;
 
         case INVOKE_METHOD_FAILED:
+            adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
 
         case INVOKE_METHOD_UNSUPPORTED:
+            adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
     }
 
@@ -747,12 +910,16 @@ CMPIStatus CMPI_Adapter::invokeMethod(
         adapter->broker, ns, cimple_meth, out, return_value, return_type);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "invokeMethod", rc);
         CMReturn(rc);
+    }
 
     // Append CMPI out args:
 
     CMReturnData(result, &return_value, return_type);
     CMReturnDone(result);
+    adapter->ret(FL, "invokeMethod", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -767,12 +934,12 @@ CMPIStatus CMPI_Adapter::indicationCleanup(
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
 
-    // Do not lock the mutex since we are deleting adapter, which owns the
-    // mutex.
-    return _cleanup((CMPI_Adapter*)mi->hdl, context, terminating);
+    adapter->ent(FL, "indicationCleanup");
+
+    return cleanup(adapter, context, terminating);
 }
 
 //------------------------------------------------------------------------------
@@ -789,6 +956,11 @@ CMPIStatus CMPI_Adapter::authorizeFilter(
      const CMPIObjectPath* cmpi_object_path,
      const char* user_name)
 {
+    CMPI_Adapter* adapter = _adapter(mi);
+
+    adapter->ent(FL, "authorizeFilter");
+
+    adapter->ret(FL, "authorizeFilter", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -805,7 +977,11 @@ CMPIStatus CMPI_Adapter::mustPoll(
     const char* indication_type,
     const CMPIObjectPath* class_path)
 {
-    // ATTN: What is thie for?
+    CMPI_Adapter* adapter = _adapter(mi);
+
+    adapter->ent(FL, "mustPoll");
+
+    adapter->ret(FL, "mustPoll", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -823,10 +999,11 @@ CMPIStatus CMPI_Adapter::activateFilter(
     const CMPIObjectPath* class_path, 
     CMPIBoolean first)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "activateFilter");
+
     const char* ns = name_space(class_path);
 
     if (ns)
@@ -835,14 +1012,15 @@ CMPIStatus CMPI_Adapter::activateFilter(
 
         Name_Space_Entry entry(ns, 1);
 
-        size_t pos = adapter->_name_spaces.find(entry);
+        size_t pos = adapter->name_spaces.find(entry);
 
         if (pos == size_t(-1))
-            adapter->_name_spaces.append(entry);
+            adapter->name_spaces.append(entry);
         else
-            adapter->_name_spaces[pos].count++;
+            adapter->name_spaces[pos].count++;
     }
 
+    adapter->ret(FL, "activateFilter", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -860,11 +1038,11 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
     const CMPIObjectPath* class_path, 
     CMPIBoolean last)
 {
-    TRACE;
-
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    Auto_Mutex auto_lock(adapter->_lock);
+    CMPI_Adapter* adapter = _adapter(mi);
+    Auto_Mutex auto_lock(adapter->lock);
     const char* ns = name_space(class_path);
+
+    adapter->ent(FL, "deactivateFilter");
 
     if (ns)
     {
@@ -872,17 +1050,18 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
 
         Name_Space_Entry entry(ns, 1);
 
-        size_t pos = adapter->_name_spaces.find(entry);
+        size_t pos = adapter->name_spaces.find(entry);
 
         if (pos != size_t(-1))
         {
-            if (adapter->_name_spaces[pos].count == 1)
-                adapter->_name_spaces.remove(pos);
+            if (adapter->name_spaces[pos].count == 1)
+                adapter->name_spaces.remove(pos);
             else
-                adapter->_name_spaces[pos].count--;
+                adapter->name_spaces[pos].count--;
         }
     }
 
+    adapter->ret(FL, "deactivateFilter", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -894,13 +1073,11 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
 
 static bool _indication_proc(Instance* cimple_inst, void* client_data)
 {
-    TRACE;
-
     // This function is called by the CIMPLE Indication_Handler<> in order to 
     // deliver a single indication.
 
     CMPI_Adapter* adapter = (CMPI_Adapter*)client_data;
-    Auto_Mutex auto_lock(adapter->_lock);
+    Auto_Mutex auto_lock(adapter->lock);
 
     // If this is the final call, just return.
 
@@ -909,9 +1086,9 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 
     // Do once for each CIM namespace:
 
-    for (size_t i = 0; i < adapter->_name_spaces.size(); i++)
+    for (size_t i = 0; i < adapter->name_spaces.size(); i++)
     {
-        String name_space = adapter->_name_spaces[i].name;
+        String name_space = adapter->name_spaces[i].name;
 
         // Convert CIMPLE instance to CMPI instance:
 
@@ -944,27 +1121,25 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
     return true;
 }
 
-CMPIStatus CMPI_Adapter::enableIndications(
+FIX_RETURN_TYPE CMPI_Adapter::enableIndications(
     CMPIIndicationMI* mi, 
     const CMPIContext* context)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "enableIndications");
 
     // Ignore request if indications already enabled.
 
-#ifdef CIMPLE_HAVE_CMPI_ENABLE_INDICATIONS_BUG
-    if (adapter->_indications_enabled)
-        return;
-#else
-    if (adapter->_indications_enabled)
-        CMReturn(CMPI_RC_OK);
-#endif
+    if (adapter->indications_enabled)
+    {
+        adapter->ret(FL, "enableIndications", CMPI_RC_OK);
+        FIX_RETURN(CMPI_RC_OK);
+    }
 
-    adapter->_indications_enabled = true;
+    adapter->indications_enabled = true;
 
     // Invoke the provider:
 
@@ -974,13 +1149,19 @@ CMPIStatus CMPI_Adapter::enableIndications(
     switch (status)
     {
         case ENABLE_INDICATIONS_OK:
+            adapter->ret(FL, "enableIndications", CMPI_RC_OK);
+            FIX_RETURN(CMPI_RC_OK);
             break;
 
         case ENABLE_INDICATIONS_FAILED:
+            adapter->ret(FL, "enableIndications", CMPI_RC_ERR_FAILED);
+            FIX_RETURN(CMPI_RC_ERR_FAILED);
             break;
     }
 
-    CMReturn(CMPI_RC_OK);
+    // Unreachable!
+    adapter->ret(FL, "enableIndications", CMPI_RC_OK);
+    FIX_RETURN(CMPI_RC_OK);
 }
 
 //------------------------------------------------------------------------------
@@ -989,37 +1170,43 @@ CMPIStatus CMPI_Adapter::enableIndications(
 //
 //------------------------------------------------------------------------------
 
-CMPIStatus CMPI_Adapter::disableIndications(
+FIX_RETURN_TYPE CMPI_Adapter::disableIndications(
     CMPIIndicationMI* mi, 
     const CMPIContext* context)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "disableIndications");
 
     // Ignore if indications are not enabled.
 
-    if (!adapter->_indications_enabled)
-        CMReturn(CMPI_RC_OK);
+    if (!adapter->indications_enabled)
+        FIX_RETURN(CMPI_RC_OK);
 
     // Invoke the provider:
 
     Disable_Indications_Status status = adapter->disable_indications();
 
+    adapter->indications_enabled = false;
+
     switch (status)
     {
         case DISABLE_INDICATIONS_OK:
+            adapter->ret(FL, "disableIndications", CMPI_RC_OK);
+            FIX_RETURN(CMPI_RC_OK);
             break;
 
         case DISABLE_INDICATIONS_FAILED:
+            adapter->ret(FL, "disableIndications", CMPI_RC_ERR_FAILED);
+            FIX_RETURN(CMPI_RC_ERR_FAILED);
             break;
     }
 
-    adapter->_indications_enabled = false;
-
-    CMReturn(CMPI_RC_OK);
+    // Unreachable!
+    adapter->ret(FL, "disableIndications", CMPI_RC_OK);
+    FIX_RETURN(CMPI_RC_OK);
 }
 
 //------------------------------------------------------------------------------
@@ -1033,7 +1220,11 @@ CMPIStatus CMPI_Adapter::associationCleanup(
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
-    return _cleanup((CMPI_Adapter*)mi->hdl, context, terminating);
+    CMPI_Adapter* adapter = _adapter(mi);
+
+    adapter->ent(FL, "associationCleanup");
+
+    return cleanup(adapter, context, terminating);
 }
 
 //------------------------------------------------------------------------------
@@ -1109,25 +1300,28 @@ CMPIStatus CMPI_Adapter::associators(
     const char* result_role_, 
     const char** properties)
 {
-    TRACE;
-
     const char* assoc_class = assoc_class_ ? assoc_class_ : "";
     const char* result_class = result_class_ ? result_class_ : "";
     const char* role = role_ ? role_ : "";
     const char* result_role = result_role_ ? result_role_ : "";
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->_mc->name) == 0);
+    adapter->ent(FL, "associators");
+
+    CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
 
     // Lookup meta class for cmpi_op (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->_find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "associators", CMPI_RC_ERR_INVALID_CLASS);
         CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+    }
 
     // Convert to CIMPLE reference:
 
@@ -1136,7 +1330,10 @@ CMPIStatus CMPI_Adapter::associators(
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "associators", rc);
         CMReturn(rc);
+    }
 
     // Invoke the provider:
 
@@ -1151,6 +1348,22 @@ CMPIStatus CMPI_Adapter::associators(
         associators::_proc,
         &data);
 
+    switch (status)
+    {
+        case ENUM_ASSOCIATOR_NAMES_OK:
+            adapter->ret(FL, "associators", CMPI_RC_OK);
+            CMReturn(CMPI_RC_OK);
+
+        case ENUM_ASSOCIATOR_NAMES_FAILED:
+            adapter->ret(FL, "associators", CMPI_RC_ERR_FAILED);
+            CMReturn(CMPI_RC_ERR_FAILED);
+
+        case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
+            adapter->ret(FL, "associators", CMPI_RC_ERR_NOT_SUPPORTED);
+            CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+    }
+
+    adapter->ret(FL, "associators", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -1213,25 +1426,28 @@ CMPIStatus CMPI_Adapter::associatorNames(
     const char* role_, 
     const char* result_role_)
 {
-    TRACE;
-
     const char* assoc_class = assoc_class_ ? assoc_class_ : "";
     const char* result_class = result_class_ ? result_class_ : "";
     const char* role = role_ ? role_ : "";
     const char* result_role = result_role_ ? result_role_ : "";
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->_mc->name) == 0);
+    adapter->ent(FL, "associatorNames");
+
+    CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
 
     // Lookup meta class for cmpi_op (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->_find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "associatorNames", CMPI_RC_ERR_INVALID_CLASS);
         CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+    }
 
     // Convert to CIMPLE reference:
 
@@ -1240,7 +1456,10 @@ CMPIStatus CMPI_Adapter::associatorNames(
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "associatorNames", rc);
         CMReturn(rc);
+    }
 
     // Invoke the provider:
 
@@ -1255,6 +1474,22 @@ CMPIStatus CMPI_Adapter::associatorNames(
         associator_names::_proc,
         &data);
 
+    switch (status)
+    {
+        case ENUM_ASSOCIATOR_NAMES_OK:
+            adapter->ret(FL, "associatorNames", CMPI_RC_OK);
+            CMReturn(CMPI_RC_OK);
+
+        case ENUM_ASSOCIATOR_NAMES_FAILED:
+            adapter->ret(FL, "associatorNames", CMPI_RC_ERR_FAILED);
+            CMReturn(CMPI_RC_ERR_FAILED);
+
+        case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
+            adapter->ret(FL, "associatorNames", CMPI_RC_ERR_NOT_SUPPORTED);
+            CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+    }
+
+    adapter->ret(FL, "associatorNames", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -1326,23 +1561,26 @@ CMPIStatus CMPI_Adapter::references(
     const char* role_,
     const char** properties)
 {
-    TRACE;
-
     const char* result_class = result_class_ ? result_class_ : "";
     const char* role = role_ ? role_ : "";
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
+
+    adapter->ent(FL, "references");
 
     // Lookup meta class for cmpi_op (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->_find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "references", CMPI_RC_ERR_INVALID_CLASS);
         CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+    }
 
-    CIMPLE_ASSERT(strcasecmp(result_class, adapter->_mc->name) == 0);
+    CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);
 
     // Convert to CIMPLE reference:
 
@@ -1351,7 +1589,10 @@ CMPIStatus CMPI_Adapter::references(
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "references", rc);
         CMReturn(rc);
+    }
 
     // Create a model.
 
@@ -1373,16 +1614,20 @@ CMPIStatus CMPI_Adapter::references(
     switch (status)
     {
         case ENUM_REFERENCES_OK:
+            adapter->ret(FL, "references", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
 
         case ENUM_REFERENCES_FAILED:
+            adapter->ret(FL, "references", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
 
         case ENUM_REFERENCES_UNSUPPORTED:
-            CMReturn(CMPI_RC_ERR_FAILED);
+            adapter->ret(FL, "references", CMPI_RC_ERR_NOT_SUPPORTED);
+            CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
     }
 
     // Unreachable!
+    adapter->ret(FL, "references", CMPI_RC_OK);
     CMReturn(CMPI_RC_OK);
 }
 
@@ -1452,23 +1697,26 @@ CMPIStatus CMPI_Adapter::referenceNames(
     const char* result_class_, 
     const char* role_)
 {
-    TRACE;
+    CMPI_Adapter* adapter = _adapter(mi);
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+    Auto_Mutex auto_lock(adapter->lock);
 
-    CMPI_Adapter* adapter = (CMPI_Adapter*)mi->hdl;
-    CMPI_Thread_Context_Pusher pusher(adapter->broker, context);
-    Auto_Mutex auto_lock(adapter->_lock);
+    adapter->ent(FL, "referenceNames");
 
     const char* result_class = result_class_ ? result_class_ : "";
     const char* role = role_ ? role_ : "";
 
     // Lookup meta class for cmpi_op (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->_find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
 
     if (!mc)
+    {
+        adapter->ret(FL, "referenceNames", CMPI_RC_ERR_INVALID_CLASS);
         CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+    }
 
-    CIMPLE_ASSERT(strcasecmp(result_class, adapter->_mc->name) == 0);
+    CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);
 
     // Convert to CIMPLE reference:
 
@@ -1477,7 +1725,10 @@ CMPIStatus CMPI_Adapter::referenceNames(
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
+    {
+        adapter->ret(FL, "referenceNames", rc);
         CMReturn(rc);
+    }
 
     // Create a model.
 
@@ -1500,11 +1751,53 @@ CMPIStatus CMPI_Adapter::referenceNames(
     switch (status)
     {
         case ENUM_REFERENCES_OK:
+            adapter->ret(FL, "referenceNames", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
 
         case ENUM_REFERENCES_FAILED:
-        case ENUM_REFERENCES_UNSUPPORTED:
+            adapter->ret(FL, "referenceNames", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
+
+        case ENUM_REFERENCES_UNSUPPORTED:
+            adapter->ret(FL, "referenceNames", CMPI_RC_ERR_NOT_SUPPORTED);
+            CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+    }
+
+    // Unreachable!
+    adapter->ret(FL, "referenceNames", CMPI_RC_OK);
+    CMReturn(CMPI_RC_OK);
+}
+
+//------------------------------------------------------------------------------
+//
+// CMPI_Adapter::cleanup()
+//
+//------------------------------------------------------------------------------
+
+CMPIStatus CMPI_Adapter::cleanup(
+    CMPI_Adapter* adapter, 
+    const CMPIContext* context,
+    CMPIBoolean terminating)
+{
+    adapter->ent(FL, "cleanup");
+
+    if (!terminating && !adapter->allow_unload)
+    {
+        adapter->ret(FL, "cleanup", CMPI_RC_DO_NOT_UNLOAD);
+        CMReturn(CMPI_RC_DO_NOT_UNLOAD);
+    }
+
+    if (adapter->load_count == 1)
+    {
+        adapter->unload();
+        adapter->ret(FL, "cleanup", CMPI_RC_OK);
+        delete adapter;
+    }
+    else
+    {
+        adapter->load_count--;
+        adapter->ret(FL, "cleanup", CMPI_RC_OK);
+        CMReturn(CMPI_RC_OK);
     }
 
     // Unreachable!
@@ -1513,35 +1806,16 @@ CMPIStatus CMPI_Adapter::referenceNames(
 
 //------------------------------------------------------------------------------
 //
-// CMPI_Adapter::_cleanup()
+// CMPI_Adapter::find_meta_class()
 //
 //------------------------------------------------------------------------------
 
-CMPIStatus CMPI_Adapter::_cleanup(
-    CMPI_Adapter* adapter, 
-    const CMPIContext* context,
-    CMPIBoolean terminating)
-{
-    TRACE;
-
-    if (adapter && --adapter->load_count == 0)
-        delete adapter;
-
-    CMReturn(CMPI_RC_OK);
-}
-
-//------------------------------------------------------------------------------
-//
-// CMPI_Adapter::_find_meta_class()
-//
-//------------------------------------------------------------------------------
-
-const Meta_Class* CMPI_Adapter::_find_meta_class(const char* class_name)
+const Meta_Class* CMPI_Adapter::find_meta_class(const char* class_name)
 {
     const Meta_Repository* meta_repository;
     get_repository(meta_repository);
 
-    return find_meta_class(meta_repository, class_name);
+    return cimple::find_meta_class(meta_repository, class_name);
 }
 
 CIMPLE_NAMESPACE_END
@@ -1550,36 +1824,40 @@ using namespace cimple;
 
 extern "C" CIMPLE_EXPORT int cimple_cmpi_adapter(
     void* arg0, /* provider-interface */
-    void* arg1, /* adapter */
+    void* arg1, /* static-data */
     void* arg2, /* registration */
     void* arg3, /* broker */
     void* arg4, /* context */
-    void* arg5, /* provider_name */
+    void* arg5, /* prov_name */
     void* arg6, /* mi-type */
     void* arg7) /* mi */
 {
-    TRACE;
-
     // Extract parameters:
 
-    CMPI_Adapter*& adapter = *((CMPI_Adapter**)arg1);
+    CMPI_Static_Data* sd = ((CMPI_Static_Data*)arg1);
     const Registration* registration = (const Registration*)arg2;
     const CMPIBroker* broker = (const CMPIBroker*)arg3;
     const CMPIContext* context = (const CMPIContext*)arg4;
-    const char* provider_name = (const char*)arg5;
+    const char* prov_name = (const char*)arg5;
     long mi_type = (long)arg6;
+
+    // Be sure static data buffer is small enough.
+
+    CIMPLE_ASSERT(sizeof(CMPI_Static_Data) <= sizeof(__CMPI_Static_Data));
 
     // Create adapter:
 
-    if (adapter)
+    if (sd->adapter)
     {
-        adapter->load_count++;
+        sd->adapter->load_count++;
     }
     else
     {
-        adapter = new CMPI_Adapter(
-            broker, context, provider_name, registration, adapter);
+        sd->adapter = new CMPI_Adapter(
+            broker, context, prov_name, registration, sd);
     }
+
+    sd->adapter->ent(FL, "cimple_cmpi_adapter");
 
     // Create management interface:
 
@@ -1587,68 +1865,105 @@ extern "C" CIMPLE_EXPORT int cimple_cmpi_adapter(
     {
         case 'I': /* instance provider */
         {
-            CMPIInstanceMI tmp = {((void*)adapter), &adapter->instance_ft};
-            memcpy(&adapter->instance_mi, &tmp, sizeof(tmp));
-            *((CMPIInstanceMI**)arg7) = &adapter->instance_mi;
+            CMPIInstanceMI tmp = {((void*)sd), &sd->instance_ft};
+            memcpy(&sd->instance_mi, &tmp, sizeof(tmp));
+            *((CMPIInstanceMI**)arg7) = &sd->instance_mi;
             break;
         }
 
         case 'M': /* method provider */
         {
-            CMPIMethodMI tmp = {((void*)adapter), &adapter->method_ft};
-            memcpy(&adapter->method_mi, &tmp, sizeof(tmp));
-            *((CMPIMethodMI**)arg7) = &adapter->method_mi;
+            CMPIMethodMI tmp = {((void*)sd), &sd->method_ft};
+            memcpy(&sd->method_mi, &tmp, sizeof(tmp));
+            *((CMPIMethodMI**)arg7) = &sd->method_mi;
             break;
         }
 
         case 'A': /* association provider */
         {
-            CMPIAssociationMI tmp = 
-                {((void*)adapter), &adapter->association_ft};
-            memcpy(&adapter->association_mi, &tmp, sizeof(tmp));
-            *((CMPIAssociationMI**)arg7) = &adapter->association_mi;
+            CMPIAssociationMI tmp = {((void*)sd), &sd->association_ft};
+            memcpy(&sd->association_mi, &tmp, sizeof(tmp));
+            *((CMPIAssociationMI**)arg7) = &sd->association_mi;
             break;
         }
 
         case 'N': /* indication provider */
         {
-            CMPIIndicationMI tmp = 
-                {((void*)adapter), &adapter->indication_ft};
-            memcpy(&adapter->indication_mi, &tmp, sizeof(tmp));
-            *((CMPIIndicationMI**)arg7) = &adapter->indication_mi;
+            CMPIIndicationMI tmp = {((void*)sd), &sd->indication_ft};
+            memcpy(&sd->indication_mi, &tmp, sizeof(tmp));
+            *((CMPIIndicationMI**)arg7) = &sd->indication_mi;
             break;
         }
     }
 
     // Success!
+    sd->adapter->ret(FL, "cimple_cmpi_adapter");
     return 0;
 }
 
 const Meta_Class* CMPI_Adapter::find_meta_class_callback(
     const char* class_name, void* client_data)
 {
-    return ((CMPI_Adapter*)client_data)->_find_meta_class(class_name);
+    return ((CMPI_Adapter*)client_data)->find_meta_class(class_name);
 }
 
 const Meta_Class* CMPI_Adapter::find_model_meta_class(const char* class_name)
 {
 #ifdef CIMPLE_ENABLE_SUBCLASS_PROVIDERS
 
-    const Meta_Class* mc = _find_meta_class(class_name);
+    const Meta_Class* mc = find_meta_class(class_name);
 
     if (!mc)
         return 0;
 
-    if (!is_subclass(_mc, mc))
+    if (!is_subclass(mc, mc))
         return 0;
 
     return mc;
 
 #else /* CIMPLE_ENABLE_SUBCLASS_PROVIDERS */
 
-    return _mc;
+    return mc;
 
 #endif /* CIMPLE_ENABLE_SUBCLASS_PROVIDERS */
 }
 
-CIMPLE_INJECT_VERSION_TAG;
+void CMPI_Adapter::ent(const char* file, int line, const char* func)
+{
+#ifdef CIMPLE_DEBUG
+    tracer->trace(TRC_DEBUG, "%s(%d): %s(): ENTER", file, line, func);
+#endif
+}
+
+void CMPI_Adapter::ret(const char* file, int line, const char* func)
+{
+#ifdef CIMPLE_DEBUG
+    tracer->trace(TRC_DEBUG, "%s(%d): %s(): RETURN", file, line, func);
+#endif
+}
+
+void CMPI_Adapter::ret(
+    const char* file, int line, const char* func, CMPIrc rc)
+{
+#ifdef CIMPLE_DEBUG
+    tracer->trace(TRC_DEBUG, "%s(%d): %s(): RETURN %s",
+        file, line, func, rc_to_str(rc));
+#endif
+}
+
+void CMPI_Adapter::trc(
+    const char* file, int line, const char* func, const char* fmt, ...)
+{
+#ifdef CIMPLE_DEBUG
+    char buffer[1024];
+    va_list ap;
+    va_start(ap, fmt);
+    vsprintf(buffer, fmt, ap);
+    va_end(ap);
+
+    tracer->trace(TRC_DEBUG, "%s(%d): %s(): %s",
+        file, line, func, buffer);
+#endif
+}
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/CMPI_Adapter.cpp,v 1.52 2007/03/13 23:25:03 mbrasher-public Exp $");

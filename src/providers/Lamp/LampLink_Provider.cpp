@@ -129,7 +129,9 @@ int LampLink_Provider::proc(
     typedef LampLink Class;
     typedef LampLink_Provider Provider;
     return Association_Provider_Proc_T<Provider>::proc(registration, 
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampLink_Provider.cpp,v 1.7 2007/03/07 20:25:25 mbrasher-public Exp $");

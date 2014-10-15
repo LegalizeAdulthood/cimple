@@ -62,17 +62,17 @@ extern size_t const literal_type_size[];
 CIMPLE_CIMPLE_LINKAGE 
 extern const char* const type_name[];
 
-inline void clear(boolean& x) { x = false; }
-inline void clear(uint8& x) { x = 0; }
-inline void clear(sint8& x) { x = 0; }
-inline void clear(uint16& x) { x = 0; }
-inline void clear(sint16& x) { x = 0; }
-inline void clear(uint32& x) { x = 0; }
-inline void clear(sint32& x) { x = 0; }
-inline void clear(uint64& x) { x = 0; }
-inline void clear(sint64& x) { x = 0; }
-inline void clear(real32& x) { x = 0.0; }
-inline void clear(real64& x) { x = 0.0; }
+inline void __clear(boolean& x) { x = false; }
+inline void __clear(uint8& x) { x = 0; }
+inline void __clear(sint8& x) { x = 0; }
+inline void __clear(uint16& x) { x = 0; }
+inline void __clear(sint16& x) { x = 0; }
+inline void __clear(uint32& x) { x = 0; }
+inline void __clear(sint32& x) { x = 0; }
+inline void __clear(uint64& x) { x = 0; }
+inline void __clear(sint64& x) { x = 0; }
+inline void __clear(real32& x) { x = 0.0; }
+inline void __clear(real64& x) { x = 0.0; }
 
 class String;
 

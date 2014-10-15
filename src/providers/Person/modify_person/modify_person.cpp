@@ -38,28 +38,28 @@ int main(int argc, char** argv)
 {
     try
     {
-	CIMClient client;
-	client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        CIMClient client;
+        client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
 
-	CIMObjectPath object_path;
-	object_path.setClassName("Person");
-	object_path.setNameSpace(NAMESPACE);
-	CIMKeyBinding binding("ssn", "1", CIMKeyBinding::NUMERIC);
-	Array<CIMKeyBinding> bindings;
-	bindings.append(binding);
-	object_path.setKeyBindings(bindings);
-	CIMInstance instance("Person");
-	instance.setPath(object_path);
-	instance.addProperty(CIMProperty("ssn", Uint32(1)));
-	instance.addProperty(CIMProperty("first", String("Pat")));
-	instance.addProperty(CIMProperty("last", String("Rafter Jr.")));
+        CIMObjectPath object_path;
+        object_path.setClassName("Person");
+        object_path.setNameSpace(NAMESPACE);
+        CIMKeyBinding binding("ssn", "1", CIMKeyBinding::NUMERIC);
+        Array<CIMKeyBinding> bindings;
+        bindings.append(binding);
+        object_path.setKeyBindings(bindings);
+        CIMInstance instance("Person");
+        instance.setPath(object_path);
+        instance.addProperty(CIMProperty("ssn", Uint32(1)));
+        instance.addProperty(CIMProperty("first", String("Pat")));
+        instance.addProperty(CIMProperty("last", String("Rafter Jr.")));
 
-	client.modifyInstance(NAMESPACE, instance);
+        client.modifyInstance(NAMESPACE, instance);
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);

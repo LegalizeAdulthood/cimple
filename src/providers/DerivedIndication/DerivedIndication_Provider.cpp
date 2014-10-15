@@ -2,7 +2,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-DerivedIndication_Provider::DerivedIndication_Provider() : _indication_handler(0)
+DerivedIndication_Provider::DerivedIndication_Provider() : 
+    _indication_handler(0)
 {
 }
 
@@ -36,8 +37,8 @@ Disable_Indications_Status DerivedIndication_Provider::disable_indications()
 
     if (_indication_handler)
     {
-	delete _indication_handler;
-	_indication_handler = 0;
+        delete _indication_handler;
+        _indication_handler = 0;
     }
 
     return DISABLE_INDICATIONS_OK;
@@ -53,17 +54,17 @@ Invoke_Method_Status DerivedIndication_Provider::DeliverIndications(
 
     if (_indication_handler)
     {
-	DerivedIndication* indic = DerivedIndication::create();
+        DerivedIndication* indic = DerivedIndication::create();
 
-	indic->IndicationIdentifier.value = "888";
-	indic->IndicationIdentifier.null = false;
+        indic->IndicationIdentifier.value = "888";
+        indic->IndicationIdentifier.null = false;
 
-	indic->IndicationTime.value = Datetime::now();
-	indic->IndicationTime.null = false;
+        indic->IndicationTime.value = Datetime::now();
+        indic->IndicationTime.null = false;
 
-	// print(indic);
+        // print(indic);
 
-	_indication_handler->handle(indic);
+        _indication_handler->handle(indic);
     }
 
     return INVOKE_METHOD_OK;
@@ -86,7 +87,7 @@ int DerivedIndication_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Indication_Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -103,3 +104,5 @@ int DerivedIndication_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/DerivedIndication/DerivedIndication_Provider.cpp,v 1.12 2007/03/07 20:25:24 mbrasher-public Exp $");

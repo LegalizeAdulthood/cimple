@@ -36,26 +36,26 @@ int main(int argc, char** argv)
 {
     try
     {
-	CIMClient client;
-	client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        CIMClient client;
+        client.connectLocal();
 
-	// Define instance name:
+        // Define instance name:
 
-	CIMObjectPath instanceName("Methods.key=7777");
+        CIMObjectPath instanceName("Methods.key=7777");
 
-	// Define input arguments:
+        // Define input arguments:
 
-	Array<CIMParamValue> inParams;
-	Array<CIMParamValue> outParams;
+        Array<CIMParamValue> inParams;
+        Array<CIMParamValue> outParams;
 
-	// Invoke the method:
+        // Invoke the method:
 
-	const String NAMESPACE = "root/cimv2";
-	const String methodName = "foo";
+        const String NAMESPACE = "root/cimv2";
+        const String methodName = "foo";
 
-	inParams.append(CIMParamValue("arg1", Uint32(99)));
-	inParams.append(CIMParamValue("arg2", String("ninety-nine")));
-	inParams.append(CIMParamValue("arg3", Boolean(true)));
+        inParams.append(CIMParamValue("arg1", Uint32(99)));
+        inParams.append(CIMParamValue("arg2", String("ninety-nine")));
+        inParams.append(CIMParamValue("arg3", Boolean(true)));
 
         CIMValue value = client.invokeMethod(
             NAMESPACE,
@@ -64,51 +64,51 @@ int main(int argc, char** argv)
             inParams,
             outParams);
 
-	{
-	    String t;
-	    assert(value.getType() == CIMTYPE_STRING);
-	    value.get(t);
-	    assert(t == "thanks for calling");
-	}
+        {
+            String t;
+            assert(value.getType() == CIMTYPE_STRING);
+            value.get(t);
+            assert(t == "thanks for calling");
+        }
 
-	assert(outParams.size() == 3);
+        assert(outParams.size() == 3);
 
-	for (size_t i = 0; i < outParams.size(); i++)
-	{
-	    const CIMParamValue& pv = outParams[i];
-	    const CIMValue v = pv.getValue();
+        for (size_t i = 0; i < outParams.size(); i++)
+        {
+            const CIMParamValue& pv = outParams[i];
+            const CIMValue v = pv.getValue();
 
-	    if (pv.getParameterName() == "arg4")
-	    {
-		Uint32 t = 0;
-		assert(v.getType() == CIMTYPE_UINT32);
-		pv.getValue().get(t);
-		assert(t == 999);
-	    }
-	    else if (pv.getParameterName() == "arg5")
-	    {
-		String t;
-		assert(v.getType() == CIMTYPE_STRING);
-		pv.getValue().get(t);
-		assert(t == "nine hundred ninety-nine");
-	    }
-	    else if (pv.getParameterName() == "arg6")
-	    {
-		Boolean t = true;
-		assert(v.getType() == CIMTYPE_BOOLEAN);
-		// pv.getValue().get(t);
-		//assert(t == false);
-	    }
-	    else
-	    {
-		assert(0);
-	    }
-	}
+            if (pv.getParameterName() == "arg4")
+            {
+                Uint32 t = 0;
+                assert(v.getType() == CIMTYPE_UINT32);
+                pv.getValue().get(t);
+                assert(t == 999);
+            }
+            else if (pv.getParameterName() == "arg5")
+            {
+                String t;
+                assert(v.getType() == CIMTYPE_STRING);
+                pv.getValue().get(t);
+                assert(t == "nine hundred ninety-nine");
+            }
+            else if (pv.getParameterName() == "arg6")
+            {
+                Boolean t = true;
+                assert(v.getType() == CIMTYPE_BOOLEAN);
+                // pv.getValue().get(t);
+                //assert(t == false);
+            }
+            else
+            {
+                assert(0);
+            }
+        }
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);

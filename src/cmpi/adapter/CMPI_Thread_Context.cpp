@@ -28,6 +28,7 @@
 #include "CMPI_Thread_Context.h"
 #include "Converter.h"
 #include <cimple/Thread.h>
+#include "CMPI_Adapter.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -67,7 +68,8 @@ Thread_Context* CMPI_Thread_Context::thread_create_hook(void* arg)
 
     CIMPLE_ASSERT(cmpi_context != 0);
 
-    return new CMPI_Thread_Context(context->cmpi_broker(), cmpi_context);
+    return new CMPI_Thread_Context(
+        context->cmpi_broker(), cmpi_context, context->cmpi_adapter());
 }
 
 void CMPI_Thread_Context::thread_start_hook()
@@ -522,13 +524,24 @@ int CMPI_Thread_Context::modify_instance(
     return 0;
 }
 
+void CMPI_Thread_Context::allow_unload(bool flag)
+{
+    Error::clear();
+    CIMPLE_ASSERT(_cmpi_adapter != 0);
+    _cmpi_adapter->allow_unload = flag;
+}
+
 CMPI_Thread_Context::CMPI_Thread_Context(
     const CMPIBroker* cmpi_broker,
-    const CMPIContext* cmpi_context)
+    const CMPIContext* cmpi_context,
+    class CMPI_Adapter* cmpi_adapter)
     :
     _cmpi_broker(cmpi_broker),
-    _cmpi_context(cmpi_context)
+    _cmpi_context(cmpi_context),
+    _cmpi_adapter(cmpi_adapter)
 {
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/CMPI_Thread_Context.cpp,v 1.15 2007/03/07 18:42:41 mbrasher-public Exp $");

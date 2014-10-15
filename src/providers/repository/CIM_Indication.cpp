@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Property
 _CIM_Indication_IndicationIdentifier;
@@ -133,8 +133,9 @@ const Meta_Class CIM_Indication::static_meta_class =
     0, /* super_class */ 
     0, /* num_keys */
     0x6F43CD19, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/CIM_Indication.cpp,v 1.51 2007/03/13 22:53:16 mbrasher-public Exp $");

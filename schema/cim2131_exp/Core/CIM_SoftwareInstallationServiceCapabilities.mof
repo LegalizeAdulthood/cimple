@@ -1,0 +1,87 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR01180.006" type ="new">Addition of
+// SoftwareUpdateService and related classes</change>
+// <change cr="DMTFCR01554.002" type ="add"> Addition of
+// SoftwareIdentityResource</change>
+
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+// SoftwareInstallationServiceCapabilities
+// ==================================================================
+   [Experimental, UMLPackagePath ( "CIM::Core::Software" ),
+       Version ( "2.10.0" ), Description (
+       "A subclass of capabilities that defines the capabilities of a "
+       "SoftwareInstallationService. A single instance of "
+       "SoftwareInstallationServiceCapabilities is associated with a "
+       "SoftwareInstallationService using ElementCapabilities.")]
+class CIM_SoftwareInstallationServiceCapabilities : CIM_Capabilities {
+
+      [Required, Description (
+          "Enumeration indicating what operations will be executed as "
+          "asynchronous jobs. If an operation is included in both this "
+          "and SupportedSynchronousActions then the underlying "
+          "implementation is indicating that it may or may not create "
+          "a job. If a Job is created, then the methods in "
+          "SoftwareInstallationService return a reference to that Job "
+          "as the Job parameter."), 
+       ValueMap { "2", "3", "4", "5" }, 
+       Values { "None supported", "Install From Software Identity",
+          "Install from ByteStream", "Install from URI" }, 
+       ModelCorrespondence { 
+          "CIM_SoftwareInstallationServiceCapabilities.SupportedSynchronousActions" 
+          }]
+   uint16 SupportedAsynchronousActions[];
+
+      [Required, Description (
+          "Enumeration indicating what operations will be executed "
+          "without the creation of a job. If an operation is included "
+          "in both this and SupportedAsynchronousActions then the "
+          "underlying instrumentation is indicating that it may or may "
+          "not create a job."), 
+       ValueMap { "2", "3", "4", "5" }, 
+       Values { "None supported", "Install From Software Identity",
+          "Install from ByteStream", "Install from URI" }, 
+       ModelCorrespondence { 
+          "CIM_SoftwareInstallationServiceCapabilities.SupportedAsynchronousActions" 
+          }]
+   uint16 SupportedSynchronousActions[];
+
+      [Required, Description (
+          "An array containing a list of SoftwareIdentity.TargetType "
+          "properties that this service 'knows' how to install. "
+          "TargetType is an application specific string which is "
+          "invariant across version or name changes of the "
+          "SoftwareIdentity and so can be used by a client to select "
+          "Software Identities compatible with this service. \n"
+          "If the service is generic (for example an OS installer), "
+          "this array will be empty."), 
+       ModelCorrespondence { "CIM_SoftwareIdentity.TargetType" }]
+   string SupportedTargetTypes[];
+
+      [Required, Description (
+          "An array containing a list of the binary format types that "
+          "this service 'knows' how to install. The Values for this "
+          "property are the subset of "
+          "CIM_SoftwareIdentityResource.ExtendedResourceTypes that "
+          "apply to the 'Installer and Payload', 'Installer' and ' "
+          "Installability Checker' ResourceTypes. For example, an a "
+          "Windows system, this property may be set to '4' indicating "
+          "'Windows MSI'. This property should be set to '2' (Not "
+          "Applicable) if this service is not OS specific."), 
+       ValueMap { "0", "2", "3", "4", "5", "6", "7", "8", "9..0x7FFF",
+          "0x8000.." }, 
+       Values { "Unknown", "Not Applicable", "Linux RPM",
+          "HP-UX Depot", "Windows MSI", "Solaris Package",
+          "Macintosh Disk Image", "Debian linux Package",
+          "DMTF Reserved", "Vendor Reserved" }]
+   uint16 SupportedExtendedResourceTypes[];
+
+      [Required, Description (
+          "This property indicates whether "
+          "SoftwareInstallationService.InstallFromSoftwareIdentity "
+          "supports adding a SoftwareIdentity to a "
+          "SoftwareIdentityCollection.")]
+   boolean CanAddToCollection;
+
+};

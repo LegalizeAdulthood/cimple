@@ -1,0 +1,68 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="NetworksCR00089" type ="add">
+// Add method CreateNetworkPipe </change>
+
+
+
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_Network
+// ==================================================================
+   [UMLPackagePath ( "CIM::Network::Systems" ), Version ( "2.13.0" ), 
+    Description (
+       "Network is a subclass of AdminDomain that groups "
+       "interconnected networking and computing objects capable of "
+       "exchanging information. Instances of CIM_Network can represent "
+       "an enterprise's global network or specific connectivity "
+       "domains within the global network. These concepts are similar "
+       "to those defined for the Network object in ITU's M.3100 "
+       "specification."), 
+    MappingStrings { "Recommendation.ITU|M3100.Network" }]
+class CIM_Network : CIM_AdminDomain {
+
+      [Experimental, Description (
+          "This method creates a NetworkPipe representing a connection "
+          "between two ServiceAccessPoints. \n"
+          "If Success (0) is returned, the method completed "
+          "successfully. \n"
+          "\n"
+          "A return value of Not Supported (1) indicates the method is "
+          "not supported. \n"
+          "\n"
+          "All other values indicate some type of error condition."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "..",
+       "0x8000..0xFFFF" }, 
+       Values { "Success", "Not Supported",
+          "Unknown/Unspecified Error", "Timeout", "Failed",
+          "Invalid Parameter", "DMTF Reserved", "Vendor Specific" }]
+
+   uint32 CreateNetworkPipe ( 
+         [IN, Description (
+             "Directionality indicates whether the pipe is "
+             "bi-directional (value = 2) or unidirectional (value = "
+             "3). For unidirectional pipes, the appropriate "
+             "ServiceAccessPoint must be referenced for the source and "
+             "sink."), 
+          ValueMap { "2", "3" }, 
+          Values { "Bi-Directional", "Unidirectional" }]
+      uint16 Directionality, 
+         [Required, IN, Description (
+             "The endpoint of the NetworkPipe. Pass the source SAP to "
+             "this parameter when creating unidirectional "
+             "NetworkPipes. When creating bi-directional NetworkPipe, "
+             "it does not matter which SAP reference is passed to this "
+             "parameter.")]
+      CIM_ServiceAccessPoint REF SourceSAP, 
+         [Required, IN, Description (
+             "The endpoint of the NetworkPipe. Pass the sink SAP to "
+             "this parameter when creating unidirectional "
+             "NetworkPipes. When creating bi-directional NetworkPipe, "
+             "it does not matter which SAP reference is passed to this "
+             "parameter.")]
+      CIM_ServiceAccessPoint REF SinkSAP,
+      
+         [IN, OUT, Description (
+             "A reference to the newly created NetworkPipe.")]
+      CIM_NetworkPipe REF NetworkPipe); 
+};

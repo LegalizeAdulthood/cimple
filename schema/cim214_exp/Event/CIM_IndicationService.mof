@@ -1,0 +1,14 @@
+// Copyright (c) 2006 DMTF.  All rights reserved.
+//<change cr="WIPCR00320.003" type="change">Add CIM_IndicationService
+//</change>
+
+// ==================================================================
+//  CIM_IndicationService
+// ==================================================================
+   [Experimental, Version ( "2.14.0" ), UMLPackagePath ( "CIM::Event" ), 
+    Description (
+       "An IndicationService is a Service of the CIM Object Manager "
+       "that is responsible for delivering indications to Indication "
+       "Handlers.")]
+class CIM_IndicationService : CIM_Service {
+};

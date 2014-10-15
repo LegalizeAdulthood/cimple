@@ -29,6 +29,7 @@
 #include <cstdio>
 #include <windows.h>
 #include <io.h>
+#include <direct.h>
 
 POSIX_NAMESPACE_BEGIN
 
@@ -38,54 +39,19 @@ unsigned int sleep(unsigned int seconds)
     return 0;
 }
 
-#if 0
+int chdir(const char* path)
+{
+    return _chdir(path);
+}
+
+char* getcwd(char* buffer, size_t size)
+{
+    return _getcwd(buffer, size);
+}
+
 int access(const char* p, int mode)
 {
-printf("ENTER[%s]\n", p);
-    // Fail on empty string.
-
-    if (*p == '\0')
-	return -1;
-
-    // Handle path of the form "[A-Z]:/".
-
-    if (isalpha(p[0]) && p[1] == ':' && p[2] == '/' && p[3] == '\0')
-	return ::access(p, mode);
-
-    // Handle "/".
-
-    if (p[0] == '/' && p[1] == '\0')
-	return ::access(p, mode);
-
-    // Handle paths that do not end with '/'.
-
-    const char* end = p;
-
-    while (*end)
-	end++;
-
-    if (*--end != '/')
-	return ::access(p, mode);
-
-    // Handle paths that end with '/' (Windows access() fails on these so
-    // we must remove the slash).
-
-    char* q = (char*)malloc(end - p + 1);
-
-    if (!q)
-	return -1;
-
-    *q = '\0';
-    strncat(q, p, end - p);
-
-printf("q[%s]\n", q);
-
-    int rc = ::access(q, mode);
-
-    free(q);
-
-    return rc;
+    return _access(p, mode);
 }
-#endif
 
 POSIX_NAMESPACE_END

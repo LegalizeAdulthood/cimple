@@ -38,6 +38,9 @@ const Meta_Class* find_meta_class(
     const Meta_Repository* mr,
     const char* class_name)
 {
+    if (!mr)
+        return 0;
+
     for (size_t i = 0; i < mr->num_meta_classes; i++)
     {
         if (eqi(mr->meta_classes[i]->name, class_name))
@@ -49,3 +52,5 @@ const Meta_Class* find_meta_class(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Repository.cpp,v 1.6 2007/03/07 18:41:15 mbrasher-public Exp $");

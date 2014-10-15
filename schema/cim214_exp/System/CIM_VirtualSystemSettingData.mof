@@ -1,0 +1,62 @@
+// Copyright (c) 2006 DMTF.  All rights reserved.
+// <change cr="SVCPCR00024" type ="new">Add class</change>
+
+// ===================================================================
+// CIM_VirtualSystemSettingData
+// ===================================================================
+   [Experimental, Version ( "2.14.0" ),
+       UMLPackagePath ( "CIM::System::SystemElements" ), Description (
+       "CIM_VirtualSystemSettingData defines the virtual aspects of a "
+       "virtual system through a set of virtualization specific "
+       "properties. CIM_VirtualSystemSettingData is also used as the "
+       "top level class of virtual system configurations. Virtual "
+       "system configurations model configuration information about "
+       "virtual systems and their components. A virtual system "
+       "configuration consists of one top-level instance of class "
+       "CIM_VirtualSystemSettingData that aggregates a number of "
+       "instances of class CIM_ResourceAllocationSettingData, using "
+       "association CIM_ConcreteComponent. \n"
+       "Virtual system configurations may for example be used to "
+       "reflect configurations of \n"
+       "- virtual systems that are defined at a virtualization "
+       "platform, \n"
+       "- virtual systems that are currently active, \n"
+       "- input requests to create new virtual systems, \n"
+       "- input requests to modify existing virtual systems, or \n"
+       "- snapshots of virtual systems.")]
+class CIM_VirtualSystemSettingData : CIM_SettingData {
+
+      [Description (
+          "VirtualSystemIdentifier shall reflect a unique name for the "
+          "system as it is used within the virtualization platform. "
+          "Note that the VirtualSystemIdentifier is not the hostname "
+          "assigned to the operating system instance running within "
+          "the virtual system, nor is it an IP address or MAC address "
+          "assigned to any of its network ports. \n"
+          "On create requests VirtualSystemIdentifier may contain "
+          "implementation specific rules (like simple patterns or "
+          "regular expresssion) that may be interpreted by the "
+          "implementation when assigning a VirtualSystemIdentifier.")]
+   string VirtualSystemIdentifier;
+
+      [Description (
+          "VirtualSystemType shall reflect a particular type of "
+          "virtual system. Implementations are commonly capable to "
+          "support various implementation defined virtual system "
+          "types. \n"
+          "As stated in the class description, instances of this class "
+          "may be used for various purposes. A management application "
+          "intending to use an instance of this class as input "
+          "parameter to an operation that creates or modifies a "
+          "virtual system should first determine the set of valid "
+          "virtual system types that are supported by the "
+          "virtualization platform hosting the virtual system by "
+          "inspecting values of array property "
+          "VirtualSystemTypesSupported of the instance of class "
+          "CIM_VirtualSystemManagementCapabilities that describes the "
+          "capabilities of the virtualization platform.")]
+   string VirtualSystemType;
+};
+
+
+

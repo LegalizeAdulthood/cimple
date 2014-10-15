@@ -61,13 +61,20 @@ void destroy(Meta_Reference* mr)
 
 //==============================================================================
 //
-// _print_meta_reference()
+// print()
 //
 //==============================================================================
 
 void print(const Meta_Reference* mr)
 {
     printf("%s ref %s", mr->meta_class->name, mr->name);
+
+    if (mr->subscript > 0)
+        printf("[%d]", mr->subscript);
+    else if (mr->subscript < 0)
+        printf("[]");
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Reference.cpp,v 1.13 2007/03/07 18:41:15 mbrasher-public Exp $");

@@ -8,7 +8,6 @@ DIRS = \
     property \
     sizes \
     time \
-    join \
     model_path \
     cast \
     class \

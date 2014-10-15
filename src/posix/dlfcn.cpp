@@ -41,8 +41,8 @@ static void _set_dlerror()
 
     if (_dlerror_message)
     {
-	LocalFree(_dlerror_message);
-	_dlerror_message = NULL;
+        LocalFree(_dlerror_message);
+        _dlerror_message = NULL;
     }
 
     // Set new error message:
@@ -65,8 +65,8 @@ void* dlopen(const char* path, int flags)
 
     if (module == NULL)
     {
-	_set_dlerror();
-	return 0;
+        _set_dlerror();
+        return 0;
     }
 
     return module;
@@ -78,8 +78,8 @@ void* dlsym(void* handle, const char* symbol)
 
     if (proc == NULL)
     {
-	_set_dlerror();
-	return 0;
+        _set_dlerror();
+        return 0;
     }
 
     return proc;
@@ -94,7 +94,7 @@ int dlclose(void* handle)
 char* dlerror()
 {
     if (!_dlerror_flag)
-	return NULL;
+        return NULL;
 
     _dlerror_flag = false;
     return _dlerror_message;

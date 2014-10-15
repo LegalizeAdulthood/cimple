@@ -49,7 +49,7 @@ void MOF_Property_Decl::validate()
     /* Check the initializer */
 
     if (initializer)
-	initializer->validate("property", name, data_type, array_index);
+        initializer->validate("property", name, data_type, array_index);
 
 #if 0
     /*
@@ -58,10 +58,10 @@ void MOF_Property_Decl::validate()
 
     if (qual_mask | MOF_QT_KEY)
     {
-	printf("KEY PROPERTY: %s[%d] %s\n", 
-	    MOF_Data_Type::to_string(data_type),
-	    array_index,
-	    name);
+        printf("KEY PROPERTY: %s[%d] %s\n", 
+            MOF_Data_Type::to_string(data_type),
+            array_index,
+            name);
     }
 #endif
 }
@@ -71,7 +71,7 @@ MOF_Element* MOF_Property_Decl::clone() const
     MOF_Property_Decl* tmp;
     
     if ((tmp = new MOF_Property_Decl()) == 0)
-	return 0;
+        return 0;
 
     tmp->type = type;
     tmp->name = strdup(name);
@@ -85,3 +85,5 @@ MOF_Element* MOF_Property_Decl::clone() const
     return tmp;
 }
 
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Property_Decl.cpp,v 1.6 2007/03/07 18:57:15 mbrasher-public Exp $");

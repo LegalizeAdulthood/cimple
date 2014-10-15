@@ -67,9 +67,9 @@ Invoke_Method_Status MyIndication_Provider::DeliverIndications(
 
     if (_indication_handler)
     {
-	MyIndication* indic = MyIndication_create("777", "seven");
-	// print(indic);
-	_indication_handler->handle(indic);
+        MyIndication* indic = MyIndication_create("777", "seven");
+        // print(indic);
+        _indication_handler->handle(indic);
     }
 
     return INVOKE_METHOD_OK;
@@ -92,7 +92,7 @@ int MyIndication_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Indication_Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -109,3 +109,5 @@ int MyIndication_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MyIndication/MyIndication_Provider.cpp,v 1.22 2007/03/07 20:25:25 mbrasher-public Exp $");

@@ -35,24 +35,24 @@ int main(int argc, char** argv)
 {
     try
     {
-	CIMClient client;
-	client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        CIMClient client;
+        client.connectLocal();
 
-	// Define instance name:
+        // Define instance name:
 
-	CIMObjectPath instanceName("Methods.key=7777");
+        CIMObjectPath instanceName("Methods.key=7777");
 
-	// Define input arguments:
+        // Define input arguments:
 
-	Array<CIMParamValue> inParams;
-	Array<CIMParamValue> outParams;
+        Array<CIMParamValue> inParams;
+        Array<CIMParamValue> outParams;
 
-	// Invoke the method:
+        // Invoke the method:
 
-	const String NAMESPACE = "root/cimv2";
-	const String methodName = "foo2";
+        const String NAMESPACE = "root/cimv2";
+        const String methodName = "foo2";
 
-	inParams.append(CIMParamValue("arg1", CIMObjectPath("Arg.key=99999")));
+        inParams.append(CIMParamValue("arg1", CIMObjectPath("Arg.key=99999")));
 
         CIMValue value = client.invokeMethod(
             NAMESPACE,
@@ -61,17 +61,17 @@ int main(int argc, char** argv)
             inParams,
             outParams);
 
-	{
-	    assert(value.getType() == CIMTYPE_STRING);
-	    String t;
-	    value.get(t);
-	    assert(t == "thanks");
-	}
+        {
+            assert(value.getType() == CIMTYPE_STRING);
+            String t;
+            value.get(t);
+            assert(t == "thanks");
+        }
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);

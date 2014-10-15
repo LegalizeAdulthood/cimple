@@ -25,3 +25,5 @@
 */
 
 #include "../adapter/CMPI_Thread_Context.cpp"
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter_s/CMPI_Thread_Context.cpp,v 1.2 2007/03/07 19:12:41 mbrasher-public Exp $");

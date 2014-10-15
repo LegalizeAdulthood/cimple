@@ -31,5 +31,7 @@ void MOF_Indent(size_t nesting)
     size_t i;
 
     for (i = 0; i < nesting * 2; i++)
-	putchar(' ');
+        putchar(' ');
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Indent.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

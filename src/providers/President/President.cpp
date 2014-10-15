@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_8F57C0F8B3E5158AA367C7FA50F40F1B;
+extern const Meta_Repository __meta_repository_C26CDA5DC5FD1E19B65F857630A80A82;
 
 extern const Meta_Property
 _President_Number;
@@ -95,8 +95,9 @@ const Meta_Class President::static_meta_class =
     0, /* super_class */ 
     1, /* num_keys */
     0x04EF282E, /* crc */
-    &__meta_repository_8F57C0F8B3E5158AA367C7FA50F40F1B,
+    &__meta_repository_C26CDA5DC5FD1E19B65F857630A80A82,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/President/President.cpp,v 1.12 2007/03/13 22:53:13 mbrasher-public Exp $");

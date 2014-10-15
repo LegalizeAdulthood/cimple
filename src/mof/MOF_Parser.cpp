@@ -44,21 +44,21 @@ FILE* MOF_open_file(const char* path, string& full_path)
     full_path.erase(full_path.begin(), full_path.end());
 
     if (*path == '/')
-	return fopen(path, "rb");
+        return fopen(path, "rb");
 
     for (size_t i = 0; i < MOF_num_include_paths; i++)
     {
-	string tmp = MOF_include_paths[i];
-	tmp += "/";
-	tmp += path;
+        string tmp = MOF_include_paths[i];
+        tmp += "/";
+        tmp += path;
 
-	FILE* is = fopen(tmp.c_str(), "rb");
+        FILE* is = fopen(tmp.c_str(), "rb");
 
-	if (is)
-	{
-	    full_path = tmp;
-	    return is;
-	}
+        if (is)
+        {
+            full_path = tmp;
+            return is;
+        }
     }
 
     // Not found!
@@ -74,8 +74,8 @@ int MOF_parse_file(const char* mof_file)
 
     if (!MOF_in)
     {
-	fprintf(stderr, "failed to open \"%s\"\n", mof_file);
-	exit(1);
+        fprintf(stderr, "failed to open \"%s\"\n", mof_file);
+        exit(1);
     }
 
     // Parse the file.
@@ -89,3 +89,5 @@ int MOF_parse_file(const char* mof_file)
     fclose(MOF_in);
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parser.cpp,v 1.7 2007/03/07 18:57:14 mbrasher-public Exp $");

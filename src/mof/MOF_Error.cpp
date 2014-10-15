@@ -44,12 +44,12 @@ void MOF_warning_printf(const char *format, ...)
 {
     if (MOF_Options::warn)
     {
-	va_list ap;
-	fprintf(stderr, "warning: %s(%d): ", MOF_file_name, MOF_line_num);
-	va_start(ap, format);
-	vfprintf(stderr, format, ap);
-	fprintf(stderr, "\n");
-	va_end(ap);
+        va_list ap;
+        fprintf(stderr, "warning: %s(%d): ", MOF_file_name, MOF_line_num);
+        va_start(ap, format);
+        vfprintf(stderr, format, ap);
+        fprintf(stderr, "\n");
+        va_end(ap);
     }
 }
 
@@ -57,3 +57,5 @@ void MOF_error(const char* message)
 {
     MOF_error_printf("%s\n", message);
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Error.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

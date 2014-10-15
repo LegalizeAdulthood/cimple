@@ -34,9 +34,9 @@ Get_Instance_Status Methods_Provider::get_instance(
 
     if (model->key.value == 99)
     {
-	instance = Methods::create();
-	instance->key.value = 99;
-	return GET_INSTANCE_OK;
+        instance = Methods::create();
+        instance->key.value = 99;
+        return GET_INSTANCE_OK;
     }
 
     return GET_INSTANCE_NOT_FOUND;
@@ -110,22 +110,19 @@ Invoke_Method_Status Methods_Provider::foo(
 Invoke_Method_Status Methods_Provider::foo2(
     const Methods* self,
     const Arg* arg1,
-    Arg* arg2,
+    Arg*& arg2,
     Property<String>& return_value)
 {
     TRACE;
 
-    if (arg2)
-    {
-	arg2->key.value = 12345;
-	arg2->key.null = false;
+    arg2 = Arg::create();
+    arg2->key.value = 12345;
+    arg2->key.null = false;
 
-	return_value.value = "thanks";
-	return_value.null = false;
-	return INVOKE_METHOD_OK;
-    }
+    return_value.value = "thanks";
+    return_value.null = false;
 
-    return INVOKE_METHOD_FAILED;
+    return INVOKE_METHOD_OK;
 }
 
 int Methods_Provider::proc(
@@ -150,7 +147,7 @@ int Methods_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -184,3 +181,5 @@ int Methods_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Methods/Methods_Provider.cpp,v 1.17 2007/03/07 20:25:25 mbrasher-public Exp $");

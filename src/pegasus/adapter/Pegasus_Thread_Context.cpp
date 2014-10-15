@@ -67,13 +67,13 @@ Pegasus_Thread_Context::Pegasus_Thread_Context(
 Pegasus_Thread_Context::~Pegasus_Thread_Context()
 {
     if (_delete_operation_context)
-	delete _operation_context;
+        delete _operation_context;
 }
 
 static Pegasus_Thread_Context* _top()
 {
     Pegasus_Thread_Context* context = 
-	(Pegasus_Thread_Context*)Thread_Context::top();
+        (Pegasus_Thread_Context*)Thread_Context::top();
     assert(context != 0);
 
     return context;
@@ -85,10 +85,10 @@ Thread_Context* Pegasus_Thread_Context::thread_create_hook(void* arg)
     assert(context != 0);
 
     Pegasus::OperationContext* operation_context = 
-	new Pegasus::OperationContext(*context->operation_context());
+        new Pegasus::OperationContext(*context->operation_context());
 
     return new Pegasus_Thread_Context(
-	context->cimom_handle(), operation_context, true);
+        context->cimom_handle(), operation_context, true);
 }
 
 void Pegasus_Thread_Context::thread_start_hook()
@@ -111,7 +111,7 @@ Instance_Enumerator_Rep* Pegasus_Thread_Context::instance_enumerator_create(
     const Instance* model)
 {
     if (!name_space || !model)
-	return 0;
+        return 0;
 
     Pegasus_Thread_Context* context = _top();
 
@@ -121,22 +121,23 @@ Instance_Enumerator_Rep* Pegasus_Thread_Context::instance_enumerator_create(
 
     try
     {
-	rep->instances = context->cimom_handle()->enumerateInstances(
-	    *context->operation_context(),
-	    name_space,
-	    model->meta_class->name,
-	    true,
-	    false,
-	    false,
-	    false,
-	    Pegasus::CIMPropertyList());
+        rep->instances = context->cimom_handle()->enumerateInstances(
+            *context->operation_context(),
+            name_space,
+            model->meta_class->name,
+            true,
+            false,
+            false,
+            false,
+            Pegasus::CIMPropertyList());
 
     }
     catch (...)
     {
-	delete rep;
-	return 0;
+        delete rep;
+        return 0;
     }
+
 
     return (Instance_Enumerator_Rep*)rep;
 }
@@ -151,10 +152,10 @@ bool Pegasus_Thread_Context::instance_enumerator_more(
     Instance_Enumerator_Rep* rep_)
 {
     Pegasus_Instance_Enumerator_Rep* rep = 
-	(Pegasus_Instance_Enumerator_Rep*)rep_;
+        (Pegasus_Instance_Enumerator_Rep*)rep_;
 
     if (!rep)
-	return false;
+        return false;
 
     return (rep->pos == rep->instances.size()) ? false : true;
 }
@@ -163,27 +164,27 @@ void Pegasus_Thread_Context::instance_enumerator_next(
     Instance_Enumerator_Rep* rep_)
 {
     Pegasus_Instance_Enumerator_Rep* rep = 
-	(Pegasus_Instance_Enumerator_Rep*)rep_;
+        (Pegasus_Instance_Enumerator_Rep*)rep_;
 
     if (rep && rep->pos != rep->instances.size())
-	rep->pos++;
+        rep->pos++;
 }
 
 Ref<Instance> Pegasus_Thread_Context::instance_enumerator_get(
     Instance_Enumerator_Rep* rep_)
 {
     Pegasus_Instance_Enumerator_Rep* rep = 
-	(Pegasus_Instance_Enumerator_Rep*)rep_;
+        (Pegasus_Instance_Enumerator_Rep*)rep_;
 
     if (!rep || rep->pos == rep->instances.size())
-	return Ref<Instance>();
+        return Ref<Instance>();
 
     Instance* instance = 0;
 
     if (Converter::to_cimple_instance(
-	rep->instances[rep->pos], rep->meta_class, instance) == 0)
+        rep->instances[rep->pos], rep->meta_class, instance) == 0)
     {
-	return Ref<Instance>(instance);
+        return Ref<Instance>(instance);
     }
 
     return Ref<Instance>();
@@ -200,44 +201,44 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
     Pegasus::CIMObjectPath cim_object_path;
 
     if (Converter::to_pegasus_object_path(
-	Pegasus::String(), name_space, model, cim_object_path) != 0)
+        Pegasus::String(), name_space, model, cim_object_path) != 0)
     {
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     try
     {
-	// Get the instance.
+        // Get the instance.
 
-	Pegasus::CIMInstance cim_instance = 
-	    context->cimom_handle()->getInstance(
-		*context->operation_context(),
-		name_space,
-		cim_object_path,
-		false,
-		false,
-		false,
-		Pegasus::CIMPropertyList());
+        Pegasus::CIMInstance cim_instance = 
+            context->cimom_handle()->getInstance(
+                *context->operation_context(),
+                name_space,
+                cim_object_path,
+                false,
+                false,
+                false,
+                Pegasus::CIMPropertyList());
 
-	// Convert to CIMPLE instance.
+        // Convert to CIMPLE instance.
 
-	Instance* instance = 0;
+        Instance* instance = 0;
 
-	if (Converter::to_cimple_instance(
-	    cim_instance, model->meta_class, instance) != 0)
-	{
-	    destroy(instance);
-	    return Ref<Instance>();
-	}
+        if (Converter::to_cimple_instance(
+            cim_instance, model->meta_class, instance) != 0)
+        {
+            destroy(instance);
+            return Ref<Instance>();
+        }
 
-	return Ref<Instance>(instance);
+        return Ref<Instance>(instance);
     }
     catch (...)
     {
-	// Error!
-	return Ref<Instance>();
+        // Error!
+        return Ref<Instance>();
     }
-	
+        
     // Unreachable!
     return Ref<Instance>();
 }
@@ -253,29 +254,29 @@ int Pegasus_Thread_Context::create_instance(
     Pegasus::CIMInstance cim_instance;
 
     if (Converter::to_pegasus_instance(
-	Pegasus::String(), name_space, instance, cim_instance) != 0)
+        Pegasus::String(), name_space, instance, cim_instance) != 0)
     {
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     try
     {
-	// Create the instance.
+        // Create the instance.
 
-	context->cimom_handle()->createInstance(
-	    *context->operation_context(),
-	    name_space,
-	    cim_instance);
+        context->cimom_handle()->createInstance(
+            *context->operation_context(),
+            name_space,
+            cim_instance);
 
-	// Success!
-	return 0;
+        // Success!
+        return 0;
     }
     catch (...)
     {
-	// Error!
-	return -1;
+        // Error!
+        return -1;
     }
-	
+        
     // Unreachable!
     return -1;
 }
@@ -291,29 +292,29 @@ int Pegasus_Thread_Context::delete_instance(
     Pegasus::CIMObjectPath cim_object_path;
 
     if (Converter::to_pegasus_object_path(
-	Pegasus::String(), name_space, model, cim_object_path) != 0)
+        Pegasus::String(), name_space, model, cim_object_path) != 0)
     {
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     try
     {
-	// Delete the instance.
+        // Delete the instance.
 
-	context->cimom_handle()->deleteInstance(
-	    *context->operation_context(),
-	    name_space,
-	    cim_object_path);
+        context->cimom_handle()->deleteInstance(
+            *context->operation_context(),
+            name_space,
+            cim_object_path);
 
-	// Success!
-	return 0;
+        // Success!
+        return 0;
     }
     catch (...)
     {
-	// Error!
-	return -1;
+        // Error!
+        return -1;
     }
-	
+        
     // Unreachable!
     return -1;
 }
@@ -329,33 +330,45 @@ int Pegasus_Thread_Context::modify_instance(
     Pegasus::CIMInstance cim_instance;
 
     if (Converter::to_pegasus_instance(
-	Pegasus::String(), name_space, instance, cim_instance) != 0)
+        Pegasus::String(), name_space, instance, cim_instance) != 0)
     {
-	return Ref<Instance>();
+        return Ref<Instance>();
     }
 
     try
     {
-	// Create the instance.
+        // Create the instance.
 
-	context->cimom_handle()->modifyInstance(
-	    *context->operation_context(),
-	    name_space,
-	    cim_instance,
-	    false,
-	    Pegasus::CIMPropertyList());
+        context->cimom_handle()->modifyInstance(
+            *context->operation_context(),
+            name_space,
+            cim_instance,
+            false,
+            Pegasus::CIMPropertyList());
 
-	// Success!
-	return 0;
+        // Success!
+        return 0;
     }
     catch (...)
     {
-	// Error!
-	return -1;
+        // Error!
+        return -1;
     }
-	
+        
     // Unreachable!
     return -1;
 }
 
+void Pegasus_Thread_Context::allow_unload(bool flag)
+{
+    Pegasus_Thread_Context* context = _top();
+
+    if (flag)
+        context->cimom_handle()->allowProviderUnload();
+    else
+        context->cimom_handle()->disallowProviderUnload();
+}
+
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Thread_Context.cpp,v 1.13 2007/03/07 18:42:32 mbrasher-public Exp $");

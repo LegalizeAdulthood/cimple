@@ -1,13 +1,11 @@
-This directory contains versions of the CIM schema. To change the version of
-the schema used by CIMPLE, define this variable in your environment to point
-to the full path of the desired schema directory.
+This directory contains versions of the CIM schema used by the following
+CIMPLE tools.
 
-    export CIMPLE_SCHEMA_PATH=/opt/cimple/schema/cim211
+    genclass
+    genprov
 
-Also, don't forget to define CIMPLE_MOF_PATH (used by genclass and genprov).
+These tools operate off the schemas in this directory, pointed to by the
+CIMPLE_MOF_PATH envirionment variable. For example:
 
-    export CIMPLE_MOF_PATH=$(CIMPLE_SCHEMA_PATH):/other/dirs
+    export CIMPLE_MOF_PATH=/opt/cimple/schema/cim2131
 
-The schema directories that end in "_experimental" are from the DMTF
-experimental distribution. They contain all the non-experimental classes
-as well.

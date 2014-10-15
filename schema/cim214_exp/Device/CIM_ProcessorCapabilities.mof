@@ -1,0 +1,26 @@
+// Copyright (c) 2006 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00825" type ="create">Added class.</
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+// CIM_ProcessorCapabilities
+// ==================================================================
+   [Experimental, Version ( "2.13.0" ),
+       UMLPackagePath ( "CIM::Device::Processor" ), Description (
+       "ProcessorCapabilities inherits the capabilities of "
+       "EnabledLogicalElementCapabilities and adds properties "
+       "describing processor core and hardware thread support.")]
+class CIM_ProcessorCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description (
+          "Number of processor cores available for processor. This "
+          "number would not include cores disabled by hardware and may "
+          "be obtained from SMBIOS 2.5 Type 4 offset 23h.")]
+   uint16 NumberOfProcessorCores;
+
+      [Description (
+          "Number of hardware threads available for the processor. May "
+          "be obtained from SMBIOS v2.5 4 offset 25h.")]
+   uint16 NumberOfHardwareThreads;
+
+};

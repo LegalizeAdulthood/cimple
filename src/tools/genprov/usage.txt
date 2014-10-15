@@ -5,10 +5,10 @@ files: <CLASSNAME>_Provider.h and <CLASSNAME>_Provider.cpp. It will only
 overwrite existing files when the -f (force) option is used.
 
 OPTIONS:
+    -V      -- print the version.
     -I      -- add to MOF include path (can be repeated).
     -M file -- add to list of MOF files to be parsed (can be repeated).
     -f      -- force overwrite of existing files (be careful).
     -m      -- generate the module file as well.
-    -v      -- print the version.
     -h      -- print this message.
 

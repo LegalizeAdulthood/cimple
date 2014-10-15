@@ -38,28 +38,30 @@ int main(int argc, char** argv)
 {
     try
     {
-	CIMClient client;
-	client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        CIMClient client;
+        client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
 
-	CIMObjectPath object_path;
-	object_path.setClassName("Person");
-	object_path.setNameSpace(NAMESPACE);
-	CIMKeyBinding binding("ssn", "1", CIMKeyBinding::NUMERIC);
-	Array<CIMKeyBinding> bindings;
-	bindings.append(binding);
-	object_path.setKeyBindings(bindings);
+        CIMObjectPath object_path;
+        object_path.setClassName("Person");
+        object_path.setNameSpace(NAMESPACE);
+        CIMKeyBinding binding("ssn", "1", CIMKeyBinding::NUMERIC);
+        Array<CIMKeyBinding> bindings;
+        bindings.append(binding);
+        object_path.setKeyBindings(bindings);
 
-	cout << object_path.toString() << endl;
+        cout << object_path.toString() << endl;
 
-	client.associators(NAMESPACE, object_path, "ParentChild", "Person");
+        client.associators(NAMESPACE, object_path, "ParentChild", "Person");
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/assoc_person/assoc_person.cpp,v 1.4 2007/03/07 20:19:40 mbrasher-public Exp $");

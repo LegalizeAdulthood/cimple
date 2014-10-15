@@ -1,0 +1,15 @@
+class RefArrayParam
+{
+    [Key] uint32 key;
+};
+
+class RefArray
+{
+    [Key] uint32 key;
+
+    uint32 SendRefArray(
+        [In(true), Out(false)]
+        RefArrayParam REF arr1[], 
+        [In(false), Out(true)]
+        RefArrayParam REF arr2[]);
+};

@@ -79,6 +79,8 @@ struct CIMPLE_CIMPLE_LINKAGE Thread_Context
         const char* name_space, 
         const Instance* instance) = 0;
 
+    virtual void allow_unload(bool flag) = 0;
+
     static void push(Thread_Context* context);
 
     static void pop();

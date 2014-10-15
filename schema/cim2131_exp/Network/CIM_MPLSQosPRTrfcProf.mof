@@ -1,0 +1,28 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_MPLSQosPRTrfcProf
+// ==================================================================
+   [Experimental, UMLPackagePath ( "CIM::Network::MPLS" ),
+       Version ( "2.8.1000" ), Description (
+       "A QoS traffic profile, which is associated to an LSP when QoS "
+       "is guaranteed. The association ElementSetting ties the Setting "
+       "to the LSP.")]
+class CIM_MPLSQosPRTrfcProf : CIM_SettingData {
+
+      [Description (
+          "The peak traffic rate in kilobits per second."), 
+       Units ( "KiloBits per Second" )]
+   uint32 PRRate;
+
+      [Description (
+          "Traffic burst size in bytes."), 
+       Units ( "Bytes" )]
+   uint16 PRNormalBurst;
+
+      [Description (
+          "Traffic excess burst in bytes."), 
+       Units ( "Bytes" )]
+   uint16 PRExcessBurst;
+};

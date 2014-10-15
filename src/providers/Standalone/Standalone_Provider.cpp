@@ -84,7 +84,9 @@ int Standalone_Provider::proc(
     typedef Standalone Class;
     typedef Standalone_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Standalone/Standalone_Provider.cpp,v 1.2 2007/03/07 20:25:16 mbrasher-public Exp $");

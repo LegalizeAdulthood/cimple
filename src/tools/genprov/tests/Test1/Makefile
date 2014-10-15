@@ -11,7 +11,7 @@ tests:
 	@ $(BIN_DIR)/test_genprov1
 
 genclass:
-	$(BIN_DIR)/genclass Test1
+	genclass Test1
 
 genprov:
-	$(BIN_DIR)/genprov  -f Test1
+	genprov  -f Test1

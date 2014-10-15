@@ -60,17 +60,17 @@ MOF_Qualifier_Decl* MOF_Qualifier_Decl::find(char* name)
 
     for (p = MOF_Qualifier_Decl::list; p; p = (MOF_Qualifier_Decl*)p->next)
     {
-	if (MOF_stricmp(p->name, name) == 0)
-	{
-	    if (strcmp(name, p->name) != 0)
-	    {
-		MOF_warning_printf("changing case of \"%s\" to \"%s\"",
-		    name, p->name);
+        if (MOF_stricmp(p->name, name) == 0)
+        {
+            if (strcmp(name, p->name) != 0)
+            {
+                MOF_warning_printf("changing case of \"%s\" to \"%s\"",
+                    name, p->name);
 
-		strcpy(name, p->name);
-	    }
-	    return p;
-	}
+                strcpy(name, p->name);
+            }
+            return p;
+        }
     }
 
     return 0;
@@ -83,7 +83,7 @@ void MOF_Qualifier_Decl::validate()
      */
 
     if (MOF_Qualifier_Decl::find(name))
-	MOF_error_printf("qualifier already defined: \"%s\"", name);
+        MOF_error_printf("qualifier already defined: \"%s\"", name);
 
     /*
      * Validate the initializer.
@@ -91,8 +91,8 @@ void MOF_Qualifier_Decl::validate()
 
     if (initializer)
     {
-	initializer->validate(
-	    "qualifier", name, data_type, array_index);
+        initializer->validate(
+            "qualifier", name, data_type, array_index);
     }
 }
 
@@ -101,9 +101,9 @@ void MOF_Qualifier_Decl::handle(MOF_Qualifier_Decl* qual_decl)
     qual_decl->validate();
 
     if (MOF_Qualifier_Decl::list == 0)
-	MOF_Qualifier_Decl::list = qual_decl;
+        MOF_Qualifier_Decl::list = qual_decl;
     else
-	MOF_Qualifier_Decl::list->append(qual_decl);
+        MOF_Qualifier_Decl::list->append(qual_decl);
 }
 
 void MOF_Qualifier_Decl::print() const
@@ -116,5 +116,7 @@ void MOF_Qualifier_Decl::print_static_list()
     MOF_Qualifier_Decl* p = MOF_Qualifier_Decl::list; 
 
     for (; p; p = (MOF_Qualifier_Decl*)p->next)
-	p->print();
+        p->print();
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier_Decl.cpp,v 1.5 2007/03/07 18:57:15 mbrasher-public Exp $");

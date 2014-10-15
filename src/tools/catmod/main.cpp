@@ -1,4 +1,4 @@
-#include <cimple/version.h>
+#include <cimple/config.h>
 #include <dlfcn.h>
 #include <cstdlib>
 #include <cstdio>
@@ -18,8 +18,8 @@ void process(const char* path)
 
     if (!handle)
     {
-	fprintf(stderr, "%s: %s\n", arg0, dlerror());
-	return;
+        fprintf(stderr, "%s: %s\n", arg0, dlerror());
+        return;
     }
 
     // Get symbol:
@@ -29,9 +29,9 @@ void process(const char* path)
 
     if (!module_proc)
     {
-	fprintf(stderr, "%s: %s\n", arg0, dlerror());
-	dlclose(handle);
-	return;
+        fprintf(stderr, "%s: %s\n", arg0, dlerror());
+        dlclose(handle);
+        return;
     }
 
     // Dump information about the module.
@@ -42,20 +42,20 @@ void process(const char* path)
     return;
 }
 
-CIMPLE_INJECT_VERSION_TAG;
-
 int main(int argc, char** argv)
 {
     arg0 = argv[0];
 
     if (argc < 2)
     {
-	fprintf(stderr, "Usage: %s module-library ...\n", argv[0]);
-	exit(1);
+        fprintf(stderr, "Usage: %s module-library ...\n", argv[0]);
+        exit(1);
     }
 
     for (int i = 1; i < argc; i++)
-	process(argv[i]);
+        process(argv[i]);
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/catmod/main.cpp,v 1.19 2007/03/07 19:05:04 mbrasher-public Exp $");

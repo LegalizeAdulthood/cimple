@@ -1,0 +1,111 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_RoleBasedAuthorizationService
+// ==================================================================
+   [Experimental, UMLPackagePath ( "CIM::User::Role" ),
+       Version ( "2.12.0" ), Description (
+       "The CIM_RoleBasedAuthorizationService class represents the "
+       "authorization service that manages and configures roles on a "
+       "managed system. The CIM_RoleBasedAuthorizationService is "
+       "responsible for creating, and deleting CIM_Role instances. "
+       "Privileges of the roles are represented through the "
+       "instance(s) of CIM_Privilege class associated to CIM_Role "
+       "instances through the CIM_MemberOfCollection association. As a "
+       "result of creating, and deleting CIM_Role instances the "
+       "CIM_Privilege instances can also be affected. The limiting "
+       "scope of the role is determined by the CIM_RoleLimitedToTarget "
+       "association.")]
+class CIM_RoleBasedAuthorizationService : CIM_AuthorizationService {
+
+      [Description (
+          "The CreateRole method creates a new instance of CIM_Role "
+          "with the specified privileges. If the NewRole parameter is "
+          "specified, the embedded instance will be used as a template "
+          "for the newly created CIM_Role instance. If the NewRole "
+          "parameter is not specified, the method will create a "
+          "default instance of CIM_Role that is implementation "
+          "specific. In order to be meaningful, a Role requires a set "
+          "of associated privileges, thus an array of embedded "
+          "instances of CIM_Privilege is provided as a parameter. An "
+          "implementation may not support the creation of a Role with "
+          "the privileges indicated by the specified combination of "
+          "CIM_Privilege instances. \n"
+          "The implementation will create new instances of "
+          "CIM_Privilege as needed to enable the implementation to "
+          "represent the rights granted to the new instance of Role. "
+          "The implementation will associate these Privilege instances "
+          "to CIM_Role via MemberOfCollection. \n"
+          "If the RoleLimitedToTargets parameter is specified, the "
+          "scope of the new role will be limited to the "
+          "CIM_ManagedElement instances whose references are "
+          "specified. For each CIM_ManagedElement specified, the "
+          "implementation will create an instance of "
+          "CIM_RoleLimitedToTarget which references CIM_ManagedElement "
+          "instance and the created instance of CIM_Role. If the "
+          "RoleLimitedToTargets parameter is not specified, the Role "
+          "applies to all resources in the target namespace."), 
+       ValueMap { "Success", "Not Supported", "Unknown", "Timeout",
+          "Failed", "Invalid Parameter", "Inappropriate Privilege",
+          "DMTF Reserved", "Vendor Specific" }, 
+       Values { "0", "1", "2", "3", "4", "5", "6", "16000..31999",
+          "32000..65535" }]
+   uint32 CreateRole (
+      
+         [IN, Description (
+             "NewRole parameter is the desired CIM_Role instance to be "
+             "created. This is an element of class CIM_Role, encoded "
+             "as a string-valued embedded instance parameter. The "
+             "embedded instance allows the client to specify the "
+             "properties desired for the new CIM_Role instance."), 
+          EmbeddedInstance ( "CIM_Role" )]
+      string RoleTemplate,
+      
+         [Required, IN, Description (
+             "Privileges parameter is the desired CIM_Privilege "
+             "instances to be associated with the new role. This is an "
+             "array of elements of class CIM_Privilege, encoded as a "
+             "string-valued embedded instance parameter. The embedded "
+             "instances allow the client to specify the properties "
+             "desired for the CIM_Privilege instances to be associated "
+             "to the new CIM_Role instance through "
+             "CIM_MemberOfCollection association."), 
+          EmbeddedInstance ( "CIM_Privilege" )]
+      string Privileges[],
+      
+         [IN, Description (
+             "RoleLimitedToTargets parameter references "
+             "CIM_ManagedElement instances that the new role will be "
+             "limited to. The call will create CIM_RoleLimitedToTarget "
+             "association instances between the new CIM_Role instance "
+             "and the referenced CIM_ManagedElement instances that the "
+             "role is limited to.")]
+      CIM_ManagedElement REF RoleLimitedToTargets[],
+      
+         [IN ( false ), OUT, Description (
+             "Role is an output parameter that per successful "
+             "execution of the method will contain the reference to "
+             "the newly created CIM_Role instance.")]
+      CIM_Role REF Role); 
+
+
+      [Description (
+          "DeleteRole method deletes the CIM_Role instance referenced "
+          "in the call. This method will delete each instance of "
+          "CIM_MemberOfCollection and CIM_RoleLimitedToTarget that "
+          "references the specified instance of CIM_Role. Any "
+          "instances of CIM_Privilege that are associated with the "
+          "this instance of CIM_Role and no other instances will also "
+          "be deleted, as well as the CIM_MemberOfCollection "
+          "associations that associate the CIM_Privilege with the "
+          "CIM_Role."), 
+       ValueMap { "Success", "Not Supported", "Unknown", "Timeout",
+          "Failed", "Invalid Parameter", "DMTF Reserved",
+          "Vendor Specific" }, 
+       Values { "0", "1", "2", "3", "4", "5", "16000..31999",
+          "32000..65535" }]
+   uint32 DeleteRole ( 
+         [IN, Description (
+             "Role parameter is the reference to the Role instance to "
+             "be deleted.")]
+      CIM_Role REF Role); 
+};

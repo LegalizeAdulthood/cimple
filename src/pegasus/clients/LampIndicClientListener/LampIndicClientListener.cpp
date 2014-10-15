@@ -21,7 +21,7 @@ class LampIndicConsumer : public CIMIndicationConsumer
 public:
 
     virtual void consumeIndication(
-	const OperationContext& context,
+        const OperationContext& context,
         const String& url,
         const CIMInstance& indicationInstance);
 };
@@ -34,7 +34,7 @@ void LampIndicConsumer::consumeIndication(
     const CIMInstance& indication)
 {
     CIMConstProperty prop = indication.getProperty(
-	indication.findProperty("IndicationIdentifier"));
+        indication.findProperty("IndicationIdentifier"));
 
     String ident;
     prop.getValue().get(ident);
@@ -47,7 +47,7 @@ void LampIndicConsumer::consumeIndication(
     printf("Consume indication...\n");
 
     if (++_count == 5)
-	_success = true;
+        _success = true;
 }
 
 static CIMObjectPath _createFilter(CIMClient& client)
@@ -113,10 +113,10 @@ static bool _findFilterOrHandlerPath(
             if (keyBindings[j].getName().equal("Name"))
             {
                 if (keyBindings[j].getValue() == name)
-		{
-		    path = paths[i];
-		    return true;
-		}
+                {
+                    path = paths[i];
+                    return true;
+                }
             }
         }
     }
@@ -129,8 +129,8 @@ static CIMObjectPath _getFilterName(CIMClient& client)
     CIMObjectPath objectPath;
 
     if (_findFilterOrHandlerPath(
-	client, "CIM_IndicationFilter", "LampIndicFilter", objectPath))
-	return objectPath;
+        client, "CIM_IndicationFilter", "LampIndicFilter", objectPath))
+        return objectPath;
 
     return _createFilter(client);
 }
@@ -140,8 +140,8 @@ static CIMObjectPath _getHandlerName(CIMClient& client)
     CIMObjectPath objectPath;
 
     if (_findFilterOrHandlerPath(
-	client, "CIM_IndicationHandler", "LampIndicHandler", objectPath))
-	return objectPath;
+        client, "CIM_IndicationHandler", "LampIndicHandler", objectPath))
+        return objectPath;
 
     return _createHandler(client);
 }
@@ -154,14 +154,14 @@ static void _invokeMethod(CIMClient& client, const char* classname)
     Uint32 result;
 
     CIMObjectPath className(String::EMPTY, CIMNamespaceName(),
-	CIMName(classname), keyBindings);
+        CIMName(classname), keyBindings);
 
     CIMValue retValue = client.invokeMethod(
-	NAMESPACE,
-	className,
-	"DeliverIndications",
-	inParams,
-	outParams);
+        NAMESPACE,
+        className,
+        "DeliverIndications",
+        inParams,
+        outParams);
 
     retValue.get(result);
     // printf("result: %u\n", result);
@@ -175,24 +175,24 @@ int main(int argc, char ** argv)
 
     try
     {
-	// Create listener (and consumer).
+        // Create listener (and consumer).
 
-	CIMListener listener(9999);
-	LampIndicConsumer* consumer = new LampIndicConsumer();
-	listener.addConsumer(consumer);
-	listener.start();
+        CIMListener listener(9999);
+        LampIndicConsumer* consumer = new LampIndicConsumer();
+        listener.addConsumer(consumer);
+        listener.start();
 
-	// Connect to CIM server:
+        // Connect to CIM server:
 
-	client.connectLocal();
+        client.connectLocal();
 
         // Create filter.
 
-	CIMObjectPath filter = _getFilterName(client);
+        CIMObjectPath filter = _getFilterName(client);
 
         // Create handler.
 
-	CIMObjectPath handler = _getHandlerName(client);
+        CIMObjectPath handler = _getHandlerName(client);
 
         // Delete old subscription if any.
 
@@ -214,25 +214,25 @@ int main(int argc, char ** argv)
 
         CIMObjectPath subscriptionObjectPath;
 
-	try 
-	{
+        try 
+        {
             subscriptionObjectPath = 
                 _createSubscription(client, filter, handler);
-	}
-	catch (Exception& e)
-	{
-	    cerr << "Subscription already exists: " << e.getMessage() << endl;
-	}
+        }
+        catch (Exception& e)
+        {
+            cerr << "Subscription already exists: " << e.getMessage() << endl;
+        }
 
-	// Send the method:
+        // Send the method:
 
-	for (int i = 0; i < 5; i++)
-	    _invokeMethod(client, "LampIndic");
+        for (int i = 0; i < 5; i++)
+            _invokeMethod(client, "LampIndic");
 
-	System::sleep(5);
-	assert(_success == true);
+        System::sleep(5);
+        assert(_success == true);
 
-	printf("+++++ passed all tests\n");
+        printf("+++++ passed all tests\n");
 
         try
         {
@@ -248,15 +248,15 @@ int main(int argc, char ** argv)
             cerr << "Error: oops" << endl;
         }
 
-	listener.stop();
-	listener.removeConsumer(consumer);
-	delete consumer;
+        listener.stop();
+        listener.removeConsumer(consumer);
+        delete consumer;
 
     }
     catch(Exception& e)
     {
-	cerr << "Error: " << e.getMessage() << endl;
-	exit(1);
+        cerr << "Error: " << e.getMessage() << endl;
+        exit(1);
     }
 
     return 0;

@@ -1,0 +1,2 @@
+chksrc:
+	chksrc $(SOURCES)

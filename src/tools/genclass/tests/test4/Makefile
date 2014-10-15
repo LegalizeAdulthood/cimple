@@ -9,7 +9,7 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN_DIR)/genclass -I ../mof Erp2
+	genclass -I ../mof Erp2
 
 tests:
 	@ $(BINARY_TARGET)

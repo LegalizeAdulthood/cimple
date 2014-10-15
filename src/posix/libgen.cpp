@@ -33,19 +33,19 @@ POSIX_NAMESPACE_BEGIN
 char* dirname(char* path)
 {
     if (!path || *path == '\0')
-	return ".";
+        return ".";
 
     // Seek zero terminator.
 
     char* end = path;
 
     while (*end)
-	end++;
+        end++;
 
     // Remove trailing slashes.
 
     while (--end != path && *end == '/')
-	*end = '\0';
+        *end = '\0';
 
     // Find last slash.
 
@@ -54,12 +54,12 @@ char* dirname(char* path)
     // If no slash...
 
     if (!slash)
-	return ".";
+        return ".";
 
     // If found slash that was first character.
 
     if (path == slash)
-	return "/";
+        return "/";
 
     *slash = '\0';
 

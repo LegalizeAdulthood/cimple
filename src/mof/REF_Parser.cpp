@@ -45,8 +45,8 @@ int REF_parse(
 
     if (ref_error_message != 0)
     {
-	free(ref_error_message);
-	ref_error_message = 0;
+        free(ref_error_message);
+        ref_error_message = 0;
     }
 
     ref_input_first = asc7;
@@ -54,10 +54,10 @@ int REF_parse(
     REF_parse();
 
     if (ref_error_code)
-	return ref_error_code;
+        return ref_error_code;
 
     if (!ref_obj_ref)
-	return -1;
+        return -1;
 
     *obj_ref = ref_obj_ref;
     return 0;
@@ -69,3 +69,5 @@ void REF_error(
     message = strdup(message);
     ref_error_code = -1;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/REF_Parser.cpp,v 1.4 2007/03/07 18:57:15 mbrasher-public Exp $");

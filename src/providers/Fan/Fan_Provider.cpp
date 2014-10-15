@@ -48,8 +48,8 @@ Get_Instance_Status Fan_Provider::get_instance(
 
     if (fan)
     {
-	instance = fan->clone();
-	return GET_INSTANCE_OK;
+        instance = fan->clone();
+        return GET_INSTANCE_OK;
     }
 
     return GET_INSTANCE_NOT_FOUND;
@@ -61,8 +61,8 @@ Enum_Instances_Status Fan_Provider::enum_instances(
 {
     for (size_t i = 0; i < _map.size(); i++)
     {
-	Fan* instance = _map[i]->clone();
-	handler->handle(instance);
+        Fan* instance = _map[i]->clone();
+        handler->handle(instance);
     }
 
     return ENUM_INSTANCES_OK;
@@ -87,8 +87,8 @@ Modify_Instance_Status Fan_Provider::modify_instance(
 
     if (fan)
     {
-	copy(fan, instance);
-	return MODIFY_INSTANCE_OK;
+        copy(fan, instance);
+        return MODIFY_INSTANCE_OK;
     }
 
     return MODIFY_INSTANCE_NOT_FOUND;
@@ -124,7 +124,7 @@ int Fan_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
@@ -143,3 +143,5 @@ int Fan_Provider::proc(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Fan/Fan_Provider.cpp,v 1.20 2007/03/07 20:25:24 mbrasher-public Exp $");

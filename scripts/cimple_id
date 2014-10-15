@@ -1,0 +1,8 @@
+#!/bin/sh
+for i
+do
+    mv $i $i.tmp
+    cat $i.tmp > $i
+    echo "" >> $i
+    echo "CIMPLE_ID(\"\$Header\$\");" >> $i
+done

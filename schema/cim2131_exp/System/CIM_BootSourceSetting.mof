@@ -1,0 +1,56 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SMWGCR00006.015" type = "add">Add class.</change>
+// <change cr="SMWGCR0086" type = "change">Added property
+// BIOSBootString and StructuredBootString.</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+// CIM_BootSourceSetting
+// ===================================================================
+   [Experimental, UMLPackagePath ( "CIM::System::Boot" ),
+       Version ( "2.13.0" ), Description (
+       "A class derived from SettingData that provides the information "
+       "necessary to describe a boot source. This may be optionally "
+       "associated to a bootable logical device, such as a hard disk "
+       "partition, or a network device. The information from this "
+       "class instance is used by the boot manager, such as BIOS/EFI "
+       "or OS Loader to initiate the boot process, when this instance "
+       "appears in a BootConfigSetting collection.")]
+class CIM_BootSourceSetting : CIM_SettingData {
+
+      [Description (
+          "A string identifying the boot source. It is typically used "
+          "by the instrumentation to pass to the boot manager as a "
+          "selection string. This could be a string identifying the "
+          "bootable device, such as \"CDROM 1\", or could be an "
+          "implementation specific address of a bootable partition, "
+          "such as the following. \"fd(64)unix root=hd(40) "
+          "swap=hd(41)\", or "
+          "\"multi(0)disk(0)rdisk(0)partition(1)\\WINDOWS=\"Microsoft "
+          "Windows XP Professional\"\".")]
+   string BootString;
+
+      [Description (
+          "A string identifying the boot source which corresponds to "
+          "the string used by the BIOS to uniquely name the boot "
+          "source. For example, in systems which implement the BIOS "
+          "Boot Specification, the string could correspond to the "
+          "descString string for entries in the IPL Table or BCV "
+          "Table.")]
+   string BIOSBootString;
+
+      [Description (
+          "A string identifying the boot source using the format "
+          "\"<OrgID>:<identifier>:<index>\", in which neither <OrgID>, "
+          "<identifier> or <index> contains a colon (\":\"). The value "
+          "of <OrgID> is a copyrighted, trademarked or otherwise "
+          "unique name that is owned by the entity defining the "
+          "<identifier>, or is a registered ID that is assigned to the "
+          "entity by a recognized global authority. For DMTF defined "
+          "identifiers, the <OrgID> is set to 'CIM'. The <identifiers> "
+          "are \"Floppy\", \"Hard-Disk\", \"CD/DVD\", \"Network\", "
+          "\"PCMCIA\", \"USB\". The value of <index> shall be a "
+          "non-zero integer.")]
+   string StructuredBootString;
+
+};

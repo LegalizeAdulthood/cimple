@@ -1,0 +1,144 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SMWGCR00006.015" type = "add">Add methods
+// CreateBootConfigSetting() and
+// SetBootConfigRole().</change>
+// <change cr="SMWGCR0086" type = "change">Added parameters
+// ScopingComputerSystem, NewBootConfig, and Job to
+// CreateBootConfigSetting().</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// <change cr="SMWGCR00105" type="add">Add method
+// SetBootConfigRole().</change>
+
+// ==================================================================
+//  CIM_BootService
+// ==================================================================
+   [Version ( "2.14.0" ), UMLPackagePath ( "CIM::System::Boot" ), 
+    Description (
+       "A class derived from Service that provides the controls to "
+       "manage the boot configuration of a managed computer system or "
+       "device. This includes changing the order of the boot devices "
+       "and affecting settings on managed elements during the boot "
+       "process. This service can also affect the load of a specific "
+       "operating on the computer system through BootSourceSetting "
+       "that point to a specific operating system image.")]
+class CIM_BootService : CIM_Service {
+
+      [Experimental, Description (
+          "This method is called to build a new instance of "
+          "BootConfigSetting, and the associated classes. This method "
+          "also creates the ElementSettingData association between the "
+          "ComputerSystem and BootConfigSetting. An instance of "
+          "existing BootConfigSetting can be passed to this method, "
+          "which allows the instrumentation to clone the instance of "
+          "BootConfigSetting and associated BootSourceSetting "
+          "instances. The association instances (orderedComponent) are "
+          "also instantiated preserving the AssignedSequence. In "
+          "addition, the SettingData instances and their association "
+          "to BootConfigSetting and BootSourceSetting are replicated. "
+          "Dependency relationship between BootSourceSetting and "
+          "LogicalDevice is also replicated. A NULL reference to this "
+          "method will result in a default BootConfigSetting tree as "
+          "defined by the factoryDefault configuration, if one is "
+          "identified."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767",
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported",
+          "Unknown/Unspecified Error", "Busy", "Invalid Reference",
+          "Invalid Parameter", "Access Denied", "DMTF Reserved",
+          "Vendor Specified" }]
+   uint32 CreateBootConfigSetting( 
+         [IN, Description (
+             "An existing BootConfigSetting instance used as a "
+             "template to replicate. A value of NULL indicates a "
+             "factory default configuration.")]
+      CIM_BootConfigSetting REF StartingBootConfig, 
+         [IN, Description (
+             "The CIM_ComputerSystem to which the instance of "
+             "BootConfigSetting created by the method is associated "
+             "via an instance of ElementSettingData. When "
+             "ScopingComputerSystem has a non-NULL value, the scoping "
+             "system for the NewBootConfig is explicitly identified. "
+             "When ScopingComputerSystem has a value of NULL and "
+             "StartingBootConfig has a non-NULL value, the scoping "
+             "system for the NewBootConfig is the scoping system for "
+             "the CIM_BootConfigSetting referenced by the "
+             "StartingBootConfig parameter.")]
+      CIM_ComputerSystem REF ScopingComputerSystem, 
+         [IN ( false ), OUT, Description (
+             "The BootConfigSetting instance created by the method. "
+             "This parameter is not returned when the method is run as "
+             "a Job.")]
+      CIM_BootConfigSetting REF NewBootConfig, 
+         [IN ( false ), OUT, Description (
+             "Reference to the job spawned if the operation continues "
+             "after the method returns. (May be null if the task is "
+             "completed).")]
+      CIM_ConcreteJob REF Job); 
+
+      [Experimental, Description (
+          "This method is called to set the role of the "
+          "BootConfigSetting for the ComputerSystem the "
+          "BootConfigSetting is associated with. This method sets the "
+          "property values in the ElementSettingData association "
+          "between the ComputerSystem and BootConfigSetting. For "
+          "example, to enable the BootConfigSetting to be used at the "
+          "next reboot, this method is called with the Role = "
+          "\"IsNext\". The implementation must then set the value of "
+          "IsNext property in the ElementSettingData association "
+          "instance between the ComputerSystem and the specified "
+          "BootConfigSetting. It must also clear the IsNext flag in "
+          "any other ElementSettingData instance between "
+          "ComputerSystem and other BootConfigSetting instance."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767",
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported",
+          "Unknown/Unspecified Error", "Busy", "Invalid Reference",
+          "Invalid Parameter", "Access Denied", "DMTF Reserved",
+          "Vendor Specified" }]
+   uint32 SetBootConfigRole( 
+         [IN, Description (
+             "An existing BootConfigSetting instance whose role will "
+             "be updated.")]
+      CIM_BootConfigSetting REF BootConfigSetting, 
+         [IN, Description (
+             "The desired Role of the BootConfigSetting."), 
+          ValueMap { "0", "1", "2", "3..32767", "32768..65535" }, 
+          Values { "IsNext", "IsNextSingleUse", "IsDefault",
+             "DMTF Reserved", "Vendor Specified" }]
+      uint16 Role, 
+         [IN ( false ), OUT, Description (
+             "Reference to the job spawned if the operation continues "
+             "after the method returns. (May be null if the task is "
+             "completed).")]
+      CIM_ConcreteJob REF Job); 
+
+      [Experimental, Description (
+          "This method is called to indicate to the referenced "
+          "ComputerSystem to apply the referenced BootConfigSetting. "
+          "This shall cause the referenced ComputerSystem's boot "
+          "process to start and apply the referenced "
+          "BootConfigSetting."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7..32767",
+          "32768..65535" }, 
+       Values { "Completed with No Error", "Not Supported",
+          "Unknown/Unspecified Error", "Busy",
+          "Invalid ReferenceInvalid Parameter", "Access Denied",
+          "DMTF Reserved", "Vendor Specified" }]
+   uint32 ApplyBootConfigSetting( 
+         [Required, IN, Description (
+             "Reference to an instance of ComputerSystem which will "
+             "apply the BootConfigSetting referenced by the "
+             "ApplyBootConfig parameter.")]
+      CIM_ComputerSystem REF ScopingComputerSystem, 
+         [Required, IN, Description (
+             "Reference to an instance of BootConfigSetting which will "
+             "be applied to the instance of ComputerSystem referenced "
+             "by the ComputerSystem parameter.")]
+      CIM_BootConfigSetting REF ApplyBootConfig, 
+         [IN ( false ), OUT, Description (
+             "Reference to the job spawned if the operation continues "
+             "after the method returns. (May be null if the task is "
+             "completed).")]
+      CIM_ConcreteJob REF Job); 
+};

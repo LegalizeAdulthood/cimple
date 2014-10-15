@@ -309,7 +309,7 @@ inline bool operator!=(const char* s1, const String& s2)
     return !operator==(s1, s2);
 }
 
-inline void clear(String& x) 
+inline void __clear(String& x) 
 { 
     x.clear(); 
 }

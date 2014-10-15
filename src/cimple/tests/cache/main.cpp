@@ -37,8 +37,8 @@ int main(int argc, char** argv)
 
     if (argc != 2)
     {
-	fprintf(stderr, "Usage: %s library-path\n", argv[0]);
-	exit(1);
+        fprintf(stderr, "Usage: %s library-path\n", argv[0]);
+        exit(1);
     }
 
     //
@@ -50,3 +50,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/cache/main.cpp,v 1.4 2007/03/07 20:17:43 mbrasher-public Exp $");

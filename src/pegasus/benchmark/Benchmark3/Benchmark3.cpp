@@ -198,3 +198,4 @@ const Meta_Class Benchmark3::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/benchmark/Benchmark3/Benchmark3.cpp,v 1.4 2007/03/07 20:23:55 mbrasher-public Exp $");

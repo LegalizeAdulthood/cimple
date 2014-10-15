@@ -41,18 +41,18 @@ static uint64 _timer(void* arg)
     printf("_timer(%s)\n", str);
 
     if (str[0] == '1')
-	return 1 * SECOND;
+        return 1 * SECOND;
 
     if (str[0] == '2')
-	return 2 * SECOND;
+        return 2 * SECOND;
 
     if (str[0] == '3')
-	return 3 * SECOND;
+        return 3 * SECOND;
 
     if (str[0] == '4')
     {
-	sched.add_timer(4 * SECOND, _timer, (void*)"4");
-	return 0;
+        sched.add_timer(4 * SECOND, _timer, (void*)"4");
+        return 0;
     }
 
     return 0;
@@ -67,11 +67,13 @@ int main(int argc, char** argv)
 
     for (;;)
     {
-	printf("inside...\n");
-	sched.dispatch();
+        printf("inside...\n");
+        sched.dispatch();
     }
 
     printf("+++++ passed all tests\n");
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/scheduler/main.cpp,v 1.4 2007/03/07 20:18:10 mbrasher-public Exp $");

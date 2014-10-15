@@ -45,5 +45,7 @@ void MOF_Property::print_list() const
     const MOF_Property* p;
 
     for (p = this; p; p = (MOF_Property*)p->next)
-	print();
+        print();
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Property.cpp,v 1.5 2007/03/07 18:57:15 mbrasher-public Exp $");

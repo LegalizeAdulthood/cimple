@@ -1,0 +1,25 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SysDevCR00707.002" type ="add">CPUBS corrections to
+// CoreCollection.mof</change>
+
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_OwningCollectionElement
+// ==================================================================
+   [Association, Experimental, Version ( "2.10.0" ),
+       UMLPackagePath ( "CIM::Core::Collection" ), Description (
+       "OwningCollectionElement represents an association between a "
+       "Collection and the ManagedElement responsible for the control "
+       "or ownership of the Collection.")]
+class CIM_OwningCollectionElement {
+
+      [Key, Max ( 1 ), Description (
+          "The ManagedElement acting as the 'owner' or object that is "
+          "responsible for the control of the Collection.")]
+   CIM_ManagedElement REF OwningElement;
+
+      [Key, Description (
+          "The Collection owned or controlled by the ManagedElement.")]
+   CIM_Collection REF OwnedElement;
+};

@@ -219,3 +219,5 @@ Pegasus::CIMProvider* PegasusCreateProvider(const Pegasus::String& name)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/benchmark/Benchmark2/Benchmark2Provider.cpp,v 1.7 2007/03/07 20:24:10 mbrasher-public Exp $");

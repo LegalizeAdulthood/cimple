@@ -1,0 +1,17 @@
+
+[Description("")]
+class Upcall3Part : CIM_RegisteredProfile
+{
+};
+
+[Association , Description("")]
+class Upcall3 : CIM_ElementConformsToProfile
+{
+   // in root/adpt namespace
+   [Override ("ConformantStandard")]
+   Upcall3Part REF ConformantStandard; 
+
+   //refers to root/ibmsd namespace object
+   [Override ("ManagedElement")]
+   CIM_ComputerSystem REF ManagedElement; 
+};

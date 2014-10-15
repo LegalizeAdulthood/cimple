@@ -70,7 +70,9 @@ int Test1_Provider::proc(
     typedef Test1 Class;
     typedef Test1_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test1/Test1_Provider.cpp,v 1.3 2007/03/07 20:25:30 mbrasher-public Exp $");

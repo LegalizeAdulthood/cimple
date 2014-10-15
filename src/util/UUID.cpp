@@ -66,7 +66,7 @@ static uint64 _get_time()
 
     if (gettimeofday(&tv, &tz) != 0)
     {
-	return uint64(-1);
+        return uint64(-1);
     }
 
     return (uint64(tv.tv_sec) * 1000000) + uint64(tv.tv_usec);
@@ -86,30 +86,30 @@ static void _fill_random(void* data, size_t size)
 
     if (fd >= 0)
     {
-	while (r)
-	{
-	    ssize_t n = read(fd, p, r);
+        while (r)
+        {
+            ssize_t n = read(fd, p, r);
 
-	    if (n < 1)
-	    {
-		if (++num_errors == MAX_ERRORS_TOLERATED)
-		    break;
+            if (n < 1)
+            {
+                if (++num_errors == MAX_ERRORS_TOLERATED)
+                    break;
 
-		if (errno == EAGAIN)
-		    continue;
+                if (errno == EAGAIN)
+                    continue;
 
-		break;
-	    }
+                break;
+            }
 
-	    r -= n;
-	    p += n;
-	}
+            r -= n;
+            p += n;
+        }
     }
 
     close(fd);
 
     if (r == 0)
-	return;
+        return;
 
 #endif /* CIMPLE_HAVE_DEV_RANDOM */
 
@@ -118,7 +118,7 @@ static void _fill_random(void* data, size_t size)
     srand((s1 >> 32) ^ s1 ^ (s2 >> 32) | s2);
 
     while (r--)
-	*p++ = rand();
+        *p++ = rand();
 }
 
 static void _dce_to_uuid(const DCE& dce, UUID& uuid)
@@ -166,10 +166,12 @@ void uuid_to_string(const UUID& uuid, char str[CIMPLE_UUID_STRING_SIZE])
 
     for (size_t i = 0; i < sizeof(uuid.data); i++)
     {
-	char buffer[3];
-	sprintf(buffer, "%02X", uuid.data[i]);
-	strcat(str, buffer);
+        char buffer[3];
+        sprintf(buffer, "%02X", uuid.data[i]);
+        strcat(str, buffer);
     }
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/util/UUID.cpp,v 1.3 2007/03/07 19:06:39 mbrasher-public Exp $");

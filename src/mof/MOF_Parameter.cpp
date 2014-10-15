@@ -41,40 +41,40 @@ int MOF_Parameter::compatible(
     MOF_Parameter* p2)
 {
     if (MOF_stricmp(p1->name, p2->name) != 0)
-	return -1;
+        return -1;
 
     if (strcmp(p1->name, p2->name) != 0)
     {
-	MOF_warning_printf("changing case of \"%s\" to \"%s\"",
-		p1->name, p2->name);
+        MOF_warning_printf("changing case of \"%s\" to \"%s\"",
+                p1->name, p2->name);
 
-	strcpy(p1->name, p2->name);
+        strcpy(p1->name, p2->name);
     }
 
     if (p1->data_type != p2->data_type)
-	return -1;
+        return -1;
 
     if (p1->array_index != p2->array_index)
-	return -1;
+        return -1;
 
     if (p1->ref_name || p2->ref_name)
     {
-	if (p1->ref_name == 0)
-	    return -1;
+        if (p1->ref_name == 0)
+            return -1;
 
-	if (p2->ref_name == 0)
-	    return -1;
+        if (p2->ref_name == 0)
+            return -1;
 
-	if (MOF_stricmp(p1->ref_name, p2->ref_name) != 0)
-	    return -1;
+        if (MOF_stricmp(p1->ref_name, p2->ref_name) != 0)
+            return -1;
 
-	if (strcmp(p1->ref_name, p2->ref_name) != 0)
-	{
-	    MOF_warning_printf("changing case of \"%s\" to \"%s\"",
-		    p1->ref_name, p2->ref_name);
+        if (strcmp(p1->ref_name, p2->ref_name) != 0)
+        {
+            MOF_warning_printf("changing case of \"%s\" to \"%s\"",
+                    p1->ref_name, p2->ref_name);
 
-	    strcpy(p1->ref_name, p2->ref_name);
-	}
+            strcpy(p1->ref_name, p2->ref_name);
+        }
     }
 
     return 0;
@@ -91,10 +91,12 @@ void MOF_Parameter::check_duplicates() const
 
     for (p = this; p; p = (MOF_Parameter*)p->next)
     {
-	for (q = this; q != p; q = (MOF_Parameter*)q->next)
-	{
-	    if (MOF_stricmp(p->name, q->name) == 0)
-		MOF_error_printf("duplicate parameter: \"%s\"", p->name);
-	}
+        for (q = this; q != p; q = (MOF_Parameter*)q->next)
+        {
+            if (MOF_stricmp(p->name, q->name) == 0)
+                MOF_error_printf("duplicate parameter: \"%s\"", p->name);
+        }
     }
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parameter.cpp,v 1.5 2007/03/07 18:57:14 mbrasher-public Exp $");

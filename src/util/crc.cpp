@@ -47,11 +47,11 @@ void _compute_table(void)
         c = (unsigned int) n;
 
         for (k = 0; k < 8; k++) 
-	{
+        {
             if (c & 1)
-		c = 0xedb88320L ^ (c >> 1);
+                c = 0xedb88320L ^ (c >> 1);
             else
-		c = c >> 1;
+                c = c >> 1;
         }
 
         _table[n] = c;
@@ -78,3 +78,5 @@ unsigned int crc_compute(unsigned char *buf, int len)
 {
     return crc_update(0L, buf, len);
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/util/crc.cpp,v 1.4 2007/03/07 19:06:39 mbrasher-public Exp $");

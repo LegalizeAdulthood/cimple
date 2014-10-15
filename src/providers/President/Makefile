@@ -9,3 +9,8 @@ include $(TOP)/mak/rules.mak
 
 reg:
 	regmod -c $(SHARED_LIBRARY_TARGET)
+
+tests:
+
+genclass:
+	genclass -r President

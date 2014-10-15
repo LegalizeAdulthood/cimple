@@ -1,0 +1,6 @@
+
+class MyClass
+{
+    String str;
+    String arr[];
+};

@@ -38,26 +38,28 @@ int main(int argc, char** argv)
 {
     try
     {
-	CIMClient client;
-	// client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
-	client.connectLocal();
+        CIMClient client;
+        // client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        client.connectLocal();
 
-	CIMNamespaceName ns("root/cimv2");
-	CIMObjectPath path("Fan.DeviceID=\"FAN01\"");
+        CIMNamespaceName ns("root/cimv2");
+        CIMObjectPath path("Fan.DeviceID=\"FAN01\"");
 
-	for (size_t i = 0; i < 30000; i++)
-	{
-	    CIMInstance inst = client.getInstance(ns, path);
-	    // printf("%zu\n", i);
-	}
+        for (size_t i = 0; i < 30000; i++)
+        {
+            CIMInstance inst = client.getInstance(ns, path);
+            // printf("%zu\n", i);
+        }
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Fan/get_instance/main.cpp,v 1.3 2007/03/07 20:20:05 mbrasher-public Exp $");

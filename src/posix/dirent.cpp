@@ -55,7 +55,7 @@ DIR* opendir(const char* path)
     {
         delete dir;
         free(pattern);
-	return NULL;
+        return NULL;
     }
 
     free(pattern);
@@ -67,13 +67,13 @@ dirent* readdir(DIR* dir)
 {
     if (dir->first)
     {
-	dir->first = false;
-	dir->ent.d_name = dir->data.name;
-	return &dir->ent;
+        dir->first = false;
+        dir->ent.d_name = dir->data.name;
+        return &dir->ent;
     }
 
     if (_findnext(dir->handle, &dir->data) != 0)
-	return NULL;
+        return NULL;
 
     return &dir->ent;
 }
@@ -82,8 +82,8 @@ int closedir(DIR* dir)
 {
     if (dir && dir->handle != -1)
     {
-	_findclose(dir->handle);
-	delete dir;
+        _findclose(dir->handle);
+        delete dir;
         return 0;
     }
 

@@ -53,3 +53,5 @@ void Cond::wait(Mutex& lock)
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Cond.cpp,v 1.12 2007/03/07 18:41:14 mbrasher-public Exp $");

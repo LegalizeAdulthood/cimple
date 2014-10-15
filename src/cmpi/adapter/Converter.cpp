@@ -29,6 +29,26 @@
 #include <cimple/Strings.h>
 #include "Converter.h"
 
+//==============================================================================
+//
+// RETURN(X)
+//
+//     Return tracing macro.
+//
+//==============================================================================
+
+#if 0
+# define RETURN(X) \
+    do \
+    { \
+        printf("RETURN(%s): %s(%d)\n", #X, __FILE__, __LINE__); \
+        return X; \
+    } \
+    while (0)
+#else
+# define RETURN(X) return(X)
+#endif
+
 // ATTN: handle embedded object properties (for indications).
 
 CIMPLE_NAMESPACE_BEGIN
@@ -39,7 +59,7 @@ CIMPLE_NAMESPACE_BEGIN
 //
 //==============================================================================
 
-static const char* _status_message(CMPIrc rc)
+const char* rc_to_str(CMPIrc rc)
 {
     switch (rc)
     {
@@ -93,12 +113,12 @@ static const char* _status_message(CMPIrc rc)
             return "CMPI_RC_ERROR";
     }
 
-    return "UNKNOWN CMPI ERROR";
+    return NULL;
 }
 
 void set_cmpi_error(const CMPIrc &rc, const char* msg)
 {
-    Error::set("%s: %s", _status_message(rc), msg);
+    Error::set("%s: %s", rc_to_str(rc), msg);
 }
 
 void set_cmpi_error(const CMPIStatus &status)
@@ -131,21 +151,21 @@ static uint16 _to_cimple_type(CMPIType type)
 {
     switch (type)
     {
-	case CMPI_boolean: return(cimple::BOOLEAN);
-	case CMPI_uint8: return(UINT8);
-	case CMPI_sint8: return(SINT8);
-	case CMPI_uint16: return(UINT16);
-	case CMPI_sint16: return(SINT16);
-	case CMPI_uint32: return(cimple::UINT32);
-	case CMPI_sint32: return(SINT32);
-	case CMPI_uint64: return(cimple::UINT64);
-	case CMPI_sint64: return(SINT64);
-	case CMPI_real32: return(REAL32);
-	case CMPI_real64: return(REAL64);
-	case CMPI_char16: return(CHAR16);
-	case CMPI_string: return(STRING);
-	case CMPI_dateTime: return(DATETIME);
-	default: return(0);
+        case CMPI_boolean: return cimple::BOOLEAN ;
+        case CMPI_uint8: return UINT8 ;
+        case CMPI_sint8: return SINT8 ;
+        case CMPI_uint16: return UINT16 ;
+        case CMPI_sint16: return SINT16 ;
+        case CMPI_uint32: return cimple::UINT32 ;
+        case CMPI_sint32: return SINT32 ;
+        case CMPI_uint64: return cimple::UINT64 ;
+        case CMPI_sint64: return SINT64 ;
+        case CMPI_real32: return REAL32 ;
+        case CMPI_real64: return REAL64 ;
+        case CMPI_char16: return CHAR16 ;
+        case CMPI_string: return STRING ;
+        case CMPI_dateTime: return DATETIME ;
+        default: return 0 ;
     }
 }
 
@@ -162,91 +182,91 @@ static CMPIrc _set_cimple_scalar(
     // Scalar case:
 
     if (CMIsArray(data))
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
 
     // Set null flag:
 
     if (data.state & CMPI_nullValue)
     {
-	null_of(mp, prop) = 1;
-	return(CMPI_RC_OK);
+        null_of(mp, prop) = 1;
+        RETURN(CMPI_RC_OK);
     }
     else
-	null_of(mp, prop) = 0;
+        null_of(mp, prop) = 0;
 
     // Check the type:
 
     if (data.type != _cmpi_type[mp->type])
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
 
     // Handle integer types up front:
 
     if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
     {
-	memcpy(prop, &data.value, type_size[mp->type]);
-	return(CMPI_RC_OK);
+        memcpy(prop, &data.value, type_size[mp->type]);
+        RETURN(CMPI_RC_OK);
     }
 
     // Set value:
 
     switch(mp->type)
     {
-	case cimple::BOOLEAN:
-	    *((cimple::boolean*)prop) = data.value.boolean;
-	    break;
+        case cimple::BOOLEAN:
+            *((cimple::boolean*)prop) = data.value.boolean;
+            break;
 
-	case STRING:
-	    *((String*)prop) = char_ptr(data.value.string);
-	    break;
+        case STRING:
+            *((String*)prop) = char_ptr(data.value.string);
+            break;
 
-	case DATETIME:
-	    ((Datetime*)prop)->set(
-		char_ptr(CMGetStringFormat(data.value.dateTime, NULL)));
-	    break;
+        case DATETIME:
+            ((Datetime*)prop)->set(
+                char_ptr(CMGetStringFormat(data.value.dateTime, NULL)));
+            break;
 
-	default:
-	    break;
+        default:
+            break;
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 static sint64 _promote(const CMPIData& data)
 {
     switch(data.type)
     {
-	case CMPI_uint8:
-	    return(sint64(data.value.uint8));
+        case CMPI_uint8:
+            return sint64(data.value.uint8);
 
-	case CMPI_sint8:
-	    return(sint64(data.value.sint8));
+        case CMPI_sint8:
+            return sint64(data.value.sint8);
 
-	case CMPI_uint16:
-	    return(sint64(data.value.uint16));
+        case CMPI_uint16:
+            return sint64(data.value.uint16);
 
-	case CMPI_sint16:
-	    return(sint64(data.value.sint16));
+        case CMPI_sint16:
+            return sint64(data.value.sint16);
 
-	case CMPI_uint32:
-	    return(sint64(data.value.uint32));
+        case CMPI_uint32:
+            return sint64(data.value.uint32);
 
-	case CMPI_sint32:
-	    return(sint64(data.value.sint32));
+        case CMPI_sint32:
+            return sint64(data.value.sint32);
 
-	case CMPI_uint64:
-	    return(sint64(data.value.uint64));
+        case CMPI_uint64:
+            return sint64(data.value.uint64);
 
-	case CMPI_sint64:
-	    return(sint64(data.value.sint64));
+        case CMPI_sint64:
+            return sint64(data.value.sint64);
 
-	default:
-	    return(0);
+        default:
+            return 0;
     }
 }
 
 static bool _type_compatible(uint16 type1, uint16 type2)
 {
-    return((type1 == type2) || (_is_integer[type1] && _is_integer[type2]));
+    return (type1 == type2) || (_is_integer[type1] && _is_integer[type2]);
 }
 
 static CMPIrc _set_cimple_scalar_key(
@@ -258,75 +278,75 @@ static CMPIrc _set_cimple_scalar_key(
 
     if (CMIsArray(data))
     {
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
     // Set null flag:
 
     if (data.state & CMPI_nullValue)
     {
-	null_of(mp, prop) = 1;
-	return(CMPI_RC_OK);
+        null_of(mp, prop) = 1;
+        RETURN(CMPI_RC_OK);
     }
     else
-	null_of(mp, prop) = 0;
+        null_of(mp, prop) = 0;
 
     // Check for type compatibility:
 
     if (!_type_compatible(mp->type, _to_cimple_type(data.type)))
     {
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
     // Set value:
 
     switch(mp->type)
     {
-	case cimple::BOOLEAN:
-	    *((cimple::boolean*)prop) = data.value.boolean;
-	    break;
+        case cimple::BOOLEAN:
+            *((cimple::boolean*)prop) = data.value.boolean;
+            break;
 
-	case UINT8:
-	    *((uint8*)prop) = _promote(data);
-	    break;
+        case UINT8:
+            *((uint8*)prop) = _promote(data);
+            break;
 
-	case SINT8:
-	    *((sint8*)prop) = _promote(data);
-	    break;
+        case SINT8:
+            *((sint8*)prop) = _promote(data);
+            break;
 
-	case UINT16:
-	    *((uint16*)prop) = _promote(data);
-	    break;
+        case UINT16:
+            *((uint16*)prop) = _promote(data);
+            break;
 
-	case SINT16:
-	    *((sint16*)prop) = _promote(data);
-	    break;
+        case SINT16:
+            *((sint16*)prop) = _promote(data);
+            break;
 
-	case cimple::UINT32:
-	    *((uint32*)prop) = _promote(data);
-	    break;
+        case cimple::UINT32:
+            *((uint32*)prop) = _promote(data);
+            break;
 
-	case SINT32:
-	    *((sint32*)prop) = _promote(data);
-	    break;
+        case SINT32:
+            *((sint32*)prop) = _promote(data);
+            break;
 
-	case cimple::UINT64:
-	    *((uint64*)prop) = _promote(data);
-	    break;
+        case cimple::UINT64:
+            *((uint64*)prop) = _promote(data);
+            break;
 
-	case SINT64:
-	    *((sint64*)prop) = _promote(data);
-	    break;
+        case SINT64:
+            *((sint64*)prop) = _promote(data);
+            break;
 
-	case STRING:
-	    *((String*)prop) = char_ptr(data.value.string);
-	    return(CMPI_RC_OK);
+        case STRING:
+            *((String*)prop) = char_ptr(data.value.string);
+            RETURN(CMPI_RC_OK);
 
-	default:
-	    return(CMPI_RC_ERR_TYPE_MISMATCH);
+        default:
+            RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 static CMPIrc _set_cimple_array(
@@ -338,24 +358,24 @@ static CMPIrc _set_cimple_array(
 
     if (!CMIsArray(data))
     {
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
     // Set null flag:
 
     if (data.state & CMPI_nullValue)
     {
-	null_of(mp, prop) = 1;
-	return(CMPI_RC_OK);
+        null_of(mp, prop) = 1;
+        RETURN(CMPI_RC_OK);
     }
     else
-	null_of(mp, prop) = 0;
+        null_of(mp, prop) = 0;
 
     // Check the type:
 
     if (CMGetArrayType(data.value.array, NULL) != _cmpi_type[mp->type])
     {
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
     // Get size of array and reserve memory in new array.
@@ -367,69 +387,69 @@ static CMPIrc _set_cimple_array(
 
     switch(mp->type)
     {
-	case cimple::BOOLEAN:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_boolean*)prop)->append(t.value.boolean);
-	    }
+        case cimple::BOOLEAN:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_boolean*)prop)->append(t.value.boolean);
+            }
 
-	    break;
-	}
+            break;
+        }
 
-	case UINT8:
-	case SINT8:
-	case UINT16:
-	case SINT16:
-	case cimple::UINT32:
-	case SINT32:
-	case cimple::UINT64:
-	case SINT64:
-	case REAL32:
-	case REAL64:
-	case CHAR16:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		__append(((__Array_Base*)prop)->rep, &t.value, 1);
-	    }
+        case UINT8:
+        case SINT8:
+        case UINT16:
+        case SINT16:
+        case cimple::UINT32:
+        case SINT32:
+        case cimple::UINT64:
+        case SINT64:
+        case REAL32:
+        case REAL64:
+        case CHAR16:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                __append(((__Array_Base*)prop)->rep, &t.value, 1);
+            }
 
-	    break;
-	}
+            break;
+        }
 
-	case STRING:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_String*)prop)->append(
-		    char_ptr(t.value.string));
-	    }
+        case STRING:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_String*)prop)->append(
+                    char_ptr(t.value.string));
+            }
 
-	    break;
-	}
+            break;
+        }
 
-	case DATETIME:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		Datetime dt;
+        case DATETIME:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                Datetime dt;
 
-		if (!dt.set(
-		    char_ptr(CMGetStringFormat(t.value.dateTime, NULL))))
-		    return(CMPI_RC_ERR_TYPE_MISMATCH);
+                if (!dt.set(
+                    char_ptr(CMGetStringFormat(t.value.dateTime, NULL))))
+                    RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
 
-		((Array_Datetime*)prop)->append(dt);
-	    }
+                ((Array_Datetime*)prop)->append(dt);
+            }
 
-	    break;
-	}
+            break;
+        }
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 static CMPIrc _set_cimple_array_key(
@@ -441,18 +461,18 @@ static CMPIrc _set_cimple_array_key(
 
     if (!CMIsArray(data))
     {
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
     // Set null flag:
 
     if (data.state & CMPI_nullValue)
     {
-	null_of(mp, prop) = 1;
-	return(CMPI_RC_OK);
+        null_of(mp, prop) = 1;
+        RETURN(CMPI_RC_OK);
     }
     else
-	null_of(mp, prop) = 0;
+        null_of(mp, prop) = 0;
 
     // Get size of array and reserve memory in new array.
 
@@ -468,115 +488,115 @@ static CMPIrc _set_cimple_array_key(
 
     if (!_type_compatible(mp->type, _to_cimple_type(array_type)))
     {
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
     // Assign the array values:
 
     switch(mp->type)
     {
-	case cimple::BOOLEAN:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_boolean*)prop)->append(t.value.boolean);
-	    }
-	    break;
-	}
+        case cimple::BOOLEAN:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_boolean*)prop)->append(t.value.boolean);
+            }
+            break;
+        }
 
-	case UINT8:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint8*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case UINT8:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_uint8*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case SINT8:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint8*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case SINT8:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_sint8*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case UINT16:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint16*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case UINT16:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_uint16*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case SINT16:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint16*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case SINT16:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_sint16*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case cimple::UINT32:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint32*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case cimple::UINT32:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_uint32*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case SINT32:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint32*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case SINT32:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_sint32*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case cimple::UINT64:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_uint64*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case cimple::UINT64:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_uint64*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case SINT64:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_sint64*)prop)->append(_promote(t));
-	    }
-	    break;
-	}
+        case SINT64:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_sint64*)prop)->append(_promote(t));
+            }
+            break;
+        }
 
-	case STRING:
-	{
-	    for (CMPICount i = 0; i < n; i++)
-	    {
-		CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
-		((Array_String*)prop)->append(
-		    char_ptr(t.value.string));
-	    }
-	}
+        case STRING:
+        {
+            for (CMPICount i = 0; i < n; i++)
+            {
+                CMPIData t = CMGetArrayElementAt(data.value.array, i, NULL);
+                ((Array_String*)prop)->append(
+                    char_ptr(t.value.string));
+            }
+        }
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 static CMPIrc _set_cimple_property(
@@ -587,9 +607,9 @@ static CMPIrc _set_cimple_property(
     void* prop = (char*)instance + mp->offset;
 
     if (mp->subscript == 0)
-	return(_set_cimple_scalar(mp, prop, data));
+        RETURN(_set_cimple_scalar(mp, prop, data));
     else
-	return(_set_cimple_array(mp, prop, data));
+        RETURN(_set_cimple_array(mp, prop, data));
 }
 
 static CMPIrc _set_cimple_key_property(
@@ -600,9 +620,9 @@ static CMPIrc _set_cimple_key_property(
     void* prop = (char*)instance + mp->offset;
 
     if (mp->subscript == 0)
-	return(_set_cimple_scalar_key(mp, prop, data));
+        RETURN(_set_cimple_scalar_key(mp, prop, data));
     else
-	return(_set_cimple_array_key(mp, prop, data));
+        RETURN(_set_cimple_array_key(mp, prop, data));
 }
 
 static CMPIrc _set_cimple_reference(
@@ -612,17 +632,47 @@ static CMPIrc _set_cimple_reference(
 {
     if (data.type != CMPI_ref)
     {
-	return(CMPI_RC_ERR_TYPE_MISMATCH);
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
     }
 
     CMPIObjectPath* op = data.value.ref;
-    Instance*& ref = reference_of(instance, mr);
+    Instance*& ref = __ref_of(instance, mr);
 
     if (op)
-	return(make_cimple_reference(mr->meta_class, op, ref));
+        RETURN(make_cimple_reference(mr->meta_class, op, ref));
 
     ref = 0;
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
+}
+
+static CMPIrc _append_cimple_reference(
+    Instance* inst,
+    const Meta_Reference* mr,
+    const CMPIData& data,
+    bool clear)
+{
+    if (data.type != CMPI_ref)
+        RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
+
+    Array_Ref& ref = __array_ref_of(inst, mr);
+
+    if (clear)
+        ref.clear();
+
+    if (data.value.ref)
+    {
+        Instance* r = 0;
+        CMPIrc rc = make_cimple_reference(mr->meta_class, data.value.ref, r);
+        
+        if (rc != CMPI_RC_OK)
+            RETURN(CMPI_RC_ERR_FAILED);
+
+        ref.append(r);
+    }
+    else
+        ref.append(0);
+
+    RETURN(CMPI_RC_OK);
 }
 
 CMPIrc make_cimple_reference(
@@ -635,67 +685,74 @@ CMPIrc make_cimple_reference(
     // Create the instance:
 
     inst = create(mc);
-    nullify_non_keys(inst);
+    nullify_properties(inst);
+
+    // Set the namespace if the CMPI object path has one.
+
+    CMPIString* ns = CMGetNameSpace(op, NULL);
+
+    if (ns)
+        inst->__name_space = char_ptr(ns);
 
     // For each property of the CMPI object path:
 
     for (size_t i = 0, n = CMGetKeyCount(op, NULL); i < n; i++)
     {
-	// Get the CMPI data object:
+        // Get the CMPI data object:
 
-	CMPIString* name;
-	CMPIData data = CMGetKeyAt(op, i, &name, NULL);
+        CMPIString* name;
+        CMPIData data = CMGetKeyAt(op, i, &name, NULL);
 
-	// Find the corresponding CIMPLE meta feature:
+        // Find the corresponding CIMPLE meta feature:
 
-	const Meta_Feature* mf = find_feature(mc, char_ptr(name));
+        const Meta_Feature* mf = find_feature(mc, char_ptr(name));
 
-	if (!mf)
-	{
-	    // Ignore properties that appear in the source class but not
-	    // in the target class. These properties may be introduced by
-	    // subclasses or by newer versions.
-	    continue;
-	}
+        if (!mf)
+        {
+            // Ignore properties that appear in the source class but not
+            // in the target class. These properties may be introduced by
+            // subclasses or by newer versions.
+            continue;
+        }
 
-	if (!(mf->flags & CIMPLE_FLAG_KEY))
-	{
-	    destroy(inst);
-	    inst = 0;
+        if (!(mf->flags & CIMPLE_FLAG_KEY))
+        {
+            destroy(inst);
+            inst = 0;
             set_cmpi_error(
                 CMPI_RC_ERR_TYPE_MISMATCH, "make_cimple_reference()");
-	    return(CMPI_RC_ERR_TYPE_MISMATCH);
-	}
+            RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
+        }
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (Meta_Property*)mf;
-	    CMPIrc rc = _set_cimple_key_property(inst, mp, data);
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (Meta_Property*)mf;
+            CMPIrc rc = _set_cimple_key_property(inst, mp, data);
 
-	    if (rc != CMPI_RC_OK)
-	    {
-		destroy(inst);
-		inst = 0;
+            if (rc != CMPI_RC_OK)
+            {
+                destroy(inst);
+                inst = 0;
                 set_cmpi_error(rc, "make_cimple_reference()");
-		return(rc);
-	    }
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-	    CMPIrc rc = _set_cimple_reference(inst, mr, data);
+                RETURN(rc);
+            }
+        }
+        else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (Meta_Reference*)mf;
+            CMPIrc rc = _set_cimple_reference(inst, mr, data);
 
-	    if (rc != CMPI_RC_OK)
-	    {
-		destroy(inst);
-		inst = 0;
+            if (rc != CMPI_RC_OK)
+            {
+                destroy(inst);
+                inst = 0;
                 set_cmpi_error(rc, "make_cimple_reference()");
-		return(rc);
-	    }
-	}
+                RETURN(rc);
+            }
+        }
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 static CMPIDateTime* _to_cmpi_datetime(
@@ -704,14 +761,14 @@ static CMPIDateTime* _to_cmpi_datetime(
 {
     char buf[Datetime::BUFFER_SIZE];
     x.ascii(buf);
-    return(CMNewDateTimeFromChars(broker, buf, NULL));
+    RETURN(CMNewDateTimeFromChars(broker, buf, NULL));
 }
 
 static CMPIString* _to_cmpi_string(
     const CMPIBroker* broker, 
     const String& x)
 {
-    return(CMNewString(broker, x.c_str(), NULL));
+    RETURN(CMNewString(broker, x.c_str(), NULL));
 }
 
 static void _to_cmpi_value(
@@ -725,85 +782,85 @@ static void _to_cmpi_value(
 
     if (mp->subscript == 0)
     {
-	if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
-	{
-	    memcpy(&value, prop, type_size[mp->type]);
-	}
-	else switch (mp->type)
-	{
-	    case cimple::BOOLEAN:
-		value.boolean = *((cimple::boolean*)prop) ? 1 : 0;
-		break;
+        if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
+        {
+            memcpy(&value, prop, type_size[mp->type]);
+        }
+        else switch (mp->type)
+        {
+            case cimple::BOOLEAN:
+                value.boolean = *((cimple::boolean*)prop) ? 1 : 0;
+                break;
 
-	    case STRING:
-	    {
-		value.string = _to_cmpi_string(broker, *((String*)prop));
-		break;
-	    }
+            case STRING:
+            {
+                value.string = _to_cmpi_string(broker, *((String*)prop));
+                break;
+            }
 
-	    case DATETIME:
-		value.dateTime = _to_cmpi_datetime(broker, *((Datetime*)prop));
-		break;
+            case DATETIME:
+                value.dateTime = _to_cmpi_datetime(broker, *((Datetime*)prop));
+                break;
 
-	    default:
-		CIMPLE_ASSERT(0);
-		break;
-	}
+            default:
+                CIMPLE_ASSERT(0);
+                break;
+        }
     }
     else
     {
-	const __Array_Base* array = (const __Array_Base*)prop;
-	value.array = CMNewArray(broker, array->rep->size, type, NULL);
+        const __Array_Base* array = (const __Array_Base*)prop;
+        value.array = CMNewArray(broker, array->rep->size, type, NULL);
 
-	if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
-	{
-	    for (size_t i = 0, n = array->rep->size; i < n; i++)
-		CMSetArrayElementAt(value.array, i, __at(array->rep, i), type);
-	}
-	else switch (mp->type)
-	{
-	    case cimple::BOOLEAN:
-	    {
-		const Array_boolean& array = *((const Array_boolean*)prop);
+        if (_is_raw[mp->type] && mp->type != cimple::BOOLEAN)
+        {
+            for (size_t i = 0, n = array->rep->size; i < n; i++)
+                CMSetArrayElementAt(value.array, i, __at(array->rep, i), type);
+        }
+        else switch (mp->type)
+        {
+            case cimple::BOOLEAN:
+            {
+                const Array_boolean& array = *((const Array_boolean*)prop);
 
-		for (size_t i = 0; i < array.size(); i++)
-		{
-		    CMPIBoolean x = array[i] ? 1 : 0;
-		    CMSetArrayElementAt(value.array, i, &x, type);
-		}
-		break;
-	    }
+                for (size_t i = 0; i < array.size(); i++)
+                {
+                    CMPIBoolean x = array[i] ? 1 : 0;
+                    CMSetArrayElementAt(value.array, i, &x, type);
+                }
+                break;
+            }
 
-	    case STRING:
-	    {
-		const Array_String& array = *((const Array_String*)prop);
+            case STRING:
+            {
+                const Array_String& array = *((const Array_String*)prop);
 
-		for (size_t i = 0; i < array.size(); i++)
-		{
-		    CMPIString* tmp = _to_cmpi_string(broker, array[i]);
-		    CMSetArrayElementAt(value.array, i, &tmp, type);
-		}
-		break;
-	    }
+                for (size_t i = 0; i < array.size(); i++)
+                {
+                    CMPIString* tmp = _to_cmpi_string(broker, array[i]);
+                    CMSetArrayElementAt(value.array, i, &tmp, type);
+                }
+                break;
+            }
 
-	    case DATETIME:
-	    {
-		const Array_Datetime& array = *((const Array_Datetime*)prop);
+            case DATETIME:
+            {
+                const Array_Datetime& array = *((const Array_Datetime*)prop);
 
-		for (size_t i = 0; i < array.size(); i++)
-		{
-		    CMPIDateTime* tmp = _to_cmpi_datetime(broker, array[i]);
-		    CMSetArrayElementAt(value.array, i, &tmp, type);
-		}
-		break;
-	    }
+                for (size_t i = 0; i < array.size(); i++)
+                {
+                    CMPIDateTime* tmp = _to_cmpi_datetime(broker, array[i]);
+                    CMSetArrayElementAt(value.array, i, &tmp, type);
+                }
+                break;
+            }
 
-	    default:
-		CIMPLE_ASSERT(0);
-		break;
-	}
+            default:
+                CIMPLE_ASSERT(0);
+                break;
+        }
 
-	type |= CMPI_ARRAY;
+        type |= CMPI_ARRAY;
     }
 }
 
@@ -817,66 +874,73 @@ CMPIrc make_cmpi_object_path(
 
     const char* class_name = cimple_inst->meta_class->name;
 
+    const char* real_name_space;
+
+    if (cimple_inst->__name_space.size())
+        real_name_space = cimple_inst->__name_space.c_str();
+    else
+        real_name_space = name_space;
+
     CMPIStatus status;
-    cmpi_op = CMNewObjectPath(broker, name_space, class_name, &status);
+    cmpi_op = CMNewObjectPath(broker, real_name_space, class_name, &status);
 
     if (cmpi_op == 0 || status.rc != CMPI_RC_OK)
     {
         set_cmpi_error(status);
-        return status.rc;
+        RETURN(status.rc);
     }
 
     const Meta_Class* mc = cimple_inst->meta_class;
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mc->meta_features[i];
+        const Meta_Feature* mf = mc->meta_features[i];
 
-	// Ignore non-keys:
+        // Ignore non-keys:
 
-	if (!(mf->flags & CIMPLE_FLAG_KEY))
-	    continue;
+        if (!(mf->flags & CIMPLE_FLAG_KEY))
+            continue;
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (const Meta_Property*)mf;
-	    const void* prop = (const char*)cimple_inst + mp->offset;
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (const Meta_Property*)mf;
+            const void* prop = (const char*)cimple_inst + mp->offset;
 
-	    // Ignore null properties:
+            // Ignore null properties:
 
-	    if (!null_of(mp, prop))
-	    {
-		CMPIValue value;
-		CMPIType type;
-		_to_cmpi_value(broker, mp, prop, value, type);
-		CMAddKey(cmpi_op, mp->name, &value, type);
-	    }
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (const Meta_Reference*)mf;
-	    const Instance* ref = reference_of(cimple_inst, mr);
-	    
-	    if (ref)
-	    {
-		CMPIValue value;
+            if (!null_of(mp, prop))
+            {
+                CMPIValue value;
+                CMPIType type;
+                _to_cmpi_value(broker, mp, prop, value, type);
+                CMAddKey(cmpi_op, mp->name, &value, type);
+            }
+        }
+        else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
+            const Instance* ref = __ref_of(cimple_inst, mr);
+            
+            if (ref)
+            {
+                CMPIValue value;
 
-		CMPIrc rc = make_cmpi_object_path(
-		    broker, ref, name_space, value.ref);
+                CMPIrc rc = make_cmpi_object_path(
+                    broker, ref, real_name_space, value.ref);
 
-		if (rc != CMPI_RC_OK)
-		{
-		    cmpi_op = 0;
+                if (rc != CMPI_RC_OK)
+                {
+                    cmpi_op = 0;
                     // Propagate error of make_cmpi_object_path().
-		    return(CMPI_RC_ERR_FAILED);
-		}
+                    RETURN(CMPI_RC_ERR_FAILED);
+                }
 
-		CMAddKey(cmpi_op, mr->name, &value, CMPI_ref);
-	    }
-	}
+                CMAddKey(cmpi_op, mr->name, &value, CMPI_ref);
+            }
+        }
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 CMPIrc make_cmpi_instance(
@@ -896,8 +960,8 @@ CMPIrc make_cmpi_instance(
 
     if (!cmpi_op)
     {
-	make_cmpi_object_path(broker, cimple_inst, name_space, cop);
-	cmpi_op = cop;
+        make_cmpi_object_path(broker, cimple_inst, name_space, cop);
+        cmpi_op = cop;
     }
 
     // Create a new instance:
@@ -908,7 +972,7 @@ CMPIrc make_cmpi_instance(
     if (cmpi_inst == 0 || status.rc != CMPI_RC_OK)
     {
         set_cmpi_error(status);
-	return(status.rc);
+        RETURN(status.rc);
     }
 
     // ATTN: check that the properties that CMPI added to the object,
@@ -918,48 +982,48 @@ CMPIrc make_cmpi_instance(
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mc->meta_features[i];
+        const Meta_Feature* mf = mc->meta_features[i];
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (const Meta_Property*)mf;
-	    const void* prop = (const char*)cimple_inst + mp->offset;
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (const Meta_Property*)mf;
+            const void* prop = (const char*)cimple_inst + mp->offset;
 
-	    // Ignore null properties:
+            // Ignore null properties:
 
-	    if (!null_of(mp, prop))
-	    {
-		CMPIValue value;
-		CMPIType type;
-		_to_cmpi_value(broker, mp, prop, value, type);
+            if (!null_of(mp, prop))
+            {
+                CMPIValue value;
+                CMPIType type;
+                _to_cmpi_value(broker, mp, prop, value, type);
 
-		CMSetProperty(cmpi_inst, mp->name, &value, type);
-	    }
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (const Meta_Reference*)mf;
-	    const Instance* ref = reference_of(cimple_inst, mr);
-	    
-	    if (ref)
-	    {
-		CMPIValue value;
+                CMSetProperty(cmpi_inst, mp->name, &value, type);
+            }
+        }
+        else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
+            const Instance* ref = __ref_of(cimple_inst, mr);
+            
+            if (ref)
+            {
+                CMPIValue value;
 
-		CMPIrc rc = make_cmpi_object_path(
-		    broker, ref, name_space, value.ref);
+                CMPIrc rc = make_cmpi_object_path(
+                    broker, ref, name_space, value.ref);
 
-		if (rc != CMPI_RC_OK)
-		{
-		    cmpi_inst = 0;
-		    return(CMPI_RC_ERR_FAILED);
-		}
+                if (rc != CMPI_RC_OK)
+                {
+                    cmpi_inst = 0;
+                    RETURN(CMPI_RC_ERR_FAILED);
+                }
 
-		CMSetProperty(cmpi_inst, mr->name, &value, CMPI_ref);
-	    }
-	}
+                CMSetProperty(cmpi_inst, mr->name, &value, CMPI_ref);
+            }
+        }
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 CMPIrc make_cimple_instance(
@@ -974,63 +1038,64 @@ CMPIrc make_cimple_instance(
     // Create the instance:
 
     Instance* cimple_inst = create(mc);
+    nullify_properties(cimple_inst);
     Ref<Instance> cimple_inst_d(cimple_inst);
 
     // For each property of the CMPI instance.
 
     for (size_t i = 0, n = CMGetPropertyCount(cmpi_inst, NULL); i < n; i++)
     {
-	// Get the CMPI data object:
+        // Get the CMPI data object:
 
-	CMPIString* name;
-	CMPIData data = CMGetPropertyAt(cmpi_inst, i, &name, NULL);
+        CMPIString* name;
+        CMPIData data = CMGetPropertyAt(cmpi_inst, i, &name, NULL);
 
-	// Find the corresponding CIMPLE meta feature:
+        // Find the corresponding CIMPLE meta feature:
 
-	const Meta_Feature* mf = find_feature(mc, char_ptr(name));
+        const Meta_Feature* mf = find_feature(mc, char_ptr(name));
 
-	if (!mf)
+        if (!mf)
         {
-            set_cmpi_error(
-                CMPI_RC_ERR_NO_SUCH_PROPERTY, 
-                "make_cimple_instance()");
-	    return(CMPI_RC_ERR_NO_SUCH_PROPERTY);
+            // Ignore properties that appear in the source class but not
+            // in the target class. These properties may be introduced by
+            // subclasses or by newer versions.
+            continue;
         }
 
-	// Set the feature:
+        // Set the feature:
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (Meta_Property*)mf;
-	    CMPIrc rc = _set_cimple_property(cimple_inst, mp, data);
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (Meta_Property*)mf;
+            CMPIrc rc = _set_cimple_property(cimple_inst, mp, data);
 
-	    if (rc != CMPI_RC_OK)
+            if (rc != CMPI_RC_OK)
             {
                 set_cmpi_error(rc, "make_cimple_instance()");
-		return(rc);
+                RETURN(rc);
             }
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (Meta_Reference*)mf;
-	    CMPIrc rc = _set_cimple_reference(cimple_inst, mr, data);
+        }
+        else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (Meta_Reference*)mf;
+            CMPIrc rc = _set_cimple_reference(cimple_inst, mr, data);
 
-	    if (rc != CMPI_RC_OK)
+            if (rc != CMPI_RC_OK)
             {
                 set_cmpi_error(rc, "make_cimple_instance()");
-		return(rc);
+                RETURN(rc);
             }
-	}
-	else
+        }
+        else
         {
             set_cmpi_error(
                 CMPI_RC_ERR_NO_SUCH_PROPERTY, "make_cimple_instance()");
-	    return(CMPI_RC_ERR_NO_SUCH_PROPERTY);
+            RETURN(CMPI_RC_ERR_NO_SUCH_PROPERTY);
         }
     }
 
     cimple_inst_out = cimple_inst_d.steal();
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 CMPIrc make_method(
@@ -1038,13 +1103,13 @@ CMPIrc make_method(
     const CMPIArgs* in,
     const Meta_Class* find_meta_class(const char*, void*),
     void* client_data,
-    Instance*& cimple_meth)
+    Instance*& meth_out)
 {
     Error::clear();
 
     // ATTN: are some arguments required in the model?
 
-    cimple_meth = 0;
+    meth_out = 0;
 
     Instance* meth = create(mm);
     nullify_properties(meth);
@@ -1052,63 +1117,148 @@ CMPIrc make_method(
 
     for (size_t i = 0, n = CMGetArgCount(in, NULL); i < n; i++)
     {
-	CMPIString* name;
-	CMPIData data = CMGetArgAt(in, i, &name, NULL);
+        CMPIString* name;
+        CMPIData data = CMGetArgAt(in, i, &name, NULL);
 
-	const Meta_Feature* mf = find_feature(mm, char_ptr(name));
+        const Meta_Feature* mf = find_feature(mm, char_ptr(name));
 
-	if (!mf)
+        if (!mf)
         {
             set_cmpi_error(
                 CMPI_RC_ERR_NO_SUCH_PROPERTY, "make_method()");
-	    return(CMPI_RC_ERR_NO_SUCH_PROPERTY);
+            RETURN(CMPI_RC_ERR_NO_SUCH_PROPERTY);
         }
 
-	if (!(mf->flags & CIMPLE_FLAG_IN))
+        if (!(mf->flags & CIMPLE_FLAG_IN))
         {
             set_cmpi_error(
                 CMPI_RC_ERR_NO_SUCH_PROPERTY, "make_method()");
-	    return(CMPI_RC_ERR_NO_SUCH_PROPERTY);
+            RETURN(CMPI_RC_ERR_NO_SUCH_PROPERTY);
         }
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (Meta_Property*)mf;
-	    CMPIrc rc = _set_cimple_property(meth, mp, data);
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (Meta_Property*)mf;
+            CMPIrc rc = _set_cimple_property(meth, mp, data);
 
-	    if (rc != CMPI_RC_OK)
+            if (rc != CMPI_RC_OK)
             {
                 set_cmpi_error(rc, "make_method()");
-		return(rc);
+                RETURN(rc);
             }
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    Meta_Reference mr = *((Meta_Reference*)mf);
+        }
+        else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = ((const Meta_Reference*)mf);
 
-	    const Meta_Class* mc = find_meta_class(
-		class_name(data.value.ref), client_data);
+            // Raise error if not a reference type.
 
-	    if (mc)
-		mr.meta_class = mc;
-
-	    CMPIrc rc = _set_cimple_reference(meth, &mr, data);
-
-	    if (rc != CMPI_RC_OK)
+            if (!(data.type & CMPI_ref))
             {
-                set_cmpi_error(rc, "make_method()");
-		return(rc);
+                set_cmpi_error(CMPI_RC_ERR_FAILED, "type mismatch");
+                RETURN(CMPI_RC_ERR_FAILED);
             }
-	}
-	else
+
+            if (CMIsArray(data))
+            {
+                if (mr->subscript == 0)
+                    RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
+
+                CMPICount n = CMGetArrayCount(data.value.array, NULL);
+
+                for (CMPICount i = 0; i < n; i++)
+                {
+                    Meta_Reference tmp_mr = *mr;
+                    CMPIData td = CMGetArrayElementAt(data.value.array, i,NULL);
+
+                    const Meta_Class* mc = 0;
+                    
+                    if (td.value.ref)
+                    {
+                        mc = find_meta_class(
+                            class_name(td.value.ref), client_data);
+                    }
+
+                    if (mc)
+                        tmp_mr.meta_class = mc;
+
+                    CMPIrc rc = _append_cimple_reference(
+                        meth, &tmp_mr, td, i == 0);
+
+                    if (rc != CMPI_RC_OK)
+                        RETURN(rc);
+                }
+            }
+            else if (data.value.ref)
+            {
+                if (mr->subscript != 0)
+                    RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
+
+                Meta_Reference tmp_mr = *mr;
+
+                const Meta_Class* mc = find_meta_class(
+                    class_name(data.value.ref), client_data);
+
+                if (mc)
+                    tmp_mr.meta_class = mc;
+
+                CMPIrc rc = _set_cimple_reference(meth, &tmp_mr, data);
+
+                if (rc != CMPI_RC_OK)
+                {
+                    set_cmpi_error(rc, "make_method()");
+                    RETURN(rc);
+                }
+            }
+        }
+        else
         {
             set_cmpi_error(CMPI_RC_ERR_NO_SUCH_PROPERTY, "make_method()");
-	    return(CMPI_RC_ERR_NO_SUCH_PROPERTY);
+            RETURN(CMPI_RC_ERR_NO_SUCH_PROPERTY);
         }
     }
 
-    cimple_meth = meth_d.steal();
-    return(CMPI_RC_OK);
+    meth_out = meth_d.steal();
+    RETURN(CMPI_RC_OK);
+}
+
+static CMPIrc _to_cmpi_ref_array(
+    const CMPIBroker* broker,
+    const char* ns,
+    const Array_Ref& r,
+    CMPIValue& value)
+{
+    value.array = CMNewArray(broker, r.size(), CMPI_ref, NULL);
+
+    for (size_t i = 0; i < r.size(); i++)
+    {
+        const Instance* ref = r[i];
+
+        CMPIValue tmp;
+        memset(&tmp, 0, sizeof(tmp));
+
+        if (ref)
+        {
+            const char* tns = ns;
+
+            if (ref->__name_space.size())
+                tns = ref->__name_space.c_str();
+
+            CMPIrc rc = make_cmpi_object_path(broker, ref, tns, tmp.ref);
+
+            if (rc != CMPI_RC_OK)
+                RETURN(CMPI_RC_ERR_FAILED);
+        }
+        else
+        {
+            set_cmpi_error(CMPI_RC_ERR_FAILED, "encountered null reference");
+            RETURN(CMPI_RC_ERR_FAILED);
+        }
+
+        CMSetArrayElementAt(value.array, i, &tmp, CMPI_ref);
+    }
+
+    RETURN(CMPI_RC_OK);
 }
 
 CMPIrc make_method_out(
@@ -1125,60 +1275,71 @@ CMPIrc make_method_out(
 
     for (size_t i = 0; i < mm->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mm->meta_features[i];
+        const Meta_Feature* mf = mm->meta_features[i];
 
-	// Ignore non-out-args:
+        // Ignore non-out-args:
 
-	if (!(mf->flags & CIMPLE_FLAG_OUT))
-	    continue;
+        if (!(mf->flags & CIMPLE_FLAG_OUT))
+            continue;
 
-	// Add the feature to the CMPI object:
+        // Add the feature to the CMPI object:
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (const Meta_Property*)mf;
-	    const void* prop = (const char*)cimple_meth + mp->offset;
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (const Meta_Property*)mf;
+            const void* prop = (const char*)cimple_meth + mp->offset;
 
-	    CMPIValue value;
-	    CMPIType type;
-	    _to_cmpi_value(broker, mp, prop, value, type);
+            CMPIValue value;
+            CMPIType type;
+            _to_cmpi_value(broker, mp, prop, value, type);
 
-	    if (strcasecmp(mp->name, "return_value") == 0)
-	    {
-		return_value = value;
-		return_type = type;
-	    }
-	    else
-		CMAddArg(out, mp->name, &value, type);
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (const Meta_Reference*)mf;
-	    const Instance* ref = reference_of(cimple_meth, mr);
-	    
-	    if (ref)
-	    {
-		CMPIValue value;
+            if (strcasecmp(mp->name, "return_value") == 0)
+            {
+                return_value = value;
+                return_type = type;
+            }
+            else
+                CMAddArg(out, mp->name, &value, type);
+        }
+        else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
 
-		CMPIrc rc = make_cmpi_object_path(
-		    broker, ref, name_space, value.ref);
+            if (mr->subscript)
+            {
+                const Array_Ref& r = __array_ref_of(cimple_meth, mr);
+                CMPIValue value;
+                CMPIrc rc = _to_cmpi_ref_array(broker, name_space, r, value);
 
-		if (rc != CMPI_RC_OK)
+                if (rc != CMPI_RC_OK)
+                    RETURN(rc);
+
+                CMAddArg(out, mr->name, &value, CMPI_ref | CMPI_ARRAY);
+            }
+            else
+            {
+                const Instance* ref = __ref_of(cimple_meth, mr);
+                
+                if (ref)
                 {
-                    // Propagate make_cmpi_object_path() error.
-		    return(CMPI_RC_ERR_FAILED);
-                }
+                    CMPIValue value;
 
-		CMAddArg(out, mr->name, &value, CMPI_ref);
-	    }
-	    else
-	    {
-		// ATTN: add a null reference anyway?
-	    }
-	}
+                    CMPIrc rc = make_cmpi_object_path(
+                        broker, ref, name_space, value.ref);
+
+                    if (rc != CMPI_RC_OK)
+                    {
+                        // Propagate make_cmpi_object_path() error.
+                        RETURN(CMPI_RC_ERR_FAILED);
+                    }
+
+                    CMAddArg(out, mr->name, &value, CMPI_ref);
+                }
+            }
+        }
     }
 
-    return(CMPI_RC_OK);
+    RETURN(CMPI_RC_OK);
 }
 
 #ifdef CIMPLE_NEED_CMPI_IO
@@ -1187,39 +1348,39 @@ static const char* type_name_of(CMPIType type)
 {
     switch(type & ~CMPI_ARRAY)
     {
-	case CMPI_boolean:
-	    return "boolean";
-	case CMPI_uint8:
-	    return "uint8";
-	case CMPI_sint8:
-	    return "sint8";
-	case CMPI_uint16:
-	    return "uint16";
-	case CMPI_sint16:
-	    return "sint16";
-	case CMPI_uint32:
-	    return "uint32";
-	case CMPI_sint32:
-	    return "sint32";
-	case CMPI_uint64:
-	    return "uint64";
-	case CMPI_sint64:
-	    return "sint64";
-	case CMPI_real32:
-	    return "real32";
-	case CMPI_real64:
-	    return "real64";
-	case CMPI_char16:
-	    return "char16";
-	case CMPI_string:
-	    return "string";
-	case CMPI_dateTime:
-	    return "datetime";
-	case CMPI_ref:
-	    return "ref";
-	default:
-	    printf("[%d]\n", type);
-	    assert(0);
+        case CMPI_boolean:
+            return "boolean";
+        case CMPI_uint8:
+            return "uint8";
+        case CMPI_sint8:
+            return "sint8";
+        case CMPI_uint16:
+            return "uint16";
+        case CMPI_sint16:
+            return "sint16";
+        case CMPI_uint32:
+            return "uint32";
+        case CMPI_sint32:
+            return "sint32";
+        case CMPI_uint64:
+            return "uint64";
+        case CMPI_sint64:
+            return "sint64";
+        case CMPI_real32:
+            return "real32";
+        case CMPI_real64:
+            return "real64";
+        case CMPI_char16:
+            return "char16";
+        case CMPI_string:
+            return "string";
+        case CMPI_dateTime:
+            return "datetime";
+        case CMPI_ref:
+            return "ref";
+        default:
+            printf("[%d]\n", type);
+            assert(0);
     }
 
     return "<unknown>";
@@ -1229,74 +1390,74 @@ void print_scalar(const CMPIData& data)
 {
     switch(data.type)
     {
-	case CMPI_boolean:
-	    printf("\"%s\"", data.value.boolean ? "true" : "false");
-	    break;
+        case CMPI_boolean:
+            printf("\"%s\"", data.value.boolean ? "true" : "false");
+            break;
 
-	case CMPI_uint8:
-	    printf("%u", data.value.uint8);
-	    break;
+        case CMPI_uint8:
+            printf("%u", data.value.uint8);
+            break;
 
-	case CMPI_sint8:
-	    printf("%d", data.value.sint8);
-	    break;
+        case CMPI_sint8:
+            printf("%d", data.value.sint8);
+            break;
 
-	case CMPI_uint16:
-	    printf("%u", data.value.uint16);
-	    break;
+        case CMPI_uint16:
+            printf("%u", data.value.uint16);
+            break;
 
-	case CMPI_sint16:
-	    printf("%d", data.value.sint16);
-	    break;
+        case CMPI_sint16:
+            printf("%d", data.value.sint16);
+            break;
 
-	case CMPI_uint32:
-	    printf("%u", data.value.uint32);
-	    break;
+        case CMPI_uint32:
+            printf("%u", data.value.uint32);
+            break;
 
-	case CMPI_sint32:
-	    printf("%d", data.value.sint32);
-	    break;
+        case CMPI_sint32:
+            printf("%d", data.value.sint32);
+            break;
 
-	case CMPI_uint64:
-	    printf("%llu", data.value.uint64);
-	    break;
+        case CMPI_uint64:
+            printf("%llu", data.value.uint64);
+            break;
 
-	case CMPI_sint64:
-	    printf("%lld", data.value.sint64);
-	    break;
+        case CMPI_sint64:
+            printf("%lld", data.value.sint64);
+            break;
 
-	case CMPI_real32:
-	    printf("%f", data.value.real32);
-	    break;
+        case CMPI_real32:
+            printf("%f", data.value.real32);
+            break;
 
-	case CMPI_real64:
-	    printf("%lf", data.value.real64);
-	    break;
+        case CMPI_real64:
+            printf("%lf", data.value.real64);
+            break;
 
-	case CMPI_char16:
-	    printf("%u", data.value.char16);
-	    break;
+        case CMPI_char16:
+            printf("%u", data.value.char16);
+            break;
 
-	case CMPI_string:
-	    printf("%s", char_ptr(data.value.string));
-	    break;
+        case CMPI_string:
+            printf("%s", char_ptr(data.value.string));
+            break;
 
-	case CMPI_dateTime:
-	{
-	    CMPIString* tmp = CMGetStringFormat(data.value.dateTime, NULL);
-	    printf("%s", char_ptr(tmp));
-	    break;
-	}
+        case CMPI_dateTime:
+        {
+            CMPIString* tmp = CMGetStringFormat(data.value.dateTime, NULL);
+            printf("%s", char_ptr(tmp));
+            break;
+        }
 
-	case CMPI_ref:
-	{
-	    print(data.value.ref);
-	    break;
-	}
+        case CMPI_ref:
+        {
+            print(data.value.ref);
+            break;
+        }
 
-	default:
-	    assert(0);
-	    break;
+        default:
+            assert(0);
+            break;
     }
 }
 
@@ -1304,29 +1465,29 @@ void print(const CMPIData& data)
 {
     if (data.state & CMPI_nullValue)
     {
-	printf("null");
-	return;
+        printf("null");
+        return;
     }
 
     if (CMIsArray(data))
     {
-	printf("{");
+        printf("{");
 
-	CMPICount n = CMGetArrayCount(data.value.array, NULL);
+        CMPICount n = CMGetArrayCount(data.value.array, NULL);
 
-	for (CMPICount i = 0; i < n; i++)
-	{
-	    CMPIData td = CMGetArrayElementAt(data.value.array, i, NULL);
-	    print_scalar(td);
+        for (CMPICount i = 0; i < n; i++)
+        {
+            CMPIData td = CMGetArrayElementAt(data.value.array, i, NULL);
+            print_scalar(td);
 
-	    if (i + 1 != n)
-		printf(",");
-	}
+            if (i + 1 != n)
+                printf(",");
+        }
 
-	printf("}");
+        printf("}");
     }
     else
-	print_scalar(data);
+        print_scalar(data);
 }
 
 void print(const CMPIObjectPath* op)
@@ -1341,12 +1502,12 @@ void print(const CMPIObjectPath* op)
 
     for (size_t i = 0, n = CMGetKeyCount(op, NULL); i < n; i++)
     {
-	CMPIString* name;
-	CMPIData data = CMGetKeyAt(op, i, &name, NULL);
+        CMPIString* name;
+        CMPIData data = CMGetKeyAt(op, i, &name, NULL);
 
-	printf("    %s(%s): ", char_ptr(name), type_name_of(data.type));
-	print(data);
-	putchar('\n');
+        printf("    %s(%s): ", char_ptr(name), type_name_of(data.type));
+        print(data);
+        putchar('\n');
     }
 
     printf("}\n");
@@ -1359,19 +1520,19 @@ void print(const CMPIInstance* inst)
 
     for (size_t i = 0, n = CMGetPropertyCount(inst, NULL); i < n; i++)
     {
-	CMPIString* name;
-	CMPIData data = CMGetPropertyAt(inst, i, &name, NULL);
+        CMPIString* name;
+        CMPIData data = CMGetPropertyAt(inst, i, &name, NULL);
 
-	if (data.type == 0)
-	{
-	    // FIXME: for some reason the data type is zero here. Embedded
-	    // object types are not converted correctly here.
-	    continue;
-	}
+        if (data.type == 0)
+        {
+            // FIXME: for some reason the data type is zero here. Embedded
+            // object types are not converted correctly here.
+            continue;
+        }
 
-	printf("    %s(%s): ", char_ptr(name), type_name_of(data.type));
-	print(data);
-	putchar('\n');
+        printf("    %s(%s): ", char_ptr(name), type_name_of(data.type));
+        print(data);
+        putchar('\n');
     }
 
     printf("}\n");
@@ -1383,6 +1544,8 @@ CIMPLE_NAMESPACE_END
 
 /*  TO DO:
 
-    1.	check class name consistency between CIMPLE and CMPI.
+    1.  check class name consistency between CIMPLE and CMPI.
     2.  revisit filtering of return instances (use the model).
 */
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/Converter.cpp,v 1.34 2007/03/13 23:25:03 mbrasher-public Exp $");

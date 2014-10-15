@@ -38,7 +38,7 @@ void MOF_Method_Decl::print() const
 {
     MOF_Indent(1);
     printf("+ method %s %s\n", 
-	MOF_Data_Type::to_string(data_type), name);
+        MOF_Data_Type::to_string(data_type), name);
     qualifiers->print_list(3);
 }
 
@@ -65,28 +65,28 @@ void MOF_Method_Decl::check_compatibility(
 
     if (m1->data_type != m2->data_type)
     {
-	MOF_error_printf("conflicting types for method \"%s\"", m1->name);
-	return;
+        MOF_error_printf("conflicting types for method \"%s\"", m1->name);
+        return;
     }
 
     while (p1 && p2)
     {
-	if (MOF_Parameter::compatible(class_name, m1->name, p1, p2) != 0)
-	{
-	    MOF_error_printf(
-		"conflicting types for method \"%s\"", m1->name);
-	    return;
-	}
+        if (MOF_Parameter::compatible(class_name, m1->name, p1, p2) != 0)
+        {
+            MOF_error_printf(
+                "conflicting types for method \"%s\"", m1->name);
+            return;
+        }
 
-	p1 = (MOF_Parameter*)p1->next;
-	p2 = (MOF_Parameter*)p2->next;
+        p1 = (MOF_Parameter*)p1->next;
+        p2 = (MOF_Parameter*)p2->next;
     }
 
     if (p1 || p2)
     {
-	MOF_error_printf(
-	    "conflicting types for method \"%s\"", m1->name);
-	return;
+        MOF_error_printf(
+            "conflicting types for method \"%s\"", m1->name);
+        return;
     }
 }
 
@@ -97,3 +97,5 @@ void MOF_Method_Decl::set_owning_class(const char* owning_class)
     for (MOF_Parameter* p = parameters; p; p = (MOF_Parameter*)p->next)
         p->set_owning_class(owning_class);
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Method_Decl.cpp,v 1.8 2007/03/07 18:57:14 mbrasher-public Exp $");

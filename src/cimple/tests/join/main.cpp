@@ -48,24 +48,26 @@ int main(int argc, char** argv)
 
     for (size_t i = 0; i < N; i++)
     {
-	char buffer[64];
-	sprintf(buffer, "%d", int(i));
-	Thread::create_joinable(threads[i], _proc, strdup(buffer));
+        char buffer[64];
+        sprintf(buffer, "%d", int(i));
+        Thread::create_joinable(threads[i], _proc, strdup(buffer));
     }
 
     for (size_t i = 0; i < N; i++)
     {
-	char buffer[64];
-	sprintf(buffer, "%d", int(i));
+        char buffer[64];
+        sprintf(buffer, "%d", int(i));
 
-	void* value = 0;
-	int r = Thread::join(threads[i], value);
-	// printf("join[%s][%s]\n", (char*)value, buffer);
-	assert(r == 0);
-	assert(strcmp(buffer, (char*)value) == 0);
+        void* value = 0;
+        int r = Thread::join(threads[i], value);
+        // printf("join[%s][%s]\n", (char*)value, buffer);
+        assert(r == 0);
+        assert(strcmp(buffer, (char*)value) == 0);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/join/main.cpp,v 1.4 2007/03/07 20:17:33 mbrasher-public Exp $");

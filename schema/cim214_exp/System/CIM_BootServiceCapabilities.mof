@@ -1,0 +1,40 @@
+// Copyright (c) 2006 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00105" type ="add">Add class</change>
+// ===============================================================
+//  CIM_BootServiceCapabilities
+// ===============================================================
+   [Experimental, Version ( "2.14.0" ),
+       UMLPackagePath ( "CIM::System::Boot" ), Description (
+       "A class derived from Capabilities that describes the boot "
+       "configuration management aspects of a system.")]
+class CIM_BootServiceCapabilities : CIM_EnabledLogicalElementCapabilities {
+
+      [Description (
+          "An enumeration indicating the create boot configuration "
+          "capabilities of a managed element. Since this is an array, "
+          "multiple values may be specified. The current values in the "
+          "enumeration are: \n"
+          "0 = Unknown \n"
+          "1 = Other \n"
+          "2 = Creates Boot Configuration, indicating that a boot "
+          "service can create new boot configuration using an existing "
+          "boot configuration as a template. \n"
+          "3 = Applies Boot Configuration, indicating that a boot "
+          "service can apply the boot configuration of a computer "
+          "system, without requiring a reset of the the computer "
+          "system."), 
+       ValueMap { "0", "1", "2", "3" }, 
+       Values { "Unknown", "Other", "Creates Boot Configuration",
+          "Applies Boot Configuration" }, 
+       ModelCorrespondence { 
+          "CIM_BootServiceCapabilities.OtherBootConfigCapabilities" }]
+   uint16 BootConfigCapabilities[];
+
+      [Description (
+          "A string, describing the additional boot configuration "
+          "capabilities of the element, used when the "
+          "BootConfigCapabilities is set to the value 1, \"Other\"."), 
+       ModelCorrespondence { 
+          "CIM_BootServiceCapabilities.BootConfigCapabilities" }]
+   string OtherBootConfigCapabilities;
+};

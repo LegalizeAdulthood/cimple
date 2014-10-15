@@ -70,7 +70,9 @@ int ComputerSystemDiskDrive_Provider::proc(
     typedef ComputerSystemDiskDrive Class;
     typedef ComputerSystemDiskDrive_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/ComputerSystemDiskDrive/ComputerSystemDiskDrive_Provider.cpp,v 1.6 2007/03/07 20:25:24 mbrasher-public Exp $");

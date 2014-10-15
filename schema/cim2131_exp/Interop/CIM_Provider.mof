@@ -1,0 +1,28 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_Provider
+// ==================================================================
+   [Experimental, UMLPackagePath ( "CIM::Interop" ),
+       Version ( "2.8.1000" ), Description (
+       "A CIM Provider is a type of WBEMService that instruments one "
+       "or more aspects of the CIM Schema. A CIM_Provider operates at "
+       "the request of the CIM_ObjectManager to perform operations on "
+       "CIM objects. The properties CreationClassName, "
+       "SystemCreationClassName and SystemName can be set to empty "
+       "strings for a createInstance operation. In this case, the CIM "
+       "Object Manager must interpret the properties with the local "
+       "system information.")]
+class CIM_Provider : CIM_WBEMService {
+
+      [Override ( "Name" ), Description (
+          "A human-readable name that uniquely identifies the provider "
+          "within a system.")]
+   string Name;
+
+      [Required, Description (
+          "An implementation specific string that identifies the "
+          "handle to the provider.")]
+   string Handle;
+};

@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Property
 _Example_key;
@@ -360,6 +360,7 @@ _Example_foo5_house =
     "house",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &House::static_meta_class,
     CIMPLE_OFF(Example_foo5_method,house)
 };
@@ -438,8 +439,9 @@ const Meta_Class Example::static_meta_class =
     0, /* super_class */ 
     1, /* num_keys */
     0x27F5848A, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/Example.cpp,v 1.52 2007/03/13 22:53:17 mbrasher-public Exp $");

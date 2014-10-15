@@ -1,0 +1,15 @@
+cvs add Application/*.mof
+cvs add Core/*.mof
+cvs add Database/*.mof
+cvs add Device/*.mof
+cvs add Event/*.mof
+cvs add IPsecPolicy/*.mof
+cvs add Interop/*.mof
+cvs add Metrics/*.mof
+cvs add Network/*.mof
+cvs add Physical/*.mof
+cvs add Policy/*.mof
+cvs add Security/*.mof
+cvs add Support/*.mof
+cvs add System/*.mof
+cvs add User/*.mof

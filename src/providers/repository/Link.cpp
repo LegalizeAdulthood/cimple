@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Reference
 _Link_parent;
@@ -27,6 +27,7 @@ _Link_parent =
     "parent",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &Person::static_meta_class,
     CIMPLE_OFF(Link,parent)
 };
@@ -42,6 +43,7 @@ _Link_child =
     "child",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &Person::static_meta_class,
     CIMPLE_OFF(Link,child)
 };
@@ -72,8 +74,9 @@ const Meta_Class Link::static_meta_class =
     0, /* super_class */ 
     2, /* num_keys */
     0x9B686A76, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/Link.cpp,v 1.51 2007/03/13 22:53:18 mbrasher-public Exp $");

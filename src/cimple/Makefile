@@ -5,6 +5,7 @@ SHARED_LIBRARY = cimple
 STATIC_LIBRARY = cimple_s
 
 SOURCES = \
+    Tracer.cpp \
     ptr_array.cpp \
     io.cpp \
     flags.cpp \
@@ -17,7 +18,6 @@ SOURCES = \
     cimom.cpp \
     Cond.cpp \
     Error.cpp \
-    version.cpp \
     Mutex.cpp \
     Time.cpp \
     Thread.cpp \
@@ -37,11 +37,12 @@ SOURCES = \
     String.cpp \
     Strings.cpp \
     Type.cpp \
-    Property.cpp
+    Property.cpp \
+    Hnd.cpp
 
 LIBRARIES =
 
-#FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
 

@@ -149,3 +149,5 @@ Modify_Instance_Status Instance_Map_Base::_modify_instance(
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Instance_Map.cpp,v 1.17 2007/03/07 18:41:14 mbrasher-public Exp $");

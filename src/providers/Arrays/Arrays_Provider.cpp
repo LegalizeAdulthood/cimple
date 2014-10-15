@@ -38,7 +38,7 @@ Enum_Instances_Status Arrays_Provider::enum_instances(
     Array<uint16> arr;
 
     for (uint16 i = 0; i < 100; i++)
-	arr.append(i);
+        arr.append(i);
 
     arrays->arr.value = arr;
 
@@ -83,7 +83,9 @@ int Arrays_Provider::proc(
     typedef Arrays Class;
     typedef Arrays_Provider Provider;
     return Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Arrays/Arrays_Provider.cpp,v 1.5 2007/03/07 20:25:23 mbrasher-public Exp $");

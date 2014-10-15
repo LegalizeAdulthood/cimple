@@ -33,53 +33,55 @@ const char* MOF_Data_Type::to_string(int data_type)
 {
     switch (data_type)
     {
-	case TOK_UINT8: 
-	    return "uint8";
+        case TOK_UINT8: 
+            return "uint8";
 
-	case TOK_SINT8: 
-	    return "sint8";
+        case TOK_SINT8: 
+            return "sint8";
 
-	case TOK_UINT16: 
-	    return "uint16";
+        case TOK_UINT16: 
+            return "uint16";
 
-	case TOK_SINT16: 
-	    return "sint16";
+        case TOK_SINT16: 
+            return "sint16";
 
-	case TOK_UINT32: 
-	    return "uint32";
+        case TOK_UINT32: 
+            return "uint32";
 
-	case TOK_SINT32: 
-	    return "sint32";
+        case TOK_SINT32: 
+            return "sint32";
 
-	case TOK_UINT64: 
-	    return "uint64";
+        case TOK_UINT64: 
+            return "uint64";
 
-	case TOK_SINT64: 
-	    return "sint64";
+        case TOK_SINT64: 
+            return "sint64";
 
-	case TOK_REAL32: 
-	    return "real32";
+        case TOK_REAL32: 
+            return "real32";
 
-	case TOK_REAL64: 
-	    return "real64";
+        case TOK_REAL64: 
+            return "real64";
 
-	case TOK_CHAR16: 
-	    return "char16";
+        case TOK_CHAR16: 
+            return "char16";
 
-	case TOK_STRING: 
-	    return "string";
+        case TOK_STRING: 
+            return "string";
 
-	case TOK_BOOLEAN: 
-	    return "boolean";
+        case TOK_BOOLEAN: 
+            return "boolean";
 
-	case TOK_DATETIME: 
-	    return "datetime";
+        case TOK_DATETIME: 
+            return "datetime";
 
-	default:
-	    MOF_ASSERT(false);
-	    return 0;
+        default:
+            MOF_ASSERT(false);
+            return 0;
     }
 
     /* Unreachable */
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Data_Type.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

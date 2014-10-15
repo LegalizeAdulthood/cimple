@@ -44,8 +44,8 @@ static void* _writer(void* arg)
 
     for (size_t i = 0; i < NUM_WRITES; i++)
     {
-	// printf("writer: %u\n", i);
-	queue->enqueue((void*)i);
+        // printf("writer: %u\n", i);
+        queue->enqueue((void*)i);
     }
 
     Time::sleep(10000 * 1000);
@@ -59,9 +59,9 @@ static void* _reader(void* arg)
 
     for (size_t i = 0; i < NUM_WRITES; i++)
     {
-	// printf("reader: %u\n", i);
-	void* entry = queue->dequeue();
-	assert((size_t)entry == i);
+        // printf("reader: %u\n", i);
+        void* entry = queue->dequeue();
+        assert((size_t)entry == i);
     }
 
     Time::sleep(500 * 1000);
@@ -89,3 +89,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/cond_queue/main.cpp,v 1.8 2007/03/07 20:17:51 mbrasher-public Exp $");

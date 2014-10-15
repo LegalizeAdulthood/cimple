@@ -28,3 +28,5 @@
 
 bool MOF_Options::warn = false;
 bool MOF_Options::debug = false;
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Options.cpp,v 1.3 2007/03/07 18:57:14 mbrasher-public Exp $");

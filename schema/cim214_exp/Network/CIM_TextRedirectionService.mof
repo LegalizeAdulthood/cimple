@@ -1,0 +1,55 @@
+// Copyright (c) 2006 DMTF.  All rights reserved.
+// <change cr="SMWGCR00008.007" type = "new"> Created
+// TextRedirectionService.</change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// <change cr="SMWGCR00118" type = "change"> Add property
+// SharingMode.</change>
+
+// ===================================================================
+// TextRedirectionService
+// ===================================================================
+   [Experimental, Version ( "2.14.0" ),
+       UMLPackagePath ( "CIM::Network::ConsoleProtocols" ), 
+    Description (
+       "A class derived from Service, that provides the capability to "
+       "redirect a text console output to the remote console. For "
+       "example, any text stream directed to a Serial COM Port (by the "
+       "operating system) on a Computer System can be redirected out "
+       "to a remote administrator's console. Similarly the text input "
+       "keystrokes from the remote administrator's console can be "
+       "redirected into the same COM Port. Each redirection stream is "
+       "accessible via a TextRedirectionSAP. This service can support "
+       "multiple redirection streams via multiple associated "
+       "TextRedirectionSAPs.")]
+class CIM_TextRedirectionService : CIM_Service {
+
+      [Description (
+          "Maximum number of concurrently enabled TextRedirectionSAPs. "
+          "The Service may have multiple (more than this number) SAPs "
+          "associated with it. However, the number of Active SAPs "
+          "(EnabledState=Enabled) associated with this Service "
+          "instance cannot exceed this number. This limitation could "
+          "come from hardware limitations (e.g. one COM port can only "
+          "redirect the text to one console), or from any other "
+          "software resource limitations.")]
+   uint16 MaxConcurrentEnabledSAPs;
+
+      [Description (
+          "An enumeration specifying the impact of enabling the "
+          "redirection of the text console flow on the original "
+          "destination of the flow. The original destination is "
+          "modeled as a concrete subclass of LogicalDevice and "
+          "associated to this service using a ServiceAffectsElement "
+          "association). If this value is Exclusive, it means that "
+          "when the text console flow is actively being redirected, "
+          "then the text console cannot be accessed at the original "
+          "destination. If this value is Shared, it means that when "
+          "the text console flow is actively being redirected, then "
+          "the text console can still be accessed at the original "
+          "destination."), 
+       ValueMap { "0", "2", "3" }, 
+       Values { "Unknown", "Exclusive", "Shared" }]
+   uint16 SharingMode;
+
+};

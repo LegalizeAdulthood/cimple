@@ -35,7 +35,7 @@ Enum_Instances_Status <CLASS>_Provider::enum_instances(
 }
 
 Create_Instance_Status <CLASS>_Provider::create_instance(
-    const <CLASS>* instance)
+    <CLASS>* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }

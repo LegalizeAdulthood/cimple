@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Property
 _XYZ_Lamp_model;
@@ -179,8 +179,9 @@ const Meta_Class XYZ_Lamp::static_meta_class =
     0, /* super_class */ 
     1, /* num_keys */
     0x9076B604, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/XYZ_Lamp.cpp,v 1.48 2007/03/13 22:53:19 mbrasher-public Exp $");

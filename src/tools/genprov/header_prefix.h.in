@@ -21,19 +21,19 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const <CLASS>* model,
-	<CLASS>*& instance);
+        const <CLASS>* model,
+        <CLASS>*& instance);
 
     Enum_Instances_Status enum_instances(
-	const <CLASS>* model,
-	Enum_Instances_Handler<<CLASS>>* handler);
+        const <CLASS>* model,
+        Enum_Instances_Handler<<CLASS>>* handler);
 
     Create_Instance_Status create_instance(
-	const <CLASS>* instance);
+        <CLASS>* instance);
 
     Delete_Instance_Status delete_instance(
-	const <CLASS>* instance);
+        const <CLASS>* instance);
 
     Modify_Instance_Status modify_instance(
-	const <CLASS>* instance);
+        const <CLASS>* instance);
 

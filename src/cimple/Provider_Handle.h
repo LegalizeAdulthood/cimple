@@ -57,7 +57,7 @@ public:
         void* client_data);
 
     Create_Instance_Status create_instance(
-        const Instance* instance);
+        Instance* instance);
 
     Delete_Instance_Status delete_instance(
         const Instance* instance);
@@ -146,7 +146,7 @@ inline Enum_Instances_Status Provider_Handle::enum_instances(
 }
 
 inline Create_Instance_Status Provider_Handle::create_instance(
-    const Instance* instance)
+    Instance* instance)
 {
     return (Create_Instance_Status)_proc(_registration, 
         OPERATION_CREATE_INSTANCE, 

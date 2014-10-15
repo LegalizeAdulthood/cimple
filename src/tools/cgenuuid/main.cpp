@@ -24,6 +24,8 @@
 **==============================================================================
 */
 
+#define CIMPLE_NO_VERSION_SYMBOL
+#include <cimple/config.h>
 #include <util/UUID.h>
 
 using namespace cimple;
@@ -40,3 +42,5 @@ int main(int arc, char** argv)
 
     return 0;
 }
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/cgenuuid/main.cpp,v 1.4 2007/03/07 18:49:10 mbrasher-public Exp $");

@@ -29,3 +29,5 @@
 CIMPLE_NAMESPACE_BEGIN
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Registration.cpp,v 1.11 2007/03/07 18:41:15 mbrasher-public Exp $");

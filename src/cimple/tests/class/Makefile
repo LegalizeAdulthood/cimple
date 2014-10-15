@@ -11,4 +11,4 @@ tests:
 	$(BINARY_TARGET)
 
 genclass:
-	$(BIN_DIR)/genclass X Y Z AX AY AZ
+	genclass X Y Z AX AY AZ

@@ -29,7 +29,7 @@
 #include <Pegasus/Common/XmlReader.h>
 #include <cimple/Error.h>
 #include "Converter.h"
-#include "CStr.h"
+#include "Str.h"
 
 #ifdef PEGASUS_USE_EXPERIMENTAL_INTERFACES
 #  ifdef PEGASUS_EMBEDDED_INSTANCE_SUPPORT
@@ -58,72 +58,72 @@ static void _to_pegasus_scalar(
 
     if (null_of(mp, field))
     {
-	const Pegasus::Boolean is_array = false;
-	value.setNullValue(Pegasus::CIMType(mp->type), is_array);
-	return;
+        const Pegasus::Boolean is_array = false;
+        value.setNullValue(Pegasus::CIMType(mp->type), is_array);
+        return;
     }
 
     switch (Type(mp->type))
     {
-	case BOOLEAN:
-	    value.set(*((boolean*)field));
+        case BOOLEAN:
+            value.set(*((boolean*)field));
             break;
 
-	case UINT8:
-	    value.set(*((uint8*)field));
+        case UINT8:
+            value.set(*((uint8*)field));
             break;
 
-	case SINT8:
-	    value.set(*((sint8*)field));
+        case SINT8:
+            value.set(*((sint8*)field));
             break;
 
-	case UINT16:
-	    value.set(*((uint16*)field));
+        case UINT16:
+            value.set(*((uint16*)field));
             break;
 
-	case SINT16:
-	    value.set(*((sint16*)field));
+        case SINT16:
+            value.set(*((sint16*)field));
             break;
 
-	case UINT32:
-	    value.set(*((uint32*)field));
+        case UINT32:
+            value.set(*((uint32*)field));
             break;
 
-	case SINT32:
-	    value.set(*((sint32*)field));
+        case SINT32:
+            value.set(*((sint32*)field));
             break;
 
-	case UINT64:
-	    value.set(*((uint64*)field));
+        case UINT64:
+            value.set(*((uint64*)field));
             break;
 
-	case SINT64:
-	    value.set(*((sint64*)field));
+        case SINT64:
+            value.set(*((sint64*)field));
             break;
 
-	case REAL32:
-	    value.set(*((real32*)field));
+        case REAL32:
+            value.set(*((real32*)field));
             break;
 
-	case REAL64:
-	    value.set(*((real64*)field));
+        case REAL64:
+            value.set(*((real64*)field));
             break;
 
-	case CHAR16:
-	    value.set(Pegasus::Char16(*((char16*)field)));
+        case CHAR16:
+            value.set(Pegasus::Char16(*((char16*)field)));
             break;
 
-	case STRING:
-	    value.set(Pegasus::String((*((String*)field)).c_str()));
+        case STRING:
+            value.set(Pegasus::String((*((String*)field)).c_str()));
             break;
 
-	case DATETIME:
-	{
-	    char buffer[Datetime::BUFFER_SIZE];
-	    ((const Datetime*)field)->ascii(buffer);
-	    value.set(Pegasus::CIMDateTime(buffer));
+        case DATETIME:
+        {
+            char buffer[Datetime::BUFFER_SIZE];
+            ((const Datetime*)field)->ascii(buffer);
+            value.set(Pegasus::CIMDateTime(buffer));
             break;
-	}
+        }
     }
 }
 
@@ -139,14 +139,14 @@ template<class CT, class PT>
 struct _to_pegasus_array_helper
 {
     static void func(
-	const Meta_Property* mp,
-	const void* field, 
-	Pegasus::CIMValue& value)
+        const Meta_Property* mp,
+        const void* field, 
+        Pegasus::CIMValue& value)
     {
-	const Array<CT>& tmp = *((const Array<CT>*)field);
-	Pegasus::Array<PT> 
-	    array((const PT*)tmp.data(), Pegasus::Uint32(tmp.size()));
-	value.set(array);
+        const Array<CT>& tmp = *((const Array<CT>*)field);
+        Pegasus::Array<PT> 
+            array((const PT*)tmp.data(), Pegasus::Uint32(tmp.size()));
+        value.set(array);
     }
 };
 
@@ -171,94 +171,94 @@ static void _to_pegasus_array(
 
     if (null_of(mp, f))
     {
-	const Pegasus::Boolean is_array = true;
-	const Pegasus::Uint32 array_size = 
-	    (mp->subscript > 0) ? mp->subscript : 0;
-	v.setNullValue(Pegasus::CIMType(mp->type), is_array, array_size);
-	return;
+        const Pegasus::Boolean is_array = true;
+        const Pegasus::Uint32 array_size = 
+            (mp->subscript > 0) ? mp->subscript : 0;
+        v.setNullValue(Pegasus::CIMType(mp->type), is_array, array_size);
+        return;
     }
 
     switch (Type(mp->type))
     {
-	case BOOLEAN:
-	    _to_pegasus_array_helper<boolean, Pegasus::Boolean>::func(mp, f, v);
+        case BOOLEAN:
+            _to_pegasus_array_helper<boolean, Pegasus::Boolean>::func(mp, f, v);
             break;
 
-	case UINT8:
-	    _to_pegasus_array_helper<uint8, Pegasus::Uint8>::func(mp, f, v);
+        case UINT8:
+            _to_pegasus_array_helper<uint8, Pegasus::Uint8>::func(mp, f, v);
             break;
 
-	case SINT8:
-	    _to_pegasus_array_helper<sint8, Pegasus::Sint8>::func(mp,f,v);
+        case SINT8:
+            _to_pegasus_array_helper<sint8, Pegasus::Sint8>::func(mp,f,v);
             break;
 
-	case UINT16:
-	    _to_pegasus_array_helper<uint16, Pegasus::Uint16>::func(mp, f, v);
+        case UINT16:
+            _to_pegasus_array_helper<uint16, Pegasus::Uint16>::func(mp, f, v);
             break;
 
-	case SINT16:
-	    _to_pegasus_array_helper<sint16, Pegasus::Sint16>::func(mp, f, v);
+        case SINT16:
+            _to_pegasus_array_helper<sint16, Pegasus::Sint16>::func(mp, f, v);
             break;
 
-	case UINT32:
-	    _to_pegasus_array_helper<uint32, Pegasus::Uint32>::func(mp, f, v);
+        case UINT32:
+            _to_pegasus_array_helper<uint32, Pegasus::Uint32>::func(mp, f, v);
             break;
 
-	case SINT32:
-	    _to_pegasus_array_helper<sint32, Pegasus::Sint32>::func(mp, f, v);
+        case SINT32:
+            _to_pegasus_array_helper<sint32, Pegasus::Sint32>::func(mp, f, v);
             break;
 
-	case UINT64:
-	    _to_pegasus_array_helper<uint64, Pegasus::Uint64>::func(mp, f, v);
+        case UINT64:
+            _to_pegasus_array_helper<uint64, Pegasus::Uint64>::func(mp, f, v);
             break;
 
-	case SINT64:
-	    _to_pegasus_array_helper<sint64, Pegasus::Sint64>::func(mp, f, v);
+        case SINT64:
+            _to_pegasus_array_helper<sint64, Pegasus::Sint64>::func(mp, f, v);
             break;
 
-	case REAL32:
-	    _to_pegasus_array_helper<real32, Pegasus::Real32>::func(mp, f, v);
+        case REAL32:
+            _to_pegasus_array_helper<real32, Pegasus::Real32>::func(mp, f, v);
             break;
 
-	case REAL64:
-	    _to_pegasus_array_helper<real64, Pegasus::Real64>::func(mp, f, v);
+        case REAL64:
+            _to_pegasus_array_helper<real64, Pegasus::Real64>::func(mp, f, v);
             break;
 
-	case CHAR16:
-	    _to_pegasus_array_helper<char16, Pegasus::Char16>::func(mp, f, v);
+        case CHAR16:
+            _to_pegasus_array_helper<char16, Pegasus::Char16>::func(mp, f, v);
             break;
 
-	case STRING:
-	{
-	    Array_String& tmp = *((Array_String*)f);
+        case STRING:
+        {
+            Array_String& tmp = *((Array_String*)f);
 
-	    Pegasus::Array<Pegasus::String> array;
-	    array.reserveCapacity(Pegasus::Uint32(tmp.size()));
+            Pegasus::Array<Pegasus::String> array;
+            array.reserveCapacity(Pegasus::Uint32(tmp.size()));
 
-	    for (size_t i = 0; i < tmp.size(); i++)
-		array.append(tmp[i].c_str());
+            for (size_t i = 0; i < tmp.size(); i++)
+                array.append(tmp[i].c_str());
 
-	    v.set(array);
+            v.set(array);
             break;
-	}
+        }
 
-	case DATETIME:
-	{
-	    Array<Datetime>& tmp = *((Array<Datetime>*)f);
+        case DATETIME:
+        {
+            Array<Datetime>& tmp = *((Array<Datetime>*)f);
 
-	    Pegasus::Array<Pegasus::CIMDateTime> array;
-	    array.reserveCapacity(Pegasus::Uint32(tmp.size()));
+            Pegasus::Array<Pegasus::CIMDateTime> array;
+            array.reserveCapacity(Pegasus::Uint32(tmp.size()));
 
-	    for (size_t i = 0; i < tmp.size(); i++)
-	    {
-		char buffer[Datetime::BUFFER_SIZE];
-		tmp[i].ascii(buffer);
-		array.append(Pegasus::CIMDateTime(buffer));
-	    }
+            for (size_t i = 0; i < tmp.size(); i++)
+            {
+                char buffer[Datetime::BUFFER_SIZE];
+                tmp[i].ascii(buffer);
+                array.append(Pegasus::CIMDateTime(buffer));
+            }
 
-	    v.set(array);
+            v.set(array);
             break;
-	}
+        }
     }
 }
 
@@ -283,94 +283,130 @@ static int _to_pegasus_value(
 
     if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
     {
-	const Meta_Reference* mr = (const Meta_Reference*)mf;
-	const Instance* ref = reference_of(ci, mr);
+        const Meta_Reference* mr = (const Meta_Reference*)mf;
+        const Instance* ref = __ref_of(ci, mr);
 
-	// Skip null references:
+        // Skip null references:
 
-	if (!ref)
-	    return 0;
+        if (!ref)
+            return 0;
 
-	Pegasus::CIMInstance pi;
+        Pegasus::CIMInstance pi;
 
-	if (Converter::to_pegasus_instance(hn, ns, ref, pi) != 0)
-	    return -1;
+        if (Converter::to_pegasus_instance(hn, ns, ref, pi) != 0)
+            return -1;
 
-	Pegasus::CIMObject po(pi);
+        Pegasus::CIMObject po(pi);
 
-	value.set(po);
+        value.set(po);
 
-	return 0;
+        return 0;
     }
     else if (mf->flags & CIMPLE_FLAG_PROPERTY)
     {
-	const Meta_Property* mp = (const Meta_Property*)mf;
-	const void* prop = property_of(ci, mp);
+        const Meta_Property* mp = (const Meta_Property*)mf;
+        const void* prop = __property_of(ci, mp);
 
-	// Handle null properties:
+        // Handle null properties:
 
-	if (null_of(mp, prop))
-	{
-	    // It is an error for a key to be null:
+        if (null_of(mp, prop))
+        {
+            // It is an error for a key to be null:
 
-	    if (mp->flags & CIMPLE_FLAG_KEY)
-	    {
-		CIMPLE_ERROR(("null key: %s", mp->name));
-		return -1;
-	    }
+            if (mp->flags & CIMPLE_FLAG_KEY)
+            {
+                CIMPLE_ERROR(("null key: %s", mp->name));
+                return -1;
+            }
 
-	    const bool is_array = mp->subscript != 0;
-	    size_t array_size = 0;
+            const bool is_array = mp->subscript != 0;
+            size_t array_size = 0;
 
-	    if (is_array)
-		array_size = mp->subscript == -1 ? 0 : mp->subscript;
+            if (is_array)
+                array_size = mp->subscript == -1 ? 0 : mp->subscript;
 
-	    value.setNullValue(Pegasus::CIMType(mp->type), is_array, 
-		Pegasus::Uint32(array_size));
+            value.setNullValue(Pegasus::CIMType(mp->type), is_array, 
+                Pegasus::Uint32(array_size));
 
-	    return 0;
-	}
+            return 0;
+        }
 
-	if (mp->subscript == 0)
-	    _to_pegasus_scalar(mp, prop, value);
-	else
-	    _to_pegasus_array(mp, prop, value);
+        if (mp->subscript == 0)
+            _to_pegasus_scalar(mp, prop, value);
+        else
+            _to_pegasus_array(mp, prop, value);
 
-	return 0;
+        return 0;
     }
     else if (mf->flags & CIMPLE_FLAG_REFERENCE)
     {
-	const Meta_Reference* mr = (const Meta_Reference*)mf;
-	const Instance* ref = reference_of(ci, mr);
+        const Meta_Reference* mr = (const Meta_Reference*)mf;
 
-	// Skip null references:
+        if (mr->subscript)
+        {
+            const Array_Ref& refs = __array_ref_of(ci, mr);
+            Pegasus::Array<Pegasus::CIMObjectPath> cops;
 
-	if (!ref)
-	{
-	    // It is an error for a key to be null:
+            for (size_t i = 0; i < refs.size(); i++)
+            {
+                Instance* ref = refs[i];
 
-	    if (mr->flags & CIMPLE_FLAG_KEY)
-	    {
-		CIMPLE_ERROR(("null key: %s", mr->name));
-		return -1;
-	    }
+                if (!ref)
+                {
+                    CIMPLE_ERROR(("provider extrinsic method failed to supply "
+                    "a value for an output reference parameter: %s", mr->name));
+                    return -1;
+                }
 
-	    return 0;
-	}
+                Pegasus::CIMObjectPath cop;
 
-	Pegasus::CIMObjectPath op;
+                if (Converter::to_pegasus_object_path(hn, ns, ref, cop) != 0)
+                    return -1;
 
-	if (Converter::to_pegasus_object_path(hn, ns, ref, op) != 0)
-	    return -1;
+                cops.append(cop);
+            }
 
-	value.set(op);
+            value.set(cops);
+        }
+        else
+        {
+            const Instance* ref = __ref_of(ci, mr);
 
-	return 0;
+            // Skip null references:
+
+            if (!ref)
+            {
+                // It is an error for a key to be null:
+
+                if (mr->flags & CIMPLE_FLAG_KEY)
+                {
+                    CIMPLE_ERROR(("null key: %s", mr->name));
+                    return -1;
+                }
+
+                // User did not fill in ref output parameter from intrisic
+                // method.
+
+                CIMPLE_ERROR(("provider extrinsic method failed to supply a "
+                    "value for an output reference parameter: %s", mr->name));
+
+                return -1;
+            }
+
+            Pegasus::CIMObjectPath op;
+
+            if (Converter::to_pegasus_object_path(hn, ns, ref, op) != 0)
+                return -1;
+
+            value.set(op);
+        }
+
+        return 0;
     }
     else
     {
-	CIMPLE_ERROR(("expected property or reference: %s", mf->name));
-	return -1;
+        CIMPLE_ERROR(("expected property or reference: %s", mf->name));
+        return -1;
     }
 
     // Unreachable:
@@ -406,38 +442,38 @@ int Converter::to_pegasus_instance(
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mc->meta_features[i];
+        const Meta_Feature* mf = mc->meta_features[i];
 
-	if (mf->flags & CIMPLE_FLAG_METHOD)
-	    continue;
+        if (mf->flags & CIMPLE_FLAG_METHOD)
+            continue;
 
         // Create Pegasus value.
 
-	Pegasus::CIMValue cv;
+        Pegasus::CIMValue cv;
 
-	if (_to_pegasus_value(hn, ns, ci, mf, cv) != 0)
-	    return -1;
+        if (_to_pegasus_value(hn, ns, ci, mf, cv) != 0)
+            return -1;
 
         // Add key binding.
 
-	if (mf->flags & CIMPLE_FLAG_KEY)
+        if (mf->flags & CIMPLE_FLAG_KEY)
             bindings.append(Pegasus::CIMKeyBinding(mf->name, cv));
 
         // Add property to instance.
 
-	try
-	{
+        try
+        {
 #ifdef CIMPLE_USE_PEGASUS_INTERNALS
             AddProperty::func(pi, Pegasus::CIMProperty(mf->name, cv));
 #else
             pi.addProperty(Pegasus::CIMProperty(mf->name, cv));
 #endif
-	}
-	catch(...)
-	{
-	    CIMPLE_ERROR(("addProperty() failed: %s", mf->name));
-	    return -1;
-	}
+        }
+        catch(...)
+        {
+            CIMPLE_ERROR(("addProperty() failed: %s", mf->name));
+            return -1;
+        }
     }
 
     // Set the object path.
@@ -459,15 +495,15 @@ template<class PT, class CT>
 struct _to_cimple_scalar
 {
     static void func(
-	const Pegasus::CIMValue& value,
-	Instance* ci,
-	char* field)
+        const Pegasus::CIMValue& value,
+        Instance* ci,
+        char* field)
     {
-	PT pt;
-	value.get(pt);
-	CT ct = pt;
-	((Property<CT>*)field)->value = ct;
-	((Property<CT>*)field)->null = value.isNull() ? 1 : 0;
+        PT pt;
+        value.get(pt);
+        CT ct = pt;
+        ((Property<CT>*)field)->value = ct;
+        ((Property<CT>*)field)->null = value.isNull() ? 1 : 0;
     }
 };
 
@@ -478,15 +514,15 @@ struct _to_cimple_scalar<Pegasus::Char16, char16>
     typedef char16 CT;
 
     static void func(
-	const Pegasus::CIMValue& value,
-	Instance* ci,
-	char* field)
+        const Pegasus::CIMValue& value,
+        Instance* ci,
+        char* field)
     {
-	PT pt;
-	value.get(pt);
-	CT ct = uint16(pt);
-	((Property<CT>*)field)->value = ct;
-	((Property<CT>*)field)->null = value.isNull() ? 1 : 0;
+        PT pt;
+        value.get(pt);
+        CT ct = uint16(pt);
+        ((Property<CT>*)field)->value = ct;
+        ((Property<CT>*)field)->null = value.isNull() ? 1 : 0;
     }
 };
 
@@ -502,15 +538,15 @@ template<class PT, class CT>
 struct _to_cimple_array
 {
     static void func(
-	const Pegasus::CIMValue& value,
-	Instance* ci,
-	char* field)
+        const Pegasus::CIMValue& value,
+        Instance* ci,
+        char* field)
     {
-	Pegasus::Array<PT> tmp;
-	value.get(tmp);
-	((Property< Array<CT> >*)field)->value.assign(
-	    tmp.getData(), tmp.size());
-	((Property< Array<CT> >*)field)->null = value.isNull() ? 1 : 0;
+        Pegasus::Array<PT> tmp;
+        value.get(tmp);
+        ((Property< Array<CT> >*)field)->value.assign(
+            tmp.getData(), tmp.size());
+        ((Property< Array<CT> >*)field)->null = value.isNull() ? 1 : 0;
     }
 };
 
@@ -533,14 +569,14 @@ static int _to_cimple_property(
 
     if (v.getType() != mp->type)
     {
-	CIMPLE_ERROR(("type mismatch"));
-	return -1;
+        CIMPLE_ERROR(("type mismatch"));
+        return -1;
     }
 
     if (v.isArray() && mp->subscript == 0)
     {
-	CIMPLE_ERROR(("array/scalar type mismatch"));
-	return -1;
+        CIMPLE_ERROR(("array/scalar type mismatch"));
+        return -1;
     }
 
     //  Set property value.
@@ -549,184 +585,184 @@ static int _to_cimple_property(
 
     if (mp->subscript == 0)
     {
-	switch (v.getType())
-	{
-	    case Pegasus::CIMTYPE_BOOLEAN:
-		_to_cimple_scalar<Pegasus::Boolean, boolean>::func(v, ci, f);
-		break;
+        switch (v.getType())
+        {
+            case Pegasus::CIMTYPE_BOOLEAN:
+                _to_cimple_scalar<Pegasus::Boolean, boolean>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT8:
-		_to_cimple_scalar<Pegasus::Uint8, uint8>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT8:
+                _to_cimple_scalar<Pegasus::Uint8, uint8>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT8:
-		_to_cimple_scalar<Pegasus::Sint8, sint8>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT8:
+                _to_cimple_scalar<Pegasus::Sint8, sint8>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT16:
-		_to_cimple_scalar<Pegasus::Uint16, uint16>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT16:
+                _to_cimple_scalar<Pegasus::Uint16, uint16>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT16:
-		_to_cimple_scalar<Pegasus::Sint16, sint16>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT16:
+                _to_cimple_scalar<Pegasus::Sint16, sint16>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT32:
-		_to_cimple_scalar<Pegasus::Uint32, uint32>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT32:
+                _to_cimple_scalar<Pegasus::Uint32, uint32>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT32:
-		_to_cimple_scalar<Pegasus::Sint32, sint32>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT32:
+                _to_cimple_scalar<Pegasus::Sint32, sint32>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT64:
-		_to_cimple_scalar<Pegasus::Uint64, uint64>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT64:
+                _to_cimple_scalar<Pegasus::Uint64, uint64>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT64:
-		_to_cimple_scalar<Pegasus::Sint64, sint64>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT64:
+                _to_cimple_scalar<Pegasus::Sint64, sint64>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_REAL32:
-		_to_cimple_scalar<Pegasus::Real32, real32>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_REAL32:
+                _to_cimple_scalar<Pegasus::Real32, real32>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_REAL64:
-		_to_cimple_scalar<Pegasus::Real64, real64>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_REAL64:
+                _to_cimple_scalar<Pegasus::Real64, real64>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_CHAR16:
-		_to_cimple_scalar<Pegasus::Char16, char16>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_CHAR16:
+                _to_cimple_scalar<Pegasus::Char16, char16>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_STRING:
-	    {
-		Pegasus::String str;
-		v.get(str);
-		(*((Property<String>*)f)).value = CStr(str);
-		(*((Property<String>*)f)).null = v.isNull() ? 1 : 0;
-		break;
-	    }
+            case Pegasus::CIMTYPE_STRING:
+            {
+                Pegasus::String str;
+                v.get(str);
+                (*((Property<String>*)f)).value = *Str(str);
+                (*((Property<String>*)f)).null = v.isNull() ? 1 : 0;
+                break;
+            }
 
-	    case Pegasus::CIMTYPE_DATETIME:
-	    {
-		Pegasus::CIMDateTime dt;
-		v.get(dt);
-		(*((Property<Datetime>*)f)).value.set(CStr(dt.toString()));
-		(*((Property<Datetime>*)f)).null = v.isNull() ? 1 : 0;
-		break;
-	    }
+            case Pegasus::CIMTYPE_DATETIME:
+            {
+                Pegasus::CIMDateTime dt;
+                v.get(dt);
+                (*((Property<Datetime>*)f)).value.set(*Str(dt));
+                (*((Property<Datetime>*)f)).null = v.isNull() ? 1 : 0;
+                break;
+            }
 
-	    case Pegasus::CIMTYPE_REFERENCE:
-	    case Pegasus::CIMTYPE_OBJECT:
+            case Pegasus::CIMTYPE_REFERENCE:
+            case Pegasus::CIMTYPE_OBJECT:
 #ifdef CIMPLE_HAVE_CIMTYPE_INSTANCE
-	    case Pegasus::CIMTYPE_INSTANCE:
+            case Pegasus::CIMTYPE_INSTANCE:
 #endif
-		CIMPLE_ERROR(("unexpected condition"));
-		return -1;
-	}
+                CIMPLE_ERROR(("unexpected condition"));
+                return -1;
+        }
     }
     else
     {
-	switch (v.getType())
-	{
-	    case Pegasus::CIMTYPE_BOOLEAN:
-		_to_cimple_array<Pegasus::Boolean, boolean>::func(v, ci, f);
-		break;
+        switch (v.getType())
+        {
+            case Pegasus::CIMTYPE_BOOLEAN:
+                _to_cimple_array<Pegasus::Boolean, boolean>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT8:
-		_to_cimple_array<Pegasus::Uint8, uint8>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT8:
+                _to_cimple_array<Pegasus::Uint8, uint8>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT8:
-		_to_cimple_array<Pegasus::Sint8, sint8>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT8:
+                _to_cimple_array<Pegasus::Sint8, sint8>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT16:
-		_to_cimple_array<Pegasus::Uint16, uint16>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT16:
+                _to_cimple_array<Pegasus::Uint16, uint16>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT16:
-		_to_cimple_array<Pegasus::Sint16, sint16>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT16:
+                _to_cimple_array<Pegasus::Sint16, sint16>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT32:
-		_to_cimple_array<Pegasus::Uint32, uint32>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT32:
+                _to_cimple_array<Pegasus::Uint32, uint32>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT32:
-		_to_cimple_array<Pegasus::Sint32, sint32>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT32:
+                _to_cimple_array<Pegasus::Sint32, sint32>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_UINT64:
-		_to_cimple_array<Pegasus::Uint64, uint64>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_UINT64:
+                _to_cimple_array<Pegasus::Uint64, uint64>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_SINT64:
-		_to_cimple_array<Pegasus::Sint64, sint64>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_SINT64:
+                _to_cimple_array<Pegasus::Sint64, sint64>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_REAL32:
-		_to_cimple_array<Pegasus::Real32, real32>::func(v, ci, f);
+            case Pegasus::CIMTYPE_REAL32:
+                _to_cimple_array<Pegasus::Real32, real32>::func(v, ci, f);
 
-	    case Pegasus::CIMTYPE_REAL64:
-		_to_cimple_array<Pegasus::Real64, real64>::func(v, ci, f);
-		break;
+            case Pegasus::CIMTYPE_REAL64:
+                _to_cimple_array<Pegasus::Real64, real64>::func(v, ci, f);
+                break;
 
-	    case Pegasus::CIMTYPE_CHAR16:
-	    {
-		Pegasus::Array<Pegasus::Char16> tmp;
-		v.get(tmp);
+            case Pegasus::CIMTYPE_CHAR16:
+            {
+                Pegasus::Array<Pegasus::Char16> tmp;
+                v.get(tmp);
 
-		((Property< Array<char16> >*)f)->value.assign(
-		    (char16*)tmp.getData(), tmp.size());
+                ((Property< Array<char16> >*)f)->value.assign(
+                    (char16*)tmp.getData(), tmp.size());
 
-		((Property< Array<char16> >*)f)->null = 0;
-		break;
-	    }
+                ((Property< Array<char16> >*)f)->null = 0;
+                break;
+            }
 
-	    case Pegasus::CIMTYPE_STRING:
-	    {
-		Pegasus::Array<Pegasus::String> tmp;
-		v.get(tmp);
+            case Pegasus::CIMTYPE_STRING:
+            {
+                Pegasus::Array<Pegasus::String> tmp;
+                v.get(tmp);
 
-		Array<String> a;
+                Array<String> a;
 
-		for (Pegasus::Uint32 i = 0; i < tmp.size(); i++)
-		    a.append(String(CStr(tmp[i])));
+                for (Pegasus::Uint32 i = 0; i < tmp.size(); i++)
+                    a.append(*Str(tmp[i]));
 
-		(*((Property<Array_String>*)f)).value = a;
-		(*((Property<Array_String>*)f)).null = v.isNull() ? 1 : 0;
-		break;
-	    }
+                (*((Property<Array_String>*)f)).value = a;
+                (*((Property<Array_String>*)f)).null = v.isNull() ? 1 : 0;
+                break;
+            }
 
-	    case Pegasus::CIMTYPE_DATETIME:
-	    {
-		Pegasus::Array<Pegasus::CIMDateTime> tmp;
-		v.get(tmp);
+            case Pegasus::CIMTYPE_DATETIME:
+            {
+                Pegasus::Array<Pegasus::CIMDateTime> tmp;
+                v.get(tmp);
 
-		Array<Datetime> a;
+                Array<Datetime> a;
 
-		for (Pegasus::Uint32 i = 0; i < tmp.size(); i++)
-		{
-		    Datetime dt;
-		    dt.set(CStr(tmp[i].toString()));
-		    a.append(dt);
-		}
+                for (Pegasus::Uint32 i = 0; i < tmp.size(); i++)
+                {
+                    Datetime dt;
+                    dt.set(*Str(tmp[i]));
+                    a.append(dt);
+                }
 
-		(*((Property<Array_Datetime>*)f)).value = a;
-		(*((Property<Array_Datetime>*)f)).null = 0;
-		break;
-	    }
+                (*((Property<Array_Datetime>*)f)).value = a;
+                (*((Property<Array_Datetime>*)f)).null = 0;
+                break;
+            }
 
-	    case Pegasus::CIMTYPE_REFERENCE:
-	    case Pegasus::CIMTYPE_OBJECT:
+            case Pegasus::CIMTYPE_REFERENCE:
+            case Pegasus::CIMTYPE_OBJECT:
 #ifdef CIMPLE_HAVE_CIMTYPE_INSTANCE
-	    case Pegasus::CIMTYPE_INSTANCE:
+            case Pegasus::CIMTYPE_INSTANCE:
 #endif
-		CIMPLE_ERROR(("unexpected condition"));
-		return -1;
-	}
+                CIMPLE_ERROR(("unexpected condition"));
+                return -1;
+        }
     }
 
     return 0;
@@ -766,12 +802,12 @@ static const Pegasus::CIMValue _bindings_get_value(
 
     try
     {
-	CStr cstr(bindings[Pegasus::Uint32(index)].getValue());
-	return Pegasus::XmlReader::stringToValue(0, cstr, expected_type);
+        Str str(bindings[Pegasus::Uint32(index)].getValue());
+        return Pegasus::XmlReader::stringToValue(0, str, expected_type);
     }
     catch (...)
     {
-	return Pegasus::CIMValue();
+        return Pegasus::CIMValue();
     }
 }
 
@@ -779,7 +815,7 @@ static const Pegasus::String _instance_get_name(const void* data, size_t index)
 {
     Pegasus::CIMInstance* instance = (Pegasus::CIMInstance*)data;
     return (*instance).getProperty(
-	Pegasus::Uint32(index)).getName().getString();
+        Pegasus::Uint32(index)).getName().getString();
 }
 
 static const Pegasus::CIMValue _instance_get_value(
@@ -812,7 +848,8 @@ static Instance* _make_cimple_instance(
     Get_Name_Proc get_name_proc,
     Get_Value_Proc get_value_proc,
     const Meta_Class* mc,
-    bool keys_only)
+    bool keys_only,
+    const String& name_space = String())
 {
     // Create a new instance:
 
@@ -827,61 +864,92 @@ static Instance* _make_cimple_instance(
 
     for (size_t i = 0; i < count; i++)
     {
-	CStr name(get_name_proc(data, i));
+        Str name(get_name_proc(data, i));
 
-	// Find the corresponding CIMPLE feature:
+        // Find the corresponding CIMPLE feature:
 
-	const Meta_Feature* mf = find_feature(mc, name);
+        const Meta_Feature* mf = find_feature(mc, name);
 
-	if (!mf)
-	{
-	    CIMPLE_ERROR(("no such feature: %s", (const char*)name));
-	    destroy(instance);
-	    return 0;
-	}
+        if (!mf)
+        {
+            // CIMPLE does not have this property but Pegasus does.
+            continue;
+        }
 
-	// Skip non-keys if so requested.
+        // Skip non-keys if so requested.
 
-	if (keys_only && !(mf->flags & CIMPLE_FLAG_KEY))
-	    continue;
+        if (keys_only && !(mf->flags & CIMPLE_FLAG_KEY))
+            continue;
 
-	// Initialize the feature:
+        // Initialize the feature:
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY)
-	{
-	    const Meta_Property* mp = (const Meta_Property*)mf;
+        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (const Meta_Property*)mf;
 
-	    const Pegasus::CIMValue value = get_value_proc(
-		data, i, Pegasus::CIMType(mp->type));
+            const Pegasus::CIMValue value = get_value_proc(
+                data, i, Pegasus::CIMType(mp->type));
 
-	    if (_to_cimple_property(value, instance, mp) != 0)
-	    {
-		CIMPLE_ERROR(("type mismatch on %s", mp->name));
-		destroy(instance);
-		return 0;
-	    }
-	}
-	else if (mf->flags & CIMPLE_FLAG_REFERENCE)
-	{
-	    const Meta_Reference* mr = (const Meta_Reference*)mf;
+            if (_to_cimple_property(value, instance, mp) != 0)
+            {
+                CIMPLE_ERROR(("type mismatch on %s", mp->name));
+                destroy(instance);
+                return 0;
+            }
+        }
+        else if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
 
-	    const Pegasus::CIMValue value = get_value_proc(
-		data, i, Pegasus::CIMTYPE_REFERENCE);
+            if (mr->subscript)
+            {
+                const Pegasus::CIMValue value = get_value_proc(
+                    data, i, Pegasus::CIMTYPE_REFERENCE);
 
-	    if (Converter::_to_cimple_ref(value, instance, mr) != 0)
-	    {
-		CIMPLE_ERROR(("failed to set reference: %s", mr->name));
-		destroy(instance);
-		return 0;
-	    }
-	}
-	else
-	{
-	    CIMPLE_ERROR(("feature not found: %s\n", mf->name));
-	    destroy(instance);
-	    return 0;
-	}
+                Pegasus::Array<Pegasus::CIMObjectPath> x;
+
+                try
+                {
+                    value.get(x);
+                }
+                catch (...)
+                {
+                    CIMPLE_ERROR(("type mismatch on ref feature %s", mf->name));
+                    destroy(instance);
+                    return 0;
+                }
+
+                for (Pegasus::Uint32 i = 0; i < x.size(); i++)
+                {
+                    if (Converter::_append_cimple_ref(x[i], instance, mr) != 0)
+                    {
+                        destroy(instance);
+                        return 0;
+                    }
+                }
+            }
+            else
+            {
+                const Pegasus::CIMValue value = get_value_proc(
+                    data, i, Pegasus::CIMTYPE_REFERENCE);
+
+                if (Converter::_to_cimple_ref(value, instance, mr) != 0)
+                {
+                    destroy(instance);
+                    return 0;
+                }
+            }
+        }
+        else
+        {
+            CIMPLE_ERROR(("feature not found: %s", mf->name));
+            destroy(instance);
+            return 0;
+        }
     }
+
+    if (name_space.size())
+        instance->__name_space = name_space;
 
     return instance;
 }
@@ -899,14 +967,14 @@ int Converter::_to_cimple_ref(
     Instance* ci,
     const Meta_Reference* mr)
 {
-    Instance*& ref = reference_of(ci, mr);
+    Instance*& ref = __ref_of(ci, mr);
 
     if (ref != 0)
     {
-	CIMPLE_ASSERT(ref->magic == CIMPLE_INSTANCE_MAGIC);
-	destroy(ref);
-	ref = 0;
-	CIMPLE_ASSERT(0);
+        CIMPLE_ASSERT(ref->magic == CIMPLE_INSTANCE_MAGIC);
+        destroy(ref);
+        ref = 0;
+        CIMPLE_ASSERT(0);
     }
 
     // Get the object path object:
@@ -915,36 +983,141 @@ int Converter::_to_cimple_ref(
 
     try
     {
-	v.get(op);
+        v.get(op);
     }
     catch (...)
     {
-	CIMPLE_ERROR(("unexpected failure"));
-	return -1;
+        CIMPLE_ERROR(("unexpected failure"));
+        return -1;
     }
+
+    // Figure out which meta class to use. If the incoming class does not match
+    // the reference class, then use the incoming class (so long as it derives
+    // from the reference class).
+
+    Str cn(op.getClassName());
+
+    const Meta_Class* mc = mr->meta_class;
+
+    if (strcasecmp(mr->name, *cn) != 0)
+    {
+        mc = find_meta_class(mr->meta_class->meta_repository, *cn);
+
+        if (!mc)
+        {
+            CIMPLE_ERROR(("CIMPLE meta repository has no such class: %s", *cn));
+            return -1;
+        }
+
+        if (!is_subclass(mr->meta_class, mc))
+        {
+            CIMPLE_ERROR(("Conversion of Pegasus object path to CIMPLE "
+                "reference failed since the object path class (%s) is not a "
+                "subclass of the reference class (%s)",
+                *cn, mr->meta_class->name));
+            return -1;
+        }
+    }
+    else
+        mc = mr->meta_class;
 
     // Check for same number of keys:
 
-    const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings = op.getKeyBindings();
+    const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings = 
+        op.getKeyBindings();
 
-    if (bindings.size() != mr->meta_class->num_keys)
+    if (bindings.size() != mc->num_keys)
     {
-	CIMPLE_ERROR(("key count mismatch"));
-	return -1;
+        CIMPLE_ERROR(("key count mismatch"));
+        return -1;
     }
 
     // Create the reference instance:
 
     ref = _make_cimple_instance(
-	&bindings, 
-	bindings.size(),
-	_bindings_get_name,
-	_bindings_get_value,
-	mr->meta_class, 
-	true); 
+        &bindings, 
+        bindings.size(),
+        _bindings_get_name,
+        _bindings_get_value,
+        mc,
+        true,
+        *Str(op.getNameSpace()));
 
     if (!ref)
-	return -1;
+        return -1;
+
+    return 0;
+}
+
+//------------------------------------------------------------------------------
+//
+// _append_cimple_ref()
+//
+//------------------------------------------------------------------------------
+
+int Converter::_append_cimple_ref(
+    const Pegasus::CIMObjectPath& cop,
+    cimple::Instance* ci,
+    const cimple::Meta_Reference* mr)
+{
+    Array_Ref& ref = __array_ref_of(ci, mr);
+
+    // Figure out which meta class to use. If the incoming class does not match
+    // the reference class, then use the incoming class (so long as it derives
+    // from the reference class).
+
+    Str cn(cop.getClassName());
+
+    const Meta_Class* mc = mr->meta_class;
+
+    if (strcasecmp(mr->name, *cn) != 0)
+    {
+        mc = find_meta_class(mr->meta_class->meta_repository, *cn);
+
+        if (!mc)
+        {
+            CIMPLE_ERROR(("CIMPLE meta repository has no such class: %s", *cn));
+            return -1;
+        }
+
+        if (!is_subclass(mr->meta_class, mc))
+        {
+            CIMPLE_ERROR(("Conversion of Pegasus object path to CIMPLE "
+                "reference failed since the object path class (%s) is not a "
+                "subclass of the reference class (%s)",
+                *cn, mr->meta_class->name));
+            return -1;
+        }
+    }
+    else
+        mc = mr->meta_class;
+
+    // Check for same number of keys:
+
+    const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings = 
+        cop.getKeyBindings();
+
+    if (bindings.size() != mc->num_keys)
+    {
+        CIMPLE_ERROR(("key count mismatch"));
+        return -1;
+    }
+
+    // Create the reference instance:
+
+    Instance* r = _make_cimple_instance(
+        &bindings, 
+        bindings.size(),
+        _bindings_get_name,
+        _bindings_get_value,
+        mc,
+        true,
+        *Str(cop.getNameSpace()));
+
+    if (!r)
+        return -1;
+
+    ref.append(r);
 
     return 0;
 }
@@ -963,7 +1136,7 @@ int Converter::to_cimple_instance(
     Instance*& ci)
 {
     ci = _make_cimple_instance(&pi, pi.getPropertyCount(),
-	_instance_get_name, _instance_get_value, mc, false);
+        _instance_get_name, _instance_get_value, mc, false);
 
     return ci ? 0 : -1;
 }
@@ -983,12 +1156,15 @@ int Converter::to_cimple_key(
     Instance*& ci)
 {
     ci = _make_cimple_instance(&bindings, bindings.size(),
-	_bindings_get_name, _bindings_get_value, mc, false);
+        _bindings_get_name, _bindings_get_value, mc, false);
 
-    if (bindings.size() != mc->num_keys)
+    if (!ci)
+        return -1;
+
+    if (ci->meta_class == mc && bindings.size() != mc->num_keys)
     {
-	CIMPLE_ERROR(("key count mismatch"));
-	return -1;
+        CIMPLE_ERROR(("key count mismatch"));
+        return -1;
     }
 
     return ci ? 0 : -1;
@@ -1024,31 +1200,38 @@ int Converter::to_pegasus_object_path(
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mc->meta_features[i];
+        const Meta_Feature* mf = mc->meta_features[i];
 
-	// Ignore non-keys features:
+        // Ignore non-keys features:
 
-	if (!(mf->flags & CIMPLE_FLAG_KEY))
-	    continue;
+        if (!(mf->flags & CIMPLE_FLAG_KEY))
+            continue;
 
-	// Ignore methods:
+        // Ignore methods:
 
-	if (mf->flags & CIMPLE_FLAG_METHOD)
-	    continue;
+        if (mf->flags & CIMPLE_FLAG_METHOD)
+            continue;
 
-	// Convert feature to key binding:
+        // Convert feature to key binding:
 
-	Pegasus::CIMValue value;
+        Pegasus::CIMValue value;
 
-	if (_to_pegasus_value(hn, ns, ci, mf, value) != 0)
-	    return -1;
+        if (_to_pegasus_value(hn, ns, ci, mf, value) != 0)
+            return -1;
 
         bindings.append(Pegasus::CIMKeyBinding(mf->name, value));
     }
 
     // Initialize the object path:
 
-    object_path.set(hn, ns, mc->name, bindings);
+    Pegasus::CIMNamespaceName real_ns;
+
+    if (ci->__name_space.size())
+        real_ns = ci->__name_space.c_str();
+    else
+        real_ns = ns;
+
+    object_path.set(hn, real_ns, mc->name, bindings);
 
     return 0;
 }
@@ -1071,8 +1254,8 @@ int Converter::de_nullify_properties(
 
     if (pl.isNull())
     {
-	cimple::de_nullify_properties(ci);
-	return 0;
+        cimple::de_nullify_properties(ci);
+        return 0;
     }
 
     // Nullify all properties.
@@ -1085,22 +1268,21 @@ int Converter::de_nullify_properties(
 
     for (size_t i = 0; i < pl.size(); i++)
     {
-        CStr name(pl[Pegasus::Uint32(i)]);
+        Str name(pl[Pegasus::Uint32(i)]);
 
-	const Meta_Property* mp = 
-            (Meta_Property*)find_feature(mc, name.c_str());
+        const Meta_Property* mp = (Meta_Property*)find_feature(mc, *name);
 
-	if (!mp)
-	{
-	    CIMPLE_ERROR(("no such property: %s", name.c_str()));
-	    return -1;
-	}
+        if (!mp)
+        {
+            // CIMPLE does not have this property but Pegasus does.
+            continue;
+        }
 
-	if (mp->flags & CIMPLE_FLAG_KEY)
-	    continue;
+        if (mp->flags & CIMPLE_FLAG_KEY)
+            continue;
 
-	if (mp->flags & CIMPLE_FLAG_PROPERTY)
-	    null_of(mp, (char*)ci + mp->offset) = 0;
+        if (mp->flags & CIMPLE_FLAG_PROPERTY)
+            null_of(mp, (char*)ci + mp->offset) = 0;
     }
 
     return 0;
@@ -1121,6 +1303,10 @@ int Converter::to_cimple_method(
     const Meta_Class* mc,
     Instance*& meth)
 {
+/*
+ATTN: handle conversion from REF arrays.
+*/
+
     meth = 0;
 
     // First look up the method:
@@ -1129,64 +1315,48 @@ int Converter::to_cimple_method(
 
     if (!mm)
     {
-	CIMPLE_ERROR(("no such method: %s", meth_name));
-	return -1;
+        CIMPLE_ERROR(("no such method: %s", meth_name));
+        return -1;
     }
 
     // Create new method instance:
 
     meth = _make_cimple_instance(&in_params, in_params.size(),
-	_params_get_name, _params_get_value, (Meta_Class*)mm, false);
+        _params_get_name, _params_get_value, (Meta_Class*)mm, false);
 
     if (!meth)
-	return -1;
-
-    // Create reference output parameters.
-
-    for (size_t i = 0; i < mm->num_meta_features; i++)
-    {
-	const Meta_Feature* mf = mm->meta_features[i];
-
-	if (mf->flags & CIMPLE_FLAG_REFERENCE && mf->flags & CIMPLE_FLAG_OUT)
-	{
-	    const Meta_Reference* mr = (const Meta_Reference*)mf;
-	    Instance*& ref = reference_of(meth, mr);
-
-	    if (!ref)
-		ref = create(mr->meta_class);
-	}
-    }
+        return -1;
 
     // Iterate the meta-method looking for missing input parameters:
 
     for (size_t i = 0; i < mm->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mm->meta_features[i];
+        const Meta_Feature* mf = mm->meta_features[i];
 
-	if (mf->flags & CIMPLE_FLAG_PROPERTY && mf->flags & CIMPLE_FLAG_IN)
-	{
-	    const Meta_Property* mp = (const Meta_Property*)mf;
-	    bool found = false;
+        if (mf->flags & CIMPLE_FLAG_PROPERTY && mf->flags & CIMPLE_FLAG_IN)
+        {
+            const Meta_Property* mp = (const Meta_Property*)mf;
+            bool found = false;
 
-	    const Pegasus::CIMParamValue* data = in_params.getData();
+            const Pegasus::CIMParamValue* data = in_params.getData();
 
-	    for (Pegasus::Uint32 j = 0, n = in_params.size(); j < n; j++)
-	    {
-		CStr param_name(data[j].getParameterName());
+            for (Pegasus::Uint32 j = 0, n = in_params.size(); j < n; j++)
+            {
+                Str param_name(data[j].getParameterName());
 
-		if (strcasecmp(param_name, mp->name) == 0)
-		{
-		    found = true;
-		    break;
-		}
-	    }
+                if (strcasecmp(param_name, mp->name) == 0)
+                {
+                    found = true;
+                    break;
+                }
+            }
 
-	    if (!found)
-	    {
-		CIMPLE_ERROR(("missing input parameter: %s", mp->name));
-		return -1;
-	    }
-	}
+            if (!found)
+            {
+                CIMPLE_ERROR(("missing input parameter: %s", mp->name));
+                return -1;
+            }
+        }
     }
 
     return 0;
@@ -1221,33 +1391,40 @@ int Converter::to_pegasus_method(
 
     for (size_t i = 0; i < mm->num_meta_features; i++)
     {
-	const Meta_Feature* mf = mm->meta_features[i];
+        const Meta_Feature* mf = mm->meta_features[i];
 
-	// Convert to Pegasus value.
+        // Convert to Pegasus value.
 
-	if (mf->flags & CIMPLE_FLAG_OUT)
-	{
-	    if (strcasecmp(mf->name, "return_value") == 0)
-	    {
-		found_return_value = true;
-		_to_pegasus_value(hn, ns, meth, mf, return_value);
-	    }
-	    else
-	    {
-		Pegasus::CIMValue value;
-		_to_pegasus_value(hn, ns, meth, mf, value);
-		out_params.append(Pegasus::CIMParamValue(mf->name, value));
-	    }
-	}
+        if (mf->flags & CIMPLE_FLAG_OUT)
+        {
+            if (strcasecmp(mf->name, "return_value") == 0)
+            {
+                found_return_value = true;
+
+                if (_to_pegasus_value(hn, ns, meth, mf, return_value) != 0)
+                    return -1;
+            }
+            else
+            {
+                Pegasus::CIMValue value;
+
+                if (_to_pegasus_value(hn, ns, meth, mf, value) != 0)
+                    return -1;
+
+                out_params.append(Pegasus::CIMParamValue(mf->name, value));
+            }
+        }
     }
 
     if (!found_return_value)
     {
-	CIMPLE_ERROR(("return value missing"));
-	return -1;
+        CIMPLE_ERROR(("return value missing"));
+        return -1;
     }
 
     return 0;
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Converter.cpp,v 1.34 2007/03/07 18:42:32 mbrasher-public Exp $");

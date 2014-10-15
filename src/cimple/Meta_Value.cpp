@@ -203,3 +203,5 @@ void destroy(Meta_Value* x, Type type, bool array)
 }
 
 CIMPLE_NAMESPACE_END
+
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Value.cpp,v 1.10 2007/03/07 18:41:15 mbrasher-public Exp $");

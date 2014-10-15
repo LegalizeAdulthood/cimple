@@ -1,0 +1,54 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR01501" type = "new"> Create AccountGroup and
+// define relationship to ChangeAccess, ShowAccess, Roles, and
+// AuthorizationPolicy. </change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_AccountGroup
+// ==================================================================
+   [Experimental, UMLPackagePath ( "CIM::User::Group" ),
+       Version ( "2.8.1000" ), Description (
+       "The AccountGroup class is used to collect Accounts into "
+       "groups. When this class is instantiated, it also carries an "
+       "Identity aspect, which is associated via ConcreteIdentity. "
+       "This Identity MAY be used in all places where any other "
+       "Identity MAY be used. In particular, it MAY be used with the "
+       "ShowAccess and ChangeAccess methods of the "
+       "PrivilegeMangementService and it MAY be aggregated into a Role "
+       "via MemberOfCollection and it MAY be associated to "
+       "AuthorizationRule by AuthorizationRuleAppliesToIdentity and to "
+       "AuthenticationRule by PolicySetAppliesToElement. In all of "
+       "these cases, Privileges extended to the Identity of the "
+       "AccountGroup are extended to the Identities associated with "
+       "the collected Account instances.")]
+class CIM_AccountGroup : CIM_Collection {
+
+      [Key, Description (
+          "Within the scope of the instantiating Namespace, InstanceID "
+          "opaquely and uniquely identifies an instance of this class. "
+          "In order to ensure uniqueness within the NameSpace, the "
+          "value of InstanceID SHOULD be constructed using the "
+          "following 'preferred' algorithm: \n"
+          "<OrgID>:<LocalID> \n"
+          "Where <OrgID> and <LocalID> are separated by a colon ':', "
+          "and where <OrgID> MUST include a copyrighted, trademarked "
+          "or otherwise unique name that is owned by the business "
+          "entity creating/defining the InstanceID, or is a registered "
+          "ID that is assigned to the business entity by a recognized "
+          "global authority (This is similar to the <Schema "
+          "Name>_<Class Name> structure of Schema class names.) In "
+          "addition, to ensure uniqueness <OrgID> MUST NOT contain a "
+          "colon (':'). When using this algorithm, the first colon to "
+          "appear in InstanceID MUST appear between <OrgID> and "
+          "<LocalID>. \n"
+          "<LocalID> is chosen by the business entity and SHOULD not "
+          "be re-used to identify different underlying (real-world) "
+          "elements. If the above 'preferred' algorithm is not used, "
+          "the defining entity MUST assure that the resultant "
+          "InstanceID is not re-used across any InstanceIDs produced "
+          "by this or other providers for this instance's NameSpace. \n"
+          "For DMTF defined instances, the 'preferred' algorithm MUST "
+          "be used with the <OrgID> set to 'CIM'.")]
+   string InstanceID;
+};

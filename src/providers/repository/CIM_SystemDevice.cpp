@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849;
+extern const Meta_Repository __meta_repository_21EDCD70A42E172A9DC460386EA6D93B;
 
 extern const Meta_Reference
 _CIM_SystemDevice_GroupComponent;
@@ -27,6 +27,7 @@ _CIM_SystemDevice_GroupComponent =
     "GroupComponent",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &CIM_System::static_meta_class,
     CIMPLE_OFF(CIM_SystemDevice,GroupComponent)
 };
@@ -42,6 +43,7 @@ _CIM_SystemDevice_PartComponent =
     "PartComponent",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &CIM_LogicalDevice::static_meta_class,
     CIMPLE_OFF(CIM_SystemDevice,PartComponent)
 };
@@ -72,8 +74,9 @@ const Meta_Class CIM_SystemDevice::static_meta_class =
     &CIM_SystemComponent::static_meta_class,
     2, /* num_keys */
     0xA3654B27, /* crc */
-    &__meta_repository_F4A795C4F3BC1F5C8B8959AFA40EE849,
+    &__meta_repository_21EDCD70A42E172A9DC460386EA6D93B,
 };
 
 CIMPLE_NAMESPACE_END
 
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/repository/CIM_SystemDevice.cpp,v 1.50 2007/03/13 22:53:17 mbrasher-public Exp $");

@@ -1,0 +1,27 @@
+// <change cr="CIMCoreCR00828" type = "new"> Add class. </change>
+// <change cr="ArchCR00066.004" type="add">Add UmlPackagePath
+// qualifier values to CIM Schema.</change>
+// ==================================================================
+//  CIM_AssociatedComponentExtent
+// ==================================================================
+   [Association, Experimental, Aggregation, Version ( "2.13.0" ),
+    UMLPackagePath ( "CIM::Device::StorageServices" ), Description (
+       "This association defines the capacity, expressed in "
+       "StorageExtents, that together represents the entire capacity "
+       "collected in a StoragePool. The capacity represented by "
+       "StorageExtents may represent capacity that is allocated or "
+       "unallocated. \n"
+       "StorageExtents associated to a StoragePool using this "
+       "association shall not be also be associated to that "
+       "StoragePool using the CIM_AssociatedRemainingExtent "
+       "association.")]
+class CIM_AssociatedComponentExtent : CIM_Component {
+
+      [Aggregate, Override ( "GroupComponent" ), Description (
+          "The parent StoragePool in the association.")]
+   CIM_StoragePool REF GroupComponent;
+
+      [Override ( "PartComponent" ), Description (
+          "The component StorageExtent in the association.")]
+   CIM_StorageExtent REF PartComponent;
+};

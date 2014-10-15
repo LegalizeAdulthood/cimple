@@ -31,4 +31,6 @@
 
 #define CIMPLE_LITTLE_ENDIAN
 
+#define CIMPLE_PLATFORM_ID "LINUX_IX86_GNU"
+
 #endif /* _cimple_platform_LINUX_IX86_GNU_h */
