@@ -43,7 +43,7 @@ inline void Atomic_create(Atomic* atomic, int x)
     atomic->n = x;
 }
 
-inline void Atomic_destroy(Atomic* atomic)
+inline void Atomic_destroy(Atomic*)
 {
 }
 

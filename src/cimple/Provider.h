@@ -414,7 +414,7 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
-        const Registration* registration,
+        const Registration* /*registration*/,
         int operation, 
         void* arg0, 
         void* /*arg1*/, 
