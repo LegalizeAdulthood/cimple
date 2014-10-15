@@ -27,7 +27,7 @@
 #ifndef _MOF_Error_h
 #define _MOF_Error_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 extern MOF_PRINTF_ATTR(1, 2)
 MOF_LINKAGE void MOF_error_printf(const char *format, ...);

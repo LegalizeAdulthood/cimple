@@ -48,6 +48,7 @@ Delete_Instance_Status BUG31_C_Provider::delete_instance(
 }
 
 Modify_Instance_Status BUG31_C_Provider::modify_instance(
+    const BUG31_C* model,
     const BUG31_C* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -59,14 +60,14 @@ Invoke_Method_Status BUG31_C_Provider::meth(
     BUG31_A*& s,
     Property<uint32>& return_value)
 {
-    printf("==== BUG31_C_Provider::meth()\n");
+    // printf("==== BUG31_C_Provider::meth()\n");
 
     // Test is_a<> operator.
 
     if (is_a<BUG31_B>(r))
     {
         BUG31_B* b = (BUG31_B*)r;
-        print(b);
+        // print(b);
     }
 
     // Test cast<> operator.
@@ -74,9 +75,11 @@ Invoke_Method_Status BUG31_C_Provider::meth(
     BUG31_B* b = cast<BUG31_B*>(r);
 
     if (b)
-        print(b);
+    {
+        // print(b);
+    }
 
-    print(r);
+    // print(r);
 
 
     CIMPLE_ASSERT(s == 0);
@@ -85,7 +88,7 @@ Invoke_Method_Status BUG31_C_Provider::meth(
 
     CIMPLE_ASSERT(s != 0);
 
-    print(s);
+    // print(s);
 
     return_value.null = false;
     return_value.value = 12345;
@@ -93,45 +96,6 @@ Invoke_Method_Status BUG31_C_Provider::meth(
     return INVOKE_METHOD_OK;
 }
 
-int BUG31_C_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef BUG31_C Class;
-    typedef BUG31_C_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "meth") == 0)
-    {
-        typedef BUG31_C_meth_method Method;
-        Method* method = (Method*)arg2;
-        return provider->meth(
-            self,
-            method->r,
-            method->s,
-            method->return_value);
-    }
-    return -1;
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_C_Provider.cpp,v 1.2 2007/03/07 20:25:30 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_C_Provider.cpp,v 1.6 2007/04/18 03:51:31 mbrasher-public Exp $");

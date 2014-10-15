@@ -60,32 +60,12 @@ Delete_Instance_Status Thing_Provider::delete_instance(
 }
 
 Modify_Instance_Status Thing_Provider::modify_instance(
+    const Thing* model,
     const Thing* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
-int Thing_Provider::proc(
-    const Registration* registration,
-    int operation,
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Thing Class;
-    typedef Thing_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Thing/Thing_Provider.cpp,v 1.8 2007/03/07 20:25:28 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Thing/Thing_Provider.cpp,v 1.10 2007/04/18 03:51:30 mbrasher-public Exp $");

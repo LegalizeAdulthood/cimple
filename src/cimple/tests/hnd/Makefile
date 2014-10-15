@@ -2,6 +2,7 @@ TOP = ../../../..
 include $(TOP)/mak/config.mak
 
 BINARY = test_handle
+
 SOURCES = \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
@@ -23,7 +24,7 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BINARY_TARGET)
+	@ $(TARGET)
 
 genclass:
-	genclass -l -H -r A E CIM_ComputerSystem CIM_ConcreteJob
+	$(BINDIR)/genclass -l -H -r A E CIM_ComputerSystem CIM_ConcreteJob

@@ -24,5 +24,3 @@ The doc directory contains several useful documents including these:
     Build How-To (doc/build-howto.txt)
     The CIMPLE Whitepaper (doc/whitepaper.pdf)
     The CIMPLE Provider Development Manual (doc/provdevman.pdf)
-
-

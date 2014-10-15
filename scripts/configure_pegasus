@@ -1,0 +1,9 @@
+#!/bin/sh
+./configure \
+    --prefix=/opt/cimple \
+    --debug \
+    --enable-pegasus \
+    --pegasus-prefix=$PEGASUS_HOME \
+    --pegasus-incdir=$PEGASUS_ROOT/src \
+    --enable-cmpi \
+    --cmpi-includedir=$PR/src/Pegasus/Provider/CMPI \

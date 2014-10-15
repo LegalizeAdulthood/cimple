@@ -1,49 +1,105 @@
-##==============================================================================
-##
-## Check Pegasus environment if present.
-##
-##==============================================================================
-
-ifdef PEGASUS_PLATFORM
-  ifndef PEGASUS_HOME
-    $(error PEGASUS_PLATFORM defined but PEGASUS_HOME is not)
-  endif
-  ifndef PEGASUS_ROOT
-    $(error PEGASUS_PLATFORM defined but PEGASUS_ROOT is not)
-  endif
-endif
-
-##==============================================================================
-##
-## CIMPLE_DEBUG
-##
-##==============================================================================
-
-ifdef PEGASUS_PLATFORM
-  ifdef PEGASUS_DEBUG
-    export CIMPLE_DEBUG=1
-    DEFINES += -DPEGASUS_DEBUG
-  endif
-endif
-
-ifdef CIMPLE_DEBUG
-  DEFINES += -DCIMPLE_DEBUG
-endif
+.PHONY: all 
+.PHONY: depend 
+.PHONY: clean 
+.PHONY: tests
+.PHONY: gen
+.PHONY: sub
+.PHONY: genclass
+.PHONY: genprov
+.PHONY: genmod
+.PHONY: regmod
+.PHONY: chksrc
+.PHONY: live
+.PHONY: install
+.PHONY: uninstall
+.PHONY: insmod
+.PHONY: rmmod
+.PHONY: vars
 
 ##==============================================================================
 ##
-## Check CIMPLE_PLATFORM definition.
+## Include config.options file.
 ##
 ##==============================================================================
 
-CIMPLE_PLATFORM=
--include $(TOP)/mak/platform.mak
+PLATFORM=
+-include $(TOP)/config.options
 
-ifeq ($(CIMPLE_PLATFORM),)
+ifeq ($(PLATFORM),)
   $(error "First type ./configure")
 endif
 
-include $(TOP)/mak/platform_$(CIMPLE_PLATFORM).mak
+##==============================================================================
+##
+## Fixups for Windows configure.
+##
+##==============================================================================
+
+ifdef WIN_ENABLE_DEBUG_OPT
+  ENABLE_DEBUG_OPT=1
+endif
+
+ifdef WIN_ENABLE_STATIC_OPT
+  ENABLE_STATIC_OPT=1
+endif
+
+##==============================================================================
+##
+## Include platform file.
+##
+##==============================================================================
+
+include $(TOP)/mak/platform_$(PLATFORM).mak
+
+##==============================================================================
+##
+## CMPI_VOID_RETURN_BUG_OPT
+##
+##==============================================================================
+
+ifneq ($(WITH_CMPI_OPT),)
+
+  ifneq ($(call grep,void...enableIndications,$(WITH_CMPI_OPT)/cmpift.h),)
+    CMPI_VOID_RETURN_BUG_OPT=1
+  endif
+
+endif
+
+##==============================================================================
+##
+## Find cimcli
+##
+##==============================================================================
+
+ifneq ($(WITH_PEGASUS_OPT),)
+
+  ifeq ($(CIMCLI),)
+    CIMCLI=$(wildcard $(WITH_PEGASUS_OPT)/bin/CLI)
+  endif
+
+  ifeq ($(CIMCLI),)
+    CIMCLI=$(wildcard $(WITH_PEGASUS_OPT)/bin/cimcli)
+  endif
+
+  ifeq ($(CIMCLI),)
+    CIMCLI=$(wildcard $(WITH_PEGASUS_OPT)/sbin/CLI)
+  endif
+
+  ifeq ($(CIMCLI),)
+    CIMCLI=$(wildcard $(WITH_PEGASUS_OPT)/sbin/cimcli)
+  endif
+
+endif
+
+##==============================================================================
+##
+## DEBUG_OPT
+##
+##==============================================================================
+
+ifdef DEBUG_OPT
+  DEFINES += -DCIMPLE_DEBUG
+endif
 
 ##==============================================================================
 ##
@@ -57,37 +113,48 @@ endif
 
 ##==============================================================================
 ##
-## CIMPLE_ROOT
+## ROOT
 ##
 ##==============================================================================
 
-ifndef CIMPLE_ROOT
-    CIMPLE_ROOT = $(call abs_path, $(TOP))
+ifndef ROOT
+    ROOT = $(call abs_path, $(TOP))
 endif
 
 ##==============================================================================
 ##
-## BIN_DIR, LIB_DIR & SRC_DIR
-##
-##     If PEGASUS_PLATFORM is defined, programs and libraries are placed under
-##     that directory.
+## BINDIR
 ##
 ##==============================================================================
 
-ifdef PEGASUS_PLATFORM
-  BIN_DIR = $(PEGASUS_HOME)/bin
-  LIB_DIR = $(PEGASUS_HOME)/lib
-else
-  BIN_DIR = $(CIMPLE_ROOT)/bin
-  LIB_DIR = $(CIMPLE_ROOT)/lib
-endif
+BINDIR = $(ROOT)/bin
 
-SRC_DIR = $(CIMPLE_ROOT)/src
+##==============================================================================
+##
+## LIBDIR
+##
+##==============================================================================
+
+LIBDIR = $(ROOT)/$(LIBBASE_OPT)
+
+##==============================================================================
+##
+## SRC_DIR
+##
+##==============================================================================
+
+SRC_DIR = $(ROOT)/src
+
+##==============================================================================
+##
+## SHLIB
+##
+##==============================================================================
 
 ifdef CIMPLE_WINDOWS
-  SHLIB = $(BIN_DIR)
+  SHLIB = $(BINDIR)
 else
-  SHLIB = $(LIB_DIR)
+  SHLIB = $(LIBDIR)
 endif
 
 ##==============================================================================
@@ -108,13 +175,3 @@ define NL
 
 
 endef
-
-##==============================================================================
-##
-## CIMCLI
-##
-##==============================================================================
-
-ifndef CIMCLI
-  CIMCLI=cimcli
-endif

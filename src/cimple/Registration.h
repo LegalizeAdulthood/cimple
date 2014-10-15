@@ -41,7 +41,31 @@
         #PROVIDER, \
         cimple::PROVIDER::proc, \
         &cimple::PROVIDER::Class::static_meta_class, \
+        _cimple_registration_head); \
+
+#define CIMPLE_INSTANCE_PROVIDER(PROVIDER) \
+    static cimple::Registration _cimple_registration_##PROVIDER( \
+        _cimple_module_name, \
+        #PROVIDER, \
+        __cimple_##PROVIDER##_proc, \
+        &cimple::PROVIDER::Class::static_meta_class, \
         _cimple_registration_head);
+
+#define CIMPLE_ASSOCIATION_PROVIDER(PROVIDER) \
+    static cimple::Registration _cimple_registration_##PROVIDER( \
+        _cimple_module_name, \
+        #PROVIDER, \
+        __cimple_##PROVIDER##_proc, \
+        &cimple::PROVIDER::Class::static_meta_class, \
+        _cimple_registration_head); \
+
+#define CIMPLE_INDICATION_PROVIDER(PROVIDER) \
+    static cimple::Registration _cimple_registration_##PROVIDER( \
+        _cimple_module_name, \
+        #PROVIDER, \
+        __cimple_##PROVIDER##_proc, \
+        &cimple::PROVIDER::Class::static_meta_class, \
+        _cimple_registration_head); \
 
 //==============================================================================
 //

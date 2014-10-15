@@ -27,7 +27,11 @@
 #ifndef _cimple_linkage_h
 #define _cimple_linkage_h
 
-#ifndef CIMPLE_CIMPLE_LINKAGE
+#include "config.h"
+
+#ifdef CIMPLE_STATIC
+# define CIMPLE_CIMPLE_LINKAGE /* */
+#else
 # ifdef CIMPLE_BUILDING_LIBCIMPLE
 #  define CIMPLE_CIMPLE_LINKAGE CIMPLE_EXPORT
 # else

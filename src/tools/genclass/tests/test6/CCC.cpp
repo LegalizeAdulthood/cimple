@@ -95,9 +95,9 @@ _CCC_foo_return_value =
 
 static Meta_Feature* _CCC_foo_MFA[] =
 {
-    (Meta_Feature*)&_CCC_foo_arg1,
-    (Meta_Feature*)&_CCC_foo_arg2,
-    (Meta_Feature*)&_CCC_foo_return_value
+    (Meta_Feature*)(void*)&_CCC_foo_arg1,
+    (Meta_Feature*)(void*)&_CCC_foo_arg2,
+    (Meta_Feature*)(void*)&_CCC_foo_return_value
 };
 
 const Meta_Method
@@ -116,10 +116,10 @@ CCC_foo_method::static_meta_class =
 
 static Meta_Feature* _CCC_MFA[] =
 {
-    (Meta_Feature*)&_BBB_counter,
-    (Meta_Feature*)&_CCC_key,
-    (Meta_Feature*)&_CCC_bbb,
-    (Meta_Feature*)&CCC_foo_method::static_meta_class,
+    (Meta_Feature*)(void*)&_BBB_counter,
+    (Meta_Feature*)(void*)&_CCC_key,
+    (Meta_Feature*)(void*)&_CCC_bbb,
+    (Meta_Feature*)(void*)&CCC_foo_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -143,10 +143,9 @@ const Meta_Class CCC::static_meta_class =
     _locals,
     &BBB::static_meta_class,
     2, /* num_keys */
-    0x3EA79480, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test6/CCC.cpp,v 1.20 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test6/CCC.cpp,v 1.24 2007/04/26 22:41:10 mbrasher-public Exp $");

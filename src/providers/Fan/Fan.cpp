@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_A58ABE44C0F618E5A3AC9FAB0F84DD8C;
+extern const Meta_Repository __meta_repository_B992A60D7606155DA226A25FB25B6F11;
 
 extern const Meta_Property
 _Fan_DeviceID;
@@ -97,8 +97,8 @@ _Fan_SetSpeed_return_value =
 
 static Meta_Feature* _Fan_SetSpeed_MFA[] =
 {
-    (Meta_Feature*)&_Fan_SetSpeed_DesiredSpeed,
-    (Meta_Feature*)&_Fan_SetSpeed_return_value
+    (Meta_Feature*)(void*)&_Fan_SetSpeed_DesiredSpeed,
+    (Meta_Feature*)(void*)&_Fan_SetSpeed_return_value
 };
 
 const Meta_Method
@@ -117,10 +117,10 @@ Fan_SetSpeed_method::static_meta_class =
 
 static Meta_Feature* _Fan_MFA[] =
 {
-    (Meta_Feature*)&_Fan_DeviceID,
-    (Meta_Feature*)&_Fan_Speed,
-    (Meta_Feature*)&_Fan_DesiredSpeed,
-    (Meta_Feature*)&Fan_SetSpeed_method::static_meta_class,
+    (Meta_Feature*)(void*)&_Fan_DeviceID,
+    (Meta_Feature*)(void*)&_Fan_Speed,
+    (Meta_Feature*)(void*)&_Fan_DesiredSpeed,
+    (Meta_Feature*)(void*)&Fan_SetSpeed_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -144,10 +144,9 @@ const Meta_Class Fan::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0xF0EDE346, /* crc */
-    &__meta_repository_A58ABE44C0F618E5A3AC9FAB0F84DD8C,
+    &__meta_repository_B992A60D7606155DA226A25FB25B6F11,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Fan/Fan.cpp,v 1.15 2007/03/13 22:53:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Fan/Fan.cpp,v 1.21 2007/04/26 22:41:03 mbrasher-public Exp $");

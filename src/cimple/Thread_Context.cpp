@@ -45,25 +45,34 @@ struct Stack
     size_t size;
 };
 
-static pthread_key_t _key;
-static pthread_once_t _key_once = PTHREAD_ONCE_INIT;
+// Export to avoid multiple copies via shared libraries.
+#ifdef CIMPLE_STATIC
+CIMPLE_EXPORT 
+#endif
+pthread_key_t _thread_context_key;
+
+// Export to avoid multiple copies via shared libraries.
+#ifdef CIMPLE_STATIC
+CIMPLE_EXPORT 
+#endif
+pthread_once_t _thread_context_key_once = PTHREAD_ONCE_INIT;
 
 static void _make_key()
 {
-    pthread_key_create(&_key, NULL);
+    pthread_key_create(&_thread_context_key, NULL);
 }
 
 static Stack* _stack()
 {
-    pthread_once(&_key_once, _make_key);
+    pthread_once(&_thread_context_key_once, _make_key);
 
-    Stack* stack = (Stack*)pthread_getspecific(_key);
+    Stack* stack = (Stack*)pthread_getspecific(_thread_context_key);
 
     if (stack == 0)
     {
         stack = new Stack;
         stack->size = 0;
-        pthread_setspecific(_key, stack);
+        pthread_setspecific(_thread_context_key, stack);
     }
 
     return stack;
@@ -85,7 +94,7 @@ void Thread_Context::pop()
 
     if (stack->size == 0)
     {
-        pthread_setspecific(_key, NULL);
+        pthread_setspecific(_thread_context_key, NULL);
         delete stack;
     }
 }
@@ -95,11 +104,21 @@ Thread_Context* Thread_Context::top()
     Stack* stack = _stack();
 
     if (stack->size != 0)
-        return stack->data[stack->size-1];
+    {
+        Thread_Context* context = stack->data[stack->size-1];
+        assert(context != 0);
+        return context;
+    }
 
+/*
+MEB
+*/
+#if 0
+    assert(0);
+#endif
     return 0;
 }
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Thread_Context.cpp,v 1.9 2007/03/07 18:41:15 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Thread_Context.cpp,v 1.11 2007/04/24 20:51:56 mbrasher-public Exp $");

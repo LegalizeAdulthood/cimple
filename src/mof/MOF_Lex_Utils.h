@@ -27,14 +27,16 @@
 #ifndef _MOF_Lex_Utils_h
 #define _MOF_Lex_Utils_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 typedef int (*MOF_input_proc)();
 
 typedef void (*MOF_error_proc)(const char*);
 
-MOF_LINKAGE extern char* MOF_read_string(
+int MOF_read_string(
     MOF_input_proc input_proc,
-    MOF_error_proc error_proc);
+    MOF_error_proc error_proc,
+    char** raw,
+    char** escaped);
 
 #endif /* _MOF_Lex_Utils_h */

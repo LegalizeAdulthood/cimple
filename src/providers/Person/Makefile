@@ -1,7 +1,9 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplperson
+MODULE=1
+
+SHARED_LIBRARY = cimplePerson
 
 SOURCES = \
     repository.cpp \
@@ -15,60 +17,55 @@ SOURCES = \
     SalesmanLink_Provider.cpp \
     module.cpp
 
-LIBRARIES = cimple
+CIMPLE_PEGASUS_MODULE=1
 
-#BUILD_CMPI_PROVIDER=1
-
-ifdef BUILD_CMPI_PROVIDER
-  LIBRARIES += cimplecmpiadap
-  DEFINES += -DBUILD_CMPI_PROVIDER
-else
-  LIBRARIES += cimplepegadap
-endif
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
-
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r Person PersonLink Salesman SalesmanLink
 
-##==============================================================================
-##
-## Test rules
-##
-##==============================================================================
+genprov:
+	$(BINDIR)/genprov Person
+	$(BINDIR)/genprov PersonLink
+	$(BINDIR)/genprov Salesman
+	$(BINDIR)/genprov SalesmanLink
 
-tests:
+genmod:
+	$(BINDIR)/genmod Person Person PersonLink Salesman SalesmanLink
 
-ei:
-	$(CIMCLI) ei Person
-
-ni:
+live:
+	$(CIMCLI) gi Person.ssn=1
 	$(CIMCLI) ni Person
-
-gi:
-	$(CIMCLI) gi Person.ssn=2
-
-di:
-	$(CIMCLI) di Person.ssn=2
-
-ci:
-	create_person
-
-mi:
-	modify_person
-
-cs:
-	( cimserver -s ; sleep 1; cimserver )
-
-cat:	
-	catmod $(SHARED_LIBRARY_TARGET)
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
-
-genclass:
-	genclass -r Person PersonLink Salesman SalesmanLink
+	$(CIMCLI) ni PersonLink
+	$(CIMCLI) ni PersonLink
+	$(CIMCLI) ni Fan
+	$(CIMCLI) ei Person
+	$(CIMCLI) ei PersonLink
+	$(CIMCLI) ei PersonLink
+	$(CIMCLI) ei Fan
+	$(CIMCLI) an Person
+	$(CIMCLI) an Person.ssn=1
+	$(CIMCLI) an Person.ssn=2
+	$(CIMCLI) an Person.ssn=3
+	$(CIMCLI) an Person.ssn=4
+	$(CIMCLI) an Person.ssn=5
+	$(CIMCLI) a Person.ssn=1
+	$(CIMCLI) a Person.ssn=2
+	$(CIMCLI) a Person.ssn=3
+	$(CIMCLI) a Person.ssn=4
+	$(CIMCLI) a Person.ssn=5
+	$(CIMCLI) r Person.ssn=1
+	$(CIMCLI) r Person.ssn=2
+	$(CIMCLI) r Person.ssn=3
+	$(CIMCLI) r Person.ssn=4
+	$(CIMCLI) r Person.ssn=5
+	$(CIMCLI) rn Person.ssn=1
+	$(CIMCLI) rn Person.ssn=2
+	$(CIMCLI) rn Person.ssn=3
+	$(CIMCLI) rn Person.ssn=4
+	$(CIMCLI) rn Person.ssn=5

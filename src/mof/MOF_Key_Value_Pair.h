@@ -27,9 +27,9 @@
 #ifndef _MOF_Key_Value_Pair_h
 #define _MOF_Key_Value_Pair_h
 
-#include <MOF_Config.h>
-#include <MOF_Element.h>
-#include <MOF_Literal.h>
+#include "MOF_Config.h"
+#include "MOF_Element.h"
+#include "MOF_Literal.h"
 
 class MOF_LINKAGE MOF_Key_Value_Pair : public MOF_Element
 {

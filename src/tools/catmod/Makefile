@@ -6,7 +6,3 @@ SOURCES = main.cpp
 LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
-
-tests:
-
-genclass:

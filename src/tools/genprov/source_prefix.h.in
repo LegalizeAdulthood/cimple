@@ -47,6 +47,7 @@ Delete_Instance_Status <CLASS>_Provider::delete_instance(
 }
 
 Modify_Instance_Status <CLASS>_Provider::modify_instance(
+    const <CLASS>* model,
     const <CLASS>* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;

@@ -35,6 +35,7 @@ public:
         const CIM_ConcreteJob* instance);
 
     Modify_Instance_Status modify_instance(
+        const CIM_ConcreteJob* model,
         const CIM_ConcreteJob* instance);
 
     Invoke_Method_Status KillJob(
@@ -47,18 +48,6 @@ public:
         const Property<uint16>& RequestedState,
         const Property<Datetime>& TimeoutPeriod,
         Property<uint32>& return_value);
-
-    static int proc(
-        const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3,
-        void* arg4,
-        void* arg5,
-        void* arg6,
-        void* arg7);
 };
 
 CIMPLE_NAMESPACE_END

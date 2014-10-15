@@ -121,15 +121,14 @@ CMPI_Adapter::CMPI_Adapter(
     sd->indication_ft.deActivateFilter = CMPI_Adapter::deactivateFilter;
 
     /*
-     * If the following two lines fail to compile, then you need to do one
-     * of the following.
+     * If the following two lines fail to compile, try reconfiguring with the
+     * --cmpi-void-return-bug option. That is:
      *
-     *     1. Undefine CIMPLE_HAVE_CMPI_VOID_RETURN_BUG (if defined).
-     *     2. Define CIMPLE_HAVE_CMPI_VOID_RETURN_BUG (if not defined).
+     *     ./configure --cmpi-void-return-bug
      *
-     * CIMPLE_HAVE_CMPI_VOID_RETURN_BUG is defined here:
+     * If you already configured with that option and still have the compiler
+     * error, then try configuring WITHOUT it.
      *
-     *     cimple/src/cimple/options.h
      */
     sd->indication_ft.enableIndications = CMPI_Adapter::enableIndications;
     sd->indication_ft.disableIndications = CMPI_Adapter::disableIndications;
@@ -507,6 +506,10 @@ CMPIStatus CMPI_Adapter::getInstance(
         CMReturn(rc);
     }
 
+    // Ask for all properties.
+
+    de_nullify_properties(cimple_ref);
+
     // Filter properties:
 
     if (properties)
@@ -518,6 +521,8 @@ CMPIStatus CMPI_Adapter::getInstance(
 
     Get_Instance_Status status = 
         adapter->get_instance(cimple_ref, cimple_inst);
+
+    Ref<Instance> cimple_inst_d(cimple_inst);
 
     switch (status)
     {
@@ -672,10 +677,16 @@ CMPIStatus CMPI_Adapter::modifyInstance(
 
     Ref<Instance> cmpi_inst_d(cimple_inst);
 
+    // Create model.
+
+    Instance* model = clone(cimple_inst);
+    Ref<Instance> model_d(cimple_inst);
+    filter_properties(model, properties);
+
     // Invoke the provider:
 
-    Modify_Instance_Status status =
-        adapter->modify_instance(cimple_inst);
+    Modify_Instance_Status status = adapter->modify_instance(
+        model, cimple_inst);
 
     switch (status)
     {
@@ -1083,6 +1094,8 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 
     if (cimple_inst == 0)
         return false;
+
+    Ref<Instance> cimple_inst_d(cimple_inst);
 
     // Do once for each CIM namespace:
 
@@ -1909,8 +1922,6 @@ const Meta_Class* CMPI_Adapter::find_meta_class_callback(
 
 const Meta_Class* CMPI_Adapter::find_model_meta_class(const char* class_name)
 {
-#ifdef CIMPLE_ENABLE_SUBCLASS_PROVIDERS
-
     const Meta_Class* mc = find_meta_class(class_name);
 
     if (!mc)
@@ -1920,12 +1931,6 @@ const Meta_Class* CMPI_Adapter::find_model_meta_class(const char* class_name)
         return 0;
 
     return mc;
-
-#else /* CIMPLE_ENABLE_SUBCLASS_PROVIDERS */
-
-    return mc;
-
-#endif /* CIMPLE_ENABLE_SUBCLASS_PROVIDERS */
 }
 
 void CMPI_Adapter::ent(const char* file, int line, const char* func)
@@ -1966,4 +1971,4 @@ void CMPI_Adapter::trc(
 #endif
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/CMPI_Adapter.cpp,v 1.52 2007/03/13 23:25:03 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/CMPI_Adapter.cpp,v 1.61 2007/04/24 20:51:56 mbrasher-public Exp $");

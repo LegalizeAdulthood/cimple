@@ -1,10 +1,12 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cimple
-STATIC_LIBRARY = cimple_s
+INSTALL=1
+
+LIBRARY = cimple
 
 SOURCES = \
+    config.cpp \
     Tracer.cpp \
     ptr_array.cpp \
     io.cpp \
@@ -13,7 +15,6 @@ SOURCES = \
     Meta_Repository.cpp \
     Meta_Qualifier.cpp \
     Meta_Reference.cpp \
-    TSD.cpp \
     Thread_Context.cpp \
     cimom.cpp \
     Cond.cpp \
@@ -25,7 +26,6 @@ SOURCES = \
     Provider_Handle.cpp \
     Array_Impl.cpp \
     cimple.cpp \
-    config.cpp \
     Datetime.cpp \
     Instance.cpp \
     Instance_Map.cpp \
@@ -38,21 +38,78 @@ SOURCES = \
     Strings.cpp \
     Type.cpp \
     Property.cpp \
-    Hnd.cpp
-
-LIBRARIES =
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+    Hnd.cpp \
+    TSD.cpp
 
 DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
 
+INSTALL_HEADERS_DIR = cimple
+
+INSTALL_HEADERS = \
+    Array.h \
+    Array_Impl.h \
+    Atomic_Counter.h \
+    Atomic_DARWIN_IX86_GNU.h \
+    Atomic_DARWIN_PPC_GNU.h \
+    Atomic.h \
+    Atomic_LINUX_IA64_GNU.h \
+    Atomic_LINUX_IX86_GNU.h \
+    Atomic_LINUX_PPC_GNU.h \
+    Atomic_LINUX_S390_GNU.h \
+    Atomic_WIN32_IX86_MSVC.h \
+    Auto_Mutex.h \
+    char16.h \
+    cimom.h \
+    cimple.h \
+    Cond.h \
+    config.h \
+    options.h \
+    Datetime.h \
+    Error.h \
+    flags.h \
+    flavor.h \
+    Hnd.h \
+    Instance.h \
+    Instance_Map.h \
+    io.h \
+    linkage.h \
+    Magic.h \
+    Meta_Class.h \
+    Meta_Feature.h \
+    Meta_Method.h \
+    Meta_Property.h \
+    Meta_Qualifier.h \
+    Meta_Reference.h \
+    Meta_Repository.h \
+    Meta_Value.h \
+    Mutex.h \
+    platform_DARWIN.h \
+    platform_DARWIN_IX86_GNU.h \
+    platform_DARWIN_PPC_GNU.h \
+    platform_LINUX.h \
+    platform_LINUX_IA64_GNU.h \
+    platform_LINUX_IX86_GNU.h \
+    platform_LINUX_PPC_GNU.h \
+    platform_LINUX_S390_GNU.h \
+    platform_LINUX_X86_64_GNU.h \
+    platform_WIN32_IX86_MSVC.h \
+    Property.h \
+    Provider.h \
+    Provider_Handle.h \
+    ptr_array.h \
+    Ref.h \
+    Registration.h \
+    scope.h \
+    String.h \
+    Strings.h \
+    Thread_Context.h \
+    Thread.h \
+    Time.h \
+    Tracer.h \
+    TSD.h \
+    Type.h
+
 include $(TOP)/mak/rules.mak
 
-genclass:
-
-doc:
-	rm -rf doxygen
-	doxygen Doxyfile
-
-create-Doxyfile:
-	doxygen -g
+zzz:
+	echo $(STATIC_CXX)

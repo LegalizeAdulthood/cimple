@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_6FAA529815A91D82B658654A66A4535E;
+extern const Meta_Repository __meta_repository_6827E083506B1A56883F566A87E0489F;
 
 extern const Meta_Qualifier
 _CIM_ManagedElement_Caption_MaxLen_MQ;
@@ -33,13 +33,13 @@ _CIM_ManagedElement_Caption_MaxLen_MQ =
     UINT32, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_ManagedElement_Caption_MaxLen_MV,
+    (const Meta_Value*)(void*)&_CIM_ManagedElement_Caption_MaxLen_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_ManagedElement_Caption_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -105,9 +105,9 @@ _CIM_ManagedElement_ElementName =
 
 static Meta_Feature* _CIM_ManagedElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -115,26 +115,6 @@ static const Meta_Feature_Local _locals[] =
     {1},
     {1},
     {1},
-};
-
-extern const Meta_Qualifier
-_CIM_ManagedElement_UMLPackagePath_MQ;
-
-static const Meta_Value_Scalar<const char*>
-_CIM_ManagedElement_UMLPackagePath_MV =
-{
-    "CIM::Core::CoreElements"
-};
-
-const Meta_Qualifier
-_CIM_ManagedElement_UMLPackagePath_MQ =
-{
-    { 0 }, /* refs */
-    "UMLPackagePath", /* name */
-    STRING, /* type */
-    0, /* array */
-    0 /* flavors */,
-    (const Meta_Value*)&_CIM_ManagedElement_UMLPackagePath_MV,
 };
 
 extern const Meta_Qualifier
@@ -154,14 +134,34 @@ _CIM_ManagedElement_Version_MQ =
     STRING, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_ManagedElement_Version_MV,
+    (const Meta_Value*)(void*)&_CIM_ManagedElement_Version_MV,
+};
+
+extern const Meta_Qualifier
+_CIM_ManagedElement_UMLPackagePath_MQ;
+
+static const Meta_Value_Scalar<const char*>
+_CIM_ManagedElement_UMLPackagePath_MV =
+{
+    "CIM::Core::CoreElements"
+};
+
+const Meta_Qualifier
+_CIM_ManagedElement_UMLPackagePath_MQ =
+{
+    { 0 }, /* refs */
+    "UMLPackagePath", /* name */
+    STRING, /* type */
+    0, /* array */
+    0 /* flavors */,
+    (const Meta_Value*)(void*)&_CIM_ManagedElement_UMLPackagePath_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_ManagedElement_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedElement_UMLPackagePath_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedElement_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedElement_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedElement_UMLPackagePath_MQ,
 };
 
 const Meta_Class CIM_ManagedElement::static_meta_class =
@@ -178,7 +178,7 @@ const Meta_Class CIM_ManagedElement::static_meta_class =
     0, /* super_class */ 
     0, /* num_keys */
     0x5B2A3886, /* crc */
-    &__meta_repository_6FAA529815A91D82B658654A66A4535E,
+    &__meta_repository_6827E083506B1A56883F566A87E0489F,
 };
 
 CIM_ManagedElement_Ref::CIM_ManagedElement_Ref()
@@ -307,4 +307,4 @@ void CIM_ManagedElement_Hnd::ElementName_null(bool x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_ManagedElement.cpp,v 1.1 2007/03/13 22:25:33 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_ManagedElement.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

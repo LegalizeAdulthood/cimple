@@ -28,10 +28,18 @@
 #include "MOF_String.h"
 #include "MOF_Buffer.h"
 
-char* MOF_read_string(
+int MOF_read_string(
     MOF_input_proc input_proc,
-    MOF_error_proc error_proc)
+    MOF_error_proc error_proc,
+    char** raw,
+    char** escaped)
 {
+    if (raw)
+        *raw = 0;
+
+    if (escaped)
+        *escaped = 0;
+
     /*
      * Process characters until a closing quote is encountered.
      */
@@ -49,8 +57,8 @@ char* MOF_read_string(
         {
             if ((next_char = (*input_proc)()) == -1)
             {
-                (*error_proc)("out of memory");
-                return 0;
+                (*error_proc)("out of input");
+                return -1;
             }
 
             buf.append(next_char);
@@ -60,7 +68,7 @@ char* MOF_read_string(
     if (ch == -1)
     {
         (*error_proc)("unterminated string literal");
-        return 0;
+        return -1;
     }
 
     buf.append('\0');
@@ -74,10 +82,18 @@ char* MOF_read_string(
     if (asc7 == 0)
     {
         (*error_proc)("bad string literal");
-        return 0;
+        return -1;
     }
 
-    return asc7;
+    if (raw)
+        *raw = buf.steal_data();
+
+    if (escaped)
+        *escaped = asc7;
+    else
+        free(asc7);
+
+    return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Lex_Utils.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Lex_Utils.cpp,v 1.5 2007/03/29 22:02:01 mbrasher-public Exp $");

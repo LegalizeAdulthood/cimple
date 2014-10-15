@@ -32,24 +32,24 @@
 #include <Pegasus/Common/CIMObjectPath.h>
 #include <Pegasus/Common/CIMParamValue.h>
 #include <cimple/cimple.h>
-#include "Linkage.h"
+#include "typedefs.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-typedef Pegasus::Array<Pegasus::CIMKeyBinding> Key_Bindings;
+typedef Pegasus::Array<P_CIMKeyBinding> Key_Bindings;
 
-class CIMPLE_PEGADAP_LINKAGE Converter
+class Converter
 {
 public:
 
     static int to_pegasus_instance(
-        const Pegasus::String& host_name,
-        const Pegasus::CIMNamespaceName& name_space,
+        const P_String& host_name,
+        const P_CIMNamespaceName& name_space,
         const cimple::Instance* cimple_instance,
-        Pegasus::CIMInstance& pegasus_instance);
+        P_CIMInstance& pegasus_instance);
 
     static int to_cimple_instance(
-        const Pegasus::CIMInstance& pegasus_instance,
+        const P_CIMInstance& pegasus_instance,
         const cimple::Meta_Class* meta_class,
         cimple::Instance*& cimple_instance);
 
@@ -59,35 +59,35 @@ public:
         cimple::Instance*& cimple_key);
 
     static int to_pegasus_object_path(
-        const Pegasus::String& host_name,
-        const Pegasus::CIMNamespaceName& name_space,
+        const P_String& host_name,
+        const P_CIMNamespaceName& name_space,
         const cimple::Instance* cimple_key,
-        Pegasus::CIMObjectPath& object_path);
+        P_CIMObjectPath& object_path);
 
     static int to_cimple_method(
         const char* meth_name,
-        const Pegasus::Array<Pegasus::CIMParamValue>& in_params,
+        const Pegasus::Array<P_CIMParamValue>& in_params,
         const cimple::Meta_Class* meta_class,
         cimple::Instance*& meth);
 
     static int to_pegasus_method(
-        const Pegasus::String& host_name,
-        const Pegasus::CIMNamespaceName& name_space,
+        const P_String& host_name,
+        const P_CIMNamespaceName& name_space,
         const cimple::Instance* meth,
-        Pegasus::Array<Pegasus::CIMParamValue>& out_params,
-        Pegasus::CIMValue& return_value);
+        Pegasus::Array<P_CIMParamValue>& out_params,
+        P_CIMValue& return_value);
 
     static int de_nullify_properties(
-        const Pegasus::CIMPropertyList& propertyList,
+        const P_CIMPropertyList& propertyList,
         cimple::Instance* cimple_instance);
 
     static int _to_cimple_ref(
-        const Pegasus::CIMValue& v,
+        const P_CIMValue& v,
         cimple::Instance* ci,
         const cimple::Meta_Reference* mr);
 
     static int _append_cimple_ref(
-        const Pegasus::CIMObjectPath& cop,
+        const P_CIMObjectPath& cop,
         cimple::Instance* ci,
         const cimple::Meta_Reference* mr);
 };

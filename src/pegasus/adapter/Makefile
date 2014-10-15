@@ -1,38 +1,25 @@
-# ATTN: This is dangerous to mix debug Pegasus builds with non debug builds.
-#ifdef CIMPLE_DEBUG
-#  export PEGASUS_DEBUG=1
-#endif
+TOP = ../../..
+include $(TOP)/mak/config.mak
 
-ROOT = $(PEGASUS_ROOT)
-DIR = cimple/adapater
-include $(ROOT)/mak/config.mak
+INSTALL=1
 
-LIBRARY = $(CIMPLE_LIBRARY_PREFIX)cimplepegadap$(CIMPLE_LIBRARY_SUFFIX)
-
-LOCAL_DEFINES = -DPEGASUS_INTERNALONLY -DCIMPLE_PEGADAP_INTERNAL
+LIBRARY = cimplepegadap
 
 SOURCES = \
-    Pegasus_Thread_Context.cpp \
-    Pegasus_Adapter.cpp \
+    Integer.cpp \
     Converter.cpp \
+    Pegasus_Adapter.cpp \
+    Pegasus_Thread_Context.cpp \
     pegasus_unsupported.cpp
 
 LIBRARIES = \
+    cimple \
     pegprm \
     pegprovidermanager \
     pegprovider \
     pegconfig \
-    pegcommon \
-    $(CIMPLE_LIBRARY_PREFIX)cimple$(CIMPLE_LIBRARY_SUFFIX)
+    pegcommon
 
-INCLUDES += 
-
-CIMPLE_ROOT = ../../..
-
-include $(CIMPLE_ROOT)/mak/extras.mak
-include $(ROOT)/mak/library.mak
-
-genclass:
-
-chksrc:
-	chksrc $(SOURCES)
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
+include ../check-pegasus.mak

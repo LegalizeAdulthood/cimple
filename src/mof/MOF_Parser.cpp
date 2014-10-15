@@ -31,8 +31,11 @@ using namespace std;
 
 extern FILE* MOF_in;
 extern int MOF_parse();
+
 int MOF_line_num = 0;
 char* MOF_file_name = 0;
+char* MOF_current_dir = 0;
+
 const char* MOF_include_paths[MAX_INCLUDES];
 size_t MOF_num_include_paths = 0;
 
@@ -90,4 +93,4 @@ int MOF_parse_file(const char* mof_file)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parser.cpp,v 1.7 2007/03/07 18:57:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parser.cpp,v 1.8 2007/03/29 22:02:01 mbrasher-public Exp $");

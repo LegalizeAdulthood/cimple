@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include "String.h"
+#include "char16.h"
 #include "Datetime.h"
 
 CIMPLE_NAMESPACE_BEGIN

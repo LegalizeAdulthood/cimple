@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_1D62E793C9D41C0C9A7355CC778798F3;
+extern const Meta_Repository __meta_repository_C2AA78B37C6515EB9DBF2BC150C67E7F;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -367,65 +367,65 @@ _CIM_StorageExtent_Primordial =
     BOOLEAN,
     0, /* subscript */
     CIMPLE_OFF(CIM_StorageExtent,Primordial),
-    (const Meta_Value*)&_CIM_StorageExtent_Primordial_MV,
+    (const Meta_Value*)(void*)&_CIM_StorageExtent_Primordial_MV,
 };
 
 static Meta_Feature* _CIM_StorageExtent_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_OtherEnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledDefault,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
-    (Meta_Feature*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
-    (Meta_Feature*)&_CIM_LogicalDevice_SystemCreationClassName,
-    (Meta_Feature*)&_CIM_LogicalDevice_SystemName,
-    (Meta_Feature*)&_CIM_LogicalDevice_CreationClassName,
-    (Meta_Feature*)&_CIM_LogicalDevice_DeviceID,
-    (Meta_Feature*)&_CIM_LogicalDevice_PowerManagementSupported,
-    (Meta_Feature*)&_CIM_LogicalDevice_PowerManagementCapabilities,
-    (Meta_Feature*)&_CIM_LogicalDevice_Availability,
-    (Meta_Feature*)&_CIM_LogicalDevice_StatusInfo,
-    (Meta_Feature*)&_CIM_LogicalDevice_LastErrorCode,
-    (Meta_Feature*)&_CIM_LogicalDevice_ErrorDescription,
-    (Meta_Feature*)&_CIM_LogicalDevice_ErrorCleared,
-    (Meta_Feature*)&_CIM_LogicalDevice_OtherIdentifyingInfo,
-    (Meta_Feature*)&_CIM_LogicalDevice_PowerOnHours,
-    (Meta_Feature*)&_CIM_LogicalDevice_TotalPowerOnHours,
-    (Meta_Feature*)&_CIM_LogicalDevice_IdentifyingDescriptions,
-    (Meta_Feature*)&_CIM_LogicalDevice_AdditionalAvailability,
-    (Meta_Feature*)&_CIM_LogicalDevice_MaxQuiesceTime,
-    (Meta_Feature*)&CIM_LogicalDevice_SetPowerState_method::static_meta_class,
-    (Meta_Feature*)&CIM_LogicalDevice_Reset_method::static_meta_class,
-    (Meta_Feature*)&CIM_LogicalDevice_EnableDevice_method::static_meta_class,
-    (Meta_Feature*)&CIM_LogicalDevice_OnlineDevice_method::static_meta_class,
-    (Meta_Feature*)&CIM_LogicalDevice_QuiesceDevice_method::static_meta_class,
-    (Meta_Feature*)&CIM_LogicalDevice_SaveProperties_method::static_meta_class,
-    (Meta_Feature*)&CIM_LogicalDevice_RestoreProperties_method::static_meta_class,
-    (Meta_Feature*)&_CIM_StorageExtent_DataOrganization,
-    (Meta_Feature*)&_CIM_StorageExtent_Purpose,
-    (Meta_Feature*)&_CIM_StorageExtent_Access,
-    (Meta_Feature*)&_CIM_StorageExtent_ErrorMethodology,
-    (Meta_Feature*)&_CIM_StorageExtent_BlockSize,
-    (Meta_Feature*)&_CIM_StorageExtent_NumberOfBlocks,
-    (Meta_Feature*)&_CIM_StorageExtent_ConsumableBlocks,
-    (Meta_Feature*)&_CIM_StorageExtent_IsBasedOnUnderlyingRedundancy,
-    (Meta_Feature*)&_CIM_StorageExtent_SequentialAccess,
-    (Meta_Feature*)&_CIM_StorageExtent_ExtentStatus,
-    (Meta_Feature*)&_CIM_StorageExtent_NoSinglePointOfFailure,
-    (Meta_Feature*)&_CIM_StorageExtent_DataRedundancy,
-    (Meta_Feature*)&_CIM_StorageExtent_PackageRedundancy,
-    (Meta_Feature*)&_CIM_StorageExtent_DeltaReservation,
-    (Meta_Feature*)&_CIM_StorageExtent_Primordial,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
+    (Meta_Feature*)(void*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_SystemCreationClassName,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_SystemName,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_CreationClassName,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_DeviceID,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_PowerManagementSupported,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_PowerManagementCapabilities,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_Availability,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_StatusInfo,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_LastErrorCode,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_ErrorDescription,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_ErrorCleared,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_OtherIdentifyingInfo,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_PowerOnHours,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_TotalPowerOnHours,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_IdentifyingDescriptions,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_AdditionalAvailability,
+    (Meta_Feature*)(void*)&_CIM_LogicalDevice_MaxQuiesceTime,
+    (Meta_Feature*)(void*)&CIM_LogicalDevice_SetPowerState_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_LogicalDevice_Reset_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_LogicalDevice_EnableDevice_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_LogicalDevice_OnlineDevice_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_LogicalDevice_QuiesceDevice_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_LogicalDevice_SaveProperties_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_LogicalDevice_RestoreProperties_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_DataOrganization,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_Purpose,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_Access,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_ErrorMethodology,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_BlockSize,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_NumberOfBlocks,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_ConsumableBlocks,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_IsBasedOnUnderlyingRedundancy,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_SequentialAccess,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_ExtentStatus,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_NoSinglePointOfFailure,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_DataRedundancy,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_PackageRedundancy,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_DeltaReservation,
+    (Meta_Feature*)(void*)&_CIM_StorageExtent_Primordial,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -500,11 +500,9 @@ const Meta_Class CIM_StorageExtent::static_meta_class =
     &CIM_LogicalDevice::static_meta_class,
     4, /* num_keys */
     0x9C054652, /* crc */
-    &__meta_repository_1D62E793C9D41C0C9A7355CC778798F3,
+    &__meta_repository_C2AA78B37C6515EB9DBF2BC150C67E7F,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_StorageExtent.cpp,v 1.2 2007/03/07 20:25:25 mbrasher-public Exp $");
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_StorageExtent.cpp,v 1.2 2007/03/07 20:25:25 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_StorageExtent.cpp,v 1.5 2007/04/18 03:29:39 mbrasher-public Exp $");

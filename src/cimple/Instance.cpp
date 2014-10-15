@@ -324,6 +324,13 @@ static void __destruct(Instance* inst)
             if (mr->subscript)
             {
                 Array_Ref& r = __array_ref_of(inst, mr);
+
+                for (size_t i = 0; i < r.size(); i++)
+                {
+                    if (r[i])
+                        unref(r[i]);
+                }
+
                 r.~Array_Ref();
             }
             else
@@ -365,6 +372,7 @@ void destroy(Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(Atomic_get(&inst->__refs) == 1);
 
     __destruct(inst);
 
@@ -530,22 +538,32 @@ bool key_eq(const Instance* i1, const Instance* i2)
 }
 
 // ATTN: fix copy to work between instances of different classes.
-static void __copy(Instance* i1, const Instance* i2, bool keys_only)
+static void __copy(
+    Instance* dest, 
+    const Instance* src, 
+    bool keys_only,
+    const Instance* model)
 {
     // Check preconditions.
 
-    CIMPLE_ASSERT(i1 != 0);
-    CIMPLE_ASSERT(i2 != 0);
-    CIMPLE_ASSERT(i1->__magic == CIMPLE_INSTANCE_MAGIC);
-    CIMPLE_ASSERT(i2->__magic == CIMPLE_INSTANCE_MAGIC);
-    CIMPLE_ASSERT(i1->meta_class == i2->meta_class);
+    CIMPLE_ASSERT(dest != 0);
+    CIMPLE_ASSERT(src != 0);
+    CIMPLE_ASSERT(dest->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(src->__magic == CIMPLE_INSTANCE_MAGIC);
+    CIMPLE_ASSERT(dest->meta_class == src->meta_class);
 
-    if (i1->meta_class != i2->meta_class)
+    if (model)
+    {
+        CIMPLE_ASSERT(model->__magic == CIMPLE_INSTANCE_MAGIC);
+        CIMPLE_ASSERT(model->meta_class == dest->meta_class);
+    }
+
+    if (dest->meta_class != src->meta_class)
         return;
 
     // Copy the properties.
 
-    const Meta_Class* mc = i1->meta_class;
+    const Meta_Class* mc = dest->meta_class;
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
@@ -557,8 +575,11 @@ static void __copy(Instance* i1, const Instance* i2, bool keys_only)
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            void* p1 = __property_of(i1, mp);
-            const void* p2 = __property_of(i2, mp);
+            void* p1 = __property_of(dest, mp);
+            const void* p2 = __property_of(src, mp);
+
+            if (model && null_of(mp, model))
+                continue;
 
             null_of(mp, p1) = null_of(mp, p2);
 
@@ -584,8 +605,15 @@ static void __copy(Instance* i1, const Instance* i2, bool keys_only)
 
             if (mr->subscript)
             {
-                Array_Ref& r1 = __array_ref_of(i1, mr);
-                const Array_Ref& r2 = __array_ref_of(i2, mr);
+                // Skip references not in model (ATTN: no way to represent
+                // null ref-arrays).
+
+                if (model && __array_ref_of(model, mr).size() == 0)
+                    continue;
+
+
+                Array_Ref& r1 = __array_ref_of(dest, mr);
+                const Array_Ref& r2 = __array_ref_of(src, mr);
 
                 r1.clear();
 
@@ -599,8 +627,13 @@ static void __copy(Instance* i1, const Instance* i2, bool keys_only)
             }
             else
             {
-                Instance*& r1 = __ref_of(i1, mr);
-                const Instance* r2 = __ref_of(i2, mr);
+                // Skip references not in model.
+
+                if (model && !__ref_of(model, mr))
+                    continue;
+
+                Instance*& r1 = __ref_of(dest, mr);
+                const Instance* r2 = __ref_of(src, mr);
 
                 if (r1)
                 {
@@ -615,14 +648,19 @@ static void __copy(Instance* i1, const Instance* i2, bool keys_only)
     }
 }
 
-void copy(Instance* i1, const Instance* i2)
+void copy(Instance* dest, const Instance* src)
 {
-    __copy(i1, i2, false);
+    __copy(dest, src, false, 0);
 }
 
-void copy_keys(Instance* i1, const Instance* i2)
+void copy(Instance* dest, const Instance* src, const Instance* model)
 {
-    __copy(i1, i2, true);
+    __copy(dest, src, false, model);
+}
+
+void copy_keys(Instance* dest, const Instance* src)
+{
+    __copy(dest, src, true, 0);
 }
 
 Instance* clone(const Instance* inst)
@@ -642,6 +680,7 @@ Instance* key_clone(const Instance* inst)
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
     Instance* new_inst = create(inst->meta_class);
+    nullify_properties(new_inst);
     copy_keys(new_inst, inst);
 
     return new_inst;
@@ -884,8 +923,8 @@ int filter_properties(Instance* instance, const char* const* properties)
 
         if (!mf)
         {
-            // No such property!
-            return -1;
+            // No such property
+            continue;
         }
 
         // Skip keys:
@@ -902,6 +941,7 @@ int filter_properties(Instance* instance, const char* const* properties)
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
+#if 0
             const Meta_Reference* mr = (const Meta_Reference*)mf;
 
             if (mr->subscript)
@@ -914,6 +954,7 @@ int filter_properties(Instance* instance, const char* const* properties)
 
             if (!ref)
                 ref = create(mr->meta_class);
+#endif
         }
         else
         {
@@ -939,8 +980,21 @@ void ref(const Instance* instance)
 
 void unref(const Instance* instance)
 {
-    if (instance && Atomic_dec_and_test(&((Instance*)instance)->__refs))
-        destroy((Instance*)instance);
+    Instance* p = (Instance*)instance;
+
+    if (p && Atomic_dec_and_test(&p->__refs))
+    {
+        CIMPLE_ASSERT(p->__magic == CIMPLE_INSTANCE_MAGIC);
+
+        __destruct(p);
+
+#ifdef CIMPLE_DEBUG
+        // Fill with bad characters to cause crash if used again.
+        memset(p, 0xDD, p->meta_class->size);
+#endif
+
+        ::operator delete(p);
+    }
 }
 
 //==============================================================================
@@ -1250,7 +1304,6 @@ const Meta_Class Instance::static_meta_class =
     0, /* locals */
     0, /* super_meta_class */
     0, /* num_keys */
-    0x00000000, /* crc */
     0, /* meta_repository */
 };
 
@@ -1705,4 +1758,4 @@ void __create_refs(Instance* inst)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Instance.cpp,v 1.119 2007/03/13 21:05:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Instance.cpp,v 1.124 2007/04/26 22:40:57 mbrasher-public Exp $");

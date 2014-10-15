@@ -127,6 +127,7 @@ _SomeClass_other1 =
     "other1",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &OtherClass::static_meta_class,
     CIMPLE_OFF(SomeClass,other1)
 };
@@ -142,20 +143,21 @@ _SomeClass_other2 =
     "other2",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &OtherClass::static_meta_class,
     CIMPLE_OFF(SomeClass,other2)
 };
 
 static Meta_Feature* _SomeClass_MFA[] =
 {
-    (Meta_Feature*)&_SomeClass_prop1,
-    (Meta_Feature*)&_SomeClass_prop2,
-    (Meta_Feature*)&_SomeClass_prop3,
-    (Meta_Feature*)&_SomeClass_prop4,
-    (Meta_Feature*)&_SomeClass_prop5,
-    (Meta_Feature*)&_SomeClass_prop6,
-    (Meta_Feature*)&_SomeClass_other1,
-    (Meta_Feature*)&_SomeClass_other2,
+    (Meta_Feature*)(void*)&_SomeClass_prop1,
+    (Meta_Feature*)(void*)&_SomeClass_prop2,
+    (Meta_Feature*)(void*)&_SomeClass_prop3,
+    (Meta_Feature*)(void*)&_SomeClass_prop4,
+    (Meta_Feature*)(void*)&_SomeClass_prop5,
+    (Meta_Feature*)(void*)&_SomeClass_prop6,
+    (Meta_Feature*)(void*)&_SomeClass_other1,
+    (Meta_Feature*)(void*)&_SomeClass_other2,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -183,10 +185,9 @@ const Meta_Class SomeClass::static_meta_class =
     _locals,
     0, /* super_class */ 
     0, /* num_keys */
-    0xB0044D87, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/print/SomeClass.cpp,v 1.5 2007/03/07 20:18:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/print/SomeClass.cpp,v 1.7 2007/04/26 22:40:59 mbrasher-public Exp $");

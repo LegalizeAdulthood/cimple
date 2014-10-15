@@ -11,22 +11,16 @@
 #include <cimple/cimple.h>
 #include "Super.h"
 
-#if (0x00633800 > CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
-#endif
-
-#if (0x00633800 < CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
-#endif
-
-
 CIMPLE_NAMESPACE_BEGIN
+
+// Sub2 keys:
+//     key
 
 class Sub2 : public Instance
 {
 public:
     // Super features:
-    Property<uint32> key; // KEY
+    Property<uint32> key;
 
     // Sub2 features:
     Property<uint32> sub2;

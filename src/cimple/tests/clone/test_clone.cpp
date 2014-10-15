@@ -41,13 +41,17 @@ int main(int argc, char** argv)
     MyClass* inst2 = inst1->clone();
     assert(identical(inst1, inst2));
 
+#if 0
     print(inst1);
     print(inst2);
+#endif
 
     destroy(inst1);
     destroy(inst2);
 
+    printf("+++++ passed all tests (%s)\n", argv[0]);
+
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/clone/test_clone.cpp,v 1.2 2007/03/07 20:18:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/clone/test_clone.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

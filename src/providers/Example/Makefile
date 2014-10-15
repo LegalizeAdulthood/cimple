@@ -1,26 +1,31 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INCLUDES += -I../repository
+MODULE=1
 
-SHARED_LIBRARY = cmplexample
+SHARED_LIBRARY = cimpleexample
 
-SOURCES = Example_Provider.cpp module.cpp
+SOURCES = \
+    Example.cpp \
+    Example_Provider.cpp \
+    House.cpp \
+    module.cpp \
+    repository.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimplepegadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS) 
-
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r Example House
+
 genprov:
+	$(BINDIR)/genprov Example
+
+genmod:
+	$(BINDIR)/genmod Example Example

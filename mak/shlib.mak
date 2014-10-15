@@ -1,20 +1,68 @@
-TARGET = $(call shlib_target,$(SH_LIBRARY))
+##==============================================================================
+##
+## target:
+##
+##==============================================================================
+
+TARGET=$(call shlib_target,$(SHARED_LIBRARY))
+
+all: $(TARGET)
+	@ echo "$(TARGET) is up to date"
 
 $(TARGET): $(OBJECTS)
-	$(MKDIRHIER) $(LIB_DIR)
-	$(call make_shlib,$(SH_LIBRARY),$(OBJECTS),$(LIBRARIES))
+	$(call mkdirhier,$(BINDIR))
+	$(call mkdirhier,$(LIBDIR))
+	$(call make_shlib,$(SHARED_LIBRARY),$(OBJECTS),$(LIBRARIES))
+	$(ECHONL)
 
-size:
-	$(SIZE) $(TARGET)
+##==============================================================================
+##
+## clean:
+##
+##==============================================================================
 
-gen:
+CLEAN += $(OBJECTS)
 
-load:
-	$(BIN_DIR)/dlopen $(TARGET)
+clean: 
+	$(call rm,$(CLEAN))
+	$(call clean_shlib,$(SHARED_LIBRARY))
+	$(ECHONL)
 
-_TARGET_LIST = $(call shlib_clean_targets,$(SH_LIBRARY))
+##==============================================================================
+##
+## install/uninstall:
+##
+##==============================================================================
 
-clean:
-	$(RM) $(OBJECTS) $(_TARGET_LIST) $(CLEAN) depend.mak
+_INCDIR = $(INCLUDEDIR_OPT)/$(INSTALL_HEADERS_DIR)
 
-include $(TOP)/mak/sub.mak
+ifdef INSTALL
+
+install: uninstall
+	$(call mkdirhier,$(DESTDIR)$(_INCDIR))
+	$(foreach i, $(INSTALL_HEADERS), \
+            $(call cp,$i $(DESTDIR)$(_INCDIR)/$(i)) $(NL))
+	$(call mkdirhier,$(DESTDIR)$(LIBDIR_OPT))
+	$(call install_shlib,$(SHARED_LIBRARY))
+	$(ECHONL)
+
+uninstall:
+	$(call uninstall_shlib,$(SHARED_LIBRARY))
+	$(foreach i, $(INSTALL_HEADERS), \
+            $(call rm,$(DESTDIR)$(_INCDIR)/$i) $(NL))
+	$(ECHONL)
+
+endif
+
+ifdef MODULE
+
+insmod:
+	$(call mkdirhier,$(LIBDIR_OPT))
+	$(call install_shlib,$(SHARED_LIBRARY))
+	$(ECHONL)
+
+rmmod:
+	$(call uninstall_shlib,$(SHARED_LIBRARY))
+	$(ECHONL)
+
+endif

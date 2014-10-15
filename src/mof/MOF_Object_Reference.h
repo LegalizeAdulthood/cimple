@@ -27,10 +27,10 @@
 #ifndef _MOF_Object_Reference_h
 #define _MOF_Object_Reference_h
 
-#include <MOF_Config.h>
-#include <MOF_Element.h>
-#include <MOF_Literal.h>
-#include <MOF_Key_Value_Pair.h>
+#include "MOF_Config.h"
+#include "MOF_Element.h"
+#include "MOF_Literal.h"
+#include "MOF_Key_Value_Pair.h"
 
 class MOF_LINKAGE MOF_Object_Reference
 {

@@ -1,4 +1,3 @@
-#include <Pegasus/Common/System.h>
 #include <cimple/config.h>
 #include <cimple/Registration.h>
 #include <cimple/Error.h>
@@ -17,20 +16,28 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-static void _throw(Pegasus::CIMStatusCode code)
+static P_String _get_host_name()
 {
-    // printf("Error: [%s]\n", Error::get());
-    throw Pegasus::CIMException(code, Error::get());
+/*
+MEB: get host name here.
+*/
+    return P_String();
 }
 
-static void _throw(Pegasus::CIMStatusCode code, const Pegasus::String& msg)
+static void _throw(P_CIMStatusCode code)
 {
-    throw Pegasus::CIMException(code, msg);
+    // printf("Error: [%s]\n", Error::get());
+    throw P_CIMException(code, Error::get());
+}
+
+static void _throw(P_CIMStatusCode code, const P_String& msg)
+{
+    throw P_CIMException(code, msg);
 }
 
 static void _check(int cimple_error)
 {
-    Pegasus::CIMStatusCode code;
+    P_CIMStatusCode code;
 
     switch (cimple_error)
     {
@@ -76,16 +83,17 @@ Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
 
 Pegasus_Adapter::~Pegasus_Adapter()
 {
+    delete _provider;
     TRACE;
 }
 
-void Pegasus_Adapter::initialize(Pegasus::CIMOMHandle& handle)
+void Pegasus_Adapter::initialize(P_CIMOMHandle& handle)
 {
     TRACE;
 
     _cimom_handle = &handle;
 
-    Pegasus::OperationContext context;
+    P_OperationContext context;
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
     _handle = &handle;
@@ -96,19 +104,19 @@ void Pegasus_Adapter::terminate(void)
 {
     TRACE;
 
-    Pegasus::OperationContext context;
+    P_OperationContext context;
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
     _provider->unload();
 }
 
 void Pegasus_Adapter::getInstance(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::Boolean includeQualifiers,
-    const Pegasus::Boolean includeClassOrigin,
-    const Pegasus::CIMPropertyList& propertyList,
-    Pegasus::InstanceResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_Boolean includeQualifiers,
+    const P_Boolean includeClassOrigin,
+    const P_CIMPropertyList& propertyList,
+    P_InstanceResponseHandler& handler)
 {
     TRACE;
 
@@ -142,9 +150,9 @@ void Pegasus_Adapter::getInstance(
 
     // Convert CIMPLE instance to Pegasus instance.
 
-    Pegasus::CIMInstance pi;
+    P_CIMInstance pi;
 
-    if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_instance(_get_host_name(),
         objectPath.getNameSpace(), inst, pi) != 0)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
@@ -159,8 +167,8 @@ void Pegasus_Adapter::getInstance(
 
 struct Enum_Instance_Data
 {
-    Pegasus::InstanceResponseHandler* handler;
-    Pegasus::CIMNamespaceName name_space;
+    P_InstanceResponseHandler* handler;
+    P_CIMNamespaceName name_space;
 };
 
 static bool _enum_instances_proc(
@@ -175,9 +183,9 @@ static bool _enum_instances_proc(
 
     Ref<Instance> instance_d(instance);
     Enum_Instance_Data* data = (Enum_Instance_Data*)client_data;
-    Pegasus::CIMInstance pi;
+    P_CIMInstance pi;
 
-    if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_instance(_get_host_name(),
         data->name_space, instance, pi) != 0)
     {
         // ATTN: what do we do here?
@@ -191,12 +199,12 @@ static bool _enum_instances_proc(
 }
 
 void Pegasus_Adapter::enumerateInstances(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::Boolean includeQualifiers,
-    const Pegasus::Boolean includeClassOrigin,
-    const Pegasus::CIMPropertyList& propertyList,
-    Pegasus::InstanceResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_Boolean includeQualifiers,
+    const P_Boolean includeClassOrigin,
+    const P_CIMPropertyList& propertyList,
+    P_InstanceResponseHandler& handler)
 {
     TRACE;
 
@@ -234,8 +242,8 @@ void Pegasus_Adapter::enumerateInstances(
 
 struct Handle_Enumerate_Instance_Names_Data
 {
-    Pegasus::ObjectPathResponseHandler* handler;
-    Pegasus::CIMNamespaceName name_space;
+    P_ObjectPathResponseHandler* handler;
+    P_CIMNamespaceName name_space;
     bool error;
 };
 
@@ -249,25 +257,30 @@ static bool _enum_instance_names_proc(
     Handle_Enumerate_Instance_Names_Data* data = 
         (Handle_Enumerate_Instance_Names_Data*)client_data;
 
-    Pegasus::ObjectPathResponseHandler* handler = data->handler;
+    P_ObjectPathResponseHandler* handler = data->handler;
 
     // Ignore the final call.
 
     if (!instance || data->error)
         return false;
 
+#if 0
     Ref<Instance> instance_d(instance);
+#endif
 
     // Convert to pegasus object path:
 
-    Pegasus::CIMObjectPath op;
+    P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(), 
            data->name_space, instance, op) != 0)
     {
+        destroy(instance);
         data->error = true;
         return false;
     }
+
+    destroy(instance);
 
     // Deliver to client:
 
@@ -278,9 +291,9 @@ static bool _enum_instance_names_proc(
 }
 
 void Pegasus_Adapter::enumerateInstanceNames(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    Pegasus::ObjectPathResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    P_ObjectPathResponseHandler& handler)
 {
     TRACE;
 
@@ -317,10 +330,10 @@ void Pegasus_Adapter::enumerateInstanceNames(
 }
 
 void Pegasus_Adapter::createInstance(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::CIMInstance& instance,
-    Pegasus::ObjectPathResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_CIMInstance& instance,
+    P_ObjectPathResponseHandler& handler)
 {
     TRACE;
 
@@ -347,9 +360,9 @@ void Pegasus_Adapter::createInstance(
 
     // Build and deliver the instance name.
 
-    Pegasus::CIMObjectPath op;
+    P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(), 
         objectPath.getNameSpace(), ci, op) != 0)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
@@ -361,12 +374,12 @@ void Pegasus_Adapter::createInstance(
 }
 
 void Pegasus_Adapter::modifyInstance(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::CIMInstance& instance,
-    const Pegasus::Boolean includeQualifiers,
-    const Pegasus::CIMPropertyList& propertyList,
-    Pegasus::ResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_CIMInstance& instance,
+    const P_Boolean includeQualifiers,
+    const P_CIMPropertyList& propertyList,
+    P_ResponseHandler& handler)
 {
     TRACE;
 
@@ -376,7 +389,7 @@ void Pegasus_Adapter::modifyInstance(
 
     const Meta_Class* mc = find_model_meta_class(objectPath);
 
-    // Convert the Pegasus instance to a CIMPLE instance.
+    // Convert Pegasus instance to CIMPLE instance.
 
     Instance* ci = 0;
 
@@ -385,14 +398,19 @@ void Pegasus_Adapter::modifyInstance(
 
     Ref<Instance> ci_d(ci);
 
+    // Create model.
+
+    Instance* model = clone(ci);
+    Ref<Instance> model_d(model);
+
     // Marks properties mentioned in property list as non-null.
 
-    if (Converter::de_nullify_properties(propertyList, ci) != 0)
+    if (Converter::de_nullify_properties(propertyList, model) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     // Invoke provider:
 
-    Modify_Instance_Status status = _provider->modify_instance(ci);
+    Modify_Instance_Status status = _provider->modify_instance(model, ci);
 
     _check(status);
 
@@ -403,9 +421,9 @@ void Pegasus_Adapter::modifyInstance(
 }
 
 void Pegasus_Adapter::deleteInstance(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    Pegasus::ResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    P_ResponseHandler& handler)
 {
     TRACE;
 
@@ -437,11 +455,11 @@ void Pegasus_Adapter::deleteInstance(
 }
 
 void Pegasus_Adapter::invokeMethod(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::CIMName& methodName,
-    const Pegasus::Array<Pegasus::CIMParamValue>& inParameters,
-    Pegasus::MethodResultResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_CIMName& methodName,
+    const Pegasus::Array<P_CIMParamValue>& inParameters,
+    P_MethodResultResponseHandler& handler)
 {
     TRACE;
 
@@ -463,10 +481,12 @@ void Pegasus_Adapter::invokeMethod(
     // Convert to a CIMPLE method:
 
     Str meth_name(methodName);
-    Instance* meth;
+    Instance* meth = 0;
 
     if (Converter::to_cimple_method(meth_name, inParameters, mc, meth) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
+
+    Ref<Instance> meth_d(meth);
 
     // Invoke the method:
 
@@ -476,10 +496,10 @@ void Pegasus_Adapter::invokeMethod(
 
     // Convert CIMPLE method to Pegasus types:
 
-    Pegasus::Array<Pegasus::CIMParamValue> out_params;
-    Pegasus::CIMValue return_value;
+    Pegasus::Array<P_CIMParamValue> out_params;
+    P_CIMValue return_value;
 
-    if (Converter::to_pegasus_method(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_method(_get_host_name(), 
         objectPath.getNameSpace(), meth, out_params, return_value) != 0)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
@@ -488,36 +508,43 @@ void Pegasus_Adapter::invokeMethod(
     // Deliver the responses:
 
     if (return_value.isNull())
-        _throw(Pegasus::CIM_ERR_FAILED);
+    {
+        P_String m = "extrinsic method returned a null value: ";
+        m.append(mc->name);
+        m.append(".");
+        m.append(methodName.getString());
+        m.append("()");
+        _throw(Pegasus::CIM_ERR_FAILED, m);
+    }
 
     handler.processing();
     handler.deliver(return_value); 
 
     for (size_t i = 0; i < out_params.size(); i++)
-        handler.deliverParamValue(out_params[Pegasus::Uint32(i)]);
+        handler.deliverParamValue(out_params[P_Uint32(i)]);
 
     handler.complete();
 }
 
 struct Handle_Associators_Request_Data
 {
-    Pegasus::CIMOMHandle* handle;
-    const Pegasus::OperationContext& context;
-    const Pegasus::CIMObjectPath& objectPath;
-    Pegasus::Boolean includeQualifiers;
-    Pegasus::Boolean includeClassOrigin;
-    const Pegasus::CIMPropertyList& propertyList;
-    Pegasus::ObjectResponseHandler& handler;
+    P_CIMOMHandle* handle;
+    const P_OperationContext& context;
+    const P_CIMObjectPath& objectPath;
+    P_Boolean includeQualifiers;
+    P_Boolean includeClassOrigin;
+    const P_CIMPropertyList& propertyList;
+    P_ObjectResponseHandler& handler;
     bool error;
 
     Handle_Associators_Request_Data(
-        Pegasus::CIMOMHandle* handle_,
-        const Pegasus::OperationContext& context_,
-        const Pegasus::CIMObjectPath& objectPath_,
-        Pegasus::Boolean includeQualifiers_,
-        Pegasus::Boolean includeClassOrigin_,
-        const Pegasus::CIMPropertyList& propertyList_,
-        Pegasus::ObjectResponseHandler& handler_)
+        P_CIMOMHandle* handle_,
+        const P_OperationContext& context_,
+        const P_CIMObjectPath& objectPath_,
+        P_Boolean includeQualifiers_,
+        P_Boolean includeClassOrigin_,
+        const P_CIMPropertyList& propertyList_,
+        P_ObjectResponseHandler& handler_)
         : 
         handle(handle_),
         context(context_),
@@ -546,9 +573,9 @@ static bool _enum_associator_proc(
 
     // Convert associator to object path:
 
-    Pegasus::CIMObjectPath objectPath;
+    P_CIMObjectPath objectPath;
 
-    if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(), 
         data->objectPath.getNameSpace(), associator_name, objectPath) != 0)
     {
         data->error = true;
@@ -557,7 +584,7 @@ static bool _enum_associator_proc(
 
     // Get instance from the provider:
 
-    Pegasus::CIMInstance instance;
+    P_CIMInstance instance;
 
     try
     {
@@ -585,16 +612,16 @@ static bool _enum_associator_proc(
 }
 
 void Pegasus_Adapter::associators(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::CIMName& associationClass,
-    const Pegasus::CIMName& resultClass,
-    const Pegasus::String& role,
-    const Pegasus::String& resultRole,
-    const Pegasus::Boolean includeQualifiers,
-    const Pegasus::Boolean includeClassOrigin,
-    const Pegasus::CIMPropertyList& propertyList,
-    Pegasus::ObjectResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_CIMName& associationClass,
+    const P_CIMName& resultClass,
+    const P_String& role,
+    const P_String& resultRole,
+    const P_Boolean includeQualifiers,
+    const P_Boolean includeClassOrigin,
+    const P_CIMPropertyList& propertyList,
+    P_ObjectResponseHandler& handler)
 {
     TRACE;
 
@@ -652,8 +679,8 @@ void Pegasus_Adapter::associators(
 
 struct Handle_Associator_Names_Request_Data
 {
-    Pegasus::ObjectPathResponseHandler* handler;
-    Pegasus::CIMObjectPath objectPath;
+    P_ObjectPathResponseHandler* handler;
+    P_CIMObjectPath objectPath;
     bool error;
 };
 
@@ -674,9 +701,9 @@ static bool _enum_associator_names_proc(
 
     // Convert assoc_name to an Pegasus object path:
 
-    Pegasus::CIMObjectPath op;
+    P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(), 
         data->objectPath.getNameSpace(), assoc_name, op) != 0)
     {
         data->error = true;
@@ -692,13 +719,13 @@ static bool _enum_associator_names_proc(
 }
 
 void Pegasus_Adapter::associatorNames(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::CIMName& associationClass,
-    const Pegasus::CIMName& resultClass,
-    const Pegasus::String& role,
-    const Pegasus::String& resultRole,
-    Pegasus::ObjectPathResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_CIMName& associationClass,
+    const P_CIMName& resultClass,
+    const P_String& role,
+    const P_String& resultRole,
+    P_ObjectPathResponseHandler& handler)
 {
     TRACE;
 
@@ -751,13 +778,13 @@ void Pegasus_Adapter::associatorNames(
 
 struct Handle_References_Request_Data
 {
-    Pegasus::ObjectResponseHandler& handler;
-    const Pegasus::CIMObjectPath& objectPath;
+    P_ObjectResponseHandler& handler;
+    const P_CIMObjectPath& objectPath;
     bool error;
 
     Handle_References_Request_Data(
-        Pegasus::ObjectResponseHandler& handler_,
-        const Pegasus::CIMObjectPath& objectPath_)
+        P_ObjectResponseHandler& handler_,
+        const P_CIMObjectPath& objectPath_)
         :
         handler(handler_),
         objectPath(objectPath_),
@@ -785,9 +812,9 @@ static bool _enumerate_references_proc(
 
     // Convert to pegasus instance:
 
-    Pegasus::CIMInstance pi;
+    P_CIMInstance pi;
 
-    if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_instance(_get_host_name(), 
         data->objectPath.getNameSpace(), reference, pi) != 0)
     {
         data->error = true;
@@ -801,14 +828,14 @@ static bool _enumerate_references_proc(
 }
 
 void Pegasus_Adapter::references(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::CIMName& resultClass,
-    const Pegasus::String& role,
-    const Pegasus::Boolean includeQualifiers,
-    const Pegasus::Boolean includeClassOrigin,
-    const Pegasus::CIMPropertyList& propertyList,
-    Pegasus::ObjectResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_CIMName& resultClass,
+    const P_String& role,
+    const P_Boolean includeQualifiers,
+    const P_Boolean includeClassOrigin,
+    const P_CIMPropertyList& propertyList,
+    P_ObjectResponseHandler& handler)
 {
     TRACE;
 
@@ -866,13 +893,13 @@ void Pegasus_Adapter::references(
 
 struct Handle_Reference_Names_Request_Data
 {
-    Pegasus::ObjectPathResponseHandler& handler;
-    const Pegasus::CIMObjectPath& objectPath;
+    P_ObjectPathResponseHandler& handler;
+    const P_CIMObjectPath& objectPath;
     bool error;
 
     Handle_Reference_Names_Request_Data(
-        Pegasus::ObjectPathResponseHandler& handler_,
-        const Pegasus::CIMObjectPath& objectPath_)
+        P_ObjectPathResponseHandler& handler_,
+        const P_CIMObjectPath& objectPath_)
         :
         handler(handler_),
         objectPath(objectPath_),
@@ -900,9 +927,9 @@ static bool _enumerate_reference_names_proc(
 
     // Convert to pegasus instance:
 
-    Pegasus::CIMObjectPath op;
+    P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(), 
         data->objectPath.getNameSpace(), reference, op) != 0)
     {
         data->error = true;
@@ -916,11 +943,11 @@ static bool _enumerate_reference_names_proc(
 }
 
 void Pegasus_Adapter::referenceNames(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& objectPath,
-    const Pegasus::CIMName& resultClass,
-    const Pegasus::String& role,
-    Pegasus::ObjectPathResponseHandler& handler)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& objectPath,
+    const P_CIMName& resultClass,
+    const P_String& role,
+    P_ObjectPathResponseHandler& handler)
 {
     TRACE;
 
@@ -979,8 +1006,8 @@ void Pegasus_Adapter::referenceNames(
 
 struct Indication_Proc_Data
 {
-    Pegasus::IndicationResponseHandler* handler;
-    Pegasus::CIMNamespaceName name_space;
+    P_IndicationResponseHandler* handler;
+    P_CIMNamespaceName name_space;
 };
 
 static bool _indication_proc(Instance* indication, void* client_data)
@@ -997,9 +1024,9 @@ static bool _indication_proc(Instance* indication, void* client_data)
 
     // Convert CIMPLE indication to Pegasus indication.
 
-    Pegasus::CIMInstance pegasus_indication;
+    P_CIMInstance pegasus_indication;
 
-    if (Converter::to_pegasus_instance(Pegasus::System::getHostName(), 
+    if (Converter::to_pegasus_instance(_get_host_name(), 
         data->name_space, indication, pegasus_indication) != 0)
         return false;
 
@@ -1007,8 +1034,8 @@ static bool _indication_proc(Instance* indication, void* client_data)
 
     try
     {
-        Pegasus::CIMObjectPath objectPath;
-        objectPath.setHost(Pegasus::System::getHostName());
+        P_CIMObjectPath objectPath;
+        objectPath.setHost(_get_host_name());
         objectPath.setNameSpace(INDICATION_NAMESPACE);
         objectPath.setClassName(indication->meta_class->name);
         pegasus_indication.setPath(objectPath);
@@ -1024,7 +1051,7 @@ static bool _indication_proc(Instance* indication, void* client_data)
 }
 
 void Pegasus_Adapter::enableIndications(
-    Pegasus::IndicationResponseHandler& handler)
+    P_IndicationResponseHandler& handler)
 {
     if (_handler_refs.get() == 0)
     {
@@ -1037,7 +1064,7 @@ void Pegasus_Adapter::enableIndications(
 
         Indication_Proc_Data* data = new Indication_Proc_Data;
         data->handler = _handler;
-        data->name_space = INDICATION_NAMESPACE;
+        data->name_space = P_String(INDICATION_NAMESPACE);
         _provider->enable_indications(_indication_proc, data);
     }
 
@@ -1061,19 +1088,19 @@ void Pegasus_Adapter::disableIndications()
 }
 
 void Pegasus_Adapter::createSubscription(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& subscriptionName,
-    const Pegasus::Array<Pegasus::CIMObjectPath>& classNames,
-    const Pegasus::CIMPropertyList& propertyList,
-    const Pegasus::Uint16 repeatNotificationPolicy)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& subscriptionName,
+    const Pegasus::Array<P_CIMObjectPath>& classNames,
+    const P_CIMPropertyList& propertyList,
+    const P_Uint16 repeatNotificationPolicy)
 {
     try
     {
         // ATTN: save namespace and use it to determine which namespace
         // to deliver events on.
 
-        Pegasus::SubscriptionFilterQueryContainer c =
-            context.get(Pegasus::SubscriptionFilterQueryContainer::NAME);
+        P_SubscriptionFilterQueryContainer c =
+            context.get(P_SubscriptionFilterQueryContainer::NAME);
 
         // c.getSourceNameSpace()
     }
@@ -1086,25 +1113,25 @@ void Pegasus_Adapter::createSubscription(
 }
 
 void Pegasus_Adapter::modifySubscription(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& subscriptionName,
-    const Pegasus::Array<Pegasus::CIMObjectPath>& classNames,
-    const Pegasus::CIMPropertyList& propertyList,
-    const Pegasus::Uint16 repeatNotificationPolicy)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& subscriptionName,
+    const Pegasus::Array<P_CIMObjectPath>& classNames,
+    const P_CIMPropertyList& propertyList,
+    const P_Uint16 repeatNotificationPolicy)
 {
     // Nothing to do!
 }
 
 void Pegasus_Adapter::deleteSubscription(
-    const Pegasus::OperationContext& context,
-    const Pegasus::CIMObjectPath& subscriptionName,
-    const Pegasus::Array<Pegasus::CIMObjectPath>& classNames)
+    const P_OperationContext& context,
+    const P_CIMObjectPath& subscriptionName,
+    const Pegasus::Array<P_CIMObjectPath>& classNames)
 {
     // Nothing to do!
 }
 
 const Meta_Class* Pegasus_Adapter::find_meta_class(
-    const Pegasus::CIMObjectPath& objectPath) const
+    const P_CIMObjectPath& objectPath) const
 {
     Str class_name(objectPath.getClassName());
 
@@ -1122,10 +1149,8 @@ const Meta_Class* Pegasus_Adapter::find_meta_class(
 }
 
 const Meta_Class* Pegasus_Adapter::find_model_meta_class(
-    const Pegasus::CIMObjectPath& objectPath) const
+    const P_CIMObjectPath& objectPath) const
 {
-#ifdef CIMPLE_ENABLE_SUBCLASS_PROVIDERS
-
     const Meta_Class* mc = find_meta_class(objectPath);
 
     if (!mc)
@@ -1135,10 +1160,6 @@ const Meta_Class* Pegasus_Adapter::find_model_meta_class(
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
 
     return mc;
-
-#else
-    return _mc;
-#endif
 }
 
 CIMPLE_NAMESPACE_END
@@ -1157,7 +1178,7 @@ extern "C" CIMPLE_EXPORT int cimple_pegasus_adapter(
 
     // Extract arguments:
 
-    const Pegasus::String& providerName = *((Pegasus::String*)arg1);
+    const P_String& providerName = *((P_String*)arg1);
     cimple::Registration* head = (cimple::Registration*)arg2;
 
     // Create the adapter object:
@@ -1166,9 +1187,13 @@ extern "C" CIMPLE_EXPORT int cimple_pegasus_adapter(
     {
         if (strcasecmp(r->provider_name, providerName.getCString()) == 0)
         {
+            cimple::Provider_Handle* provider = 
+                new cimple::Provider_Handle(r);
+
             cimple::Pegasus_Adapter* adapter =
-                new cimple::Pegasus_Adapter(new cimple::Provider_Handle(r));
-            *((Pegasus::CIMProvider**)arg3) = adapter;
+                new cimple::Pegasus_Adapter(provider);
+
+            *((P_CIMProvider**)arg3) = adapter;
             return 0;
         }
     }
@@ -1177,4 +1202,4 @@ extern "C" CIMPLE_EXPORT int cimple_pegasus_adapter(
     return -1;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Adapter.cpp,v 1.48 2007/03/13 21:49:06 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Adapter.cpp,v 1.55 2007/04/24 20:51:56 mbrasher-public Exp $");

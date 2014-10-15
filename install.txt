@@ -1,0 +1,10 @@
+To build:
+
+    % ./configure [OPTIONS]
+    % make 
+    % make install
+
+To see configuration options and additional build help:
+
+    % ./configure --help
+

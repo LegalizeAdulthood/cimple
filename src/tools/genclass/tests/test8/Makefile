@@ -1,7 +1,7 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-BINARY = genclass_test8
+BINARY = test_genclass8
 
 SOURCES = \
     main.cpp \
@@ -18,8 +18,8 @@ INCLUDES += -I.
 
 include $(TOP)/mak/rules.mak
 
-genclass:
-	genclass -q -d CIM_Card
-
 tests:
-	@ $(BINARY_TARGET)
+	$(TARGET)
+
+genclass:
+	$(BINDIR)/genclass -q -d CIM_Card

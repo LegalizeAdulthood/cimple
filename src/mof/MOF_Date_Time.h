@@ -27,7 +27,7 @@
 #ifndef MOF_Date_Time_h
 #define MOF_Date_Time_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 class MOF_LINKAGE MOF_Date_Time
 {

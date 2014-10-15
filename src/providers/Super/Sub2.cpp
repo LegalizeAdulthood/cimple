@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_E4275E2C1A6C1DADAC2F7E477CBAF5C2;
+extern const Meta_Repository __meta_repository_6C5ECFA91B78177BB75BA45F087D4A49;
 
 extern const Meta_Property
 _Super_key;
@@ -38,8 +38,8 @@ _Sub2_sub2 =
 
 static Meta_Feature* _Sub2_MFA[] =
 {
-    (Meta_Feature*)&_Super_key,
-    (Meta_Feature*)&_Sub2_sub2,
+    (Meta_Feature*)(void*)&_Super_key,
+    (Meta_Feature*)(void*)&_Sub2_sub2,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -61,10 +61,9 @@ const Meta_Class Sub2::static_meta_class =
     _locals,
     &Super::static_meta_class,
     1, /* num_keys */
-    0xB38404CB, /* crc */
-    &__meta_repository_E4275E2C1A6C1DADAC2F7E477CBAF5C2,
+    &__meta_repository_6C5ECFA91B78177BB75BA45F087D4A49,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Super/Sub2.cpp,v 1.14 2007/03/13 22:53:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Super/Sub2.cpp,v 1.20 2007/04/26 22:41:06 mbrasher-public Exp $");

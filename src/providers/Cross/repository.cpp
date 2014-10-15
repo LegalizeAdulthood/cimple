@@ -18,14 +18,12 @@ static const Meta_Class* _meta_classes[] =
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);
 
-extern const Meta_Repository __meta_repository_F4E528F227ED1CBD8BD1773E04D0F0A0;
+extern const Meta_Repository __meta_repository_3A42E74BFE1A13E183E6A60B5160A980;
 
-const Meta_Repository __meta_repository_F4E528F227ED1CBD8BD1773E04D0F0A0 =
+const Meta_Repository __meta_repository_3A42E74BFE1A13E183E6A60B5160A980 =
 {
     _meta_classes,
     _num_meta_classes,
 };
 
 CIMPLE_NAMESPACE_END
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/repository.cpp,v 1.2 2007/03/07 20:25:24 mbrasher-public Exp $");

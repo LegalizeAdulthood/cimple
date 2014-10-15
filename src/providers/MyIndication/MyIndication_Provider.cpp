@@ -75,39 +75,6 @@ Invoke_Method_Status MyIndication_Provider::DeliverIndications(
     return INVOKE_METHOD_OK;
 }
 
-int MyIndication_Provider::proc(
-    const Registration* registration,
-    int operation,
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    typedef MyIndication Class;
-    typedef MyIndication_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Indication_Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "DeliverIndications") == 0)
-    {
-        typedef MyIndication_DeliverIndications_method Method;
-        Method* method = (Method*)arg2;
-        return provider->DeliverIndications(
-            method->return_value);
-    }
-    return -1;
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MyIndication/MyIndication_Provider.cpp,v 1.22 2007/03/07 20:25:25 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MyIndication/MyIndication_Provider.cpp,v 1.23 2007/04/18 03:51:28 mbrasher-public Exp $");

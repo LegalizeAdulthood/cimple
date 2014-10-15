@@ -29,12 +29,20 @@
 
 #include <cstring>
 #include "config.h"
-#include "Type.h"
 #include "Atomic.h"
 #include "flags.h"
 #include "Strings.h"
 
 CIMPLE_NAMESPACE_BEGIN
+
+struct __String_Rep
+{
+    Atomic refs;
+    uint32 size;
+    uint32 cap;
+    char data[1];
+    __String_Rep() { Atomic_create(&refs, 2); }
+};
 
 class CIMPLE_CIMPLE_LINKAGE String
 {
@@ -108,91 +116,9 @@ public:
 
     size_t find(char c) const;
 
-    static void split(const char* str, char c, String& left, String& right);
-
-    /** Returns true if the given string is a prefix of this string.
-    */
-    bool is_prefix(const char* s, size_t n) const;
-
-    /** Returns true if the given string is a suffix of this string.
-    */
-    bool is_suffix(const char* s, size_t n) const;
-
 private:
-
-    struct Rep
-    {
-        uint32 size;
-        uint32 cap;
-        Atomic refs;
-        char data[1];
-        Rep() { Atomic_create(&refs, 2); }
-    };
-
-    static CIMPLE_HIDE Rep* _new(size_t cap);
-
-    static void _ref(const Rep* rep);
-
-    static void _unref(const Rep* rep);
-
-    void _append_char(char c);
-
-    void _reserve(size_t n);
-
-    static Rep _empty;
-
-    Rep* _rep;
+    __String_Rep* _rep;
 };
-
-inline void String::_ref(const String::Rep* rep)
-{
-    if (rep != &String::_empty)
-        Atomic_inc(&((Rep*)rep)->refs);
-}
-
-inline void String::_unref(const String::Rep* rep)
-{
-    if (rep != &String::_empty && Atomic_dec_and_test(&((Rep*)rep)->refs))
-        ::operator delete((Rep*)rep);
-}
-
-inline String::String() : _rep(&_empty)
-{
-}
-
-inline String::String(const String& s)
-{
-    _ref(_rep = s._rep);
-}
-
-inline String::~String()
-{
-    _unref(_rep);
-}
-
-inline void String::reserve(size_t n)
-{
-    if (n > _rep->cap || Atomic_get(&_rep->refs) != 1)
-        _reserve(n);
-}
-
-inline void String::assign(const String& s)
-{
-    if (&s != this)
-    {
-        _unref(_rep);
-        _ref(_rep = s._rep);
-    }
-}
-
-inline void String::append(char c)
-{
-    if (_rep->size == _rep->cap || Atomic_get(&_rep->refs) != 1)
-        _append_char(c);
-
-    _rep->data[_rep->size++] = c;
-    _rep->data[_rep->size] = '\0';
-}
 
 inline String& String::operator=(const String& s)
 {
@@ -232,53 +158,6 @@ inline char String::operator[](size_t i) const
     return _rep->data[i];
 }
 
-inline bool String::equal(const String& s) const
-{
-    return _rep->size == s._rep->size &&
-        memcmp(_rep->data, s._rep->data, _rep->size) == 0;
-}
-
-inline bool String::equal(const char* s) const
-{
-    return strcmp(_rep->data, s) == 0;
-}
-
-inline bool String::equal(const char* s, size_t n) const
-{
-    return _rep->size == n && memcmp(_rep->data, s, n) == 0;
-}
-
-inline bool String::equal(size_t pos, const char* s, size_t n) const
-{
-    return memcmp(_rep->data + pos, s, n) == 0;
-}
-
-inline bool String::equali(const String& s) const
-{
-    return _rep->size == s._rep->size &&
-        strncasecmp(_rep->data, s._rep->data, _rep->size) == 0;
-}
-
-inline bool String::equali(const char* s) const
-{
-    return eqi(_rep->data, s);
-}
-
-inline bool String::equali(const char* s, size_t n) const
-{
-    return _rep->size == n && strncasecmp(s, _rep->data, n) == 0;
-}
-
-inline bool String::is_prefix(const char* s, size_t n) const
-{
-    return _rep->size >= n && memcmp(_rep->data, s, n) == 0;
-}
-
-inline bool String::is_suffix(const char* s, size_t n) const
-{
-    return _rep->size >= n && memcmp(_rep->data + _rep->size - n, s, n) == 0;
-}
-
 inline bool operator==(const String& s1, const String& s2)
 {
     return s1.equal(s2);
@@ -309,36 +188,6 @@ inline bool operator!=(const char* s1, const String& s2)
     return !operator==(s1, s2);
 }
 
-inline void __clear(String& x) 
-{ 
-    x.clear(); 
-}
-
-/* Returns the initial segment  of s which consists entirely of characters 
-   in accept.
-*/
-inline String spn(const String& s, const char* accept)
-{
-    return String(s.c_str(), strspn(s.c_str(), accept));
-}
-
-/* Returns the initial segment  of s which consists entirely of characters 
-   not in reject.
-*/
-inline String cspn(const String& s, const char* reject)
-{
-    return String(s.c_str(), strcspn(s.c_str(), reject));
-}
-
-/* Returns the concatenation of s1 and s2. 
-*/
-inline String cat(const String& s1, const String& s2)
-{
-    String s = s1;
-    s.append(s2);
-    return s;
-}
-
 inline bool eqi(const String& s1, const String& s2)
 {
     return eqi(s1.c_str(), s2.c_str());
@@ -352,6 +201,11 @@ inline bool eqi(const String& s1, const char* s2)
 inline bool eqi(const char* s1, const String& s2)
 {
     return eqi(s1, s2.c_str());
+}
+
+inline void __clear(String& x) 
+{ 
+    x.clear(); 
 }
 
 CIMPLE_NAMESPACE_END

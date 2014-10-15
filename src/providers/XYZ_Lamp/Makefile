@@ -1,24 +1,37 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = XYZ_Lamp
+MODULE=1
 
-INCLUDES += -I../repository -I$(TOP)/src/CMPI/cmpi \
-    -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
+SHARED_LIBRARY = cimpleXYZ_Lamp
 
-SOURCES = XYZ_Lamp_Provider.cpp XYZ_LampLink_Provider.cpp XYZ_LampIndic_Provider.cpp module.cpp
+SOURCES = \
+    CIM_Indication.cpp \
+    module.cpp \
+    repository.cpp \
+    XYZ_Lamp.cpp \
+    XYZ_LampIndic.cpp \
+    XYZ_LampIndic_Provider.cpp \
+    XYZ_LampLink.cpp \
+    XYZ_LampLink_Provider.cpp \
+    XYZ_Lamp_Provider.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_CMPI_MODULE=1
 
-LIBRARIES += cimplecmpiadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
-
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r XYZ_Lamp XYZ_LampLink XYZ_LampIndic
 
-tests:
+genprov:
+	$(BINDIR)/genprov XYZ_Lamp
+	$(BINDIR)/genprov XYZ_LampLink
+	$(BINDIR)/genprov XYZ_LampIndic
+
+genmod:
+	$(BINDIR)/genmod XYZ_Lamp XYZ_Lamp XYZ_LampLink XYZ_LampIndic

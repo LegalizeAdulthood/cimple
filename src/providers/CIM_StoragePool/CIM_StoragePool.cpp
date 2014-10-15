@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_2721A2789B2B162E87FD8A9B61FE98D9;
+extern const Meta_Repository __meta_repository_726110F483FB1A84AAA435E5F0022E5C;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -97,7 +97,7 @@ _CIM_StoragePool_Primordial =
     BOOLEAN,
     0, /* subscript */
     CIMPLE_OFF(CIM_StoragePool,Primordial),
-    (const Meta_Value*)&_CIM_StoragePool_Primordial_MV,
+    (const Meta_Value*)(void*)&_CIM_StoragePool_Primordial_MV,
 };
 
 extern const Meta_Property
@@ -191,10 +191,10 @@ _CIM_StoragePool_GetSupportedSizes_return_value =
 
 static Meta_Feature* _CIM_StoragePool_GetSupportedSizes_MFA[] =
 {
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizes_ElementType,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizes_Goal,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizes_Sizes,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizes_return_value
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizes_ElementType,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizes_Goal,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizes_Sizes,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizes_return_value
 };
 
 const Meta_Method
@@ -296,12 +296,12 @@ _CIM_StoragePool_GetSupportedSizeRange_return_value =
 
 static Meta_Feature* _CIM_StoragePool_GetSupportedSizeRange_MFA[] =
 {
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizeRange_ElementType,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizeRange_Goal,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizeRange_MinimumVolumeSize,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizeRange_MaximumVolumeSize,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizeRange_VolumeSizeDivisor,
-    (Meta_Feature*)&_CIM_StoragePool_GetSupportedSizeRange_return_value
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizeRange_ElementType,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizeRange_Goal,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizeRange_MinimumVolumeSize,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizeRange_MaximumVolumeSize,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizeRange_VolumeSizeDivisor,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetSupportedSizeRange_return_value
 };
 
 const Meta_Method
@@ -360,9 +360,9 @@ _CIM_StoragePool_GetAvailableExtents_return_value =
 
 static Meta_Feature* _CIM_StoragePool_GetAvailableExtents_MFA[] =
 {
-    (Meta_Feature*)&_CIM_StoragePool_GetAvailableExtents_Goal,
-    (Meta_Feature*)&_CIM_StoragePool_GetAvailableExtents_AvailableExtents,
-    (Meta_Feature*)&_CIM_StoragePool_GetAvailableExtents_return_value
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetAvailableExtents_Goal,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetAvailableExtents_AvailableExtents,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_GetAvailableExtents_return_value
 };
 
 const Meta_Method
@@ -381,23 +381,23 @@ CIM_StoragePool_GetAvailableExtents_method::static_meta_class =
 
 static Meta_Feature* _CIM_StoragePool_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_StoragePool_InstanceID,
-    (Meta_Feature*)&_CIM_StoragePool_PoolID,
-    (Meta_Feature*)&_CIM_StoragePool_Primordial,
-    (Meta_Feature*)&_CIM_StoragePool_TotalManagedSpace,
-    (Meta_Feature*)&_CIM_StoragePool_RemainingManagedSpace,
-    (Meta_Feature*)&CIM_StoragePool_GetSupportedSizes_method::static_meta_class,
-    (Meta_Feature*)&CIM_StoragePool_GetSupportedSizeRange_method::static_meta_class,
-    (Meta_Feature*)&CIM_StoragePool_GetAvailableExtents_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_InstanceID,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_PoolID,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_Primordial,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_TotalManagedSpace,
+    (Meta_Feature*)(void*)&_CIM_StoragePool_RemainingManagedSpace,
+    (Meta_Feature*)(void*)&CIM_StoragePool_GetSupportedSizes_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_StoragePool_GetSupportedSizeRange_method::static_meta_class,
+    (Meta_Feature*)(void*)&CIM_StoragePool_GetAvailableExtents_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -435,9 +435,9 @@ const Meta_Class CIM_StoragePool::static_meta_class =
     &CIM_LogicalElement::static_meta_class,
     1, /* num_keys */
     0xCF82CDF5, /* crc */
-    &__meta_repository_2721A2789B2B162E87FD8A9B61FE98D9,
+    &__meta_repository_726110F483FB1A84AAA435E5F0022E5C,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_StoragePool/CIM_StoragePool.cpp,v 1.3 2007/03/13 22:47:17 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_StoragePool/CIM_StoragePool.cpp,v 1.5 2007/03/30 19:16:44 mbrasher-public Exp $");

@@ -29,31 +29,20 @@ public:
         Enum_Instances_Handler<RefArray>* handler);
 
     Create_Instance_Status create_instance(
-        const RefArray* instance);
+        RefArray* instance);
 
     Delete_Instance_Status delete_instance(
         const RefArray* instance);
 
     Modify_Instance_Status modify_instance(
+        const RefArray* model,
         const RefArray* instance);
 
     Invoke_Method_Status SendRefArray(
         const RefArray* self,
-        const RefArrayParam* arr1,
-        RefArrayParam* arr2,
+        const Array<RefArrayParam*>& arr1,
+        Array<RefArrayParam*>& arr2,
         Property<uint32>& return_value);
-
-    static int proc(
-        const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3,
-        void* arg4,
-        void* arg5,
-        void* arg6,
-        void* arg7);
 };
 
 CIMPLE_NAMESPACE_END

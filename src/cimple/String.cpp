@@ -33,7 +33,24 @@ CIMPLE_NAMESPACE_BEGIN
 
 static const uint32 INITIAL_STRING_SIZE = 32;
 
-String::Rep String::_empty;
+// Export to avoid multiple copies via shared libraries.
+#ifdef CIMPLE_STATIC
+CIMPLE_EXPORT 
+#endif
+__String_Rep _string_empty;
+
+static inline void _ref(const __String_Rep* rep)
+{
+    if (rep != &_string_empty)
+        Atomic_inc(&((__String_Rep*)rep)->refs);
+}
+
+static inline void _unref(const __String_Rep* rep)
+{
+    if (rep != &_string_empty && 
+        Atomic_dec_and_test(&((__String_Rep*)rep)->refs))
+        ::operator delete((__String_Rep*)rep);
+}
 
 static uint32 _next_pow_2(uint32 x)
 {
@@ -51,18 +68,30 @@ static uint32 _next_pow_2(uint32 x)
     return x;
 }
 
-String::Rep* String::_new(size_t cap) 
+static inline __String_Rep* _new(size_t cap) 
 {
     cap = _next_pow_2(cap);
-    Rep* rep = (Rep*)::operator new(sizeof(Rep) + cap);
+    __String_Rep* rep = 
+        (__String_Rep*)::operator new(sizeof(__String_Rep) + cap);
+
     rep->cap = cap;
     Atomic_create(&rep->refs, 1);
     return rep;
 }
 
-void String::_append_char(char c)
+static inline void _reserve(__String_Rep*& _rep, size_t n)
 {
-    Rep* rep;
+    __String_Rep* new_rep = _new(n);
+    new_rep->size = _rep->size;
+    memcpy(new_rep->data, _rep->data, _rep->size + 1);
+    _unref(_rep);
+    _rep = new_rep;
+}
+
+
+static void _append_char(__String_Rep*& _rep, char c)
+{
+    __String_Rep* rep;
 
     if (_rep->cap)
     {
@@ -80,6 +109,10 @@ void String::_append_char(char c)
     _rep = rep;
 }
 
+String::String() : _rep(&_string_empty)
+{
+}
+
 String::String(const char* s)
 {
     if (*s)
@@ -90,7 +123,7 @@ String::String(const char* s)
         _rep->size = n;
     }
     else
-        _rep = &_empty;
+        _rep = &_string_empty;
 }
 
 String::String(const char* s, size_t n)
@@ -103,7 +136,7 @@ String::String(const char* s, size_t n)
         _rep->size = n;
     }
     else
-        _rep = &_empty;
+        _rep = &_string_empty;
 }
 
 String::String(const char* s1, const char* s2)
@@ -130,14 +163,40 @@ String::String(const char* s1, const char* s2, const char* s3)
     _rep->data[n] = '\0';
 }
 
-void String::_reserve(size_t n)
+String::String(const String& s)
 {
-    Rep* new_rep = _new(n);
-    new_rep->size = _rep->size;
-    memcpy(new_rep->data, _rep->data, _rep->size + 1);
-    _unref(_rep);
-    _rep = new_rep;
+    _ref(_rep = s._rep);
 }
+
+String::~String()
+{
+    _unref(_rep);
+}
+
+void String::reserve(size_t n)
+{
+    if (n > _rep->cap || Atomic_get(&_rep->refs) != 1)
+        _reserve(_rep, n);
+}
+
+void String::assign(const String& s)
+{
+    if (&s != this)
+    {
+        _unref(_rep);
+        _ref(_rep = s._rep);
+    }
+}
+
+void String::append(char c)
+{
+    if (_rep->size == _rep->cap || Atomic_get(&_rep->refs) != 1)
+        _append_char(_rep, c);
+
+    _rep->data[_rep->size++] = c;
+    _rep->data[_rep->size] = '\0';
+}
+
 
 void String::assign(const char* s, size_t n)
 {
@@ -184,7 +243,7 @@ void String::remove(size_t pos, size_t n)
     CIMPLE_ASSERT(pos + n <= _rep->size);
 
     if (Atomic_get(&_rep->refs) != 1)
-        _reserve(_rep->cap);
+        _reserve(_rep, _rep->cap);
 
     size_t rem = _rep->size - (pos + n);
 
@@ -216,7 +275,7 @@ void String::clear()
         else
         {
             _unref(_rep);
-            _rep = &_empty;
+            _rep = &_string_empty;
         }
     }
 }
@@ -226,7 +285,7 @@ void String::set(size_t i, char c)
     CIMPLE_ASSERT(i <= _rep->size);
 
     if (Atomic_get(&_rep->refs) != 1)
-        _reserve(_rep->cap);
+        _reserve(_rep, _rep->cap);
 
     _rep->data[i] = c;
 }
@@ -237,36 +296,43 @@ size_t String::find(char c) const
     return p ? (p - _rep->data) : size_t(-1);
 }
 
-void String::split(const char* str, char c, String& left, String& right)
+bool String::equal(const String& s) const
 {
-    const char* p = strchr(str, c);
+    return _rep->size == s._rep->size &&
+        memcmp(_rep->data, s._rep->data, _rep->size) == 0;
+}
 
-    if (p)
-    {
-        left.assign(str, p - str);
-        right.assign(p + 1);
-    }
-    else
-    {
-        left.assign(str);
-        right.clear();
-    }
+bool String::equal(const char* s) const
+{
+    return strcmp(_rep->data, s) == 0;
+}
+
+bool String::equal(const char* s, size_t n) const
+{
+    return _rep->size == n && memcmp(_rep->data, s, n) == 0;
+}
+
+bool String::equal(size_t pos, const char* s, size_t n) const
+{
+    return memcmp(_rep->data + pos, s, n) == 0;
+}
+
+bool String::equali(const String& s) const
+{
+    return _rep->size == s._rep->size &&
+        strncasecmp(_rep->data, s._rep->data, _rep->size) == 0;
+}
+
+bool String::equali(const char* s) const
+{
+    return eqi(_rep->data, s);
+}
+
+bool String::equali(const char* s, size_t n) const
+{
+    return _rep->size == n && strncasecmp(s, _rep->data, n) == 0;
 }
 
 CIMPLE_NAMESPACE_END
 
-/* 
-    To-do list:
-
-        -  Implement insert()
-        -  clone()
-        -  substr()
-        -  find()
-        -  rfind()
-        -  tolower()
-        -  toupper()
-        -  lexographical compare (for sorting).
-        -  s/string/String/g?
-*/
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/String.cpp,v 1.17 2007/03/07 18:41:15 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/String.cpp,v 1.21 2007/03/25 01:12:04 mbrasher-public Exp $");

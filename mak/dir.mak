@@ -1,14 +1,5 @@
-.PHONY: all 
-.PHONY: depend 
-.PHONY: clean 
-.PHONY: tests
-.PHONY: gen
-.PHONY: sub
-.PHONY: genclass
-.PHONY: chksrc
-
 all:
-	@ $(foreach i, $(DIRS), $(MAKE) -C $i $(NL) )
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i all $(NL) )
 
 depend:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i depend $(NL) )
@@ -19,6 +10,9 @@ clean:
 tests:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i tests $(NL) )
 
+live:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i live $(NL) )
+
 gen:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i gen $(NL) )
 
@@ -27,6 +21,27 @@ sub:
 
 genclass:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i genclass $(NL) )
+
+genprov:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i genprov $(NL) )
+
+genmod:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i genmod $(NL) )
+
+regmod:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i regmod $(NL) )
+
+insmod:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i insmod $(NL) )
+
+rmmod:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i rmmod $(NL) )
+
+install:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i install $(NL) )
+
+uninstall:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i uninstall $(NL) )
 
 chksrc:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i chksrc $(NL) )

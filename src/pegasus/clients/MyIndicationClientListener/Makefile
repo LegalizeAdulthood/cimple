@@ -1,29 +1,20 @@
-DIR = cimple/pegasus/indications/MyIndication/ClientListener
+TOP = ../../../..
+include $(TOP)/mak/config.mak
 
-include $(PEGASUS_ROOT)/mak/config.mak
+BINARY = MyIndicationClientListener
 
-PROGRAM = MyIndicationClientListener
-
-LIBRARIES = \
-    peglistener \
-    pegqueryexpression \
-    pegprovider \
-    pegcql \
-    pegwql \
-    pegquerycommon \
-    pegclient \
-    pegcommon
-	
 SOURCES = MyIndicationClientListener.cpp
 
-include $(PEGASUS_ROOT)/mak/program.mak
+LIBRARIES = \
+    cimple \
+    pegclient \
+    peglistener \
+    pegcommon
 
-run:
-	$(PROGRAM)
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
 
-tests:
+live:
+	$(TARGET)
 
-genclass:
-
-chksrc:
-	chksrc $(SOURCES)
+include ../../check-pegasus.mak

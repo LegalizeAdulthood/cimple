@@ -50,8 +50,8 @@ _OtherClass_num =
 
 static Meta_Feature* _OtherClass_MFA[] =
 {
-    (Meta_Feature*)&_OtherClass_key,
-    (Meta_Feature*)&_OtherClass_num,
+    (Meta_Feature*)(void*)&_OtherClass_key,
+    (Meta_Feature*)(void*)&_OtherClass_num,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -73,10 +73,9 @@ const Meta_Class OtherClass::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0xA69A6950, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/print/OtherClass.cpp,v 1.5 2007/03/07 20:18:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/print/OtherClass.cpp,v 1.7 2007/04/26 22:40:59 mbrasher-public Exp $");

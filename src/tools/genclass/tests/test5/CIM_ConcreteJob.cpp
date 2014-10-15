@@ -213,9 +213,9 @@ _CIM_ConcreteJob_RequestStateChange_return_value =
 
 static Meta_Feature* _CIM_ConcreteJob_RequestStateChange_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ConcreteJob_RequestStateChange_RequestedState,
-    (Meta_Feature*)&_CIM_ConcreteJob_RequestStateChange_TimeoutPeriod,
-    (Meta_Feature*)&_CIM_ConcreteJob_RequestStateChange_return_value
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_RequestStateChange_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_RequestStateChange_TimeoutPeriod,
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_RequestStateChange_return_value
 };
 
 const Meta_Method
@@ -252,47 +252,47 @@ _CIM_ConcreteJob_TimeBeforeRemoval =
     DATETIME,
     0, /* subscript */
     CIMPLE_OFF(CIM_ConcreteJob,TimeBeforeRemoval),
-    (const Meta_Value*)&_CIM_ConcreteJob_TimeBeforeRemoval_MV,
+    (const Meta_Value*)(void*)&_CIM_ConcreteJob_TimeBeforeRemoval_MV,
 };
 
 static Meta_Feature* _CIM_ConcreteJob_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ConcreteJob_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_Job_JobStatus,
-    (Meta_Feature*)&_CIM_Job_TimeSubmitted,
-    (Meta_Feature*)&_CIM_Job_ScheduledStartTime,
-    (Meta_Feature*)&_CIM_Job_StartTime,
-    (Meta_Feature*)&_CIM_Job_ElapsedTime,
-    (Meta_Feature*)&_CIM_Job_JobRunTimes,
-    (Meta_Feature*)&_CIM_Job_RunMonth,
-    (Meta_Feature*)&_CIM_Job_RunDay,
-    (Meta_Feature*)&_CIM_Job_RunDayOfWeek,
-    (Meta_Feature*)&_CIM_Job_RunStartInterval,
-    (Meta_Feature*)&_CIM_Job_LocalOrUtcTime,
-    (Meta_Feature*)&_CIM_Job_UntilTime,
-    (Meta_Feature*)&_CIM_Job_Notify,
-    (Meta_Feature*)&_CIM_Job_Owner,
-    (Meta_Feature*)&_CIM_Job_Priority,
-    (Meta_Feature*)&_CIM_Job_PercentComplete,
-    (Meta_Feature*)&_CIM_Job_DeleteOnCompletion,
-    (Meta_Feature*)&_CIM_Job_ErrorCode,
-    (Meta_Feature*)&_CIM_Job_ErrorDescription,
-    (Meta_Feature*)&_CIM_Job_RecoveryAction,
-    (Meta_Feature*)&_CIM_Job_OtherRecoveryAction,
-    (Meta_Feature*)&CIM_Job_KillJob_method::static_meta_class,
-    (Meta_Feature*)&_CIM_ConcreteJob_InstanceID,
-    (Meta_Feature*)&_CIM_ConcreteJob_JobState,
-    (Meta_Feature*)&_CIM_ConcreteJob_TimeOfLastStateChange,
-    (Meta_Feature*)&CIM_ConcreteJob_RequestStateChange_method::static_meta_class,
-    (Meta_Feature*)&_CIM_ConcreteJob_TimeBeforeRemoval,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_Job_JobStatus,
+    (Meta_Feature*)(void*)&_CIM_Job_TimeSubmitted,
+    (Meta_Feature*)(void*)&_CIM_Job_ScheduledStartTime,
+    (Meta_Feature*)(void*)&_CIM_Job_StartTime,
+    (Meta_Feature*)(void*)&_CIM_Job_ElapsedTime,
+    (Meta_Feature*)(void*)&_CIM_Job_JobRunTimes,
+    (Meta_Feature*)(void*)&_CIM_Job_RunMonth,
+    (Meta_Feature*)(void*)&_CIM_Job_RunDay,
+    (Meta_Feature*)(void*)&_CIM_Job_RunDayOfWeek,
+    (Meta_Feature*)(void*)&_CIM_Job_RunStartInterval,
+    (Meta_Feature*)(void*)&_CIM_Job_LocalOrUtcTime,
+    (Meta_Feature*)(void*)&_CIM_Job_UntilTime,
+    (Meta_Feature*)(void*)&_CIM_Job_Notify,
+    (Meta_Feature*)(void*)&_CIM_Job_Owner,
+    (Meta_Feature*)(void*)&_CIM_Job_Priority,
+    (Meta_Feature*)(void*)&_CIM_Job_PercentComplete,
+    (Meta_Feature*)(void*)&_CIM_Job_DeleteOnCompletion,
+    (Meta_Feature*)(void*)&_CIM_Job_ErrorCode,
+    (Meta_Feature*)(void*)&_CIM_Job_ErrorDescription,
+    (Meta_Feature*)(void*)&_CIM_Job_RecoveryAction,
+    (Meta_Feature*)(void*)&_CIM_Job_OtherRecoveryAction,
+    (Meta_Feature*)(void*)&CIM_Job_KillJob_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_InstanceID,
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_JobState,
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_TimeOfLastStateChange,
+    (Meta_Feature*)(void*)&CIM_ConcreteJob_RequestStateChange_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ConcreteJob_TimeBeforeRemoval,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -348,10 +348,9 @@ const Meta_Class CIM_ConcreteJob::static_meta_class =
     _locals,
     &CIM_Job::static_meta_class,
     1, /* num_keys */
-    0xE68CD3C9, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test5/CIM_ConcreteJob.cpp,v 1.23 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test5/CIM_ConcreteJob.cpp,v 1.27 2007/04/26 22:41:09 mbrasher-public Exp $");

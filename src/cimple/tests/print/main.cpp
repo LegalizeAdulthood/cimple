@@ -52,9 +52,14 @@ int main(int argc, char** argv)
     inst->prop6.value.append(true);
 
     inst->other1 = OtherClass::create();
+
+#if 0
     print(inst);
+#endif
+
+    printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/print/main.cpp,v 1.3 2007/03/07 20:18:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/print/main.cpp,v 1.4 2007/03/30 19:16:43 mbrasher-public Exp $");

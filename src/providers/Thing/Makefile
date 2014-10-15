@@ -1,26 +1,41 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplthing
+MODULE=1
 
-INCLUDES += -I$(TOP)/src/providers/repository 
-INCLUDES += -I$(TOP)/src/CMPI/cmpi
-INCLUDES += $(CMPI_INCLUDES)
-INCLUDES += -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
+SHARED_LIBRARY = cimplething
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+SOURCES = \
+    module.cpp \
+    repository.cpp \
+    Thing.cpp \
+    ThingLink.cpp \
+    ThingLink_Provider.cpp \
+    Thing_Provider.cpp
 
-SOURCES = Thing_Provider.cpp ThingLink_Provider.cpp module.cpp
+CIMPLE_CMPI_MODULE=1
 
-LIBRARIES = cmplrep cimple
-
-LIBRARIES += cimplecmpiadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r ThingLink
+
+genprov:
+	$(BINDIR)/genprov Thing
+	$(BINDIR)/genprov ThingLink
+
+genmod:
+	$(BINDIR)/genmod Thing Thing ThingLink
+
+live:
+	$(CIMCLI) ei Thing
+	$(CIMCLI) gi Thing.key=200
+	$(CIMCLI) a Thing.key=100
+	$(CIMCLI) an Thing.key=100
+	$(CIMCLI) r Thing.key=100
+	$(CIMCLI) rn Thing.key=100

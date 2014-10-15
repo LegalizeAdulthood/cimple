@@ -3,10 +3,6 @@ include $(TOP)/mak/config.mak
 
 BINARY = file2c
 SOURCES = main.cpp
-LIBRARIES = cimpleutil
+LIBRARIES = cimpleutil cimple
 
 include $(TOP)/mak/rules.mak
-
-tests:
-
-genclass:

@@ -43,6 +43,7 @@ CIMPLEUTIL_LINKAGE
 void set_arg0(const char* arg0);
 
 CIMPLEUTIL_LINKAGE 
+CIMPLE_PRINTF_ATTR(1, 2)
 void err(const char* format, ...);
 
 CIMPLEUTIL_LINKAGE 

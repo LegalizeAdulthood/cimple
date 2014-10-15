@@ -35,17 +35,13 @@ public:
 	const Fan* inst);
 
     Modify_Instance_Status modify_instance(
-	const Fan* inst);
+        const Fan* model,
+        const Fan* instance);
 
     Invoke_Method_Status SetSpeed(
         const Fan* self,
         const Property<uint64>& DesiredSpeed,
         Property<uint32>& return_value);
-
-    static int proc(
-	const Registration* registration,
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3,
-	void* arg4, void* arg5, void* arg6, void* arg7);
 
 private:
 

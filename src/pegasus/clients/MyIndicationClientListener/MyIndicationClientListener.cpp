@@ -1,14 +1,9 @@
 #include <cassert>
+#include <cimple/Time.h>
 #include <Pegasus/Common/Config.h>
 #include <Pegasus/Client/CIMClient.h>
 #include <Pegasus/Listener/CIMListener.h>
 #include <Pegasus/Consumer/CIMIndicationConsumer.h>
-#include <Pegasus/Common/System.h>
-#include <Pegasus/Common/MofWriter.h>
-
-#ifdef PRINT_INSTANCE
-#include <Pegasus/Common/Buffer.h>
-#endif
 
 PEGASUS_USING_PEGASUS;
 PEGASUS_USING_STD;
@@ -244,7 +239,7 @@ int main(int argc, char ** argv)
             System::sleep(1);
 #endif
             _invokeMethod(client, "MyIndication");
-            System::sleep(1);
+            cimple::Time::sleep(1 * 1000000);
         }
 #endif
 
@@ -252,7 +247,7 @@ int main(int argc, char ** argv)
 
         printf("Sleeping...\n");
 
-        System::sleep(1000000000);
+        cimple::Time::sleep(3 * 1000000);
 
         listener.stop();
         listener.removeConsumer(consumer);

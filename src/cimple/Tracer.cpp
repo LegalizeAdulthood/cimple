@@ -158,6 +158,8 @@ Tracer::Tracer(Trace_Level level, const char* prefix)
                 _level = TRC_INFO;
             else if (strcmp(value, "DEBUG") == 0)
                 _level = TRC_DEBUG;
+
+            free(value);
         }
     }
 

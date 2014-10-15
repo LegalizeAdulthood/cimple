@@ -1,7 +1,9 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplfan
+MODULE=1
+
+SHARED_LIBRARY = cimplefan
 
 SOURCES = \
     repository.cpp \
@@ -9,23 +11,20 @@ SOURCES = \
     Fan_Provider.cpp \
     module.cpp
 
-LIBRARIES = cimple
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimplepegadap
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
 genclass:
-	genclass -r Fan
+	$(BINDIR)/genclass -r Fan
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+genprov:
+	$(BINDIR)/genprov Fan
 
-genclass:
+genmod:
+	$(BINDIR)/genmod Fan Fan

@@ -29,7 +29,6 @@
 #include <cstdio>
 #include <cimple/Strings.h>
 #include "Error.h"
-#include "TSD.h"
 #include "io.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -40,7 +39,34 @@ CIMPLE_NAMESPACE_BEGIN
 //
 //==============================================================================
 
-static TSD _tsd;
+// Export to avoid multiple copies via shared libraries.
+#ifdef CIMPLE_STATIC
+CIMPLE_EXPORT 
+#endif
+pthread_key_t _error_key;
+
+// Export to avoid multiple copies via shared libraries.
+#ifdef CIMPLE_STATIC
+CIMPLE_EXPORT 
+#endif
+pthread_once_t _error_key_once = PTHREAD_ONCE_INIT;
+
+static void _make_key()
+{
+    pthread_key_create(&_error_key, NULL);
+}
+
+static char* _message()
+{
+    pthread_once(&_error_key_once, _make_key);
+    return (char*)pthread_getspecific(_error_key);
+}
+
+static void _message(char* msg)
+{
+    pthread_once(&_error_key_once, _make_key);
+    pthread_setspecific(_error_key, msg);
+}
 
 //==============================================================================
 //
@@ -59,17 +85,17 @@ void Error::set(const char* format, ...)
     // thread-specific-data (no other thread can be accessing this slot since
     // since the thread executing this function owns it).
 
-    void* old_message = _tsd.get();
+    char* old_message = _message();
 
     if (old_message)
         free(old_message);
 
-    _tsd.set(message);
+    _message(message);
 }
 
 const char* Error::get()
 {
-    const char* message = (const char*)_tsd.get();
+    const char* message = _message();
 
     return message ? message : "";
 }
@@ -79,22 +105,22 @@ void Error::set_prefix(
     const char* file, 
     size_t line)
 {
-    char* old_message = (char*)_tsd.get();
-    _tsd.set(0);
+    char* old_message = _message();
+    _message(0);
     Error::set("%s(): %s(%d): %s", function, file, int(line), old_message);
     free(old_message);
 }
 
 void Error::clear()
 {
-    void* old_message = _tsd.get();
+    void* old_message = _message();
 
     if (old_message)
         free(old_message);
 
-    _tsd.set(0);
+    _message(0);
 }
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Error.cpp,v 1.17 2007/03/07 18:41:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Error.cpp,v 1.18 2007/03/24 18:54:10 mbrasher-public Exp $");

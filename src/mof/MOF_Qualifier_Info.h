@@ -27,9 +27,9 @@
 #ifndef _MOF_Qualifier_info_h
 #define _MOF_Qualifier_info_h
 
-#include <MOF_Config.h>
-#include <MOF_Literal.h>
-#include <MOF_Qualifier.h>
+#include "MOF_Config.h"
+#include "MOF_Literal.h"
+#include "MOF_Qualifier.h"
 
 class MOF_Qualifier;
 
@@ -48,13 +48,13 @@ public:
     void print_list(size_t nesting) const;
 
     static MOF_Qualifier_Info* make_all_qualifiers(
-	const char* class_name,
-	const char* inst_name,
-	const char* feature_name,
-	const char* param_name,
-	MOF_Qualifier* local_qualifiers,
-	MOF_Qualifier_Info* inherited_qual_info_list,
-	MOF_mask* qual_mask,
+        const char* class_name,
+        const char* inst_name,
+        const char* feature_name,
+        const char* param_name,
+        MOF_Qualifier* local_qualifiers,
+        MOF_Qualifier_Info* inherited_qual_info_list,
+        MOF_mask* qual_mask,
         bool prop);
 
     const MOF_Qualifier* qualifier;

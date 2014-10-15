@@ -48,8 +48,8 @@ _Test2Link_r2 =
 
 static Meta_Feature* _Test2Link_MFA[] =
 {
-    (Meta_Feature*)&_Test2Link_r1,
-    (Meta_Feature*)&_Test2Link_r2,
+    (Meta_Feature*)(void*)&_Test2Link_r1,
+    (Meta_Feature*)(void*)&_Test2Link_r2,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -71,10 +71,9 @@ const Meta_Class Test2Link::static_meta_class =
     _locals,
     0, /* super_class */ 
     2, /* num_keys */
-    0x43985E92, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test2/Test2Link.cpp,v 1.12 2007/03/13 22:53:21 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test2/Test2Link.cpp,v 1.15 2007/04/26 22:41:11 mbrasher-public Exp $");

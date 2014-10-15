@@ -27,9 +27,9 @@
 #ifndef MOF_Feature_Info_h
 #define MOF_Feature_Info_h
 
-#include <MOF_Config.h>
-#include <MOF_Feature.h>
-#include <MOF_Element.h>
+#include "MOF_Config.h"
+#include "MOF_Feature.h"
+#include "MOF_Element.h"
 
 class MOF_LINKAGE MOF_Feature_Info : public MOF_Element
 {

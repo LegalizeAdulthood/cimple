@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_1BC4D74E0D4C155A9518D766557EF3D5;
+extern const Meta_Repository __meta_repository_744FE1BA70631B6AB3FACECFFBDAF9F6;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -69,9 +69,9 @@ _CIM_ManagedElement_ElementName =
 
 static Meta_Feature* _CIM_ManagedElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -94,10 +94,9 @@ const Meta_Class CIM_ManagedElement::static_meta_class =
     _locals,
     0, /* super_class */ 
     0, /* num_keys */
-    0x5B2A3886, /* crc */
-    &__meta_repository_1BC4D74E0D4C155A9518D766557EF3D5,
+    &__meta_repository_744FE1BA70631B6AB3FACECFFBDAF9F6,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_ConcreteJob/CIM_ManagedElement.cpp,v 1.2 2007/03/13 22:53:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_ConcreteJob/CIM_ManagedElement.cpp,v 1.8 2007/04/26 22:40:59 mbrasher-public Exp $");

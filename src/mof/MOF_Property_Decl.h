@@ -27,9 +27,9 @@
 #ifndef _MOF_Property_decl_h
 #define _MOF_Property_decl_h
 
-#include <MOF_Config.h>
-#include <MOF_Parameter.h>
-#include <MOF_Feature.h>
+#include "MOF_Config.h"
+#include "MOF_Parameter.h"
+#include "MOF_Feature.h"
 
 class MOF_LINKAGE MOF_Property_Decl : public MOF_Feature
 {

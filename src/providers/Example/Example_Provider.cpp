@@ -47,6 +47,7 @@ Delete_Instance_Status Example_Provider::delete_instance(
 }
 
 Modify_Instance_Status Example_Provider::modify_instance(
+    const Example* model,
     const Example* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -103,92 +104,6 @@ Invoke_Method_Status Example_Provider::foo5(
     return INVOKE_METHOD_UNSUPPORTED;
 }
 
-int Example_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Example Class;
-    typedef Example_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "foo0") == 0)
-    {
-        typedef Example_foo0_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo0(
-            self,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "foo1") == 0)
-    {
-        typedef Example_foo1_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo1(
-            self,
-            method->x,
-            method->y,
-            method->z,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "foo2") == 0)
-    {
-        typedef Example_foo2_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo2(
-            self,
-            method->w,
-            method->x,
-            method->y,
-            method->z,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "foo3") == 0)
-    {
-        typedef Example_foo3_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo3(
-            self,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "foo4") == 0)
-    {
-        typedef Example_foo4_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo4(
-            self,
-            method->x,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "foo5") == 0)
-    {
-        typedef Example_foo5_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo5(
-            self,
-            method->house,
-            method->return_value);
-    }
-    return -1;
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Example/Example_Provider.cpp,v 1.19 2007/03/07 20:25:24 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Example/Example_Provider.cpp,v 1.21 2007/04/18 03:51:26 mbrasher-public Exp $");

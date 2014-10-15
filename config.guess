@@ -1,0 +1,53 @@
+#!/bin/sh
+
+if [ -z "$host" ]; then
+
+  machine=`(uname -m) 2>/dev/null` || machine=unknown
+  system=`(uname -s) 2>/dev/null`  || system=unknown
+  release=`(uname -r) 2>/dev/null` || release=unknown
+  version=`(uname -v) 2>/dev/null` || version=unknown
+  token="$machine:$system:$release:$version"
+
+  case "$token" in
+
+    i686:Linux:*:*)
+      host=i686-unknown-linux-gnu
+      ;;
+
+    x86_64:Linux:*:*)
+      host=x86_64-unknown-linux-gnu
+      ;;
+
+    ia64:Linux:*:*)
+      host=ia64-unknown-linux-gnu
+      ;;
+
+    s390:Linux:*:*)
+      host=s390-unknown-linux-gnu
+      ;;
+
+    s390x:Linux:*:*)
+      host=s390x-unknown-linux-gnu
+      ;;
+
+    ppc64:Linux:*:*)
+      host=ppc64-unknown-linux-gnu
+      ;;
+
+    ppc:Linux:*:*)
+      host=ppc-unknown-linux-gnu
+      ;;
+
+    *)
+        echo "$0: Failed to guess host"
+        echo "  machine=$machine"
+        echo "  system=$system"
+        echo "  release=$release"
+        echo "  version=$version"
+        exit 1
+        ;;
+
+  esac
+fi
+
+echo $host

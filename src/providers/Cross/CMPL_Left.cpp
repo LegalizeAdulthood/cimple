@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4E528F227ED1CBD8BD1773E04D0F0A0;
+extern const Meta_Repository __meta_repository_3A42E74BFE1A13E183E6A60B5160A980;
 
 extern const Meta_Property
 _CMPL_Left_key;
@@ -35,7 +35,7 @@ _CMPL_Left_key =
 
 static Meta_Feature* _CMPL_Left_MFA[] =
 {
-    (Meta_Feature*)&_CMPL_Left_key,
+    (Meta_Feature*)(void*)&_CMPL_Left_key,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -56,10 +56,9 @@ const Meta_Class CMPL_Left::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0x4FE6D0B9, /* crc */
-    &__meta_repository_F4E528F227ED1CBD8BD1773E04D0F0A0,
+    &__meta_repository_3A42E74BFE1A13E183E6A60B5160A980,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Left.cpp,v 1.2 2007/03/07 20:25:24 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Left.cpp,v 1.10 2007/04/26 22:41:02 mbrasher-public Exp $");

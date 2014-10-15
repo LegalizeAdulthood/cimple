@@ -35,19 +35,8 @@ public:
         const Upcall* instance);
 
     Modify_Instance_Status modify_instance(
+        const Upcall* model,
         const Upcall* instance);
-
-    static int proc(
-        const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3,
-        void* arg4,
-        void* arg5,
-        void* arg6,
-        void* arg7);
 
     Thread thread;
     Atomic_Counter counter;

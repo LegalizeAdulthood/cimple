@@ -1,81 +1,12 @@
-##------------------------------------------------------------------------------
-##
-## PEGASUS_ROOT
-##
-##------------------------------------------------------------------------------
+# Include just before the rules.mak
+INCLUDES += -I$(WITH_PEGASUS_INCLUDES_OPT) -I$(TOP)/src/pegasus/include
 
-ifndef PEGASUS_ROOT
-pegasus_root_undefined:
-	@ echo "Error: PEGASUS_ROOT is undefined"
+DEFINES += -DPEGASUS_PLATFORM_$(PLATFORM)
+
+ifeq ($(PLATFORM),LINUX_S390_GNU)
+    DEFINES += -DPEGASUS_PLATFORM_LINUX_ZSERIES_GNU
 endif
 
-INCLUDES += -I$(PEGASUS_ROOT)/src
-
-##------------------------------------------------------------------------------
-##
-## PEGASUS_HOME
-##
-##------------------------------------------------------------------------------
-
-ifndef PEGASUS_HOME
-pegasus_home_undefined:
-	@ echo "Error: PEGASUS_HOME is undefined"
-endif
-
-##------------------------------------------------------------------------------
-##
-## PEGASUS_PLATFORM
-##
-##------------------------------------------------------------------------------
-
-ifndef PEGASUS_PLATFORM
-pegasus_platform_undefined:
-	@ echo "Error: PEGASUS_PLATFORM is undefined"
-else
-FLAGS += -DPEGASUS_PLATFORM_LINUX_GENERIC_GNU
-FLAGS += -DPEGASUS_PLATFORM_$(PEGASUS_PLATFORM)
-endif
-
-##------------------------------------------------------------------------------
-##
-## PEGASUS_DEBUG
-##
-##------------------------------------------------------------------------------
-
-ifdef PEGASUS_DEBUG
-  FLAGS += -DPEGASUS_DEBUG
-else
-  ifneq ($(PEGASUS_PLATFORM), LINUX_PPC_GNU)
-    FLAGS += -fno-enforce-eh-specs
-  endif
-endif
-
-##------------------------------------------------------------------------------
-##
-## LD_LIBRARY_PATH
-##
-##------------------------------------------------------------------------------
-
-export LD_LIBRARY_PATH=$(LIB):$(PEGASUS_HOME)/lib
-LINK_FLAGS += -L$(PEGASUS_HOME)/lib -lpthread -ldl
-
-DEFINES += -D_REENTRANT
-DEFINES += -DTHREAD_SAFE
-DEFINES += -D_GNU_SOURCE
-DEFINES += -DPEGASUS_USE_EXPERIMENTAL_INTERFACES
-DEFINES += -DPEGASUS_USE_DEPRECATED_INTERFACES
-DEFINES += -Wno-unused
-DEFINES += -DPEGASUS_INTERNALONLY
-DEFINES += -DPEGASUS_USE_ARRAY_INLINE
-
-##------------------------------------------------------------------------------
-##
-## CMPI_INCLUDES (for Pegasus only)
-##
-##------------------------------------------------------------------------------
-
-CMPI_INCLUDES = -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI
-
-ifeq ($(PEGASUS_PLATFORM), LINUX_PPC_GNU)
-  RPATH_OPT = -Wl,-rpath-link=$(LIB)
+ifeq ($(PLATFORM),LINUX_S390X_GNU)
+    DEFINES += -DPEGASUS_PLATFORM_LINUX_ZSERIES64_GNU
 endif

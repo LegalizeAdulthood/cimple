@@ -1,7 +1,7 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-BINARY = genclass_test5
+BINARY = test_genclass5
 
 SOURCES = \
     CIM_ComputerSystem.cpp \
@@ -20,12 +20,12 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 Erp2.cpp:
-	$(BIN_DIR)/genclass Erp2
+	$(BINDIR)/genclass Erp2
 
 CLEAN += Erp2.h Erp2.cpp
 
 tests:
-	@ $(BINARY_TARGET)
+	$(TARGET)
 
 genclass:
-	genclass CIM_ComputerSystem
+	$(BINDIR)/genclass CIM_ComputerSystem

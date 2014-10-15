@@ -15,12 +15,15 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN_DIR)/test_genprov2
+	@ $(BINDIR)/test_genprov2
 
 genclass:
-	genclass Test2
-	genclass Test2Link
+	$(BINDIR)/genclass Test2
+	$(BINDIR)/genclass Test2Link
 
 genprov:
-	genprov  -f Test2
-	genprov  -f Test2Link
+	$(BINDIR)/genprov  -f Test2
+	$(BINDIR)/genprov  -f Test2Link
+
+genmod:
+	$(BINDIR)/genmod Test2 Test2 Test2Link

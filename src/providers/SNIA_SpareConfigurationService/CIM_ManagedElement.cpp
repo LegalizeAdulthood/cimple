@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_1EFFCF5E346717DCBD81B2711E2620B8;
+extern const Meta_Repository __meta_repository_8CCF8E58804E17C2BA75EC619FBC3236;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -69,9 +69,9 @@ _CIM_ManagedElement_ElementName =
 
 static Meta_Feature* _CIM_ManagedElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -95,9 +95,9 @@ const Meta_Class CIM_ManagedElement::static_meta_class =
     0, /* super_class */ 
     0, /* num_keys */
     0x5B2A3886, /* crc */
-    &__meta_repository_1EFFCF5E346717DCBD81B2711E2620B8,
+    &__meta_repository_8CCF8E58804E17C2BA75EC619FBC3236,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/SNIA_SpareConfigurationService/CIM_ManagedElement.cpp,v 1.6 2007/03/08 15:17:22 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/SNIA_SpareConfigurationService/CIM_ManagedElement.cpp,v 1.9 2007/04/18 03:29:40 mbrasher-public Exp $");

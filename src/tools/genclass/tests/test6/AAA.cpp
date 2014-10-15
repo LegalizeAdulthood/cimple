@@ -75,8 +75,8 @@ _AAA_fool_return_value =
 
 static Meta_Feature* _AAA_fool_MFA[] =
 {
-    (Meta_Feature*)&_AAA_fool_c,
-    (Meta_Feature*)&_AAA_fool_return_value
+    (Meta_Feature*)(void*)&_AAA_fool_c,
+    (Meta_Feature*)(void*)&_AAA_fool_return_value
 };
 
 const Meta_Method
@@ -95,9 +95,9 @@ AAA_fool_method::static_meta_class =
 
 static Meta_Feature* _AAA_MFA[] =
 {
-    (Meta_Feature*)&_AAA_left,
-    (Meta_Feature*)&_AAA_right,
-    (Meta_Feature*)&AAA_fool_method::static_meta_class,
+    (Meta_Feature*)(void*)&_AAA_left,
+    (Meta_Feature*)(void*)&_AAA_right,
+    (Meta_Feature*)(void*)&AAA_fool_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -120,10 +120,9 @@ const Meta_Class AAA::static_meta_class =
     _locals,
     0, /* super_class */ 
     2, /* num_keys */
-    0x40EE457B, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test6/AAA.cpp,v 1.20 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test6/AAA.cpp,v 1.24 2007/04/26 22:41:10 mbrasher-public Exp $");

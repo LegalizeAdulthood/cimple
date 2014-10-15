@@ -86,12 +86,12 @@ const Meta_Reference _MyClass_obj3 =
 
 static Meta_Feature* _MyClass_MFA[] =
 {
-    (Meta_Feature*)&_YourClass_str1,
-    (Meta_Feature*)&_MyClass_str2,
-    (Meta_Feature*)&_YourClass_obj1,
-    (Meta_Feature*)&_MyClass_obj2,
-    (Meta_Feature*)&_MyClass_str3,
-    (Meta_Feature*)&_MyClass_obj3,
+    (Meta_Feature*)(void*)&_YourClass_str1,
+    (Meta_Feature*)(void*)&_MyClass_str2,
+    (Meta_Feature*)(void*)&_YourClass_obj1,
+    (Meta_Feature*)(void*)&_MyClass_obj2,
+    (Meta_Feature*)(void*)&_MyClass_str3,
+    (Meta_Feature*)(void*)&_MyClass_obj3,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -117,10 +117,9 @@ const Meta_Class MyClass::static_meta_class =
     _locals,
     &YourClass::static_meta_class,
     0, /* num_keys */
-    0x37C63A9B, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test7/MyClass.cpp,v 1.21 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test7/MyClass.cpp,v 1.25 2007/04/26 22:41:11 mbrasher-public Exp $");

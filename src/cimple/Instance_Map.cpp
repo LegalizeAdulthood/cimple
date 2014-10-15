@@ -136,6 +136,7 @@ Delete_Instance_Status Instance_Map_Base::_delete_instance(
 }
 
 Modify_Instance_Status Instance_Map_Base::_modify_instance(
+    const Instance* model,
     const Instance* instance)
 {
     size_t pos = _find(instance);
@@ -143,11 +144,11 @@ Modify_Instance_Status Instance_Map_Base::_modify_instance(
     if (pos == (size_t)-1)
         return MODIFY_INSTANCE_NOT_FOUND;
 
-    copy(_instances[pos], instance);
+    copy(_instances[pos], instance, model);
 
     return MODIFY_INSTANCE_OK;
 }
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Instance_Map.cpp,v 1.17 2007/03/07 18:41:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Instance_Map.cpp,v 1.18 2007/04/18 03:29:37 mbrasher-public Exp $");

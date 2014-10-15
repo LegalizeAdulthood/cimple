@@ -1,21 +1,23 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplmyindic
+MODULE=1
 
-INCLUDES += -I../repository
+SHARED_LIBRARY = cimplemyindic
 
 SOURCES = \
+    CIM_Indication.cpp \
+    module.cpp \
+    MyEmbeddedClass.cpp \
+    MyIndication.cpp \
     MyIndication_Provider.cpp \
-    module.cpp
+    repository.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimplepegadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 ifdef CIMPLE_WINDOWS
     DEV_NULL=.dev.null
@@ -23,13 +25,14 @@ else
     DEV_NULL=/dev/null
 endif
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-xxx:
-	cimmofl ../repository/MyEmbeddedClass.mof 2> $(DEV_NULL)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r MyIndication MyEmbeddedClass
 
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+genprov:
+	$(BINDIR)/genprov MyIndication
+
+genmod:
+	$(BINDIR)/genmod MyIndication MyIndication

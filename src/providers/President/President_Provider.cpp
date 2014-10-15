@@ -24,30 +24,63 @@ Get_Instance_Status President_Provider::get_instance(
     const President* model,
     President*& instance)
 {
-    return GET_INSTANCE_UNSUPPORTED;
+    if (model->Number.value == 1)
+    {
+        instance = President::create(true);
+        instance->Number.set(1);
+        instance->First.set("George");
+        instance->Last.set("Washington");
+        return GET_INSTANCE_OK;
+    }
+    else if (model->Number.value == 2)
+    {
+        instance = President::create(true);
+        instance->Number.set(2);
+        instance->First.set("John");
+        instance->Last.set("Adams");
+        return GET_INSTANCE_OK;
+    }
+    else if (model->Number.value == 3)
+    {
+        instance = President::create(true);
+        instance->Number.set(3);
+        instance->First.set("Thomas");
+        instance->Last.set("Jefferson");
+        return GET_INSTANCE_OK;
+    }
+
+    return GET_INSTANCE_NOT_FOUND;
 }
 
 Enum_Instances_Status President_Provider::enum_instances(
     const President* model,
     Enum_Instances_Handler<President>* handler)
 {
-    President* p1 = President::create();
-    p1->Number.value = 1;
-    p1->First.value = "George";
-    p1->Last.value = "Washington";
-    handler->handle(p1);
+    President* instance;
 
-    President* p2 = President::create();
-    p2->Number.value = 2;
-    p2->First.value = "John";
-    p2->Last.value = "Adams";
-    handler->handle(p2);
+    instance = President::create(true);
+    instance->Number.set(1);
+    instance->First.set("George");
+    instance->Last.set("Washington");
+    handler->handle(instance);
+
+    instance = President::create(true);
+    instance->Number.set(2);
+    instance->First.set("John");
+    instance->Last.set("Adams");
+    handler->handle(instance);
+
+    instance = President::create(true);
+    instance->Number.set(3);
+    instance->First.set("Thomas");
+    instance->Last.set("Jefferson");
+    handler->handle(instance);
 
     return ENUM_INSTANCES_OK;
 }
 
 Create_Instance_Status President_Provider::create_instance(
-    const President* instance)
+    President* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -59,32 +92,12 @@ Delete_Instance_Status President_Provider::delete_instance(
 }
 
 Modify_Instance_Status President_Provider::modify_instance(
+    const President* model,
     const President* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
-int President_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef President Class;
-    typedef President_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/President/President_Provider.cpp,v 1.2 2007/03/07 20:25:27 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/President/President_Provider.cpp,v 1.7 2007/05/01 23:07:20 mbrasher-public Exp $");

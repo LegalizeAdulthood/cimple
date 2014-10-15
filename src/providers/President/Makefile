@@ -1,16 +1,27 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = President
+MODULE=1
+
+SHARED_LIBRARY = cimplePresident
 SOURCES = repository.cpp President.cpp module.cpp President_Provider.cpp
-LIBRARIES = cimple cimplecmpiadap
+
+CIMPLE_CMPI_MODULE=1
+
+include ../common.mak
+
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r President
+	$(BINDIR)/genclass -r President
+
+genprov:
+	$(BINDIR)/genprov President
+
+genmod:
+	$(BINDIR)/genmod President President
+

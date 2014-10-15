@@ -35,12 +35,13 @@ public:
 	const LinuxComputerSystem* instance);
 
     Modify_Instance_Status modify_instance(
-	const LinuxComputerSystem* instance);
+        const LinuxComputerSystem* model,
+        const LinuxComputerSystem* instance);
 
     Invoke_Method_Status RequestStateChange(
         const LinuxComputerSystem* self,
         const Property<uint16>& RequestedState,
-        CIM_ConcreteJob* Job,
+        CIM_ConcreteJob*& Job,
         const Property<Datetime>& TimeoutPeriod,
         Property<uint32>& return_value);
 
@@ -49,18 +50,6 @@ public:
         const Property<uint32>& PowerState,
         const Property<Datetime>& Time,
         Property<uint32>& return_value);
-
-    static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
 };
 
 CIMPLE_NAMESPACE_END

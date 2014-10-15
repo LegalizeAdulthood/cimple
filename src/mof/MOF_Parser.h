@@ -27,10 +27,10 @@
 #ifndef _MOF_Parser_h
 #define _MOF_Parser_h
 
-#include <MOF_Config.h>
-#include <MOF_Types.h>
-#include <MOF_Yacc.h>
-#include <MOF_Options.h>
+#include "MOF_Config.h"
+#include "MOF_Types.h"
+#include "MOF_Yacc.h"
+#include "MOF_Options.h"
 #include <string>
 #include <cstdio>
 #include <cstdlib>
@@ -40,6 +40,8 @@
 
 MOF_LINKAGE extern int MOF_line_num;
 MOF_LINKAGE extern char* MOF_file_name;
+MOF_LINKAGE extern char* MOF_current_dir;
+
 MOF_LINKAGE extern const char* MOF_include_paths[MAX_INCLUDES];
 MOF_LINKAGE extern size_t MOF_num_include_paths;
 MOF_LINKAGE extern const char* MOF_generate_classes[MAX_GENERATES];

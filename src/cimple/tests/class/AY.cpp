@@ -48,8 +48,8 @@ _AY_right =
 
 static Meta_Feature* _AY_MFA[] =
 {
-    (Meta_Feature*)&_AY_left,
-    (Meta_Feature*)&_AY_right,
+    (Meta_Feature*)(void*)&_AY_left,
+    (Meta_Feature*)(void*)&_AY_right,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -71,10 +71,9 @@ const Meta_Class AY::static_meta_class =
     _locals,
     &AX::static_meta_class,
     0, /* num_keys */
-    0x57A8CE86, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/class/AY.cpp,v 1.16 2007/03/13 22:53:12 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/class/AY.cpp,v 1.20 2007/04/26 22:40:58 mbrasher-public Exp $");

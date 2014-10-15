@@ -1,10 +1,9 @@
 #include <cassert>
+#include <cimple/Time.h>
 #include <Pegasus/Common/Config.h>
 #include <Pegasus/Client/CIMClient.h>
 #include <Pegasus/Listener/CIMListener.h>
 #include <Pegasus/Consumer/CIMIndicationConsumer.h>
-#include <Pegasus/Common/System.h>
-#include <Pegasus/Common/MofWriter.h>
 
 PEGASUS_USING_PEGASUS;
 PEGASUS_USING_STD;
@@ -229,7 +228,7 @@ int main(int argc, char ** argv)
         for (int i = 0; i < 5; i++)
             _invokeMethod(client, "LampIndic");
 
-        System::sleep(5);
+        cimple::Time::sleep(5 * 1000000);
         assert(_success == true);
 
         printf("+++++ passed all tests\n");

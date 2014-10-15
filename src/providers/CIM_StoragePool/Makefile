@@ -1,11 +1,11 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmpl_CIM_StoragePool
+MODULE=1
+
+SHARED_LIBRARY = cimple_CIM_StoragePool
 
 INCLUDES += $(CMPI_INCLUDES)
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 SOURCES = \
     repository.cpp \
@@ -23,25 +23,19 @@ SOURCES = \
     module.cpp \
     CIM_StoragePool_Provider.cpp
 
-LIBRARIES = cimple
-
-BUILD_CMPI_PROVIDER=1
-ifdef BUILD_CMPI_PROVIDER
-  LIBRARIES += cimplecmpiadap
-  DEFINES += -DBUILD_CMPI_PROVIDER
-else
-  LIBRARIES += cimplepegadap
-endif
+CIMPLE_CMPI_MODULE=1
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r CIM_StoragePool
+	$(BINDIR)/genclass -r CIM_StoragePool
 
 genprov:
-	genprov -f BUG30_X
+	$(BINDIR)/genprov CIM_StoragePool
+
+genmod:
+	$(BINDIR)/genmod CIM_StoragePool CIM_StoragePool

@@ -34,16 +34,12 @@ static const Meta_Class* _meta_classes[] =
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);
 
-extern const Meta_Repository __meta_repository_1D62E793C9D41C0C9A7355CC778798F3;
+extern const Meta_Repository __meta_repository_C2AA78B37C6515EB9DBF2BC150C67E7F;
 
-const Meta_Repository __meta_repository_1D62E793C9D41C0C9A7355CC778798F3 =
+const Meta_Repository __meta_repository_C2AA78B37C6515EB9DBF2BC150C67E7F =
 {
     _meta_classes,
     _num_meta_classes,
 };
 
 CIMPLE_NAMESPACE_END
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/repository.cpp,v 1.2 2007/03/07 20:25:26 mbrasher-public Exp $");
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/repository.cpp,v 1.2 2007/03/07 20:25:26 mbrasher-public Exp $");

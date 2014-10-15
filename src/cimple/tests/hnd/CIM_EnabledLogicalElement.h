@@ -12,15 +12,6 @@
 #include "CIM_LogicalElement.h"
 #include "CIM_ConcreteJob.h"
 
-#if (0x00633700 > CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.55) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
-#endif
-
-#if (0x00633700 < CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.55) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
-#endif
-
-
 CIMPLE_NAMESPACE_BEGIN
 
 class CIMPLE_LINKAGE CIM_EnabledLogicalElement : public Instance

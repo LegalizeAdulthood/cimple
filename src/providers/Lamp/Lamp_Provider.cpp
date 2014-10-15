@@ -1,6 +1,6 @@
 #include "Lamp_Provider.h"
-#include "Fan.h"
 #include "Persistent.h"
+#include "ModernLamp.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -39,6 +39,16 @@ Load_Status Lamp_Provider::load()
     instance->wattage.value = 400;
     instance->color.value = "Blue";
     _map.insert(instance);
+
+    {
+        ModernLamp* inst = ModernLamp::create();
+        inst->model.value = "Zippy";
+        inst->vendor.value = "Euro Lamps Inc";
+        inst->wattage.value = 5000;
+        inst->color.value = "White";
+        inst->artist.value = "Jean Do Van Dam";
+        _map.insert(cast<Lamp*>(inst));
+    }
 
     return LOAD_OK;
 }
@@ -81,10 +91,11 @@ Delete_Instance_Status Lamp_Provider::delete_instance(
 }
 
 Modify_Instance_Status Lamp_Provider::modify_instance(
+    const Lamp* model,
     const Lamp* instance)
 {
     TRACE;
-    return _map.modify_instance(instance);
+    return _map.modify_instance(model, instance);
 }
 
 Invoke_Method_Status Lamp_Provider::foo(
@@ -100,47 +111,6 @@ Invoke_Method_Status Lamp_Provider::foo(
     return INVOKE_METHOD_OK;
 }
 
-int Lamp_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    TRACE;
-
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Lamp Class;
-    typedef Lamp_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "foo") == 0)
-    {
-        typedef Lamp_foo_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo(
-            self,
-            method->arg1,
-            method->arg2,
-            method->return_value);
-    }
-    return -1;
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/Lamp_Provider.cpp,v 1.20 2007/03/09 03:40:59 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/Lamp_Provider.cpp,v 1.24 2007/04/18 03:51:27 mbrasher-public Exp $");

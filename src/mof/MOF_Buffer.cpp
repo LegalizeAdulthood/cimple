@@ -67,4 +67,5 @@ char* MOF_Buffer::steal_data()
     return data;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Buffer.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");
+/*NOCHKSRC*/
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Buffer.cpp,v 1.5 2007/03/29 22:02:01 mbrasher-public Exp $");

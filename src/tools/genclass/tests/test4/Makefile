@@ -1,17 +1,18 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-BINARY = genclass_test4
+BINARY = test_genclass4
+
 SOURCES = Erp2.cpp main.cpp
+
 LIBRARIES = cimple
+
 INCLUDES += -I.
 
 include $(TOP)/mak/rules.mak
 
-genclass:
-	genclass -I ../mof Erp2
-
 tests:
-	@ $(BINARY_TARGET)
+	$(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -I ../mof Erp2

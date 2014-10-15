@@ -1,11 +1,11 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
+MODULE=1
+
 SHARED_LIBRARY = MySpareConfigurationService
 
 INCLUDES += $(CMPI_INCLUDES)
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 SOURCES = \
     CIM_Collection.cpp \
@@ -31,25 +31,20 @@ SOURCES = \
     MySpareConfigurationService_Provider.cpp \
     module.cpp
 
-LIBRARIES = cimple
+CIMPLE_CMPI_MODULE=1
 
-BUILD_CMPI_PROVIDER=1
-ifdef BUILD_CMPI_PROVIDER
-  LIBRARIES += cimplecmpiadap
-  DEFINES += -DBUILD_CMPI_PROVIDER
-else
-  LIBRARIES += cimplepegadap
-endif
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r MySpareConfigurationService MyStorageExtent
+	$(BINDIR)/genclass -r MySpareConfigurationService MyStorageExtent
 
 genprov:
-	genprov -f MySpareConfigurationService
+	$(BINDIR)/genprov MySpareConfigurationService
+
+genmod:
+	$(BINDIR)/genmod MySpareConfigurationService MySpareConfigurationService

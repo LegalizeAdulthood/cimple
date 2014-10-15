@@ -2,9 +2,9 @@
 #include <pthread.h>
 #include <unistd.h>
 #include "LampIndic_Provider.h"
-#include <LampIndicA.h>
-#include <LampIndicB.h>
-#include <LampIndicC.h>
+#include "LampIndicA.h"
+#include "LampIndicB.h"
+#include "LampIndicC.h"
 
 #if 0
 # define TRACE CIMPLE_TRACE
@@ -155,43 +155,6 @@ Invoke_Method_Status LampIndic_Provider::DeliverIndications(
     return INVOKE_METHOD_OK;
 }
 
-int LampIndic_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    TRACE;
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef LampIndic Class;
-    typedef LampIndic_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Indication_Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "DeliverIndications") == 0)
-    {
-        typedef LampIndic_DeliverIndications_method Method;
-        Method* method = (Method*)arg2;
-        return provider->DeliverIndications(
-            method->return_value);
-    }
-    return -1;
-}
-
 void LampIndic_Provider::_stop_thread()
 {
     TRACE;
@@ -208,4 +171,4 @@ void LampIndic_Provider::_stop_thread()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampIndic_Provider.cpp,v 1.20 2007/03/07 20:25:24 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampIndic_Provider.cpp,v 1.24 2007/04/18 03:51:27 mbrasher-public Exp $");

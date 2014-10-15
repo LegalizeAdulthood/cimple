@@ -45,42 +45,6 @@ Invoke_Method_Status XYZ_LampIndic_Provider::DeliverIndications(
     return INVOKE_METHOD_UNSUPPORTED;
 }
 
-int XYZ_LampIndic_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef XYZ_LampIndic Class;
-    typedef XYZ_LampIndic_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Indication_Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "DeliverIndications") == 0)
-    {
-        typedef XYZ_LampIndic_DeliverIndications_method Method;
-        Method* method = (Method*)arg2;
-        return provider->DeliverIndications(
-            method->return_value);
-    }
-    return -1;
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampIndic_Provider.cpp,v 1.4 2007/03/07 20:25:29 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampIndic_Provider.cpp,v 1.5 2007/04/18 03:51:31 mbrasher-public Exp $");

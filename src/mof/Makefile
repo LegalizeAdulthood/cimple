@@ -1,7 +1,7 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cimplemof
+STATIC_LIBRARY = cimplemof
 
 INCLUDES += -I.
 
@@ -47,23 +47,24 @@ SOURCES = \
 
 include $(TOP)/mak/rules.mak
 
-ifeq ($(GENERATE_PARSER),1)
+GEN=0
+ifeq ($(GEN),1)
 
 MOF_Yacc.cpp : MOF.y
-	yacc -d -p MOF_ -o MOF_Yacc.cpp MOF.y
+	bison -d -p MOF_ -o MOF_Yacc.cpp MOF.y
 	mv MOF_Yacc.hpp MOF_Yacc.h
 
 MOF_Lex.cpp : MOF.l
 	flex -PMOF_ -oMOF_Lex.cpp MOF.l
 
 REF_Yacc.cpp : REF.y
-	yacc -d -p REF_ -o REF_Yacc.cpp REF.y
+	bison -d -p REF_ -o REF_Yacc.cpp REF.y
 	mv REF_Yacc.hpp REF_Yacc.h
 
 REF_Lex.cpp : REF.l
 	flex -PREF_ -oREF_Lex.cpp REF.l
 
-CLEAN = \
+CLEAN += \
     REF_Yacc.h \
     REF_Yacc.cpp \
     REF_Lex.cpp \
@@ -72,5 +73,3 @@ CLEAN = \
     MOF_Lex.cpp
 
 endif
-
-genclass:

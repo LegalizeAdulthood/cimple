@@ -1,18 +1,22 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cimplegencommon
-STATIC_LIBRARY = cimplegencommon_s
+STATIC_LIBRARY = cimplegencommon
+
 SOURCES = gencommon.cpp
+
 LIBRARIES = cimplemof cimpleutil cimple
+
 INCLUDES += -I$(SRC_DIR)/mof
-DEFINES += -DGENCOMMON_INTERNAL
+
+DEFINES += -DGENCOMMON_INTERNAL 
+
+DEFINES += -DCIMPLE_DEFAULT_SCHEMA=\"$(WITH_SCHEMA_OPT)\"
 
 include $(TOP)/mak/rules.mak
-
-tests:
 
 usage:
 	file2c usage.txt -n USAGE > usage.h
 
-genclass:
+zzz:
+	echo $(DEFINES)

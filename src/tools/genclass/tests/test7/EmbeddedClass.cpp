@@ -33,7 +33,7 @@ _EmbeddedClass_msg =
 
 static Meta_Feature* _EmbeddedClass_MFA[] =
 {
-    (Meta_Feature*)&_EmbeddedClass_msg,
+    (Meta_Feature*)(void*)&_EmbeddedClass_msg,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -54,10 +54,9 @@ const Meta_Class EmbeddedClass::static_meta_class =
     _locals,
     0, /* super_class */ 
     0, /* num_keys */
-    0xC580D23F, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test7/EmbeddedClass.cpp,v 1.20 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test7/EmbeddedClass.cpp,v 1.24 2007/04/26 22:41:10 mbrasher-public Exp $");

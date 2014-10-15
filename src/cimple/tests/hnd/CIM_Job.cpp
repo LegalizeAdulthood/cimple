@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_6FAA529815A91D82B658654A66A4535E;
+extern const Meta_Repository __meta_repository_6827E083506B1A56883F566A87E0489F;
 
 extern const Meta_Qualifier
 _CIM_ManagedElement_Caption_MaxLen_MQ;
@@ -22,7 +22,7 @@ _CIM_ManagedElement_Caption_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_Job_Caption_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -50,7 +50,7 @@ _CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ;
 static const Meta_Qualifier*
 _CIM_Job_InstallDate_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
 };
 
 extern const Meta_Property
@@ -62,7 +62,7 @@ _CIM_ManagedSystemElement_Name_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_Job_Name_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Name_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Name_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -83,10 +83,10 @@ _CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_Job_OperationalStatus_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -101,8 +101,8 @@ _CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_Job_StatusDescriptions_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -120,9 +120,9 @@ _CIM_ManagedSystemElement_Status_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_Job_Status_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -137,8 +137,8 @@ _CIM_ManagedSystemElement_HealthState_Values_MQ;
 static const Meta_Qualifier*
 _CIM_Job_HealthState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
 };
 
 extern const Meta_Property
@@ -168,13 +168,13 @@ _CIM_Job_JobStatus_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_JobStatus_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_JobStatus_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_JobStatus_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_JobStatus_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_JobStatus_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -243,13 +243,13 @@ _CIM_Job_ScheduledStartTime_Deprecated_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_ScheduledStartTime_Deprecated_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_ScheduledStartTime_Deprecated_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_ScheduledStartTime_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_ScheduledStartTime_Deprecated_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_ScheduledStartTime_Deprecated_MQ,
 };
 
 extern const Meta_Property
@@ -338,7 +338,7 @@ _CIM_Job_JobRunTimes =
     UINT32,
     0, /* subscript */
     CIMPLE_OFF(CIM_Job,JobRunTimes),
-    (const Meta_Value*)&_CIM_Job_JobRunTimes_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_JobRunTimes_MV,
 };
 
 extern const Meta_Qualifier
@@ -376,7 +376,7 @@ _CIM_Job_RunMonth_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunMonth_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunMonth_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -414,7 +414,7 @@ _CIM_Job_RunMonth_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunMonth_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunMonth_Values_MV,
 };
 
 extern const Meta_Qualifier
@@ -443,15 +443,15 @@ _CIM_Job_RunMonth_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunMonth_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunMonth_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_RunMonth_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_RunMonth_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RunMonth_Values_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RunMonth_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunMonth_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunMonth_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunMonth_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -488,7 +488,7 @@ _CIM_Job_RunDay_MinValue_MQ =
     SINT64, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunDay_MinValue_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunDay_MinValue_MV,
 };
 
 extern const Meta_Qualifier
@@ -508,7 +508,7 @@ _CIM_Job_RunDay_MaxValue_MQ =
     SINT64, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunDay_MaxValue_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunDay_MaxValue_MV,
 };
 
 extern const Meta_Qualifier
@@ -537,15 +537,15 @@ _CIM_Job_RunDay_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunDay_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunDay_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_RunDay_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_RunDay_MinValue_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RunDay_MaxValue_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RunDay_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunDay_MinValue_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunDay_MaxValue_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunDay_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -603,7 +603,7 @@ _CIM_Job_RunDayOfWeek_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunDayOfWeek_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunDayOfWeek_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -644,7 +644,7 @@ _CIM_Job_RunDayOfWeek_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunDayOfWeek_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunDayOfWeek_Values_MV,
 };
 
 extern const Meta_Qualifier
@@ -673,15 +673,15 @@ _CIM_Job_RunDayOfWeek_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunDayOfWeek_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunDayOfWeek_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_RunDayOfWeek_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_RunDayOfWeek_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RunDayOfWeek_Values_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RunDayOfWeek_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunDayOfWeek_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunDayOfWeek_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunDayOfWeek_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -728,13 +728,13 @@ _CIM_Job_RunStartInterval_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RunStartInterval_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RunStartInterval_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_RunStartInterval_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_RunStartInterval_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RunStartInterval_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -779,7 +779,7 @@ _CIM_Job_LocalOrUtcTime_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_LocalOrUtcTime_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_LocalOrUtcTime_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -807,14 +807,14 @@ _CIM_Job_LocalOrUtcTime_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_LocalOrUtcTime_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_LocalOrUtcTime_Values_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_LocalOrUtcTime_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_LocalOrUtcTime_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_Job_LocalOrUtcTime_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_LocalOrUtcTime_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_LocalOrUtcTime_Values_MQ,
 };
 
 extern const Meta_Property
@@ -858,13 +858,13 @@ _CIM_Job_UntilTime_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_UntilTime_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_UntilTime_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_UntilTime_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_UntilTime_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_UntilTime_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -930,13 +930,13 @@ _CIM_Job_Owner_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_Owner_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_Owner_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_Owner_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_Owner_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_Owner_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -995,7 +995,7 @@ _CIM_Job_PercentComplete_Units_MQ =
     STRING, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_PercentComplete_Units_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_PercentComplete_Units_MV,
 };
 
 extern const Meta_Qualifier
@@ -1015,7 +1015,7 @@ _CIM_Job_PercentComplete_MinValue_MQ =
     SINT64, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_PercentComplete_MinValue_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_PercentComplete_MinValue_MV,
 };
 
 extern const Meta_Qualifier
@@ -1035,15 +1035,15 @@ _CIM_Job_PercentComplete_MaxValue_MQ =
     SINT64, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_PercentComplete_MaxValue_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_PercentComplete_MaxValue_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_PercentComplete_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_PercentComplete_Units_MQ,
-    (Meta_Qualifier*)&_CIM_Job_PercentComplete_MinValue_MQ,
-    (Meta_Qualifier*)&_CIM_Job_PercentComplete_MaxValue_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_PercentComplete_Units_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_PercentComplete_MinValue_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_PercentComplete_MaxValue_MQ,
 };
 
 extern const Meta_Property
@@ -1109,13 +1109,13 @@ _CIM_Job_ErrorCode_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_ErrorCode_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_ErrorCode_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_ErrorCode_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_ErrorCode_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_ErrorCode_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -1159,13 +1159,13 @@ _CIM_Job_ErrorDescription_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_ErrorDescription_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_ErrorDescription_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_ErrorDescription_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_ErrorDescription_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_ErrorDescription_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -1214,7 +1214,7 @@ _CIM_Job_RecoveryAction_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RecoveryAction_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RecoveryAction_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -1246,7 +1246,7 @@ _CIM_Job_RecoveryAction_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RecoveryAction_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RecoveryAction_Values_MV,
 };
 
 extern const Meta_Qualifier
@@ -1273,15 +1273,15 @@ _CIM_Job_RecoveryAction_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_RecoveryAction_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_RecoveryAction_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_RecoveryAction_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_RecoveryAction_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RecoveryAction_Values_MQ,
-    (Meta_Qualifier*)&_CIM_Job_RecoveryAction_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RecoveryAction_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RecoveryAction_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_RecoveryAction_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -1325,13 +1325,13 @@ _CIM_Job_OtherRecoveryAction_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_OtherRecoveryAction_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_OtherRecoveryAction_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_OtherRecoveryAction_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_OtherRecoveryAction_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_OtherRecoveryAction_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -1375,7 +1375,7 @@ _CIM_Job_KillJob_Deprecated_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_KillJob_Deprecated_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_KillJob_Deprecated_MV,
 };
 
 extern const Meta_Qualifier
@@ -1410,7 +1410,7 @@ _CIM_Job_KillJob_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_KillJob_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_KillJob_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -1445,15 +1445,15 @@ _CIM_Job_KillJob_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_KillJob_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_KillJob_Values_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_KillJob_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_KillJob_Deprecated_MQ,
-    (Meta_Qualifier*)&_CIM_Job_KillJob_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_Job_KillJob_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_KillJob_Deprecated_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_KillJob_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_KillJob_Values_MQ,
 };
 
 static const Meta_Qualifier*
@@ -1491,8 +1491,8 @@ _CIM_Job_KillJob_return_value =
 
 static Meta_Feature* _CIM_Job_KillJob_MFA[] =
 {
-    (Meta_Feature*)&_CIM_Job_KillJob_DeleteOnKill,
-    (Meta_Feature*)&_CIM_Job_KillJob_return_value
+    (Meta_Feature*)(void*)&_CIM_Job_KillJob_DeleteOnKill,
+    (Meta_Feature*)(void*)&_CIM_Job_KillJob_return_value
 };
 
 const Meta_Method
@@ -1511,37 +1511,37 @@ CIM_Job_KillJob_method::static_meta_class =
 
 static Meta_Feature* _CIM_Job_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_Job_JobStatus,
-    (Meta_Feature*)&_CIM_Job_TimeSubmitted,
-    (Meta_Feature*)&_CIM_Job_ScheduledStartTime,
-    (Meta_Feature*)&_CIM_Job_StartTime,
-    (Meta_Feature*)&_CIM_Job_ElapsedTime,
-    (Meta_Feature*)&_CIM_Job_JobRunTimes,
-    (Meta_Feature*)&_CIM_Job_RunMonth,
-    (Meta_Feature*)&_CIM_Job_RunDay,
-    (Meta_Feature*)&_CIM_Job_RunDayOfWeek,
-    (Meta_Feature*)&_CIM_Job_RunStartInterval,
-    (Meta_Feature*)&_CIM_Job_LocalOrUtcTime,
-    (Meta_Feature*)&_CIM_Job_UntilTime,
-    (Meta_Feature*)&_CIM_Job_Notify,
-    (Meta_Feature*)&_CIM_Job_Owner,
-    (Meta_Feature*)&_CIM_Job_Priority,
-    (Meta_Feature*)&_CIM_Job_PercentComplete,
-    (Meta_Feature*)&_CIM_Job_DeleteOnCompletion,
-    (Meta_Feature*)&_CIM_Job_ErrorCode,
-    (Meta_Feature*)&_CIM_Job_ErrorDescription,
-    (Meta_Feature*)&_CIM_Job_RecoveryAction,
-    (Meta_Feature*)&_CIM_Job_OtherRecoveryAction,
-    (Meta_Feature*)&CIM_Job_KillJob_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_Job_JobStatus,
+    (Meta_Feature*)(void*)&_CIM_Job_TimeSubmitted,
+    (Meta_Feature*)(void*)&_CIM_Job_ScheduledStartTime,
+    (Meta_Feature*)(void*)&_CIM_Job_StartTime,
+    (Meta_Feature*)(void*)&_CIM_Job_ElapsedTime,
+    (Meta_Feature*)(void*)&_CIM_Job_JobRunTimes,
+    (Meta_Feature*)(void*)&_CIM_Job_RunMonth,
+    (Meta_Feature*)(void*)&_CIM_Job_RunDay,
+    (Meta_Feature*)(void*)&_CIM_Job_RunDayOfWeek,
+    (Meta_Feature*)(void*)&_CIM_Job_RunStartInterval,
+    (Meta_Feature*)(void*)&_CIM_Job_LocalOrUtcTime,
+    (Meta_Feature*)(void*)&_CIM_Job_UntilTime,
+    (Meta_Feature*)(void*)&_CIM_Job_Notify,
+    (Meta_Feature*)(void*)&_CIM_Job_Owner,
+    (Meta_Feature*)(void*)&_CIM_Job_Priority,
+    (Meta_Feature*)(void*)&_CIM_Job_PercentComplete,
+    (Meta_Feature*)(void*)&_CIM_Job_DeleteOnCompletion,
+    (Meta_Feature*)(void*)&_CIM_Job_ErrorCode,
+    (Meta_Feature*)(void*)&_CIM_Job_ErrorDescription,
+    (Meta_Feature*)(void*)&_CIM_Job_RecoveryAction,
+    (Meta_Feature*)(void*)&_CIM_Job_OtherRecoveryAction,
+    (Meta_Feature*)(void*)&CIM_Job_KillJob_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -1580,26 +1580,6 @@ static const Meta_Feature_Local _locals[] =
 };
 
 extern const Meta_Qualifier
-_CIM_Job_UMLPackagePath_MQ;
-
-static const Meta_Value_Scalar<const char*>
-_CIM_Job_UMLPackagePath_MV =
-{
-    "CIM::Core::CoreElements"
-};
-
-const Meta_Qualifier
-_CIM_Job_UMLPackagePath_MQ =
-{
-    { 0 }, /* refs */
-    "UMLPackagePath", /* name */
-    STRING, /* type */
-    0, /* array */
-    0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_UMLPackagePath_MV,
-};
-
-extern const Meta_Qualifier
 _CIM_Job_Version_MQ;
 
 static const Meta_Value_Scalar<const char*>
@@ -1616,14 +1596,34 @@ _CIM_Job_Version_MQ =
     STRING, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_Job_Version_MV,
+    (const Meta_Value*)(void*)&_CIM_Job_Version_MV,
+};
+
+extern const Meta_Qualifier
+_CIM_Job_UMLPackagePath_MQ;
+
+static const Meta_Value_Scalar<const char*>
+_CIM_Job_UMLPackagePath_MV =
+{
+    "CIM::Core::CoreElements"
+};
+
+const Meta_Qualifier
+_CIM_Job_UMLPackagePath_MQ =
+{
+    { 0 }, /* refs */
+    "UMLPackagePath", /* name */
+    STRING, /* type */
+    0, /* array */
+    0 /* flavors */,
+    (const Meta_Value*)(void*)&_CIM_Job_UMLPackagePath_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_Job_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_Job_UMLPackagePath_MQ,
-    (Meta_Qualifier*)&_CIM_Job_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_Job_UMLPackagePath_MQ,
 };
 
 const Meta_Class CIM_Job::static_meta_class =
@@ -1640,7 +1640,7 @@ const Meta_Class CIM_Job::static_meta_class =
     &CIM_LogicalElement::static_meta_class,
     0, /* num_keys */
     0xAA7F75B2, /* crc */
-    &__meta_repository_6FAA529815A91D82B658654A66A4535E,
+    &__meta_repository_6827E083506B1A56883F566A87E0489F,
 };
 
 CIM_Job_Ref::CIM_Job_Ref()
@@ -2201,4 +2201,4 @@ void CIM_Job_Hnd::OtherRecoveryAction_null(bool x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_Job.cpp,v 1.1 2007/03/13 22:25:32 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_Job.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

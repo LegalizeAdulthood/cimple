@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_2EEF8AD09F4D1605BA3399E4AAEB46FC;
+extern const Meta_Repository __meta_repository_30E99343B00615FEAF732DB4A45D94FB;
 
 extern const Meta_Property
 _RefArray_key;
@@ -41,6 +41,7 @@ _RefArray_SendRefArray_arr1 =
     "arr1",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    -1, /* subscript */
     &RefArrayParam::static_meta_class,
     CIMPLE_OFF(RefArray_SendRefArray_method,arr1)
 };
@@ -53,6 +54,7 @@ _RefArray_SendRefArray_arr2 =
     "arr2",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    -1, /* subscript */
     &RefArrayParam::static_meta_class,
     CIMPLE_OFF(RefArray_SendRefArray_method,arr2)
 };
@@ -73,9 +75,9 @@ _RefArray_SendRefArray_return_value =
 
 static Meta_Feature* _RefArray_SendRefArray_MFA[] =
 {
-    (Meta_Feature*)&_RefArray_SendRefArray_arr1,
-    (Meta_Feature*)&_RefArray_SendRefArray_arr2,
-    (Meta_Feature*)&_RefArray_SendRefArray_return_value
+    (Meta_Feature*)(void*)&_RefArray_SendRefArray_arr1,
+    (Meta_Feature*)(void*)&_RefArray_SendRefArray_arr2,
+    (Meta_Feature*)(void*)&_RefArray_SendRefArray_return_value
 };
 
 const Meta_Method
@@ -94,8 +96,8 @@ RefArray_SendRefArray_method::static_meta_class =
 
 static Meta_Feature* _RefArray_MFA[] =
 {
-    (Meta_Feature*)&_RefArray_key,
-    (Meta_Feature*)&RefArray_SendRefArray_method::static_meta_class,
+    (Meta_Feature*)(void*)&_RefArray_key,
+    (Meta_Feature*)(void*)&RefArray_SendRefArray_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -117,10 +119,9 @@ const Meta_Class RefArray::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0x61A78787, /* crc */
-    &__meta_repository_2EEF8AD09F4D1605BA3399E4AAEB46FC,
+    &__meta_repository_30E99343B00615FEAF732DB4A45D94FB,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/RefArray.cpp,v 1.3 2007/03/07 20:25:27 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/RefArray.cpp,v 1.10 2007/04/26 22:41:06 mbrasher-public Exp $");

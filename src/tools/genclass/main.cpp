@@ -38,10 +38,9 @@
 #include <cstdarg>
 #include <string>
 #include <util/util.h>
-#include <util/crc.h>
 #include <tools/gencommon/gencommon.h>
 #include "usage.h"
-#include "MOF_Parser.h"
+#include <mof/MOF_Parser.h>
 
 using namespace std;
 
@@ -58,233 +57,6 @@ static string class_list_file;
 static bool gen_handles = false;
 
 string meta_repository_name;
-
-// ATTN: do we need to implement qualifiers for parameters?
-// ATTN: optimize out empty Meta_Qualifier arrays (MQAs).
-
-char data_type_tag(int data_type)
-{
-    switch (data_type)
-    {
-        case TOK_BOOLEAN:
-            return 'O';
-        case TOK_UINT8:
-            return 'B';
-        case TOK_SINT8:
-            return 'b';
-        case TOK_UINT16:
-            return 'S';
-        case TOK_SINT16:
-            return 's';
-        case TOK_UINT32:
-            return 'I';
-        case TOK_SINT32:
-            return 'i';
-        case TOK_UINT64:
-            return 'L';
-        case TOK_SINT64:
-            return 'l';
-        case TOK_REAL32:
-            return 'F';
-        case TOK_REAL64:
-            return 'D';
-        case TOK_CHAR16:
-            return 'C';
-        case TOK_STRING:
-            return 'Z';
-        case TOK_DATETIME:
-            return 'T';
-        default:
-            assert(0);
-    }
-
-    return 0;
-}
-
-void put_qual_sig(int qual_mask, string& sig)
-{
-    string tmp;
-
-    if (qual_mask & MOF_QT_KEY)
-        tmp += 'K';
-
-    if (qual_mask & MOF_QT_EMBEDDEDOBJECT)
-        tmp += 'E';
-
-    if (qual_mask & MOF_QT_STATIC)
-        tmp += 'S';
-
-    if (qual_mask & MOF_QT_IN)
-        tmp += 'I';
-
-    if (qual_mask & MOF_QT_OUT)
-        tmp += 'O';
-
-    if (tmp.size())
-    {
-        sig += '[';
-        sig += tmp;
-        sig += ']';
-    }
-}
-
-void put_data_type_sig(int data_type, int array_index, string& sig)
-{
-    // Subscript:
-
-    if (array_index == -1)
-        sig += "@";
-    else if (array_index > 0)
-    {
-        char buffer[16];
-        sprintf(buffer, "@%d", array_index);
-        sig += buffer;
-    }
-
-    // Type:
-
-    sig += data_type_tag(data_type);
-}
-
-void make_signature(const MOF_Class_Decl* cd, string& sig)
-{
-    sig.erase(sig.begin(), sig.end());
-
-    // Object type tag: [A]ssociation, [I]ndication, [C]lass.
-
-    if (cd->qual_mask & MOF_QT_ASSOCIATION)
-        sig += 'A';
-    else if (cd->qual_mask & MOF_QT_INDICATION)
-        sig += 'N';
-    else
-        sig += 'C';
-
-    // Class name:
-
-    sig += cd->name;
-
-    // Super class name:
-
-    if (cd->super_class_name)
-    {
-        sig += ';';
-        sig += cd->super_class_name;
-    }
-
-    sig += '\n';
-
-    // Class features:
-
-    MOF_Feature_Info* p = cd->all_features;
-
-    for (; p; p = (MOF_Feature_Info*)p->next)
-    {
-        MOF_Feature* f = p->feature;
-
-        // The next character written is a tag which represents the data type.
-        // It will be one of the following:
-        //
-        //     'O' - boolean
-        //     'B' - uint8 (unsigned byte)
-        //     'b' - sint8 (signed byte)
-        //     'S' - uint16 (unsigned short)
-        //     's' - sint16 (signed short)
-        //     'I' - uint32 (unsigned integer)
-        //     'i' - sint32 (sint32 integer)
-        //     'L' - uint64 (unsigned long)
-        //     'l' - sint64 (singed long)
-        //     'F' - real32 (float)
-        //     'D' - real64 (double)
-        //     'C' - char16
-        //     'Z' - string
-        //     'T' - datetime
-        //     'R' - reference
-        //     'M' - method
-
-        // Property:
-
-        MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(f);
-
-        if (prop)
-        {
-            // Qualifiers:
-
-            put_qual_sig(
-                prop->qual_mask & (MOF_QT_EMBEDDEDOBJECT|MOF_QT_KEY), sig);
-
-            // Type:
-
-            put_data_type_sig(prop->data_type, prop->array_index, sig);
-
-            // Name:
-
-            sig += f->name;
-
-            sig += '\n';
-        }
-
-        // Reference:
-
-        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(f);
-
-        if (ref)
-        {
-            // Qualifiers:
-
-            put_qual_sig(ref->qual_mask & MOF_QT_KEY, sig);
-
-            sig += 'R';
-            sig += ref->class_name;
-            sig += ';';
-            sig += ref->name;
-            sig += '\n';
-        }
-
-        // Method:
-
-        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(f);
-
-        if (meth)
-        {
-            put_qual_sig(meth->qual_mask & MOF_QT_STATIC, sig);
-
-            sig += 'M';
-            sig += data_type_tag(meth->data_type);
-            sig += meth->name;
-            sig += ';';
-
-            MOF_Parameter* param = meth->parameters;
-
-            for (; param; param = (MOF_Parameter*)param->next)
-            {
-                // Qualifiers:
-
-                put_qual_sig(param->qual_mask & (MOF_QT_IN|MOF_QT_OUT), sig);
-
-                // Data type:
-
-                if (param->data_type == TOK_REF)
-                {
-                    sig += 'R';
-                    sig += param->ref_name;
-                    sig += ';';
-                }
-                else
-                {
-                    put_data_type_sig(
-                        param->data_type, param->array_index, sig);
-                }
-
-                // Param name:
-
-                sig += param->name;
-                sig += ';';
-            }
-
-            sig += "\n";
-        }
-    }
-}
 
 size_t find(vector<string>& array, const string& x)
 {
@@ -605,7 +377,7 @@ void gen_qual_scalar_def(
     gen_flavors(mqd, mq);
 
     if (mq->params && mq->params->value_type != TOK_NULL_VALUE)
-        out("    (const Meta_Value*)&%s_MV,\n", var.c_str());
+        out("    (const Meta_Value*)(void*)&%s_MV,\n", var.c_str());
     else
         out("    0, /* value */\n");
 
@@ -744,7 +516,7 @@ void gen_qual_array_def(
     gen_flavors(mqd, mq);
 
     if (mq->params && mq->params->value_type != TOK_NULL_VALUE)
-        out("    (const Meta_Value*)&%s_MV,\n", var.c_str());
+        out("    (const Meta_Value*)(void*)&%s_MV,\n", var.c_str());
     else
         out("    0, /* value */\n");
 
@@ -826,7 +598,7 @@ void gen_qual_defs(
 
         var += string("_") + string(mq->name);
 
-        out("    (Meta_Qualifier*)&%s_MQ,\n", var.c_str());
+        out("    (Meta_Qualifier*)(void*)&%s_MQ,\n", var.c_str());
     }
 
     out("};\n");
@@ -888,7 +660,7 @@ void gen_property_decl(
 
             // Generate enum property.
 
-            out("    struct\n");
+            out("    struct _%s\n", prop->name);
             out("    {\n");
             out("        enum\n");
             out("        {\n");
@@ -901,29 +673,29 @@ void gen_property_decl(
 
             out("        };\n");
 
-            out("        %s value;\n", _to_string(prop->data_type));
+            if (prop->array_index)
+                out("        Array_%s value;\n", _to_string(prop->data_type));
+            else
+                out("        %s value;\n", _to_string(prop->data_type));
+
             out("        uint8 null;\n");
 
             switch (prop->data_type)
             {
                 case TOK_UINT8:
                 case TOK_SINT8:
-                    out("        char padding[48];\n");
                     break;
 
                 case TOK_UINT16:
                 case TOK_SINT16:
-                    out("        char padding[40];\n");
                     break;
 
                 case TOK_UINT32:
                 case TOK_SINT32:
-                    out("        char padding[24];\n");
                     break;
 
                 case TOK_UINT64:
                 case TOK_SINT64:
-                    out("        char padding[56];\n");
                     break;
 
                 default:
@@ -948,12 +720,7 @@ void gen_property_decl(
     if (i == 0)
     {
         /* Scalar */
-        out("    Property<%s> %s;", tmp, prop->name);
-
-        if (prop->qual_mask & MOF_QT_KEY)
-            out(" // KEY\n");
-        else
-            out("\n");
+        out("    Property<%s> %s;\n", tmp, prop->name);
     }
     else
     {
@@ -1087,6 +854,24 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
     // Generate class definition.
 
     const char* linkage = linkage_opt ? "CIMPLE_LINKAGE " : "";
+
+    // Print keys comment:
+    {
+        MOF_Feature_Info* p = class_decl->all_features;
+
+        out("// %s keys:\n", class_decl->name);
+
+        for (; p; p = (MOF_Feature_Info*)p->next)
+        {
+            MOF_Property_Decl* prop = 
+                dynamic_cast<MOF_Property_Decl*>(p->feature);
+
+            if (prop && (prop->qual_mask & MOF_QT_KEY))
+                out("//     %s\n", prop->name);
+        }
+
+        out("\n");
+    }
 
     out("class %s%s : public Instance\n", linkage, class_name);
 
@@ -1568,10 +1353,12 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
 
     generate_ref_includes(class_decl);
     generate_param_ref_includes(class_decl);
-
     nl();
+
+#if 0
     generate_version_check();
     nl();
+#endif
 
     out("CIMPLE_NAMESPACE_BEGIN\n");
     nl();
@@ -1726,7 +1513,7 @@ void gen_property_def(
     // Meta_Property.value:
 
     if (mp->initializer && mp->initializer->value_type != TOK_NULL_VALUE)
-        out("    (const Meta_Value*)&_%s_%s_MV,\n", class_name, mp->name);
+        out("    (const Meta_Value*)(void*)&_%s_%s_MV,\n", class_name,mp->name);
     else
         out("    0, /* value */\n");
 
@@ -1930,11 +1717,12 @@ void gen_param_array(
 
     for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
     {
-        out("    (Meta_Feature*)&_%s_%s_%s,\n", class_name, meth->name, 
+        out("    (Meta_Feature*)(void*)&_%s_%s_%s,\n", class_name, meth->name, 
             p->name);
     }
 
-    out("    (Meta_Feature*)&_%s_%s_return_value\n", class_name, meth->name);
+    out("    (Meta_Feature*)(void*)&_%s_%s_return_value\n", 
+        class_name, meth->name);
 
     out("};\n");
     nl();
@@ -2209,14 +1997,14 @@ void gen_feature_array(const MOF_Class_Decl* class_decl)
         MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(feature);
 
         if (prop)
-            out("    (Meta_Feature*)&_%s_%s,\n", class_name, prop->name);
+            out("    (Meta_Feature*)(void*)&_%s_%s,\n", class_name, prop->name);
 
         // Reference.
 
         MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(feature);
 
         if (ref)
-            out("    (Meta_Feature*)&_%s_%s,\n", class_name, ref->name);
+            out("    (Meta_Feature*)(void*)&_%s_%s,\n", class_name, ref->name);
 
         // Method.
 
@@ -2224,7 +2012,7 @@ void gen_feature_array(const MOF_Class_Decl* class_decl)
 
         if (meth)
         {
-            out("    (Meta_Feature*)&%s_%s_method::static_meta_class,\n", 
+            out("    (Meta_Feature*)(void*)&%s_%s_method::static_meta_class,\n",
                 p->class_origin->name, meth->name);
         }
     }
@@ -2331,15 +2119,6 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
     // Number of keys.
     {
         out("    %u, /* num_keys */\n", int(_count_keys(class_decl)));
-    }
-
-    // CRC:
-
-    {
-        string sig;
-        make_signature(class_decl, sig);
-        unsigned int crc = crc_compute((unsigned char*)sig.c_str(), sig.size());
-        out("    0x%08X, /* crc */\n", crc);
     }
 
     // meta_repository:
@@ -2947,4 +2726,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/main.cpp,v 1.138 2007/03/13 21:05:16 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/main.cpp,v 1.145 2007/04/26 22:41:08 mbrasher-public Exp $");

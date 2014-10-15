@@ -24,6 +24,7 @@
 **==============================================================================
 */
 
+#include <cimple/config.h>
 #include <Pegasus/Common/Config.h>
 #include <cassert>
 #include <Pegasus/Client/CIMClient.h>
@@ -119,4 +120,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/meth/main.cpp,v 1.2 2007/03/07 20:25:27 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/meth/main.cpp,v 1.3 2007/03/16 21:21:38 mbrasher-public Exp $");

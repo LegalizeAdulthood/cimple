@@ -13,6 +13,12 @@ static void MOF_trace(const char* str);
 %union
 {
     MOF_char16 char_value;
+    struct MOF_String_Literal
+    {
+        char* raw;
+        char* escaped;
+    }
+    string_literal;
     char* string_value;
     MOF_sint64 int_value;
     int bool_value;
@@ -177,17 +183,17 @@ static void MOF_trace(const char* str);
 %type <scope> scope_list
 %type <string_value> class_alias
 %type <string_value> inst_alias
-%type <string_value> string_value
+%type <string_literal> string_literal
 %type <string_value> name
 %type <obj_ref> obj_ref; 
 %type <string_value> object_ref;
 %type <string_value> super_class_name
 %type <string_value> pragma_name
-%type <string_value> pragma_param
+%type <string_literal> pragma_param
 %type <string_value> TOK_ALIAS_IDENT
 %type <string_value> TOK_IDENT
 %type <string_value> TOK_SCHEMA
-%type <string_value> TOK_STRING_VALUE
+%type <string_literal> TOK_STRING_VALUE
 %type <string_value> TOK_ASSOCIATION
 %type <string_value> TOK_INDICATION
 %type <string_value> TOK_REFERENCE
@@ -266,7 +272,7 @@ MOF_production
 compiler_directive 
     : TOK_PRAGMA pragma_name TOK_OPEN_PAREN pragma_param TOK_CLOSE_PAREN
     {
-	MOF_Pragma::handle($2, $4);
+	MOF_Pragma::handle($2, $4.raw);
     }
     ;
 
@@ -278,9 +284,9 @@ pragma_name
     ;
 
 pragma_param
-    : string_value
+    : string_literal
     {
-	$$ = $1;
+        $$ = $1;
     }
     ;
 
@@ -1148,23 +1154,24 @@ object_ref
     ;
 
 obj_ref 
-    : string_value
+    : string_literal
     {
 	MOF_trace("obj_ref:1");
 
-	if (REF_parse($1, &$$) != 0)
+	if (REF_parse($1.escaped, &$$) != 0)
 	{
 	    MOF_error_printf("malformed object reference: \"%s\": %s", 
-		$1, ref_error_message);
+		$1.escaped, ref_error_message);
 	}
 
 	{
-	    char* p = MOF_Object_Reference::normalize($1);
+	    char* p = MOF_Object_Reference::normalize($1.escaped);
 	    MOF_ASSERT(p != NULL);
 	    free(p);
 	}
 
-	free($1);
+	free($1.escaped);
+	free($1.raw);
 	$$->validate();
 	$$->normalize();
 	/* MOF_obj_ref_print(stdout, $$); */
@@ -1364,13 +1371,14 @@ literal
 	$$->value_type = TOK_BOOL_VALUE;
 	$$->bool_value = $1 ? true : false;
     }
-    | string_value
+    | string_literal
     {
 	MOF_trace("literal:6");
 	$$ = new MOF_Literal();
 	MOF_ASSERT($$ != NULL);
 	$$->value_type = TOK_STRING_VALUE;
-	$$->string_value = $1;
+	$$->string_value = $1.escaped;
+        free($1.raw);
     }
     | TOK_NULL_VALUE
     {
@@ -1384,29 +1392,46 @@ literal
 /*
 **==============================================================================
 **
-** string_value:
+** string_literal:
 **
 **==============================================================================
 */
 
-string_value 
+string_literal 
     : TOK_STRING_VALUE
     {
-	MOF_trace("string_value:1");
+	MOF_trace("string_literal:1");
 	$$ = $1;
     }
-    | string_value TOK_STRING_VALUE
+    | string_literal TOK_STRING_VALUE
     {
-	size_t n1 = strlen($1);
-	size_t n2 = strlen($2);
+        /* Raw case */
+        {
+            size_t n1 = strlen($1.raw);
+            size_t n2 = strlen($2.raw);
 
-	MOF_trace("string_value:2");
+            MOF_trace("string_literal:2");
 
-	$$ = (char*)realloc($1, n1 + n2 + 16);
-	MOF_ASSERT($$ != NULL);
+            $$.raw = (char*)realloc($1.raw, n1 + n2 + 16);
+            MOF_ASSERT($$.raw != NULL);
 
-	strcat($$, $2);
-	free($2);
+            strcat($$.raw, $2.raw);
+            free($2.raw);
+        }
+
+        /* Escaped case */
+        {
+            size_t n1 = strlen($1.escaped);
+            size_t n2 = strlen($2.escaped);
+
+            MOF_trace("string_literal:2");
+
+            $$.escaped = (char*)realloc($1.escaped, n1 + n2 + 16);
+            MOF_ASSERT($$.escaped != NULL);
+
+            strcat($$.escaped, $2.escaped);
+            free($2.escaped);
+        }
     }
     ;
 

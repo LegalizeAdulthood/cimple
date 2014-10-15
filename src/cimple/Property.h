@@ -28,7 +28,6 @@
 #define _cimple_Property_h
 
 #include "config.h"
-#include "options.h"
 #include "Type.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -42,11 +41,24 @@ struct Property
 {
     T value;
     uint8 null;
-#ifdef CIMPLE_HAVE_PROPERTY_PADDING
-    // Pad so that sizeof(Property<T>) is 16 bytes.
-    char _padding[16 - (sizeof(T) + sizeof(uint8))];
-#endif
+
+    void set(const T& x);
+    void clear();
 };
+
+template<class T>
+inline void Property<T>::set(const T& x)
+{
+    value = x;
+    null = false;
+}
+
+template<class T>
+inline void Property<T>::clear()
+{
+    __clear(value); 
+    null = true;
+}
 
 CIMPLE_NAMESPACE_END
 

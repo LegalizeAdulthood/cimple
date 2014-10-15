@@ -27,7 +27,7 @@
 #ifndef _MOF_Element_h
 #define _MOF_Element_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 class MOF_Qualifier_Info;
 class MOF_Qualifier;

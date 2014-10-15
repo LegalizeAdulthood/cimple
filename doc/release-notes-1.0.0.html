@@ -1,0 +1,605 @@
+<html lang="en">
+<head>
+<title>CIMPLE 1.0.0 Release Notes</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="CIMPLE 1.0.0 Release Notes">
+<meta name="generator" content="makeinfo 4.8">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">CIMPLE 1.0.0 Release Notes</h1>
+   <div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_TOC0" href="#TOC0">1 Introduction</a>
+<li><a name="toc_TOC1" href="#TOC1">2 What's New?</a>
+<ul>
+<li><a href="#TOC2">2.1 New CIMPLE Users Guide</a>
+<li><a href="#TOC3">2.2 Platform Support</a>
+<li><a href="#TOC4">2.3 Build Procedures</a>
+<li><a href="#TOC5">2.4 New <code>genprov</code> Patch Option</a>
+<li><a href="#TOC6">2.5 New <code>genmod</code> Tool</a>
+<li><a href="#TOC7">2.6 Multi-Provider Generation in <code>genprov</code></a>
+<li><a href="#TOC8">2.7 New <code>genproj</code> Tool</a>
+<li><a href="#TOC9">2.8 New <code>ciminvoke</code> Tool</a>
+<li><a href="#TOC10">2.9 New <code>cimlisten</code> Tool</a>
+<li><a href="#TOC11">2.10 <code>Regmod</code> Is Now an OpenPegasus Client</a>
+<li><a href="#TOC12">2.11 New <code>Property::set</code> and <code>Property::clear</code> Methods</a>
+<li><a href="#TOC13">2.12 Provider Examples</a>
+<li><a href="#TOC14">2.13 New <code>Datetime::ascii</code> Method</a>
+<li><a href="#TOC15">2.14 New OpenWBEM Adapter</a>
+<li><a href="#TOC16">2.15 Static Builds</a>
+<li><a href="#TOC17">2.16 MOF Compiler Accepts DMTF CIM Schemas</a>
+<li><a href="#TOC18">2.17 MOF Compiler Include Relative</a>
+<li><a href="#TOC19">2.18 The MOF Search Path</a>
+<li><a href="#TOC20">2.19 Cross-Namespace Association Support</a>
+<li><a href="#TOC21">2.20 Removed <code>Meta_Class.crc</code> Member</a>
+<li><a href="#TOC22">2.21 Upgraded to CIM 2.14 Schema</a>
+</li></ul>
+<li><a name="toc_TOC23" href="#TOC23">3 Bug Fixes</a>
+<ul>
+<li><a href="#TOC24">3.1 <strong>Bug 1</strong>: Life-Cycle Indications for the CMPI Adapter</a>
+<li><a href="#TOC25">3.2 <strong>Bug 36</strong>: <code>Modify_instance</code> Has No Property List</a>
+</li></ul>
+<li><a name="toc_TOC26" href="#TOC26">4 Migration Notes</a>
+<ul>
+<li><a href="#TOC27">4.1 Class Generation</a>
+<li><a href="#TOC28">4.2 Provider Patching</a>
+<li><a href="#TOC29">4.3 Module Generation</a>
+<li><a href="#TOC30">4.4 Using <code>genproj</code></a>
+</li></ul>
+</li></ul>
+</div>
+
+
+
+<!-- ============================================================================= -->
+<!-- Chapter: Introduction -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC0"></a>1 Introduction</h2>
+
+<p>The CIMPLE project began over two years ago and has had 55 releases. This
+document introduces CIMPLE 1.0.0 and explains what has changed since the
+last public release (CIMPLE 0.99.56). If you are unfamiliar with the
+major changes introduced by CIMPLE 0.99.56, you might want to review them
+by clicking here: <a href="http://www.cimple.org/downloads.html">http://www.cimple.org/downloads.html</a>.
+
+   <p><strong>Please read this document carefully if you are an existing CIMPLE user. 
+There are a few major changes in CIMPLE that require some action.</strong>
+
+   <p>Chapter 1 describes what is new in this release. Chapter 2 discusses bugs fixed
+by this release. Chapter 3 explains how to migrate providers developed with
+earlier versions.
+
+<!-- ============================================================================= -->
+<!-- Chapter: What's New? -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC1"></a>2 What's New?</h2>
+
+<p>This chapter covers new capabilities introduced by CIMPLE 1.0.0.
+
+<!--  -->
+<h3 class="section"><a name="TOC2"></a>2.1 New CIMPLE Users Guide</h3>
+
+<p>We recently prepared a new users guide for CIMPLE, which explains how to
+develop providers with CIMPLE. It also covers features introduced by
+CIMPLE 1.0.0. This guide is available in PDF format at:
+<a href="http://www.cimple.org/Using_CIMPLE.pdf">http://www.cimple.org/Using_CIMPLE.pdf</a>.
+
+<!--  -->
+<h3 class="section"><a name="TOC3"></a>2.2 Platform Support</h3>
+
+<p>CIMPLE 1.0.0 officially supports the following platforms.
+
+     <ul>
+<li>Linux-X86 32-bit, GNU C++
+<li>Linux-X86 64-bit, GNU C++
+<li>Linux-IA64 64-bit, GNU C++
+<li>Linux-S390 32-bit, GNU C++
+<li>Linux-S390 64-bit, GNU C++
+<li>Linux-PPC 32-bit, GNU C++
+<li>Linux-PPC 64-bit, GNU C++
+</ul>
+
+<!--  -->
+<h3 class="section"><a name="TOC4"></a>2.3 Build Procedures</h3>
+
+<p>The CIMPLE build procedures now comply with the GNU Coding Standards
+(see <a href="http://www.gnu.org/prep/standards">http://www.gnu.org/prep/standards</a>). For example, the following
+configures, builds, and installs CIMPLE.
+
+<pre class="example">     $ ./configure [OPTIONS]
+     $ make
+     $ make install
+</pre>
+   <p class="noindent">The configure script supports the standard and custom options listed below.
+
+<pre class="example">     --help
+     --host=HOST
+     --prefix=DIR
+     --bindir=DIR
+     --libdir=DIR
+     --incluedir=DIR
+     --datadir=DIR
+     --with-pegasus=DIR
+     --with-pegasus-libdir=DIR
+     --with-pegasus-includes=DIR
+     --with-pegasus-env
+     --with-cmpi=DIR
+     --with-openwbem=DIR
+     --with-schema=DIR
+     --enable-debug
+     --enable-static
+</pre>
+   <p class="noindent">CIMPLE can be configured with support for any of the following.
+
+     <ul>
+<li>CMPI (use `<samp><span class="samp">--with-cmpi=DIR</span></samp>'). 
+<li>OpenPegasus (use `<samp><span class="samp">--with-pegasus=DIR</span></samp>'). 
+<li>OpenPegasus source distribution (use `<samp><span class="samp">--with-pegasus-env</span></samp>'). 
+<li>OpenWBEM (use `<samp><span class="samp">--with-openwbem=DIR</span></samp>'). 
+</ul>
+
+<p class="noindent">If you use CIMPLE with an OpenPegasus source distribution, then configure,
+build and install as follows.
+
+<pre class="example">     ./configure --with-pegasus-env
+     make
+     make install
+</pre>
+   <p class="noindent">This configures CIMPLE from the OpenPegasus environment variables
+(<code>PEGASUS_PLATFORM</code>, <code>PEGASUS_HOME</code>, <code>PEGASUS_ROOT</code>), builds,
+and then installs CIMPLE under PEGASUS_HOME. <strong>Do not forget to install</strong>.
+
+<!--  -->
+<h3 class="section"><a name="TOC5"></a>2.4 New <code>genprov</code> Patch Option</h3>
+
+<p>The <code>genprov</code> tool now patches existing provider sources. That is, it
+updates the method signatures in the those source files. For example, if
+the following files exist (in the current directory):
+
+<pre class="example">     CIM_ComputerSystem_Provider.h
+     CIM_ComputerSystem_Provider.cpp
+</pre>
+   <p class="noindent">then the following command patches them.
+
+<pre class="example">     $ genprov CIM_ComputerSystem
+     Patched CIM_ComputerSystem_Provider.h
+     Patched CIM_ComputerSystem_Provider.cpp
+</pre>
+   <p class="noindent">This tool should be used in two situations.
+
+     <ul>
+<li>When a MOF class definition changes an extrinsic method. 
+<li>When CIMPLE changes a provider method signature (CIMPLE 1.0.0
+    changed the method signature of <code>modify_instance</code> as well
+    as extrinsic method signatures with reference arguments). 
+</ul>
+
+<p class="noindent">We recommend running <code>genprov</code> to fix faulty method signatures generated
+by older versions of <code>genprov</code>. <strong>Also after running genprov, you
+should remove the </strong><code>proc</code><strong> method, as it is no longer used.</strong>
+
+<!--  -->
+<h3 class="section"><a name="TOC6"></a>2.5 New <code>genmod</code> Tool</h3>
+
+<p>The new <code>genmod</code> tool automatically generates <code>module.cpp</code> for one
+or more providers. The following example generates a module for the
+<code>CIM_ComputerSystem</code> and <code>CIM_Fan</code> providers.
+
+<pre class="example">     $ genmod CIM_ComputerSystem CIM_ComputerSystem CIM_Fan
+     Created module.cpp
+</pre>
+   <p class="noindent">The first argument is the name of the module. The remaining arguments are the
+names of classes, for which there are (or will be) providers.
+
+   <p><code>Genmod</code> generates entry points for all three provider interfaces,
+including CMPI, OpenPegasus, and OpenWBEM. To enable one of these entry points,
+compile <code>module.cpp</code> with one of the following.
+
+<pre class="example">     -DCIMPLE_CMPI_MODULE
+     -DCIMPLE_PEGASUS_MODULE
+     -DCIMPLE_OPENWBEM_MODULE
+</pre>
+   <p><code>Genmod</code> also generates the <code>proc</code> method, formerly located
+in the provider sources. <strong>You must remove the </strong><code>proc</code><strong> method from
+the provider sources since it is no longer used.</strong> <strong>Also, note that
+running </strong><code>genmod</code><strong> is not optional.</strong>
+
+<!--  -->
+<h3 class="section"><a name="TOC7"></a>2.6 Multi-Provider Generation in <code>genprov</code></h3>
+
+<p>The <code>genprov</code> tool now generates provider skeletons for more than one
+provider. For example, the following command generates provider skeletons
+for the <code>CIM_ComputerSystem</code> and <code>CIM_Fan</code> providers.
+
+<pre class="example">     $ genprov CIM_ComputerSystem CIM_Fan
+     Created CIM_ComputerSystem_Provider.h
+     Created CIM_ComputerSystem_Provider.cpp
+     Created CIM_Fan.h
+     Created CIM_Fan.cpp
+</pre>
+   <p class="noindent">As mentioned above, <code>genprov</code> patches the provider sources if they already
+exist.
+
+<!--  -->
+<h3 class="section"><a name="TOC8"></a>2.7 New <code>genproj</code> Tool</h3>
+
+<p>The new <code>genproj</code> tool (generate project) runs the following tools
+automatically.
+
+<pre class="example">     genclass
+     genprov
+     genmod
+</pre>
+   <p class="noindent"><code>Genproj</code> takes the same arguments as <code>genmod</code>. The following command
+generates a complete set of sources for the
+for the <code>CIM_ComputerSystem</code> and <code>CIM_Fan</code> providers.
+
+<pre class="example">     $ genproj CIM_ComputerSystem CIM_ComputerSystem CIM_Fan
+     ==== genclass:
+     Created CIM_ManagedElement.h
+     Created CIM_ManagedElement.cpp
+     Created CIM_ManagedSystemElement.h
+     Created CIM_ManagedSystemElement.cpp
+     Created CIM_LogicalElement.h
+     Created CIM_LogicalElement.cpp
+     Created CIM_Job.h
+     Created CIM_Job.cpp
+     Created CIM_ConcreteJob.h
+     Created CIM_ConcreteJob.cpp
+     Created CIM_EnabledLogicalElement.h
+     Created CIM_EnabledLogicalElement.cpp
+     Created CIM_System.h
+     Created CIM_System.cpp
+     Created CIM_ComputerSystem.h
+     Created CIM_ComputerSystem.cpp
+     Created CIM_LogicalDevice.h
+     Created CIM_LogicalDevice.cpp
+     Created CIM_CoolingDevice.h
+     Created CIM_CoolingDevice.cpp
+     Created CIM_Fan.h
+     Created CIM_Fan.cpp
+     created repository.h
+     Created repository.cpp
+     ==== genprov:
+     Patched CIM_ComputerSystem_Provider.h
+     Patched CIM_ComputerSystem_Provider.cpp
+     Created CIM_Fan_Provider.h
+     Created CIM_Fan_Provider.cpp
+     ==== genmod:
+     Created module.cpp
+</pre>
+   <p class="noindent">Running <code>genproj</code> is not required. You can still run <code>genclass</code>,
+<code>genprov</code>, and <code>genmod</code> separately.
+
+<!--  -->
+<h3 class="section"><a name="TOC9"></a>2.8 New <code>ciminvoke</code> Tool</h3>
+
+<p>The new <code>ciminvoke</code> tool is an OpenPegasus client that invokes extrinsic
+provider methods. Since <code>ciminvoke</code> is experimental, it is not linked into
+the build. To build it, first build CIMPLE, and then type these commands from
+the root of the CIMPLE distribution (`<samp><span class="samp">cimple-1.0.0</span></samp>').
+
+<pre class="example">     $ cd src/pegasus/ciminvoke
+     $ make
+     $ make install
+</pre>
+   <p class="noindent">The usage follows.
+
+<pre class="example">     ciminvoke [OPTIONS] object-path method-name [param=VALUE]...
+</pre>
+   <p class="noindent">For more on <code>ciminvoke</code>, see
+<code>cimple-1.0.0/src/pegasus/ciminvoke/readme.txt</code>.
+
+<!--  -->
+<h3 class="section"><a name="TOC10"></a>2.9 New <code>cimlisten</code> Tool</h3>
+
+<p>The new <code>cimlisten</code> tool is an OpenPegasus client that subscribes to and
+listens for CIM indications. Since <code>cimlisten</code> is experimental, it is
+not linked into the build. To build it, first build CIMPLE, and then type
+these commands from the root of the CIMPLE distribution (`<samp><span class="samp">cimple-1.0.0</span></samp>').
+
+<pre class="example">     $ cd src/pegasus/cimlisten
+     $ make
+     $ make install
+</pre>
+   <p class="noindent">The usage is shown below.
+
+<pre class="example">     $ cimlisten [OPTIONS] QUERY
+</pre>
+   <p class="noindent">The following example, subscribes to and listens for indications of the
+class <code>CIM_Indication</code> on the default namespace (<code>root/cimv2</code>).
+
+<pre class="example">     $ cimlisten
+</pre>
+   <p class="noindent">The command hangs indefinitely, printing indications to standard output as
+they are received. The following command subscribes to and listens for
+indications of the class <code>MyIndication</code>.
+
+<pre class="example">     cimlisten "select * from MyIndication"
+</pre>
+   <p class="noindent">For more on <code>cimlisten</code>, type:
+
+<pre class="example">     $ cimlisten -h
+</pre>
+   <!--  -->
+<h3 class="section"><a name="TOC11"></a>2.10 <code>Regmod</code> Is Now an OpenPegasus Client</h3>
+
+<p>The <code>regmod</code> tool now runs as an OpenPegasus client (rather than modifying
+the OpenPegasus repository directly). Accordingly, the OpenPegasus server must
+be started before running <code>regmod</code>.
+
+<!--  -->
+<h3 class="section"><a name="TOC12"></a>2.11 New <code>Property::set</code> and <code>Property::clear</code> Methods</h3>
+
+<p>The <code>Property</code> struct, used in generated classes, now has <code>set</code> and
+<code>clear</code> methods to simplify setting and clearing of property values. 
+Before it was necessary to clear the null flag when setting the value
+as shown in the following example:
+
+<pre class="example">     inst-&gt;CreationClassName.value = "LinuxComputerSystem";
+     inst-&gt;CreationClassName.null = false;
+</pre>
+   <p class="noindent">You can now do this with a single call.
+
+<pre class="example">     inst-&gt;CreationClassName.set("LinuxComputerSystem");
+</pre>
+   <p class="noindent">Conversely, it was necessary to clear the value when setting the null flag
+as shown in the following example.
+
+<pre class="example">     inst-&gt;CreationClassName.value = "";
+     inst-&gt;CreationClassName.null = true;
+</pre>
+   <p class="noindent">You can now do this with a single call.
+
+<pre class="example">     inst-&gt;CreationClassName.clear();
+</pre>
+   <p class="noindent"><strong>We recommend using the </strong><code>set</code><strong> and </strong><code>clear</code><strong> methods wherever
+possible to avoid mistakes. Forgetting to clear the null flag is a common
+mistake.</strong>
+
+<!--  -->
+<h3 class="section"><a name="TOC13"></a>2.12 Provider Examples</h3>
+
+<p>There are now comprehensive provider examples located under:
+
+<pre class="example">     cimple-1.0.0/src/cimple/provider/Employee
+</pre>
+   <p class="noindent">We suggest looking at these first if you are new to CIMPLE and of course
+reading the CIMPLE users guide (<a href="http://www.cimple.org/Using_CIMPLE.pdf">http://www.cimple.org/Using_CIMPLE.pdf</a>).
+
+<!--  -->
+<h3 class="section"><a name="TOC14"></a>2.13 New <code>Datetime::ascii</code> Method</h3>
+
+<p><code>Datetime</code> has a new form of the <code>ascii</code> method. The following
+snippet uses the <strong>old</strong> form:
+
+<pre class="example">     Datetime dt;
+     ...
+     char buffer[Datetime::BUFFER_SIZE];
+     dt.ascii(buffer);
+</pre>
+   <p class="noindent">Whereas, the following using the <strong>new</strong> form.
+
+<pre class="example">     Datetime dt;
+     ...
+     String buffer = dt.ascii();
+</pre>
+   <p class="noindent">The former incurs no memory allocation but risks a buffer overrun if
+<code>buffer</code> is too small. The latter eliminates the risk of a
+buffer overrun but incurs a memory allocation. You can decide for yourself
+which is better.
+
+<!--  -->
+<h3 class="section"><a name="TOC15"></a>2.14 New OpenWBEM Adapter</h3>
+
+<p>Bart Whitely and the OpenWBEM team (Novell Inc.) contributed a new adapter
+enabling CIMPLE providers to work under the native OpenWBEM C++ provider
+interface. The OpenWBEM adapter is experimental in this release.
+
+<!--  -->
+<h3 class="section"><a name="TOC16"></a>2.15 Static Builds</h3>
+
+<p>By default CIMPLE installs at most three shared libraries:
+
+     <ul>
+    <li><code>libcimple.so</code> &mdash; the main CIMPLE library
+    <li><code>libcimplecmpiadap.so</code> &mdash; the CMPI adapter
+    <li><code>libcimplepegadap.so</code> &mdash; the OpenPegasus adapter
+    <li><code>libcimpleowadap.so</code> &mdash; the OpenWBEM adapter
+</ul>
+
+<p class="noindent">Alternatively, you can build these libraries as static by passing the
+`<samp><span class="samp">--enable-static</span></samp>' option to the <code>configure</code> script, which eliminates
+the need to deploy extra libraries.
+
+<!--  -->
+<h3 class="section"><a name="TOC17"></a>2.16 MOF Compiler Accepts DMTF CIM Schemas</h3>
+
+<p>The CIMPLE MOF compiler (used by <code>genclass</code> and <code>genprov</code>) now
+compiles the DMTF CIM schemas as they come from the DMTF. Before two changes
+were needed:
+
+     <ul>
+<li>Creation of the <code>CIM_Schema.mof</code> file. 
+<li>Reversing the slashes in the include pragmas. 
+</ul>
+
+<p class="noindent">Now the MOF compiler accepts the schemas &ldquo;as is&rdquo;.
+
+<!--  -->
+<h3 class="section"><a name="TOC18"></a>2.17 MOF Compiler Include Relative</h3>
+
+<p class="noindent">The MOF compiler now handles included files relative to the currently
+opened file. The following pragma first searches for `<samp><span class="samp">abc.mof</span></samp>' in the
+directory containing file that included it.
+
+   <p>#pragma include("abc.mof");
+
+<!--  -->
+<h3 class="section"><a name="TOC19"></a>2.18 The MOF Search Path</h3>
+
+<p>The <code>genclass</code> and <code>genmod</code> tools now embed the default directory
+containing the MOF schema files. The CIMPLE_MOF_PATH environment is no
+longer required, unless you want to override the default. This directory name
+is set during configuration to <code>PREFIX/share/cimple/schema/cim214</code>. You
+can override it with the `<samp><span class="samp">--with-schema</span></samp>' option as shown below.
+
+<pre class="example">     ./configure --with-schema=DIR
+</pre>
+   <p class="noindent">The CIMPLE_MOF_PATH overrides the use of this directory. To determine the
+actual directory name, see the `<samp><span class="samp">WITH_SCHEMA_OPT</span></samp>' variable in the
+<code>config.options</code> file (located in the root of the CIMPLE source
+distribution).
+
+<!--  -->
+<h3 class="section"><a name="TOC20"></a>2.19 Cross-Namespace Association Support</h3>
+
+<p>CIMPLE now supports cross-namespace association providers. The
+<code>Instance</code> class&mdash;from which all generated classes derive&mdash;defines
+the following data member.
+
+<pre class="example">     String __name_space;
+</pre>
+   <p class="noindent">When an association provider builds the references, it may optionally set
+the <code>__name_space</code> member. Take for example, the following MOF
+definitions.
+
+<pre class="example">     class B
+     {
+         [Key] uint32 Key;
+     };
+     
+     [Association]
+     class A
+     {
+        B REF Left;
+        B REF Right;
+     };
+</pre>
+   <p class="noindent">The following snippet creates an association of type <code>A</code> in which
+<code>Left</code> and <code>Right</code> refer to instances in namespaces `<samp><span class="samp">root/left</span></samp>'
+and `<samp><span class="samp">root/right</span></samp>' respectively.
+
+<pre class="example">     B* Left = B::create(true);
+     Left-&gt;__name_space = "root/left";
+     Left-&gt;Key.set(1001);
+     
+     B* Right = B::create(true);
+     Left-&gt;__name_space = "root/right";
+     Right-&gt;Key.set(1002);
+     
+     A* a = A::create(true);
+     a-&gt;Left = Left;
+     a-&gt;Right = Right;
+</pre>
+   <p class="noindent">If <code>__name_space</code> is empty, it defaults to the namespace of the
+originating request.
+
+<!--  -->
+<h3 class="section"><a name="TOC21"></a>2.20 Removed <code>Meta_Class.crc</code> Member</h3>
+
+<p>The <code>Meta_Class.crc</code> member has been removed. <strong>Accordingly, you
+should regenerate your classes with </strong><code>genclass</code>.
+
+<!--  -->
+<h3 class="section"><a name="TOC22"></a>2.21 Upgraded to CIM 2.14 Schema</h3>
+
+<p>CIMPLE now includes the CIM 2.14 schema (and the CIM 2.13.1 schema as before). 
+All other schemas have been removed to make the distribution smaller.
+
+<!-- ============================================================================= -->
+<!-- Chapter: Bug Fixes -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC23"></a>3 Bug Fixes</h2>
+
+<p>CIMPLE 1.0.0 only fixes two bugs, since the previous release closed most of
+the outstanding bugs.
+
+<!--  -->
+<h3 class="section"><a name="TOC24"></a>3.1 <strong>Bug 1</strong>: Life-Cycle Indications for the CMPI Adapter</h3>
+
+<p>CIMPLE-CMPI Indication providers can now provide instances with embedded
+objects, making it possible to generate life-cycle indications. The OpenPegasus
+adapter supported embedded objects before.
+
+<!--  -->
+<h3 class="section"><a name="TOC25"></a>3.2 <strong>Bug 36</strong>: <code>Modify_instance</code> Has No Property List</h3>
+
+<p class="noindent">The <code>modify_instance</code> provider method now takes an additional parameter
+that indicates which properties to modify. Here is the old function prototype:
+
+<pre class="example">     Modify_Instance_Status &lt;CLASSNAME&gt;_Provider::modify_instance(
+         const &lt;CLASSNAME&gt;* instance);
+</pre>
+   <p class="noindent">The new prototype adds the <code>model</code> parameter as shown below.
+
+<pre class="example">     Modify_Instance_Status &lt;CLASSNAME&gt;_Provider::modify_instance(
+         const &lt;CLASSNAME&gt;* model,
+         const &lt;CLASSNAME&gt;* instance);
+</pre>
+   <p class="noindent">The non-null properties of <code>model</code> must be modified.
+
+   <p><strong>Since this bug fix changes the provider interface, you must patch each
+provider with </strong><code>genprov</code><strong>. As mentioned above, </strong><code>genprov</code><strong> can now
+automatically patch your provider</strong>.
+
+<!-- ============================================================================= -->
+<!-- Chapter: Migration Notes -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC26"></a>4 Migration Notes</h2>
+
+<p>This chapter explains how to migrate providers from an earlier version to
+CIMPLE 1.0.0. This process is automated and relatively easy.
+
+<h3 class="section"><a name="TOC27"></a>4.1 Class Generation</h3>
+
+<p>Regenerate all classes with <code>genclass</code>. This is a simple matter of
+running <code>genclass</code> as shown below.
+
+<pre class="example">     $ genclass -r CLASS-1 CLASS-2 ... CLASS-N
+</pre>
+   <p>The class arguments are the names of classes for which there are providers. 
+It is unnecessary to generate all related classes since <code>genclass</code> does
+this automatically.
+
+<h3 class="section"><a name="TOC28"></a>4.2 Provider Patching</h3>
+
+<p>Patch your provider sources with the new <code>genprov</code> patching feature. 
+Simply run <code>genprov</code> in the directory that contains your provider
+sources as follows.
+
+<pre class="example">     $ genprov CLASS-1 CLASS-2 ... CLASS-N
+</pre>
+   <h3 class="section"><a name="TOC29"></a>4.3 Module Generation</h3>
+
+<p>Generate <code>module.cpp</code> with the new <code>genmod</code> utility.
+
+<pre class="example">     $ genmod MODULE-NAME CLASS-1 CLASS-2 ... CLASS-N
+</pre>
+   <h3 class="section"><a name="TOC30"></a>4.4 Using <code>genproj</code></h3>
+
+<p>As mentioned in chapter 1, the new <code>genproj</code> tool can run <code>genclass</code>,
+<code>genprov</code>, and <code>genmod</code> in a single step. The usage is shown below.
+
+<pre class="example">     $ genproj MODULE-NAME CLASS-1 CLASS-2 ... CLASS-N
+</pre>
+   <p class="noindent">This is a shortcut to the three commands shown in the last three
+sections.
+
+</body></html>
+

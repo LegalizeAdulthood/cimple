@@ -1,11 +1,11 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmpl_CIM_ConcreteJob
+MODULE=1
+
+SHARED_LIBRARY = cimple_CIM_ConcreteJob
 
 INCLUDES += $(CMPI_INCLUDES)
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 SOURCES = \
     CIM_ConcreteJob.cpp \
@@ -17,26 +17,20 @@ SOURCES = \
     module.cpp \
     repository.cpp
 
-LIBRARIES = cimple
+CIMPLE_PEGASUS_MODULE=1
 
-#BUILD_CMPI_PROVIDER=1
-ifdef BUILD_CMPI_PROVIDER
-  LIBRARIES += cimplecmpiadap
-  DEFINES += -DBUILD_CMPI_PROVIDER
-else
-  LIBRARIES += cimplepegadap
-endif
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r CIM_ConcreteJob
+	$(BINDIR)/genclass -r CIM_ConcreteJob
 
 genprov:
-	genprov -f CIM_ConcreteJob
+	$(BINDIR)/genprov CIM_ConcreteJob
 
+genmod:
+	$(BINDIR)/genmod CIM_ConcreteJob CIM_ConcreteJob

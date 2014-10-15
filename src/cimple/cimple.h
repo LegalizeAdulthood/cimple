@@ -40,7 +40,6 @@
 #include "Registration.h"
 #include "cimom.h"
 #include "Ref.h"
-#include "Thread.h"
 #include "Time.h"
 #include "Atomic_Counter.h"
 #include "Meta_Repository.h"
@@ -49,5 +48,8 @@
 #include "flavor.h"
 #include "scope.h"
 #include "Hnd.h"
+#include "Thread.h"
+#include "Mutex.h"
+#include "Auto_Mutex.h"
 
 #endif /* _cimple_h */

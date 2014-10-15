@@ -61,7 +61,7 @@ _CIM_EnabledLogicalElement_EnabledState =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledState),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledState_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledState_MV,
 };
 
 extern const Meta_Property
@@ -101,7 +101,7 @@ _CIM_EnabledLogicalElement_RequestedState =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,RequestedState),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestedState_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestedState_MV,
 };
 
 extern const Meta_Property
@@ -124,7 +124,7 @@ _CIM_EnabledLogicalElement_EnabledDefault =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledDefault),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledDefault_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_MV,
 };
 
 extern const Meta_Property
@@ -201,10 +201,10 @@ _CIM_EnabledLogicalElement_RequestStateChange_return_value =
 
 static Meta_Feature* _CIM_EnabledLogicalElement_RequestStateChange_MFA[] =
 {
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_Job,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_TimeoutPeriod,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_return_value
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_Job,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_TimeoutPeriod,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_return_value
 };
 
 const Meta_Method
@@ -223,21 +223,21 @@ CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class =
 
 static Meta_Feature* _CIM_EnabledLogicalElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_OtherEnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledDefault,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
-    (Meta_Feature*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
+    (Meta_Feature*)(void*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -272,10 +272,9 @@ const Meta_Class CIM_EnabledLogicalElement::static_meta_class =
     _locals,
     &CIM_LogicalElement::static_meta_class,
     0, /* num_keys */
-    0x1CA9D0D7, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test5/CIM_EnabledLogicalElement.cpp,v 1.23 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test5/CIM_EnabledLogicalElement.cpp,v 1.27 2007/04/26 22:41:09 mbrasher-public Exp $");

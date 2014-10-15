@@ -41,12 +41,12 @@ namespace pegasus
         return context;
     }
 
-    Pegasus::CIMOMHandle* cimom_handle()
+    P_CIMOMHandle* cimom_handle()
     {
         return _top()->cimom_handle();
     }
 
-    Pegasus::OperationContext* operation_context()
+    P_OperationContext* operation_context()
     {
         return _top()->operation_context();
     }
@@ -54,4 +54,4 @@ namespace pegasus
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/pegasus_unsupported.cpp,v 1.3 2007/03/07 18:42:32 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/pegasus_unsupported.cpp,v 1.4 2007/03/16 15:10:01 mbrasher-public Exp $");

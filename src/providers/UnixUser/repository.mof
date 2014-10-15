@@ -1,0 +1,11 @@
+
+class UnixUser
+{
+    [key] string name;
+    string password;
+    uint32 uid;
+    uint32 gid;
+    string fullName;
+    string homeDir;
+    string shellProgram;
+};

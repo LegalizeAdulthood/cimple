@@ -27,9 +27,9 @@
 #ifndef _MOF_Property_h
 #define _MOF_Property_h
 
-#include <MOF_Config.h>
-#include <MOF_Qualified_Element.h>
-#include <MOF_Literal.h>
+#include "MOF_Config.h"
+#include "MOF_Qualified_Element.h"
+#include "MOF_Literal.h"
 
 class MOF_LINKAGE MOF_Property : public MOF_Qualified_Element
 {

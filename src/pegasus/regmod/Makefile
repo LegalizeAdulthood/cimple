@@ -1,32 +1,18 @@
-ROOT = $(PEGASUS_ROOT)
-DIR = cimple/regmod
-include $(ROOT)/mak/config.mak
+TOP = ../../..
+include $(TOP)/mak/config.mak
 
-LOCAL_DEFINES = -DPEGASUS_INTERNALONLY
+INSTALL=1
 
-PROGRAM = regmod
+BINARY = regmod
 
 SOURCES = main.cpp
 
-LIBRARIES = \
-    $(CIMPLE_LIBRARY_PREFIX)cimpleutil$(CIMPLE_LIBRARY_SUFFIX) \
-    $(CIMPLE_LIBRARY_PREFIX)cimple$(CIMPLE_LIBRARY_SUFFIX) \
-    pegprovider \
-    pegrepository \
-    pegconfig \
-    pegcommon
+LIBRARIES = cimpleutil cimple pegclient pegcommon
 
-CIMPLE_ROOT = ../../..
-include $(CIMPLE_ROOT)/mak/extras.mak
-
-include $(ROOT)/mak/program.mak
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
 
 usage:
-	file2c usage.txt -n USAGE > usage.h
+	$(BINDIR)/file2c usage.txt -n USAGE > usage.h
 
-tests:
-
-genclass:
-
-chksrc:
-	chksrc $(SOURCES)
+include ../check-pegasus.mak

@@ -271,7 +271,7 @@ static int _to_openwbem_value(
     if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
     {
         const Meta_Reference* mr = (const Meta_Reference*)mf;
-        const Instance* ref = reference_of(ci, mr);
+        const Instance* ref = __ref_of(ci, mr);
 
         // Skip null references:
 
@@ -294,7 +294,7 @@ static int _to_openwbem_value(
     else if (mf->flags & CIMPLE_FLAG_PROPERTY)
     {
         const Meta_Property* mp = (const Meta_Property*)mf;
-        const void* prop = property_of(ci, mp);
+        const void* prop = __property_of(ci, mp);
 
         // Handle null properties:
 
@@ -330,7 +330,7 @@ static int _to_openwbem_value(
     else if (mf->flags & CIMPLE_FLAG_REFERENCE)
     {
         const Meta_Reference* mr = (const Meta_Reference*)mf;
-        const Instance* ref = reference_of(ci, mr);
+        const Instance* ref = __ref_of(ci, mr);
 
         // Skip null references:
 
@@ -911,7 +911,7 @@ int to_cimple_method(const OpenWBEM::String& methodName,
         if (mf->flags & CIMPLE_FLAG_REFERENCE && mf->flags & CIMPLE_FLAG_OUT)
         {
             const Meta_Reference* mr = (const Meta_Reference*)mf; 
-            Instance*& ref = reference_of(meth, mr); 
+            Instance*& ref = __ref_of(meth, mr); 
             if (!ref)
             {
                 ref = create(mr->meta_class); 
@@ -951,4 +951,4 @@ int to_cimple_method(const OpenWBEM::String& methodName,
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/openwbem/adapter/Converter.cpp,v 1.3 2007/03/07 20:25:23 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/openwbem/adapter/Converter.cpp,v 1.4 2007/03/20 19:01:33 mbrasher-public Exp $");

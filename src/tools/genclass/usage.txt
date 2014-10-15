@@ -8,14 +8,15 @@ classes (ancestor and reference classes).
 
 Genclass to process the following MOF files:
 
-    1. 	First CIM_Schema.mof (required).
+    1. 	First CIM_Schema.mof or first file of form cimv[0-9]*.mof (required).
     2. 	Second repository.mof (optional).
     3.	Finally any files given by the -M option (optional).
 
 Genclass requires the CIMPLE_MOF_PATH environment variable to be set, where
-it expects to find CIM_Schema.mof (which contains the CIM schema). The syntax 
-of CIMPLE_MOF_PATH is similar to the Linux/Unix PATH environment variable 
-(i.e., a list of directories separated by colons). For example:
+it expects to find CIM_Schema.mof or cimv[0-9]*.mof (which contains the CIM 
+schema). The syntax of CIMPLE_MOF_PATH is similar to the Linux/Unix PATH 
+environment variable (i.e., a list of directories separated by colons). For 
+example:
 
     export CIMPLE_MOF_PATH=/opt/cimple/schema/cim2131:/tmp/cim
 

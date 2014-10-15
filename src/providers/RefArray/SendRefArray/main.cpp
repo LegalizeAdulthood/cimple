@@ -24,10 +24,10 @@
 **==============================================================================
 */
 
+#include <cimple/config.h>
 #include <Pegasus/Common/Config.h>
 #include <cassert>
 #include <Pegasus/Client/CIMClient.h>
-#include <Pegasus/Common/XmlWriter.h>
 
 PEGASUS_USING_PEGASUS;
 PEGASUS_USING_STD;
@@ -52,8 +52,10 @@ int main(int argc, char** argv)
 
         const String NAMESPACE = "root/cimv2";
         Array<CIMObjectPath> arr1;
-        arr1.append(CIMObjectPath("RefArrayParam.key=1"));
-        arr1.append(CIMObjectPath("RefArrayParam.key=2"));
+        CIMObjectPath x0("RefArrayParam.key=1");
+        CIMObjectPath x1("RefArrayParam.key=2");
+        arr1.append(x0);
+        arr1.append(x1);
 
         inParams.append(CIMParamValue("arr1", CIMValue(arr1)));
 
@@ -64,10 +66,24 @@ int main(int argc, char** argv)
             inParams,
             outParams);
 
-        assert(outParams.size() == 0);
+        assert(outParams.size() == 1);
+
+        Array<CIMObjectPath> arr2;
+        outParams[0].getValue().get(arr2);
+        assert(arr2.size() == 2);
+
+        CIMObjectPath y0 = arr2[0];
+        CIMObjectPath y1 = arr2[1];
+
+        x0.setNameSpace("root/cimv2");
+        x1.setNameSpace("root/cimv2");
+
+        assert(y0.identical(x0));
+        assert(y1.identical(x1));
+
         Uint32 tmp;
         returnValue.get(tmp);
-        assert(tmp == 1000);
+        assert(tmp == 123);
     }
     catch(Exception& e)
     {
@@ -80,4 +96,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/SendRefArray/main.cpp,v 1.2 2007/03/07 20:25:27 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/SendRefArray/main.cpp,v 1.3 2007/03/16 21:21:38 mbrasher-public Exp $");

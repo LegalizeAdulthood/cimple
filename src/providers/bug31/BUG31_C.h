@@ -12,22 +12,16 @@
 #include "BUG31_A.h"
 #include "BUG31_A.h"
 
-#if (0x00633800 > CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
-#endif
-
-#if (0x00633800 < CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
-#endif
-
-
 CIMPLE_NAMESPACE_BEGIN
+
+// BUG31_C keys:
+//     key
 
 class BUG31_C : public Instance
 {
 public:
     // BUG31_C features:
-    Property<uint32> key; // KEY
+    Property<uint32> key;
 
     CIMPLE_CLASS(BUG31_C)
 };

@@ -27,7 +27,7 @@
 #ifndef _MOF_Options_h
 #define _MOF_Options_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 struct MOF_LINKAGE MOF_Options
 {

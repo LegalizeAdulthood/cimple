@@ -2,7 +2,7 @@ TOP = ../..
 POSIX_MAKEFILE=1
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = posix
+STATIC_LIBRARY = posix
 
 SOURCES = \
     dirent.cpp \
@@ -13,12 +13,6 @@ SOURCES = \
     pthread.cpp \
     time.cpp
 
-LIBRARIES =
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
-
 DEFINES += -DPOSIX_INTERNAL
 
 include $(TOP)/mak/rules.mak
-
-genclass:

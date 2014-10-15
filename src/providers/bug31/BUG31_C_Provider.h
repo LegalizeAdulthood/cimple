@@ -35,6 +35,7 @@ public:
         const BUG31_C* instance);
 
     Modify_Instance_Status modify_instance(
+        const BUG31_C* model,
         const BUG31_C* instance);
 
     Invoke_Method_Status meth(
@@ -42,18 +43,6 @@ public:
         const BUG31_A* r,
         BUG31_A*& s,
         Property<uint32>& return_value);
-
-    static int proc(
-        const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3,
-        void* arg4,
-        void* arg5,
-        void* arg6,
-        void* arg7);
 };
 
 CIMPLE_NAMESPACE_END

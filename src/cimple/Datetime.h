@@ -28,6 +28,7 @@
 #define _cimple_Datetime_h
 
 #include "config.h"
+#include "String.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -216,6 +217,10 @@ struct CIMPLE_CIMPLE_LINKAGE Datetime
         If the prettify flag is true, the format is somewhat more readable.
     */
     void ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify = false) const;
+
+    /** Similar to ascii() above, but returns String result.
+    */
+    String ascii(bool prettify = false) const;
 
     /** Print object to stream parameter.
     */

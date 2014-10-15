@@ -30,6 +30,7 @@
 #include <cimple/Thread_Context.h>
 #include <Pegasus/Common/OperationContext.h>
 #include <Pegasus/Provider/CIMOMHandle.h>
+#include "typedefs.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -40,18 +41,18 @@ class CIMPLE_HIDE Pegasus_Thread_Context : public Thread_Context
 public:
 
     Pegasus_Thread_Context(
-        Pegasus::CIMOMHandle* cimom_handle,
-        Pegasus::OperationContext* operation_context,
+        P_CIMOMHandle* cimom_handle,
+        P_OperationContext* operation_context,
         bool delete_operation_context);
 
     virtual ~Pegasus_Thread_Context();
 
-    Pegasus::CIMOMHandle* cimom_handle()
+    P_CIMOMHandle* cimom_handle()
     {
         return _cimom_handle;
     }
 
-    Pegasus::OperationContext* operation_context()
+    P_OperationContext* operation_context()
     {
         return _operation_context;
     }
@@ -98,8 +99,8 @@ public:
 
 private:
 
-    Pegasus::CIMOMHandle* _cimom_handle;
-    Pegasus::OperationContext* _operation_context;
+    P_CIMOMHandle* _cimom_handle;
+    P_OperationContext* _operation_context;
     bool _delete_operation_context;
 };
 
@@ -108,11 +109,11 @@ class Pegasus_Thread_Context_Pusher
 public:
 
     Pegasus_Thread_Context_Pusher(
-        Pegasus::CIMOMHandle* cimom_handle,
-        const Pegasus::OperationContext* operation_context)
+        P_CIMOMHandle* cimom_handle,
+        const P_OperationContext* operation_context)
     {
         _context = new Pegasus_Thread_Context(
-            cimom_handle, (Pegasus::OperationContext*)operation_context, false);
+            cimom_handle, (P_OperationContext*)operation_context, false);
         Thread_Context::push(_context);
     }
 

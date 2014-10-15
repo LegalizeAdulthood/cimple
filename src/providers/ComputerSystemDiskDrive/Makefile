@@ -1,27 +1,46 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INCLUDES += -I../repository
+MODULE=1
 
-SHARED_LIBRARY = cmplcsdd
+SHARED_LIBRARY = cimplecsdd
 
-SOURCES = ComputerSystemDiskDrive_Provider.cpp module.cpp
+SOURCES = \
+    CIM_Component.cpp \
+    CIM_ComputerSystem.cpp \
+    CIM_ConcreteJob.cpp \
+    CIM_DiskDrive.cpp \
+    CIM_EnabledLogicalElement.cpp \
+    CIM_Job.cpp \
+    CIM_LogicalDevice.cpp \
+    CIM_LogicalElement.cpp \
+    CIM_ManagedElement.cpp \
+    CIM_ManagedSystemElement.cpp \
+    CIM_MediaAccessDevice.cpp \
+    CIM_SystemComponent.cpp \
+    CIM_System.cpp \
+    CIM_SystemDevice.cpp \
+    ComputerSystem.cpp \
+    ComputerSystemDiskDrive.cpp \
+    ComputerSystemDiskDrive_Provider.cpp \
+    DiskDrive.cpp \
+    module.cpp \
+    repository.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimplepegadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS) 
-
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-genprov:
-	genprov -I ../repository -f Example
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r ComputerSystemDiskDrive
+
+genprov:
+	$(BINDIR)/genprov ComputerSystemDiskDrive
+
+genmod:
+	$(BINDIR)/genmod ComputerSystemDiskDrive ComputerSystemDiskDrive

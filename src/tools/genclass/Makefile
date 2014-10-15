@@ -1,16 +1,15 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
+INSTALL=1
+
 BINARY = genclass
+
 SOURCES = main.cpp
-LIBRARIES = cimplemof cimplegencommon cimpleutil cimple
-INCLUDES += -I$(SRC_DIR)/mof
+
+LIBRARIES = cimpleutil cimplegencommon cimplemof cimple
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
 usage:
-	file2c usage.txt -n USAGE > usage.h
-
-genclass:
+	$(BINDIR)/file2c usage.txt -n USAGE > usage.h

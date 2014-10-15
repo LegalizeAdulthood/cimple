@@ -27,8 +27,8 @@
 #ifndef _REF_Parser_h
 #define _REF_Parser_h
 
-#include <MOF_Config.h>
-#include <MOF_Object_Reference.h>
+#include "MOF_Config.h"
+#include "MOF_Object_Reference.h"
 
 extern size_t ref_line_num;
 extern const char* ref_input_first;

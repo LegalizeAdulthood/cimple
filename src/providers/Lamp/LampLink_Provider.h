@@ -35,7 +35,8 @@ public:
 	const LampLink* instance);
 
     Modify_Instance_Status modify_instance(
-	const LampLink* instance);
+        const LampLink* model,
+        const LampLink* instance);
 
     Enum_Associator_Names_Status enum_associator_names(
 	const Instance* instance,
@@ -49,18 +50,6 @@ public:
 	const LampLink* model,
 	const String& role,
 	Enum_References_Handler<LampLink>* handler);
-
-    static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
 };
 
 CIMPLE_NAMESPACE_END

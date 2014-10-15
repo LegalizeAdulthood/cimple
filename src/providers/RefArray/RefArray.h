@@ -12,16 +12,10 @@
 #include "RefArrayParam.h"
 #include "RefArrayParam.h"
 
-#if (0x00632900 > CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.41) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
-#endif
-
-#if (0x00632900 < CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.41) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
-#endif
-
-
 CIMPLE_NAMESPACE_BEGIN
+
+// RefArray keys:
+//     key
 
 class RefArray : public Instance
 {
@@ -35,8 +29,8 @@ public:
 class RefArray_SendRefArray_method : public Instance
 {
 public:
-    RefArrayParam* arr1;
-    RefArrayParam* arr2;
+    Array<RefArrayParam*> arr1;
+    Array<RefArrayParam*> arr2;
     Property<uint32> return_value;
     CIMPLE_METHOD(RefArray_SendRefArray_method)
 };

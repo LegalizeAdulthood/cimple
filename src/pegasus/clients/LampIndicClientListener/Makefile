@@ -1,29 +1,20 @@
-DIR = cimple/pegasus/indications/LampIndic/ClientListener
+TOP = ../../../..
+include $(TOP)/mak/config.mak
 
-include $(PEGASUS_ROOT)/mak/config.mak
+BINARY = LampIndicClientListener
 
-PROGRAM = LampIndicClientListener
-
-LIBRARIES = \
-    peglistener \
-    pegqueryexpression \
-    pegprovider \
-    pegcql \
-    pegwql \
-    pegquerycommon \
-    pegclient \
-    pegcommon
-	
 SOURCES = LampIndicClientListener.cpp
 
-include $(PEGASUS_ROOT)/mak/program.mak
+LIBRARIES = \
+    cimple \
+    pegclient \
+    peglistener \
+    pegcommon
 
-tests:
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
 
-live-tests:
-	$(PROGRAM)
+live:
+	$(TARGET)
 
-genclass:
-
-chksrc:
-	chksrc $(SOURCES)
+include ../../check-pegasus.mak

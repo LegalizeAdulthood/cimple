@@ -2,20 +2,22 @@ TOP = ../..
 include $(TOP)/mak/config.mak
 
 DIRS = \
-    file2c \
-    dlopen \
-    dlsym \
-    catmod \
+    csleep \
     gencommon \
     genclass \
     genclass/tests \
     genprov \
+    genmod \
+    genproj \
     genprov/tests \
-    apriori \
+    file2c
+
+XDIRS = \
+    dlopen \
     cwhat \
-    cgenuuid \
-    csleep \
-    cimpleinfo \
-    cimplefiles
+    dlsym \
+    catmod \
+    apriori \
+    cgenuuid
 
 include $(TOP)/mak/dir.mak

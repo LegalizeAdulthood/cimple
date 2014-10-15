@@ -1,26 +1,38 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INCLUDES += -I../repository
+MODULE=1
 
-SHARED_LIBRARY = cmpldiskdrive
+SHARED_LIBRARY = cimplediskdrive
 
-SOURCES = CIM_DiskDrive_Provider.cpp module.cpp
+SOURCES = \
+    CIM_ConcreteJob.cpp \
+    CIM_DiskDrive.cpp \
+    CIM_DiskDrive_Provider.cpp \
+    CIM_EnabledLogicalElement.cpp \
+    CIM_Job.cpp \
+    CIM_LogicalDevice.cpp \
+    CIM_LogicalElement.cpp \
+    CIM_ManagedElement.cpp \
+    CIM_ManagedSystemElement.cpp \
+    CIM_MediaAccessDevice.cpp \
+    module.cpp \
+    repository.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_CMPI_MODULE=1
 
-LIBRARIES += cimplecmpiadap
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
-reg:
-	regmod -n root/cimv2 -c $(SHARED_LIBRARY_TARGET)
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -n root/cimv2 -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r CIM_DiskDrive
+
+genprov:
+	$(BINDIR)/genprov CIM_DiskDrive
+
+genmod:
+	$(BINDIR)/genmod CIM_DiskDrive CIM_DiskDrive

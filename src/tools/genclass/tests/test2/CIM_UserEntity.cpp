@@ -25,9 +25,9 @@ _CIM_ManagedElement_ElementName;
 
 static Meta_Feature* _CIM_UserEntity_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -50,10 +50,9 @@ const Meta_Class CIM_UserEntity::static_meta_class =
     _locals,
     &CIM_OrganizationalEntity::static_meta_class,
     0, /* num_keys */
-    0x690B13AB, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_UserEntity.cpp,v 1.18 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_UserEntity.cpp,v 1.22 2007/04/26 22:41:09 mbrasher-public Exp $");

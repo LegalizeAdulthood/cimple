@@ -75,4 +75,7 @@ typedef __int32 ssize_t;
 
 #define CIMPLE_PLATFORM_ID "WIN32_IX86_MSVC"
 
+#define CIMPLE_UINT64_LITERAL(X) ((Uint64)(X))
+#define CIMPLE_SINT64_LITERAL(X) ((Sint64)(X))
+
 #endif /* _cimple_WIN32_IX86_MSVC_h */

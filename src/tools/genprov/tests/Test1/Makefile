@@ -8,10 +8,13 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN_DIR)/test_genprov1
+	@ $(BINDIR)/test_genprov1
 
 genclass:
-	genclass Test1
+	$(BINDIR)/genclass Test1
 
 genprov:
-	genprov  -f Test1
+	$(BINDIR)/genprov Test1
+
+genmod:
+	$(BINDIR)/genmod Test1 Test1

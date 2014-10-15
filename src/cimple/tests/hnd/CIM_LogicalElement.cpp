@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_6FAA529815A91D82B658654A66A4535E;
+extern const Meta_Repository __meta_repository_6827E083506B1A56883F566A87E0489F;
 
 extern const Meta_Qualifier
 _CIM_ManagedElement_Caption_MaxLen_MQ;
@@ -22,7 +22,7 @@ _CIM_ManagedElement_Caption_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_LogicalElement_Caption_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -50,7 +50,7 @@ _CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ;
 static const Meta_Qualifier*
 _CIM_LogicalElement_InstallDate_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
 };
 
 extern const Meta_Property
@@ -62,7 +62,7 @@ _CIM_ManagedSystemElement_Name_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_LogicalElement_Name_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Name_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Name_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -83,10 +83,10 @@ _CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_LogicalElement_OperationalStatus_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -101,8 +101,8 @@ _CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_LogicalElement_StatusDescriptions_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -120,9 +120,9 @@ _CIM_ManagedSystemElement_Status_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_LogicalElement_Status_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -137,8 +137,8 @@ _CIM_ManagedSystemElement_HealthState_Values_MQ;
 static const Meta_Qualifier*
 _CIM_LogicalElement_HealthState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
 };
 
 extern const Meta_Property
@@ -146,15 +146,15 @@ _CIM_ManagedSystemElement_HealthState;
 
 static Meta_Feature* _CIM_LogicalElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -168,26 +168,6 @@ static const Meta_Feature_Local _locals[] =
     {0},
     {0},
     {0},
-};
-
-extern const Meta_Qualifier
-_CIM_LogicalElement_UMLPackagePath_MQ;
-
-static const Meta_Value_Scalar<const char*>
-_CIM_LogicalElement_UMLPackagePath_MV =
-{
-    "CIM::Core::CoreElements"
-};
-
-const Meta_Qualifier
-_CIM_LogicalElement_UMLPackagePath_MQ =
-{
-    { 0 }, /* refs */
-    "UMLPackagePath", /* name */
-    STRING, /* type */
-    0, /* array */
-    0 /* flavors */,
-    (const Meta_Value*)&_CIM_LogicalElement_UMLPackagePath_MV,
 };
 
 extern const Meta_Qualifier
@@ -207,14 +187,34 @@ _CIM_LogicalElement_Version_MQ =
     STRING, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_LogicalElement_Version_MV,
+    (const Meta_Value*)(void*)&_CIM_LogicalElement_Version_MV,
+};
+
+extern const Meta_Qualifier
+_CIM_LogicalElement_UMLPackagePath_MQ;
+
+static const Meta_Value_Scalar<const char*>
+_CIM_LogicalElement_UMLPackagePath_MV =
+{
+    "CIM::Core::CoreElements"
+};
+
+const Meta_Qualifier
+_CIM_LogicalElement_UMLPackagePath_MQ =
+{
+    { 0 }, /* refs */
+    "UMLPackagePath", /* name */
+    STRING, /* type */
+    0, /* array */
+    0 /* flavors */,
+    (const Meta_Value*)(void*)&_CIM_LogicalElement_UMLPackagePath_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_LogicalElement_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_LogicalElement_UMLPackagePath_MQ,
-    (Meta_Qualifier*)&_CIM_LogicalElement_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_LogicalElement_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_LogicalElement_UMLPackagePath_MQ,
 };
 
 const Meta_Class CIM_LogicalElement::static_meta_class =
@@ -231,7 +231,7 @@ const Meta_Class CIM_LogicalElement::static_meta_class =
     &CIM_ManagedSystemElement::static_meta_class,
     0, /* num_keys */
     0x65D846FD, /* crc */
-    &__meta_repository_6FAA529815A91D82B658654A66A4535E,
+    &__meta_repository_6827E083506B1A56883F566A87E0489F,
 };
 
 CIM_LogicalElement_Ref::CIM_LogicalElement_Ref()
@@ -288,4 +288,4 @@ CIM_LogicalElement_Hnd& CIM_LogicalElement_Hnd::operator=(const CIM_LogicalEleme
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_LogicalElement.cpp,v 1.1 2007/03/13 22:25:33 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_LogicalElement.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

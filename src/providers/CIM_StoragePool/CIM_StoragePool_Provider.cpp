@@ -47,6 +47,7 @@ Delete_Instance_Status CIM_StoragePool_Provider::delete_instance(
 }
 
 Modify_Instance_Status CIM_StoragePool_Provider::modify_instance(
+    const CIM_StoragePool* model,
     const CIM_StoragePool* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -80,8 +81,13 @@ Invoke_Method_Status CIM_StoragePool_Provider::GetAvailableExtents(
     Array<CIM_StorageExtent*>& AvailableExtents,
     Property<uint32>& return_value)
 {
-    print(self);
-    print(Goal);
+    print(self, true);
+    print(Goal, true);
+
+    for (size_t i = 0; i < AvailableExtents.size(); i++)
+    {
+        print(AvailableExtents[i], true);
+    }
 
     CIM_StorageExtent* ext1 = CIM_StorageExtent::create();
     ext1->SystemCreationClassName.value = "CIM_ComputerSystem";
@@ -105,69 +111,6 @@ Invoke_Method_Status CIM_StoragePool_Provider::GetAvailableExtents(
     return INVOKE_METHOD_OK;
 }
 
-int CIM_StoragePool_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef CIM_StoragePool Class;
-    typedef CIM_StoragePool_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "GetSupportedSizes") == 0)
-    {
-        typedef CIM_StoragePool_GetSupportedSizes_method Method;
-        Method* method = (Method*)arg2;
-        return provider->GetSupportedSizes(
-            self,
-            method->ElementType,
-            method->Goal,
-            method->Sizes,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "GetSupportedSizeRange") == 0)
-    {
-        typedef CIM_StoragePool_GetSupportedSizeRange_method Method;
-        Method* method = (Method*)arg2;
-        return provider->GetSupportedSizeRange(
-            self,
-            method->ElementType,
-            method->Goal,
-            method->MinimumVolumeSize,
-            method->MaximumVolumeSize,
-            method->VolumeSizeDivisor,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "GetAvailableExtents") == 0)
-    {
-        typedef CIM_StoragePool_GetAvailableExtents_method Method;
-        Method* method = (Method*)arg2;
-        return provider->GetAvailableExtents(
-            self,
-            method->Goal,
-            method->AvailableExtents,
-            method->return_value);
-    }
-    return -1;
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_StoragePool/CIM_StoragePool_Provider.cpp,v 1.2 2007/03/07 20:25:24 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_StoragePool/CIM_StoragePool_Provider.cpp,v 1.5 2007/04/18 03:51:24 mbrasher-public Exp $");

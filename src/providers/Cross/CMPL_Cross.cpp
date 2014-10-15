@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_F4E528F227ED1CBD8BD1773E04D0F0A0;
+extern const Meta_Repository __meta_repository_3A42E74BFE1A13E183E6A60B5160A980;
 
 extern const Meta_Reference
 _CMPL_Cross_left;
@@ -27,6 +27,7 @@ _CMPL_Cross_left =
     "left",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &CMPL_Left::static_meta_class,
     CIMPLE_OFF(CMPL_Cross,left)
 };
@@ -42,14 +43,15 @@ _CMPL_Cross_right =
     "right",
     0, /* meta_qualifiers */
     0, /* num_meta_qaulifiers */
+    0, /* subscript */
     &CMPL_Right::static_meta_class,
     CIMPLE_OFF(CMPL_Cross,right)
 };
 
 static Meta_Feature* _CMPL_Cross_MFA[] =
 {
-    (Meta_Feature*)&_CMPL_Cross_left,
-    (Meta_Feature*)&_CMPL_Cross_right,
+    (Meta_Feature*)(void*)&_CMPL_Cross_left,
+    (Meta_Feature*)(void*)&_CMPL_Cross_right,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -71,10 +73,9 @@ const Meta_Class CMPL_Cross::static_meta_class =
     _locals,
     0, /* super_class */ 
     2, /* num_keys */
-    0xDD2EC491, /* crc */
-    &__meta_repository_F4E528F227ED1CBD8BD1773E04D0F0A0,
+    &__meta_repository_3A42E74BFE1A13E183E6A60B5160A980,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Cross.cpp,v 1.2 2007/03/07 20:25:24 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Cross.cpp,v 1.10 2007/04/26 22:41:02 mbrasher-public Exp $");

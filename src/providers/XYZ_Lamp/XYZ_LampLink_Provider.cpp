@@ -47,6 +47,7 @@ Delete_Instance_Status XYZ_LampLink_Provider::delete_instance(
 }
 
 Modify_Instance_Status XYZ_LampLink_Provider::modify_instance(
+    const XYZ_LampLink* model,
     const XYZ_LampLink* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -71,27 +72,6 @@ Enum_References_Status XYZ_LampLink_Provider::enum_references(
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
-int XYZ_LampLink_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef XYZ_LampLink Class;
-    typedef XYZ_LampLink_Provider Provider;
-    return Association_Provider_Proc_T<Provider>::proc(registration, 
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampLink_Provider.cpp,v 1.4 2007/03/07 20:25:29 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampLink_Provider.cpp,v 1.6 2007/04/18 03:51:31 mbrasher-public Exp $");

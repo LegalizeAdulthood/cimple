@@ -35,7 +35,7 @@ Enum_Instances_Status Test2Link_Provider::enum_instances(
 }
 
 Create_Instance_Status Test2Link_Provider::create_instance(
-    const Test2Link* instance)
+    Test2Link* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -47,6 +47,7 @@ Delete_Instance_Status Test2Link_Provider::delete_instance(
 }
 
 Modify_Instance_Status Test2Link_Provider::modify_instance(
+    const Test2Link* model,
     const Test2Link* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -71,27 +72,6 @@ Enum_References_Status Test2Link_Provider::enum_references(
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
-int Test2Link_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Test2Link Class;
-    typedef Test2Link_Provider Provider;
-    return Association_Provider_Proc_T<Provider>::proc(registration, 
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
+/*@END@*/
 
 CIMPLE_NAMESPACE_END
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test2/Test2Link_Provider.cpp,v 1.3 2007/03/07 20:25:30 mbrasher-public Exp $");

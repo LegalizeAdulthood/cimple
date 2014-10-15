@@ -1,20 +1,17 @@
-ROOT = $(PEGASUS_ROOT)
-DIR = cimple/providers/CIM_StoragePool/meth/CIM_StoragePool_GetAvailableExtents
-include $(ROOT)/mak/config.mak
-LIBRARIES = pegclient pegcommon
+TOP = ../../../..
+include $(TOP)/mak/config.mak
 
-EXTRA_INCLUDES = $(SYS_INCLUDES)
-
-PROGRAM = sniameth
+BINARY = SNIA_SpareConfigurationService_AssignSpares
 
 SOURCES = main.cpp
 
-include $(ROOT)/mak/program.mak
+LIBRARIES = cimple pegclient pegcommon
 
-tests:
+INCLUDES += -I$(PEGASUS_INCDIR)
 
-genclass:
+DEFINES += -DPEGASUS_PLATFORM_$(PLATFORM)
 
+include $(TOP)/mak/rules.mak
 
-live-tests:
-	$(PROGRAM)
+live:
+	$(TARGET)

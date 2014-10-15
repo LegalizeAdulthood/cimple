@@ -1,26 +1,38 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INCLUDES += -I../repository
+MODULE=1
 
-SHARED_LIBRARY = cmpllinuxsysprov
+SHARED_LIBRARY = cimplelinuxsysprov
 
 SOURCES = \
+    CIM_ComputerSystem.cpp \
+    CIM_ConcreteJob.cpp \
+    CIM_EnabledLogicalElement.cpp \
+    CIM_Job.cpp \
+    CIM_LogicalElement.cpp \
+    CIM_ManagedElement.cpp \
+    CIM_ManagedSystemElement.cpp \
+    CIM_System.cpp \
+    LinuxComputerSystem.cpp \
     LinuxComputerSystem_Provider.cpp \
-    module.cpp
+    module.cpp \
+    repository.cpp
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES = cimple cmplrep
-
-LIBRARIES += cimplepegadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	$(BIN_DIR)/regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r LinuxComputerSystem
+
+genprov:
+	$(BINDIR)/genprov LinuxComputerSystem
+
+genmod:
+	$(BINDIR)/genmod LinuxComputerSystem LinuxComputerSystem

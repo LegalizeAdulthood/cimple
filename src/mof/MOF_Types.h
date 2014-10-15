@@ -27,17 +27,17 @@
 #ifndef _MOF_Types_h
 #define _MOF_Types_h
 
-#include <MOF_Config.h>
-#include <MOF_Error.h>
-#include <MOF_Class_Decl.h>
-#include <MOF_Instance_Decl.h>
-#include <MOF_Qualifier_Decl.h>
-#include <MOF_Data_Type.h>
-#include <MOF_Instance_Decl.h>
-#include <MOF_Indent.h>
-#include <MOF_String.h>
-#include <MOF_Feature.h>
-#include <MOF_Object_Reference.h>
-#include <MOF_Pragma.h>
+#include "MOF_Config.h"
+#include "MOF_Error.h"
+#include "MOF_Class_Decl.h"
+#include "MOF_Instance_Decl.h"
+#include "MOF_Qualifier_Decl.h"
+#include "MOF_Data_Type.h"
+#include "MOF_Instance_Decl.h"
+#include "MOF_Indent.h"
+#include "MOF_String.h"
+#include "MOF_Feature.h"
+#include "MOF_Object_Reference.h"
+#include "MOF_Pragma.h"
 
 #endif /* _MOF_Types_h */

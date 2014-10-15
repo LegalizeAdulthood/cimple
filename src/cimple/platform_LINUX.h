@@ -56,4 +56,7 @@
 
 #define CIMPLE_HAVE_DEV_RANDOM
 
+#define CIMPLE_UINT64_LITERAL(X) ((Uint64)(X##ULL))
+#define CIMPLE_SINT64_LITERAL(X) ((Sint64)(X##LL))
+
 #endif /* _cimple_platform_LINUX_h */

@@ -1,22 +1,14 @@
-ROOT = $(PEGASUS_ROOT)
-DIR = cimple/providers/bug31/meth/bug31meth
-include $(ROOT)/mak/config.mak
-LIBRARIES = pegclient pegcommon
+TOP = ../../../..
+include $(TOP)/mak/config.mak
 
-EXTRA_INCLUDES = $(SYS_INCLUDES)
-
-PROGRAM = bug31meth
+BINARY = bug31
 
 SOURCES = main.cpp
 
-include $(ROOT)/mak/program.mak
+LIBRARIES = cimple pegclient pegcommon
 
-tests:
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
 
-genclass:
-
-live-tests:
-	$(PROGRAM)
-
-chksrc:
-	chksrc $(SOURCES)
+live:
+	$(TARGET)

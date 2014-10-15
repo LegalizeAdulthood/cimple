@@ -39,10 +39,9 @@ public:
 
     Ref();
 
-    template<class U>
-    inline Ref(const Ref<U>& x)
+    Ref(const Ref<T>& x)
     {
-        ref(_ptr = cast<T*>(x.ptr()));
+        ref(_ptr = x._ptr);
     }
 
     template<class U>

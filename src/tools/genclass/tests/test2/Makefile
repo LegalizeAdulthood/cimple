@@ -1,7 +1,7 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-BINARY = genclass_test2
+BINARY = test_genclass2
 
 SOURCES = \
     CIM_CommonDatabase.cpp \
@@ -23,7 +23,7 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 genclass:
-	genclass CIM_DatabaseAdministrator
+	$(BINDIR)/genclass CIM_DatabaseAdministrator
 
 tests:
-	$(BINARY)
+	$(TARGET)

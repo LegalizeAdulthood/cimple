@@ -35,19 +35,8 @@ public:
 	const UnixUser* instance);
 
     Modify_Instance_Status modify_instance(
-	const UnixUser* instance);
-
-    static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
+        const UnixUser* model,
+        const UnixUser* instance);
 };
 
 CIMPLE_NAMESPACE_END

@@ -35,7 +35,8 @@ public:
 	const Example* instance);
 
     Modify_Instance_Status modify_instance(
-	const Example* instance);
+        const Example* model,
+        const Example* instance);
 
     Invoke_Method_Status foo0(
         const Example* self,
@@ -69,18 +70,6 @@ public:
         const Example* self,
         const House* house,
         Property<String>& return_value);
-
-    static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
 };
 
 CIMPLE_NAMESPACE_END

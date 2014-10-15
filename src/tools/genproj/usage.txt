@@ -1,0 +1,12 @@
+Usage: %s [OPTIONS] MODULE_NAME CLASS_NAME...
+
+This utility generates an entire "project" by running the following programs:
+
+    genclass -- to genereate classes.
+    genprov -- to generate providers.
+    genmod -- to generate module.cpp.
+
+OPTIONS:
+    -V      -- print the version.
+    -h      -- print this message.
+

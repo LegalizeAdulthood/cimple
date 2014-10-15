@@ -30,47 +30,100 @@
 #include <vector>
 #include <unistd.h>
 #include <string>
+#include <dirent.h>
 #include <util/util.h>
 #include "MOF_Parser.h"
 #include "gencommon.h"
 
 using namespace std;
 
+static string _schema_mof;
+
+static int _find_schema_mof(const char* path, string& schema_mof)
+{
+    schema_mof.erase(schema_mof.begin(), schema_mof.end());
+
+    // Look first for file called CIM_Schema.mof.
+
+    {
+        string tmp = string(path) + string("/CIM_Schema.mof");
+        struct stat st;
+
+        if (stat(tmp.c_str(), &st) == 0)
+        {
+            schema_mof = tmp;
+            return 0;
+        }
+    }
+
+    // Search for a file of the form cimv[0-9]*.mof in this directory.
+
+    DIR* dir = opendir(path);
+
+    if (!dir)
+        return -1;
+
+    struct dirent* ent;
+
+    while ((ent = readdir(dir)))
+    {
+        const char* name = ent->d_name;
+
+        if (strncmp(name, "cimv", 4) == 0)
+        {
+            const char* p = name + 4;
+
+            while (isdigit(*p))
+                p++;
+
+            if (strcmp(p, ".mof") == 0)
+            {
+                struct stat st;
+
+                string tmp = string(path) + string("/") + string(name);
+
+                if (stat(tmp.c_str(), &st) == 0)
+                {
+                    schema_mof = tmp;
+                    closedir(dir);
+                    return 0;
+                }
+            }
+        }
+    }
+
+    closedir(dir);
+
+    // Not found!
+    return -1;
+}
+
 void setup_mof_path()
 {
     char* mof_path = getenv("CIMPLE_MOF_PATH");
 
     if (!mof_path)
-    {
-        err("please define the CIMPLE_MOF_PATH environment variable. "
-            "It must contain the schema directory (located under the root "
-            "of the CIMPLE distribution). The schema directory is the one "
-            "that contains CIM_Schema.mof.");
-        return;
-    }
+        mof_path = CIMPLE_DEFAULT_SCHEMA;
 
     char* tmp = strdup(mof_path);
-    bool schema_mof_found = false;
+    bool found = false;
 
     for (char* p = strtok(tmp, ":"); p; p = strtok(NULL, ":"))
     {
         MOF_include_paths[MOF_num_include_paths++] = strdup(p);
 
-        string schema_mof = string(p) + string("/CIM_Schema.mof");
+        if (_find_schema_mof(p, _schema_mof) == 0)
+            found = true;
 
-        struct stat st;
-
-        if (stat(schema_mof.c_str(), &st) == 0)
-            schema_mof_found = true;
     }
 
     free(tmp);
 
-    if (!schema_mof_found)
+    if (!found)
     {
-        err("Cannot find CIM_Schema.mof. Please add the directory containing "
-            "this file to the path defined by the CIMPLE_MOF_PATH environment "
-            "variable.");
+        err("Failed to find master CIM MOF file on CIMPLE_MOF_PATH. The name "
+            "of this file must match \"cimv[0-9]*.mof\" or \"CIM_Schema.mof\". "
+            "CIMPLE_MOF_PATH=%s", mof_path);
     }
 }
 
@@ -103,7 +156,7 @@ void load_repository(const vector<string>& extra_mof_files)
     // Build list of MOF files to parse.
 
     vector<string> mof_files;
-    mof_files.push_back("CIM_Schema.mof");
+    mof_files.push_back(_schema_mof);
 
     if (find_file("repository.mof") == 0)
         mof_files.push_back("repository.mof");
@@ -117,4 +170,4 @@ void load_repository(const vector<string>& extra_mof_files)
         MOF_parse_file(mof_files[i].c_str());
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/gencommon/gencommon.cpp,v 1.10 2007/03/07 18:49:10 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/gencommon/gencommon.cpp,v 1.16 2007/03/29 23:11:07 mbrasher-public Exp $");

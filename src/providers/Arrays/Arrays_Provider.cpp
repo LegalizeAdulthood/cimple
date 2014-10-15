@@ -60,32 +60,14 @@ Delete_Instance_Status Arrays_Provider::delete_instance(
 }
 
 Modify_Instance_Status Arrays_Provider::modify_instance(
+    const Arrays* model,
     const Arrays* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
-int Arrays_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Arrays Class;
-    typedef Arrays_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
+/*@END@*/
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Arrays/Arrays_Provider.cpp,v 1.5 2007/03/07 20:25:23 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Arrays/Arrays_Provider.cpp,v 1.6 2007/04/18 03:28:48 mbrasher-public Exp $");

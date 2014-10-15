@@ -24,7 +24,7 @@ Get_Instance_Status ComputerSystemDiskDrive_Provider::get_instance(
     const ComputerSystemDiskDrive* model,
     ComputerSystemDiskDrive*& instance)
 {
-    return GET_INSTANCE_NOT_FOUND;
+    return GET_INSTANCE_UNSUPPORTED;
 }
 
 Enum_Instances_Status ComputerSystemDiskDrive_Provider::enum_instances(
@@ -35,7 +35,7 @@ Enum_Instances_Status ComputerSystemDiskDrive_Provider::enum_instances(
 }
 
 Create_Instance_Status ComputerSystemDiskDrive_Provider::create_instance(
-    const ComputerSystemDiskDrive* instance)
+    ComputerSystemDiskDrive* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -47,32 +47,31 @@ Delete_Instance_Status ComputerSystemDiskDrive_Provider::delete_instance(
 }
 
 Modify_Instance_Status ComputerSystemDiskDrive_Provider::modify_instance(
+    const ComputerSystemDiskDrive* model,
     const ComputerSystemDiskDrive* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
-int ComputerSystemDiskDrive_Provider::proc(
-    const Registration* registration,
-    int operation,
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
+Enum_Associator_Names_Status ComputerSystemDiskDrive_Provider::enum_associator_names(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associator_Names_Handler<Instance>* handler)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef ComputerSystemDiskDrive Class;
-    typedef ComputerSystemDiskDrive_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
 }
 
-CIMPLE_NAMESPACE_END
+Enum_References_Status ComputerSystemDiskDrive_Provider::enum_references(
+    const Instance* instance,
+    const ComputerSystemDiskDrive* model,
+    const String& role,
+    Enum_References_Handler<ComputerSystemDiskDrive>* handler)
+{
+    return ENUM_REFERENCES_UNSUPPORTED;
+}
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/ComputerSystemDiskDrive/ComputerSystemDiskDrive_Provider.cpp,v 1.6 2007/03/07 20:25:24 mbrasher-public Exp $");
+/*@END@*/
+
+CIMPLE_NAMESPACE_END

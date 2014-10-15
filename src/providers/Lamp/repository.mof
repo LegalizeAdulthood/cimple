@@ -1,0 +1,51 @@
+class Lamp
+{
+    [key] string model;
+    string vendor;
+    uint32 wattage;
+    string color;
+
+    uint32 foo(string arg1, string arg2);
+};
+
+class ModernLamp : Lamp
+{
+    string artist;
+};
+
+[Association]
+class LampLink
+{
+    [key] Lamp ref left;
+    [key] Lamp ref right;
+};
+
+[Indication]
+class LampIndic : CIM_Indication
+{
+    string message;
+    [Static] uint32 DeliverIndications();
+};
+
+[Indication]
+class LampIndicA : LampIndic
+{
+    string messageA;
+};
+
+[Indication]
+class LampIndicB : LampIndic
+{
+    string messageB;
+};
+
+[Indication]
+class LampIndicC : LampIndic
+{
+    string messageC;
+};
+
+class Persistent
+{
+    [Key] uint32 key;
+};

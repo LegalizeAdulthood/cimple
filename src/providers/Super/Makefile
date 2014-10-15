@@ -1,40 +1,30 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = Super
+MODULE=1
+
+SHARED_LIBRARY = cimpleSuper
 
 SOURCES = \
     module.cpp repository.cpp Super.cpp Sub1.cpp Sub2.cpp Super_Provider.cpp
 
-ifdef USE_CMPI
-    LIBRARIES += cimplecmpiadap
-    DEFINES += -DUSE_CMPI
-else
-    LIBRARIES += cimplepegadap
-endif
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimple 
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-##==============================================================================
-##
-## Rule to generate the classes
-##
-##==============================================================================
-
 genclass:
-	genclass -r Super Sub1 Sub2
+	$(BINDIR)/genclass -r Super Sub1 Sub2
 
-##==============================================================================
-##
-## Rule to register the provider with Pegasus.
-##
-##==============================================================================
+genprov:
+	$(BINDIR)/genprov Super
 
-reg:
-	regmod -d -s -c $(SHARED_LIBRARY_TARGET)
+genmod:
+	$(BINDIR)/genmod Super Super
 
-tests:
+regmod:
+	$(BINDIR)/regmod -s -c $(TARGET)
+
+live:
+	$(CIMCLI) ei Super

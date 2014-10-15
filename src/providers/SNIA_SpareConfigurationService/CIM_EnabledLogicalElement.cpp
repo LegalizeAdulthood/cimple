@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_1EFFCF5E346717DCBD81B2711E2620B8;
+extern const Meta_Repository __meta_repository_8CCF8E58804E17C2BA75EC619FBC3236;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -63,7 +63,7 @@ _CIM_EnabledLogicalElement_EnabledState =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledState),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledState_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledState_MV,
 };
 
 extern const Meta_Property
@@ -103,7 +103,7 @@ _CIM_EnabledLogicalElement_RequestedState =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,RequestedState),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestedState_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestedState_MV,
 };
 
 extern const Meta_Property
@@ -126,7 +126,7 @@ _CIM_EnabledLogicalElement_EnabledDefault =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledDefault),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledDefault_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_MV,
 };
 
 extern const Meta_Property
@@ -203,10 +203,10 @@ _CIM_EnabledLogicalElement_RequestStateChange_return_value =
 
 static Meta_Feature* _CIM_EnabledLogicalElement_RequestStateChange_MFA[] =
 {
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_Job,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_TimeoutPeriod,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_return_value
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_Job,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_TimeoutPeriod,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_return_value
 };
 
 const Meta_Method
@@ -225,21 +225,21 @@ CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class =
 
 static Meta_Feature* _CIM_EnabledLogicalElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_OtherEnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledDefault,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
-    (Meta_Feature*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
+    (Meta_Feature*)(void*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -275,9 +275,9 @@ const Meta_Class CIM_EnabledLogicalElement::static_meta_class =
     &CIM_LogicalElement::static_meta_class,
     0, /* num_keys */
     0x1CA9D0D7, /* crc */
-    &__meta_repository_1EFFCF5E346717DCBD81B2711E2620B8,
+    &__meta_repository_8CCF8E58804E17C2BA75EC619FBC3236,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/SNIA_SpareConfigurationService/CIM_EnabledLogicalElement.cpp,v 1.6 2007/03/08 15:17:22 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/SNIA_SpareConfigurationService/CIM_EnabledLogicalElement.cpp,v 1.9 2007/04/18 03:29:40 mbrasher-public Exp $");

@@ -1,22 +1,30 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplunixusrprov
+MODULE=1
 
-INCLUDES += -I../repository
+SHARED_LIBRARY = cimpleunixusrprov
 
-SOURCES = UnixUser_Provider.cpp module.cpp 
+SOURCES = \
+    module.cpp \
+    repository.cpp \
+    UnixUser.cpp \
+    UnixUser_Provider.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimplepegadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
-
 genclass:
+	$(BINDIR)/genclass -r UnixUser
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
+genprov:
+	$(BINDIR)/genprov UnixUser
+
+genmod:
+	$(BINDIR)/genmod UnixUser UnixUser
+
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)

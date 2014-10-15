@@ -31,13 +31,9 @@
 #include <vector>
 #include <string>
 
-#ifdef GENCOMMON_INTERNAL
-# define GENCOMMON_LINKAGE CIMPLE_EXPORT
-#else
-# define GENCOMMON_LINKAGE CIMPLE_IMPORT
-#endif
-
 using namespace std;
+
+#define GENCOMMON_LINKAGE /* */
 
 GENCOMMON_LINKAGE void setup_mof_path();
 GENCOMMON_LINKAGE int find_file(const char* path);

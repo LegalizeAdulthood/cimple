@@ -1,20 +1,14 @@
-ROOT = $(PEGASUS_ROOT)
-DIR = cimple/providers/CIM_StoragePool/meth/create_CIM_ConcreteJob
-include $(ROOT)/mak/config.mak
-LIBRARIES = pegclient pegcommon
+TOP = ../../../..
+include $(TOP)/mak/config.mak
 
-EXTRA_INCLUDES = $(SYS_INCLUDES)
-
-PROGRAM = create_CIM_ConcreteJob
+BINARY = create_CIM_ConcreteJob
 
 SOURCES = main.cpp
 
-include $(ROOT)/mak/program.mak
+LIBRARIES = cimple pegclient pegcommon
 
-tests:
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
 
-genclass:
-
-
-live-tests:
-	$(PROGRAM)
+live:
+	$(TARGET)

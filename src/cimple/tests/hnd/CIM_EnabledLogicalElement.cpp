@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_6FAA529815A91D82B658654A66A4535E;
+extern const Meta_Repository __meta_repository_6827E083506B1A56883F566A87E0489F;
 
 extern const Meta_Qualifier
 _CIM_ManagedElement_Caption_MaxLen_MQ;
@@ -22,7 +22,7 @@ _CIM_ManagedElement_Caption_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_Caption_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -50,7 +50,7 @@ _CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ;
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_InstallDate_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
 };
 
 extern const Meta_Property
@@ -62,7 +62,7 @@ _CIM_ManagedSystemElement_Name_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_Name_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Name_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Name_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -83,10 +83,10 @@ _CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_OperationalStatus_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -101,8 +101,8 @@ _CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_StatusDescriptions_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -120,9 +120,9 @@ _CIM_ManagedSystemElement_Status_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_Status_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -137,8 +137,8 @@ _CIM_ManagedSystemElement_HealthState_Values_MQ;
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_HealthState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
 };
 
 extern const Meta_Property
@@ -180,7 +180,7 @@ _CIM_EnabledLogicalElement_EnabledState_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledState_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledState_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -219,7 +219,7 @@ _CIM_EnabledLogicalElement_EnabledState_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledState_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledState_Values_MV,
 };
 
 extern const Meta_Qualifier
@@ -246,15 +246,15 @@ _CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_EnabledState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledState_Values_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -277,7 +277,7 @@ _CIM_EnabledLogicalElement_EnabledState =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledState),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledState_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledState_MV,
 };
 
 extern const Meta_Qualifier
@@ -304,13 +304,13 @@ _CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_OtherEnabledState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -366,7 +366,7 @@ _CIM_EnabledLogicalElement_RequestedState_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestedState_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestedState_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -405,7 +405,7 @@ _CIM_EnabledLogicalElement_RequestedState_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestedState_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestedState_Values_MV,
 };
 
 extern const Meta_Qualifier
@@ -432,15 +432,15 @@ _CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_RequestedState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestedState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestedState_Values_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestedState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestedState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -463,7 +463,7 @@ _CIM_EnabledLogicalElement_RequestedState =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,RequestedState),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestedState_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestedState_MV,
 };
 
 extern const Meta_Qualifier
@@ -477,7 +477,8 @@ _CIM_EnabledLogicalElement_EnabledDefault_ValueMap_elements[] =
     "5",
     "6",
     "7",
-    "8..32767",
+    "9",
+    "..",
     "32768..65535",
 };
 
@@ -496,7 +497,7 @@ _CIM_EnabledLogicalElement_EnabledDefault_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledDefault_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -510,6 +511,7 @@ _CIM_EnabledLogicalElement_EnabledDefault_Values_elements[] =
     "Not Applicable",
     "Enabled but Offline",
     "No Default",
+    "Quiesce",
     "DMTF Reserved",
     "Vendor Reserved",
 };
@@ -529,14 +531,14 @@ _CIM_EnabledLogicalElement_EnabledDefault_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledDefault_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_Values_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_EnabledDefault_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledDefault_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledDefault_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_Values_MQ,
 };
 
 extern const Meta_Property
@@ -559,7 +561,7 @@ _CIM_EnabledLogicalElement_EnabledDefault =
     UINT16,
     0, /* subscript */
     CIMPLE_OFF(CIM_EnabledLogicalElement,EnabledDefault),
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_EnabledDefault_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_MV,
 };
 
 static const Meta_Qualifier*
@@ -621,7 +623,7 @@ _CIM_EnabledLogicalElement_RequestStateChange_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestStateChange_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -661,7 +663,7 @@ _CIM_EnabledLogicalElement_RequestStateChange_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestStateChange_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_Values_MV,
 };
 
 extern const Meta_Qualifier
@@ -688,15 +690,15 @@ _CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_RequestStateChange_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_Values_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Qualifier
@@ -733,7 +735,7 @@ _CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ValueMap_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ValueMap_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ValueMap_MV,
 };
 
 extern const Meta_Qualifier
@@ -770,7 +772,7 @@ _CIM_EnabledLogicalElement_RequestStateChange_RequestedState_Values_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_Values_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_Values_MV,
 };
 
 extern const Meta_Qualifier
@@ -797,15 +799,15 @@ _CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ModelCorrespondence
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ModelCorrespondence_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ModelCorrespondence_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_RequestStateChange_RequestedState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_Values_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState_ModelCorrespondence_MQ,
 };
 
 static const Meta_Property
@@ -875,10 +877,10 @@ _CIM_EnabledLogicalElement_RequestStateChange_return_value =
 
 static Meta_Feature* _CIM_EnabledLogicalElement_RequestStateChange_MFA[] =
 {
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_Job,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_TimeoutPeriod,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestStateChange_return_value
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_Job,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_TimeoutPeriod,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_return_value
 };
 
 const Meta_Method
@@ -897,21 +899,21 @@ CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class =
 
 static Meta_Feature* _CIM_EnabledLogicalElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_OtherEnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledDefault,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
-    (Meta_Feature*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
+    (Meta_Feature*)(void*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -934,6 +936,26 @@ static const Meta_Feature_Local _locals[] =
 };
 
 extern const Meta_Qualifier
+_CIM_EnabledLogicalElement_Version_MQ;
+
+static const Meta_Value_Scalar<const char*>
+_CIM_EnabledLogicalElement_Version_MV =
+{
+    "2.14.0"
+};
+
+const Meta_Qualifier
+_CIM_EnabledLogicalElement_Version_MQ =
+{
+    { 0 }, /* refs */
+    "Version", /* name */
+    STRING, /* type */
+    0, /* array */
+    0 /* flavors */,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_Version_MV,
+};
+
+extern const Meta_Qualifier
 _CIM_EnabledLogicalElement_UMLPackagePath_MQ;
 
 static const Meta_Value_Scalar<const char*>
@@ -950,34 +972,14 @@ _CIM_EnabledLogicalElement_UMLPackagePath_MQ =
     STRING, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_UMLPackagePath_MV,
-};
-
-extern const Meta_Qualifier
-_CIM_EnabledLogicalElement_Version_MQ;
-
-static const Meta_Value_Scalar<const char*>
-_CIM_EnabledLogicalElement_Version_MV =
-{
-    "2.10.0"
-};
-
-const Meta_Qualifier
-_CIM_EnabledLogicalElement_Version_MQ =
-{
-    { 0 }, /* refs */
-    "Version", /* name */
-    STRING, /* type */
-    0, /* array */
-    0 /* flavors */,
-    (const Meta_Value*)&_CIM_EnabledLogicalElement_Version_MV,
+    (const Meta_Value*)(void*)&_CIM_EnabledLogicalElement_UMLPackagePath_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_EnabledLogicalElement_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_UMLPackagePath_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_UMLPackagePath_MQ,
 };
 
 const Meta_Class CIM_EnabledLogicalElement::static_meta_class =
@@ -994,7 +996,7 @@ const Meta_Class CIM_EnabledLogicalElement::static_meta_class =
     &CIM_LogicalElement::static_meta_class,
     0, /* num_keys */
     0x1CA9D0D7, /* crc */
-    &__meta_repository_6FAA529815A91D82B658654A66A4535E,
+    &__meta_repository_6827E083506B1A56883F566A87E0489F,
 };
 
 CIM_EnabledLogicalElement_Ref::CIM_EnabledLogicalElement_Ref()
@@ -1171,4 +1173,4 @@ void CIM_EnabledLogicalElement_Hnd::TimeOfLastStateChange_null(bool x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_EnabledLogicalElement.cpp,v 1.1 2007/03/13 22:25:32 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_EnabledLogicalElement.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

@@ -27,9 +27,9 @@
 #ifndef _MOF_Method_Decl_h
 #define _MOF_Method_Decl_h
 
-#include <MOF_Config.h>
-#include <MOF_Parameter.h>
-#include <MOF_Feature.h>
+#include "MOF_Config.h"
+#include "MOF_Parameter.h"
+#include "MOF_Feature.h"
 
 class MOF_LINKAGE MOF_Method_Decl : public MOF_Feature
 {
@@ -46,9 +46,9 @@ public:
     virtual void set_owning_class(const char* owning_class);
 
     static void check_compatibility(
-	const char* class_name,
-	const MOF_Method_Decl* m1,
-	const MOF_Method_Decl* m2);
+        const char* class_name,
+        const MOF_Method_Decl* m1,
+        const MOF_Method_Decl* m2);
 
     int data_type;
     MOF_Parameter* parameters;

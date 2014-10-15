@@ -29,7 +29,6 @@
 
 #define CIMPLE_NO_VERSION_SYMBOL
 #include <cimple/config.h>
-#include <platform.h>
 
 #ifdef CIMPLE_PLATFORM_WIN32_IX86_MSVC
 # define MOF_WINDOWS
@@ -47,25 +46,17 @@
 #ifdef MOF_WINDOWS
 #  define strcasecmp stricmp
 #  define MOF_PRINTF_ATTR(A1, A2) /* empty */
-#  ifdef MOF_INTERNAL
-#    define MOF_LINKAGE __declspec(dllexport)
-#  else
-#    define MOF_LINKAGE __declspec(dllimport)
-#  endif
    typedef unsigned __int64 MOF_uint64;
    typedef signed __int64 MOF_sint64;
 #else
 #  define MOF_PRINTF_ATTR(A1, A2) __attribute__ ((format (printf, A1, A2)))
-
-#  if (__GNUC__ >= 4)
-#    define MOF_LINKAGE __attribute__((visibility("default")))
-#  else
-#    define MOF_LINKAGE /* empty */
-#  endif
-
    typedef unsigned long long MOF_uint64;
    typedef long long MOF_sint64;
 #endif
+
+#define MOF_LINKAGE /* */
+
+#define MOF_PATH_SIZE 512
 
 typedef unsigned char MOF_uint8;
 typedef signed char MOF_sint8;

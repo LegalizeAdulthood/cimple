@@ -1,14 +1,42 @@
-BINARY_TARGET = $(call bin_target,$(BINARY))
+##==============================================================================
+##
+## target:
+##
+##==============================================================================
 
-$(BINARY_TARGET): $(OBJECTS) $(BIN_DIR)/target
-	$(call make_bin,$(BINARY),$(OBJECTS),$(_LIBRARIES))
+TARGET = $(call binary_target,$(BINARY))
 
-size:
-	$(SIZE) $(BINARY_TARGET)
+all: $(TARGET)
+	@ echo "$(TARGET) is up to date"
 
-gen:
+$(TARGET): $(OBJECTS)
+	$(call mkdirhier,$(BINDIR))
+	$(call make_bin,$(BINARY),$(OBJECTS),$(LIBRARIES))
+	$(ECHONL)
 
-include $(TOP)/mak/sub.mak
+##==============================================================================
+##
+## clean
+##
+##==============================================================================
 
 clean:
-	$(RM) $(OBJECTS) $(BINARY_TARGET) $(CLEAN) depend.mak
+	$(RM) $(OBJECTS) $(TARGET) $(CLEAN) depend.mak
+	$(ECHONL)
+
+##==============================================================================
+##
+## install/uninstall:
+##
+##==============================================================================
+
+ifdef INSTALL
+install:
+	$(call mkdirhier,$(DESTDIR)$(BINDIR_OPT))
+	$(call install_bin,$(BINARY))
+	$(ECHONL)
+
+uninstall:
+	$(call uninstall_bin,$(BINARY))
+	$(ECHONL)
+endif

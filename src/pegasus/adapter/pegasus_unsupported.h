@@ -29,7 +29,7 @@
 
 #include <cimple/cimple.h>
 #include <Pegasus/Provider/CIMOMHandle.h>
-#include "Linkage.h"
+#include "typedefs.h"
 
 #ifndef CIMPLE_PEGASUS_UNSUPPORTED
 # warning "including internal file: pegasus_unsupported.h"
@@ -39,11 +39,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 namespace pegasus
 {
-    CIMPLE_PEGADAP_LINKAGE 
-    Pegasus::CIMOMHandle* cimom_handle();
+    P_CIMOMHandle* cimom_handle();
 
-    CIMPLE_PEGADAP_LINKAGE 
-    Pegasus::OperationContext* operation_context();
+    P_OperationContext* operation_context();
 }
 
 CIMPLE_NAMESPACE_END

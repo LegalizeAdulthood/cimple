@@ -27,7 +27,7 @@
 #ifndef _MOF_String_h
 #define _MOF_String_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 #define MOF_stricmp strcasecmp
 

@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_75B3E6B1183D134A8D991D60B97808DF;
+extern const Meta_Repository __meta_repository_F376261AA91118F3B0C24AB8ECE1BBD2;
 
 extern const Meta_Property
 _BUG31_A_prop1;
@@ -35,7 +35,7 @@ _BUG31_A_prop1 =
 
 static Meta_Feature* _BUG31_A_MFA[] =
 {
-    (Meta_Feature*)&_BUG31_A_prop1,
+    (Meta_Feature*)(void*)&_BUG31_A_prop1,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -56,10 +56,9 @@ const Meta_Class BUG31_A::static_meta_class =
     _locals,
     0, /* super_class */ 
     0, /* num_keys */
-    0x38DCB8BE, /* crc */
-    &__meta_repository_75B3E6B1183D134A8D991D60B97808DF,
+    &__meta_repository_F376261AA91118F3B0C24AB8ECE1BBD2,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_A.cpp,v 1.12 2007/03/13 22:53:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_A.cpp,v 1.19 2007/04/26 22:41:07 mbrasher-public Exp $");

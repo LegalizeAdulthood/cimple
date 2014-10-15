@@ -1,21 +1,14 @@
-ROOT = $(PEGASUS_ROOT)
+TOP = ../../../..
+include $(TOP)/mak/config.mak
 
-DIR = Pegasus/Client/tests/RefArray/SendRefArray
-
-include $(ROOT)/mak/config.mak
-
-LOCAL_DEFINES = -DPEGASUS_INTERNALONLY
-
-LIBRARIES = pegclient pegcommon
-
-EXTRA_INCLUDES = $(SYS_INCLUDES)
-
-PROGRAM = SendRefArray
+BINARY = SendRefArray
 
 SOURCES = main.cpp
 
-include $(ROOT)/mak/program.mak
+LIBRARIES = cimple pegclient pegcommon
 
-tests:
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
 
-genclass:
+live:
+	$(TARGET)

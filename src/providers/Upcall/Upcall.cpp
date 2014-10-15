@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_FF3F59BF3B7A1C00A11CB7A817C932AD;
+extern const Meta_Repository __meta_repository_3D6F4D1D2271105794B6DBA6FD3CB729;
 
 extern const Meta_Property
 _Upcall_key;
@@ -35,7 +35,7 @@ _Upcall_key =
 
 static Meta_Feature* _Upcall_MFA[] =
 {
-    (Meta_Feature*)&_Upcall_key,
+    (Meta_Feature*)(void*)&_Upcall_key,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -56,10 +56,9 @@ const Meta_Class Upcall::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0xAF29A1A3, /* crc */
-    &__meta_repository_FF3F59BF3B7A1C00A11CB7A817C932AD,
+    &__meta_repository_3D6F4D1D2271105794B6DBA6FD3CB729,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Upcall/Upcall.cpp,v 1.13 2007/03/13 22:53:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Upcall/Upcall.cpp,v 1.20 2007/04/26 22:41:07 mbrasher-public Exp $");

@@ -1,19 +1,14 @@
-ROOT = $(PEGASUS_ROOT)
-DIR = Pegasus/Client/tests/foo2
-include $(ROOT)/mak/config.mak
-LIBRARIES = pegclient pegcommon
+TOP = ../../../..
+include $(TOP)/mak/config.mak
 
-EXTRA_INCLUDES = $(SYS_INCLUDES)
-
-PROGRAM = call_foo2
+BINARY = call_foo2
 
 SOURCES = main.cpp
 
-include $(ROOT)/mak/program.mak
+LIBRARIES = cimple pegclient pegcommon
 
-tests:
+include $(TOP)/mak/pegasus.mak
+include $(TOP)/mak/rules.mak
 
-genclass:
-
-chksrc:
-	chksrc $(SOURCES)
+live:
+	$(TARGET)

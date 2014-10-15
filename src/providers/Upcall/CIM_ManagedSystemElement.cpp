@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_FF3F59BF3B7A1C00A11CB7A817C932AD;
+extern const Meta_Repository __meta_repository_3D6F4D1D2271105794B6DBA6FD3CB729;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -129,15 +129,15 @@ _CIM_ManagedSystemElement_HealthState =
 
 static Meta_Feature* _CIM_ManagedSystemElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -166,10 +166,9 @@ const Meta_Class CIM_ManagedSystemElement::static_meta_class =
     _locals,
     &CIM_ManagedElement::static_meta_class,
     0, /* num_keys */
-    0x0DD66B62, /* crc */
-    &__meta_repository_FF3F59BF3B7A1C00A11CB7A817C932AD,
+    &__meta_repository_3D6F4D1D2271105794B6DBA6FD3CB729,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Upcall/CIM_ManagedSystemElement.cpp,v 1.11 2007/03/13 22:53:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Upcall/CIM_ManagedSystemElement.cpp,v 1.18 2007/04/26 22:41:07 mbrasher-public Exp $");

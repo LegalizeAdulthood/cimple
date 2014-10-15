@@ -38,6 +38,8 @@ public:
 
     Hnd(const Hnd& x);
 
+    explicit Hnd(Instance* inst, bool ref = false);
+
     ~Hnd();
 
     Hnd& operator=(const Hnd& x);
@@ -45,8 +47,6 @@ public:
     const Instance* instance() const { return _inst; }
 
     void print() const;
-
-    explicit Hnd(Instance* inst, bool ref = false);
 
 protected:
 

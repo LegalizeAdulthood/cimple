@@ -35,7 +35,8 @@ public:
 	const Test1* instance);
 
     Modify_Instance_Status modify_instance(
-	const Test1* instance);
+        const Test1* model,
+        const Test1* instance);
 
     static int proc(
 	const Registration* registration,

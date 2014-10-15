@@ -22,19 +22,18 @@ using namespace std;
 #include "header_suffix.h"
 #include "header_prefix.h"
 #include "source_suffix.h"
-#include "source_infix1.h"
-#include "source_infix2.h"
 #include "source_prefix.h"
 #include "indication_header_prefix.h"
 #include "indication_header_suffix.h"
 #include "indication_source_prefix.h"
-#include "indication_source_infix1.h"
-#include "indication_source_infix2.h"
-#include "module_source.h"
 #include "association_header.h"
 #include "association_source.h"
-#include "association_source_infix1.h"
-#include "association_source_infix2.h"
+
+bool force_opt = false;
+
+// ATTN: handle break in method name between class name and method name.
+
+const char END[] = "/*@END@*/";
 
 static inline const char* _to_string(int data_type)
 {
@@ -171,6 +170,11 @@ void write_methods(
         if (meth)
             write_method(os, class_name, meth, do_definition);
     }
+
+    if (do_definition)
+        fprintf(os, "%s\n", END);
+    else
+        fprintf(os, "    %s\n", END);
 }
 
 void write_provider_header(
@@ -243,64 +247,6 @@ void write_skeleton(
     fprintf(os, "    }\n");
 }
 
-void write_proc(
-    FILE* os,
-    const char* class_name, 
-    const MOF_Class_Decl* class_decl)
-{
-    // Determine whether class has any methods.
-
-    bool has_methods = false;
-
-    MOF_Feature_Info* p = class_decl->all_features;
-
-    for (; p; p = (MOF_Feature_Info*)p->next)
-    {
-        if (dynamic_cast<MOF_Method_Decl*>(p->feature))
-        {
-            has_methods = true;
-            break;
-        }
-    }
-
-    // Write proc:
-
-    if (!has_methods)
-    {
-        if (class_decl->qual_mask & MOF_QT_INDICATION)
-            write_file(os, class_name, indication_source_infix1);
-        else if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
-            write_file(os, class_name, association_source_infix1);
-        else
-            write_file(os, class_name, source_infix1);
-
-        fprintf(os, "}\n");
-        return;
-    }
-
-    if (class_decl->qual_mask & MOF_QT_INDICATION)
-        write_file(os, class_name, indication_source_infix2);
-    else if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
-        write_file(os, class_name, association_source_infix2);
-    else
-        write_file(os, class_name, source_infix2);
-
-    p = class_decl->all_features;
-
-    for (; p; p = (MOF_Feature_Info*)p->next)
-    {
-        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p->feature);
-
-        if (!meth)
-            continue;
-
-        write_skeleton(os, class_name, meth);
-    }
-
-    fprintf(os, "    return -1;\n");
-    fprintf(os, "}\n");
-}
-
 void write_provider_source(
     const char* class_name, 
     const string& path,
@@ -317,7 +263,6 @@ void write_provider_source(
         write_file(os, class_name, association_source);
 
     write_methods(os, class_name, class_decl, true);
-    write_proc(os, class_name, class_decl);
     write_file(os, class_name, source_suffix);
     printf("Created %s\n", path.c_str());
 
@@ -336,34 +281,13 @@ void write_indication_provider_source(
 
     write_file(os, class_name, indication_source_prefix);
     write_methods(os, class_name, class_decl, true);
-    write_proc(os, class_name, class_decl);
     write_file(os, class_name, source_suffix);
     printf("Created %s\n", path.c_str());
 
     fclose(os);
 }
 
-void generate_module_file(const char* class_name, bool force)
-{
-    const char MODULE_CPP[] = "module.cpp";
-
-    if (!force)
-    {
-        if (access(MODULE_CPP, F_OK) == 0)
-            err("%s already exists; use -f to overwrite", MODULE_CPP);
-    }
-
-    FILE* os = fopen(MODULE_CPP, "wb");
-    write_file(os, class_name, module_source);
-    fclose(os);
-
-    printf("Created %s\n", MODULE_CPP);
-}
-
-void generate_provider(
-    const char* class_name,
-    bool module,
-    bool force)
+void generate_provider(const char* class_name)
 {
     // Lookup class.
 
@@ -377,15 +301,6 @@ void generate_provider(
     string header_file = string(class_name) + "_Provider.h";
     string source_file = string(class_name) + "_Provider.cpp";
 
-    if (!force)
-    {
-        if (access(header_file.c_str(), F_OK) == 0)
-            err("%s already exists; use -f to overwrite", header_file.c_str());
-
-        if (access(source_file.c_str(), F_OK) == 0)
-            err("%s already exists; use -f to overwrite", source_file.c_str());
-    }
-
     // Write header and source files:
 
     if (class_decl->qual_mask & MOF_QT_INDICATION)
@@ -398,35 +313,512 @@ void generate_provider(
         write_provider_header(class_name, header_file, class_decl);
         write_provider_source(class_name, source_file, class_decl);
     }
-
-    // Generate the module file:
-
-    if (module)
-        generate_module_file(class_decl->name, force);
 }
 
-bool is_dir(const string& path)
+int load_file(const char* path, string& data)
 {
-    struct stat st;
+    FILE* is = fopen(path, "rb");
 
-    if (stat(path.c_str(), &st) != 0)
-        return false;
+    if (!is)
+        return -1;
 
-    return S_ISDIR(st.st_mode);
+    char buffer[4097];
+    size_t n;
+
+    while ((n = fread(buffer, 1, sizeof(buffer) - 1, is)) > 0)
+    {
+        buffer[n] = '\0';
+        data += buffer;
+    }
+
+    fclose(is);
+    return 0;
+}
+
+int put_file(const char* path, const string& data)
+{
+    FILE* os = fopen(path, "wb");
+
+    if (!os)
+        return -1;
+
+    size_t n;
+
+    for (size_t i = 0; i < data.size(); i++)
+        fputc(data[i], os);
+
+    fclose(os);
+
+    printf("Patched %s\n", path);
+    return 0;
+}
+
+//==============================================================================
+//
+// Patches
+//
+//==============================================================================
+
+struct Patch
+{
+    const char* returns;
+    const char* scope;
+    const char* func;
+    const char* text;
+};
+
+const Patch modify_instance_hdr_patch =
+{
+    "Modify_Instance_Status",
+    NULL,
+    "modify_instance",
+    "Modify_Instance_Status modify_instance(\n"
+    "        const <CLASS>* model,\n"
+    "        const <CLASS>* instance)"
+};
+
+const Patch modify_instance_src_patch =
+{
+    "Modify_Instance_Status",
+    "<CLASS>_Provider",
+    "modify_instance",
+    "Modify_Instance_Status <CLASS>_Provider::modify_instance(\n"
+    "    const <CLASS>* model,\n"
+    "    const <CLASS>* instance)"
+};
+
+const Patch create_instance_hdr_patch =
+{
+    "Create_Instance_Status",
+    NULL,
+    "create_instance",
+    "Create_Instance_Status create_instance(\n"
+    "        <CLASS>* instance)"
+};
+
+const Patch create_instance_src_patch =
+{
+    "Create_Instance_Status",
+    "<CLASS>_Provider",
+    "create_instance",
+    "Create_Instance_Status <CLASS>_Provider::create_instance(\n"
+    "    <CLASS>* instance)"
+};
+
+//==============================================================================
+
+void expand(string& text, const string& pattern, const string& replacement)
+{
+    size_t pos;
+
+    while ((pos = text.find(pattern)) != string::npos)
+    {
+        text = 
+            text.substr(0, pos) + 
+            string(replacement) + 
+            text.substr(pos + pattern.size());
+    }
+}
+
+int patch(string& data, const char* cn, const Patch& patch)
+{
+    string rt = patch.returns;
+    string fn = patch.func;
+    expand(fn, "<CLASS>", cn);
+
+    const string tmp = data;
+    const char* str = tmp.c_str();
+    const char* p = str;
+
+    for (;;)
+    {
+        // return type
+
+        p = strstr(p, rt.c_str());
+
+        if (!p)
+            return -1;
+
+        const char* start = p;
+
+        p += rt.size();
+
+        // whitespace
+
+        while (isspace(*p))
+            p++;
+
+        if (*p == '\0')
+            return -1;
+
+        // scope
+
+        if (patch.scope)
+        {
+            string sn = patch.scope;
+            expand(sn, "<CLASS>", cn);
+
+            // scope
+
+            if (strncmp(p, sn.c_str(), sn.size()) != 0)
+                continue;
+
+
+            p += sn.size();
+
+            // whitespace
+
+            while (isspace(*p))
+                p++;
+
+            if (*p == '\0')
+                return -1;
+
+            // expect "::"
+
+            if (!(p[0] == ':' && p[1] == ':'))
+                continue;
+
+            p += 2;
+
+            // whitespace
+
+            while (isspace(*p))
+                p++;
+
+            if (*p == '\0')
+                return -1;
+        }
+
+        // function name
+
+        if (strncmp(p, fn.c_str(), fn.size()) != 0)
+            continue;
+
+        p += fn.size();
+
+        // whitespace
+
+        while (isspace(*p))
+            p++;
+
+        if (*p == '\0')
+            return -1;
+
+        // '('
+
+        if (*p != '(')
+            continue;
+
+        p++;
+
+        // ')'
+
+        while (*p && *p != ')')
+            p++;
+
+        if (*p == '\0')
+            return -1;
+
+        p++;
+
+        // Perform patch.
+
+        string text = patch.text;
+        size_t pos;
+        expand(text, "<CLASS>", cn);
+
+        data.erase(start - str, p - start);
+        data.insert(start - str, text);
+
+        return 0;
+    }
+
+    // Unreachable
+    return -1;
+}
+
+void patch_err(
+    const char* path, string& data, const char* cn, const Patch& pt)
+{
+    if (patch(data, cn, pt) != 0)
+        err("%s: patch failed: failed to find %s()", path, pt.func);
+}
+
+void patch_method(
+    const char* path, 
+    const MOF_Class_Decl* cd, 
+    const MOF_Method_Decl* md, 
+    string& data,
+    bool def)
+{
+    const char* cn = cd->name;
+    const char* mn = md->name;
+    const char* in = def ? "" : "    ";
+    string rt;
+    string sn;
+    string fn;
+    string text;
+
+    // returns
+
+    rt = "Invoke_Method_Status";
+
+    // scope
+
+    if (def)
+        sn = string(cn) + string("_Provider");
+
+    // function
+
+    fn = mn;
+
+    // header
+
+    char buf[1024];
+
+    if (def)
+    {
+        sprintf(buf, "Invoke_Method_Status %s_Provider::%s(\n", cn, mn);
+        text += buf;
+    }
+    else
+    {
+        sprintf(buf, "Invoke_Method_Status %s(\n", mn);
+        text += buf;
+    }
+
+    // This:
+
+    if (!(md->qual_mask & MOF_QT_STATIC))
+    {
+        sprintf(buf, "%s    const %s* self,\n", in, cn);
+        text += buf;
+    }
+
+    // Parameters:
+
+    for (MOF_Parameter* p = md->parameters; p; p = (MOF_Parameter*)p->next)
+    {
+        sprintf(buf, "%s    ", in);
+        text += buf;
+
+        if (!(p->qual_mask & MOF_QT_OUT))
+        {
+            sprintf(buf, "const ");
+            text += buf;
+        }
+
+        if (p->data_type == TOK_REF)
+        {
+            if (p->array_index)
+            {
+                sprintf(buf, "Array<%s*>& %s", p->ref_name, p->name);
+                text += buf;
+            }
+            else
+            {
+                if (p->qual_mask & MOF_QT_OUT)
+                {
+                    sprintf(buf, "%s*& %s", p->ref_name, p->name);
+                    text += buf;
+                }
+                else
+                {
+                    sprintf(buf, "%s* %s", p->ref_name, p->name);
+                    text += buf;
+                }
+            }
+        }
+        else
+        {
+            sprintf(buf, "Property<");
+            text += buf;
+
+            if (p->array_index)
+            {
+                sprintf(buf, "Array_");
+                text += buf;
+            }
+
+            sprintf(buf, "%s>& %s", _to_string(p->data_type), p->name);
+            text += buf;
+        }
+
+        sprintf(buf, ",\n");
+        text += buf;
+    }
+
+    // Return value:
+
+    sprintf(buf, "%s    Property<%s>& return_value)",
+        in, _to_string(md->data_type));
+    text += buf;
+
+    // Patch it:
+
+    {
+        Patch pt;
+        pt.returns = rt.c_str();
+
+        if (sn.size())
+            pt.scope = sn.c_str();
+        else
+            pt.scope = NULL;
+
+        pt.func = mn;
+        pt.text = text.c_str();
+
+        if (patch(data, cn, pt) == 0)
+            return;
+    }
+
+    // Search for "/*@END@*/" marker.
+
+    size_t pos = data.find(END);
+
+    if (pos == string::npos)
+    {
+        err("%s: patch failed: please add end-marker (\"%s\") "
+            "so genprov will know where to insert new extrinsic methods", 
+            path, END);
+    }
+
+    if (def)
+    {
+        text +=
+            "\n"
+            "{\n"
+            "    return INVOKE_METHOD_UNSUPPORTED;\n"
+            "}\n";
+    }
+    else
+    {
+        text += ";\n";
+    }
+
+    text += "\n" + string(in) + string(END);
+
+    data = data.substr(0, pos) + text + data.substr(pos + strlen(END));
+}
+
+void patch_methods(
+    const char* path, const MOF_Class_Decl* cd, string& data, bool def)
+{
+    MOF_Feature_Info* p = cd->all_features;
+
+    for (; p; p = (MOF_Feature_Info*)p->next)
+    {
+        MOF_Feature* feature = p->feature;
+
+        MOF_Method_Decl* md = dynamic_cast<MOF_Method_Decl*>(feature);
+
+        if (md)
+            patch_method(path, cd, md, data, def);
+    }
+}
+
+void patch_header(const MOF_Class_Decl* cd)
+{
+    // Load file into memory.
+
+    char path[1024];
+    sprintf(path, "%s_Provider.h", cd->name);
+    string data;
+
+    if (load_file(path, data) != 0)
+        err("failed to patch %s (no such file)", path);
+
+    // Patch provider.
+
+    if (cd->qual_mask & MOF_QT_INDICATION)
+    {
+    }
+    else if (cd->qual_mask & MOF_QT_ASSOCIATION)
+    {
+        patch_err(path, data, cd->name, modify_instance_hdr_patch);
+        patch_err(path, data, cd->name, create_instance_hdr_patch);
+    }
+    else
+    {
+        patch_err(path, data, cd->name, modify_instance_hdr_patch);
+        patch_err(path, data, cd->name, create_instance_hdr_patch);
+    }
+
+    patch_methods(path, cd, data, false);
+    put_file(path, data);
+}
+
+void patch_source(const MOF_Class_Decl* cd)
+{
+    // Load file into memory.
+
+    char path[1024];
+    sprintf(path, "%s_Provider.cpp", cd->name);
+    string data;
+
+    if (load_file(path, data) != 0)
+        err("failed to patch %s (no such file)", path);
+
+    // Patch provider.
+
+    if (cd->qual_mask & MOF_QT_INDICATION)
+    {
+    }
+    else if (cd->qual_mask & MOF_QT_ASSOCIATION)
+    {
+        patch_err(path, data, cd->name, modify_instance_src_patch);
+        patch_err(path, data, cd->name, create_instance_src_patch);
+    }
+    else
+    {
+        patch_err(path, data, cd->name, modify_instance_src_patch);
+        patch_err(path, data, cd->name, create_instance_src_patch);
+    }
+
+    patch_methods(path, cd, data, true);
+    put_file(path, data);
+}
+
+void patch_provider(const char* class_name)
+{
+    // Find class:
+
+    const MOF_Class_Decl* cd = MOF_Class_Decl::find((char*)class_name);
+
+    if (!cd)
+        err("no such class: %s", class_name);
+
+    patch_header(cd);
+    patch_source(cd);
+}
+
+void genprov(const string& cn)
+{
+    // Locate provider files.
+
+    bool found = exists(cn + "_Provider.h") && exists(cn + "_Provider.cpp");
+
+    // Patch provider.
+
+    if (found && !force_opt)
+        patch_provider(cn.c_str());
+    else
+    {
+        generate_provider(cn.c_str());
+    }
 }
 
 int main(int argc, char** argv)
 {
+    const char* arg0 = argv[0];
     vector<string> mof_files;
     set_arg0(argv[0]);
-
-    bool module = false;
-    bool force = false;
 
     // Check options:
     int opt;
 
-    while ((opt = getopt(argc, argv, "I:M:fmhV")) != -1)
+    while ((opt = getopt(argc, argv, "I:M:fhV")) != -1)
     {
         switch (opt)
         {
@@ -461,11 +853,7 @@ int main(int argc, char** argv)
             } 
 
             case 'f':
-                force = true;
-                break;
-
-            case 'm':
-                module = true;
+                force_opt = true;
                 break;
 
             case 'h':
@@ -488,23 +876,25 @@ int main(int argc, char** argv)
 
     // Check usage.
 
-    if (argc - optind != 1)
+    argc -= optind;
+    argv += optind;
+
+    if (argc < 1)
     {
-        fprintf(stderr, (char*)USAGE, argv[0]);
+        fprintf(stderr, (char*)USAGE, arg0);
         exit(1);
     }
-
-    const char* class_name = argv[optind];
 
     // Load repository. 
 
     load_repository(mof_files);
 
-    // Generate provider.
+    // Create providers.
 
-    generate_provider(class_name, module, force);
+    for (int i = 0; i < argc; i++)
+        genprov(argv[i]);
 
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/main.cpp,v 1.39 2007/03/07 18:49:10 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/main.cpp,v 1.45 2007/05/01 23:07:20 mbrasher-public Exp $");

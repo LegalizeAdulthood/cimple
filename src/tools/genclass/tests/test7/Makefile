@@ -1,7 +1,7 @@
 TOP = ../../../../..
 include $(TOP)/mak/config.mak
 
-BINARY = genclass_test7
+BINARY = test_genclass7
 
 SOURCES = main.cpp EmbeddedClass.cpp MyClass.cpp YourClass.cpp
 
@@ -10,7 +10,7 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BINARY_TARGET)
+	$(TARGET)
 
 genclass:
-	genclass YourClass MyClass EmbeddedClass
+	$(BINDIR)/genclass YourClass MyClass EmbeddedClass

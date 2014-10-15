@@ -1,26 +1,31 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplmethods
+MODULE=1
 
-INCLUDES += -I../repository
+SHARED_LIBRARY = cimplemethods
 
-SOURCES = Methods_Provider.cpp module.cpp
+SOURCES = \
+    Arg.cpp \
+    Methods.cpp \
+    Methods_Provider.cpp \
+    module.cpp \
+    repository.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimplepegadap
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
-reg:
-	regmod -d -c $(SHARED_LIBRARY_TARGET)
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r Methods
+
+genprov:
+	$(BINDIR)/genprov Methods
+
+genmod:
+	$(BINDIR)/genmod Methods Methods

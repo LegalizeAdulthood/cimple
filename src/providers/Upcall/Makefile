@@ -1,8 +1,9 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplupcall
+MODULE=1
 
+SHARED_LIBRARY = cimpleupcall
 
 SOURCES = \
     CIM_ComputerSystem.cpp \
@@ -18,29 +19,20 @@ SOURCES = \
     Upcall.cpp \
     Upcall_Provider.cpp
 
-# Uncommment this to build a CMPI provider.
-#BUILD_CMPI_PROVIDER=1
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimple
-
-ifdef BUILD_CMPI_PROVIDER
-  LIBRARIES += cimplecmpiadap
-  DEFINES += -DBUILD_CMPI_PROVIDER
-else
-  LIBRARIES += cimplepegadap
-endif
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r Upcall CIM_ComputerSystem
+	$(BINDIR)/genclass -r Upcall CIM_ComputerSystem
+
+genprov:
+	$(BINDIR)/genprov Upcall
+
+genmod:
+	$(BINDIR)/genmod Upcall Upcall

@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_C26CDA5DC5FD1E19B65F857630A80A82;
+extern const Meta_Repository __meta_repository_BD4E34DC9A2A16169AB4EB70D8D93CFC;
 
 extern const Meta_Property
 _President_Number;
@@ -69,9 +69,9 @@ _President_Last =
 
 static Meta_Feature* _President_MFA[] =
 {
-    (Meta_Feature*)&_President_Number,
-    (Meta_Feature*)&_President_First,
-    (Meta_Feature*)&_President_Last,
+    (Meta_Feature*)(void*)&_President_Number,
+    (Meta_Feature*)(void*)&_President_First,
+    (Meta_Feature*)(void*)&_President_Last,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -94,10 +94,9 @@ const Meta_Class President::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0x04EF282E, /* crc */
-    &__meta_repository_C26CDA5DC5FD1E19B65F857630A80A82,
+    &__meta_repository_BD4E34DC9A2A16169AB4EB70D8D93CFC,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/President/President.cpp,v 1.12 2007/03/13 22:53:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/President/President.cpp,v 1.15 2007/05/01 23:07:20 mbrasher-public Exp $");

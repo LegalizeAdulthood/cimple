@@ -35,7 +35,7 @@ Enum_Instances_Status MySpareConfigurationService_Provider::enum_instances(
 }
 
 Create_Instance_Status MySpareConfigurationService_Provider::create_instance(
-    const MySpareConfigurationService* instance)
+    MySpareConfigurationService* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -47,6 +47,7 @@ Delete_Instance_Status MySpareConfigurationService_Provider::delete_instance(
 }
 
 Modify_Instance_Status MySpareConfigurationService_Provider::modify_instance(
+    const MySpareConfigurationService* model,
     const MySpareConfigurationService* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -127,8 +128,7 @@ Invoke_Method_Status MySpareConfigurationService_Provider::RebuildStorageExtent(
     return INVOKE_METHOD_UNSUPPORTED;
 }
 
-Invoke_Method_Status MySpareConfigurationService_Provider::
-CheckParityConsistency(
+Invoke_Method_Status MySpareConfigurationService_Provider::CheckParityConsistency(
     const MySpareConfigurationService* self,
     CIM_ConcreteJob*& Job,
     const CIM_StorageExtent* Target,
@@ -146,118 +146,6 @@ Invoke_Method_Status MySpareConfigurationService_Provider::RepairParity(
     return INVOKE_METHOD_UNSUPPORTED;
 }
 
-int MySpareConfigurationService_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef MySpareConfigurationService Class;
-    typedef MySpareConfigurationService_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "RequestStateChange") == 0)
-    {
-        typedef MySpareConfigurationService_RequestStateChange_method Method;
-        Method* method = (Method*)arg2;
-        return provider->RequestStateChange(
-            self,
-            method->RequestedState,
-            method->Job,
-            method->TimeoutPeriod,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "StartService") == 0)
-    {
-        typedef MySpareConfigurationService_StartService_method Method;
-        Method* method = (Method*)arg2;
-        return provider->StartService(
-            self,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "StopService") == 0)
-    {
-        typedef MySpareConfigurationService_StopService_method Method;
-        Method* method = (Method*)arg2;
-        return provider->StopService(
-            self,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "AssignSpares") == 0)
-    {
-        typedef MySpareConfigurationService_AssignSpares_method Method;
-        Method* method = (Method*)arg2;
-        return provider->AssignSpares(
-            self,
-            method->Job,
-            method->InPool,
-            method->InExtents,
-            method->RedundancySet,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "UnassignSpares") == 0)
-    {
-        typedef MySpareConfigurationService_UnassignSpares_method Method;
-        Method* method = (Method*)arg2;
-        return provider->UnassignSpares(
-            self,
-            method->Job,
-            method->InPool,
-            method->InExtents,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "RebuildStorageExtent") == 0)
-    {
-        typedef MySpareConfigurationService_RebuildStorageExtent_method Method;
-        Method* method = (Method*)arg2;
-        return provider->RebuildStorageExtent(
-            self,
-            method->Job,
-            method->Target,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "CheckParityConsistency") == 0)
-    {
-        typedef 
-        MySpareConfigurationService_CheckParityConsistency_method Method;
-        Method* method = (Method*)arg2;
-        return provider->CheckParityConsistency(
-            self,
-            method->Job,
-            method->Target,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "RepairParity") == 0)
-    {
-        typedef MySpareConfigurationService_RepairParity_method Method;
-        Method* method = (Method*)arg2;
-        return provider->RepairParity(
-            self,
-            method->Job,
-            method->Target,
-            method->return_value);
-    }
-    return -1;
-}
+/*@END@*/
 
 CIMPLE_NAMESPACE_END
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/MySpareConfigurationService_Provider.cpp,v 1.2 2007/03/07 20:25:26 mbrasher-public Exp $");
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/MySpareConfigurationService_Provider.cpp,v 1.2 2007/03/07 20:25:26 mbrasher-public Exp $");

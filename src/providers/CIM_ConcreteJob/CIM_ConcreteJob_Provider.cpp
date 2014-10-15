@@ -37,12 +37,12 @@ Enum_Instances_Status CIM_ConcreteJob_Provider::enum_instances(
 Create_Instance_Status CIM_ConcreteJob_Provider::create_instance(
     CIM_ConcreteJob* instance)
 {
-    print(instance, true);
+    // print(instance, true);
 
     instance->InstanceID.value = "2222";
     instance->InstanceID.null = false;
 
-    print(instance, true);
+    // print(instance, true);
 
     return CREATE_INSTANCE_OK;
 }
@@ -54,6 +54,7 @@ Delete_Instance_Status CIM_ConcreteJob_Provider::delete_instance(
 }
 
 Modify_Instance_Status CIM_ConcreteJob_Provider::modify_instance(
+    const CIM_ConcreteJob* model,
     const CIM_ConcreteJob* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -74,54 +75,6 @@ Invoke_Method_Status CIM_ConcreteJob_Provider::RequestStateChange(
     Property<uint32>& return_value)
 {
     return INVOKE_METHOD_UNSUPPORTED;
-}
-
-int CIM_ConcreteJob_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef CIM_ConcreteJob Class;
-    typedef CIM_ConcreteJob_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "KillJob") == 0)
-    {
-        typedef CIM_ConcreteJob_KillJob_method Method;
-        Method* method = (Method*)arg2;
-        return provider->KillJob(
-            self,
-            method->DeleteOnKill,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "RequestStateChange") == 0)
-    {
-        typedef CIM_ConcreteJob_RequestStateChange_method Method;
-        Method* method = (Method*)arg2;
-        return provider->RequestStateChange(
-            self,
-            method->RequestedState,
-            method->TimeoutPeriod,
-            method->return_value);
-    }
-    return -1;
 }
 
 CIMPLE_NAMESPACE_END

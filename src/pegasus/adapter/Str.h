@@ -39,23 +39,23 @@ class Str
 {
 public:
 
-    Str(const Pegasus::String& s) : _cstr(s.getCString())
+    Str(const P_String& s) : _cstr(s.getCString())
     {
     }
 
-    Str(const Pegasus::CIMName& n) : _cstr(n.getString().getCString())
+    Str(const P_CIMName& n) : _cstr(n.getString().getCString())
     {
     }
 
-    Str(const Pegasus::CIMNamespaceName& n) : _cstr(n.getString().getCString())
+    Str(const P_CIMNamespaceName& n) : _cstr(n.getString().getCString())
     {
     }
 
-    Str(const Pegasus::Exception& e) : _cstr(e.getMessage().getCString())
+    Str(const P_Exception& e) : _cstr(e.getMessage().getCString())
     {
     }
 
-    Str(const Pegasus::CIMDateTime& x) : _cstr(x.toString().getCString())
+    Str(const P_CIMDateTime& x) : _cstr(x.toString().getCString())
     {
     }
 
@@ -68,7 +68,7 @@ public:
     operator const char*() const { return (const char*)_cstr; }
 
 private:
-    Pegasus::CString _cstr;
+    P_CString _cstr;
 };
 
 CIMPLE_NAMESPACE_END

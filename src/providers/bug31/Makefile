@@ -1,11 +1,11 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplbug31
+MODULE=1
+
+SHARED_LIBRARY = cimplebug31
 
 INCLUDES += $(CMPI_INCLUDES)
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 SOURCES = \
     BUG31_C_Provider.cpp \
@@ -15,25 +15,20 @@ SOURCES = \
     repository.cpp \
     module.cpp
 
-LIBRARIES = cimple
+CIMPLE_CMPI_MODULE=1
 
-BUILD_CMPI_PROVIDER=1
-ifdef BUILD_CMPI_PROVIDER
-  LIBRARIES += cimplecmpiadap
-  DEFINES += -DBUILD_CMPI_PROVIDER
-else
-  LIBRARIES += cimplepegadap
-endif
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r BUG31_A BUG31_B BUG31_C
+	$(BINDIR)/genclass -r BUG31_A BUG31_B BUG31_C
 
 genprov:
-	genprov -f BUG31_C
+	$(BINDIR)/genprov BUG31_C
+
+genmod:
+	$(BINDIR)/genmod BUG31_C BUG31_C

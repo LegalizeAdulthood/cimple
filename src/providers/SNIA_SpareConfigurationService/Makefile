@@ -1,11 +1,11 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
+MODULE=1
+
 SHARED_LIBRARY = SNIA_SpareConfigurationService
 
 INCLUDES += $(CMPI_INCLUDES)
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
 SOURCES = \
     CIM_Collection.cpp \
@@ -30,25 +30,20 @@ SOURCES = \
     SNIA_SpareConfigurationService_Provider.cpp \
     module.cpp
 
-LIBRARIES = cimple
+CIMPLE_CMPI_MODULE=1
 
-BUILD_CMPI_PROVIDER=1
-ifdef BUILD_CMPI_PROVIDER
-  LIBRARIES += cimplecmpiadap
-  DEFINES += -DBUILD_CMPI_PROVIDER
-else
-  LIBRARIES += cimplepegadap
-endif
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r SNIA_SpareConfigurationService MyStorageExtent
+	$(BINDIR)/genclass -r SNIA_SpareConfigurationService MyStorageExtent
 
 genprov:
-	genprov -f SNIA_SpareConfigurationService
+	$(BINDIR)/genprov SNIA_SpareConfigurationService
+
+genmod:
+	$(BINDIR)/genmod SNIA_SpareConfigurationService SNIA_SpareConfigurationService

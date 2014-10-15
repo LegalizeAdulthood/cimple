@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_382DB07289F3163E932C1B4825585E84;
+extern const Meta_Repository __meta_repository_415C2E0823D519D0B7C34CFC8299CB0B;
 
 extern const Meta_Property
 _Person_ssn;
@@ -69,9 +69,9 @@ _Person_last =
 
 static Meta_Feature* _Person_MFA[] =
 {
-    (Meta_Feature*)&_Person_ssn,
-    (Meta_Feature*)&_Person_first,
-    (Meta_Feature*)&_Person_last,
+    (Meta_Feature*)(void*)&_Person_ssn,
+    (Meta_Feature*)(void*)&_Person_first,
+    (Meta_Feature*)(void*)&_Person_last,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -94,10 +94,9 @@ const Meta_Class Person::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0xFD25E1F3, /* crc */
-    &__meta_repository_382DB07289F3163E932C1B4825585E84,
+    &__meta_repository_415C2E0823D519D0B7C34CFC8299CB0B,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person.cpp,v 1.18 2007/03/13 22:53:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person.cpp,v 1.25 2007/04/26 22:41:05 mbrasher-public Exp $");

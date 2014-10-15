@@ -27,10 +27,10 @@
 #ifndef _MOF_Feature_h
 #define _MOF_Feature_h
 
-#include <MOF_Config.h>
-#include <MOF_Qualifier.h>
-#include <MOF_Qualifier_Info.h>
-#include <MOF_Qualified_Element.h>
+#include "MOF_Config.h"
+#include "MOF_Qualifier.h"
+#include "MOF_Qualifier_Info.h"
+#include "MOF_Qualified_Element.h"
 
 #define MOF_FEATURE_PROP 1
 #define MOF_FEATURE_REF 2

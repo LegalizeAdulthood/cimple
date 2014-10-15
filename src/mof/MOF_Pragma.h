@@ -27,7 +27,7 @@
 #ifndef _MOF_Pragma_h
 #define _MOF_Pragma_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 class MOF_LINKAGE MOF_Pragma
 {

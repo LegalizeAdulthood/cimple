@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_1D62E793C9D41C0C9A7355CC778798F3;
+extern const Meta_Repository __meta_repository_C2AA78B37C6515EB9DBF2BC150C67E7F;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -336,28 +336,28 @@ _CIM_StorageSetting_UserDataStripeDepthMax =
 
 static Meta_Feature* _CIM_StorageSetting_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_SettingData_ElementName,
-    (Meta_Feature*)&_CIM_SettingData_InstanceID,
-    (Meta_Feature*)&_CIM_StorageSetting_NoSinglePointOfFailure,
-    (Meta_Feature*)&_CIM_StorageSetting_DataRedundancyMax,
-    (Meta_Feature*)&_CIM_StorageSetting_DataRedundancyMin,
-    (Meta_Feature*)&_CIM_StorageSetting_DataRedundancyGoal,
-    (Meta_Feature*)&_CIM_StorageSetting_PackageRedundancyMax,
-    (Meta_Feature*)&_CIM_StorageSetting_PackageRedundancyMin,
-    (Meta_Feature*)&_CIM_StorageSetting_PackageRedundancyGoal,
-    (Meta_Feature*)&_CIM_StorageSetting_DeltaReservationMax,
-    (Meta_Feature*)&_CIM_StorageSetting_DeltaReservationMin,
-    (Meta_Feature*)&_CIM_StorageSetting_DeltaReservationGoal,
-    (Meta_Feature*)&_CIM_StorageSetting_ChangeableType,
-    (Meta_Feature*)&_CIM_StorageSetting_ExtentStripeLength,
-    (Meta_Feature*)&_CIM_StorageSetting_ExtentStripeLengthMin,
-    (Meta_Feature*)&_CIM_StorageSetting_ExtentStripeLengthMax,
-    (Meta_Feature*)&_CIM_StorageSetting_ParityLayout,
-    (Meta_Feature*)&_CIM_StorageSetting_UserDataStripeDepth,
-    (Meta_Feature*)&_CIM_StorageSetting_UserDataStripeDepthMin,
-    (Meta_Feature*)&_CIM_StorageSetting_UserDataStripeDepthMax,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_SettingData_ElementName,
+    (Meta_Feature*)(void*)&_CIM_SettingData_InstanceID,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_NoSinglePointOfFailure,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_DataRedundancyMax,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_DataRedundancyMin,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_DataRedundancyGoal,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_PackageRedundancyMax,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_PackageRedundancyMin,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_PackageRedundancyGoal,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_DeltaReservationMax,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_DeltaReservationMin,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_DeltaReservationGoal,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_ChangeableType,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_ExtentStripeLength,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_ExtentStripeLengthMin,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_ExtentStripeLengthMax,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_ParityLayout,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_UserDataStripeDepth,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_UserDataStripeDepthMin,
+    (Meta_Feature*)(void*)&_CIM_StorageSetting_UserDataStripeDepthMax,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -400,11 +400,9 @@ const Meta_Class CIM_StorageSetting::static_meta_class =
     &CIM_SettingData::static_meta_class,
     1, /* num_keys */
     0x88D44501, /* crc */
-    &__meta_repository_1D62E793C9D41C0C9A7355CC778798F3,
+    &__meta_repository_C2AA78B37C6515EB9DBF2BC150C67E7F,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_StorageSetting.cpp,v 1.2 2007/03/07 20:25:25 mbrasher-public Exp $");
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_StorageSetting.cpp,v 1.2 2007/03/07 20:25:25 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_StorageSetting.cpp,v 1.5 2007/04/18 03:29:39 mbrasher-public Exp $");

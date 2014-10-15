@@ -27,10 +27,10 @@
 #ifndef _MOF_Qualified_Element_h
 #define _MOF_Qualified_Element_h
 
-#include <MOF_Config.h>
-#include <MOF_Named_Element.h>
-#include <MOF_Qualifier.h>
-#include <MOF_Qualifier_Info.h>
+#include "MOF_Config.h"
+#include "MOF_Named_Element.h"
+#include "MOF_Qualifier.h"
+#include "MOF_Qualifier_Info.h"
 
 class MOF_Qualifier_Info;
 class MOF_Qualifier;

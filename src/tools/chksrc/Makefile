@@ -7,10 +7,6 @@ LIBRARIES =
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
-genclass:
-
 static:
 	g++ -static -o chksrc main.c
 

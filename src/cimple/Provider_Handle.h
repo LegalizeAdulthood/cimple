@@ -63,6 +63,7 @@ public:
         const Instance* instance);
 
     Modify_Instance_Status modify_instance(
+        const Instance* model,
         const Instance* instance);
 
     Invoke_Method_Status invoke_method(
@@ -162,11 +163,12 @@ inline Delete_Instance_Status Provider_Handle::delete_instance(
 }
 
 inline Modify_Instance_Status Provider_Handle::modify_instance(
+    const Instance* model,
     const Instance* instance)
 {
     return (Modify_Instance_Status)_proc(_registration, 
         OPERATION_MODIFY_INSTANCE, 
-        (void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
+        (void*)_provider, (void*)model, (void*)instance, 0, 0, 0, 0, 0);
 }
 
 inline Invoke_Method_Status Provider_Handle::invoke_method(

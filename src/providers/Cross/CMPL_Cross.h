@@ -12,16 +12,9 @@
 #include "CMPL_Left.h"
 #include "CMPL_Right.h"
 
-#if (0x00632D00 > CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.45) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
-#endif
-
-#if (0x00632D00 < CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.45) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
-#endif
-
-
 CIMPLE_NAMESPACE_BEGIN
+
+// CMPL_Cross keys:
 
 class CMPL_Cross : public Instance
 {

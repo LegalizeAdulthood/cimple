@@ -68,6 +68,7 @@ Delete_Instance_Status Methods_Provider::delete_instance(
 }
 
 Modify_Instance_Status Methods_Provider::modify_instance(
+    const Methods* model,
     const Methods* instance)
 {
     TRACE;
@@ -85,7 +86,7 @@ Invoke_Method_Status Methods_Provider::foo(
     Property<String>& return_value)
 {
     TRACE;
-#if 0
+#if 1
     printf("===== Methods_Provider::foo()\n");
     printf("[in] arg1: %u\n", arg1.value);
     printf("[in] arg2: %s\n", arg2.value.c_str());
@@ -125,61 +126,46 @@ Invoke_Method_Status Methods_Provider::foo2(
     return INVOKE_METHOD_OK;
 }
 
-int Methods_Provider::proc(
-    const Registration* registration,
-    int operation,
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
+Invoke_Method_Status Methods_Provider::foo3(
+    Property<String>& return_value)
 {
-    TRACE;
-
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Methods Class;
-    typedef Methods_Provider Provider;
-
-    if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(registration,
-            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-
-    Provider* provider = (Provider*)arg0;
-    const Class* self = (const Class*)arg1;
-    const char* meth_name = ((Instance*)arg2)->meta_class->name;
-
-    if (strcasecmp(meth_name, "foo") == 0)
-    {
-        typedef Methods_foo_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo(
-            self,
-            method->arg1,
-            method->arg2,
-            method->arg3,
-            method->arg4,
-            method->arg5,
-            method->arg6,
-            method->return_value);
-    }
-    if (strcasecmp(meth_name, "foo2") == 0)
-    {
-        typedef Methods_foo2_method Method;
-        Method* method = (Method*)arg2;
-        return provider->foo2(
-            self,
-            method->arg1,
-            method->arg2,
-            method->return_value);
-    }
-    return -1;
+    return_value.value = "goodbye";
+    return_value.null = false;
+    return INVOKE_METHOD_OK;
 }
 
-CIMPLE_NAMESPACE_END
+Invoke_Method_Status Methods_Provider::foo4(
+    const Methods* self,
+    const Property<Array_String>& arr1,
+    Property<Array_String>& arr2,
+    Property<uint32>& return_value)
+{
+    arr2 = arr1;
+    return_value.value = 999;
+    return_value.null = false;
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Methods/Methods_Provider.cpp,v 1.17 2007/03/07 20:25:25 mbrasher-public Exp $");
+    return INVOKE_METHOD_OK;
+}
+
+Invoke_Method_Status Methods_Provider::foo5(
+    const Methods* self,
+    const Property<uint32>& in_arg,
+    Property<uint32>& in_out_arg,
+    Property<uint32>& out_arg,
+    Property<uint32>& return_value)
+{
+    return INVOKE_METHOD_UNSUPPORTED;
+}
+
+Invoke_Method_Status Methods_Provider::junk(
+    const Methods* self,
+    const Property<uint32>& x,
+    const Property<uint32>& y,
+    Property<uint32>& return_value)
+{
+    return INVOKE_METHOD_UNSUPPORTED;
+}
+
+/*@END@*/
+
+CIMPLE_NAMESPACE_END

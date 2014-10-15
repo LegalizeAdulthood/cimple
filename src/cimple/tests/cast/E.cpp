@@ -33,7 +33,7 @@ _E_e =
 
 static Meta_Feature* _E_MFA[] =
 {
-    (Meta_Feature*)&_E_e,
+    (Meta_Feature*)(void*)&_E_e,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -54,10 +54,9 @@ const Meta_Class E::static_meta_class =
     _locals,
     0, /* super_class */ 
     0, /* num_keys */
-    0x40B42E8F, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/cast/E.cpp,v 1.18 2007/03/13 22:53:12 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/cast/E.cpp,v 1.22 2007/04/26 22:40:58 mbrasher-public Exp $");

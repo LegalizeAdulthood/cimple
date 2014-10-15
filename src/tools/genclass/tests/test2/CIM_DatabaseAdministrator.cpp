@@ -48,8 +48,8 @@ _CIM_DatabaseAdministrator_Dependent =
 
 static Meta_Feature* _CIM_DatabaseAdministrator_MFA[] =
 {
-    (Meta_Feature*)&_CIM_DatabaseAdministrator_Antecedent,
-    (Meta_Feature*)&_CIM_DatabaseAdministrator_Dependent,
+    (Meta_Feature*)(void*)&_CIM_DatabaseAdministrator_Antecedent,
+    (Meta_Feature*)(void*)&_CIM_DatabaseAdministrator_Dependent,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -71,10 +71,9 @@ const Meta_Class CIM_DatabaseAdministrator::static_meta_class =
     _locals,
     &CIM_Dependency::static_meta_class,
     2, /* num_keys */
-    0xEF2153FB, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_DatabaseAdministrator.cpp,v 1.19 2007/03/13 22:53:19 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_DatabaseAdministrator.cpp,v 1.23 2007/04/26 22:41:08 mbrasher-public Exp $");

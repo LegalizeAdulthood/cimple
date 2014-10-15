@@ -307,11 +307,6 @@ bool identical(const Meta_Class* mc1, const Meta_Class* mc2)
     if (mc1->num_keys != mc2->num_keys)
         return false;
 
-    if (mc1->crc != mc2->crc)
-        return false;
-
-    // Ignore meta_repository!
-
     // Identical:
     return true;
 }
@@ -413,10 +408,6 @@ Meta_Class* create_meta_class(
 
         unref(mc->super_meta_class);
         ref(mc->super_meta_class = smc);
-
-        // Meta_Class.crc:
-
-        mc->crc = 0;
 
         return mc;
     }
@@ -521,9 +512,6 @@ Meta_Class* clone(const Meta_Class* x)
         // Meta_Class.num_keys:
         mc->num_keys = x->num_keys;
 
-        // Meta_Class.num_keys:
-        mc->crc = x->crc;
-
         // Meta_Class.meta_repository.
         mc->meta_repository = 0;
     }
@@ -569,4 +557,4 @@ void filter_qualifiers(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Class.cpp,v 1.64 2007/03/07 18:41:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Class.cpp,v 1.65 2007/04/26 22:40:57 mbrasher-public Exp $");

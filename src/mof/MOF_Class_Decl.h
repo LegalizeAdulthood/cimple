@@ -27,16 +27,16 @@
 #ifndef _MOF_Class_Decl_h
 #define _MOF_Class_Decl_h
 
-#include <MOF_Config.h>
-#include <MOF_Feature.h>
-#include <MOF_Feature_Info.h>
-#include <MOF_Property_Decl.h>
-#include <MOF_Method_Decl.h>
-#include <MOF_Reference_Decl.h>
-#include <MOF_Qualified_Element.h>
-#include <MOF_Qualifier.h>
-#include <MOF_Qualifier_Info.h>
-#include <MOF_Qualifier_Decl.h>
+#include "MOF_Config.h"
+#include "MOF_Feature.h"
+#include "MOF_Feature_Info.h"
+#include "MOF_Property_Decl.h"
+#include "MOF_Method_Decl.h"
+#include "MOF_Reference_Decl.h"
+#include "MOF_Qualified_Element.h"
+#include "MOF_Qualifier.h"
+#include "MOF_Qualifier_Info.h"
+#include "MOF_Qualifier_Decl.h"
 
 /** Class declaration.
 */
@@ -63,12 +63,12 @@ public:
     virtual void set_owning_class(const char* owning_class);
 
     static MOF_Class_Decl* find(
-	char* class_name,
-	bool fix_case = false);
+        char* class_name,
+        bool fix_case = false);
 
     static MOF_Class_Decl* find_by_alias(
-	char* alias,
-	bool fix_case = false);
+        char* alias,
+        bool fix_case = false);
 
     static void handle(MOF_Class_Decl* class_decl);
 

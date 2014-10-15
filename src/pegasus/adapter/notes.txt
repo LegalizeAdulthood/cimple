@@ -1,0 +1,9 @@
+The Pegasus adapter does not support embedded instances yet.
+
+This feature is only available in Pegasus as of 2.6.0.
+
+#ifdef PEGASUS_USE_EXPERIMENTAL_INTERFACES
+# ifdef PEGASUS_EMBEDDED_INSTANCE_SUPPORT
+   CIMValue(const CIMInstance& x);
+# endif // PEGASUS_EMBEDDED_INSTANCE_SUPPORT
+#endif // PEGASUS_USE_EXPERIMENTAL_INTERFACES

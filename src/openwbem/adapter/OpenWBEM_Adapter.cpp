@@ -30,7 +30,6 @@
 #include <openwbem/OW_CIMClass.hpp>
 #include <openwbem/OW_CIMValue.hpp>
 #include <openwbem/OW_CIMNameSpace.hpp>
-#include <cimple/version.h>
 #include <cimple/Registration.h>
 #include <cimple/Error.h>
 #include "OpenWBEM_Adapter.h"
@@ -806,8 +805,6 @@ const Meta_Class* OpenWBEM_Adapter::find_meta_class(
 const Meta_Class* OpenWBEM_Adapter::find_model_meta_class(
     const OpenWBEM::CIMObjectPath& objectPath) const
 {
-#ifdef CIMPLE_ENABLE_SUBCLASS_PROVIDERS
-
     const Meta_Class* mc = find_meta_class(objectPath);
 
     if (!mc)
@@ -817,10 +814,6 @@ const Meta_Class* OpenWBEM_Adapter::find_model_meta_class(
         _throw(CIMException::INVALID_CLASS);
 
     return mc;
-
-#else
-    return _mc;
-#endif
 }
 
 
@@ -861,6 +854,4 @@ extern "C" CIMPLE_EXPORT int cimple_openwbem_adapter(
 }
 
 
-CIMPLE_INJECT_VERSION_TAG;
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/openwbem/adapter/OpenWBEM_Adapter.cpp,v 1.2 2007/03/07 20:25:23 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/openwbem/adapter/OpenWBEM_Adapter.cpp,v 1.4 2007/03/20 19:01:33 mbrasher-public Exp $");

@@ -35,6 +35,7 @@ public:
         const SNIA_SpareConfigurationService* instance);
 
     Modify_Instance_Status modify_instance(
+        const SNIA_SpareConfigurationService* model,
         const SNIA_SpareConfigurationService* instance);
 
     Invoke_Method_Status RequestStateChange(
@@ -84,18 +85,6 @@ public:
         CIM_ConcreteJob*& Job,
         const CIM_StorageExtent* Target,
         Property<uint32>& return_value);
-
-    static int proc(
-        const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3,
-        void* arg4,
-        void* arg5,
-        void* arg6,
-        void* arg7);
 };
 
 CIMPLE_NAMESPACE_END

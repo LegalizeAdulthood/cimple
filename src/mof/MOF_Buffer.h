@@ -27,7 +27,7 @@
 #ifndef _MOF_Buffer_h
 #define _MOF_Buffer_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 /** Simple dynamic buffer.
 */
@@ -48,12 +48,12 @@ public:
     void reserve(size_t capacity);
 
     /** Appends size bytes to the end of the buffer, increasing the size
-	by size bytes.
+        by size bytes.
     */
     void append(const char* data, size_t size);
 
     /** Appends a single byte to the end of the buffer, increasing the size
-	by one.
+        by one.
     */
     void append(const char ch) { append(&ch, 1); }
 
@@ -70,8 +70,8 @@ public:
     size_t capacity() const { return _capacity; }
 
     /** Steals the internal buffer from this instance (helps prevent an
-	unecessary allocation in certain cases). After calling this, the
-	buffer is empty as though it was freshly constructed.
+        unecessary allocation in certain cases). After calling this, the
+        buffer is empty as though it was freshly constructed.
     */
     char* steal_data();
 

@@ -1,46 +1,22 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
-include cmpi.mak
 
-ifdef STATIC
-  STATIC_LIBRARY = cimplecmpiadap_s
-  DEFINES += -DCIMPLE_CIMPLE_LINKAGE=""
-  LIBRARIES = cimple_s
-else
-  SHARED_LIBRARY = cimplecmpiadap
-  LIBRARIES = cimple
-endif
+INSTALL=1
+
+LIBRARY = cimplecmpiadap
+
+LIBRARIES = cimple
 
 SOURCES = \
     CMPI_Thread_Context.cpp \
     Converter.cpp \
-    CMPI_Adapter.cpp \
+    CMPI_Adapter.cpp
 
-DEFINES += -DCIMPLE_NEED_CMPI_IO
-DEFINES += -DCIMPLECMPL_INTERNAL
-
-ifdef CMPI_ROOT
-    INCLUDES += -I$(CMPI_ROOT)
-else
-    $(error "please define CMPI_ROOT to point to CMPI include directory")
+ifeq ($(CMPI_VOID_RETURN_BUG_OPT),1)
+  DEFINES += -DCIMPLE_HAVE_CMPI_VOID_RETURN_BUG
 endif
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+INCLUDES += -I$(WITH_CMPI_OPT)
 
 include $(TOP)/mak/rules.mak
-
-tests:
-
-genclass:
-
-##==============================================================================
-##
-## static
-##
-##     This rule builds a static adapter library (named cimplecmpiadap_s).
-##
-##==============================================================================
-
-static:
-	$(MAKE) clean
-	$(MAKE) STATIC=1
+include ../check-cmpi.mak

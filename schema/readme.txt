@@ -4,8 +4,8 @@ CIMPLE tools.
     genclass
     genprov
 
-These tools operate off the schemas in this directory, pointed to by the
-CIMPLE_MOF_PATH envirionment variable. For example:
+These tools operate off the schemas in this directory, pointed to by either:
 
-    export CIMPLE_MOF_PATH=/opt/cimple/schema/cim2131
+    1. The --with-schema=DIR option provided during configure.
 
+    2. The CIMPLE_MOF_PATH envirionment variable.

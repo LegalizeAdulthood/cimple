@@ -27,7 +27,7 @@
 #ifndef _cimple_config_h
 #define _cimple_config_h
 
-#include <platform.h>
+#include "options.h"
 #include <cstddef>
 #include <cstdlib>
 #include <cstdio>
@@ -35,7 +35,6 @@
 #include <climits>
 #include <cassert>
 #include <new>
-#include "options.h"
 
 //==============================================================================
 //
@@ -291,11 +290,7 @@ CIMPLE_NAMESPACE_END
 #ifdef CIMPLE_INTERNAL
 # define CIMPLE_LINKAGE CIMPLE_EXPORT
 #else
-# ifdef CIMPLE_LINK_STATIC_CIMPLE
-#  define CIMPLE_LINKAGE /* empty */
-# else
-#  define CIMPLE_LINKAGE CIMPLE_IMPORT
-#endif
+# define CIMPLE_LINKAGE CIMPLE_IMPORT
 #endif
 
 //==============================================================================
@@ -351,9 +346,9 @@ CIMPLE_NAMESPACE_END
 //
 //==============================================================================
 
-#define CIMPLE_MAJOR 0
-#define CIMPLE_MINOR 99
-#define CIMPLE_REVISION 56
+#define CIMPLE_MAJOR 1
+#define CIMPLE_MINOR 0
+#define CIMPLE_REVISION 0
 
 //==============================================================================
 //
@@ -461,28 +456,6 @@ typedef CIMPLE_UINT64 uint64;
 typedef CIMPLE_SINT64 sint64;
 typedef float real32;
 typedef double real64;
-
-CIMPLE_NAMESPACE_END
-
-//==============================================================================
-//
-// char16
-//
-//==============================================================================
-
-CIMPLE_NAMESPACE_BEGIN
-
-struct char16
-{
-    uint16 code;
-
-    char16() { }
-    char16(const char16& x) : code(x.code) { }
-    char16(uint16 x) : code(x) { }
-    char16& operator=(const char16& x) { code = x.code; return *this; }
-    char16& operator=(uint16 x) { code = x; return *this; }
-    operator uint16() const { return code; }
-};
 
 CIMPLE_NAMESPACE_END
 

@@ -47,6 +47,7 @@ Delete_Instance_Status Test1_Provider::delete_instance(
 }
 
 Modify_Instance_Status Test1_Provider::modify_instance(
+    const Test1* model,
     const Test1* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
@@ -75,4 +76,4 @@ int Test1_Provider::proc(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test1/Test1_Provider.cpp,v 1.3 2007/03/07 20:25:30 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test1/Test1_Provider.cpp,v 1.4 2007/04/18 03:29:44 mbrasher-public Exp $");

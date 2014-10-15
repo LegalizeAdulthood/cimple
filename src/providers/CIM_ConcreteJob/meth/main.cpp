@@ -40,17 +40,18 @@ void call_func()
         client.connectLocal();
 
         CIMInstance newInstance("CIM_ConcreteJob");
-#if 0
         CIMObjectPath objectPath("CIM_ConcreteJob.InstanceID=\"1000\"");
         newInstance.setPath(objectPath);
         newInstance.addProperty(CIMProperty("InstanceID", String("1111")));
-#endif
 
         CIMObjectPath returnObjectPath = 
             client.createInstance("root/cimv2", newInstance);
 
-        cout << "returnObjectPath=[" << returnObjectPath.toString() << "]";
-        cout << endl;
+        String tmp = returnObjectPath.toString();
+
+        const char tmp2[] = "CIM_ConcreteJob.InstanceID=\"2222\"";
+
+        assert(tmp == tmp2);
     }
     catch(Exception& e)
     {

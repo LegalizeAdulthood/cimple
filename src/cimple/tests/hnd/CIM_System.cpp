@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_6FAA529815A91D82B658654A66A4535E;
+extern const Meta_Repository __meta_repository_6827E083506B1A56883F566A87E0489F;
 
 extern const Meta_Qualifier
 _CIM_ManagedElement_Caption_MaxLen_MQ;
@@ -22,7 +22,7 @@ _CIM_ManagedElement_Caption_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_System_Caption_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedElement_Caption_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -50,7 +50,7 @@ _CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ;
 static const Meta_Qualifier*
 _CIM_System_InstallDate_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_InstallDate_MappingStrings_MQ,
 };
 
 extern const Meta_Property
@@ -73,7 +73,7 @@ _CIM_System_Name_Override_MQ =
     STRING, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_Name_Override_MV,
+    (const Meta_Value*)(void*)&_CIM_System_Name_Override_MV,
 };
 
 extern const Meta_Qualifier
@@ -93,14 +93,14 @@ _CIM_System_Name_MaxLen_MQ =
     UINT32, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_Name_MaxLen_MV,
+    (const Meta_Value*)(void*)&_CIM_System_Name_MaxLen_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_System_Name_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_System_Name_Override_MQ,
-    (Meta_Qualifier*)&_CIM_System_Name_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_Name_Override_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_Name_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -135,10 +135,10 @@ _CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_System_OperationalStatus_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_OperationalStatus_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -153,8 +153,8 @@ _CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_System_StatusDescriptions_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ArrayType_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -172,9 +172,9 @@ _CIM_ManagedSystemElement_Status_MaxLen_MQ;
 static const Meta_Qualifier*
 _CIM_System_Status_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_Deprecated_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_Status_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -189,8 +189,8 @@ _CIM_ManagedSystemElement_HealthState_Values_MQ;
 static const Meta_Qualifier*
 _CIM_System_HealthState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_ManagedSystemElement_HealthState_Values_MQ,
 };
 
 extern const Meta_Property
@@ -208,9 +208,9 @@ _CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_System_EnabledState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledState_Values_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledState_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -222,7 +222,7 @@ _CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_System_OtherEnabledState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -240,9 +240,9 @@ _CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_System_RequestedState_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestedState_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestedState_Values_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestedState_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestedState_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestedState_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Property
@@ -257,8 +257,8 @@ _CIM_EnabledLogicalElement_EnabledDefault_Values_MQ;
 static const Meta_Qualifier*
 _CIM_System_EnabledDefault_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledDefault_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_EnabledDefault_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault_Values_MQ,
 };
 
 extern const Meta_Property
@@ -284,9 +284,9 @@ _CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MQ;
 static const Meta_Qualifier*
 _CIM_System_RequestStateChange_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_ValueMap_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_Values_MQ,
-    (Meta_Qualifier*)&_CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_ValueMap_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_Values_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_EnabledLogicalElement_RequestStateChange_ModelCorrespondence_MQ,
 };
 
 extern const Meta_Qualifier
@@ -306,13 +306,13 @@ _CIM_System_CreationClassName_MaxLen_MQ =
     UINT32, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_CreationClassName_MaxLen_MV,
+    (const Meta_Value*)(void*)&_CIM_System_CreationClassName_MaxLen_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_System_CreationClassName_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_System_CreationClassName_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_CreationClassName_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -349,13 +349,13 @@ _CIM_System_NameFormat_MaxLen_MQ =
     UINT32, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_NameFormat_MaxLen_MV,
+    (const Meta_Value*)(void*)&_CIM_System_NameFormat_MaxLen_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_System_NameFormat_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_System_NameFormat_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_NameFormat_MaxLen_MQ,
 };
 
 extern const Meta_Property
@@ -392,7 +392,7 @@ _CIM_System_PrimaryOwnerName_MaxLen_MQ =
     UINT32, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_PrimaryOwnerName_MaxLen_MV,
+    (const Meta_Value*)(void*)&_CIM_System_PrimaryOwnerName_MaxLen_MV,
 };
 
 extern const Meta_Qualifier
@@ -419,14 +419,14 @@ _CIM_System_PrimaryOwnerName_MappingStrings_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_PrimaryOwnerName_MappingStrings_MV,
+    (const Meta_Value*)(void*)&_CIM_System_PrimaryOwnerName_MappingStrings_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_System_PrimaryOwnerName_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_System_PrimaryOwnerName_MaxLen_MQ,
-    (Meta_Qualifier*)&_CIM_System_PrimaryOwnerName_MappingStrings_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_PrimaryOwnerName_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_PrimaryOwnerName_MappingStrings_MQ,
 };
 
 extern const Meta_Property
@@ -463,7 +463,7 @@ _CIM_System_PrimaryOwnerContact_MaxLen_MQ =
     UINT32, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_PrimaryOwnerContact_MaxLen_MV,
+    (const Meta_Value*)(void*)&_CIM_System_PrimaryOwnerContact_MaxLen_MV,
 };
 
 extern const Meta_Qualifier
@@ -490,14 +490,14 @@ _CIM_System_PrimaryOwnerContact_MappingStrings_MQ =
     STRING, /* type */
     1, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_PrimaryOwnerContact_MappingStrings_MV,
+    (const Meta_Value*)(void*)&_CIM_System_PrimaryOwnerContact_MappingStrings_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_System_PrimaryOwnerContact_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_System_PrimaryOwnerContact_MaxLen_MQ,
-    (Meta_Qualifier*)&_CIM_System_PrimaryOwnerContact_MappingStrings_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_PrimaryOwnerContact_MaxLen_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_PrimaryOwnerContact_MappingStrings_MQ,
 };
 
 extern const Meta_Property
@@ -541,26 +541,26 @@ _CIM_System_Roles =
 
 static Meta_Feature* _CIM_System_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_System_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_OtherEnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledDefault,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
-    (Meta_Feature*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
-    (Meta_Feature*)&_CIM_System_CreationClassName,
-    (Meta_Feature*)&_CIM_System_NameFormat,
-    (Meta_Feature*)&_CIM_System_PrimaryOwnerName,
-    (Meta_Feature*)&_CIM_System_PrimaryOwnerContact,
-    (Meta_Feature*)&_CIM_System_Roles,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_System_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
+    (Meta_Feature*)(void*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_System_CreationClassName,
+    (Meta_Feature*)(void*)&_CIM_System_NameFormat,
+    (Meta_Feature*)(void*)&_CIM_System_PrimaryOwnerName,
+    (Meta_Feature*)(void*)&_CIM_System_PrimaryOwnerContact,
+    (Meta_Feature*)(void*)&_CIM_System_Roles,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -588,26 +588,6 @@ static const Meta_Feature_Local _locals[] =
 };
 
 extern const Meta_Qualifier
-_CIM_System_UMLPackagePath_MQ;
-
-static const Meta_Value_Scalar<const char*>
-_CIM_System_UMLPackagePath_MV =
-{
-    "CIM::Core::CoreElements"
-};
-
-const Meta_Qualifier
-_CIM_System_UMLPackagePath_MQ =
-{
-    { 0 }, /* refs */
-    "UMLPackagePath", /* name */
-    STRING, /* type */
-    0, /* array */
-    0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_UMLPackagePath_MV,
-};
-
-extern const Meta_Qualifier
 _CIM_System_Version_MQ;
 
 static const Meta_Value_Scalar<const char*>
@@ -624,14 +604,34 @@ _CIM_System_Version_MQ =
     STRING, /* type */
     0, /* array */
     0 /* flavors */,
-    (const Meta_Value*)&_CIM_System_Version_MV,
+    (const Meta_Value*)(void*)&_CIM_System_Version_MV,
+};
+
+extern const Meta_Qualifier
+_CIM_System_UMLPackagePath_MQ;
+
+static const Meta_Value_Scalar<const char*>
+_CIM_System_UMLPackagePath_MV =
+{
+    "CIM::Core::CoreElements"
+};
+
+const Meta_Qualifier
+_CIM_System_UMLPackagePath_MQ =
+{
+    { 0 }, /* refs */
+    "UMLPackagePath", /* name */
+    STRING, /* type */
+    0, /* array */
+    0 /* flavors */,
+    (const Meta_Value*)(void*)&_CIM_System_UMLPackagePath_MV,
 };
 
 static const Meta_Qualifier*
 _CIM_System_MQA[] =
 {
-    (Meta_Qualifier*)&_CIM_System_UMLPackagePath_MQ,
-    (Meta_Qualifier*)&_CIM_System_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_Version_MQ,
+    (Meta_Qualifier*)(void*)&_CIM_System_UMLPackagePath_MQ,
 };
 
 const Meta_Class CIM_System::static_meta_class =
@@ -648,7 +648,7 @@ const Meta_Class CIM_System::static_meta_class =
     &CIM_EnabledLogicalElement::static_meta_class,
     2, /* num_keys */
     0x7B11EFCE, /* crc */
-    &__meta_repository_6FAA529815A91D82B658654A66A4535E,
+    &__meta_repository_6827E083506B1A56883F566A87E0489F,
 };
 
 CIM_System_Ref::CIM_System_Ref()
@@ -897,4 +897,4 @@ void CIM_System_Hnd::Roles_null(bool x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_System.cpp,v 1.1 2007/03/13 22:25:33 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_System.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

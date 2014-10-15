@@ -54,7 +54,6 @@ struct Meta_Class
     const Meta_Feature_Local* locals;
     const Meta_Class* super_meta_class;
     size_t num_keys;
-    uint32 crc;
     const struct Meta_Repository* meta_repository;
 };
 

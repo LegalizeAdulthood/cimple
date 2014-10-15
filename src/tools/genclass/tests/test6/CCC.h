@@ -11,16 +11,11 @@
 #include <cimple/cimple.h>
 #include "BBB.h"
 
-#if (0x00633800 > CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
-#endif
-
-#if (0x00633800 < CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
-#endif
-
-
 CIMPLE_NAMESPACE_BEGIN
+
+// CCC keys:
+//     key
+//     bbb
 
 class CCC : public Instance
 {
@@ -29,8 +24,8 @@ public:
     Property<uint32> counter;
 
     // CCC features:
-    Property<String> key; // KEY
-    Property<uint32> bbb; // KEY
+    Property<String> key;
+    Property<uint32> bbb;
 
     CIMPLE_CLASS(CCC)
 };

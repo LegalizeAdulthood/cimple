@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_883E8F24EB4016D8933FCEE51577701E;
+extern const Meta_Repository __meta_repository_BB0EA580CB0C15D0AED7DAD9D1EA1DCA;
 
 extern const Meta_Reference
 _Glue_left;
@@ -67,9 +67,9 @@ _Glue_message =
 
 static Meta_Feature* _Glue_MFA[] =
 {
-    (Meta_Feature*)&_Glue_left,
-    (Meta_Feature*)&_Glue_right,
-    (Meta_Feature*)&_Glue_message,
+    (Meta_Feature*)(void*)&_Glue_left,
+    (Meta_Feature*)(void*)&_Glue_right,
+    (Meta_Feature*)(void*)&_Glue_message,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -92,10 +92,9 @@ const Meta_Class Glue::static_meta_class =
     _locals,
     0, /* super_class */ 
     2, /* num_keys */
-    0x93B8DC91, /* crc */
-    &__meta_repository_883E8F24EB4016D8933FCEE51577701E,
+    &__meta_repository_BB0EA580CB0C15D0AED7DAD9D1EA1DCA,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/model_path/Glue.cpp,v 1.25 2007/03/13 22:53:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/model_path/Glue.cpp,v 1.29 2007/04/26 22:40:58 mbrasher-public Exp $");

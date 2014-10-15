@@ -1,42 +1,53 @@
-STATIC_LIBRARY_TARGET = $(call static_library_target,$(_STATIC_LIBRARY))
-SHARED_LIBRARY_TARGET = $(call shared_library_target,$(_SHARED_LIBRARY))
+##==============================================================================
+##
+## target:
+##
+##==============================================================================
 
-ifdef _STATIC_LIBRARY
-    DEPENDENCIES += $(STATIC_LIBRARY_TARGET)
-endif
+TARGET=$(call lib_target,$(STATIC_LIBRARY))
 
-ifdef _SHARED_LIBRARY
-    DEPENDENCIES += $(SHARED_LIBRARY_TARGET)
-endif
+all: $(TARGET)
+	@ echo "$(TARGET) is up to date"
 
-all: $(DEPENDENCIES)
-ifdef _SHARED_LIBRARY
-	@ echo "$(SHARED_LIBRARY_TARGET) is up to date"
-endif
-ifdef _STATIC_LIBRARY
-	@ echo "$(STATIC_LIBRARY_TARGET) is up to date"
-endif
+$(TARGET): $(OBJECTS)
+	$(call mkdirhier,$(LIBDIR))
+	$(call make_lib,$(STATIC_LIBRARY),$(OBJECTS))
+	$(ECHONL)
 
-$(STATIC_LIBRARY_TARGET): $(OBJECTS)
-	$(MKDIRHIER) $(LIB_DIR)
-	$(call make_lib,$(STATIC_LIBRARY_TARGET),$(OBJECTS))
+##==============================================================================
+##
+## clean:
+##
+##==============================================================================
 
-$(SHARED_LIBRARY_TARGET): $(OBJECTS)
-	$(MKDIRHIER) $(LIB_DIR)
-	$(call make_shlib,$(_SHARED_LIBRARY),$(OBJECTS),$(_LIBRARIES))
-
-
-size:
-	size $(SHARED_LIBRARY_TARGET)
-
-CLEAN += $(call shlib_clean_targets,$(_SHARED_LIBRARY))
 CLEAN += $(OBJECTS)
-CLEAN += $(STATIC_LIBRARY_TARGET)
-CLEAN += depend.mak
 
 clean: 
-	$(RM) $(CLEAN)
+	$(call rm,$(CLEAN))
+	$(call clean_lib,$(STATIC_LIBRARY))
+	$(ECHONL)
 
-gen:
+##==============================================================================
+##
+## install/uninstall:
+##
+##==============================================================================
 
-include $(TOP)/mak/sub.mak
+_INCDIR = $(INCLUDEDIR_OPT)/$(INSTALL_HEADERS_DIR)
+
+ifdef INSTALL
+
+install: uninstall
+	$(call mkdirhier,$(DESTDIR)$(_INCDIR))
+	$(foreach i, $(INSTALL_HEADERS), $(call cp,$i \
+            $(DESTDIR)$(_INCDIR)/$(i)) $(NL))
+	$(call mkdirhier,$(DESTDIR)$(LIBDIR_OPT))
+	$(call install_lib,$(STATIC_LIBRARY))
+	$(ECHONL)
+
+uninstall:
+	$(call uninstall_lib,$(STATIC_LIBRARY))
+	$(foreach i, $(INSTALL_HEADERS), \
+            $(call rm,$(DESTDIR)$(_INCDIR)/$(i)) $(NL))
+	$(ECHONL)
+endif

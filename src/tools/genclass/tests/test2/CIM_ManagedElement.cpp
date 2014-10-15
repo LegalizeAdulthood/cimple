@@ -67,9 +67,9 @@ _CIM_ManagedElement_ElementName =
 
 static Meta_Feature* _CIM_ManagedElement_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -92,10 +92,9 @@ const Meta_Class CIM_ManagedElement::static_meta_class =
     _locals,
     0, /* super_class */ 
     0, /* num_keys */
-    0x5B2A3886, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_ManagedElement.cpp,v 1.23 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_ManagedElement.cpp,v 1.27 2007/04/26 22:41:09 mbrasher-public Exp $");

@@ -35,8 +35,10 @@ CIMPLE_NAMESPACE_BEGIN
 
 struct Instance_Enumerator_Rep;
 
-struct CIMPLE_CIMPLE_LINKAGE Thread_Context
+class CIMPLE_CIMPLE_LINKAGE Thread_Context
 {
+public:
+
     Thread_Context();
 
     virtual ~Thread_Context();

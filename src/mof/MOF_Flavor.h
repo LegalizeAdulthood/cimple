@@ -27,7 +27,7 @@
 #ifndef _MOF_Flavor_h
 #define _MOF_Flavor_h
 
-#include <MOF_Config.h>
+#include "MOF_Config.h"
 
 #define MOF_FLAVOR_ENABLEOVERRIDE 1
 #define MOF_FLAVOR_DISABLEOVERRIDE 2

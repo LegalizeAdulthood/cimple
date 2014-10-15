@@ -9,9 +9,8 @@ Where:
     -v           : verbose mode
     -n namespace : provider namespace (may occur multiple times)
     -d           : dump the MOF registration instances to standard output
-    -b           : use binary repository mode
+                   without modifying the Pegasus repository.
     -u           : unregister the module
-    -r path      : Pegasus repository directory
     -U username  : the user to run provider module as (user must be a system
                    user, @requestor, @cimserver, or @privileged).
     -h           : print this help text

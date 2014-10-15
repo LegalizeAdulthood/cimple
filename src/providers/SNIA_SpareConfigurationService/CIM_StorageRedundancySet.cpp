@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_1EFFCF5E346717DCBD81B2711E2620B8;
+extern const Meta_Repository __meta_repository_8CCF8E58804E17C2BA75EC619FBC3236;
 
 extern const Meta_Property
 _CIM_ManagedElement_Caption;
@@ -88,21 +88,21 @@ _CIM_StorageRedundancySet_OtherAlgorithm =
 
 static Meta_Feature* _CIM_StorageRedundancySet_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_SystemSpecificCollection_InstanceID,
-    (Meta_Feature*)&_CIM_RedundancySet_RedundancyStatus,
-    (Meta_Feature*)&_CIM_RedundancySet_TypeOfSet,
-    (Meta_Feature*)&_CIM_RedundancySet_MinNumberNeeded,
-    (Meta_Feature*)&_CIM_RedundancySet_MaxNumberSupported,
-    (Meta_Feature*)&CIM_RedundancySet_Failover_method::static_meta_class,
-    (Meta_Feature*)&_CIM_RedundancySet_VendorIdentifyingInfo,
-    (Meta_Feature*)&_CIM_RedundancySet_OtherTypeOfSet,
-    (Meta_Feature*)&_CIM_RedundancySet_LoadBalanceAlgorithm,
-    (Meta_Feature*)&_CIM_RedundancySet_OtherLoadBalanceAlgorithm,
-    (Meta_Feature*)&_CIM_StorageRedundancySet_TypeOfAlgorithm,
-    (Meta_Feature*)&_CIM_StorageRedundancySet_OtherAlgorithm,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_SystemSpecificCollection_InstanceID,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_RedundancyStatus,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_TypeOfSet,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_MinNumberNeeded,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_MaxNumberSupported,
+    (Meta_Feature*)(void*)&CIM_RedundancySet_Failover_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_VendorIdentifyingInfo,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_OtherTypeOfSet,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_LoadBalanceAlgorithm,
+    (Meta_Feature*)(void*)&_CIM_RedundancySet_OtherLoadBalanceAlgorithm,
+    (Meta_Feature*)(void*)&_CIM_StorageRedundancySet_TypeOfAlgorithm,
+    (Meta_Feature*)(void*)&_CIM_StorageRedundancySet_OtherAlgorithm,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -138,9 +138,9 @@ const Meta_Class CIM_StorageRedundancySet::static_meta_class =
     &CIM_RedundancySet::static_meta_class,
     1, /* num_keys */
     0x01CA42E4, /* crc */
-    &__meta_repository_1EFFCF5E346717DCBD81B2711E2620B8,
+    &__meta_repository_8CCF8E58804E17C2BA75EC619FBC3236,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/SNIA_SpareConfigurationService/CIM_StorageRedundancySet.cpp,v 1.6 2007/03/08 15:17:23 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/SNIA_SpareConfigurationService/CIM_StorageRedundancySet.cpp,v 1.9 2007/04/18 03:29:41 mbrasher-public Exp $");

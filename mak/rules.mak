@@ -1,28 +1,24 @@
-##==============================================================================
-##
-## Fix up variables containing library names with the CIMPLE_LIBRARY_PREFIX and
-## CIMPLE_LIBRARY_SUFFIX.
-##
-##==============================================================================
+ifdef SOURCES
+  _OBJECTS = $(SOURCES:.cpp=$(OBJ))
+  OBJECTS = $(_OBJECTS:.c=$(OBJ))
+endif
 
-ifdef STATIC_LIBRARY
-  _STATIC_LIBRARY = \
-    $(CIMPLE_LIBRARY_PREFIX)$(STATIC_LIBRARY)$(CIMPLE_LIBRARY_SUFFIX)
+ifdef LIBRARY
+  ifdef ENABLE_STATIC_OPT
+    STATIC_LIBRARY = $(LIBRARY)
+  else
+    SHARED_LIBRARY = $(LIBRARY)
+  endif
 endif
 
 ifdef SHARED_LIBRARY
-  _SHARED_LIBRARY = \
-    $(CIMPLE_LIBRARY_PREFIX)$(SHARED_LIBRARY)$(CIMPLE_LIBRARY_SUFFIX)
+  include $(TOP)/mak/shlib.mak
+  include $(TOP)/mak/object.mak
+  include $(TOP)/mak/depend.mak
+  include $(TOP)/mak/chksrc.mak
 endif
 
-_LIBRARIES = \
-  $(foreach i,$(LIBRARIES),$(CIMPLE_LIBRARY_PREFIX)$i$(CIMPLE_LIBRARY_SUFFIX))
-
-##==============================================================================
-
-ifneq ("$(_SHARED_LIBRARY)$(_STATIC_LIBRARY)","")
-  _OBJECTS = $(SOURCES:.cpp=$(OBJ))
-  OBJECTS = $(_OBJECTS:.c=$(OBJ))
+ifdef STATIC_LIBRARY
   include $(TOP)/mak/lib.mak
   include $(TOP)/mak/object.mak
   include $(TOP)/mak/depend.mak
@@ -30,8 +26,6 @@ ifneq ("$(_SHARED_LIBRARY)$(_STATIC_LIBRARY)","")
 endif
 
 ifdef BINARY
-  _OBJECTS = $(SOURCES:.cpp=$(OBJ))
-  OBJECTS = $(_OBJECTS:.c=$(OBJ))
   include $(TOP)/mak/bin.mak
   include $(TOP)/mak/object.mak
   include $(TOP)/mak/depend.mak
@@ -42,11 +36,11 @@ ifdef DIRS
   include $(TOP)/mak/dir.mak
 endif
 
-$(BIN_DIR)/target:
-	$(MKDIRHIER) $(BIN_DIR)
-	$(TOUCH) $(BIN_DIR)/target
-
-$(LIB_DIR)/target:
-	$(MKDIRHIER) $(LIB_DIR)
-	$(MKDIRHIER) $(LIB_DIR)
-	$(TOUCH) $(LIB_DIR)/target
+insmod:
+rmmod:
+regmod:
+live:
+genclass:
+genprov:
+genmod:
+tests:

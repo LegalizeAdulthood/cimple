@@ -27,14 +27,9 @@
 #ifndef _cimple_posix_linkage_h
 #define _cimple_posix_linkage_h
 
-#define POSIX_IMPORT __declspec(dllimport)
-#define POSIX_EXPORT __declspec(dllexport)
+#include <cimple/options.h>
 
-#ifdef POSIX_INTERNAL
-# define POSIX_LINKAGE POSIX_EXPORT
-#else
-# define POSIX_LINKAGE POSIX_IMPORT
-#endif
+#define POSIX_LINKAGE /* */
 
 #define POSIX_NAMESPACE_BEGIN namespace posix {
 

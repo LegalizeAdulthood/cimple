@@ -231,9 +231,9 @@ _CIM_ComputerSystem_SetPowerState_return_value =
 
 static Meta_Feature* _CIM_ComputerSystem_SetPowerState_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ComputerSystem_SetPowerState_PowerState,
-    (Meta_Feature*)&_CIM_ComputerSystem_SetPowerState_Time,
-    (Meta_Feature*)&_CIM_ComputerSystem_SetPowerState_return_value
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_SetPowerState_PowerState,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_SetPowerState_Time,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_SetPowerState_return_value
 };
 
 const Meta_Method
@@ -252,33 +252,33 @@ CIM_ComputerSystem_SetPowerState_method::static_meta_class =
 
 static Meta_Feature* _CIM_ComputerSystem_MFA[] =
 {
-    (Meta_Feature*)&_CIM_ManagedElement_Caption,
-    (Meta_Feature*)&_CIM_ManagedElement_Description,
-    (Meta_Feature*)&_CIM_ManagedElement_ElementName,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_InstallDate,
-    (Meta_Feature*)&_CIM_System_Name,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_OperationalStatus,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_StatusDescriptions,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_Status,
-    (Meta_Feature*)&_CIM_ManagedSystemElement_HealthState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_OtherEnabledState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_RequestedState,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_EnabledDefault,
-    (Meta_Feature*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
-    (Meta_Feature*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
-    (Meta_Feature*)&_CIM_System_CreationClassName,
-    (Meta_Feature*)&_CIM_ComputerSystem_NameFormat,
-    (Meta_Feature*)&_CIM_System_PrimaryOwnerName,
-    (Meta_Feature*)&_CIM_System_PrimaryOwnerContact,
-    (Meta_Feature*)&_CIM_System_Roles,
-    (Meta_Feature*)&_CIM_ComputerSystem_OtherIdentifyingInfo,
-    (Meta_Feature*)&_CIM_ComputerSystem_IdentifyingDescriptions,
-    (Meta_Feature*)&_CIM_ComputerSystem_Dedicated,
-    (Meta_Feature*)&_CIM_ComputerSystem_OtherDedicatedDescriptions,
-    (Meta_Feature*)&_CIM_ComputerSystem_ResetCapability,
-    (Meta_Feature*)&_CIM_ComputerSystem_PowerManagementCapabilities,
-    (Meta_Feature*)&CIM_ComputerSystem_SetPowerState_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Caption,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_Description,
+    (Meta_Feature*)(void*)&_CIM_ManagedElement_ElementName,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_InstallDate,
+    (Meta_Feature*)(void*)&_CIM_System_Name,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_OperationalStatus,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_StatusDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_Status,
+    (Meta_Feature*)(void*)&_CIM_ManagedSystemElement_HealthState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_OtherEnabledState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_RequestedState,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_EnabledDefault,
+    (Meta_Feature*)(void*)&_CIM_EnabledLogicalElement_TimeOfLastStateChange,
+    (Meta_Feature*)(void*)&CIM_EnabledLogicalElement_RequestStateChange_method::static_meta_class,
+    (Meta_Feature*)(void*)&_CIM_System_CreationClassName,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_NameFormat,
+    (Meta_Feature*)(void*)&_CIM_System_PrimaryOwnerName,
+    (Meta_Feature*)(void*)&_CIM_System_PrimaryOwnerContact,
+    (Meta_Feature*)(void*)&_CIM_System_Roles,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_OtherIdentifyingInfo,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_IdentifyingDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_Dedicated,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_OtherDedicatedDescriptions,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_ResetCapability,
+    (Meta_Feature*)(void*)&_CIM_ComputerSystem_PowerManagementCapabilities,
+    (Meta_Feature*)(void*)&CIM_ComputerSystem_SetPowerState_method::static_meta_class,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -325,10 +325,9 @@ const Meta_Class CIM_ComputerSystem::static_meta_class =
     _locals,
     &CIM_System::static_meta_class,
     2, /* num_keys */
-    0x94A14F0D, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test5/CIM_ComputerSystem.cpp,v 1.20 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test5/CIM_ComputerSystem.cpp,v 1.24 2007/04/26 22:41:09 mbrasher-public Exp $");

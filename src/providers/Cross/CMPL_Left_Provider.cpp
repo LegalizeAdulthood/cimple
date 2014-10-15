@@ -51,32 +51,12 @@ Delete_Instance_Status CMPL_Left_Provider::delete_instance(
 }
 
 Modify_Instance_Status CMPL_Left_Provider::modify_instance(
+    const CMPL_Left* model,
     const CMPL_Left* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
-int CMPL_Left_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef CMPL_Left Class;
-    typedef CMPL_Left_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Left_Provider.cpp,v 1.2 2007/03/07 20:25:24 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Left_Provider.cpp,v 1.4 2007/04/18 03:51:25 mbrasher-public Exp $");

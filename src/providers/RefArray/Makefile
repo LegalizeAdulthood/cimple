@@ -1,27 +1,26 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INCLUDES += -I../repository
+MODULE=1
 
-SHARED_LIBRARY = cmplrefarrary
+SHARED_LIBRARY = cimplerefarrary
 
 SOURCES = RefArray_Provider.cpp module.cpp RefArray.cpp RefArrayParam.cpp repository.cpp
 
-LIBRARIES = cimple
+CIMPLE_CMPI_MODULE=1
 
-LIBRARIES += cimplepegadap
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
-
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
-	genclass -r RefArray
+	$(BINDIR)/genclass -r RefArray
+
+genprov:
+	$(BINDIR)/genprov RefArray
+
+genmod:
+	$(BINDIR)/genmod RefArray RefArray

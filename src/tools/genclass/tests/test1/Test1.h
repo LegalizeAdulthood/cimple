@@ -10,23 +10,19 @@
 
 #include <cimple/cimple.h>
 
-#if (0x00633800 > CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is newer than the version of <cimple/cimple.h> found on the include path. Please place the matching version of <cimple/cimple.h> on the include path."
-#endif
-
-#if (0x00633800 < CIMPLE_VERSION)
-# error "The version of genclass used to generate this file (0.99.56) is older than the version of <cimple/cimple.h> found on the include path. Please regenerate the sources with the matching version of genclass."
-#endif
-
-
 CIMPLE_NAMESPACE_BEGIN
+
+// Test1 keys:
+//     field1
+//     field2
+//     field14
 
 class Test1 : public Instance
 {
 public:
     // Test1 features:
-    Property<boolean> field1; // KEY
-    Property<sint8> field2; // KEY
+    Property<boolean> field1;
+    Property<sint8> field2;
     Property<uint8> field3;
     Property<sint16> field4;
     Property<uint16> field5;
@@ -38,7 +34,7 @@ public:
     Property<real64> field11;
     Property<char16> field12;
     Property<Datetime> field13;
-    Property<String> field14; // KEY
+    Property<String> field14;
     Property<Array_boolean> vla1;
     Property<Array_sint8> vla2;
     Property<Array_uint8> vla3;

@@ -39,9 +39,9 @@ _Z_z =
 
 static Meta_Feature* _Z_MFA[] =
 {
-    (Meta_Feature*)&_X_x,
-    (Meta_Feature*)&_Y_y,
-    (Meta_Feature*)&_Z_z,
+    (Meta_Feature*)(void*)&_X_x,
+    (Meta_Feature*)(void*)&_Y_y,
+    (Meta_Feature*)(void*)&_Z_z,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -64,10 +64,9 @@ const Meta_Class Z::static_meta_class =
     _locals,
     &Y::static_meta_class,
     0, /* num_keys */
-    0xFE4E8CBC, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/class/Z.cpp,v 1.16 2007/03/13 22:53:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/class/Z.cpp,v 1.20 2007/04/26 22:40:58 mbrasher-public Exp $");

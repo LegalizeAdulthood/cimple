@@ -35,7 +35,7 @@ Enum_Instances_Status Test2_Provider::enum_instances(
 }
 
 Create_Instance_Status Test2_Provider::create_instance(
-    const Test2* instance)
+    Test2* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -47,32 +47,12 @@ Delete_Instance_Status Test2_Provider::delete_instance(
 }
 
 Modify_Instance_Status Test2_Provider::modify_instance(
+    const Test2* model,
     const Test2* instance)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
-int Test2_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Test2 Class;
-    typedef Test2_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
+/*@END@*/
 
 CIMPLE_NAMESPACE_END
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test2/Test2_Provider.cpp,v 1.3 2007/03/07 20:25:30 mbrasher-public Exp $");

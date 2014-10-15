@@ -35,5 +35,6 @@ public:
         const <CLASS>* instance);
 
     Modify_Instance_Status modify_instance(
+        const <CLASS>* model,
         const <CLASS>* instance);
 

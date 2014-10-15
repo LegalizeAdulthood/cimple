@@ -1,0 +1,38 @@
+class Employee
+{
+    [Key] uint32 Id;
+    string First;
+    string Last;
+    [Values{"Male", "Female"}, ValueMap{"1", "2"}]
+    uint32 Gender;
+    boolean Active = true;
+    boolean OutOfOffice;
+
+    uint32 SetOutOfOfficeState(
+        [In]
+        boolean OutOfOfficeState,
+        [In(false), Out]
+        boolean PreviousOutOfOfficeState);
+
+    [Static] uint32 GetEmployeeCount();
+};
+
+class Manager : Employee
+{
+    uint32 NumEmployees;
+    uint32 Budget;
+};
+
+[Association]
+class Link
+{
+    [Key] Employee REF Emp;
+    [Key] Manager REF Mgr;
+};
+
+[Indication]
+class OutOfOfficeNotice
+{
+    [EmbeddedObject]
+    string employee;
+};

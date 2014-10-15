@@ -17,14 +17,12 @@ static const Meta_Class* _meta_classes[] =
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);
 
-extern const Meta_Repository __meta_repository_2EEF8AD09F4D1605BA3399E4AAEB46FC;
+extern const Meta_Repository __meta_repository_30E99343B00615FEAF732DB4A45D94FB;
 
-const Meta_Repository __meta_repository_2EEF8AD09F4D1605BA3399E4AAEB46FC =
+const Meta_Repository __meta_repository_30E99343B00615FEAF732DB4A45D94FB =
 {
     _meta_classes,
     _num_meta_classes,
 };
 
 CIMPLE_NAMESPACE_END
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/repository.cpp,v 1.3 2007/03/07 20:25:27 mbrasher-public Exp $");

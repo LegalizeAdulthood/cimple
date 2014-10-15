@@ -35,7 +35,7 @@
     do \
     { \
         Error::set ARGS; \
-        Error::set_prefix(__FUNCTION__, __FILE__, __LINE__); \
+        Error::set_prefix(CIMPLE_FUNCTION, __FILE__, __LINE__); \
     } \
     while (0)
 #else

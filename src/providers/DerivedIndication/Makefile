@@ -1,26 +1,32 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-SHARED_LIBRARY = cmplderivedindic
+MODULE=1
 
-INCLUDES += -I../repository
+SHARED_LIBRARY = cimplederivedindic
 
 SOURCES = \
+    CIM_Indication.cpp \
+    DerivedIndication.cpp \
     DerivedIndication_Provider.cpp \
-    module.cpp
+    module.cpp \
+    MyIndication.cpp \
+    repository.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_PEGASUS_MODULE=1
 
-LIBRARIES += cimplepegadap
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
-
-reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r DerivedIndication
 
-tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+genprov:
+	$(BINDIR)/genprov DerivedIndication
+
+genmod:
+	$(BINDIR)/genmod DerivedIndication DerivedIndication

@@ -27,8 +27,8 @@
 #ifndef _MOF_Literal_h
 #define _MOF_Literal_h
 
-#include <MOF_Config.h>
-#include <MOF_Element.h>
+#include "MOF_Config.h"
+#include "MOF_Element.h"
 
 class MOF_LINKAGE MOF_Literal : public MOF_Element
 {
@@ -43,16 +43,16 @@ public:
     virtual MOF_Element* clone() const;
 
     void validate(
-	const char* object_type,
-	const char* object_name,
-	int data_type,
-	int array_index);
+        const char* object_type,
+        const char* object_name,
+        int data_type,
+        int array_index);
 
 public:
 
     static bool identical(
-	MOF_Literal* lit1,
-	MOF_Literal* lit2);
+        MOF_Literal* lit1,
+        MOF_Literal* lit2);
 
 public:
 
@@ -64,11 +64,11 @@ public:
 
     union
     {
-	MOF_sint64 int_value;
-	MOF_real64 real_value;
-	MOF_char16 char_value;
-	bool bool_value;
-	MOF_String string_value;
+        MOF_sint64 int_value;
+        MOF_real64 real_value;
+        MOF_char16 char_value;
+        bool bool_value;
+        MOF_String string_value;
     };
 };
 

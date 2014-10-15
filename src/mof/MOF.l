@@ -16,6 +16,7 @@ struct MOF_State
 {
     char* file_name;
     int line_num;
+    char* current_dir;
     YY_BUFFER_STATE buffer_state;
 };
 
@@ -376,7 +377,13 @@ IDENT_CHAR [A-Za-z_]
 }
 
 \" {
-    MOF_lval.string_value = MOF_read_string(yyinput, MOF_error);
+
+    MOF_read_string(
+        yyinput, 
+        MOF_error, 
+        &MOF_lval.string_literal.raw,
+        &MOF_lval.string_literal.escaped);
+
     return TOK_STRING_VALUE;
 }
 
@@ -504,26 +511,67 @@ int MOF_wrap()
     return 1;
 }
 
-static FILE* _find_and_open(
-    const char* file_name)
+static FILE* _find_and_open_included_file(
+    const char* file_name,
+    char** current_dir_out)
 {
-    for (size_t i = 0; i < MOF_num_include_paths; i++)
+    *current_dir_out = NULL;
+
+    const char* path = NULL;
+
+    // Try to open file relative to the current file.
+
+    if (MOF_current_dir)
     {
-	char* path = (char*)malloc(
-	    strlen(MOF_include_paths[i]) + strlen(file_name) + 2);
+        char path[MOF_PATH_SIZE];
+        size_t n = strlen(MOF_current_dir) + strlen(file_name) + 2;
 
-	if (path == NULL)
-	    MOF_error("out of memory");
+        if (n > sizeof(path))
+	    MOF_error("path would be too long");
 
-	strcpy(path, MOF_include_paths[i]);
-	strcat(path, "/");
-	strcat(path, file_name);
-
+        sprintf(path, "%s/%s", MOF_current_dir, file_name);
 	FILE* stream = fopen(path, "rb");
-	free(path);
 
 	if (stream != NULL)
+        {
+            char* p = strrchr(path, '/');
+            assert(p != NULL);
+
+            char* current_dir = (char*)malloc(MOF_PATH_SIZE);
+            *current_dir = '\0';
+            strncat(current_dir, path, p - path);
+            *current_dir_out = current_dir;
+
 	    return stream;
+        }
+    }
+
+    // Now search the MOF include path.
+
+    for (size_t i = 0; i < MOF_num_include_paths; i++)
+    {
+        char path[MOF_PATH_SIZE];
+
+        size_t n = strlen(MOF_include_paths[i]) + strlen(file_name) + 2;
+
+        if (n > sizeof(path))
+	    MOF_error("path would be too long");
+
+        sprintf(path, "%s/%s", MOF_include_paths[i], file_name);
+	FILE* stream = fopen(path, "rb");
+
+	if (stream != NULL)
+        {
+            char* p = strrchr(path, '/');
+            assert(p != NULL);
+
+            char* current_dir = (char*)malloc(MOF_PATH_SIZE);
+            *current_dir = '\0';
+            strncat(current_dir, path, p - path);
+            *current_dir_out = current_dir;
+
+	    return stream;
+        }
     }
 
     return NULL;
@@ -533,11 +581,22 @@ static FILE* _find_and_open(
  * Used to push (and save) the current parsing state and to define a new
  * one from the file_name parameter.
  */
-void push_include_file(const char* file_name)
+void push_include_file(const char* file_name_)
 {
-    /*
-     * Save the old state:
-     */
+    // Reverse slashes.
+
+    char file_name[MOF_PATH_SIZE];
+
+    *file_name = '\0';
+    strncat(file_name, file_name_, sizeof(file_name) - 1);
+
+    for (char* p = file_name; *p; p++)
+    {
+        if (*p == '\\')
+            *p = '/';
+    }
+
+    // Save the old state:
 
     if (state_stack_size == MAX_STATE_STACK_SIZE)
     {
@@ -546,22 +605,24 @@ void push_include_file(const char* file_name)
     }
 
     MOF_State current_state = 
-	{ MOF_file_name, MOF_line_num, YY_CURRENT_BUFFER };
+	{ MOF_file_name, MOF_line_num, MOF_current_dir, YY_CURRENT_BUFFER };
 
     state_stack[state_stack_size++] = current_state;
 
-    /* 
-     * Create the new state:
-     */
+    // Open file.
 
-    FILE* stream = _find_and_open(file_name);
+    char* current_dir = NULL;
+    FILE* stream = _find_and_open_included_file(file_name, &current_dir);
 
     if (stream == NULL)
 	MOF_error_printf("failed to open included file: \"%s\"", file_name);
 
+    // Create the new state:
+
     yy_switch_to_buffer(yy_create_buffer(stream, YY_BUF_SIZE));
     MOF_file_name = strdup(file_name);	
     MOF_line_num = 1;
+    MOF_current_dir = current_dir;
 }
 
 int pop_include_file()
@@ -574,13 +635,17 @@ int pop_include_file()
     if (state_stack_size > 0)
     {
 	free(MOF_file_name);
+	free(MOF_current_dir);
 	fclose(YY_CURRENT_BUFFER->yy_input_file);
 
 	yy_delete_buffer(YY_CURRENT_BUFFER);
 
 	state_stack_size--;
-	MOF_file_name = state_stack[state_stack_size].file_name;
+
 	MOF_line_num = state_stack[state_stack_size].line_num;
+	MOF_file_name = state_stack[state_stack_size].file_name;
+	MOF_current_dir = state_stack[state_stack_size].current_dir;
+
 	yy_switch_to_buffer(state_stack[state_stack_size].buffer_state);
 	return 0;
     }

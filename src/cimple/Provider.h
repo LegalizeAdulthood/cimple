@@ -470,7 +470,9 @@ public:
             case OPERATION_MODIFY_INSTANCE:
             {
                 PROVIDER* provider = (PROVIDER*)arg0;
-                return provider->modify_instance((const CLASS*)arg1);
+                return provider->modify_instance(
+                    (const CLASS*)arg1,
+                    (const CLASS*)arg2);
             }
 
             default:
@@ -479,6 +481,31 @@ public:
                 return -1;
             }
         }
+    }
+};
+
+// Instance provider proc.
+template<class PROVIDER>
+class Instance_Provider_Proc_T
+{
+public:
+
+    typedef typename PROVIDER::Class CLASS;
+
+    static int proc(
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3, 
+        void* arg4, 
+        void* arg5, 
+        void* arg6, 
+        void* arg7)
+    {
+        return Provider_Proc_T<PROVIDER>::proc(registration, operation, 
+            arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
 };
 

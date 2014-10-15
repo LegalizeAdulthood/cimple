@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_6FAA529815A91D82B658654A66A4535E;
+extern const Meta_Repository __meta_repository_6827E083506B1A56883F566A87E0489F;
 
 static const Meta_Qualifier*
 _E_e_MQA[] =
@@ -38,7 +38,7 @@ const Meta_Reference _E_e =
 
 static Meta_Feature* _E_MFA[] =
 {
-    (Meta_Feature*)&_E_e,
+    (Meta_Feature*)(void*)&_E_e,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -65,7 +65,7 @@ const Meta_Class E::static_meta_class =
     0, /* super_class */ 
     0, /* num_keys */
     0x631D7A14, /* crc */
-    &__meta_repository_6FAA529815A91D82B658654A66A4535E,
+    &__meta_repository_6827E083506B1A56883F566A87E0489F,
 };
 
 E_Ref::E_Ref()
@@ -135,4 +135,4 @@ void E_Hnd::e(const Hnd& x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/E.cpp,v 1.1 2007/03/13 22:25:33 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/E.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

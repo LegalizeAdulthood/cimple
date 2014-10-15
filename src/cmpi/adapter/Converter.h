@@ -98,8 +98,6 @@ CMPIrc make_method_out(
 
 const char* rc_to_str(CMPIrc rc);
 
-#ifdef CIMPLE_NEED_CMPI_IO
-
 void print_scalar(const CMPIData& data);
 
 void print(const CMPIData& data);
@@ -107,8 +105,6 @@ void print(const CMPIData& data);
 void print(const CMPIObjectPath* op);
 
 void print(const CMPIInstance* inst);
-
-#endif /* CIMPLE_NEED_CMPI_IO */
 
 CIMPLE_NAMESPACE_END
 

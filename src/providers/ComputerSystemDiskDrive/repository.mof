@@ -1,0 +1,17 @@
+class DiskDrive : CIM_DiskDrive
+{
+};
+
+class ComputerSystem : CIM_ComputerSystem
+{
+};
+
+[Association]
+class ComputerSystemDiskDrive : CIM_SystemDevice
+{
+   [Override ( "GroupComponent" )]
+   ComputerSystem REF GroupComponent;
+
+   [Override ( "PartComponent" )]
+   DiskDrive REF PartComponent;
+};

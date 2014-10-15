@@ -1,0 +1,11 @@
+class Delegate
+{
+    [Key] uint32 key;
+    string message;
+};
+
+class Delegator
+{
+    [Key] uint32 key;
+    string message;
+};

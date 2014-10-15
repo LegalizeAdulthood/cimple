@@ -1,0 +1,59 @@
+class Employee
+{
+    [Key] uint32 Id;
+    string First;
+    string Last;
+    [Values{"Male", "Female"}, ValueMap{"1", "2"}]
+    uint32 Gender;
+    boolean Active = true;
+};
+
+class Manager : Employee
+{
+    uint32 NumEmployees;
+    uint32 Budget;
+};
+
+[Association]
+class Link
+{
+    [Key] Manager REF Mgr;
+    [Key] Employee REF Emp;
+};
+
+class A
+{
+    [Key] uint32 w;
+};
+
+class B : A
+{
+    boolean x;
+    string y;
+};
+
+class C : B
+{
+    datetime z;
+};
+
+[Association]
+class AA
+{
+    [Key] A ref left;
+    [Key] A ref right;
+};
+
+[Association]
+class BB : AA
+{
+    [Key] B ref left;
+    [Key] B ref right;
+};
+
+[Indication]
+class OutOfOfficeNotice
+{
+    [EmbeddedObject]
+    string employee;
+};

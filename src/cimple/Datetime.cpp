@@ -259,6 +259,13 @@ void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
     }
 }
 
+String Datetime::ascii(bool prettify) const
+{
+    char buffer[Datetime::BUFFER_SIZE];
+    ascii(buffer, prettify);
+    return String(buffer);
+}
+
 void Datetime::get_interval(
     uint32& days, 
     uint32& hours, 
@@ -494,4 +501,4 @@ void Datetime::_cow()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Datetime.cpp,v 1.27 2007/03/07 18:41:14 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Datetime.cpp,v 1.28 2007/04/12 14:48:43 mbrasher-public Exp $");

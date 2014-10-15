@@ -1,24 +1,30 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INCLUDES += -I../repository
+MODULE=1
 
-SHARED_LIBRARY = cmplarrays
+SHARED_LIBRARY = cimplearrays
 
-SOURCES = Arrays_Provider.cpp module.cpp
+SOURCES = \
+    Arrays.cpp \
+    Arrays_Provider.cpp \
+    module.cpp \
+    repository.cpp
 
-LIBRARIES = cimple cmplrep
+CIMPLE_CMPI_MODULE=1
 
-#LIBRARIES += cimplepegadap
-LIBRARIES += cimplecmpiadap
-
-FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-tests:
-
-reg:
-	regmod -n root/cimv2 -c $(SHARED_LIBRARY_TARGET)
+regmod:
+	$(BINDIR)/regmod -n root/cimv2 -c $(TARGET)
 
 genclass:
+	$(BINDIR)/genclass -r Arrays
+
+genprov:
+	$(BINDIR)/genprov Arrays
+
+genmod:
+	$(BINDIR)/genmod Arrays Arrays

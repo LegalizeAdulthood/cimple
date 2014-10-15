@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_2EEF8AD09F4D1605BA3399E4AAEB46FC;
+extern const Meta_Repository __meta_repository_30E99343B00615FEAF732DB4A45D94FB;
 
 extern const Meta_Property
 _RefArrayParam_key;
@@ -35,7 +35,7 @@ _RefArrayParam_key =
 
 static Meta_Feature* _RefArrayParam_MFA[] =
 {
-    (Meta_Feature*)&_RefArrayParam_key,
+    (Meta_Feature*)(void*)&_RefArrayParam_key,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -56,10 +56,9 @@ const Meta_Class RefArrayParam::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0x03401CB0, /* crc */
-    &__meta_repository_2EEF8AD09F4D1605BA3399E4AAEB46FC,
+    &__meta_repository_30E99343B00615FEAF732DB4A45D94FB,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/RefArrayParam.cpp,v 1.3 2007/03/07 20:25:27 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/RefArrayParam.cpp,v 1.10 2007/04/26 22:41:06 mbrasher-public Exp $");

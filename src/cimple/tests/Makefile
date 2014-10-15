@@ -11,7 +11,8 @@ DIRS = \
     model_path \
     cast \
     class \
-    static
+    clone \
+    print
 
 XDIRS = \
     datetime

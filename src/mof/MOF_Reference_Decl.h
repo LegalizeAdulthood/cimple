@@ -27,9 +27,9 @@
 #ifndef _MOF_Reference_Decl_h
 #define _MOF_Reference_Decl_h
 
-#include <MOF_Config.h>
-#include <MOF_Feature.h>
-#include <MOF_Object_Reference.h>
+#include "MOF_Config.h"
+#include "MOF_Feature.h"
+#include "MOF_Object_Reference.h"
 
 class MOF_LINKAGE MOF_Reference_Decl : public MOF_Feature
 {

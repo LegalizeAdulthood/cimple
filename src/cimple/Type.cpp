@@ -193,7 +193,7 @@ void print_scalar(Type type, const void* value)
 
         case CHAR16:
         {
-            printf("%u", ((char16*)value)->code);
+            printf("%u", ((char16*)value)->code());
             break;
         }
 
@@ -230,4 +230,4 @@ void print_array(Type type, const void* elements_, size_t num_elements)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Type.cpp,v 1.16 2007/03/07 18:41:15 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Type.cpp,v 1.17 2007/04/12 14:48:44 mbrasher-public Exp $");

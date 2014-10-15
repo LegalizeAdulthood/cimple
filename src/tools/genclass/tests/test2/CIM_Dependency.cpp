@@ -48,8 +48,8 @@ _CIM_Dependency_Dependent =
 
 static Meta_Feature* _CIM_Dependency_MFA[] =
 {
-    (Meta_Feature*)&_CIM_Dependency_Antecedent,
-    (Meta_Feature*)&_CIM_Dependency_Dependent,
+    (Meta_Feature*)(void*)&_CIM_Dependency_Antecedent,
+    (Meta_Feature*)(void*)&_CIM_Dependency_Dependent,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -71,10 +71,9 @@ const Meta_Class CIM_Dependency::static_meta_class =
     _locals,
     0, /* super_class */ 
     2, /* num_keys */
-    0xFE53221F, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_Dependency.cpp,v 1.19 2007/03/13 22:53:19 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_Dependency.cpp,v 1.23 2007/04/26 22:41:08 mbrasher-public Exp $");

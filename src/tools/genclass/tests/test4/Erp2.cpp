@@ -84,10 +84,10 @@ _Erp2_z =
 
 static Meta_Feature* _Erp2_MFA[] =
 {
-    (Meta_Feature*)&_Erp2_w,
-    (Meta_Feature*)&_Erp2_x,
-    (Meta_Feature*)&_Erp2_y,
-    (Meta_Feature*)&_Erp2_z,
+    (Meta_Feature*)(void*)&_Erp2_w,
+    (Meta_Feature*)(void*)&_Erp2_x,
+    (Meta_Feature*)(void*)&_Erp2_y,
+    (Meta_Feature*)(void*)&_Erp2_z,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -111,10 +111,9 @@ const Meta_Class Erp2::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0x2DA47FD5, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test4/Erp2.cpp,v 1.19 2007/03/13 22:53:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test4/Erp2.cpp,v 1.23 2007/04/26 22:41:09 mbrasher-public Exp $");

@@ -157,9 +157,13 @@ int main(int arc, char** argv)
         assert(strcmp(buffer, buffer2) == 0);
     }
 
+    Datetime now = Datetime::now();
+
+    printf("%s\n", now.ascii(true).c_str());
+
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/datetime/main.cpp,v 1.19 2007/03/07 20:17:20 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/datetime/main.cpp,v 1.20 2007/04/12 14:48:44 mbrasher-public Exp $");

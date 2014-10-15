@@ -59,8 +59,6 @@ Enum_Instances_Status PersonLink_Provider::enum_instances(
     const PersonLink* model, 
     Enum_Instances_Handler<PersonLink>* handler)
 {
-    printf("***** PersonLink_Provider::enum_instances()\n");
-
     for (size_t i = 0; i < _map.size(); i++)
         handler->handle(_map[i]->clone());
 
@@ -93,6 +91,7 @@ Delete_Instance_Status PersonLink_Provider::delete_instance(
 }
 
 Modify_Instance_Status PersonLink_Provider::modify_instance(
+    const PersonLink* model,
     const PersonLink* instance)
 {
     size_t pos = _map.find(instance);
@@ -112,8 +111,6 @@ Enum_Associator_Names_Status PersonLink_Provider::enum_associator_names(
     const String& result_role,
     Enum_Associator_Names_Handler<Instance>* handler)
 {
-    printf("***** PersonLink_Provider::enum_associator_names()\n");
-
     // Return unsupported, causing the caller will use enum_instances() 
     // to implement this operation.
     return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
@@ -125,7 +122,6 @@ Enum_References_Status PersonLink_Provider::enum_references(
     const String& role,
     Enum_References_Handler<PersonLink>* handler)
 {
-    printf("***** PersonLink_Provider::enum_references()\n");
     assert(instance && instance->__magic == CIMPLE_INSTANCE_MAGIC);
     assert(model && model->__magic == CIMPLE_INSTANCE_MAGIC);
 
@@ -134,27 +130,6 @@ Enum_References_Status PersonLink_Provider::enum_references(
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
-int PersonLink_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef PersonLink Class;
-    typedef PersonLink_Provider Provider;
-    return Association_Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/PersonLink_Provider.cpp,v 1.5 2007/03/07 20:19:49 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/PersonLink_Provider.cpp,v 1.8 2007/04/18 03:29:40 mbrasher-public Exp $");

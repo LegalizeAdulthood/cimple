@@ -984,6 +984,22 @@ CMPIrc make_cmpi_instance(
     {
         const Meta_Feature* mf = mc->meta_features[i];
 
+        if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
+        {
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
+            const Instance* inst = __ref_of(cimple_inst, mr);
+
+            if (inst)
+            {
+                CMPIValue v;
+
+                if (make_cmpi_instance(
+                    broker, inst, name_space, 0, v.inst) == CMPI_RC_OK)
+                {
+                    CMSetProperty(cmpi_inst, mr->name, &v, CMPI_instance);
+                }
+            }
+        }
         if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (const Meta_Property*)mf;
@@ -1342,8 +1358,6 @@ CMPIrc make_method_out(
     RETURN(CMPI_RC_OK);
 }
 
-#ifdef CIMPLE_NEED_CMPI_IO
-
 static const char* type_name_of(CMPIType type)
 {
     switch(type & ~CMPI_ARRAY)
@@ -1538,8 +1552,6 @@ void print(const CMPIInstance* inst)
     printf("}\n");
 }
 
-#endif /* CIMPLE_NEED_CMPI_IO */
-
 CIMPLE_NAMESPACE_END
 
 /*  TO DO:
@@ -1548,4 +1560,4 @@ CIMPLE_NAMESPACE_END
     2.  revisit filtering of return instances (use the model).
 */
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/Converter.cpp,v 1.34 2007/03/13 23:25:03 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/Converter.cpp,v 1.36 2007/04/24 21:21:58 mbrasher-public Exp $");

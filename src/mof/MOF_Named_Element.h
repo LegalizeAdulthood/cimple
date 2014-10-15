@@ -27,8 +27,8 @@
 #ifndef _MOF_Named_Element_h
 #define _MOF_Named_Element_h
 
-#include <MOF_Config.h>
-#include <MOF_Element.h>
+#include "MOF_Config.h"
+#include "MOF_Element.h"
 
 class MOF_LINKAGE MOF_Named_Element : public MOF_Element
 {

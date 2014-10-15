@@ -32,8 +32,8 @@
 CIMPLE_NAMESPACE_BEGIN
 
 Pegasus_Thread_Context::Pegasus_Thread_Context(
-    Pegasus::CIMOMHandle* cimom_handle,
-    Pegasus::OperationContext* operation_context,
+    P_CIMOMHandle* cimom_handle,
+    P_OperationContext* operation_context,
     bool delete_operation_context)
     :
     _cimom_handle(cimom_handle),
@@ -45,15 +45,15 @@ Pegasus_Thread_Context::Pegasus_Thread_Context(
     // the provider.
     try
     {
-        const Pegasus::OperationContext::Container& c =  
-            _operation_context->get(Pegasus::IdentityContainer::NAME);
+        const P_OperationContext::Container& c =  
+            _operation_context->get(P_IdentityContainer::NAME);
 
-        const Pegasus::IdentityContainer* ic = 
-            dynamic_cast<const Pegasus::IdentityContainer*>(&c);
+        const P_IdentityContainer* ic = 
+            dynamic_cast<const P_IdentityContainer*>(&c);
 
         if (ic)
         {
-            Pegasus::CString cstr = ic->getUserName().getCString();
+            P_CString cstr = ic->getUserName().getCString();
             printf("USERNAME[%s]\n", (const char*)cstr);
         }
     }
@@ -84,8 +84,8 @@ Thread_Context* Pegasus_Thread_Context::thread_create_hook(void* arg)
     Pegasus_Thread_Context* context = _top();
     assert(context != 0);
 
-    Pegasus::OperationContext* operation_context = 
-        new Pegasus::OperationContext(*context->operation_context());
+    P_OperationContext* operation_context = 
+        new P_OperationContext(*context->operation_context());
 
     return new Pegasus_Thread_Context(
         context->cimom_handle(), operation_context, true);
@@ -102,8 +102,8 @@ void Pegasus_Thread_Context::thread_exit_hook()
 struct Pegasus_Instance_Enumerator_Rep
 {
     const Meta_Class* meta_class;
-    Pegasus::Array<Pegasus::CIMInstance> instances;
-    Pegasus::Uint32 pos;
+    Pegasus::Array<P_CIMInstance> instances;
+    P_Uint32 pos;
 };
 
 Instance_Enumerator_Rep* Pegasus_Thread_Context::instance_enumerator_create(
@@ -129,7 +129,7 @@ Instance_Enumerator_Rep* Pegasus_Thread_Context::instance_enumerator_create(
             false,
             false,
             false,
-            Pegasus::CIMPropertyList());
+            P_CIMPropertyList());
 
     }
     catch (...)
@@ -198,10 +198,10 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
 
     // Convert to Pegasus object path.
 
-    Pegasus::CIMObjectPath cim_object_path;
+    P_CIMObjectPath cim_object_path;
 
     if (Converter::to_pegasus_object_path(
-        Pegasus::String(), name_space, model, cim_object_path) != 0)
+        P_String(), name_space, model, cim_object_path) != 0)
     {
         return Ref<Instance>();
     }
@@ -210,7 +210,7 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
     {
         // Get the instance.
 
-        Pegasus::CIMInstance cim_instance = 
+        P_CIMInstance cim_instance = 
             context->cimom_handle()->getInstance(
                 *context->operation_context(),
                 name_space,
@@ -218,7 +218,7 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
                 false,
                 false,
                 false,
-                Pegasus::CIMPropertyList());
+                P_CIMPropertyList());
 
         // Convert to CIMPLE instance.
 
@@ -251,10 +251,10 @@ int Pegasus_Thread_Context::create_instance(
 
     // Convert to Pegasus instance.
 
-    Pegasus::CIMInstance cim_instance;
+    P_CIMInstance cim_instance;
 
     if (Converter::to_pegasus_instance(
-        Pegasus::String(), name_space, instance, cim_instance) != 0)
+        P_String(), name_space, instance, cim_instance) != 0)
     {
         return Ref<Instance>();
     }
@@ -289,10 +289,10 @@ int Pegasus_Thread_Context::delete_instance(
 
     // Convert to Pegasus object path.
 
-    Pegasus::CIMObjectPath cim_object_path;
+    P_CIMObjectPath cim_object_path;
 
     if (Converter::to_pegasus_object_path(
-        Pegasus::String(), name_space, model, cim_object_path) != 0)
+        P_String(), name_space, model, cim_object_path) != 0)
     {
         return Ref<Instance>();
     }
@@ -327,10 +327,10 @@ int Pegasus_Thread_Context::modify_instance(
 
     // Convert to Pegasus instance.
 
-    Pegasus::CIMInstance cim_instance;
+    P_CIMInstance cim_instance;
 
     if (Converter::to_pegasus_instance(
-        Pegasus::String(), name_space, instance, cim_instance) != 0)
+        P_String(), name_space, instance, cim_instance) != 0)
     {
         return Ref<Instance>();
     }
@@ -344,7 +344,7 @@ int Pegasus_Thread_Context::modify_instance(
             name_space,
             cim_instance,
             false,
-            Pegasus::CIMPropertyList());
+            P_CIMPropertyList());
 
         // Success!
         return 0;
@@ -371,4 +371,4 @@ void Pegasus_Thread_Context::allow_unload(bool flag)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Thread_Context.cpp,v 1.13 2007/03/07 18:42:32 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Thread_Context.cpp,v 1.15 2007/03/16 15:10:01 mbrasher-public Exp $");

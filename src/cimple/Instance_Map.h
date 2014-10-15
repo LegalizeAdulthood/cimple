@@ -72,6 +72,7 @@ protected:
         const Instance* instance);
 
     Modify_Instance_Status _modify_instance(
+        const Instance* model,
         const Instance* instance);
 
     friend class Load_Provider_Base;
@@ -115,6 +116,7 @@ public:
         const CLASS* instance);
 
     Modify_Instance_Status modify_instance(
+        const CLASS* model,
         const CLASS* instance);
 };
 
@@ -205,9 +207,10 @@ Delete_Instance_Status Instance_Map<CLASS>::delete_instance(
 
 template<class CLASS>
 Modify_Instance_Status Instance_Map<CLASS>::modify_instance(
+    const CLASS* model,
     const CLASS* instance)
 {
-    return _modify_instance(instance);
+    return _modify_instance(model, instance);
 }
 
 CIMPLE_NAMESPACE_END

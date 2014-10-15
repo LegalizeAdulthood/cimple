@@ -27,10 +27,10 @@
 #ifndef MOF_Qualifier_Decl_h
 #define MOF_Qualifier_Decl_h
 
-#include <MOF_Config.h>
-#include <MOF_Literal.h>
-#include <MOF_Flavor.h>
-#include <MOF_Named_Element.h>
+#include "MOF_Config.h"
+#include "MOF_Literal.h"
+#include "MOF_Flavor.h"
+#include "MOF_Named_Element.h"
 
 #define MOF_SCOPE_SCHEMA 1
 #define MOF_SCOPE_CLASS 2

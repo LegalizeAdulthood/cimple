@@ -33,7 +33,7 @@ _Test2_key =
 
 static Meta_Feature* _Test2_MFA[] =
 {
-    (Meta_Feature*)&_Test2_key,
+    (Meta_Feature*)(void*)&_Test2_key,
 };
 
 static const Meta_Feature_Local _locals[] =
@@ -54,10 +54,9 @@ const Meta_Class Test2::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0xF5C9C5FE, /* crc */
     0,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test2/Test2.cpp,v 1.12 2007/03/13 22:53:21 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test2/Test2.cpp,v 1.15 2007/04/26 22:41:11 mbrasher-public Exp $");

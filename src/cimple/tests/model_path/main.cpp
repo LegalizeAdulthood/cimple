@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 
         Ref<Instance> tmp(glue2);
         Ref<Instance> tmp2(glue2);
-        Ref<Glue> glue3(glue2);
+        Ref<Glue> glue3(glue2.ptr());
 
 #if 0
         print(glue1.ptr());
@@ -103,4 +103,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/model_path/main.cpp,v 1.11 2007/03/07 20:18:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/model_path/main.cpp,v 1.12 2007/03/25 01:20:08 mbrasher-public Exp $");

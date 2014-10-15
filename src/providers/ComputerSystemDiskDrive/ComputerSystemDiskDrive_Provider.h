@@ -21,33 +21,37 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const ComputerSystemDiskDrive* model,
-	ComputerSystemDiskDrive*& instance);
+        const ComputerSystemDiskDrive* model,
+        ComputerSystemDiskDrive*& instance);
 
     Enum_Instances_Status enum_instances(
-	const ComputerSystemDiskDrive* model,
-	Enum_Instances_Handler<ComputerSystemDiskDrive>* handler);
+        const ComputerSystemDiskDrive* model,
+        Enum_Instances_Handler<ComputerSystemDiskDrive>* handler);
 
     Create_Instance_Status create_instance(
-	const ComputerSystemDiskDrive* instance);
+        ComputerSystemDiskDrive* instance);
 
     Delete_Instance_Status delete_instance(
-	const ComputerSystemDiskDrive* instance);
+        const ComputerSystemDiskDrive* instance);
 
     Modify_Instance_Status modify_instance(
-	const ComputerSystemDiskDrive* instance);
+        const ComputerSystemDiskDrive* model,
+        const ComputerSystemDiskDrive* instance);
 
-    static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
+    Enum_Associator_Names_Status enum_associator_names(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associator_Names_Handler<Instance>* handler);
+
+    Enum_References_Status enum_references(
+        const Instance* instance,
+        const ComputerSystemDiskDrive* model,
+        const String& role,
+        Enum_References_Handler<ComputerSystemDiskDrive>* handler);
+
+    /*@END@*/
 };
 
 CIMPLE_NAMESPACE_END

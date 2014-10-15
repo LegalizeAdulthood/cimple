@@ -27,13 +27,13 @@
 #ifndef MOF_Instance_Decl_h
 #define MOF_Instance_Decl_h
 
-#include <MOF_Config.h>
-#include <MOF_Property.h>
-#include <MOF_Qualified_Element.h>
-#include <MOF_Qualifier.h>
-#include <MOF_Qualifier_Info.h>
-#include <MOF_Feature_Info.h>
-#include <MOF_Class_Decl.h>
+#include "MOF_Config.h"
+#include "MOF_Property.h"
+#include "MOF_Qualified_Element.h"
+#include "MOF_Qualifier.h"
+#include "MOF_Qualifier_Info.h"
+#include "MOF_Feature_Info.h"
+#include "MOF_Class_Decl.h"
 
 class MOF_LINKAGE MOF_Instance_Decl : public MOF_Qualified_Element
 {
@@ -48,8 +48,8 @@ public:
     static void handle(MOF_Instance_Decl* inst_decl);
 
     static MOF_Instance_Decl* find_by_alias(
-	char* alias, 
-	bool fix_case = false);
+        char* alias, 
+        bool fix_case = false);
 
     static MOF_Instance_Decl* find(const char* inst_name);
 

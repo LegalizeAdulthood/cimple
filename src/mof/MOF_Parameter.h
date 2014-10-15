@@ -27,10 +27,10 @@
 #ifndef _MOF_Parameter_h
 #define _MOF_Parameter_h
 
-#include <MOF_Config.h>
-#include <MOF_Qualified_Element.h>
-#include <MOF_Qualifier.h>
-#include <MOF_Qualifier_Info.h>
+#include "MOF_Config.h"
+#include "MOF_Qualified_Element.h"
+#include "MOF_Qualifier.h"
+#include "MOF_Qualifier_Info.h"
 
 class MOF_LINKAGE MOF_Parameter : public MOF_Qualified_Element
 {
@@ -43,10 +43,10 @@ public:
     /** Return zero if the two parameters are compatible or negative one if not.
     */
     static int compatible(
-	const char* class_name,
-	const char* method_name,
-	MOF_Parameter* p1,
-	MOF_Parameter* p2);
+        const char* class_name,
+        const char* method_name,
+        MOF_Parameter* p1,
+        MOF_Parameter* p2);
 
     /** Check for parameters with duplicate name in this list.
     */

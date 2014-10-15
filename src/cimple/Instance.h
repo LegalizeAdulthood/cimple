@@ -121,6 +121,12 @@ Instance* clone(const Instance* instance);
 CIMPLE_CIMPLE_LINKAGE
 Instance* key_clone(const Instance* instance);
 
+/** Returns class name of this instance. */
+inline const char* class_name_of(const Instance* instance)
+{
+    return instance->meta_class->name;
+}
+
 /** Print this instance to the standard output device.
 */
 CIMPLE_CIMPLE_LINKAGE
@@ -162,15 +168,20 @@ inline void de_nullify_keys(const Instance* inst)
 CIMPLE_CIMPLE_LINKAGE
 bool key_eq(const Instance* instance1, const Instance* instance2);
 
-/** Copies all properties from instance2 to instance1.
+/** Copies all properties from src to dest.
 */
 CIMPLE_CIMPLE_LINKAGE
-void copy(Instance* instance1, const Instance* instance2);
+void copy(Instance* dest, const Instance* src);
+
+/** Copy properties from dest to src, whose features are non-null in model.
+*/
+CIMPLE_CIMPLE_LINKAGE
+void copy(Instance* dest, const Instance* src, const Instance* model);
 
 /** Copy all key properties from instance1 to instance2.
 */
 CIMPLE_CIMPLE_LINKAGE
-void copy_keys(Instance* instance1, const Instance* instance2);
+void copy_keys(Instance* dest, const Instance* src);
 
 /** Returns a pointer to the given property.
 */

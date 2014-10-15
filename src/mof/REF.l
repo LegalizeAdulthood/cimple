@@ -108,7 +108,11 @@ BLANK                   [ \t\n]
 }
 
 \" {
-    REF_lval.string_value = MOF_read_string(yyinput, REF_error);
+    MOF_read_string(
+        yyinput, 
+        REF_error, 
+        (char**)0,
+        &REF_lval.string_value);
     return REF_TOK_STRING_VALUE;
 }
 

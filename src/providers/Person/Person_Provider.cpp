@@ -110,7 +110,9 @@ Delete_Instance_Status Person_Provider::delete_instance(const Person* instance)
     return DELETE_INSTANCE_OK;
 }
 
-Modify_Instance_Status Person_Provider::modify_instance(const Person* instance)
+Modify_Instance_Status Person_Provider::modify_instance(
+    const Person* model,
+    const Person* instance)
 {
     size_t pos = _map.find(instance);
 
@@ -122,27 +124,6 @@ Modify_Instance_Status Person_Provider::modify_instance(const Person* instance)
     return MODIFY_INSTANCE_OK;
 }
 
-int Person_Provider::proc(
-    const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3,
-    void* arg4,
-    void* arg5,
-    void* arg6,
-    void* arg7)
-{
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
-    // GENERATED.
-
-    typedef Person Class;
-    typedef Person_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(registration,
-        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
-}
-
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person_Provider.cpp,v 1.36 2007/03/07 20:19:49 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person_Provider.cpp,v 1.38 2007/04/18 03:29:40 mbrasher-public Exp $");
