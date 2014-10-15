@@ -1,0 +1,10 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_LogicalElement
+// ==================================================================
+   [Abstract, Version ( "2.6.0" ), Description (
+       "CIM_LogicalElement is a base class for all the components of a "
+       "System that represent abstract system components, such as "
+       "Files, Processes, or LogicalDevices.")]
+class CIM_LogicalElement : CIM_ManagedSystemElement {
+};

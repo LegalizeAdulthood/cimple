@@ -1,0 +1,11 @@
+
+
+class X1
+{
+};
+
+#pragma include("y.mof")
+
+class X2
+{
+};

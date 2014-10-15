@@ -1,0 +1,21 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_RedundancyComponent
+// ==================================================================
+   [Association, Aggregation, Version ( "2.7.1" ), Description (
+       "A RedundancyGroup aggregates Managed System Elements and "
+       "indicates that these elements, taken together, provide "
+       "redundancy. All elements aggregated in a RedundancyGroup "
+       "should be instantiations of the same object class.")]
+class CIM_RedundancyComponent : CIM_Component {
+
+      [Aggregate, Override ( "GroupComponent" ), Description (
+          "The RedundancyComponent association indicates that 'this "
+          "set of fans' or 'these physical extents' participate in a "
+          "single RedundancyGroup.")]
+   CIM_RedundancyGroup REF GroupComponent;
+
+      [Override ( "PartComponent" ), Description (
+          "The component of the redundancy group.")]
+   CIM_ManagedSystemElement REF PartComponent;
+};

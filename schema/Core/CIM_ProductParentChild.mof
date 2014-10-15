@@ -1,0 +1,19 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_ProductParentChild
+// ==================================================================
+   [Association, Aggregation, Composition, Version ( "2.7.0" ), 
+    Description (
+       "The CIM_ProductParentChild association defines a parent child "
+       "hierarchy among Products. For example, a Product may come "
+       "bundled with other Products.")]
+class CIM_ProductParentChild {
+
+      [Key, Aggregate, Description (
+          "The parent Product in the association.")]
+   CIM_Product REF Parent;
+
+      [Key, Description (
+          "The child Product in the association.")]
+   CIM_Product REF Child;
+};

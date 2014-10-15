@@ -1,0 +1,7 @@
+
+qualifier X : uint32[2] = {10, 20}, scope(class);
+
+qualifier Y : uint32[10], scope(class);
+
+qualifier Z : string[], scope(class);
+

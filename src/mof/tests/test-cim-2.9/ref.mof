@@ -1,0 +1,39 @@
+
+class REF_Z
+{
+    [key] string x = NULL;
+};
+
+instance of REF_Z
+{
+    x = "Red";
+};
+
+instance of REF_Z
+{
+    x = "Green";
+};
+
+instance of REF_Z
+{
+    x = "This color \X1234 is called \"Blue\"";
+};
+
+[association]
+class REF_A
+{
+    [key] REF_Z ref r1;
+    [key] REF_Z ref r2;
+};
+
+instance of REF_A
+{
+    [key] r1 = "REF_Z.x=\"Red\"";
+    [key] r2 = "REF_Z.x=\"Green\"";
+};
+
+instance of REF_A
+{
+    [key] r1 = "REF_Z.x=\"Blue\"";
+    [key] r2 = "REF_Z.x=\"This color \\X1234 is called \\\"Blue\\\"\"";
+};

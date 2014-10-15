@@ -1,0 +1,25 @@
+
+qualifier q1 : string = "1", scope(class), flavor(DisableOverride);
+qualifier q2 : string = "2", scope(class), flavor(Restricted);
+qualifier q3 : string = "3", scope(class), flavor(Restricted);
+qualifier q4 : string = "4", scope(class), flavor(Translatable);
+qualifier q5 : string = NULL, scope(class);
+
+[q1("q1"):EnableOverride, q2("q2"), q4("q4")]
+class W
+{
+
+};
+
+[q1("q1"), q3("q3"), q5(NULL):Restricted DisableOverride]
+class X : W
+{
+
+};
+
+[q1("q1"), q5(NULL)]
+class Y : X
+{
+
+};
+

@@ -1,0 +1,6 @@
+
+
+    Implement mechanism for finding the repository array of meta classes
+    with a library (like Provider_Cache::find_providers).
+
+    Rename Provider_Reg_Base

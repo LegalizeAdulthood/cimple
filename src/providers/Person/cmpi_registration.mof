@@ -1,0 +1,45 @@
+instance of PG_ProviderModule
+{
+    Name = "PersonModule";
+    Vendor = "Pegasus";
+    Version = "2.0.0";
+    InterfaceType = "CMPI";
+    InterfaceVersion = "2.0.0";
+    Location = "PersonProvider";
+};
+
+instance of PG_Provider
+{
+    ProviderModuleName = "PersonModule";
+    Name = "PersonProvider";
+};
+
+instance of PG_ProviderCapabilities
+{
+    ProviderModuleName = "PersonModule";
+    ProviderName = "PersonProvider";
+    CapabilityID = "1";
+    ClassName = "Person";
+    Namespaces = {"root/cimv2"};
+    ProviderType = { 2 /* instance */, 5 /* method */ };
+    SupportedProperties = NULL; // All properties
+    SupportedMethods = NULL; // All methods
+};
+
+instance of PG_Provider
+{
+    ProviderModuleName = "PersonModule";
+    Name = "LinkProvider";
+};
+
+instance of PG_ProviderCapabilities
+{
+    ProviderModuleName = "PersonModule";
+    ProviderName = "LinkProvider";
+    CapabilityID = "1";
+    ClassName = "Link";
+    Namespaces = {"root/cimv2"};
+    ProviderType = { 2 /* instance */, 5 /* method */, 3 /* association */ };
+    SupportedProperties = NULL; // All properties
+    SupportedMethods = NULL; // All methods
+};

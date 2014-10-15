@@ -1,0 +1,35 @@
+
+class BBB
+{
+    uint32 counter;
+};
+
+class CCC : BBB
+{
+    [key] string key;
+    [key] uint32 bbb;
+
+    uint32 foo(string arg1, string arg2);
+};
+
+class DDD : CCC
+{
+    uint32 ccc;
+
+    uint32 goo(string arg1);
+};
+
+[Association]
+class AAA
+{
+    [key] CCC ref left;
+    [key] DDD ref right;
+    uint32 fool(CCC ref c);
+};
+
+[Association]
+class AAA2 : AAA
+{
+    uint32 aaa;
+};
+

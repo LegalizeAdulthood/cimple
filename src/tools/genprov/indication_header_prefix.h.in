@@ -1,0 +1,29 @@
+#ifndef _<CLASS>_Provider_h
+#define _<CLASS>_Provider_h
+
+#include <cimple/cimple.h>
+#include "<CLASS>.h"
+
+CIMPLE_NAMESPACE_BEGIN
+
+class <CLASS>_Provider
+{
+public:
+
+    typedef <CLASS> Class;
+
+    <CLASS>_Provider();
+
+    CIMPLE_HIDE ~<CLASS>_Provider();
+
+    CIMPLE_HIDE Load_Status load();
+
+    CIMPLE_HIDE Unload_Status unload();
+
+    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
+
+    CIMPLE_HIDE Enable_Indications_Status enable_indications(
+	Indication_Handler<<CLASS>>* indication_handler);
+
+    CIMPLE_HIDE Disable_Indications_Status disable_indications();
+

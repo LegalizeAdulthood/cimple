@@ -1,0 +1,11 @@
+
+    (1) Implement description pruning.
+
+    (2)	Implement pruning.
+
+	    % mofc one.mof two.mof -- three.mof
+
+    (3) Use MOF_Date_Time::valid() function.
+
+    (4) Implement printing.
+

@@ -1,0 +1,27 @@
+instance of PG_ProviderModule
+{
+    Name = "StubsModule";
+    Vendor = "Pegasus";
+    Version = "2.0.0";
+    InterfaceType = "CMPI";
+    InterfaceVersion = "2.0.0";
+    Location = "StubsProvider";
+};
+
+instance of PG_Provider
+{
+    ProviderModuleName = "StubsModule";
+    Name = "StubsProvider";
+};
+
+instance of PG_ProviderCapabilities
+{
+    ProviderModuleName = "StubsModule";
+    ProviderName = "StubsProvider";
+    CapabilityID = "1";
+    ClassName = "Stubs";
+    Namespaces = {"root/cimv2"};
+    ProviderType = { 2 /* instance */, 5 /* method */ };
+    SupportedProperties = NULL; // All properties
+    SupportedMethods = NULL; // All methods
+};

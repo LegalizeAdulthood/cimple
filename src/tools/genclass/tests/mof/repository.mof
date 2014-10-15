@@ -1,0 +1,4 @@
+#pragma include("Test1.mof")
+#pragma include("Test2.mof")
+#pragma include("Erp.mof")
+#pragma include("Erp2.mof")

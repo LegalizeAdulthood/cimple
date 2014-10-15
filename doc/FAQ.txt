@@ -1,0 +1,12 @@
+
+
+    1. 	How do I run the "live tests" (client-server tests)?
+
+	Stop the cimserver.
+
+	From the root type "make reg"
+
+	Start the cimserver
+
+	From the root type "make live-tests"
+

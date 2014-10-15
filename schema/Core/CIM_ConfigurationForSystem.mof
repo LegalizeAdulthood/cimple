@@ -1,0 +1,17 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_ConfigurationForSystem
+// ==================================================================
+   [Association, Version ( "2.8.0" ), Description (
+       "CIM_ConfigurationForSystem defines a Configuration in the "
+       "context of the System on which it resides.")]
+class CIM_ConfigurationForSystem : CIM_HostedDependency {
+
+      [Override ( "Antecedent" ), Min ( 1 ), Max ( 1 ), Description (
+          "The hosting System.")]
+   CIM_System REF Antecedent;
+
+      [Override ( "Dependent" ), Weak, Description (
+          "The Configuration defined for the System.")]
+   CIM_SystemConfiguration REF Dependent;
+};

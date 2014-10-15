@@ -1,0 +1,8 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_IDEController
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "Capabilities and management of an IDEController.")]
+class CIM_IDEController : CIM_Controller {
+};

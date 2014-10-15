@@ -1,0 +1,18 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_ElementSecuritySensitivity
+// ==================================================================
+   [Association, Version ( "2.8.0" ), Description (
+       "This association relates a security sensitivity level to a "
+       "ManagedElement. It describes the level assigned to the "
+       "element.")]
+class CIM_ElementSecuritySensitivity {
+
+      [Key, Description (
+          "The security sensitivity level of the element.")]
+   CIM_SecuritySensitivity REF SecurityLevel;
+
+      [Key, Description (
+          "The element which is assigned a sensitivity level.")]
+   CIM_ManagedElement REF ManagedElement;
+};

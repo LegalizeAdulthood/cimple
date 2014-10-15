@@ -1,0 +1,10 @@
+int <CLASS>_Provider::proc(
+    int operation, void* arg0, void* arg1, void* arg2, void* arg3)
+{
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // GENERATED.
+
+    typedef <CLASS> Class;
+    typedef <CLASS>_Provider Provider;
+    return Indication_Provider_Proc_T<Provider>::proc(
+	operation, arg0, arg1, arg2, arg3);

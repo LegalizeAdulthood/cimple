@@ -1,0 +1,17 @@
+
+
+class Mine
+{
+    [key] uint32 x;
+    [key] string y;
+};
+
+instance of Mine
+{
+    x = 99;
+};
+
+class Mine2 : Mine
+{
+
+};

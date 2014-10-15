@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeJCAStats
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "The J2eeJCAStats class defines the performance statistics that "
+       "are provided by a JCA resource.")]
+class CIM_J2eeJCAStats : CIM_J2eeStatistic {
+};

@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeStatefulSessionBean
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "Identifies a deployed stateful session bean within an EJB "
+       "module.")]
+class CIM_J2eeStatefulSessionBean : CIM_J2eeSessionBean {
+};

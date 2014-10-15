@@ -1,0 +1,34 @@
+class X
+{
+    uint32 x;
+};
+
+class Y : X
+{
+    uint32 y;
+};
+
+class Z : Y
+{
+    uint32 z;
+};
+
+[Association]
+class AX
+{
+    X ref left;
+    X ref right;
+};
+
+[Association]
+class AY : AX
+{
+    Y ref left;
+    Y ref right;
+};
+
+[Association]
+class AZ : AY
+{
+    Z ref left;
+};

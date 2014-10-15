@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+(@ARGV == 1) or die "Usage: $0 input-file\n";
+
+@tags1 = (Boolean, Uint8, Sint8, Uint16, Sint16, Uint32, Sint32, Uint64, Sint64, Real32, Real64, Char16, String, CIMDateTime);
+@tags2 = (boolean, uint8, sint8, uint16, sint16, uint32, sint32, uint64, sint64, real32, real64, char16, string, datetime);
+@tags3 = (BOOLEAN, UINT8, SINT8, UINT16, SINT16, UINT32, SINT32, UINT64, SINT64, REAL32, REAL64, CHAR16, STRING, DATETIME);
+
+for ($i = 0; $i < @tags1; $i++)
+{
+    open(IS, @ARGV[0]) or die "$0: failed to open @ARGV[0]\n";
+
+    while (<IS>)
+    {
+	s/Ttt/@tags1[$i]/g;
+	s/ttt/@tags2[$i]/g;
+	s/TTT/@tags3[$i]/g;
+	print $_;
+    }
+
+    close(IS);
+}

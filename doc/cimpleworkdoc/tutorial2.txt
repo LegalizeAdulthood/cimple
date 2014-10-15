@@ -1,0 +1,70 @@
+CIMPLE Tutorial #2:
+
+
+    The last tutorial showed how to add a class to the CIMPLE 
+    repository which, among other things, involved reading a
+    MOF class definition and generating the following C++ class
+    definition (contained in MyClass.h).
+
+
+        class MyClass : public Instance
+        {
+        public:
+            ...
+            Property<String> message;
+            Property<uint32> count;
+            Property<boolean> flag;
+            Property<real32> ratio;
+            Property<Array_String> array;
+     
+            static Self* create();
+            static void destroy(Self*);
+            Self* clone() const;
+            static bool key_eq(const Self*, const Self*);
+         };
+
+
+    Using this class is straight forward. First include
+    <repository/MyClass.h>. Then create an instance.
+
+
+        MyClass* i1 = MyClass::create();
+
+
+    Now set the value of a couple of properties.
+
+
+        i1->count.value = 99;
+        i1->count.null = false;
+
+
+          i1->message.value = "Hello";
+        i1->message.null = false;
+
+
+    Properties are structures with two fields: 'value' and 'null'. 
+    The 'value' field obviously contains the property value. The
+    'null' indicates whether the property is null. C++ has no concept 
+    of null values so the 'null' flag is necessary.
+
+
+    Instances are deleted like this.
+
+
+        MyClass::destroy(i1);
+
+
+    And cloned like this.
+
+
+        MyClass* i2 = i1->clone();
+
+
+    Finally, the following snippet tests whether two instances have 
+    identical key fields.
+
+
+        if (MyClass::key_eq(i1, i2))
+        {
+            // Same key components.
+        }

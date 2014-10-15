@@ -1,0 +1,25 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_ActsAsSpare
+// ==================================================================
+   [Association, Version ( "2.6.0" ), Description (
+       "The ActsAsSpare association indicates which elements can spare "
+       "or replace the other aggregated elements. The fact that a "
+       "spare can operate in \"hot standby\" mode is specified on an "
+       "element by element basis.")]
+class CIM_ActsAsSpare {
+
+      [Key, Description (
+          "The SpareGroup.")]
+   CIM_SpareGroup REF Group;
+
+      [Key, Description (
+          "A ManagedSystemElement acting as a spare and participating "
+          "in the SpareGroup.")]
+   CIM_ManagedSystemElement REF Spare;
+
+      [Description (
+          "HotStandby is a boolean indicating that the spare is "
+          "operating as a hot standby.")]
+   boolean HotStandby;
+};

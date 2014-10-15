@@ -1,0 +1,59 @@
+#include "<CLASS>_Provider.h"
+
+CIMPLE_NAMESPACE_BEGIN
+
+<CLASS>_Provider::<CLASS>_Provider()
+{
+}
+
+<CLASS>_Provider::~<CLASS>_Provider()
+{
+}
+
+Load_Status <CLASS>_Provider::load()
+{
+    return LOAD_OK;
+}
+
+Unload_Status <CLASS>_Provider::unload()
+{
+    return UNLOAD_OK;
+}
+
+Timer_Status <CLASS>_Provider::timer(uint64& timeout_msec)
+{
+    return TIMER_CANCEL;
+}
+
+Get_Instance_Status <CLASS>_Provider::get_instance(
+    const <CLASS>* model,
+    <CLASS>*& instance)
+{
+    return GET_INSTANCE_NOT_FOUND;
+}
+
+Enum_Instances_Status <CLASS>_Provider::enum_instances(
+    const <CLASS>* model,
+    Enum_Instances_Handler<<CLASS>>* handler)
+{
+    return ENUM_INSTANCES_OK;
+}
+
+Create_Instance_Status <CLASS>_Provider::create_instance(
+    const <CLASS>* instance)
+{
+    return CREATE_INSTANCE_UNSUPPORTED;
+}
+
+Delete_Instance_Status <CLASS>_Provider::delete_instance(
+    const <CLASS>* instance)
+{
+    return DELETE_INSTANCE_UNSUPPORTED;
+}
+
+Modify_Instance_Status <CLASS>_Provider::modify_instance(
+    const <CLASS>* instance)
+{
+    return MODIFY_INSTANCE_UNSUPPORTED;
+}
+

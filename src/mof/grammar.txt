@@ -1,0 +1,617 @@
+
+mofSpecification
+                            =
+                                *mofProduction
+   
+                             
+                                 
+  mofProduction
+                            =
+                                compilerDirective |
+   
+                             
+                                classDeclaration |
+   
+                             
+                                assocDeclaration |
+   
+                             
+                                indicDeclaration |
+   
+                             
+                                qualifierDeclaration |
+   
+                             
+                                instanceDeclaration
+   
+                             
+  compilerDirective
+                            =
+                                PRAGMA pragmaName "(" pragmaParameter ")"
+   
+                             
+                                 
+  pragmaName
+                            =
+                                IDENTIFIER
+   
+                             
+                                 
+  pragmaParameter
+                            =
+                                stringValue
+   
+                             
+                                 
+  classDeclaration
+                            =
+                                [ qualifierList ]
+   
+                             
+                                CLASS className [ alias ] [ superClass ]
+   
+                             
+                                "{" *classFeature "}" ";"
+   
+                             
+  assocDeclaration
+                            =
+                                "[" ASSOCIATION *( "," qualifier ) "]"
+   
+                             
+                                CLASS className [ alias ] [ superClass ]
+   
+                             
+                                "{" *associationFeature "}" ";"
+   
+                             
+   
+                             
+                                // Context:
+   
+                             
+                                // The remaining qualifier list must not include
+
+                                // the ASSOCIATION qualifier again. If the
+
+                                // association has no super association, then at
+
+                                // least two references must be specified! The
+
+                                // ASSOCIATION qualifier may be omitted in
+
+                                // sub associations.
+   
+                             
+                                 
+  indicDeclaration
+                            =
+                                "[" INDICATION *( "," qualifier ) "]"
+   
+                             
+                                CLASS className [ alias ] [ superClass ]
+   
+                             
+                                "{" *classFeature "}" ";"
+   
+                             
+                                 
+  className
+                            =
+                                schemaName "_" IDENTIFIER // NO whitespace !
+   
+                             
+                                 
+   
+                             
+                                // Context:
+   
+                             
+                                // Schema name must not include "_" !
+   
+                             
+                                 
+  alias
+                            =
+                                AS aliasIdentifer
+   
+                             
+                                 
+  aliasIdentifer
+                            =
+                                "$" IDENTIFIER // NO whitespace !
+   
+                             
+                                 
+  superClass
+                            =
+                                ":" className
+                             
+                                 
+  classFeature
+                            =
+                                propertyDeclaration | methodDeclaration
+   
+                             
+  associationFeature
+                            =
+                                classFeature | referenceDeclaration
+   
+                             
+                                 
+  qualifierList
+                            =
+                                "[" qualifier *( "," qualifier ) "]"
+   
+                             
+                                 
+  qualifier
+                            =
+                                qualifierName [ qualifierParameter ] [ ":" 1*flavor ]
+   
+                             
+                                 
+  qualifierParameter
+                            =
+                                "(" constantValue ")" | arrayInitializer
+   
+                             
+                                 
+  flavor
+                            =
+                                ENABLEOVERRIDE | DISABLEOVERRIDE | RESTRICTED | 
+   
+                             
+                                TOSUBCLASS | TRANSLATABLE
+   
+                             
+                                 
+  propertyDeclaration
+                            =
+                                [ qualifierList ] dataType propertyName
+   
+                             
+                                [ array ] [ defaultValue ] ";"
+   
+                             
+  referenceDeclaration
+                            =
+                                [ qualifierList ] objectRef referenceName
+   
+                             
+                                [ defaultValue ] ";"
+   
+                             
+  methodDeclaration
+                            =
+                                [ qualifierList ] dataType methodName
+   
+                             
+                                "(" [ parameterList ] ")" ";"
+   
+                             
+  propertyName
+                            =
+                                IDENTIFIER
+   
+                             
+                                 
+  referenceName
+                            =
+                                IDENTIFIER
+   
+                             
+                                 
+  methodName
+                            =
+                                IDENTIFIER
+   
+                             
+                                 
+  dataType
+                            =
+                                DT_UINT8 | DT_SINT8 | DT_UINT16 | DT_SINT16 |
+   
+                             
+                                DT_UINT32 | DT_SINT32 | DT_UINT64 | DT_SINT64 |
+   
+                             
+                                DT_REAL32 | DT_REAL64 | DT_CHAR16 |
+   
+                             
+                                DT_STR | DT_BOOL | DT_DATETIME
+   
+                             
+                                 
+  objectRef
+                            =
+                                className REF
+   
+                             
+                                 
+  parameterList
+                            =
+                                parameter *( "," parameter )
+   
+                             
+                                 
+  parameter
+                            =
+                                [ qualifierList ] (dataType|objectRef) parameterName 
+
+                                [ array ]
+  parameterName
+                            =
+                                IDENTIFIER
+   
+                             
+                                 
+  array
+                            =
+                                "[" [positiveDecimalValue] "]"
+   
+                             
+                                 
+  positiveDecimalValue
+                            =
+                                positiveDecimalDigit *decimalDigit
+   
+                             
+                                 
+  defaultValue
+                            =
+                                "=" initializer
+   
+                             
+                                 
+  initializer
+                            =
+                                ConstantValue | arrayInitializer | referenceInitializer
+   
+                             
+                                 
+  arrayInitializer
+                            =
+                                "{" constantValue*( "," constantValue)"}"
+   
+                             
+                                 
+  constantValue
+                            =
+                                integerValue | realValue | charValue | stringValue |
+   
+                             
+                                booleanValue | nullValue
+   
+                             
+  integerValue
+                            =
+                                binaryValue | octalValue | decimalValue | hexValue
+   
+                             
+                                 
+  referenceInitializer
+                            =
+                                objectHandle | aliasIdentifier
+   
+                             
+                                 
+  objectHandle
+                            =
+                                """ [ namespaceHandle ":" ] modelPath """
+   
+                             
+                                 
+  namespaceHandle
+                            =
+                                *ucs2Character 
+                                // Note: structure depends on type of namespace
+   
+                             
+                                 
+  modelPath 
+                            =
+                                className "." keyValuePairList
+   
+                             
+                                 
+  keyValuePairList
+                            =
+                                keyValuePair *( "," keyValuePair )
+   
+                             
+                                 
+  keyValuePair
+                            =
+                                ( propertyname | referenceName ) "=" initializer
+   
+                             
+                                 
+  qualifierDeclaration
+                            =
+                                QUALIFIER qualifierName qualifierType scope
+   
+                             
+                                [ defaultFlavor ] ";"
+   
+                             
+  qualifierName
+                            =
+                                IDENTIFIER
+   
+                             
+                                 
+  qualifierType
+                            =
+                                ":" dataType [ array ] [ defaultValue ]
+   
+                             
+                                 
+  scope
+                            =
+                                "," SCOPE "(" metaElement *( "," metaElement ) ")"
+   
+                             
+                                 
+  metaElement
+                            =
+                                SCHEMA | CLASS | ASSOCIATION | INDICATION | QUALIFIER
+   
+                             
+                                PROPERTY | REFERENCE | METHOD | PARAMETER | ANY
+   
+                             
+  defaultFlavor
+                            =
+                                "," FLAVOR "(" flavor *( "," flavor ) ")"
+   
+                             
+                                 
+  instanceDeclaration
+                            =
+                                [ qualifierList ] INSTANCE OF className [ alias ]
+   
+                             
+                                "{" 1*valueInitializer "}" ";"
+   
+                             
+  valueInitializer
+                            =
+                                [ qualifierList ] 
+   
+                             
+                                ( propertyName | referenceName ) "=" initializer ";"
+
+
+              These productions do not allow whitespace between the terms:
+
+  schemaName
+                             =
+                                 IDENTIFIER
+   
+                              
+                                 // Context:
+   
+                              
+                                 // Schema name must not include "_" !
+  fileName
+                             =
+                                 stringValue
+   
+                              
+  binaryValue
+                             =
+                                 [ "+" | "-" ] 1*binaryDigit ( "b" | "B" )
+   
+                              
+                                  
+  binaryDigit
+                             =
+                                 "0" | "1"
+   
+                              
+                                  
+  octalValue
+                             =
+                                 [ "+" | "-" ] "0" 1*octalDigit
+   
+                              
+                                  
+  octalDigit
+                             =
+                                 "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7"
+   
+                              
+                                  
+  decimalValue
+                             =
+                                 [ "+" | "-" ] ( positiveDecimalDigit *decimalDigit | "0" )
+   
+                              
+                                  
+  decimalDigit
+                             =
+                                 "0" | positiveDecimalDigit
+   
+                              
+                                  
+  positiveDecimalDigit
+                             =
+                                 "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+   
+                              
+                                  
+  hexValue
+                             =
+                                 [ "+" | "-" ] ( "0x" | "0X" ) 1*hexDigit
+   
+                              
+                                  
+  hexDigit
+                             =
+                                 decimalDigit | "a" | "A" | "b" | "B" | "c" | "C" |
+   
+                              
+                                 "d" | "D" | "e" | "E" | "f" | "F"
+   
+                              
+                                  
+  realValue
+                             =
+                                 [ "+" | "-" ] *decimalDigit "." 1*decimalDigit
+   
+                              
+                                 [ ( "e" | "E" ) [ "+" | "-" ] 1*decimalDigit ]
+   
+                              
+                                  
+  charValue
+                             =
+                                 // any single-quoted Unicode-character, except
+
+                                 // single quotes
+   
+                              
+                                  
+  stringValue
+                             =
+                                 1*( """ *ucs2Character """ )
+   
+                              
+                                  
+  ucs2Character
+                             =
+                                 // any valid UCS-2-character
+   
+                              
+                                  
+  booleanValue
+                             =
+                                 TRUE | FALSE
+   
+                              
+                                  
+  nullValue
+                             =
+                                 NULL
+
+
+              The remaining productions are case-insensitive keywords:
+
+  ANY
+                             =
+                                 "any"
+  AS
+                             =
+                                 "as"
+  ASSOCIATION
+                             =
+                                 "association"
+  CLASS
+                             =
+                                 "class"
+  DISABLEOVERRIDE
+                             =
+                                 "disableOverride"
+  DT_BOOL
+                             =
+                                 "boolean"
+  DT_CHAR16
+                             =
+                                 "char16"
+  DT_DATETIME
+                             =
+                                 "datetime"
+  DT_REAL32
+                             =
+                                 "real32"
+  DT_REAL64
+                             =
+                                 "real64"
+  DT_SINT16
+                             =
+                                 "sint16"
+  DT_SINT32
+                             =
+                                 "sint32"
+  DT_SINT64
+                             =
+                                 "sint64"
+  DT_SINT8
+                             =
+                                 "sint8"
+  DT_STR
+                             =
+                                 "string"
+  DT_UINT16
+                             =
+                                 "uint16"
+  DT_UINT32
+                             =
+                                 "uint32"
+  DT_UINT64
+                             =
+                                 "uint64"
+  DT_UINT8
+                             =
+                                 "uint8"
+  ENABLEOVERRIDE
+                             =
+                                 "enableoverride"
+  FALSE
+                             =
+                                 "false"
+  FLAVOR
+                             =
+                                 "flavor"
+  INDICATION
+                             =
+                                 "indication"
+  INSTANCE
+                             =
+                                 "instance"
+  METHOD
+                             =
+                                 "method"
+  NULL
+                             =
+                                 "null"
+  OF
+                             =
+                                 "of"
+  PARAMETER
+                             =
+                                 "parameter"
+  PRAGMA
+                             =
+                                 "#pragma"
+  PROPERTY
+                             =
+                                 "property"
+  QUALIFIER
+                             =
+                                 "qualifier"
+  REF
+                             =
+                                 "ref"
+  REFERENCE
+                             =
+                                 "reference"
+  RESTRICTED
+                             =
+                                 "restricted"
+  SCHEMA
+                             =
+                                 "schema"
+  SCOPE
+                             =
+                                 "scope"
+  TOSUBCLASS
+                             =
+                                 "tosubclass"
+  TRANSLATABLE
+                             =
+                                 "translatable"
+  TRUE
+                             =
+                                 "true"

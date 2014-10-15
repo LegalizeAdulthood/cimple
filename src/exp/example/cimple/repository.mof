@@ -1,0 +1,11 @@
+
+class TheClass
+{
+    [key] string u;
+    uint32 v;
+    boolean w;
+    real32 x;
+    uint32 y[];
+
+    uint32 add([in] uint32 x, [in] uint32 y);
+};

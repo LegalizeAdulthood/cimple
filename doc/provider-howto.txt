@@ -1,0 +1,420 @@
+			HOW TO WRITE A CIMPLE PROVIDER
+                        v 0.9 
+
+INTRODUCTION:
+
+    Note: if all you want is a quick overview of the exact steps, jump right
+    to the SUMMARY section at the end of this document.
+
+    This document shows how to develop CIMPLE providers and how to use them in 
+    the Pegasus environement. The diagram below illustrates the key software
+    components you will work with while writing providers.
+
+	+--------------------------------------------------------------+
+	|                         Pegasus CIMOM                        |
+	+--------------------------------------------------------------+
+	|                    CIMPLE provider manager                   |
+	+-------------------------------+------------------------------+
+	|            Module-A           |          Module-B            |
+	+ +------------+ +------------+ + +--------------------------+ |
+	| | Provider-X | | Provider-Y | | |        Provider-Z        | |
+	+ +------------+ +------------+ + +--------------------------+ |
+	+-------------------------------+------------------------------+
+
+    The Pegasus CIMOM receives requests from CIM clients and routes them to
+    the appropriate provider manager. Requests bound for CIMPLE providers
+    are routed to the CIMPLE provider manager, which in turn delegates them
+    to the relevant provider to be handled. The CIMPLE provider manager is
+    a shared library that is linked by the Pegasus CIMOM.
+    
+    Providers are organized into modules. Each module may contain one or 
+    more providers. The diagram above shows two moduldes: Module-A (containing
+    Provider-X and Provider-Y) and Module-B (containing Provider-Z).
+
+    In this document we show how to develop a provider for a simplified Fan
+    class. Here are the steps in developing a provider.
+
+	1. Define and generate the class.
+	2. Generate the provider skeleton.
+	3. Implement the provider behavior.
+	4. Define the module.
+	5. Build the library.
+	6. Register the module with Pegasus.
+	7. Test the provider.
+
+    The source code for this example is located under:
+
+	<CIMPLE-DISTRIBUTION-ROOT>/src/providers/Fan
+
+    Note: This tutorial assumes the Pegasus environmnent is set up correctly.
+    If you are not sure, run the checkpeg utility like this.
+
+	% checkpeg
+	
+DEFINING AND GENERATING THE FAN CLASS:
+
+    The first step is to define and generate the class. Create a file called
+    repository.mof with these contents.
+
+	class Fan
+	{
+	    [key] string DeviceID;
+	    uint64 Speed;
+	    uint64 DesiredSpeed;
+	    uint32 SetSpeed([in] uint64 DesiredSpeed); 
+	};
+
+    Note: you can organize classes into several files using the MOF include
+    pragma.
+
+    Next, generate the class with the following command (be sure that 
+    CIMPLE_MOF_PATH contains the schema directory under the root of the CIMPLE 
+    distribution). Do this from the directory that contains repository.mof.
+
+    	% genclass Fan
+	Created Fan.h
+	Created Fan.cpp
+
+    This creates Fan.h and Fan.cpp. Fan.h defines three C++ classes:
+
+	Fan - corresponds to the Fan MOF class.
+	Fan_ref - similar to Fan but only contains key properties.
+	Fan_SetSpeed_method - defines arguments for the SetSpeed method.
+
+    Fan.cpp contains internal meta-data used by CIMPLE.
+
+GENERATE THE FAN PROVIDER SKELETON:
+
+    The next step is to generate the provider skeleton. Use the following
+    command:
+
+	% genprov Fan
+	Created Fan_Provider.h
+	Created Fan_Provider.cpp
+
+    Fan_Provider.cpp defines stubs for the following functions.
+
+	Fan_Provider::load()
+	Fan_Provider::unload()
+	Fan_Provider::get_instance()
+	Fan_Provider::enum_instance()
+	Fan_Provider::create_instance()
+	Fan_Provider::delete_instance()
+	Fan_Provider::modify_instance()
+	Fan_Provider::SetSpeed()
+
+    Implementing the Fan provider is a matter implementing these stubs.
+
+IMPLEMENTING THE PROVIDER BEHAVIOR:
+
+    We will show how to implement these stubs (a read-only provider).
+
+	Fan_Provider::get_instance()
+	Fan_Provider::enum_instance()
+	Fan_Provider::SetSpeed()
+
+    The generated get_instance() stub looks like this.
+
+	Get_Instance_Status Fan_Provider::get_instance(Fan* inst)
+	{
+	    return GET_INSTANCE_NOT_FOUND;
+	}
+
+    It passes in a Fan instance whoose key fields are already initialized.
+    Our implementation will provide the following instances.
+
+	Fan.DeviceId="FAN01"
+	Fan.DeviceId="FAN02"
+
+    Here is our implementation.
+
+	Get_Instance_Status Fan_Provider::get_instance(Fan* inst)
+	{
+	    if (inst->DeviceID.value == "FAN01")
+	    {
+		if (!inst->Speed.null)
+		    inst->Speed.value = 1000;
+
+		if (!inst->DesiredSpeed.null)
+		    inst->DesiredSpeed.value = 1200;
+
+		return GET_INSTANCE_OK;
+	    }
+	    else if (inst->DeviceID.value == "FAN02")
+	    {
+		if (!inst->Speed.null)
+		    inst->Speed.value = 1100;
+
+		if (!inst->DesiredSpeed.null)
+		    inst->DesiredSpeed.value = 1200;
+
+		return GET_INSTANCE_OK;
+	    }
+
+	    return GET_INSTANCE_NOT_FOUND;
+	}
+
+    Since the key fields are initialized by the caller of get_instance(),
+    our implementation can simply examine the DeviceID field to determine
+    which field is being requested.
+
+    The caller of get_instance(), sets the null flag to true for fields it
+    needs. We must test the null flag for each field. For example,
+
+		if (!inst->Speed.null)
+		    inst->Speed.value = 1000;
+
+    The get_instance() implmentation must return one of the following status
+    codes.
+
+	GET_INSTANCE_OK
+	GET_INSTANCE_NOT_FOUND
+
+    If we implement get_instance(), we must also implement enum_instance().
+    Here is the enum_instance() stub.
+
+	Enum_Instance_Status Fan_Provider::enum_instance(
+	    Fan* inst, State& state)
+	{
+	    return ENUM_INSTANCE_MORE;
+	}
+
+    This stub is called repeatedly for each instance, until all of the 
+    instances have been exhausted. For each call, we must fill in the non-null 
+    fields of the inst parmaeter. We use the state parameter to maintain state 
+    between calls. It has two fields:
+
+	state.client_data
+	state.delete_proc
+
+    On the first call of an enumeration, client_data and delete_proc are both 
+    zero. The enum_instance() method modifies client_data to keep track of its 
+    place in the enumeration. Client_data is an integer but is large enough
+    to hold a pointer. The state is passed back in on subsequent calls to
+    enum_instance(). The delete_proc is a function pointer used to dispose
+    of the client_data (if necessary) at the end of the enumeration. In our
+    implementation, we use client_data as a simple integer index so we do not
+    need to use delete_proc.
+
+    Enum_insance() must return one of the following:
+
+	ENUM_INSTANCE_MORE
+	ENUM_INSTANCE_DONE
+	ENUM_INSTANCE_FAILED
+
+    It returns ENUM_INSTANCE_MORE to indicate that another instance has been
+    initialized and returned. It calls ENUM_INSTANCE_DONE to indicate that there
+    are not more instances to be enumerated. It returns ENUM_INSTANCE_FAILED
+    if the enumeration fails for whatever reason.
+    
+	Enum_Instance_Status Fan_Provider::enum_instance(
+	    Fan* inst, State& state)
+	{
+	    if (state.client_data == 0)
+	    {
+		inst->DeviceID.value = "FAN01";
+		inst->DeviceID.null = false;
+
+		if (!inst->Speed.null)
+		    inst->Speed.value = 1000;
+
+		if (!inst->DesiredSpeed.null)
+		    inst->DesiredSpeed.value = 1200;
+
+		state.client_data++;
+
+		return ENUM_INSTANCE_MORE;
+	    }
+	    else if (state.client_data == 1)
+	    {
+		inst->DeviceID.value = "FAN02";
+		inst->DeviceID.null = false;
+
+		if (!inst->Speed.null)
+		    inst->Speed.value = 1100;
+
+		if (!inst->DesiredSpeed.null)
+		    inst->DesiredSpeed.value = 1200;
+
+		state.client_data++;
+
+		return ENUM_INSTANCE_MORE;
+	    }
+	    else
+		return ENUM_INSTANCE_DONE;
+	}
+
+    [ATTN: explain how to implement the SetSpeed() method]
+
+DEFINE THE MODULE:
+
+    Next we must define the module. To do this, we create a file called
+    module.cpp with these contents.
+
+	#include "Fan_Provider.h"
+
+	using namespace cimple;
+
+	CIMPLE_MODULE(Fan_Module);
+	CIMPLE_PROVIDER(Fan_Provider);
+
+    A module may contain multiple providers. To add providers to this module,
+    just add more lines like this:
+
+	CIMPLE_PROVIDER(Other_Provider);
+
+BUILD THE LIBRARY:
+
+    Next we build a library from these files:
+
+	Fan.cpp
+	Fan_Provider.cpp
+	module.cpp
+
+    We will create a library called "libcmplfan.so".
+
+    You can build the library however you like. If you want to use the CIMPLE
+    build system, create a Makefile with these contents. Be sure to define
+    the CIMPLE_ROOT environment variable to refer to the root of the CIMPLE
+    distribution.
+
+	TOP = $(CIMPLE_ROOT)
+	include $(TOP)/mak/config.mak
+
+	SH_LIBRARY = cmplfan
+	SOURCES = Fan_Provider.cpp Fan.cpp module.cpp
+	LIBRARIES = -lcimple
+	FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+
+	include $(TOP)/mak/rules.mak
+
+    To build the library, just type "make". This creates a file called
+    libcmplfan.so.
+
+REGISTERING THE MODULE WITH PEGASUS:
+
+    Note: Stop the Pegasus server if it is running:
+
+	% cimserver -s
+
+    To register the module, use the regmod utility as follows:
+
+	% regmod -c $(CIMPLE_ROOT)/lib/libcmplfan.so
+
+    This performs the following steps.
+
+	1.  Checks to see if PEGASUS_HOME is defined.
+	2.  Checks to see if the Pegasus repository exists.
+	3.  Verifies that CIMPLE provider manager patch was applied to Pegasus.
+	4.  Checks whether CIMPLE provider manager is installed in Pegasus.
+	5.  Validates the module library by loading it.
+	6.  Checks compatiblity between provider classes and Pegasus classes.
+	7.  Creates provider classes in Pegasus repository if they do not exist.
+	8.  Copies the module library to $PEGASUS_HOME/lib.
+	9.  Registers all providers in the module with the Pegasus repository
+
+TESTING THE PROVIDER:
+
+    To test the provider, first check for problems in the Pegasus environment
+    with the CIMPLE checkpeg utility.
+
+	% checkpeg
+
+    The utility will indicate whether there are any files missing or any
+    environment variables that must be defined.
+
+    Now stop the CIM server (if it is running).
+
+    	% cimserver -s
+
+    Now start the CIM server.
+
+	% cimserver
+
+    Now use the Pegasus CLI utility to send requests to the provider. Here are
+    some examples.
+
+	% CLI ni
+	Fan.DeviceID="FAN01"
+	Fan.DeviceID="FAN02"
+
+	% CLI gi 'Fan.DeviceID="FAN01"'
+	path= Fan
+
+	//Instance of Class Fan
+	instance of class Fan
+	{
+	    string DeviceID = "FAN01";
+	    uint64 Speed = 1000;
+	    uint64 DesiredSpeed = 1200;
+	};
+
+SUMMARY:
+
+    1.  Define and generate the class.
+
+	Put your class in repository.mof. For example:
+
+	    class Fan
+	    {
+		[key] string DeviceID;
+		uint64 Speed;
+		uint64 DesiredSpeed;
+		uint32 SetSpeed([in] uint64 DesiredSpeed); 
+	    };
+
+	% genclass Fan
+	Created Fan.h
+	Created Fan.cpp
+
+    2.  Generate the provider skeleton.
+
+	% genprov Fan
+	Created Fan_Provider.h
+	Created Fan_Provider.cpp
+
+    3.  Implement the provider behavior.
+
+	Edit Fan_Provider.cpp as you like.
+
+    4.  Define the module.
+
+	Add the following definition to module.cpp
+
+	    #include "Fan_Provider.h"
+	    using namespace cimple;
+	    CIMPLE_MODULE;
+	    CIMPLE_PROVIDER(Fan_Provider);
+
+    5.  Build the library.
+
+	Create a Makefile with these contents and type 'make'.
+
+	    TOP = $(CIMPLE_ROOT)
+	    include $(TOP)/mak/config.mak
+
+	    SH_LIBRARY = cmplfan
+	    SOURCES = Fan_Provider.cpp Fan.cpp module.cpp
+	    LIBRARIES = -lcimple
+
+	    FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+	    include $(TOP)/mak/rules.mak
+
+    6.  Register the module with Pegasus.
+
+	    regmod -c $CIMPLE_ROOT/lib/libcmplfan.so
+
+    7.  Test the provider.
+
+	Stop the cimserver:
+
+	    % cimserver -s
+
+	Start the cmserver:
+
+	    % cimserver
+
+	Test the provider with the Pegasus CLI tool.
+
+	    % CLI ei Fan
+

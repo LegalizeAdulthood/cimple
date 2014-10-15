@@ -1,0 +1,42 @@
+
+class AA
+{
+    uint32 w;
+    uint32 x;
+};
+
+class BB : AA
+{
+    uint32 x;
+    uint32 y;
+};
+
+class CC : BB
+{
+    uint32 y;
+    uint32 z;
+};
+
+class DD : CC
+{
+};
+
+class EE : DD
+{
+    uint32 w;
+    uint32 x;
+    uint32 y;
+    uint32 z;
+};
+
+[Association]
+class FF
+{
+    EE ref t1;
+    EE ref t2;
+};
+
+[Association]
+class GG : FF
+{
+};

@@ -1,0 +1,23 @@
+Usage: %s [-cvh] provider-module-library
+
+Where:
+    -c : adds provider class to Pegasus repository if it does not exist
+    -v : verbose mode
+    -n : provider namespace (may occur multiple times)
+    -d : dump the MOF registration instances to standard output
+    -m : register as a CMPI provider
+    -b : use binary repository mode
+    -h : print this help text
+
+Synopsis:
+    This utility registers a CIMPLE provider with the Pegasus CIMOM by
+    performing the following steps:
+
+    1.  Checks to see if PEGASUS_HOME is defined.
+    2.  Checks to see if the Pegasus repository exists.
+    3.  Verifies that CIMPLE provider manager patch was applied to Pegasus.
+    4.  Checks whether CIMPLE provider manager is installed in Pegasus.
+    5.  Validates the module library by loading it.
+    6.  Checks compatiblity between provider classes and Pegasus classes.
+    7.  Creates provider classes in Pegasus repository if they do not exist.
+    8.  Registers all providers in the module with the Pegasus repository

@@ -1,0 +1,66 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_IndicationFilter
+// ==================================================================
+   [Version ( "2.6.0" ), Description (
+       "CIM_IndicationFilter defines the criteria for generating an "
+       "Indication and what data should be returned in the Indication. "
+       "It is derived from CIM_ManagedElement to allow modeling the "
+       "dependency of the filter on a specific service.")]
+class CIM_IndicationFilter : CIM_ManagedElement {
+
+      [Key, Description (
+          "A System's CreationClassName. The Filter is defined in the "
+          "context of a CIM_System, where it is hosted or to which it "
+          "applies. In a future release, a weak relationship will be "
+          "explicitly added to the model. This is not done now to "
+          "allow further refinement of the Filter definition and its "
+          "inheritance tree. Keys are defined now to allow the class "
+          "to be instantiated."), 
+       MaxLen ( 256 )]
+   string SystemCreationClassName;
+
+      [Key, Description (
+          "A System's Name. The Filter is defined in the context of a "
+          "CIM_System, where it is hosted or to which it applies. In a "
+          "future release, a weak relationship will be explicitly "
+          "added to the model. This is not done now to allow further "
+          "refinement of the Filter definition and its inheritance "
+          "tree. Keys are defined now to allow the class to be "
+          "instantiated."), 
+       MaxLen ( 256 )]
+   string SystemName;
+
+      [Key, Description (
+          "Indicates the name of the class or the subclass used in the "
+          "creation of an instance. When used with the other key "
+          "properties of this class, it allows all instances of this "
+          "class and its subclasses to be uniquely identified."), 
+       MaxLen ( 256 )]
+   string CreationClassName;
+
+      [Key, Description (
+          "The name of the filter.")]
+   string Name;
+
+      [Description (
+          "The path to a local namespace where the Indications "
+          "originate. If NULL, the namespace of the Filter "
+          "registration is assumed.")]
+   string SourceNamespace;
+
+      [Required, Description (
+          "A query expression that defines the condition(s) under "
+          "which Indications will be generated. For some Indication "
+          "classes, the query expression may also define the instance "
+          "properties to be copied to the CIM_InstIndication's "
+          "SourceInstance and PreviousInstance properties. Query "
+          "language semantics include projection (e.g., Select), range "
+          "(e.g., From) and predicate (e.g., Where)."), 
+       ModelCorrespondence { "CIM_IndicationFilter.QueryLanguage" }]
+   string Query;
+
+      [Required, Description (
+          "The language in which the query is expressed.")]
+   string QueryLanguage;
+};

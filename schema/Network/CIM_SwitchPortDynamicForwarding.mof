@@ -1,0 +1,17 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_SwitchPortDynamicForwarding
+// ==================================================================
+   [Association, Version ( "2.7.0" ), Description (
+       "This association links a DynamicForwardingEntry and the "
+       "SwitchPort to which the entry applies.")]
+class CIM_SwitchPortDynamicForwarding : CIM_Dependency {
+
+      [Override ( "Antecedent" ), Min ( 1 ), Description (
+          "The SwitchPort.")]
+   CIM_SwitchPort REF Antecedent;
+
+      [Override ( "Dependent" ), Description (
+          "DynamicForwardingEntry of the forwarding database.")]
+   CIM_DynamicForwardingEntry REF Dependent;
+};

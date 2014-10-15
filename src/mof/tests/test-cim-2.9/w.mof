@@ -1,0 +1,12 @@
+
+
+class W1
+{
+};
+
+#pragma include("x.mof")
+
+class W2
+{
+    uint32 i;
+};

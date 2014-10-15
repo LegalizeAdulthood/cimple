@@ -1,0 +1,49 @@
+#!/bin/sh
+
+##
+## Be sure PEGASUS_ROOT is defined
+##
+
+if [ "$PEGASUS_ROOT" == "" ]
+then
+    echo "PEGASUS_ROOT not defined"
+    exit 1
+fi
+
+##
+## Be sure that $PEGASUS_ROOT/src/Pegasus/ProviderManager2 exists
+##
+
+DIR=$PEGASUS_ROOT/src/Pegasus/ProviderManager2
+
+if [ ! -d "$DIR" ]
+then
+    echo "$PEGASUS_ROOT/src/Pegasus/ProviderManager2 missing"
+    exit 1
+fi
+
+##
+## Be sure patch has not already been applied
+##
+
+grep -q "CIMPLE" $DIR/BasicProviderManagerRouter.cpp
+
+if [ "$?" == "0" ]
+then
+    echo ""
+    echo "Pegasus already has CIMPLE patch"
+    echo ""
+    exit 0
+fi
+
+##
+## Change the directory under pegasus and apply patch:
+##
+
+THIS_DIR=$PWD
+cd $DIR
+echo ""
+patch -p0 < $THIS_DIR/BasicProviderManagerRouter.cpp.diff
+make
+echo ""
+cd $THIS_DIR

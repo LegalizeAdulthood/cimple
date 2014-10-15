@@ -1,0 +1,16 @@
+
+class Class_10
+{
+};
+
+[Association]
+class Assoc_10
+{
+    Class_10 ref r1;
+    Class_10 ref r2;
+};
+
+class Assoc_11 : Assoc_10
+{
+    Class_10 ref r1;
+};

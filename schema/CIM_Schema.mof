@@ -1,0 +1,12 @@
+#pragma include("cimv210.mof")
+
+// This is a pseudo class that only exists to implement embedded object 
+// properties. In CIMPLE, these properties are pointers to real instances
+// rather than strings.
+
+/*
+class Instance
+{
+    uint32 dummy;
+};
+*/

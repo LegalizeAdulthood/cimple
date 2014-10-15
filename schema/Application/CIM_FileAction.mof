@@ -1,0 +1,10 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_FileAction
+// ==================================================================
+   [Abstract, Version ( "2.6.0" ), Description (
+       "FileAction locates files that already exist on the CIM_ "
+       "ComputerSystem that defines the Action's environment. These "
+       "files are removed or moved/copied to a new location.")]
+class CIM_FileAction : CIM_Action {
+};

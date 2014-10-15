@@ -1,0 +1,5 @@
+[Indication]
+class MyIndication : CIM_Indication
+{
+    [Static] uint32 DeliverIndications();
+};

@@ -1,0 +1,34 @@
+
+qualifier X : uint32[2] = {10, 20}, scope(class);
+qualifier /* Hello */ Z : boolean = /* Yes */ false, scope(class);
+qualifier W : boolean = false, scope(property);
+
+[X{100,200}, Z(false)]
+class MyClass
+{
+    [Key] uint32 x;
+};
+
+[ASSOCIATION(true)]
+class YourClass
+{
+    [W] uint32 X = 99;
+    real32 Y = 1.5;
+    string z = "Hello " "World";
+    MYCLASS ref r1 = "MyClass.x=1";
+    MYCLASS ref r2 = "MyClass.x=1";
+};
+
+class A
+{
+    uint32 f(uint32 arg1, real32 arg2, string arg3[]);
+};
+
+class B : A
+{
+    [Description("This is junk")]
+    uint32 f([IN] uint32 ARG1, [IN] real32 Arg2, [In] string ARG3[]);
+    uint32 g(uint32 x, real32 y);
+
+    uint32 s[] = { 10, 20, 50 };
+};

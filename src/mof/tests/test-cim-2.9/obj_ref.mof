@@ -1,0 +1,30 @@
+
+class Class_1
+{
+    [key] uint32 key1;
+    [key] string key2;
+    [key] real32 key3;
+    [key] boolean key4;
+    [key] boolean key5[];
+    [key] uint32 key6[];
+    [key] string key7[2];
+};
+
+class Class_2 : Class_1
+{
+};
+
+[Association]
+class Class_3
+{
+    Class_1 ref r1 = 
+	"Class_2."
+	"Key5={true, false, true},"
+	"KEY2=\"Hello World\","
+	"key3=99.6,"
+	"KEY4=FALSE,"
+	"keY1=111,"
+	"key6={10,20,30,40,50},"
+	"key7={\"one\", \"two\" }";
+    Class_2 ref r2;
+};

@@ -1,0 +1,9 @@
+class Erp
+{
+    [key] string w;
+    uint32 x;
+    string y[];
+    string z[3];
+};
+
+#pragma generate("Erp")

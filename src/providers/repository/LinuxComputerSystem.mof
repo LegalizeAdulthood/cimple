@@ -1,0 +1,4 @@
+
+class LinuxComputerSystem : CIM_ComputerSystem
+{
+};

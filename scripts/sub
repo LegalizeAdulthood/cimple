@@ -1,0 +1,46 @@
+#!/bin/bash
+
+##==============================================================================
+##
+## sub
+##
+## Usage: sub file1 file2 ...
+##
+## This utility applies the SED script /tmp/sub.sed to all files given as 
+## arguments.
+##
+## The original files are first moved to a directory called ".rsub".
+##
+##==============================================================================
+
+SUB_SED=/tmp/sub.sed
+
+# Check arguments:
+
+if [ "$#" == "0" ]
+then
+    echo "Usage: $0 file1 file2 ..."
+    echo
+    exit 1
+fi
+
+# Be sure $SUB_SED exits.
+
+if [ ! -f $SUB_SED ]
+then
+    echo "$0: $SUB_SED not found"
+    exit 1
+fi
+
+# Perform substitution on each file.
+
+for i
+do
+    if [ -f $i ]
+    then
+	mv $i $i.bak
+	sed -f /tmp/sub.sed $i.bak > $i
+    else
+	echo "$0: warning: $i not found"
+    fi
+done

@@ -1,0 +1,9 @@
+[association]
+class Test2
+{
+    boolean ref_field1;
+    sint8 ref_field2;
+    string ref_field3;
+    Test1 ref ref1;
+    Test1 ref ref2;
+};

@@ -1,0 +1,7 @@
+#pragma include("MyIndication.mof")
+
+[Indication]
+class DerivedIndication : MyIndication
+{
+
+};

@@ -1,0 +1,8 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeJMSResource
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "CIM_J2eeJMSResource identifies a JMS resource.")]
+class CIM_J2eeJMSResource : CIM_J2eeResource {
+};

@@ -1,0 +1,28 @@
+
+Qualifier Key : boolean = false, 
+    Scope(property, reference), 
+    Flavor(DisableOverride);
+
+class X
+{
+    [key] string w;
+    [key] uint32 x;
+    [key] boolean y;
+    [key] real32 z;
+};
+
+instance of X
+{
+    w = "Hello \"There\" World";	
+    x = 99;
+    y = False;
+    z = 33.33;
+};
+
+instance of X
+{
+    w = "Hello \"There\" World";	
+    x = 99;
+    y = False;
+    z = 44.33;
+};

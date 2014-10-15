@@ -1,0 +1,276 @@
+/*
+**==============================================================================
+**
+** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** 
+** Permission is hereby granted, free of charge, to any person obtaining a
+** copy of this software and associated documentation files (the "Software"),
+** to deal in the Software without restriction, including without limitation
+** the rights to use, copy, modify, merge, publish, distribute, sublicense,
+** and/or sell copies of the Software, and to permit persons to whom the
+** Software is furnished to do so, subject to the following conditions:
+** 
+** The above copyright notice and this permission notice shall be included in
+** all copies or substantial portions of the Software.
+** 
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+** SOFTWARE.
+**
+**==============================================================================
+*/
+
+#define _BSD_SOURCE
+#include <sys/types.h>
+#include <sys/time.h>
+#include <cctype>
+#include <time.h>
+#include "Datetime.h"
+#include "Strings.h"
+
+CIMPLE_NAMESPACE_BEGIN
+
+void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
+{
+    if (is_interval())
+    {
+	const char* STANDARD_FORMAT =  "%08u%02u%02u%02u.%06u:000";
+	const char* PRETTY_FORMAT =  "%08u %02u %02u %02u.%06u:000";
+
+	uint32 seconds = (_usec / SEC) % 60;
+	uint32 minutes = (_usec / MIN) % 60;
+	uint32 hours = (_usec / HOUR) % 24;
+	uint32 days = _usec / DAY;
+
+	sprintf(
+	    buffer, 
+	    prettify ? PRETTY_FORMAT : STANDARD_FORMAT,
+	    days,
+	    hours,
+	    minutes,
+	    seconds,
+	    _usec % 1000000);
+    }
+    else
+    {
+	const char* STANDARD_FORMAT =  "%04d%02d%02d%02d%02d%02d.%06d%c%03d";
+	const char* PRETTY_FORMAT = "%04d/%02d/%02d %02d:%02d:%02d.%06d%c%03d";
+
+	time_t t = (_usec / 1000000);
+	struct tm tm;
+	localtime_r(&t, &tm);
+
+	sprintf(
+	    buffer,
+	    prettify ? PRETTY_FORMAT : STANDARD_FORMAT,
+	    tm.tm_year + 1900, /* yyyy */
+	    tm.tm_mon + 1, /* mm */
+	    tm.tm_mday, /* dd */
+	    tm.tm_hour, /* hh */
+	    tm.tm_min, /* mm */
+	    tm.tm_sec, /* ss */
+	    int(_usec % 1000000), /* mmmmmm */
+	    _offset < 0 ? '-' : '+', /* sign */
+	    _offset); /* utc */
+    }
+}
+
+void Datetime::get_interval(
+    uint32& days, 
+    uint32& hours, 
+    uint32& minutes, 
+    uint32& seconds, 
+    uint32& microseconds)
+{
+    seconds = (_usec / SEC) % 60;
+    minutes = (_usec / MIN) % 60;
+    hours = (_usec / HOUR) % 24;
+    days = _usec / DAY;
+    microseconds = _usec % 1000000;
+}
+
+void Datetime::set_interval(
+    uint32 days, 
+    uint32 hours, 
+    uint32 minutes, 
+    uint32 seconds, 
+    uint32 microseconds)
+{
+    _usec = 
+	days * DAY +
+	hours * HOUR +
+	minutes * MIN +
+	seconds * SEC +
+	microseconds;
+    _offset = CIMPLE_SINT32_MAX;
+}
+
+void Datetime::get_timestamp(
+    uint32& year, 
+    uint32& month, 
+    uint32& day, 
+    uint32& hours, 
+    uint32& minutes,
+    uint32& seconds,
+    uint32& microseconds,
+    sint32& utc)
+{
+    time_t t = (_usec / 1000000);
+    struct tm tm;
+    localtime_r(&t, &tm);
+
+    year = tm.tm_year + 1900;
+    month = tm.tm_mon + 1;
+    day = tm.tm_mday;
+    hours = tm.tm_hour;
+    minutes = tm.tm_min;
+    seconds = tm.tm_sec;
+    microseconds = _usec % 1000000;
+    utc = _offset;
+}
+
+void Datetime::set_timestamp(
+    uint32 year, 
+    uint32 month, 
+    uint32 day, 
+    uint32 hours, 
+    uint32 minutes,
+    uint32 seconds,
+    uint32 microseconds,
+    sint32 utc)
+{
+    struct tm tm;
+    tm.tm_year = year - 1900;
+    tm.tm_mon = month - 1;
+    tm.tm_mday = day;
+    tm.tm_hour = hours;
+    tm.tm_min = minutes;
+    tm.tm_sec = seconds;
+
+    time_t t = mktime(&tm);
+    _usec = uint64(t) * uint64(1000000) + microseconds;
+    _offset = utc;
+}
+
+void Datetime::print(FILE* os, bool prettify)
+{
+    char buffer[32];
+    ascii(buffer, prettify);
+    fprintf(os, "%s\n", buffer);
+}
+
+Datetime Datetime::now()
+{
+    timeval tv;
+    struct timezone tz;
+
+    memset(&tv, 0, sizeof(tz));
+
+    if (gettimeofday(&tv, &tz) != 0)
+	return Datetime(0);
+
+    uint64 usec = uint64(tv.tv_sec) * uint64(1000000) + tv.tv_usec;
+    sint32 offset = tz.tz_minuteswest;
+
+    return Datetime(usec, offset);
+}
+
+bool Datetime::set(const char* str)
+{
+    CIMPLE_ASSERT(strlen(str) == 25);
+
+
+    char sign = str[21];
+
+    if (sign == ':')
+    {
+	// ddddddddhhmmss.mmmmmm:000
+
+	// It's an interval:
+
+	uint32 days;
+	uint32 hours;
+	uint32 minutes;
+	uint32 seconds;
+	uint32 microseconds;
+
+	if (!str_to_uint32(str, 8, days))
+	    return false;
+
+	if (!str_to_uint32(str + 8, 2, hours))
+	    return false;
+
+	if (!str_to_uint32(str + 10, 2, minutes))
+	    return false;
+
+	if (!str_to_uint32(str + 12, 2, seconds))
+	    return false;
+
+	if (str[14] != '.')
+	    return false;
+
+	if (!str_to_uint32(str + 15, 6, microseconds))
+	    return false;
+
+	if (str[22] != '0' || str[23] != '0' || str[24] != '0')
+	    return false;
+
+	set_interval(days, hours, minutes, seconds, microseconds);
+
+	return true;
+    }
+    else if (sign == '+' || sign == '-')
+    {
+	// yyyymmddhhmmss.mmmmmmsutc
+
+	uint32 year;
+	uint32 month;
+	uint32 day;
+	uint32 hours;
+	uint32 minutes;
+	uint32 seconds;
+	uint32 microseconds;
+	uint32 utc;
+
+	if (!str_to_uint32(str, 4, year))
+	    return false;
+
+	if (!str_to_uint32(str + 4, 2, month))
+	    return false;
+
+	if (!str_to_uint32(str + 6, 2, day))
+	    return false;
+
+	if (!str_to_uint32(str + 8, 2, hours))
+	    return false;
+
+	if (!str_to_uint32(str + 10, 2, minutes))
+	    return false;
+
+	if (!str_to_uint32(str + 12, 2, seconds))
+	    return false;
+
+	if (str[14] != '.')
+	    return false;
+
+	if (!str_to_uint32(str + 15, 6, microseconds))
+	    return false;
+
+	if (!str_to_uint32(str + 22, 3, utc))
+	    return false;
+
+	set_timestamp(
+	    year, month, day, hours, minutes, seconds, microseconds,
+	    sign == '+' ? utc : -utc);
+
+	return true;
+    }
+
+    return false;
+}
+
+CIMPLE_NAMESPACE_END

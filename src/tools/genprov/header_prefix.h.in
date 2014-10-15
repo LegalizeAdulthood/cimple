@@ -1,0 +1,41 @@
+#ifndef _<CLASS>_Provider_h
+#define _<CLASS>_Provider_h
+
+#include <cimple/cimple.h>
+#include "<CLASS>.h"
+
+CIMPLE_NAMESPACE_BEGIN
+
+class <CLASS>_Provider
+{
+public:
+
+    typedef <CLASS> Class;
+
+    <CLASS>_Provider();
+
+    CIMPLE_HIDE ~<CLASS>_Provider();
+
+    CIMPLE_HIDE Load_Status load();
+
+    CIMPLE_HIDE Unload_Status unload();
+
+    CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
+
+    CIMPLE_HIDE Get_Instance_Status get_instance(
+	const <CLASS>* model,
+	<CLASS>*& instance);
+
+    CIMPLE_HIDE Enum_Instances_Status enum_instances(
+	const <CLASS>* model,
+	Enum_Instances_Handler<<CLASS>>* handler);
+
+    CIMPLE_HIDE Create_Instance_Status create_instance(
+	const <CLASS>* instance);
+
+    CIMPLE_HIDE Delete_Instance_Status delete_instance(
+	const <CLASS>* instance);
+
+    CIMPLE_HIDE Modify_Instance_Status modify_instance(
+	const <CLASS>* instance);
+

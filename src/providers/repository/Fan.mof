@@ -1,0 +1,9 @@
+
+class Fan
+{
+    [key] string DeviceID;
+    uint64 Speed;
+    uint64 DesiredSpeed;
+    uint32 SetSpeed([in] uint64 DesiredSpeed); 
+};
+

@@ -1,0 +1,18 @@
+class OtherClass
+{
+    [key] string key;
+    uint32 num;
+};
+
+[Association]
+class SomeClass
+{
+    string prop1;
+    uint32 prop2;
+    boolean prop3;
+    string prop4[];
+    uint32 prop5[];
+    boolean prop6[];
+    OtherClass ref other1;
+    OtherClass ref other2;
+};

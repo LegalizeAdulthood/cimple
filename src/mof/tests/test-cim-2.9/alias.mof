@@ -1,0 +1,35 @@
+
+class XXX as $Class1
+{
+    [key] uint32 x = 0;
+};
+
+[Association]
+class R
+{
+    XXX ref r1;
+    XXX ref r2;
+};
+
+instance of XXX as $Inst1
+{
+    x = 10;
+};
+
+instance of XXX as $Inst2
+{
+    x = 20;
+};
+
+[Association]
+class R2
+{
+    XXX ref r1 = $Inst1;
+    XXX ref r2 = $Inst2;
+};
+
+instance of R
+{
+    r1 = "XXX";
+    r2 = $Inst2;
+};

@@ -1,0 +1,99 @@
+		    HOW TO BUILD AND CONFIGURE CIMPLE
+
+INTRODUCTION:
+
+    This document explains how to build CIMPLE. It can be built two ways:
+    for use with Pegasus and standalone. The Pegasus case is discussed first.
+
+BUILDING FOR PEGASUS:
+
+    NOTE: This version of CIMPLE builds only on linux systems.
+
+    To build CIMPLE for use with Pegasus, be sure the following PEGASUS 
+    environment variables are defined.  These are used by CIMPLE to control 
+    the compile and locate the CIMPLE compile output modules so that they
+    are integrated into Pegasus.
+
+      PEGASUS_PLATFORM
+      PEGASUS_ROOT
+      PEGASUS_HOME
+
+    These are the same variables used to build Pegasus, If you already
+    have these in your environment, you can proceed.
+
+    To build CIMPLE  type 'make' from the root of the CIMPLE distribution.
+
+    This build process places CIMPLE output programs here:
+
+	$PEGASUS_HOME/bin
+
+    And libraries here:
+
+	$PEGASUS_HOME/lib
+
+    You might want to add $PEGASUS_HOME/bin to your path but this is
+    optional simply to make runtime execution of CIMPLE and Pegasus
+    programs simpler.
+
+BUILDING STANDALONE:
+
+    If you are cross-compiling for PowerPC, see the document
+    entitled "cross-compile-ppc.txt"
+
+    CIMPLE may also be built without integration into Pegasus. This
+    is the standalone mode. This allows doing the basic CIMPLE builds,
+    writing providers and using the CIMPLE utilities without Pegasus.
+
+    To build CIMPLE standalone, be sure the following environment
+    variables are NOT defined.
+
+      PEGASUS_PLATFORM
+      PEGASUS_ROOT
+      PEGASUS_HOME
+
+    If these variables are set, then you are building for Pegasus.
+
+    If you are building for any platform other than LINUX_IX86_GNU, then
+    you must edit <cimple-root>/src/cimple/platform.h and uncomment the
+    appropriate platform macro. You must also comment out whichever one
+    was defined before.
+    	
+    Change to the root of the distribution and type 'make'.
+
+    You might want to add <cimple-root>/bin to your path but this is optional.
+
+TESTING THE CIMPLE BUILD:
+
+    Whether you build for Pegasus or standalone, you can test the build by
+    typing 'make -s tests' from the root of the distribution. For example,
+    you might see something like this:
+
+	+++++ passed all tests (mofc)
+	+++++ passed all tests (genclass_test1)
+	+++++ passed all tests (genclass_test2)
+	+++++ passed all tests (genclass_test3)
+	+++++ passed all tests (genclass_test3)
+	+++++ passed all tests (test_ptrsize)
+	+++++ passed all tests (test_vla)
+	+++++ passed all tests (test_string)
+	+++++ passed all tests (test_property)
+	+++++ passed all tests (test_meta)
+	+++++ passed all tests (test_datetime)
+	+++++ passed all tests (test_facade)
+	+++++ passed all tests (loadpm)
+
+    To be certain that the Pegasus environment is valid, use the checkpeg
+    utility, like this.
+
+	% checkpeg
+
+    It will report any problems (or remain silent).
+
+APPLYING CIMPLE PATCH TO PEGASUS:
+
+    To use CIMPLE providers with Pegasus you must apply the CIMPLE provider
+    manager patch contained under:
+
+	<cimple-root>/src/pegasus/patch
+
+    You may simply change to this directory and type "make".

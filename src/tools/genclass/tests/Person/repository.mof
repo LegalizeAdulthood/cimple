@@ -1,0 +1,8 @@
+class Person
+{
+	[key] uint32 Id;
+	string LastName;
+	char16 MiddleInitial;
+	string FirstName;
+	uint16 Age;
+};

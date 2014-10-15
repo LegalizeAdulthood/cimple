@@ -1,0 +1,70 @@
+#!/bin/bash
+
+##==============================================================================
+##
+## rsub
+##
+## Usage: rsub
+##
+## This utility applies the SED script /tmp/sub.sed to files of these types:
+##
+##     *.h *.cpp *.c
+##
+## It recurses down from the current directory looking for matching files.
+## The original files are moved to a directory called ".rsub" under each of
+## the directories visited. The changes are then written.
+##
+##==============================================================================
+
+SUB_SED=/tmp/sub.sed
+
+# Check usage:
+
+if [ "$#" != "0" ]
+then
+    echo "Usage: $0"
+    echo
+    exit 1
+fi
+
+# Be sure $SUB_SED exits.
+
+if [ ! -f $SUB_SED ]
+then
+    echo "$0: $SUB_SED not found"
+    exit 1
+fi
+
+# Build list of directories (exclude 'CVS' and '.rsub' directories)
+
+DIRS=`find . -type d | grep -v CVS | grep -v ".rsub"`
+SAVE_PWD=$PWD
+
+# Perform substitution on each file.
+
+for dir in $DIRS
+do
+    echo "Entering directory: $dir"
+
+    cd $dir
+    mkdir -p .rsub
+
+    FILES=`ls -1 *.h *.cpp *.c 2> /dev/null`
+
+    for file in $FILES
+    do
+	echo "File: $file"
+
+	if [ -f $file ]
+	then
+	    mv $file .rsub/$file
+	    sed -f /tmp/sub.sed .rsub/$file > $file
+	else
+	    echo "$0: warning: $file not found"
+	fi
+    done
+
+    echo "Leaving directory: $dir"
+
+    cd $SAVE_PWD
+done

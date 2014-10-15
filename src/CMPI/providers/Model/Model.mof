@@ -1,0 +1,35 @@
+
+class Part
+{
+    [key] uint32 key;
+};
+
+class Model
+{
+    [key] string k1;
+    [key] uint32 k2;
+    [key] boolean k3;
+    string prop1;
+    string prop2;
+    string prop3;
+    string prop4;
+    string prop5;
+
+    string stub(
+	[in] string w,
+	[in] uint32 x,
+	[out] boolean y,
+	[out] real32 z);
+
+    [Static]
+    string stub2(
+	[in] string w,
+	[in] uint32 x,
+	[out] boolean y,
+	[out] real32 z);
+
+/*
+    [key] Part ref left;
+    [key] Part ref right;
+*/
+};

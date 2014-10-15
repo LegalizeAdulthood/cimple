@@ -1,0 +1,31 @@
+TOP = ../../../../..
+include $(TOP)/mak/config.mak
+
+export CIMPLE_MOF_PATH:=$(CIMPLE_MOF_PATH):../mof
+
+BINARY = genclass_test2
+
+SOURCES = \
+    CIM_CommonDatabase.cpp \
+    CIM_ConcreteJob.cpp \
+    CIM_DatabaseAdministrator.cpp \
+    CIM_Dependency.cpp \
+    CIM_EnabledLogicalElement.cpp \
+    CIM_Job.cpp \
+    CIM_LogicalElement.cpp \
+    CIM_ManagedElement.cpp \
+    CIM_ManagedSystemElement.cpp \
+    CIM_OrganizationalEntity.cpp \
+    CIM_UserEntity.cpp \
+    main.cpp
+
+LIBRARIES = -lcimple
+INCLUDES += -I.
+
+include $(TOP)/mak/rules.mak
+
+genclass:
+	$(BIN)/genclass CIM_DatabaseAdministrator
+
+tests:
+	$(BIN)/$(BINARY)

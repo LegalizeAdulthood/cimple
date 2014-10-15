@@ -1,0 +1,19 @@
+? BasicProviderManagerRouter.cpp.diff
+Index: BasicProviderManagerRouter.cpp
+===================================================================
+RCS file: /cvs/MSB/pegasus/src/Pegasus/ProviderManager2/BasicProviderManagerRouter.cpp,v
+retrieving revision 1.24
+diff -r1.24 BasicProviderManagerRouter.cpp
+420a421,432
+> #define PEGASUS_ENABLE_CIMPLE_PROVIDER_MANAGER
+> #if defined(PEGASUS_ENABLE_CIMPLE_PROVIDER_MANAGER)
+>         if (interfaceType == "CIMPLE")
+>         {
+>             ProviderManagerContainer* pmc = new ProviderManagerContainer(
+>                 "cimpleprovmgr", "CIMPLE", "CIMPLE",
+>                 _indicationCallback, _subscriptionInitComplete);
+>             _providerManagerTable.append(pmc);
+>             return pmc->getProviderManager();
+>         }
+> #endif
+> 

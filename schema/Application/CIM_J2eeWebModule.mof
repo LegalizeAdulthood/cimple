@@ -1,0 +1,9 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_J2eeWebModule
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "CIM_J2eeWebModule identifies a deployed WAR module and is a "
+       "container for Servlets.")]
+class CIM_J2eeWebModule : CIM_J2eeModule {
+};

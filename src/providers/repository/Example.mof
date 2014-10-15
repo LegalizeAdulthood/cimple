@@ -1,0 +1,19 @@
+
+class Example
+{
+    string key;
+    uint32 prop1;
+    real32 prop2;
+
+    uint32 foo0();
+    uint32 foo1([in] real32 x, [in] uint32 y, [in] boolean z);
+    uint32 foo2([in] string w, real32 x, [in] uint32 y, [in] boolean z);
+    string foo3();
+    string foo4([in] real32 x[]);
+    string foo5(House ref house);
+};
+
+class House
+{
+    [key] string key;
+};

@@ -1,0 +1,136 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_StorageSetting
+// ==================================================================
+   [Version ( "2.7.0" ), Description (
+       "StorageSetting is roughly equivalent to a Service Level "
+       "Agreement (SLA) It defines the characteristics, qualities of "
+       "service and goals when used in a CreateOrModifyElement "
+       "FromStoragePool or CreateOrModifyStoragePool method in the "
+       "StorageConfigurationService. It specifies a series of "
+       "properties with Maximum and Minimum values that define the "
+       "(inclusive) bounds that the object should maintain. Note that "
+       "the setting is associated to a StorageVolume, using "
+       "ElementSetting.")]
+class CIM_StorageSetting : CIM_SettingData {
+
+      [Write, Description (
+          "Indicates the desired value for No Single Point of Failure. "
+          "Possible values are false = single point of failure, and "
+          "true = no single point of failure.")]
+   boolean NoSinglePointOfFailure;
+
+      [Write, Description (
+          "DataRedundancyMax describes the maximum number of complete "
+          "copies of data to be maintained. Examples would be RAID 5 "
+          "where 1 copy is maintained and RAID 1 where 2 or more "
+          "copies are maintained. Possible values are 1 to n. The "
+          "desired redundancy is specified using DataRedundancyGoal, "
+          "while the minimum is defined by DataRedundancyMin."), 
+       MinValue ( 1 ), 
+       ModelCorrespondence { "CIM_StorageSetting.DataRedundancyMin",
+          "CIM_StorageSetting.DataRedundancyGoal" }]
+   uint16 DataRedundancyMax;
+
+      [Write, Description (
+          "DataRedundancyMin describes the minimum number of complete "
+          "copies of data to be maintained. Examples would be RAID 5 "
+          "where 1 copy is maintained and RAID 1 where 2 or more "
+          "copies are maintained. Possible values are 1 to n. The "
+          "desired redundancy is specified using DataRedundancyGoal, "
+          "while the maximum is defined by DataRedundancyMax."), 
+       MinValue ( 1 ), 
+       ModelCorrespondence { "CIM_StorageSetting.DataRedundancyMax",
+          "CIM_StorageSetting.DataRedundancyGoal" }]
+   uint16 DataRedundancyMin;
+
+      [Write, Description (
+          "DataRedundancyGoal describes the desired number of complete "
+          "copies of data to be maintained. Examples would be RAID 5 "
+          "where 1 copy is maintained and RAID 1 where 2 or more "
+          "copies are maintained. Possible values are 1 to n. The "
+          "bounds (max and min) for redundancy are defined using the "
+          "properties, DataRedundancyMax and DataRedundancyMin."), 
+       MinValue ( 1 ), 
+       ModelCorrespondence { "CIM_StorageSetting.DataRedundancyMax",
+          "CIM_StorageSetting.DataRedundancyMin" }]
+   uint16 DataRedundancyGoal;
+
+      [Write, Description (
+          "PackageRedundancyMax describes the maximum number of "
+          "redundant packages to be used. For example, in the storage "
+          "domain, package redundancy describes how many disk spindles "
+          "can fail without data loss including, at most, one spare. "
+          "An example would be RAID5 with a spare disk which would "
+          "have a PackageRedundancy of 2. Possible values are 0 to n. "
+          "The desired redundancy is specified using "
+          "PackageRedundancyGoal, while the minimum is defined by "
+          "PackageRedundancyMin."), 
+       ModelCorrespondence { "CIM_StorageSetting.PackageRedundancyMin",
+          "CIM_StorageSetting.PackageRedundancyGoal" }]
+   uint16 PackageRedundancyMax;
+
+      [Write, Description (
+          "PackageRedundancyMin describes the minimum number of "
+          "redundant packages to be used. For example, in the storage "
+          "domain, package redundancy describes how many disk spindles "
+          "can fail without data loss including, at most, one spare. "
+          "An example would be RAID5 with a spare disk which would "
+          "have a PackageRedundancy of 2. Possible values are 0 to n. "
+          "The desired redundancy is specified using "
+          "PackageRedundancyGoal, while the maximum is defined by "
+          "PackageRedundancyMax."), 
+       ModelCorrespondence { "CIM_StorageSetting.PackageRedundancyMax",
+          "CIM_StorageSetting.PackageRedundancyGoal" }]
+   uint16 PackageRedundancyMin;
+
+      [Write, Description (
+          "PackageRedundancyGoal describes the desired number of "
+          "redundant packages to be used. For example, in the storage "
+          "domain, package redundancy describes how many disk spindles "
+          "can fail without data loss including, at most, one spare. "
+          "An example would be RAID5 with a spare disk which would "
+          "have a PackageRedundancy of 2. Possible values are 0 to n. "
+          "The bounds (max and min) for redundancy are defined using "
+          "the properties, PackageRedundancyMax and "
+          "PackageRedundancyMin."), 
+       ModelCorrespondence { "CIM_StorageSetting.PackageRedundancyMax",
+          "CIM_StorageSetting.PackageRedundancyMin" }]
+   uint16 PackageRedundancyGoal;
+
+      [Write, Description (
+          "DeltaReservationMax is a number between 1 (1%) and a 100 "
+          "(100%) which specifies the maximum amount of space that "
+          "should be reserved in a replica for caching changes. For a "
+          "complete copy this would be 100%. The desired reservation "
+          "is specified using DeltaReservationGoal, while the minimum "
+          "is defined by DeltaReservationMin."), 
+       Units ( "Percentage" ), MinValue ( 1 ), MaxValue ( 100 ), 
+       ModelCorrespondence { "CIM_StorageSetting.DeltaReservationMin",
+          "CIM_StorageSetting.DeltaReservationGoal" }]
+   uint8 DeltaReservationMax;
+
+      [Write, Description (
+          "DeltaReservationMin is a number between 1 (1%) and a 100 "
+          "(100%) which specifies the minimum amount of space that "
+          "should be reserved in a replica for caching changes. For a "
+          "complete copy this would be 100%. The desired reservation "
+          "is specified using DeltaReservationGoal, while the maximum "
+          "is defined by DeltaReservationMax."), 
+       Units ( "Percentage" ), MinValue ( 1 ), MaxValue ( 100 ), 
+       ModelCorrespondence { "CIM_StorageSetting.DeltaReservationMax",
+          "CIM_StorageSetting.DeltaReservationGoal" }]
+   uint8 DeltaReservationMin;
+
+      [Write, Description (
+          "DeltaReservationGoal is a number between 1 (1%) and a 100 "
+          "(100%) which specifies the desired amount of space that "
+          "should be reserved in a replica for caching changes. For a "
+          "complete copy this would be 100%. The bounds (max and min) "
+          "for the reservation are defined using the properties, "
+          "DeltaReservationMax and DeltaReservationMin."), 
+       Units ( "Percentage" ), MinValue ( 1 ), MaxValue ( 100 ), 
+       ModelCorrespondence { "CIM_StorageSetting.DeltaReservationMin",
+          "CIM_StorageSetting.DeltaReservationMax" }]
+   uint8 DeltaReservationGoal;
+};

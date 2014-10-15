@@ -1,0 +1,30 @@
+
+Cautionary note: if your pegasus environment is set up (i.e., the Pegasus
+environment variables are present), CIMPLE will attempt to build Pegasus-
+related components. Be sure PEGASUS has been properly cross compiled before
+proceeding. If none of the Pegasus environment variables are defined, then
+you can build a standalone CIMPLE environment with these instructions as
+well.
+
+This document explains how to cross-compile CIMPLE for the PowerPC, with 
+HardHat Linux (from MonteVista).
+
+First, define three environment variables as shown:
+
+    % export CXX=/opt/hardhat/devkit/ppc/82xx/bin/ppc_82xx-g++
+    % export CC=/opt/hardhat/devkit/ppc/82xx/bin/ppc_82xx-gcc
+    % export AR=/opt/hardhat/devkit/ppc/82xx/bin/ppc_82xx-ar
+
+This is to override the native tool-chain with the cross-compiler tool
+chain.
+
+Next, edit <cimple-root>/src/cimple/platform.h and uncomment the line
+that defines your platform macro. For example:
+
+	#define CIMPLE_PLATFORM_LINUX_PPC_GNU
+
+You must also comment out the other definitions. For example:
+
+	// #define CIMPLE_PLATFORM_LINUX_IX86_GNU
+
+Finally, follow the instructions in build-howto.txt as usual.

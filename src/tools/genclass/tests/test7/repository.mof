@@ -1,0 +1,30 @@
+
+class EmbeddedClass
+{
+    string msg;
+};
+
+[Indication]
+class YourClass
+{
+    string str1;
+    string str2;
+
+    [EmbeddedObject]
+    string obj1;
+
+    [EmbeddedObject]
+    string obj2;
+};
+
+class MyClass : YourClass
+{
+    string str2;
+    string str3;
+
+    [EmbeddedObject]
+    string obj2;
+
+    [EmbeddedObject]
+    string obj3;
+};

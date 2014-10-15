@@ -1,0 +1,6 @@
+#include "<CLASS>_Provider.h"
+
+using namespace cimple;
+
+CIMPLE_MODULE(<CLASS>_Module);
+CIMPLE_PROVIDER(<CLASS>_Provider);

@@ -1,0 +1,47 @@
+class Test1
+{
+    [key] boolean field1;
+    [key] sint8 field2;
+    uint8 field3;
+    sint16 field4;
+    uint16 field5;
+    sint32 field6;
+    uint32 field7;
+    sint64 field8;
+    uint64 field9;
+    real32 field10;
+    real64 field11;
+    char16 field12;
+    datetime field13;
+    [key] string field14;
+
+    boolean vla1[];
+    sint8 vla2[];
+    uint8 vla3[];
+    sint16 vla4[];
+    uint16 vla5[];
+    sint32 vla6[];
+    uint32 vla7[];
+    sint64 vla8[];
+    uint64 vla9[];
+    real32 vla10[];
+    real64 vla11[];
+    char16 vla12[];
+    datetime vla13[];
+    string vla14[];
+
+    boolean fla1[1];
+    sint8 fla2[2];
+    uint8 fla3[3];
+    sint16 fla4[4];
+    uint16 fla5[5];
+    sint32 fla6[6];
+    uint32 fla7[7];
+    sint64 fla8[8];
+    uint64 fla9[9];
+    real32 fla10[10];
+    real64 fla11[11];
+    char16 fla12[13];
+    datetime fla13[13];
+    string fla14[14];
+};

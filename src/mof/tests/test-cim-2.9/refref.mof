@@ -1,0 +1,53 @@
+
+class REFREF_X
+{
+    [key] string key;
+};
+
+[Association]
+class REFREF_A
+{
+    [key] REFREF_X ref r1; /*  = "REFREF_X.key=\"AAA\\nBBB\""; */
+    [key] REFREF_X ref r2; /*  = "REFREF_X.key=\"HELLO\""; */
+};
+
+instance of REFREF_A
+{
+    r1 = "REFREF_X.key=\"11\"";
+    r2 = "REFREF_X.key=\"22\"";
+};
+
+[Association]
+class REFREF_B
+{
+    REFREF_A ref r1 = "REFREF_A.r2=\"REFREF_X.key=\\\"1\\\\n1\\\"\",r1=\"REFREF_X.key=\\\"22\\\"\"";
+    REFREF_A ref r2 = "REFREF_A.r2=\"REFREF_X.key=\\\"ONE\\\\X1234ONE\\\"\",r1=\"REFREF_X.key=\\\"22\\\"\"";
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class REFREF_Y
+{
+    [key] uint32 k1;
+    [key] uint32 k2;
+};
+
+[Association]
+class REFREF_C
+{
+    [key] REFREF_Y ref r1 = "REFREF_Y.k2=2,k1=1";
+    [key] REFREF_Y ref r2 = "REFREF_Y.k2=2,k1=1";
+};
+
+instance of REFREF_C
+{
+    r1 = "REFREF_Y.k2=2,k1=1";
+    r2 = "REFREF_Y.k2=2,k1=1";
+};
+
+[Association]
+class REFREF_D
+{
+    REFREF_C ref r1 = "REFREF_C.r2=\"REFREF_Y.k2=2,k1=1\",r1=\"REFREF_Y.k2=2,k1=1\"";
+    REFREF_C ref r2 = "REFREF_C.r2=\"REFREF_Y.k2=2,k1=1\",r1=\"REFREF_Y.k2=2,k1=1\"";
+};

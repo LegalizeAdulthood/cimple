@@ -1,0 +1,11 @@
+    CIMPLE_HIDE static int proc(
+	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+
+private:
+
+    Indication_Handler<<CLASS>>* _indication_handler;
+};
+
+CIMPLE_NAMESPACE_END
+
+#endif /* _<CLASS>_Provider_h */

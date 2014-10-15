@@ -1,0 +1,20 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_CollectionConfiguration
+// ==================================================================
+   [Association, Version ( "2.6.0" ), Description (
+       "This association relates a Configuration object to one or more "
+       "CollectionOfMSEs objects. The Configuration object represents "
+       "a certain behavior, or a desired functional state for the "
+       "associated Collection.")]
+class CIM_CollectionConfiguration {
+
+      [Key, Description (
+          "The CollectionOfMSEs.")]
+   CIM_CollectionOfMSEs REF Collection;
+
+      [Key, Description (
+          "The Configuration object that groups the Settings and "
+          "dependencies associated with the Collection.")]
+   CIM_Configuration REF Configuration;
+};

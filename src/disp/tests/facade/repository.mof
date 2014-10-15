@@ -1,0 +1,20 @@
+
+class Base
+{
+    boolean w;
+    uint32 x;
+    string y;
+    uint32 z[];
+};
+
+class Thing : Base
+{
+    [key] uint32 key;
+};
+
+[association]
+class Assoc
+{
+    Thing ref left;
+    Thing ref right;
+};

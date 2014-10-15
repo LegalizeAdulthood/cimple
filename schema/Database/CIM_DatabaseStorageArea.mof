@@ -1,0 +1,29 @@
+// Copyright (c) 2005 DMTF.  All rights reserved.
+// ==================================================================
+//  CIM_DatabaseStorageArea
+// ==================================================================
+   [Version ( "2.8.0" ), Description (
+       "Databases as modeled by instances of the CommonDatabase class "
+       "are comprised of a collection of logical storage areas "
+       "represented by instances of the DatabaseStorageArea class. "
+       "Database storage areas allow the administrator to logically "
+       "organize the content of the database. This class extends from "
+       "FileSystem and uses the inherited associations to represent "
+       "the internal structure of the database.")]
+class CIM_DatabaseStorageArea : CIM_FileSystem {
+
+      [Description (
+          "A Boolean value indicating the ownership of this "
+          "StorageArea. A value of true indicates that this "
+          "StorageArea is owned by the DatabaseSystem and contains "
+          "system information. A value of false indicates that this is "
+          "a user StorageArea containing data.")]
+   boolean IsSystemArea;
+
+      [Description (
+          "A timestamp representing the date and time of the last "
+          "successful backup of the DatabaseStorageArea. This property "
+          "SHOULD be set to a value of zero, in interval format, if it "
+          "is not known whether a backup has ever been completed.")]
+   datetime LastBackup;
+};

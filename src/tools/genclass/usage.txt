@@ -1,0 +1,34 @@
+Usage: genclass [OPTIONS] class-name...
+
+This utility generates C++ definitions from MOF classes. For each class-name
+argument, it generates at least two files: CLASSNAME.h (containing the 
+corresponding C++ class) and CLASSNAME.cpp (containing opaque meta-data for
+the class). It also generates header and source files for any dependent 
+classes (ancestor and reference classes).
+
+Genclass to process the following MOF files:
+
+    1. 	First CIM_Schema.mof (required).
+    2. 	Second repository.mof (optional).
+    3.	Finally any files given by the -M option (optional).
+
+Genclass requires the CIMPLE_MOF_PATH environment variable to be set, where
+it expects to find CIM_Schema.mof (which contains the CIM schema). The syntax 
+of CIMPLE_MOF_PATH is similar to the Linux/Unix PATH environment variable 
+(i.e., a list of directories separated by colons). For example:
+
+    export CIMPLE_MOF_PATH=/opt/cimple/schema:/tmp/cim:
+
+Genclass searches for user-defined MOF files in the following way:
+
+    1. 	First in the current directory.
+    2. 	Second under $CIMPLE_MOF_PATH.
+    3. 	Finally, under directories given by the -I options.
+
+OPTIONS:
+    -I path -- add to MOF include path (can be repeated).
+    -M file -- add to list of MOF files to be parsed (can be repeated).
+    -r      -- generate repository.h and repository.cpp.
+    -v      -- print the version number.
+    -h      -- Print this message.
+

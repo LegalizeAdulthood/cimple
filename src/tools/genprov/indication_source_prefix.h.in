@@ -1,0 +1,46 @@
+#include "<CLASS>_Provider.h"
+
+CIMPLE_NAMESPACE_BEGIN
+
+<CLASS>_Provider::<CLASS>_Provider() : _indication_handler(0)
+{
+}
+
+<CLASS>_Provider::~<CLASS>_Provider()
+{
+}
+
+Load_Status <CLASS>_Provider::load()
+{
+    return LOAD_OK;
+}
+
+Unload_Status <CLASS>_Provider::unload()
+{
+    return UNLOAD_OK;
+}
+
+Timer_Status <CLASS>_Provider::timer(uint64& timeout)
+{
+    return TIMER_CANCEL;
+}
+
+Enable_Indications_Status <CLASS>_Provider::enable_indications(
+    Indication_Handler<<CLASS>>* indication_handler)
+{
+    _indication_handler = indication_handler;
+
+    return ENABLE_INDICATIONS_OK;
+}
+
+Disable_Indications_Status <CLASS>_Provider::disable_indications()
+{
+    if (_indication_handler)
+    {
+	delete _indication_handler;
+	_indication_handler = 0;
+    }
+
+    return DISABLE_INDICATIONS_OK;
+}
+

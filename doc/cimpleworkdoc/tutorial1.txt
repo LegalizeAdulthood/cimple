@@ -1,0 +1,86 @@
+CIMPLE Tutorial #1:
+
+
+        This tutorial describes how to add classes to the CIMPLE
+      repository, which is merely a shared library containing
+      C++ class definitions and metadata for CIM classes.
+
+
+        1. The CIMPLE repository is contained in
+
+
+                cimple/src/repository
+
+
+           The repository contains the following elements.
+
+
+                - User-defined MOF files.
+                - A Makefile for building the repository (libcmplrep.so).
+                - Generated C++ header files and source files.
+                - A cim directory containing the CIM Schema MOF files.
+                - The repository.mof file, which includes all the MOF
+              files (the schema and user-defined files).
+
+
+        2. Create a new MOF file for your class and add it to
+         the repository directory. For example, the following file
+         defines a class called 'MyClass'.
+
+
+                class MyClass
+                {
+                    string message;
+                    uint32 count;
+                    boolean flag;
+                    real32 ratio;
+                    string array[];
+                };
+
+
+        3. Include the new MOF file last in repository.mof as shown.
+
+
+                #pragma include ("CIM_Schema.mof")
+                #pragma include ("MyClass.mof")
+
+
+        4. Edit the Makefile and append the class name (MyClass) to the
+         CLASSES variable.
+
+
+        5. Then type 'make'. This runs genclass, which reads MyClass.mof
+         and generates MyClass.h and MyClass.cpp. It also builds the
+         libcmpl.so library. Here are the partial contents of MyClass.h.
+
+
+                class MyClass : public Instance
+                {
+                public:
+                    ...
+                    Property<String> message;
+                    Property<uint32> count;
+                    Property<boolean> flag;
+                    Property<real32> ratio;
+                    Property<Array_String> array;
+    
+                    static Self* create();
+                    static void destroy(Self*);
+                    Self* clone() const;
+                    static bool key_eq(const Self*, const Self*);
+                };
+
+
+           The source file (MyClass.cpp) contains metaclass definitions
+         which are never seen by the provider developer.
+
+
+           To generate a class that already exists in the CIM scheme, just
+         perform steps four and five.
+
+
+           Now you have a C++ header and a library containing its metadata.
+
+
+           The next lesson will explain how to create and use instance of 
+         the new class.
