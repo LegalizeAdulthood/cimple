@@ -47,7 +47,8 @@ public:
 	const CMPIBroker* broker_, 
 	const CMPIContext* context,
 	const char* provider_name,
-	const Registration* registration);
+	const Registration* registration,
+	CMPI_Adapter*& adapter_back_pointer);
 
     ~CMPI_Adapter();
 
@@ -210,11 +211,20 @@ public:
     CMPIMethodMIFT method_ft;
     CMPIIndicationMIFT indication_ft;
     CMPIAssociationMIFT association_ft;
+
+    CMPIInstanceMI instance_mi;
+    CMPIMethodMI method_mi;
+    CMPIAssociationMI association_mi;
+    CMPIIndicationMI indication_mi;
+
     const CMPIBroker* broker;
 
     // Number of times this provider has been loaded due to CMPI entry points
     // for different provider types (instance, method, indication, association).
     size_t load_count;
+
+    // ATTN: make prviate?
+    const CMPIContext* current_context;
 
 private:
 
@@ -222,6 +232,10 @@ private:
 
     // This flag indicates whether indications are enabled.
     bool _indications_enabled;
+
+    // This points back to the static place in the entry point that points
+    // to this adapter.
+    CMPI_Adapter*& _adapter_back_pointer;
 
     // Synchronizes access to adapter methods from different threads:
     RMutex _lock;

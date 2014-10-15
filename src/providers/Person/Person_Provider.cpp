@@ -12,6 +12,8 @@ Person_Provider::~Person_Provider()
 
 Load_Status Person_Provider::load()
 {
+    printf("Person_Provider::load()\n");
+
     {
 	Person* instance = Person::create();
 	instance->ssn.value = 1;
@@ -49,6 +51,7 @@ Load_Status Person_Provider::load()
 
 Unload_Status Person_Provider::unload()
 {
+    printf("Person_Provider::unload()\n");
     _map.clear();
     return UNLOAD_OK;
 }

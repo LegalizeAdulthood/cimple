@@ -32,6 +32,7 @@ reg: mut
 
 live-tests: mut
 	$(MAKE) -C src/providers live-tests
+	$(MAKE) -C src/pegasus/clients/LampIndicClientListener live-tests
 
 mut:
 ifeq ($(CIMPLE_PLATFORM),WIN32_IX86_MSVC)

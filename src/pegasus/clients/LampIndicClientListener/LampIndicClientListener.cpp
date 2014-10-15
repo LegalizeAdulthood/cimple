@@ -6,10 +6,6 @@
 #include <Pegasus/Common/System.h>
 #include <Pegasus/Common/MofWriter.h>
 
-#ifdef PRINT_INSTANCE
-#include <Pegasus/Common/Buffer.h>
-#endif
-
 PEGASUS_USING_PEGASUS;
 PEGASUS_USING_STD;
 
@@ -32,55 +28,25 @@ public:
         const CIMInstance& indicationInstance);
 };
 
-#ifdef PRINT_INSTANCE
-static void _print_instance(const CIMInstance& inst)
-{
-    Buffer buf;
-    MofWriter::appendInstanceElement(buf, inst);
-    buf.append('\0');
-
-    printf("<<<<<<<<<< _print_instance():\n");
-
-    printf("%.*s\n", int(buf.size()), buf.getData());
-
-    printf(">>>>>>>>>>\n");
-}
-#endif /* PRINT_INSTANCE */
+bool _success = false;
 
 void LampIndicConsumer::consumeIndication(
     const OperationContext& context,
     const String& url,
     const CIMInstance& indication)
 {
-    printf("=== LampIndicConsumer::consumeIndication()\n");
-
-#if 0
-    cout << "url: " << url << endl;
-    cout << "classname: " << indication.getClassName().getString() << endl;
-#endif
-
     CIMConstProperty prop = indication.getProperty(
 	indication.findProperty("IndicationIdentifier"));
 
     String indicationIdentifier;
     prop.getValue().get(indicationIdentifier);
 
-    cout << "IndicationIdentifier: " << indicationIdentifier << endl;
+    static size_t _count = 0;
 
-#ifdef PRINT_INSTANCE
-    _print_instance(indication);
-#endif
+    assert(indicationIdentifier == "HELLO");
 
-#if 0
-    CString cstr = indicationIdentifier.getCString();
-    const char* str = cstr;
-
-    char* end;
-    long x = strtol(str, &end, 10);
-
-    // if ((x % 10) == 0)
-    printf("%ld\n", x);
-#endif
+    if (++_count == 5)
+	_success = true;
 }
 
 static CIMObjectPath _createFilter(CIMClient& client)
@@ -231,7 +197,7 @@ int main(int argc, char ** argv)
 	}
 	catch (Exception& e)
 	{
-	    cerr << "Warning: " << e.getMessage() << endl;
+	    // cerr << "Warning: " << e.getMessage() << endl;
 	}
 
 	// Send the method:
@@ -244,15 +210,13 @@ int main(int argc, char ** argv)
 	    System::sleep(1);
 #endif
 	    _invokeMethod(client, "LampIndic");
-	    System::sleep(1);
 	}
 #endif
 
-	// Wait for 1000 seconds.
+	System::sleep(5);
+	assert(_success == true);
 
-	printf("Sleeping...\n");
-
-	System::sleep(1000000000);
+	printf("+++++ passed all tests\n");
 
 	listener.stop();
 	listener.removeConsumer(consumer);

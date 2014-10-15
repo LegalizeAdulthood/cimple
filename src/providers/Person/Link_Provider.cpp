@@ -36,6 +36,7 @@ Load_Status Link_Provider::load()
 
 Unload_Status Link_Provider::unload()
 {
+printf("Link_Provider::unload()\n");
     _map.clear();
     return UNLOAD_OK;
 }

@@ -79,6 +79,7 @@ void Pegasus_Adapter::initialize(Pegasus::CIMOMHandle& handle)
 
 void Pegasus_Adapter::terminate(void)
 {
+printf("Pegasus_Adapter::terminate()\n");
     TRACE;
     _provider->unload();
 }

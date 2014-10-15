@@ -4,14 +4,18 @@ CIMPLE_NAMESPACE_BEGIN
 
 Thing_Provider::Thing_Provider()
 {
+    printf("Thing_Provider()\n");
 }
 
 Thing_Provider::~Thing_Provider()
 {
+    printf("~Thing_Provider()\n");
 }
 
 Load_Status Thing_Provider::load()
 {
+    printf("Thing_Provider::load()\n");
+
     Thing* thing;
     
     thing = Thing::create();
@@ -27,6 +31,7 @@ Load_Status Thing_Provider::load()
 
 Unload_Status Thing_Provider::unload()
 {
+    printf("Thing_Provider::unload()\n");
     return UNLOAD_OK;
 }
 

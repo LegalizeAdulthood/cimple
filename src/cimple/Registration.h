@@ -76,7 +76,7 @@
 	void* cmpi_context, \
 	void* cmpi_status) \
     { \
-	static void* _mi = 0; \
+	void* _mi = 0; \
 	cimple_cmpi_adapter( \
 	    (void*)'C', \
 	    (void*)&_adapter##PROVIDER, \
@@ -103,7 +103,7 @@
 #define CIMPLE_CMPI_INDICATION_PROVIDER(PROVIDER)  \
     static void* _adapter##PROVIDER = 0; \
     __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER) \
-    __CIMPLE_CMPI_PROVIDER('I', Indication, PROVIDER)
+    __CIMPLE_CMPI_PROVIDER('N', Indication, PROVIDER)
 
 //==============================================================================
 //

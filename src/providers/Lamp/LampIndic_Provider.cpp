@@ -1,33 +1,45 @@
 #include "LampIndic_Provider.h"
 
+#if 0
+# define TRACE CIMPLE_TRACE
+#else
+# define TRACE
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
 LampIndic_Provider::LampIndic_Provider() : _indication_handler(0)
 {
+    TRACE;
 }
 
 LampIndic_Provider::~LampIndic_Provider()
 {
+    TRACE;
 }
 
 Load_Status LampIndic_Provider::load()
 {
+    TRACE;
     return LOAD_OK;
 }
 
 Unload_Status LampIndic_Provider::unload()
 {
+    TRACE;
     return UNLOAD_OK;
 }
 
 Timer_Status LampIndic_Provider::timer(uint64& timeout)
 {
+    TRACE;
     return TIMER_CANCEL;
 }
 
 Enable_Indications_Status LampIndic_Provider::enable_indications(
     Indication_Handler<LampIndic>* indication_handler)
 {
+    TRACE;
     _indication_handler = indication_handler;
 
     return ENABLE_INDICATIONS_OK;
@@ -35,6 +47,7 @@ Enable_Indications_Status LampIndic_Provider::enable_indications(
 
 Disable_Indications_Status LampIndic_Provider::disable_indications()
 {
+    TRACE;
     if (_indication_handler)
     {
 	delete _indication_handler;
@@ -47,6 +60,7 @@ Disable_Indications_Status LampIndic_Provider::disable_indications()
 Invoke_Method_Status LampIndic_Provider::DeliverIndications(
     Property<uint32>& return_value)
 {
+    TRACE;
     LampIndic* indic = LampIndic::create();
 
     indic->IndicationIdentifier.value = "HELLO";
@@ -72,6 +86,7 @@ int LampIndic_Provider::proc(
     void* arg6,
     void* arg7)
 {
+    TRACE;
     // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
     // GENERATED.
 

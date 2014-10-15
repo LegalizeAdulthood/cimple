@@ -18,7 +18,7 @@ SOURCES = LampIndicClientListener.cpp
 
 include $(PEGASUS_ROOT)/mak/program.mak
 
-run:
-	$(PROGRAM)
-
 tests:
+
+live-tests:
+	@ $(PROGRAM)

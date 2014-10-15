@@ -1,0 +1,7 @@
+
+class Stubs
+{
+    [key] string key;
+    string message;
+    string stub([in] string message);
+};
