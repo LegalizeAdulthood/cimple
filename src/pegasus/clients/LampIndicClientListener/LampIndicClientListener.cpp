@@ -35,7 +35,9 @@ static void _dump(const String& s)
     {
         char c = *p;
 
-        if (isprint(c))
+        // Attention. Without the cast, windows expands this to an integer
+        // and falsly passes the test.
+        if (isprint((unsigned char)c))
             printf("%c", c);
         else
             printf("[%2X]", (unsigned char)c);
@@ -58,13 +60,14 @@ void LampIndicConsumer::consumeIndication(
 
         static size_t _count = 0;
 
-        // cout << ident << endl;
+        //cout << ident << endl;
         assert(ident == "HELLO" || ident == "GOODBYE");
-
-        printf("Consume indication...\n");
 
         if (++_count == 5)
             _success = true;
+
+        printf("Consume indication... %u finished %s \n", _count,
+                (_success? "true" : "false"));
     }
 
     {
@@ -76,7 +79,7 @@ void LampIndicConsumer::consumeIndication(
 
         _dump(message);
 
-        cout << message << endl;
+        //cout << message << endl;
     }
 }
 
@@ -216,11 +219,11 @@ int main(int argc, char ** argv)
 
         client.connectLocal();
 
-        // Create filter.
+        // Create or get existing filter
 
         CIMObjectPath filter = _getFilterName(client);
 
-        // Create handler.
+        // Create handler or get existing handler.
 
         CIMObjectPath handler = _getHandlerName(client);
 
@@ -235,7 +238,7 @@ int main(int argc, char ** argv)
             cop.setKeyBindings(bindings);
             client.deleteInstance(NAMESPACE, cop);
         }
-        catch (Exception& e)
+        catch (Exception&)
         {
             // Ignore:
         }
@@ -254,18 +257,20 @@ int main(int argc, char ** argv)
             cerr << "Subscription already exists: " << e.getMessage() << endl;
         }
 
-        // Send the method:
+        // Send the method to generate indications:
 
         for (int i = 0; i < 5; i++)
             _invokeMethod(client, "LampIndic");
 
+        // Sleep 5 seconds waiting for indications
         cimple::Time::sleep(5 * 1000000);
+        cout << "Slept 5 seconds" << endl;
         assert(_success == true);
-
-        printf("+++++ passed all tests\n");
+        cout << "Received all indications. Clean up" << endl;
 
         try
         {
+            cout << "Delete subscription" << endl;
             client.deleteInstance(NAMESPACE, subscriptionObjectPath);
         }
         catch (Exception& e)
@@ -275,7 +280,7 @@ int main(int argc, char ** argv)
         }
         catch (...)
         {
-            cerr << "Error: oops" << endl;
+            cerr << "Error: Failed in delete subscription" << endl;
         }
 
         listener.stop();
@@ -289,5 +294,6 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
+    printf("+++++ passed all tests\n");
     return 0;
 }

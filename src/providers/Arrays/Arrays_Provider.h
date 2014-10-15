@@ -38,7 +38,20 @@ public:
         const Arrays* model,
         const Arrays* instance);
 
+    Invoke_Method_Status setReturnCount(
+        const Arrays* self,
+        const Property<uint32>& returnCount,
+        Property<uint32>& prevReturnCount,
+        Property<uint32>& return_value);
+
+    Invoke_Method_Status getReturnCount(
+        const Arrays* self,
+        Property<uint32>& returnCount,
+        Property<uint32>& return_value);
+
     /*@END@*/
+private:
+    uint32 _returnCount;
 };
 
 CIMPLE_NAMESPACE_END

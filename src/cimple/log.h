@@ -89,7 +89,7 @@ CIMPLE_PRINTF_ATTR(4, 5)
 
 /* INTERNAL ONLY
  * Create a log entry with the defined parameters formatting the
- * the output from input paramters. This call creates a single 
+ * the output from input parameters. This call creates a single 
  * log entry with information about the file and line number 
  * from which the log entry occurred, and information from a 
  * format string and additional parameters. 
@@ -104,7 +104,8 @@ CIMPLE_PRINTF_ATTR(4, 5)
  * Any other arguments are arguments for processing of the fmt.
  *  
  * Example 
- *     log(LL_DBG, "my name is %s; my age is %d", "John", 12);
+ *     log(LL_DBG, __FILE__, __LINE__,
+ *         "my name is %s; my age is %d", "John", 12);
  */
 void log(
     Log_Level level, 

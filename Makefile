@@ -43,16 +43,12 @@ check:
 
 CIMSERVER = $(WITH_PEGASUS_OPT)/bin/cimserver
 
-
-## Moved to config.mak
-##ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
-##  SLEEP = ./bin/csleep
-##else
-##  SLEEP = sleep
-##endif
-
+##
+##  Server start and stop operations. All platforms except
+##  windows uses same command format.
+##
 stop_cimserver:
-ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
+ifeq ($(findstring _MSVC, $(PEGASUS_PLATFORM)), _MSVC)
 	- $(CIMSERVER) -stop
 else
 	- $(CIMSERVER) -s
@@ -60,23 +56,25 @@ endif
 	$(SLEEP) 3
 
 start_cimserver:
-ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
+ifeq ($(findstring _MSVC, $(PEGASUS_PLATFORM)), _MSVC)
 	- $(CIMSERVER) -start
 else
 	- $(CIMSERVER)
 endif
 	$(SLEEP) 3
 
-## execute the install of cimple libraries,the insmod for providers, and
-## finally a repository make on pegasus to clean the repository
+## Execute the install of cimple libraries,providers (insmod),
+## and  a repository make on pegasus to clean the repository.
+## We do not use the Pegasus test repository (make testrepository)
 prepare:
 	$(MAKE) install
 	$(MAKE) insmod
 	$(MAKE) -C $(PEGASUS_ROOT) repository
 
 # run unit tests (all Makefiles with tests target),
-#     registers providers that have regmod target in Makefile,
-#     runs all programs defined with live target in Makefile
+#     register providers that have regmod target in Makefile,
+#     run all programs defined with live target in Makefile
+#     Server must be running for this step.
 run:
 	$(MAKE) tests
 	$(MAKE) regmod
@@ -118,16 +116,26 @@ cmpiworld:
 	$(MAKE) world
 
 ##==============================================================================
+## Start the pegasus server with valgrind.  Note that this is a Linux tool
+## it also starts the server in the calling terminal window.
+## Useful for server and provider memory allocation tests
+##==============================================================================
+
+server_vg:
+	$(VALGRIND) --tool=memcheck --leak-check=full $(CIMSERVER) daemon=false 
+
+##==============================================================================
 ##
 ## tag: Tag CVS with the release tag defined below.
 ##
 ##==============================================================================
 
 # The Version components MUST BE Numerics
-# NOTE: Developers. src/cimple/config.h version definition MUST match this one
+# NOTE: Developers. src/cimple/config.h version definition MUST match this
+# definition or execution of providers will fail
 MAJOR=2
 MINOR=0
-REVISION=14
+REVISION=16
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 
@@ -203,7 +211,8 @@ publish:
 ##==============================================================================
 ##
 ## clean-all
-## Developer function. Designed for *nix OS types
+## Developer function. Designed for *nix OS types. Cleans out
+## all objects and the libraries associated with building
 ##
 ##==============================================================================
 

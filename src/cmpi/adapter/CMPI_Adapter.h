@@ -326,6 +326,9 @@ public:
 
     void ret(const char* file, int line, const char* func, CMPIrc rc);
 
+    void ret(const char* file, int line, const char* func, CMPIrc rc,
+        const char* msg);
+
     CIMPLE_PRINTF_ATTR(5, 6)
     void trc(
         const char* file, int line, const char* func, const char* fmt, ...);

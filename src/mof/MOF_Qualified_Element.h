@@ -24,6 +24,9 @@
 **==============================================================================
 */
 
+/*
+    Adds the concepts of qualifers to named element.
+*/
 #ifndef _MOF_Qualified_Element_h
 #define _MOF_Qualified_Element_h
 

@@ -30,7 +30,7 @@
 #define CIMPLE_NO_VERSION_SYMBOL
 #include <cimple/config.h>
 
-#ifdef CIMPLE_PLATFORM_WIN32_IX86_MSVC
+#ifdef CIMPLE_WINDOWS
 # define MOF_WINDOWS
 #endif
 

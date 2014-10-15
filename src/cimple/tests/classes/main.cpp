@@ -246,6 +246,7 @@ int main(int argc, char** argv)
         Datetime dt_timestamp;
 
         EverythingDefaults* e = EverythingDefaults::create(true);
+        print(e);
         assert(e->a.value == false);
         assert(e->b.value = 8);
         assert(e->c.value = 32);
@@ -261,16 +262,37 @@ int main(int argc, char** argv)
         assert(e->m.value == true);
 
         assert(!e->aa.null);
-        assert(e->aa.value == Array<boolean>::make(true, false,true));
+        assert(e->aa.value == Array<boolean>::make(true, false, true));
         assert(!e->bb.null);
-        assert(e->bb.value == Array<uint8>::make(0, 255));
+        // the CIMPLE...MIN and MAX are defined in config.h
+        assert(e->bb.value == Array<uint8>::make(CIMPLE_UINT8_MIN,
+                                                 128,
+                                                 CIMPLE_UINT8_MAX));
         assert(!e->cc.null);
-        assert(e->cc.value == Array<uint16>::make(0, 65535));
+        assert(e->cc.value == Array<uint16>::make(CIMPLE_UINT16_MIN,
+                                                  1000,
+                                                  CIMPLE_UINT16_MAX));
         assert(!e->dd.null);
-        assert(e->dd.value ==  Array<uint32>::make(0, 8192, 4294967295));
+        assert(e->dd.value ==  Array<uint32>::make(CIMPLE_UINT32_MIN, 
+                                                   8192,
+                                                   CIMPLE_UINT32_MAX));
+        assert(!e->es.null);
+        assert(e->es.value ==  Array<sint64>::make(0,
+                                               CIMPLE_SINT64_LITERAL(9999999),
+                                               CIMPLE_SINT64_MAX));
+        // switch to use the following. Note we substitute numeric for
+        // symbolic max until we fix problem in compiler.  Problem in 
+        // compiler is use of strtoll function for integer conversion that
+        // causes max defined in numeric below as maximum allowable
+        // in a class default uint64 integer.  This also affects the
+        // test in mofe/tests/test12
+//      assert(e->es.value ==  Array<sint64>::make(CIMPLE_SINT64_MIN,
+//                                             CIMPLE_SINT64_LITERAL(9999999),
+//                                             CIMPLE_SINT64_MAX));
         assert(!e->ee.null);
-        assert(e->ee.value ==  Array<uint64>::make(0, 99999,
-                                                   9223372036854775807));
+        assert(e->ee.value ==  Array<uint64>::make(CIMPLE_UINT64_MIN,
+            CIMPLE_UINT64_LITERAL(9999999),
+            CIMPLE_UINT64_LITERAL(9223372036854775807) ));
         assert(!e->ff.null);
         assert(e->ff.value ==  Array<real32>::make(1.5, 1.5));
         assert(!e->gg.null);

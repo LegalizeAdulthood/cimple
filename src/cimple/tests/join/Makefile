@@ -14,3 +14,6 @@ tests:
 
 vg:
 	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)
+
+vgdetail:
+	(VALGRIND) --tool=memcheck --leak-check=full --show-reachable=yes $(TARGET)

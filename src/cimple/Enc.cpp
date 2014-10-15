@@ -29,6 +29,8 @@
     These functions pack into a Buffer in binary form and
     correspondingly unpack from a Buffer.
     Functions are provided for all CIM Data types.
+    The functions include the capability for Endian swap when required
+    by the system.
 */
 
 #include "Enc.h"
@@ -71,6 +73,40 @@ uint64 swap_uint64(uint64 x)
     swap(u.data[3], u.data[4]);
 
     return u.x;
+
+#endif /* _GNU_SOURCE */
+}
+
+sint64 swap_sint64(sint64 x)
+{
+#ifdef _GNU_SOURCE
+
+    return (uint64)
+     (((uint64)(x) & 0xff00000000000000ull) >> 56) | 
+     (((uint64)(x) & 0x00ff000000000000ull) >> 40) | 
+     (((uint64)(x) & 0x0000ff0000000000ull) >> 24) |
+     (((uint64)(x) & 0x000000ff00000000ull) >>  8) |
+     (((uint64)(x) & 0x00000000ff000000ull) <<  8) |
+     (((uint64)(x) & 0x0000000000ff0000ull) << 24) |
+     (((uint64)(x) & 0x000000000000ff00ull) << 40) |
+     (((uint64)(x) & 0x00000000000000ffull) << 56);
+
+#else /* _GNU_SOURCE */
+
+    union
+    {
+        uint64 x;
+        uint8 data[8];
+    }
+    u;
+
+    u.x = (uint64)x;
+    swap(u.data[0], u.data[7]);
+    swap(u.data[1], u.data[6]);
+    swap(u.data[2], u.data[5]);
+    swap(u.data[3], u.data[4]);
+
+    return (uint64)u.x;
 
 #endif /* _GNU_SOURCE */
 }
@@ -134,6 +170,7 @@ void pack_datetime(Buffer& out, const Datetime& x)
 {
     pack_uint64(out, x.usec());
     pack_uint32(out, x.offset());
+    pack_boolean(out, x.is_timestamp());
 }
 
 //==============================================================================
@@ -265,7 +302,13 @@ void unpack_datetime(const Buffer& in, size_t& pos, Datetime& x)
     uint32 offset;
     unpack_uint32(in, pos, offset);
 
-    x.set(usec, offset);
+    boolean is_timestamp;
+    unpack_boolean(in, pos, is_timestamp);
+
+    if (is_timestamp)
+        x.set(usec, offset);
+    else
+        x.set(usec);
 }
 
 void pack_boolean_array(Buffer& out, const Array<boolean>& x)

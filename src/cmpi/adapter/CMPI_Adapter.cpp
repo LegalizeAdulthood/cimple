@@ -33,6 +33,7 @@
 #include <cimple/Auto_Mutex.h>
 #include "Converter.h"
 #include "CMPI_Thread_Context.h"
+#include "CMPIUtils.h"
 
 #define STATIC_DATA_MAGIC 0x5DE2B131
 
@@ -342,6 +343,8 @@ namespace enum_instance_names
             return false;
 
         CMReturnObjectPath(data->result, cop);
+        // Release CMPI object immediatly. Reduces memory usage.
+        CMRelease(cop);
         return true;
     }
 }
@@ -515,11 +518,19 @@ namespace enum_instances
             return false;
 
         CMReturnInstance(data->result, ci);
+        // Release CMPI instanceimmediatly. Reduces memory usage.
+        CMRelease( ci );
 
         return true;
     }
 }
 
+/* Adapter enumerateInstances function.
+   Creates CIMPLE instance with properties not filtered,
+   calls CIMPLE provider. Provider return processed through
+   enum_instances above.
+ 
+*/
 CMPIStatus CMPI_Adapter::enumInstances(
     CMPIInstanceMI* mi, 
     const CMPIContext* context, 
@@ -698,6 +709,8 @@ CMPIStatus CMPI_Adapter::getInstance(
     if (rc == CMPI_RC_OK)
     {
         CMReturnInstance(result, ci);
+        // Release with CMRelease not required.  object released at end of operation
+        //CMRelease(ci);
         CMReturnDone(result);
         adapter->ret(FL, "getInstance", CMPI_RC_OK);
         CMReturn(CMPI_RC_OK);
@@ -738,12 +751,12 @@ CMPIStatus CMPI_Adapter::createInstance(
 
     Instance* inst = 0;
 
-    CMPIrc rc = make_cimple_instance(adapter->broker, mc, cop, ci, inst);
+    CMPIrc rc_l = make_cimple_instance(adapter->broker, mc, cop, ci, inst);
 
-    if (rc != CMPI_RC_OK)
+    if (rc_l != CMPI_RC_OK)
     {
-        adapter->ret(FL, "createInstance", rc);
-        CMReturn(rc);
+        adapter->ret(FL, "createInstance", rc_l);
+        CMReturn(rc_l);
     }
 
     Ref<Instance> inst_destroyer(inst);
@@ -854,6 +867,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
     {
         case MODIFY_INSTANCE_OK:
             CMReturnObjectPath(result, cop);
+            // release not required here. Single object released at op end by CMPI
             CMReturnDone(result);
             adapter->ret(FL, "modifyInstance", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
@@ -1020,7 +1034,8 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 
     if (!mc)
     {
-        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED);
+        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED,
+            "MetaClass not found");
         CMReturn(CMPI_RC_ERR_FAILED);
     }
 
@@ -1028,7 +1043,8 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 
     if (!mm)
     {
-        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_METHOD_NOT_FOUND);
+        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_METHOD_NOT_FOUND,
+            method);
         CMReturn(CMPI_RC_ERR_METHOD_NOT_FOUND);
     }
 
@@ -1042,11 +1058,27 @@ CMPIStatus CMPI_Adapter::invokeMethod(
         CMReturn(CMPI_RC_ERR_INVALID_CLASS);
     }
 
-    if (CMGetKeyCount(cop, NULL) > 0 && (mm->flags & CIMPLE_FLAG_STATIC))
-    {
-        adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED);
-        CMReturn(CMPI_RC_ERR_FAILED);
-    }
+    /*
+        The following test has been commented out because the behavior
+        of the CMGetKeyCount function changed in Pegasus 9 with the
+        inclusion of SCMO.  Originally this function actually reported
+        the number of keys in the object.  Now it reports the number of keys
+        from the class itself so the > 0 test is completely invalid.  Note that
+        SCMO fills out keys that were not in the original path as follows:
+        key exists - convert it.
+        no key but default value in class - Use this value
+        no key and no default value - use NULL
+        Since there is no way to actually determine whether there were any
+        keys input with the invoke method request, there is no way to
+        execute this test.
+    */
+//  if ((mm->flags & CIMPLE_FLAG_STATIC) && CMGetKeyCount(cop, NULL) > 0)
+//  {
+//          adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED,
+//                       "Method Static qualifier does not match key count");
+//          CMReturn(CMPI_RC_ERR_FAILED);
+//      }
+//  }
 
     // Convert to CIMPLE reference:
 
@@ -1055,10 +1087,12 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 
     if (rc != CMPI_RC_OK)
     {
-        adapter->ret(FL, "invokeMethod", rc);
+        adapter->ret(FL, "invokeMethod", rc,
+            "CIMPLE reference creation failed");
         CMReturn(rc);
     }
 
+    // mark for destruction
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     // Create the method:
@@ -1068,7 +1102,8 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 
     if (rc != CMPI_RC_OK)
     {
-        adapter->ret(FL, "invokeMethod", rc);
+        adapter->ret(FL, "invokeMethod", rc,
+            "CIMPLE make_cimple_method function failed");
         CMReturn(rc);
     }
 
@@ -1327,6 +1362,11 @@ static bool _indication_proc(Instance* inst, void* client_data)
                 thread_context->cmpi_context(),
                 name_space.c_str(),
                 ci);
+            
+            // Release the indication immediatly after delivering it.
+            // This avoids the broker holding the indications until
+            // the broker is released.
+            CMRelease(ci);
         }
     }
 
@@ -1510,6 +1550,8 @@ namespace associators1
         // Deliver instance to requestor:
 
         CMReturnInstance(data->result, ci);
+        // Release CMPI instance immediatly. Reduces memory usage.
+        CMRelease(ci);
 
         return true;
     }
@@ -1578,6 +1620,8 @@ namespace associators2
         // Deliver instance to requestor:
 
         CMReturnInstance(data->result, ci);
+        // Release CMPI object immediatly after returning it. Reduces memory usage.
+        CMRelease(ci);
 
         return true;
     }
@@ -1605,7 +1649,10 @@ CMPIStatus CMPI_Adapter::associators(
 
     adapter->ent(FL, "associators");
 
-    CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
+    // This was in error.  Removed for version 2.0.16 because it causes
+    // problems with servers that do not always provide the assoc_class
+    // parameter. Note that Pegasus always provides this variable.
+    //CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
 
     // Lookup meta class for cop (not the same as the provider class).
 
@@ -1628,8 +1675,6 @@ CMPIStatus CMPI_Adapter::associators(
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
-
-    print(cimple_ref);
 
     if (rc != CMPI_RC_OK)
     {
@@ -1768,7 +1813,11 @@ namespace associator_names
             cop);
 
         if (data->rc == CMPI_RC_OK)
+        {
             CMReturnObjectPath(data->result, cop);
+            // Release CMPI object immediatly. Reduces memory usage.
+            CMRelease(cop);
+        }
 
         return true;
     }
@@ -1798,8 +1847,9 @@ CMPIStatus CMPI_Adapter::associatorNames(
     Auto_Mutex auto_lock(adapter->lock);
 
     adapter->ent(FL, "associatorNames");
-
-    CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
+    // KS_TBD_TODO_REMOVE THIS
+    //printf("CMPI_Adapter assoc_class %s adapter->mx->name %s \n", assoc_class, adapter->mc->name);
+    //CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
 
     // Lookup meta class for cop (not the same as the provider class).
 
@@ -1940,6 +1990,7 @@ namespace references
         // Deliver the instance.
 
         CMReturnInstance(data->result, ci);
+        CMRelease(ci);
 
         return true;
     }
@@ -1979,7 +2030,7 @@ CMPIStatus CMPI_Adapter::references(
         CMReturn(CMPI_RC_OK);
     }
 
-    CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);
+    //CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);
 
     // Convert to CIMPLE reference:
 
@@ -2084,9 +2135,10 @@ namespace reference_names
         if (data->rc != CMPI_RC_OK)
             return false;
 
-        // Deliver the instance.
+        // Deliver the object path.
 
         CMReturnObjectPath(data->result, cop);
+        CMRelease(cop);
 
         return true;
     }
@@ -2125,7 +2177,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
         CMReturn(CMPI_RC_OK);
     }
 
-    CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);
+    //CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);
 
     // Convert to CIMPLE reference:
 
@@ -2196,20 +2248,20 @@ CMPIStatus CMPI_Adapter::cleanup(
 
     if (!terminating && !adapter->allow_unload)
     {
-        adapter->ret(FL, "cleanup", CMPI_RC_DO_NOT_UNLOAD);
+        adapter->ret(FL, "cleanup" " do not unload", CMPI_RC_DO_NOT_UNLOAD);
         CMReturn(CMPI_RC_DO_NOT_UNLOAD);
     }
 
     if (adapter->load_count == 1)
     {
         adapter->unload();
-        adapter->ret(FL, "cleanup", CMPI_RC_OK);
+        adapter->ret(FL, "cleanup" " unload", CMPI_RC_OK);
         delete adapter;
     }
     else
     {
         adapter->load_count--;
-        adapter->ret(FL, "cleanup", CMPI_RC_OK);
+        adapter->ret(FL, "cleanup" " decrement", CMPI_RC_OK);
         CMReturn(CMPI_RC_OK);
     }
 
@@ -2347,6 +2399,12 @@ void CMPI_Adapter::ret(
     const char* file, int line, const char* func, CMPIrc rc)
 {
     log(LL_DBG, file, line, "return: %s(): %s", func, _rc_to_str(rc));
+}
+
+void CMPI_Adapter::ret(
+    const char* file, int line, const char* func, CMPIrc rc, const char* msg)
+{
+    log(LL_DBG, file, line, "return: %s(): %s %s", func, _rc_to_str(rc), msg);
 }
 
 void CMPI_Adapter::trc(

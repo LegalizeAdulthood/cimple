@@ -24,6 +24,10 @@
 **==============================================================================
 */
 
+/*
+    Define a method.  Adds data_type and parameter list (pointer to parameters)
+    to MOF_Feature.
+*/
 #ifndef _MOF_Method_Decl_h
 #define _MOF_Method_Decl_h
 
@@ -50,7 +54,9 @@ public:
         const MOF_Method_Decl* m1,
         const MOF_Method_Decl* m2);
 
+    // Data type for the method
     int data_type;
+    // pointer to the MOF_Parameters
     MOF_Parameter* parameters;
 };
 

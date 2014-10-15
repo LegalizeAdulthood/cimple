@@ -25,12 +25,15 @@
 */
 
 #include "Buffer.h"
+#include <ctype.h>
 #include <cstdarg>
 
 #define MIN_CAPACITY 4096
 
 CIMPLE_NAMESPACE_BEGIN
 
+// Return the next power of 2 for the input x or if x is less that
+// the defined minimum capacity, return minimum capacity.
 static size_t _round_up_pow_2(size_t x)
 {
     if (x < MIN_CAPACITY)
@@ -81,6 +84,11 @@ Buffer& Buffer::operator=(const Buffer& x)
     return *this;
 }
 
+// If requested capacity > current capacity realloc space for the
+// buffer.  realloc covers issues of freeing old allocated memory and
+// moving existing data in the buffer. Allocates an extra byte to allow
+// for addition of \0 to be inserted by the data() method.
+// 
 void Buffer::reserve(size_t capacity)
 {
     if (capacity > _cap)
@@ -105,9 +113,19 @@ void Buffer::remove(size_t i, size_t size)
     _size -= size;
 }
 
+// set capacity to MIN_CAPACITY if zero else double the current
+// capacity.
 void Buffer::_append_aux()
 {
     reserve(_cap ? _cap * 2 : MIN_CAPACITY);
+}
+
+// Sets capacity to next power of 2 of the input capacity parameter.
+// Used internally to expand the buffer capacity for all append 
+// functions.
+void Buffer::_reserve_aux(size_t capacity)
+{
+    reserve(_round_up_pow_2(capacity));
 }
 
 void Buffer::insert(size_t i, const char* data, size_t size)
@@ -119,12 +137,20 @@ void Buffer::insert(size_t i, const char* data, size_t size)
 
     if (new_size > _cap)
     {
+        // allocate new buffer and save in temp space.
         size_t new_cap = _round_up_pow_2(new_size);
         char* new_data = (char*)malloc(new_cap + 1);
+
+        // Copy 1) everything below i from existing data
+        //      2) the insert from data
+        //      3) the remaining _data starting at i from data
         memcpy(new_data, _data, i);
         memcpy(new_data + i, data, size);
         memcpy(new_data + i + size, _data + i, rem);
+
+        // free the previous allocation
         free(_data);
+
         _data = new_data;
         _size = new_size;
         _cap = new_cap;
@@ -139,14 +165,22 @@ void Buffer::insert(size_t i, const char* data, size_t size)
     }
 }
 
+// Formatted input to a buffer
 size_t Buffer::format(const char* format, ...)
 {
     size_t size = 128;
     va_list ap;
 
+    // loop to insure the reserve is greater than size of 
+    // result generated from the format string and input parameters
+    // If the vsnprintf return indicates that the capacity is too small
+    // buffer capacity is increased and another conversion attempt executed.
     for (;;)
     {
-        reserve(_size + size);
+        if (_size + size > _cap)
+        {
+            _reserve_aux(_size + size);
+        }
         char* str = _data + _size;
 
         va_start(ap, format);
@@ -173,17 +207,28 @@ size_t Buffer::vformat(const char* format, va_list ap)
 {
     size_t size = 128;
 
+    // Repeat the reserve, format until we have reserved enough
+    // space for the complete formatting operation.
     for (;;)
     {
-        reserve(_size + size);
+        //reserve(_size + size);
+        if (_size + size > _cap)
+        {
+            _reserve_aux(_size + size);
+        }
         char* str = _data + _size;
 
         va_list tmp_ap;
 
-        // No va_copy() on Windows.
-
+        // No va_copy() on Windows at least the known versions
+        // C99 spec requires that va_copy be a macro so the #ifdef
+        // va_copy covers future compatible existence.
 #ifdef CIMPLE_WINDOWS
+#ifdef va_copy
+        va_copy(tmp_ap, ap);
+#else
         memcpy(&tmp_ap, &ap, sizeof(ap));
+#endif
 #else
         va_copy(tmp_ap, ap);
 #endif
@@ -247,5 +292,74 @@ void Buffer::append_uint64(uint64 x)
 
     append(p, &buffer[20] - p);
 }
+
+// Display the contents of the buffer in side-side hex and ascii
+// of the complete contents of the buffer.
+// NOTE: This is a diagnostic only.
+//
+#ifdef ENABLE_BUFFER_DIAG
+void Buffer::dump()
+{
+    char sp_buffer[100];
+    long indent = 1;
+
+    struct
+    {
+        char *data;
+        unsigned long size;
+    } buf;
+
+    unsigned char *p_addr = (unsigned char *)_data;
+
+    buf.data   = (char *)p_addr;
+    buf.size   = _size;
+
+    while (buf.size > 0)
+    {
+        long rel_pos;
+        long out_len, index, index2, out_len2;
+        unsigned char *p_tmp, uc_tmp;
+        p_tmp    = (unsigned char *)buf.data;
+        out_len  = (int)buf.size;
+
+        if (out_len > 16)
+          out_len = 16;
+        
+        // create a 64-character formatted output line:
+        sprintf(sp_buffer, " >                            "
+                     "                      "
+                     "    %08lX", (unsigned long int)(p_tmp - p_addr));
+        out_len2 = out_len;
+        
+        for(index = 1 + indent, index2 = 53 - 15 + indent, rel_pos = 0;
+            out_len2;
+            out_len2--, index += 2, index2++)
+        {
+            uc_tmp = *p_tmp++;
+            
+            sprintf(sp_buffer + index, "%02X ", (unsigned short)uc_tmp);
+            if(!isprint(uc_tmp))  uc_tmp = '.'; // nonprintable char
+            sp_buffer[index2] = uc_tmp;
+            
+            if (!(++rel_pos & 3))     // extra blank after 4 bytes
+            {
+                index++; 
+                sp_buffer[index+2] = ' ';
+            }
+        }
+        
+        if (!(rel_pos & 3)) index--;
+        
+        sp_buffer[index  ]   = '<';
+        sp_buffer[index+1]   = ' ';
+        
+        printf("%s\n", sp_buffer);
+        
+        buf.data   += out_len;
+        buf.size   -= out_len;
+    }
+}
+#endif
+
 
 CIMPLE_NAMESPACE_END

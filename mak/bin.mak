@@ -6,6 +6,8 @@
 
 TARGET = $(call binary_target,$(BINARY))
 
+LINK_TARGETS = $(call link_clean_targets,$(BINARY))
+
 all: $(TARGET)
 	@ echo "$(TARGET) is up to date"
 
@@ -19,9 +21,13 @@ $(TARGET): $(OBJECTS)
 ## clean
 ##
 ##==============================================================================
-
+## TODO - make the manifest delete windows only.
+## TODO -- Windows delete pdb files also
 clean:
-	$(call rm,$(OBJECTS) $(TARGET) $(CLEAN) depend.mak)
+	echo CLEAN = $(CLEAN)  link_targets $(LINK_TARGETS)
+	$(call rm,$(OBJECTS) $(TARGET) $(CLEAN) \
+	    $(LINK_TARGETS) \
+	    depend.mak)
 	$(ECHONL)
 
 ##==============================================================================

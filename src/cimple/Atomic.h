@@ -45,7 +45,8 @@
 # include "Atomic_DARWIN_PPC_GNU.h"
 #elif defined(CIMPLE_PLATFORM_DARWIN_IX86_GNU)
 # include "Atomic_DARWIN_IX86_GNU.h"
-#elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
+#elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC) || \
+    defined(CIMPLE_PLATFORM_WIN64_X86_64_MSVC)
 # include "Atomic_WIN32_IX86_MSVC.h"
 #elif defined(CIMPLE_PLATFORM_VXWORKS_XSCALE_GNU)
 # include "Atomic_VXWORKS_XSCALE_GNU.h"

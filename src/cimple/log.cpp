@@ -34,7 +34,7 @@
 #include "config.h"
 #include "options.h"
 
-#ifdef CIMPLE_WINDOWS
+#ifdef CIMPLE_WINDOWS_MSVC
 # include <windows.h>
 # include <io.h>
 # include <direct.h>
@@ -44,17 +44,31 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+// Defines Environment Variable defining location of CIMPLE_HOME, the
+// location where CIMPLE stores and retrieves information. This is set
+// from a definitiion in config.h but may be overridded by setters
+// in cimple_config.
 static String cimple_home_envvar = CIMPLEHOME_ENVVAR ;
 
-boolean _log_enabled_state = true;
+// FUTURE static String cimple_home_dir = String::EMPTY;
+
+// When true, macro log calls are executed.  When false, the macro
+// calls return immediatly without calling log generation functions
+bool _log_enabled_state = true;
 
 static File_Lock* _lock;
-static FILE* _os;
+static FILE* _log_file_handle;
+
+// current log level
 static Log_Level _level;
-static int _initialized;
+
+// defines whether log output has been initialized
+static bool _initialized;
+
+// log mutex
 static pthread_mutex_t _mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static const char* _strings[] =
+static const char* _log_level_strings[] =
 {
     "FATAL",
     "ERR", 
@@ -63,7 +77,8 @@ static const char* _strings[] =
     "DBG",
 };
 
-static const size_t _num_strings = sizeof(_strings) / sizeof(_strings[0]);
+static const size_t _num_strings =
+    sizeof(_log_level_strings) / sizeof(_log_level_strings[0]);
 
 static char* _get_opt_value(const char* path, const char* opt)
 {
@@ -131,11 +146,13 @@ static char* _get_opt_value(const char* path, const char* opt)
 // string definitions.  Return 0 if valid with the correct enum
 // in level or -1 if no match.
 // Does a no case match against the level definition strings.
+// Returns 0 if txt matches one of the defined log_level strings and
+// also 
 static int _validate_log_level(const char * txt, Log_Level& level)
 {
     for (size_t i = 0; i < _num_strings; i++)
     {
-        if (strcasecmp(_strings[i], txt) == 0)
+        if (strcasecmp(_log_level_strings[i], txt) == 0)
         {
             level = Log_Level(i);
             return 0;
@@ -164,6 +181,10 @@ static int _get_log_level(const char* path, Log_Level& level)
 // name variable on input.
 static void _initialize(const char* name)
 {
+    if (_initialized)
+    {
+        return;
+    }
     // Get home path for CIMPLE_HOME.
     // Defined originally in options as define and 
     // as String in this file.
@@ -188,7 +209,7 @@ static void _initialize(const char* name)
     char root_path[1024];
     {
         sprintf(root_path, "%s/%s", home, name);
-#ifdef CIMPLE_WINDOWS
+#ifdef CIMPLE_WINDOWS_MSVC
         _mkdir(root_path);
 #else
         mkdir(root_path, 0777);
@@ -226,26 +247,28 @@ static void _initialize(const char* name)
 
     // Open log file for append.
 
-    _os = fopen(log_file_path, "a");
+    _log_file_handle = fopen(log_file_path, "a");
 
-    if (!_os)
+    if (!_log_file_handle)
     {
         delete _lock;
         _lock = 0;
         return;
     }
+    _initialized = true;
 }
 
-void open_log(const char* name)
-{
-    // Initialize on the first call.
-
-    if (_initialized == 0)
-    {
-        _initialize(name);
-        _initialized = 1;
-    }
-}
+// Commented out because it appears to have no use and is not
+// used.
+//void open_log(const char* name)
+//{
+//    // Initialize on the first call.
+//
+//    if (!_initialized)
+//    {
+//        _initialize(name);
+//    }
+//}
 
 void vlog(
     Log_Level level, 
@@ -258,15 +281,14 @@ void vlog(
 
     // Initialize on the first call.
 
-    if (_initialized == 0)
+    if (!_initialized)
     {
         _initialize(DEFAULT_CONFIG_FILE_NAME);
-        _initialized = 1;
     }
 
     // Bail out if initialize failed.
 
-    if (!_os)
+    if (!_log_file_handle)
     {
         pthread_mutex_unlock(&_mutex);
         return;
@@ -295,7 +317,7 @@ void vlog(
     // Format message prefix:
 
     Buffer buffer;
-    buffer.format("%s %s: %s(%d): ", datetime, _strings[int(level)], 
+    buffer.format("%s %s: %s(%d): ", datetime, _log_level_strings[int(level)], 
         file, (uint32)line);
 
     // Format message body:
@@ -309,8 +331,8 @@ void vlog(
     // Write to log file:
 
     _lock->lock();
-    fwrite(buffer.data(), buffer.size(), 1, _os);
-    fflush(_os);
+    fwrite(buffer.data(), buffer.size(), 1, _log_file_handle);
+    fflush(_log_file_handle);
     _lock->unlock();
 
     pthread_mutex_unlock(&_mutex);

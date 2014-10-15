@@ -24,6 +24,10 @@
 **==============================================================================
 */
 
+/*
+    Defines the declaration of a single class. Since this is a qualified
+    element it inherits the qualifier
+*/
 #ifndef _MOF_Class_Decl_h
 #define _MOF_Class_Decl_h
 

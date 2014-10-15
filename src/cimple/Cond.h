@@ -131,7 +131,8 @@ public:
 
     /** Blocks until a thread calls signal() or broadcast(). The
     *   mutex is unlocked while the thread is waiting and relocked
-    *   upon wakeup.
+    *   upon wakeup. This routine should be called while mutex is
+    *   locked.
     *   @param lock Mutex that is unlocked while the thread is
     *   waiting and relocked upon wakeup.
     */

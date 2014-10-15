@@ -46,6 +46,7 @@ Enum_Instances_Status Methods_Provider::enum_instances(
     const Methods* model,
     Enum_Instances_Handler<Methods>* handler)
 {
+    TRACE;
     Methods* methods = Methods::create();
     methods->key.value = 99;
     handler->handle(methods);
@@ -115,13 +116,15 @@ Invoke_Method_Status Methods_Provider::foo2(
     Property<String>& return_value)
 {
     TRACE;
-
     arg2 = Argument::create();
-    arg2->key.value = 12345;
-    arg2->key.null = false;
 
-    return_value.value = "thanks";
-    return_value.null = false;
+    arg2->key.set(12345);
+//  arg2->key.value = 12345;
+//  arg2->key.null = false;
+
+    return_value.set("thanks");
+//  return_value.value = "thanks";
+//  return_value.null = false;
 
     return INVOKE_METHOD_OK;
 }
@@ -129,8 +132,8 @@ Invoke_Method_Status Methods_Provider::foo2(
 Invoke_Method_Status Methods_Provider::foo3(
     Property<String>& return_value)
 {
-    return_value.value = "goodbye";
-    return_value.null = false;
+    TRACE;
+    return_value.set("goodbye");
     return INVOKE_METHOD_OK;
 }
 
@@ -140,7 +143,11 @@ Invoke_Method_Status Methods_Provider::foo4(
     Property<Array_String>& arr2,
     Property<uint32>& return_value)
 {
+    TRACE;
+
     arr2 = arr1;
+    // use the value and null form of setting.  Note that
+    // we prefer to sue return_value.set(999) as a single statement.
     return_value.value = 999;
     return_value.null = false;
 
@@ -154,7 +161,10 @@ Invoke_Method_Status Methods_Provider::foo5(
     Property<uint32>& out_arg,
     Property<uint32>& return_value)
 {
-    return INVOKE_METHOD_UNSUPPORTED;
+    out_arg = in_arg;
+    return_value.set(1200);
+    
+    return INVOKE_METHOD_OK;
 }
 
 Invoke_Method_Status Methods_Provider::junk(

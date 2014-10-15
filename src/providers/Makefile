@@ -18,6 +18,9 @@ DIRS = \
     Methods \
     Methods/foo \
     Methods/foo2 \
+    Methods/foo3 \
+    Methods/foo4 \
+    Methods/foo5 \
     MyIndication \
     OperationException \
     OperationException/testclient \

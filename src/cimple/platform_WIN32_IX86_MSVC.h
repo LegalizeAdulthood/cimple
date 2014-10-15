@@ -45,11 +45,16 @@
 // 'sprintf' name was marked as #pragma deprecated
 #pragma warning ( disable : 4995 )
 
+// DEPRECATE CIMPLE_WINDOWS define in favor of CIMPLE_WINDOWS_MSVC
+// to allow possible other compilers in future
 #define CIMPLE_WINDOWS
+
+#define CIMPLE_WINDOWS_MSVC
 #define CIMPLE_UINT64 unsigned __int64
 #define CIMPLE_SINT64 signed __int64
 #define CIMPLE_HIDE
 #define CIMPLE_WINDOWS
+#define CIMPLE_WINDOWS_32
 #define CIMPLE_LLU "%I64u"
 #define CIMPLE_LLD "%I64d"
 #define CIMPLE_IMPORT __declspec(dllimport)

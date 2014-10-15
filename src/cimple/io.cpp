@@ -27,9 +27,26 @@
 #include "config.h"
 #include <cstdarg>
 #include "io.h"
+#include "String.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
+// formatting function that returns a CIMPLE string. 
+String string_printf(const char* format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+    char* rtn;
+    rtn = str_vprintf(format, ap);
+    va_end(ap);
+    String rtn_string(rtn);
+    free(rtn);
+    return(rtn_string);
+}
+
+// formatting function that returns char point.  While this function
+// allocates memory for the return char* the user is responsible for
+// freeing that memory
 char* str_printf(const char* format, ...)
 {
     int n;
@@ -57,10 +74,11 @@ char* str_printf(const char* format, ...)
         if ((p = (char*)realloc(p, size)) == NULL)
             return 0;
     }
-
+    // unreachable
     return 0;
 }
 
+//  function to return a formatted char*  from a va_list.
 char* str_vprintf(const char* format, va_list ap)
 {
     int n;
@@ -85,8 +103,16 @@ char* str_vprintf(const char* format, va_list ap)
         if ((p = (char*)realloc(p, size)) == NULL)
             return 0;
     }
-
+    // unreachable
     return 0;
+}
+
+String string_vprintf(const char* format, va_list ap)
+{
+    char *rtn = str_vprintf(format, ap);
+    String return_String(rtn);
+    free(rtn);
+    return(return_String);
 }
 
 int ifprintf(FILE* os, size_t level, const char* format, ...)

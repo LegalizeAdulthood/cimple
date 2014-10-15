@@ -86,7 +86,9 @@ endif
 
 ##==============================================================================
 ##
-## FLAGS
+## Compiler FLAGS
+##     Use CIMPLE_WERROR to generate error for all warnings (not in configure)
+##     USE ENABLE_DEBUG_OPT to set compiler debug errors (--debug in configure)
 ##
 ##==============================================================================
 

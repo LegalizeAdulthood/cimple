@@ -33,10 +33,10 @@ Enum_Instances_Status SalesmanLink_Provider::enum_instances(
 {
     SalesmanLink* link = SalesmanLink::create();
 
-    link->parent = Person::create();
+    link->parent = Salesman::create();
     link->parent->ssn.value = 100;
 
-    link->child = Person::create();
+    link->child = Salesman::create();
     link->child->ssn.value = 200;
 
     handler->handle(link);

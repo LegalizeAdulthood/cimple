@@ -34,7 +34,7 @@
 # include <errno.h>
 #endif
 
-#ifdef CIMPLE_WINDOWS
+#ifdef CIMPLE_WINDOWS_MSVC
 # include <windows.h>
 #endif
 
@@ -119,7 +119,7 @@ int File_Lock::unlock()
 //
 //==============================================================================
 
-#ifdef CIMPLE_WINDOWS
+#ifdef CIMPLE_WINDOWS_MSVC
 
 struct File_Lock_Rep
 {
@@ -178,6 +178,6 @@ int File_Lock::unlock()
     return 0;
 }
 
-#endif /* CIMPLE_WINDOWS */
+#endif /* CIMPLE_WINDOWS_MSVC */
 
 CIMPLE_NAMESPACE_END

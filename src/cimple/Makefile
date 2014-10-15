@@ -56,7 +56,8 @@ SOURCES = \
     TSD.cpp \
 
 ## The encoder functions are optional components
-## so compiled only when flag set.
+## so compiled only when flag set. This code is experimental an should not
+## be used in production environments.
 ifdef ENABLE_INSTANCE_PERSISTENCE_OPT
     SOURCES += Enc.cpp Instance_Enc.cpp
 endif

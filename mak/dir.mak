@@ -1,3 +1,5 @@
+## recursive execution of the defined targets.
+
 .PHONY: install_mak
 
 all:

@@ -92,20 +92,17 @@ Options:
                                 default is "cimple").
     --cimplehome-envvar	        Set the name of the environment variable that
                                 is used to define the home directory
-				for CIMPLE runtime files such as the .configrc
-				file and log files.  The default is
-				CIMPLE_HOME if this is not specified.
-Limit CIMPLE Compiled Features:
+				                for CIMPLE runtime files such as the .configrc
+				                file and log files.  The default is
+				                CIMPLE_HOME if this is not specified.
+
+Options that Limit CIMPLE Compiled Features:
     --enable-embedded-instances Enable use of embedded instances (must be
-                                supported by CIMOM).
+                                supported by CIMOM). Default is that this
+                                feature is not compiled into the common library
     --enable-scheduler	        Enable compilation of the scheduler functions.
                                 Defaults is that this feature is not enabled
-				making the common library smaller
-    --enable-instance persistence Enable the functions that allow writing 
-                                instances to disk and restoring them from disk.
-				This is a compile time option. The default
-				is that this feature is not compiled into the
-				CIMPLE library and is not available to the
-				providers.
+				                making the common library smaller
+
 
 

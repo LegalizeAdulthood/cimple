@@ -10,12 +10,17 @@ set arg0=%0
 
 set prev=
 
+::
+::  Loop for all input parameters
+::
+
 :loop
 
   set found=
 
   ::
-  :: Get option argument
+  :: Get option argument based on prev variable set 
+  :: when option found
   ::
 
   if "%prev%" == "prefix" (
@@ -97,9 +102,24 @@ set prev=
     set prev=
   )
 
+  if "%prev%" == "host" (
+    set __host=%1
+    set found=1
+    set prev=
+  )
+
   ::
   :: Get option
   ::
+
+  if "%1" == "--help" (
+    set help=1
+    set found=1
+  )
+  if "%1" == "-h" (
+    set help=1
+    set found=1
+  )
 
   if "%1" == "--prefix" (
     set prev=prefix
@@ -201,6 +221,12 @@ set prev=
     set found=1
   )
 
+  if "%1" == "--host" (
+    echo --host found.
+    set prev=host
+    set found=1
+  )
+
   if "%1" == "" (
     set found=1
   )
@@ -224,6 +250,16 @@ if not "%prev%" == "" (
     echo %arg0%: missing option argument for --%prev%
     goto done
 )
+::==============================================================================
+::
+:: help - display help and exit
+::
+::==============================================================================
+
+if "%help%" == "1" (
+    type config.help
+    goto done
+)
 
 ::==============================================================================
 ::
@@ -236,6 +272,10 @@ if "%with_pegasus_env%" == "1" (
   if "%PEGASUS_PLATFORM%" == "" (
     echo %arg0%: --with-pegasus-env needs PEGASUS_PLATFORM environment variable.
     goto done
+  )
+
+  if NOT "%PEGASUS_PLATFORM%" == "" (
+    set __host=%PEGASUS_PLATFORM%
   )
 
   if "%PEGASUS_HOME%" == "" (
@@ -289,13 +329,47 @@ if "%with_schema%" == "" (
   set with_schema=%datadir%/cimple/schema/cim214
 )
 
+
+::==============================================================================
+::
+:: if no host parameter input, guess host
+::
+::==============================================================================
+if NOT "%__host%" == "" GOTO HOSTFROMPARAM
+
+if NOT defined PROCESSOR_ARCHITECTURE (
+    echo %arg0% Error: Env var PROCESSOR_ARCHITECTURE not found
+    goto done
+)
+
+if "%PROCESSOR_ARCHITECTURE%" == "x86" ( 
+  set __host=WIN32_IX86_MSVC
+  goto HOSTFOUND
+)
+if "%PROCESSOR_ARCHITECTURE%" == "AMD64" (
+  set __host=WIN64_X86_64_MSVC
+  goto HOSTFOUND
+)
+if "%PROCESSOR_ARCHITECTURE%" == "IA64" (
+  set __host=WIN32_IA64_MSVC
+  goto HOSTFOUND
+)
+
+echo %arg0%: Error: No Valid Host detected or input
+goto done
+
+:HOSTFOUND
+
+:HOSTFROMPARAM
+
 ::==============================================================================
 ::
 :: Echo options
 ::
 ::==============================================================================
 
-goto skip
+::goto skip
+echo host=%__host%
 echo prefix=%prefix%
 echo bindir=%bindir%
 echo libdir=%libdir%
@@ -323,7 +397,7 @@ echo cimplehome-envvar=%cimplehome_envvar%
 ::
 ::==============================================================================
 
-echo PLATFORM=WIN32_IX86_MSVC> config.options
+echo PLATFORM=%__host%> config.options
 echo PREFIX_OPT=%prefix%>> config.options
 echo BINDIR_OPT=%bindir%>> config.options
 echo LIBDIR_OPT=%libdir%>> config.options
@@ -367,7 +441,8 @@ echo Configured for Windows
 
 ::==============================================================================
 ::
-:: Clear options
+:: Clear options - Required because cmd sets all internals
+::                 as env variables
 ::
 ::==============================================================================
 
@@ -389,6 +464,10 @@ set enable_debug=
 set enable_wmi=
 set enable_static=
 set enable_embedded_instances=
+set enable_scheduler=
+set help=
+set host=
+set __host=
 
 set arg0=
 set prev=

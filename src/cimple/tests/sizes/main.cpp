@@ -34,7 +34,14 @@ int main(int argc, char** argv)
 {
     // Test size assumptions made by CIMPLE.
 
+    printf("sizes %lu %lu\n", sizeof(long), sizeof(void*));
+
+#ifdef CIMPLE_PLATFORM_WIN64_X86_64_MSVC
+    assert((sizeof(long) * 2) == sizeof(void*));
+#else
     assert(sizeof(long) == sizeof(void*));
+#endif
+
     assert(sizeof(char) == 1);
     assert(sizeof(uint8) == 1);
     assert(sizeof(sint8) == 1);

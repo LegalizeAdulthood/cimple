@@ -753,6 +753,13 @@ void Value::fprint(FILE* os) const
 
     fprintf(os, "    type=%s\n", _type_name(_type));
     fprintf(os, "    null=%s\n", _null ? "true" : "false");
+    // Don't display values when null set.  Info unreliable at least
+    // for strings.
+    if (_null)
+    {
+        fprintf(os, "    value= NONE\n");
+        return;
+    }
     fprintf(os, "    value=");
 
     switch (_type)

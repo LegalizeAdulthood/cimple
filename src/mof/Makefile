@@ -47,6 +47,7 @@ SOURCES = \
 
 include $(TOP)/mak/rules.mak
 
+## Turn this flag to 1 to execute generate of Yacc and Lex
 GEN=0
 ifeq ($(GEN),1)
 

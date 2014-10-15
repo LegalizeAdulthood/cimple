@@ -1,8 +1,20 @@
+/*
+    This provider is based completely on the Instance_Map.
+    Objects are built at initialization and the one line MAP
+    operation calls used to retrieve them for the various operations.
+ 
+    This provider can process all of the CIM Intrinsic operations for
+    instanceand assocation provider types
+ 
+    All of the Association operations default to use the enumerate
+    and internal CIMPLE association/reference filtering.
+*/
 #include "PersonLink_Provider.h"
 #include "Person.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
+// Create a single instance of the association instance
 static PersonLink* _make_link(uint32 parent_ssn, uint32 child_ssn)
 {
     PersonLink* link = PersonLink::create();
@@ -26,10 +38,13 @@ PersonLink_Provider::~PersonLink_Provider()
 
 Load_Status PersonLink_Provider::load()
 {
+    // Build all of the links and put into the map.
     _map.insert(_make_link(1, 3));
     _map.insert(_make_link(1, 4));
+    _map.insert(_make_link(1, 5));
     _map.insert(_make_link(2, 3));
     _map.insert(_make_link(2, 4));
+    _map.insert(_make_link(2, 5));
 
     return LOAD_OK;
 }
@@ -44,64 +59,34 @@ Get_Instance_Status PersonLink_Provider::get_instance(
     const PersonLink* model, 
     PersonLink*& instance)
 {
-    PersonLink* link = _map.lookup(model);
-
-    if (link)
-    {
-        instance = link->clone();
-        return GET_INSTANCE_OK;
-    }
-
-    return GET_INSTANCE_NOT_FOUND;
+    // This is more efficient than using NOT_SUPPORTED
+    return _map.get_instance(model, instance);
 }
 
 Enum_Instances_Status PersonLink_Provider::enum_instances(
     const PersonLink* model, 
     Enum_Instances_Handler<PersonLink>* handler)
 {
-    for (size_t i = 0; i < _map.size(); i++)
-        handler->handle(_map[i]->clone());
-
-    return ENUM_INSTANCES_OK;
+    return _map.enum_instances(model, handler);
 }
 
 Create_Instance_Status PersonLink_Provider::create_instance(
     PersonLink* instance)
 {
-    if (_map.find(instance) != size_t(-1))
-        return CREATE_INSTANCE_DUPLICATE;
-
-    _map.insert(instance->clone());
-
-    return CREATE_INSTANCE_OK;
+    return _map.create_instance(instance);
 }
 
 Delete_Instance_Status PersonLink_Provider::delete_instance(
     const PersonLink* instance)
 {
-    size_t pos = _map.find(instance);
-
-    if (pos == size_t(-1))
-        return DELETE_INSTANCE_NOT_FOUND;
-
-    destroy(_map[pos]);
-    _map.remove(pos);
-
-    return DELETE_INSTANCE_OK;
+    return _map.delete_instance(instance);
 }
 
 Modify_Instance_Status PersonLink_Provider::modify_instance(
     const PersonLink* model,
     const PersonLink* instance)
 {
-    size_t pos = _map.find(instance);
-
-    if (pos == size_t(-1))
-        return MODIFY_INSTANCE_NOT_FOUND;
-
-    copy(_map[pos], instance);
-
-    return MODIFY_INSTANCE_OK;
+    return _map.modify_instance(model, instance);
 }
 
 Enum_Associator_Names_Status PersonLink_Provider::enum_associator_names(

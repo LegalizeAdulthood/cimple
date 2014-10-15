@@ -43,7 +43,7 @@ const uint64 Time::SEC = 1000000;
 
 uint64 Time::now()
 {
-#ifdef CIMPLE_WINDOWS
+#ifdef CIMPLE_WINDOWS_MSVC
     struct posix::timeval tv;
 #else
     struct timeval tv;
@@ -58,7 +58,7 @@ uint64 Time::now()
 
 void Time::sleep(uint64 timeout_usec)
 {
-#ifdef CIMPLE_WINDOWS
+#ifdef CIMPLE_WINDOWS_MSVC
 
     Sleep((DWORD)(timeout_usec / 1000));
 

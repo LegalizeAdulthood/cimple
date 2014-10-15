@@ -24,7 +24,7 @@
 **==============================================================================
 */
 
-/*   CMPI implementation of the cikmple container class
+/*   CMPI implementation of the cimple container class
      Provides CMPI implementation of the get and set functions for
      CMPI instance information and storage of CMPI operation specific
      information such as the CMPI_Broker reference for the operation

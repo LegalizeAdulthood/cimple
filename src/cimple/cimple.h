@@ -24,6 +24,10 @@
 **==============================================================================
 */
 
+/*
+    Consolidate all CIMPLE required header files into this file
+*/
+
 #ifndef _cimple_h
 #define _cimple_h
 

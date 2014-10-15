@@ -110,12 +110,24 @@ class EverythingDefaults
     boolean m = true;
 
     boolean aa[] = {true, false, true};
-    uint8 bb[] = {0, 255};
-    uint16 cc[] = {0, 65535};
+
+    sint8 bs[] = {0, 60, 127};
+    uint8 bb[] = {0, 128, 255};
+
+    sint16 cs[] = {0, 1000, 32000};
+    uint16 cc[] = {0, 1000, 65535};
+
+    // Issue: the max should be 4294967295 but we have compile error
+    // on 32 bit linux systems with large uint32 and uint64 integers
+    // translated through the compiler
+
+    sint32 ds[] = {0, 8192, 2147483647};
     uint32 dd[] = {0, 8192, 4294967295};
+
+    sint64 es[] = {0, 9999999, 9223372036854775807 };
     // Issue.  the max should be 18446744073709551615 but when we
     // use this, we get back 9223372036854775807
-    uint64 ee[] = {0, 99999, 9223372036854775807 };
+    uint64 ee[] = {0, 9999999, 18446744073709551615 };
     real32 ff[] = {1.5, 1.5};
     real64 gg[] = {1.5, 1.5};
     char16 hh[] = {'A', 'a'};   

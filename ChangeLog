@@ -211,7 +211,7 @@ This change log was started effective with version 2.00
       these tests are contained in bat files and only exercise the provider
       using the wmic executable.  They do not confirm results.
 
-2.0.14 6 October 2009( cvs cimple_2_0_12-branch)
+2.0.14 6 October 2009(cvs cimple_2_0_12-branch)
     * Update to User Guide (version 2.1)
 	* Correct problem with model->__namespce variable missing on some
 	  request types for C++ adapter.  Added test to Hello provider to
@@ -219,17 +219,75 @@ This change log was started effective with version 2.00
 	* Correct indexing error in regview and include build in standard
 	  make.
 
-	
+2.0.15 29 March 2009(cvs cimple_2_0_12-branch)
+    * Modified Buffer.h and Buffer.cpp to improve capacity management
+      algorithm.  Added unit test of Buffer class (cimple/tests/buffer. Note that
+	  modifies the Buffer.h header file. 
+    * Modify several files (ex. Instance.cpp) to reduce the number of warning
+      messages produced by the Windows Development Kit prefast tool.
+    * Correct deadlock error between indication generation and subscription
+      enable/disable in cmpi provider.
+    * Add .cvsignore files in root directory and src/cimple.
+    * Add String return functions to cimple/io.  These are parallel to the
+      functions that return char* formatted strings but require the user
+      to free the memory except that they return CIMPLE Strings and manage
+      memory.
+    * Implement WIN64 Microsoft Compiler platform, WIN64_X86_64-MSVC.  Note that this
+      should really be callse WIN32_X86_64_MSVC (i.e. the Microcoft api set is Win32
+      for both the 32 bit and 64 bit platforms but we kept the WIN64 to be 
+      consistent with Pegasus that uses this platform name.
+    * Add help option to configure.bat
+    * Add more unit tests including (io, ref). Expanded some other
+      unit tests and add valgrind target to a number of unit tests.
+    * Add more provider tests (Arrays)
+    * Implement dump function for Buffer.h when CIMPLE compiled in
+      debug mode. This is just a developer diagonstic.
+    * Enable ciminvoke compile and installation by default.
+    * Modify Person Provider to use Map CIM Operation calls as demo of the
+      complete use of the Map cache. Update Fan provider to use Map CIM
+      Operations.
+
+2.0.16 8 Dec 2010 (cs cimple-2_0_12-branch)
+    * Remove test for static method type from CMPIAdapter code but add it
+      to the Pegasus adapter code.  This function has been failing in the
+      CMPI adapter since SCMO was added to Pegasus (the behavior of the
+      CMGetKeyCount function changed drastically.  The problem occurs with
+      CMPI providers that have static methods.  It returns CIM_ERR_FAILED
+      with the latest versions of Pegasus.  The test is not in the CMPI
+      adapter any more because we do not have enough information to 
+      execute the test for zero keys in a CMPIObjectPath effeciently since
+      the CMgetKeyCount now returns the number of keys in the class not
+      in the input.  Note that the only effect is on [static] methods. The
+      CMPI provider no longer returns an error if the request includes 
+      keys.
+    * Add text to a logging of a number of error returns from the CMPI Provider
+      adapter to supplement the error code.
+    * Add more invoke method tests
+    * Add LargeInstance provider and tests.
+    * Corrections to cmpi adapter to release memory after sending enums and indications.
+    * integer test in cimple/tests
+    * Expand make to handle windows manifest files more effectively
+    * Update compile make files to handle different windows compile options for different
+      versions of the MSVC compiler.
+    * Change ROOT env variable to TEST_ROOT. This was causing confusion in some compiles
+      with Pegasus.
+    * Add quick return to logs in case logs not enabled.
+    * Complete tests/enable of Windows 64 bit compiler.
+    * Modify Person Provider to use Map CIM Operation calls as demo of the
+      complete use of the Map cache. Update Fan provider to use Map CIM
+      Operations.
+    * Add CMPIUtils to cmpi adapter to display cmpi objects. NOTE This is experimetal
+      used only for debug and disabled by default.
+    * Updates to some utilities (ex. regview).
+    * Add a number of manual tests to providers and expand live tests.  NOTE: many of the
+      new tests use Pegasus cimcli and depend on at least Pegasus version 2.10 for correct
+      version of cimcli.
+    * Add CMRelease to cmpiAdapter to remove cmpi instances when we pass them 
+      to the server.  For Enumerations this reduces memory very temporarily
+      since the server removes them at the end of the enumeration.  For
+      indications this avoids indication instances being caught in the
+      broker until it is shutdown.
 
 
 
-     
-
-
-
-       
-
-
-
-	
 

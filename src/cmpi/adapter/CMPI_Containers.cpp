@@ -230,7 +230,8 @@ struct to_cimple_array_value
     {
         Array<T> x;
 
-        if (data.state & CMPI_nullValue)
+        //if (data.state & CMPI_nullValue)
+        if (CMIsNullValue(data))
         {
             v.set_value(x);
             v.null(true);
@@ -254,7 +255,8 @@ struct to_cimple_array_value
                 return -1;
             }
 
-            if (tmp.state & CMPI_nullValue)
+            //if (tmp.state & CMPI_nullValue)
+            if (CMIsNullValue(tmp))
             {
                 CIMPLE_WARN(("encountered null array element"));
                 return -1;
@@ -291,7 +293,8 @@ struct to_cimple_scalar_value
         }
 
         v.set_value(x);
-        v.null(data.state & CMPI_nullValue);
+        //v.null(data.state & CMPI_nullValue);
+        v.null(CMIsNullValue(data));
         return 0;
     }
 };
@@ -516,7 +519,7 @@ int cmpi_to_cimple_value(
 
             default:
             {
-                CIMPLE_WARN(("unknown type"));
+                CIMPLE_WARN(("unknown cmpi type %u", data.state));
                 return -1;
             }
         }
@@ -664,7 +667,8 @@ int cmpi_to_cimple_value(
                     return -1;
                 }
 
-                if (tmp.state & CMPI_nullValue)
+                //if (tmp.state & CMPI_nullValue)
+                if (CMIsNullValue(tmp))
                 {
                     x.append(0);
                 }
@@ -824,10 +828,10 @@ struct to_cmpi_scalar<Instance*>
         }
         else if (type == CMPI_instance)
         {
-            CMPIStatus status;
-            CMPIInstance* ci = CMNewInstance(cb, cop, &status);
+            CMPIStatus status_l;
+            CMPIInstance* ci = CMNewInstance(cb, cop, &status_l);
 
-            if (status.rc != CMPI_RC_OK || !ci)
+            if (status_l.rc != CMPI_RC_OK || !ci)
             {
                 CIMPLE_WARN(("CMNewInstance() failed"));
                 return -1;
@@ -1318,6 +1322,12 @@ CMPIObjectPath_Container::~CMPIObjectPath_Container()
 
 size_t CMPIObjectPath_Container::get_size()
 {
+    // KS_TODO Dec 2010. Possible issue with this and Pegasus 2.10.  
+    // Need if zero, need to try the zeroth and determine from this
+    // if keycount really zero. Issue introduced by Pegasus v 2.10
+    // Note that we already commented out code elsewhere to correct this issue
+    // but we need to add code here to prevent any misuse in the future.
+    // See the adapter for more comments.
     return CMGetKeyCount(_rep, NULL);
 }
 

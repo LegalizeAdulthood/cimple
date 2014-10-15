@@ -50,27 +50,39 @@ static void* _proc(void* arg)
 
 int main(int argc, char** argv)
 {
-
     // Single thread test.  Used to find memory leak.
-    Thread myThread;
+    //Thread myThread;
 
+//  {
+//      const char STR[] = "abc";
+//      int r = Thread::create_joinable(myThread, _proc, (void*)strdup(STR));
+//      assert(r == 0);
+//  }
+//
+//  {
+//      void* value = 0;
+//      int r = Thread::join(myThread, value);
+//
+//      assert(r == 0);
+//      assert(strcmp((char*)value,"abc") == 0);
+//
+//      free(value);
+//  }
+
+    // create a single detached thread and wait for it to complete
     {
-        const char STR[] = "abc";
-        int r = Thread::create_joinable(myThread, _proc, (void*)strdup(STR));
+
+        Thread myThread;
+        const char str[] = "abc";
+        int r = Thread::create_detached(myThread, _proc, (void*)str);
         assert(r == 0);
+
+        Time::sleep(3 * Time::SEC);
     }
+    return 0;  // enable this to just do one thread for memory leak testing
 
-    {
-        void* value = 0;
-        int r = Thread::join(myThread, value);
 
-        assert(r == 0);
-        assert(strcmp((char*)value,"abc") == 0);
-
-        free(value);
-    }
-    //return 0;  // enable this to just do one thread for memory leak testing
-
+    // Test to create multiple joinable strings and then wait to join them.
 
     const size_t N = 164;
     Thread threads[N];

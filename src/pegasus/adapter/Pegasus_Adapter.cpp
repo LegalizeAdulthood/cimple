@@ -639,15 +639,27 @@ void Pegasus_Adapter::invokeMethod(
     // Convert instance name to CIMPLE reference.
 
     Instance* ref = 0;
+    Str meth_name(methodName);
 
+    // test if cop is valid.  Should not exist with static method.
+    const Meta_Method* mm = find_method(mc, meth_name);
+
+    if ((mm->flags & CIMPLE_FLAG_STATIC) && (cop.getKeyBindings().size() > 0))
+    {
+        _throw(Pegasus::CIM_ERR_FAILED,
+               "Mof static qualifier and object path mismatch");
+    }
+
+    // Convert instance name to CIMPLE reference.
     if (Converter::to_cimple_key(*ns, cop, mc, ref) != 0)
-        _throw(Pegasus::CIM_ERR_FAILED);
+    {
+            _throw(Pegasus::CIM_ERR_FAILED, "Invalid object path");
+    }
 
     Ref<Instance> ref_d(ref);
 
     // Convert to a CIMPLE method:
 
-    Str meth_name(methodName);
     Instance* meth = 0;
 
     if (Converter::to_cimple_method(
@@ -669,6 +681,7 @@ void Pegasus_Adapter::invokeMethod(
         _throw(Pegasus::CIM_ERR_NOT_SUPPORTED, P_String(buffer.data()));
     }
 
+    // Check CIMPLE status returns and convert to Pegasus returns
     _check(status);
 
     // Convert CIMPLE method to Pegasus types:
@@ -679,7 +692,7 @@ void Pegasus_Adapter::invokeMethod(
     if (Converter::to_pegasus_method(_get_host_name(), cop.getNameSpace(), 
         meth, CIMPLE_FLAG_OUT, out_params, return_value) != 0)
     {
-        _throw(Pegasus::CIM_ERR_FAILED);
+        _throw(Pegasus::CIM_ERR_FAILED, "CIMPLE to Pegasus conversion failed");
     }
 
     // Deliver the responses:

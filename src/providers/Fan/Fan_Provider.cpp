@@ -44,55 +44,33 @@ Get_Instance_Status Fan_Provider::get_instance(
     const Fan* model,
     Fan*& instance)
 {
-    Fan* fan = _map.lookup(model);
-
-    if (fan)
-    {
-        instance = fan->clone();
-        return GET_INSTANCE_OK;
-    }
-
-    return GET_INSTANCE_NOT_FOUND;
+    // This is more efficient than using NOT_SUPPORTED
+    return _map.get_instance(model, instance);
 }
 
 Enum_Instances_Status Fan_Provider::enum_instances(
     const Fan* model,
     Enum_Instances_Handler<Fan>* handler)
 {
-    for (size_t i = 0; i < _map.size(); i++)
-    {
-        Fan* instance = _map[i]->clone();
-        handler->handle(instance);
-    }
-
-    return ENUM_INSTANCES_OK;
+    return _map.enum_instances(model, handler);
 }
 
 Create_Instance_Status Fan_Provider::create_instance(
     Fan* instance)
 {
-    return CREATE_INSTANCE_UNSUPPORTED;
-}
+    return _map.create_instance(instance);}
 
 Delete_Instance_Status Fan_Provider::delete_instance(
     const Fan* instance)
 {
-    return DELETE_INSTANCE_UNSUPPORTED;
-}
+    return _map.delete_instance(instance);}
 
 Modify_Instance_Status Fan_Provider::modify_instance(
     const Fan* model,
     const Fan* instance)
 {
-    Fan* fan = _map.lookup(instance);
+    return _map.modify_instance(model, instance);
 
-    if (fan)
-    {
-        copy(fan, instance);
-        return MODIFY_INSTANCE_OK;
-    }
-
-    return MODIFY_INSTANCE_NOT_FOUND;
 }
 
 Invoke_Method_Status Fan_Provider::SetSpeed(

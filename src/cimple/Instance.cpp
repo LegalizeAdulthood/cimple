@@ -73,13 +73,13 @@ void __default_construct(
     // to initialize most properties. Others must be default constructed.
     // These include arrays and strings.
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        uint32 flags = mc->meta_features[i]->flags;
+        uint32 flags = mc->meta_features[index]->flags;
 
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
-            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[index];
             void* prop = 0;
             prop = __property_of(inst, mp);
 
@@ -109,41 +109,43 @@ void __default_construct(
                         case REAL64:
                         case CHAR16:
                         {
-                            __Array_Base* base = (__Array_Base*)prop;
+                            __Array_Base* local_base = (__Array_Base*)prop;
 
                             Meta_Value_Array<void>* mv = 
                                 (Meta_Value_Array<void>*)(mp->value);
 
-                            __append(base->rep, mv->elements, mv->num_elements);
+                            __append(local_base->rep, mv->elements,
+                                    mv->num_elements);
                             break;
                         }
 
                         case STRING:
                         {
-                            Array<String>* base = (Array<String>*)prop;
+                            Array<String>* local_base = (Array<String>*)prop;
 
                             Meta_Value_Array<char*>* mv = 
                                 (Meta_Value_Array<char*>*)(mp->value);
 
-                            for (size_t i = 0; i < mv->num_elements; i++)
-                                base->append(String(mv->elements[i]));
+                            for (size_t j = 0; j < mv->num_elements; j++)
+                                local_base->append(String(mv->elements[j]));
 
                             break;
                         }
 
                         case DATETIME:
                         {
-                            Array<Datetime>* base = (Array<Datetime>*)prop;
+                            Array<Datetime>* local_base =
+                                (Array<Datetime>*)prop;
 
                             Meta_Value_Array<char*>* mv = 
                                 (Meta_Value_Array<char*>*)(mp->value);
 
-                            for (size_t i = 0; i < mv->num_elements; i++)
+                            for (size_t j = 0; j < mv->num_elements; j++)
                             {
                                 Datetime dt;
                                 // ATTN: potential error ignored here!
-                                dt.set(mv->elements[i]);
-                                base->append(Datetime(dt));
+                                dt.set(mv->elements[j]);
+                                local_base->append(Datetime(dt));
                             }
 
                             break;
@@ -205,7 +207,7 @@ void __default_construct(
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = 
-                (const Meta_Reference*)mc->meta_features[i];
+                (const Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
             {
@@ -238,13 +240,13 @@ static void __uninitialized_copy(Instance* i1, const Instance* i2)
 
     // Copy features.
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        uint32 flags = mc->meta_features[i]->flags;
+        uint32 flags = mc->meta_features[index]->flags;
 
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
-            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[index];
 
             void* p1 = 0;
             p1 = __property_of(i1, mp);
@@ -270,7 +272,8 @@ static void __uninitialized_copy(Instance* i1, const Instance* i2)
         }
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+            const Meta_Reference* mr =
+                (Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
             {
@@ -279,10 +282,10 @@ static void __uninitialized_copy(Instance* i1, const Instance* i2)
 
                 new(&r1) Array_Ref;
 
-                for (size_t i = 0; i < r2.size(); i++)
+                for (size_t j = 0; j < r2.size(); j++)
                 {
-                    if (r2[i])
-                        r1.append(clone(r2[i]));
+                    if (r2[j])
+                        r1.append(clone(r2[j]));
                     else
                         r1.append(0);
                 }
@@ -404,12 +407,10 @@ bool identical(const Instance* i1, const Instance* i2)
     CIMPLE_ASSERT(i2->__magic == CIMPLE_INSTANCE_MAGIC);
 
     // They must have the same meta class.
-
     if (i1->meta_class != i2->meta_class)
         return false;
 
     // Check namespace field.
-
     if (i1->__name_space != i2->__name_space)
         return false;
 
@@ -417,16 +418,15 @@ bool identical(const Instance* i1, const Instance* i2)
 
     const Meta_Class* mc = i1->meta_class;
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        const Meta_Feature* mf = mc->meta_features[i];
+        const Meta_Feature* mf = mc->meta_features[index];
 
         // Check that features are identical.
-
         if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = 
-                (const Meta_Property*)mc->meta_features[i];
+                (const Meta_Property*)mc->meta_features[index];
 
             if (!property_eq((const Meta_Property*)mp, 
                 __property_of(i1, mp), __property_of(i2, mp)))
@@ -435,7 +435,7 @@ bool identical(const Instance* i1, const Instance* i2)
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = 
-                (const Meta_Reference*)mc->meta_features[i];
+                (const Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
             {
@@ -445,10 +445,10 @@ bool identical(const Instance* i1, const Instance* i2)
                 if (r1.size() != r2.size())
                     return false;
 
-                for (size_t i = 0; i < r1.size(); i++)
+                for (size_t j = 0; j < r1.size(); j++)
                 {
-                    const Instance* tmp1 = r1[i];
-                    const Instance* tmp2 = r2[i];
+                    const Instance* tmp1 = r1[j];
+                    const Instance* tmp2 = r2[j];
 
                     if (tmp1 && tmp2 && !identical(tmp1, tmp2))
                         return false;
@@ -493,9 +493,9 @@ bool key_eq(const Instance* i1, const Instance* i2)
 
     // For each feature of i1.
 
-    for (size_t i = 0; i < mc1->num_meta_features; i++)
+    for (size_t index = 0; index < mc1->num_meta_features; index++)
     {
-        const Meta_Feature* mf1 = mc1->meta_features[i];
+        const Meta_Feature* mf1 = mc1->meta_features[index];
 
         // Skip non-key features.
 
@@ -553,6 +553,19 @@ bool key_eq(const Instance* i1, const Instance* i2)
 }
 
 // ATTN: fix copy to work between instances of different classes.
+/*
+    Common internal copy function used by the public copy functions.
+    Copies the features of one instance (src) to a destination instance
+    modulated by the inputs keys_only and model.
+    The meta_class for the source and destination MUST be the same or
+    the copy is not executed. Today this causes a CIMPLE_ASSERT.
+ 
+    @param dest - Destination instance for the copy
+    @param src Instance source for the copy
+    @param keys_only bool. If true only the key properties are copied.
+    @param model Instance that serves as the model for the copy. If model
+    exists only properties in the model are copied.
+*/
 static void __copy(
     Instance* dest, 
     const Instance* src, 
@@ -580,16 +593,16 @@ static void __copy(
 
     const Meta_Class* mc = dest->meta_class;
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        uint32 flags = mc->meta_features[i]->flags;
+        uint32 flags = mc->meta_features[index]->flags;
 
         if (keys_only && !(flags & CIMPLE_FLAG_KEY))
             continue;
 
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
-            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[index];
             void* p1 = __property_of(dest, mp);
             const void* p2 = __property_of(src, mp);
 
@@ -616,7 +629,8 @@ static void __copy(
         }
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+            const Meta_Reference* mr =
+                (Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
             {
@@ -635,10 +649,10 @@ static void __copy(
 
                 r1.clear();
 
-                for (size_t i = 0; i < r2.size(); i++)
+                for (size_t j = 0; j < r2.size(); j++)
                 {
-                    if (r2[i])
-                        r1.append(clone(r2[i]));
+                    if (r2[j])
+                        r1.append(clone(r2[j]));
                     else
                         r1.append(0);
                 }
@@ -683,6 +697,11 @@ void copy_keys(Instance* dest, const Instance* src)
     __copy(dest, src, true, 0);
 }
 
+/*
+    Implementation of the clone templae function.  Creates a new
+    instance of the meta_class and copies the instance to this
+    newly created instance.
+*/
 Instance* clone(const Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
@@ -714,13 +733,13 @@ void __set_null_flags(
 
     const Meta_Class* mc = inst->meta_class;
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        uint32 flags = mc->meta_features[i]->flags;
+        uint32 flags = mc->meta_features[index]->flags;
 
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
-            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[index];
             uint8* prop = (uint8*)__property_of(inst, mp);
 
             if (flags & CIMPLE_FLAG_KEY)
@@ -777,13 +796,14 @@ ssize_t get_associators(
     bool found_inst = false;
     size_t r = 0;
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        uint32 flags = mc->meta_features[i]->flags;
+        uint32 flags = mc->meta_features[index]->flags;
 
         if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+            const Meta_Reference* mr =
+                (Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
             {
@@ -860,13 +880,14 @@ bool is_reference_of(
 
     const Meta_Class* mc = ref->meta_class;
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        uint32 flags = mc->meta_features[i]->flags;
+        uint32 flags = mc->meta_features[index]->flags;
 
         if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+            const Meta_Reference* mr =
+                (Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
             {
@@ -901,9 +922,9 @@ bool keys_non_null(const Instance* inst)
 
     const Meta_Class* mc = inst->meta_class;
 
-    for (size_t i = 0; i < mc->num_meta_features; i++)
+    for (size_t index = 0; index < mc->num_meta_features; index++)
     {
-        uint32 flags = mc->meta_features[i]->flags;
+        uint32 flags = mc->meta_features[index]->flags;
 
         // Skip non keys:
 
@@ -912,7 +933,7 @@ bool keys_non_null(const Instance* inst)
 
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
-            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[index];
             const void* field = __property_of(inst, mp);
 
             if (null_of(mp, field))
@@ -920,7 +941,8 @@ bool keys_non_null(const Instance* inst)
         }
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+            const Meta_Reference* mr =
+                (Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
             {
@@ -1123,7 +1145,7 @@ static bool _str_to_sint64(const char*& str, sint64& x)
 
     x = strtoll(str, &end, 16);
 
-#elif defined(CIMPLE_WINDOWS)
+#elif defined(CIMPLE_WINDOWS_MSVC)
 
     // ATTN: hanlde overflow here!
     x = strtol(str, &end, 16);

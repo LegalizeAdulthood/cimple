@@ -2,5 +2,19 @@
 class Arrays
 {
     [key] string key;
+    uint32 returnCount;
     uint16 arr[];
+    sint16 arr_sin16[];
+    uint32 arr_uint32[];
+    uint64 arr_uint64[];
+    sint64 arr_sint64[];
+    String arrString[];
+    Datetime arrDatetime[];
+
+    uint32 setReturnCount(
+	[IN] uint32 returnCount,
+	[OUT] uint32 prevReturnCount);
+
+    uint32 getReturnCount(
+	[OUT] uint32 returnCount);
 };

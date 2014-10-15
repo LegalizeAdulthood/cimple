@@ -23,7 +23,9 @@
 **
 **==============================================================================
 */
-
+/*
+    Adds feature type (Property, Reference, Method) to Qualified Element
+*/
 #ifndef _MOF_Feature_h
 #define _MOF_Feature_h
 

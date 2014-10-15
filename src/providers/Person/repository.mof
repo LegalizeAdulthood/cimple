@@ -3,6 +3,12 @@ class Person
     [key] uint32 ssn;
     string first;
     string last;
+
+    uint32 hello(
+	[IN]
+	String message,
+	[OUT]
+	String response);
 };
 
 class Salesman : Person
@@ -20,6 +26,6 @@ class PersonLink
 [Association]
 class SalesmanLink : PersonLink
 {
-    // [Key] Salesman ref parent;
-    // [Key] Salesman ref child;
+    [Key] Salesman ref parent;
+    [Key] Salesman ref child;
 };

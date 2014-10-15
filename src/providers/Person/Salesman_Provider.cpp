@@ -69,5 +69,19 @@ Modify_Instance_Status Salesman_Provider::modify_instance(
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
+Invoke_Method_Status Salesman_Provider::hello(
+    const Salesman* self,
+    const Property<String>& message,
+    Property<String>& response,
+    Property<uint32>& return_value)
+
+{
+    return_value.null = false;
+    return_value.value = 0;
+    return INVOKE_METHOD_OK;
+}
+
+
+/*@END@*/
 CIMPLE_NAMESPACE_END
 

@@ -23,7 +23,10 @@
 **
 **==============================================================================
 */
-
+/*
+    Defines list mechanism where elements can be appended, scaned, etc.
+    
+*/
 #ifndef _MOF_Element_h
 #define _MOF_Element_h
 

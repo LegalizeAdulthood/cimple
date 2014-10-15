@@ -826,7 +826,9 @@ void MOF_Class_Decl::validate()
     }
 #endif
 }
-
+/*
+    Validate the class declaration and add it to the class decl list
+*/
 void MOF_Class_Decl::handle(MOF_Class_Decl* class_decl)
 {
     class_decl->validate();
@@ -845,6 +847,10 @@ void MOF_Class_Decl::handle(MOF_Class_Decl* class_decl)
 #endif
 }
 
+/*
+    Return true if this class Decl is in the class hiearchy above the
+    object class.
+*/
 bool MOF_Class_Decl::is_a(const MOF_Class_Decl* ancestor) const
 {
     const MOF_Class_Decl* p;
@@ -880,6 +886,10 @@ void MOF_Class_Decl::print_static_list()
         p->print();
 }
 
+/*
+    Find the ansestor to the current class with the
+    classname provided.  Returns 0 if none found.
+*/
 const MOF_Class_Decl* MOF_Class_Decl::find_ancestor(
     const char* class_name) const
 {

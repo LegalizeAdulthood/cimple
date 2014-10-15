@@ -1,0 +1,58 @@
+   [Description (
+   "Class that allows creation of very large instances and also allows the "
+   "client to set both size and number of instances returned. In addition "
+   "it allows nultiple types of instance generation in the provider.")]
+class CMPL_LargeInstance
+{
+    [Key] uint32 Key;
+
+    [Description (
+    "Approximate size of this instance in bytes.  This is approximate because "
+    "it counts only the size of the Strings in the largeProperty and "
+    "largeArrayProperty properties.")]
+    Uint32 sizeOfInstance = 1000;
+
+    [Description (
+    "Count of instances to return from an enumerate. ")]
+    Uint32 countToReturn = 1000;
+
+    [Description (
+    "Algorithm for creation of instances in the provider. "
+    "Direct - Generate directly with the create function. "
+    "Clone - Create and clone each object. "
+    "Cache - Create at provider startup and get from Cache." ),
+    ValueMap { "1", "2", "3"}, 
+       Values { "Direct", "Clone", "Cache"}]
+    Uint16 instanceDeliveryType = 1;
+
+    [Description (
+    "String property that the provider sets to a string with arbitary value "
+    "whose length corresponds to the current setting of size parameter.")]
+    String largeProperty;
+
+    [Description (
+    "Array of strings that can be set to size determined by the "
+    "sizeOfInstance parameter.")]
+    String largeArrayProperty[];
+    
+    // Allow setting and getting the provider configuration parameters of
+    // type (1 = create instances directly, 
+    //       2 = Created in repository and cloned
+    // size - Approximate size of each instance
+    // count - count of instances to return from enumerate operations.
+    // These are class level methods.
+    [Static]
+    uint16 setConfig(
+        [ In ] Uint16 type,
+        [ In ] Uint32 size,
+        [ In ] Uint32 count);
+    [Static]
+    uint16 getConfig(
+        [ Out ] Uint16 type,
+        [ Out ] Uint32 size,
+        [ Out ] Uint32 count);
+
+    // test because of CMPI issue
+    [Static]
+    uint16 test();
+};

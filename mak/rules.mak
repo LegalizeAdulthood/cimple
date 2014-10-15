@@ -1,3 +1,5 @@
+##
+##  Include specific make files depending on keyword.
 ifdef SOURCES
   _OBJECTS = $(SOURCES:.cpp=$(OBJ))
   OBJECTS = $(_OBJECTS:.c=$(OBJ))

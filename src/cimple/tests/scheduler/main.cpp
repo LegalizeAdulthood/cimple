@@ -297,7 +297,7 @@ void test03()
 
     void * value;
     assert(Thread::join(sched_auto.thread_id(), value) == 0);
-    assert(x.test_range_sec(3, 4));
+    assert(x.test_range_sec(2, 5));
     //  Rerun again with new timer after sleeping.
     //  no particular reason for the sleep
 
@@ -433,7 +433,7 @@ void test07()
     void * value;
     assert(Thread::join(sched_auto.thread_id(), value) == 0);
 
-    assert(x.test_range_sec(3,5));
+    assert(x.test_range_sec(3,6));
 
     x.restart();
     // Run a second test to assure it works the second time
@@ -448,6 +448,7 @@ void test07()
 
     printf("+++++ passed test07\n");
 }
+
 int main(int argc, char** argv)
 {
     printf("Test+++ %s\n",argv[0]);

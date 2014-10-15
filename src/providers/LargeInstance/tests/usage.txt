@@ -1,0 +1,17 @@
+Usage: %s [OPTIONS] MODULE_NAME CLASS_NAME...
+
+Defines an execution profile for the provider and then executes client
+operations to test this profile. Used to generate very large instances and
+very large numbers of instances for performance and resource usage testing.
+Without options, executes with default values.
+
+OPTIONS:
+    -V      -- print the version.
+    -s      -- Approximate size of instances returned (default 1200)
+    -c      -- Number of instances to be returned for enumerate operations
+               (default 100)
+    -r      -- number of times to repeat the operation (default 1)
+    -t      -- type of provider operation to generate enumerates
+               1 = Direct, 2 = Clone, 3 = Cache (default 1)
+    -v      -- verbose output
+    -h      -- print this message.

@@ -37,7 +37,18 @@ public:
     Modify_Instance_Status modify_instance(
         const Salesman* model,
         const Salesman* instance);
+
+    Invoke_Method_Status hello(
+        const Salesman* self,
+        const Property<String>& message,
+        Property<String>& response,
+        Property<uint32>& return_value);
+
+    /*@END@*/
+private:
+    Instance_Map<Salesman> _map;
 };
+
 
 CIMPLE_NAMESPACE_END
 

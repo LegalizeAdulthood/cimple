@@ -19,7 +19,7 @@ include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-ifdef CIMPLE_WINDOWS
+ifdef CIMPLE_WINDOWS_MSVC
     DEV_NULL=.dev.null
 else
     DEV_NULL=/dev/null

@@ -27,7 +27,8 @@
 #include "Atomic.h"
 #include "config.h"
 
-#if defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
+#if defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC) || \
+    defined(CIMPLE_PLATFORM_WIN64_X86_64_MSVC)
 
 #include "Atomic_WIN32_IX86_MSVC.cpp"
 

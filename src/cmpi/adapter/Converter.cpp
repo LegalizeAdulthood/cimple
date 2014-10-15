@@ -87,7 +87,7 @@ CMPIrc make_cmpi_instance(
         cop = tmp;
     }
 
-    // Create CMPI instance:
+    // Create CMPI instance using the CMNEWInstance function:
 
     ci = CMNewInstance(cb, cop, 0);
 

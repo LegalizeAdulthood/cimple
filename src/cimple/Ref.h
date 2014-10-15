@@ -71,7 +71,7 @@ class Ref
 {
 public:
 
-    ///
+    /// constructor
     Ref();
 
     ///
@@ -118,15 +118,24 @@ public:
 
     /** 
      * return pointer to the Ref'd entity
-     * @return T*
+     * @return T* 
+     *      * \verbatim
+     * Example:
+     *     Ref<Instance> x(X::create(true));
+     *     Instance* y = x.ptr();
+     * \endverbatim  
      */
     T* ptr();
 
     /** 
-     * return const pointer to the Ref'd entity
+     * Return const pointer to the Ref'd entity
      * 
-     * 
-     * @return const T*
+     * @return const T* 
+     * \verbatim
+     * Example:
+     *     Ref<Instance> x(X::create(true));
+     *     const Instance* y = x.ptr();
+     * \endverbatim  
      */
     const T* ptr() const;
 
@@ -137,8 +146,14 @@ public:
     const T& operator*() const;
 
     /** 
-     * return pointer to instance; set pointer to zero
-     * @return T*
+     * return pointer to instance; set pointer to zero. Once you 
+     * steal a Ref, it is your problem to destroy it. 
+     * @return T* 
+     * \verbatim
+     * Example:
+     *     Ref<Instance> x(X::create(true));
+     *     Instance* x.steal();
+     * \endverbatim 
      */
     T* steal();
 
@@ -150,7 +165,12 @@ public:
 
     /** 
      * return current reference count
-     * @return size_t Current reference count
+     * @return size_t Current reference count 
+     * \verbatim
+     * Example:
+     *     Ref<Instance> x(X::create(true));
+     *     printf("count = %zd\n", x.count());
+     * \endverbatim
      */
     size_t count() const;
 
@@ -256,7 +276,7 @@ inline bool Ref<T>::operator!() const
 template<class T>
 size_t Ref<T>::count() const
 {
-    return Atomic_get(_ptr->refs);
+    return Atomic_get(&_ptr->__refs);
 }
 
 CIMPLE_NAMESPACE_END

@@ -1,0 +1,11 @@
+class X
+{
+    [Key] uint32 Key;
+    string Names[] = { "One", "Two" };
+};
+
+class Y : X
+{
+    [Key] uint32 Key;
+    boolean Flag;
+};

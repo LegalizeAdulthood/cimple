@@ -18,12 +18,13 @@ SOURCES = \
     repository.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
-ifdef CIMPLE_PROVIDER_BUILD_CMPI
-   CIMPLE_CMPI_MODULE=1
-else
+## Changing Provider interfaces requires reregistering the provider. Default Pegasus
+##
+ifndef CIMPLE_PROVIDER_TYPE
    CIMPLE_PEGASUS_MODULE=1
 endif
 
+## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak
 
 include $(TOP)/mak/rules.mak
@@ -68,7 +69,14 @@ reregister:
 	$(MAKE) insmod
 	$(MAKE) regmod
 
-
+##============================================================================
+##
+## Live manual tests using Pegasus cimcli
+## These tests are a demonstration that the provider works.  They
+## do not test the results today, simply assure that there is no exception
+## on response
+##
+##===========================================================================	
 manual-test:
 	cimcli ei Cross
 	cimcli ei Left

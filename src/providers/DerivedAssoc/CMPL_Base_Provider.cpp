@@ -49,7 +49,6 @@ Enum_Instances_Status CMPL_Base_Provider::enum_instances(
 {
     TRACE;
     return _map.enum_instances(model, handler);
-    return ENUM_INSTANCES_OK;
 }
 
 Create_Instance_Status CMPL_Base_Provider::create_instance(

@@ -2,6 +2,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+// Create the resource object.  Note that this builds the
+// instances.
 Resource resource;
 
 Resource::Resource()

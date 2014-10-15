@@ -24,6 +24,10 @@
 **==============================================================================
 */
 
+/*
+    Specialization for method parameters. Since this is a subclass of
+    Qualified Element, it includes the ability to handle parameter qualifiers.
+*/
 #ifndef _MOF_Parameter_h
 #define _MOF_Parameter_h
 

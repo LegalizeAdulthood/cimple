@@ -16,3 +16,6 @@ tests:
 
 genclass:
 	$(BINDIR)/genclass -I ../mof Erp
+
+vg:
+	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)

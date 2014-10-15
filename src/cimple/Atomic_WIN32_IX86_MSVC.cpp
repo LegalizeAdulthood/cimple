@@ -24,43 +24,28 @@
 **==============================================================================
 */
 
-// define __Interlock intrinsics.  Note that they are not included in
-// earlier versions of VC
 // Placed as .cpp because we do not want to enternalize the windows
 // header files to the providers.
-#if _msc_ver >= 1400
-#include <intrin.h>
-#else
-#define _X86_
-#include <windef.h>
-#include <winbase.h>
-extern "C"
-{
-   LONG  __cdecl _InterlockedIncrement(LONG volatile *Addend);
-   LONG  __cdecl _InterlockedDecrement(LONG volatile *Addend);
-}
-#pragma intrinsic (_InterlockedIncrement)
-#define InterlockedIncrement _InterlockedIncrement
-
-#pragma intrinsic (_InterlockedDecrement)
-#define InterlockedDecrement _InterlockedDecrement
-#endif
+// This set of definitions covers both the 32 and 64 bit versions of
+// windows.
+#include "Atomic_WIN32_IX86_MSVC.h"
+#include <windows.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
 void Atomic_inc(Atomic* atomic)
 {
-    _InterlockedIncrement(&atomic->n);
+    InterlockedIncrement(&atomic->n);
 }
 
 int Atomic_dec_and_test(Atomic* atomic)
 {
-    return _InterlockedDecrement(&atomic->n) == 0;
+    return InterlockedDecrement(&atomic->n) == 0;
 }
 
 void Atomic_dec(Atomic* atomic)
 {
-    _InterlockedDecrement(&atomic->n);
+    InterlockedDecrement(&atomic->n);
 }
 CIMPLE_NAMESPACE_END
 

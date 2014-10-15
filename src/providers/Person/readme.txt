@@ -2,9 +2,18 @@ This directory contains an implementation of the 'Person' provider. It
 implements:
 
 	Person instance provider
-	Link association provider
+	Salesman instance provider
+	PersonLink association provider
+	SalesmanLink Association provider
 
-The Linke provider defines four associations:
+The Person provider and PersonLink provider were implemented with the
+Instance_Map cache as a demonstration of this function with all of the
+CIM Operation implemented directly in map calls.
+
+Note that this is an update in Nov 09. The earlier version used the
+Map but not the map CIM Operation calls.
+
+The PersonLink provider defines four associations:
 
 	P1 <-- parent.child --> P3
 	P1 <-- parent.child --> P4
@@ -13,19 +22,16 @@ The Linke provider defines four associations:
 
 To register provider with Pegasus:
 
-	% make reg
+	% make regmod
 
 To test:
+        make live
+
 
 	% cimcli gi Person
 	% cimcli ei Person
 	% cimcli ni Person
 	% cimcli gi Person.ssn=2
 	% cimcli di Person.ssn=2
-	% create_person
-	% modify_person
 
-In Pegasus you will have to do the following from the Pegasus root:
 
-	% make repository
-	% cimserver -s; cimserver

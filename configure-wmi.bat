@@ -1,1 +1,1 @@
-configure --bindir=c:/windows/system32 --enable-wmi
+configure --bindir=c:/windows/system32 --enable-wmi --cimplehome-envvar=HOME

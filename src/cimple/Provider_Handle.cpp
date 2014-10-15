@@ -128,7 +128,8 @@ namespace _enum_associator_names
             // increment ref so proc does not destroy
             ref(associator_names[i]);
 
-            printf("Provider_Handle enum_associator_names call proc name NS = %s\n",
+            printf("Provider_Handle enum_associator_names call proc name NS "
+                        "= %s\n",
                     associator_names[i]->__name_space.c_str());
 
             print(associator_names[i]);
@@ -215,7 +216,8 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
 
     // Enumerate the association provider.
 
-    //printf("Provider_handle call enum_instances for _enum_associator_names::_proc\n");
+    //printf("Provider_handle call enum_instances for "
+    //    "_enum_associator_names::_proc\n");
 
     Enum_Instances_Status status = enum_instances(
         model, _enum_associator_names::_proc , &args);
@@ -248,7 +250,7 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
 //
 // Provider_Handle::enum_references()
 //
-//------------------------------------------------------------------------------ 
+//------------------------------------------------------------------------------
 
 //
 // Callback function for enumerate references. It calls the users callback
@@ -380,7 +382,7 @@ Enum_References_Status Provider_Handle::enum_references(
 //
 // Provider_Handle::get_instance()
 //
-//------------------------------------------------------------------------------ 
+//-----------------------------------------------------------------------------
 
 // Callback function that provides filtering of instances to find a particular
 // instance.  If a matching instance is found, it is set into the

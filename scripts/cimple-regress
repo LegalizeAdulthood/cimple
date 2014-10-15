@@ -27,7 +27,7 @@
 function set_root()
 {
     DIRNAME=cimple-regress.dir
-    ROOT=`pwd`/$DIRNAME
+    TEST_ROOT=`pwd`/$DIRNAME
 }
 
 ##==============================================================================
@@ -84,7 +84,7 @@ function create_dir()
 
 function setup_pegasus()
 {
-    export PEGASUS_ROOT=$ROOT/pegasus
+    export PEGASUS_ROOT=$TEST_ROOT/pegasus
     export PEGASUS_HOME=$PEGASUS_ROOT/home
     detect_platform
     export PEGASUS_PLATFORM=$PLATFORM
@@ -101,7 +101,7 @@ function setup_pegasus()
 
 function checkout_pegasus()
 {
-    cd $ROOT
+    cd $TEST_ROOT
     export CVSROOT=:pserver:anon:anon@cvs.opengroup.org:/cvs/MSB
     cvs co pegasus
 
@@ -166,11 +166,11 @@ function build_pegasus()
 function build_cimple()
 {
     # Install the patch:
-    cd $ROOT/cimple/src/pegasus/patch
+    cd $TEST_ROOT/cimple/src/pegasus/patch
     make patch
 
     # Build CIMPLE
-    cd $ROOT/cimple
+    cd $TEST_ROOT/cimple
     ./configure
     make
 
@@ -189,7 +189,7 @@ function build_cimple()
 
 function echo_env()
 {
-    echo "ROOT=$ROOT"
+    echo "TEST_ROOT=$TEST_ROOT"
     echo "PEGASUS_ROOT=$PEGASUS_ROOT"
     echo "PEGASUS_HOME=$PEGASUS_HOME"
     echo "PEGASUS_PLATFORM=$PEGASUS_PLATFORM"
@@ -203,7 +203,7 @@ function echo_env()
 
 function test_cimple()
 {
-    cd $ROOT/cimple
+    cd $TEST_ROOT/cimple
     make -s tests
 
     if [ ! "$?"  == "0" ]
@@ -221,7 +221,7 @@ function test_cimple()
 
 function register_providers()
 {
-    cd $ROOT/cimple
+    cd $TEST_ROOT/cimple
     make reg
 
     if [ ! "$?"  == "0" ]
@@ -250,7 +250,7 @@ function run_live_tests()
     echo "Waiting 5 seconds..."
     sleep 5
 
-    cd $ROOT/cimple
+    cd $TEST_ROOT/cimple
     make live-tests
 
     if [ ! "$?"  == "0" ]

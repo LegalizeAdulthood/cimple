@@ -47,7 +47,7 @@
  * of CIMPLE that dynamically manage instances (ex. the 
  * interface adapters). 
  *  
- * Some of the function that should be used include: 
+ * Some of the functions that should be used include: 
  *     \li \c key_eq - test for key equality between instances
  *     \li \c identical - compare two instances for equality
  *     \li \c copy - copy non-null properties from one instance
@@ -68,9 +68,11 @@
 #define CIMPLE_MAX_REFERENCES_PER_CLASS 16
 
 /*
-    Create the CIMPLE Class for the provider defined. This defines the
-    create, destroy and clone methods for the CIMPLE class defined for
-    this property.  
+    CIMPLE_CLASS template that defines the instance manipulation functions for
+    the creation, destruction, and clone of instances.  This template class
+    is instantiated for the target class in the header file <Classname>.h
+    with genprov. genprov creates the CIMPLE Class for the provider defined.
+    This defines the create, destroy and clone methods for the CIMPLE class.  
 */
 #define CIMPLE_CLASS(CLASS) \
     public: \
@@ -143,7 +145,9 @@ struct CIMPLE_CIMPLE_LINKAGE Instance
 *                     created
 *   @param defaults bool parameter defining whether the complete
 *                   instance or only the key properties are
-*                   included
+*                   included. If true complete instance is
+*                   included.  If false, only key properties are
+*                   provided.  
 *   @return Instance* The created instance. 
 */
 CIMPLE_CIMPLE_LINKAGE
@@ -263,15 +267,15 @@ inline void de_nullify_keys(const Instance* inst)
 CIMPLE_CIMPLE_LINKAGE
 bool key_eq(const Instance* instance1, const Instance* instance2);
 
-/** Copies all properties from src to dest.
+/** Copies all properties of a CIMPLE instance from src to dest.
 */
 CIMPLE_CIMPLE_LINKAGE
 void copy(Instance* dest, const Instance* src);
 
-/** Copy properties from dest to src, whose features are non-null in model.
- *  This copy is designed specifically to support the paradigm
- *  for instance updating of the DMTF CIM modify_instance
- *  operation.
+/** Copy properties from dest to src, whose features are
+ *  non-null in the  model instance. This copy is designed
+ *  specifically to support the paradigm for instance updating
+ *  of the DMTF CIM modify_instance operation.
  *  
  *  @param dest Instance* that is the destination instance for
  *              non-null properties.
@@ -344,8 +348,9 @@ CIMPLE_CIMPLE_LINKAGE
 bool identical(const Instance* i1, const Instance* i2);
 
 /** Finds associators of the instance with respect to the given association 
-    instance. Returns the number of associators or negative one if this 
-    association instance does not refer to the instance at all.
+    instance. Returns the number of associators or negative one
+    (-1) if this association instance does not refer to the
+    instance at all.
 */
 CIMPLE_CIMPLE_LINKAGE
 ssize_t get_associators(
@@ -372,7 +377,7 @@ CIMPLE_CIMPLE_LINKAGE
 bool keys_non_null(const Instance* instance);
 
 /** The is_a operator is used to determine whether an instance
-*   is a subclass of a given class. For example:
+    is a subclass of a given class. For example:
 
     \code
     Derived* inst = Derived::create();
@@ -383,8 +388,8 @@ bool keys_non_null(const Instance* instance);
     }
     \endcode
 
-    This operator returns false if the instance is not descendant from the given
-    class.
+    This operator returns false if the instance is not
+    descendant from the given class.
 */
 template<class CLASS>
 struct is_a
@@ -499,7 +504,7 @@ Instance* model_path_to_instance(
     const Meta_Class* source_meta_class, 
     const char* path);
 
-// This function converts and instance to a CIM model path of the following
+// This function converts an instance to a CIM model path of the following
 // form:
 //
 //     MyClass.key1=value1,key2=value2

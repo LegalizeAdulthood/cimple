@@ -1,3 +1,10 @@
+##
+##	Shared library makefile
+##      includes targets to:
+##         - make shared libraries
+##         - clean object files from shared libraries
+##         - install and uninstall shared libraries
+##
 ##==============================================================================
 ##
 ## target:
@@ -18,6 +25,8 @@ $(TARGET): $(OBJECTS)
 ##==============================================================================
 ##
 ## clean:
+##    remove all of the object files and call the platform
+##    specific clean_shlib
 ##
 ##==============================================================================
 
@@ -31,6 +40,12 @@ clean:
 ##==============================================================================
 ##
 ## install/uninstall:
+## NOTE: Depends on Makefile variables INSTALL or INSMOD
+##       Uses target insmod if MODULE keyword set in Makefile.
+##          MODULE used for provider installation
+##       Uses target install, uninstall if INSTALL keyword set in Makefile
+##          INSTALL used for shared library installation.
+##       Install installs header files in addition to the shared library files.
 ##
 ##==============================================================================
 

@@ -18,18 +18,15 @@ SOURCES = \
     OutOfOfficeNotice_Provider.cpp \
     repository.cpp
 
-####CIMPLE_CMPI_MODULE=1
-####CIMPLE_PEGASUS_MODULE=1
-## Allow building providers for either CMPI or Pegasus C++ provider interface
-## Changing Provider interfaces requires reregistering the provider.
-ifdef CIMPLE_PROVIDER_BUILD_CMPI
+# Allow building providers for either CMPI or Pegasus C++ provider interface
+# Changing Provider interfaces requires reregistering the provider.
+# Default is CMPI Provider
+ifndef CIMPLE_PROVIDER_TYPE
     CIMPLE_CMPI_MODULE=1
-else
-    CIMPLE_PEGASUS_MODULE=1
 endif
 
+## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak
-
 
 include $(TOP)/mak/rules.mak
 

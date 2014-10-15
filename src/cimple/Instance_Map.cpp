@@ -46,7 +46,11 @@ void Instance_Map_Base::clear()
 
     _instances.clear();
 }
-
+/*
+    returns size_t with either -1 if the instance already exists or
+    the position where the instance was inserted if the insert was
+    successful
+*/
 size_t Instance_Map_Base::_insert(Instance* instance)
 {
     if (_find(instance) != (size_t)-1)

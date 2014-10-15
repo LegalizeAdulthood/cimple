@@ -19,21 +19,17 @@ SOURCES = \
     Upcall.cpp \
     Upcall_Provider.cpp
 
-####CIMPLE_PEGASUS_MODULE=1
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
-## Changing Provider interfaces requires reregistering the provider.
-ifdef CIMPLE_PROVIDER_BUILD_CMPI
-    CIMPLE_CMPI_MODULE=1
-else
+## Changing Provider interfaces requires reregistering the provider. Default Pegasus
+##
+ifndef CIMPLE_PROVIDER_TYPE
     CIMPLE_PEGASUS_MODULE=1
 endif
 
+## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak
 
 include $(TOP)/mak/rules.mak
-
-regmod:
-	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
 	$(BINDIR)/genclass -r Upcall CIM_ComputerSystem
@@ -47,6 +43,16 @@ genmod:
 genproj:
 	$(BINDIR)/genproj Upcall Upcall CIM_ComputerSystem
 
+regmod:
+	$(BINDIR)/regmod -c $(TARGET)
+
+##============================================================================
+##
+## Live manual tests using Pegasus cimcli
+## These tests are a demonstration that the provider works.  They
+## do not test the results today, simply assure that there is no exception
+## on response
+##===========================================================================	
 manual-test:
 	cimcli gc Upcall
 	cimcli ni Upcall
@@ -64,6 +70,12 @@ starttest:
 stoptest:
 	cimcli im Upcall StopTest
 
+##============================================================================
+##
+## Live tests that are executed as part of the CIMPLE regression tests
+##             These tests use Pegasus cimcli
+## 
+##===========================================================================	
 live:
 	cimcli ni Upcall
 	cimcli ei Upcall

@@ -24,6 +24,8 @@
 **==============================================================================
 */
 
+/* adds name to MOF_Element. This is the name for this element
+*/
 #ifndef _MOF_Named_Element_h
 #define _MOF_Named_Element_h
 

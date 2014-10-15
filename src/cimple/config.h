@@ -57,6 +57,8 @@
 # include "platform_LINUX_S390_GNU.h"
 #elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
 # include "platform_WIN32_IX86_MSVC.h"
+#elif defined(CIMPLE_PLATFORM_WIN64_X86_64_MSVC)
+# include "platform_WIN64_X86_64_MSVC.h"
 #elif defined(CIMPLE_PLATFORM_DARWIN_PPC_GNU)
 # include "platform_DARWIN_PPC_GNU.h"
 #elif defined(CIMPLE_PLATFORM_DARWIN_IX86_GNU)
@@ -138,7 +140,7 @@
 #define CIMPLE_UINT64_MAX (uint64(-1)) /* 18446744073709551615 */
 
 #define CIMPLE_SINT64_MIN (-CIMPLE_SINT64_MAX-1)
-#define CIMPLE_SINT64_MAX 9223372036854775807LL
+#define CIMPLE_SINT64_MAX CIMPLE_SINT64_LITERAL(9223372036854775807)
 
 //==============================================================================
 //
@@ -385,7 +387,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 2
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 14
+#define CIMPLE_REVISION 16
 
 //==============================================================================
 //
@@ -457,6 +459,26 @@ static CIMPLE_UNUSED const char __cimple_version_tag[] = \
 #ifndef CIMPLE_NO_VERSION_SYMBOL
     static CIMPLE_UNUSED int __cimple_version_symbol =
         __CIMPLE_VERSION_SYMBOL(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION);
+#endif
+
+//==============================================================================
+//
+// Default Literal definition for Sint64/32 and Uint64/32 Literals. Avoids 
+// issues with use of the suffixes unless defined otherwise in platform files
+//
+//==============================================================================
+#ifndef CIMPLE_SINT64_LITERAL
+#define CIMPLE_SINT64_LITERAL(X) (Sint64 (X##LL))
+#endif
+#ifndef CIMPLE_UINT64_LITERAL
+#define CIMPLE_UINT64_LITERAL(X) (Uint64 (X##ULL))
+#endif
+
+#ifndef CIMPLE_SINT32_LITERAL
+#define CIMPLE_SINT32_LITERAL(X) (X##L)
+#endif
+#ifndef CIMPLE_UINT32_LITERAL
+#define CIMPLE_UINT32_LITERAL(X) (X##UL)
 #endif
 
 //==============================================================================

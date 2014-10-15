@@ -202,7 +202,7 @@ public:
         const Instance* instance);
 
     /** 
-     * Make na upcall to the server to delete the instance defined 
+     * Make an upcall to the server to delete the instance defined 
      * by the model parameter and namespace. 
      * 
      * @param name_space

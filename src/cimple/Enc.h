@@ -24,6 +24,12 @@
 **==============================================================================
 */
 
+/*
+    Lowest level of the encoding and decoding functions.  The functions in
+    this file encode single cimple value types and their corresponding arrays.
+    This module also includes the functions for swapping and alignment.
+*/
+
 #ifndef _cimple_Enc_h
 #define _cimple_Enc_h
 
@@ -82,6 +88,12 @@ inline uint16 swap_uint16(uint16 x)
     (((uint16)(x) & 0x00ffu) << 8) |
     (((uint16)(x) & 0xff00u) >> 8));
 }
+inline sint16 swap_sint16(sint16 x)
+{
+    return (sint16)(
+    (((uint16)(x) & 0x00ffu) << 8) |
+    (((uint16)(x) & 0xff00u) >> 8));
+}
 
 inline uint32 swap_uint32(uint32 x)
 {
@@ -92,9 +104,19 @@ inline uint32 swap_uint32(uint32 x)
     (((uint32)(x) & 0xff000000ul) >> 24));
 }
 
+inline sint32 swap_sint32(sint32 x)
+{
+    return (sint32)(
+    (((uint32)(x) & 0x000000fful) << 24) |
+    (((uint32)(x) & 0x0000ff00ul) <<  8) |
+    (((uint32)(x) & 0x00ff0000ul) >>  8) |
+    (((uint32)(x) & 0xff000000ul) >> 24));}
+
 CIMPLE_CIMPLE_LINKAGE
 uint64 swap_uint64(uint64 x);
 
+CIMPLE_CIMPLE_LINKAGE
+sint64 swap_sint64(sint64 x);
 //==============================================================================
 //
 // pack_<type>
@@ -220,7 +242,6 @@ void pack_sint32_array(Buffer& out, const Array<sint32>& x);
 
 CIMPLE_CIMPLE_LINKAGE
 void pack_uint64_array(Buffer& out, const Array<uint64>& x);
-
 
 CIMPLE_CIMPLE_LINKAGE
 void pack_sint64_array(Buffer& out, const Array<sint64>& x);

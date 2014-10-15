@@ -1,40 +1,44 @@
-Usage: %s [-Vcvhm] [-C classname] [modules]
+Usage: %s [-chmnsVv] [-C classname] [modules]
 
 Where:
-    -V           : Print the version
-    -v           : Verbose mode. Displays additonal information
-    -h           : Print this help text
-    -c           : Display Pegasus registration classes in place of 
-                   formatted output
+
+    -c           : Display instances of Pegasus registration classes in place 
+                   of formatted output.
     -C  ClassName: Display registration for particular class. This
-                   parameter may be repeated.
+                   parameter may be repeated to display multiple classes
+    -h           : Print this help text
     -m           : Show only Provider Modules registered
+    -n           : show fields that have NULL information
+    -s           : Summary showing tree of module and provider names only
+    -V           : Print the version
+    -v           : Verbose mode. Displays additional information (primarily
+                   status information)
 
 Synopsis: Display information about Pegasus CIMServer provider registration.
      Displays module registration settings and status, provider registration
      settings and status including Classes registered. This information is
-     acquired from the provider registration information instances.
+     acquired from the provider registration information instances. This
+     tool is Pegasus-only because the registration mechanisms have not ben
+     standardized in DMTF.
 
 Output form is:
     <moduleName>: <InterfaceType> Ver[<InterfaceVersion>] Loc[<Location>]
+                  <optional info if verbose mode>
         <providerName>: <status>
+                  <optional info if verbose mode>
             <class Name>: Namespaces[<Namespaces>] <Provider Types>
+                  <optional info if verbose mode>
+
     where: InterfaceType    Defines CMPI, C++Default, JMPI, etc. 
            InterfaceVersion Defines the version for this interface
-	   Location         Defines the module name
-	   status           Current status for this provider
-	   Class Name       Name of class registered for this provider
-	   Namespaces       Namespaces for which this class registered
-	   Provider Types   Provider type (ex. Instance, Method, Assocation,
-	                    Indication)
+	       Location         Defines the module name
+	       status           Current status for this provider
+	       Class Name       Name of class registered for this provider
+	       Namespaces       Namespaces for which this class registered
+	       Provider Types   Provider type (ex. Instance, Method, Assocation,
+	                        Indication)
 Example:
-%%<regview CMPL_Time_Module
-    CMPL_Time_Module: C++Default Ver[2.5.0] Vendor[Pegasus] Loc[cimpletime]
-        CMPL_Time_Provider:
-            CMPL_Time: NameSpaces[root/cimv2] Instance, Method
-
-
-
-
-
-
+%%<regview CMPL_Time_Module returns:
+    CMPL_Time_Module[#1}: C++Default Ver[2.5.0] Vendor[Pegasus] Loc[cimpletime]
+        CMPL_Time_Provider[#0]:
+            CMPL_Time: Instance,Method[2,5] NameSpaces[root/cimv2] 

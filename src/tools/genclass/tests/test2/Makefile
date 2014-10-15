@@ -27,3 +27,6 @@ genclass:
 
 tests:
 	$(TARGET)
+
+vg:
+	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)

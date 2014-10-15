@@ -4,6 +4,7 @@ include $(TOP)/mak/config.mak
 DIRS = \
     array \
     atomicint \
+    buffer \
     cast \
     class \
     classes \
@@ -23,6 +24,13 @@ DIRS = \
     time \
     type \
     value
+
+## Temporary bypass for windows becasue of issue
+## in test
+## TODO - Fix This issue
+ifdef CIMPLE_UNIX
+    DIRS += io
+endif 
 
 ifdef ENABLE_SCHEDULER_OPT
     DIRS += lists scheduler

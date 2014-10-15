@@ -3,9 +3,7 @@
 ##
 
 TOP = ../../..
-##ROOT=.
-##BINDIR=.
-##LIBDIR=.
+
 include $(TOP)/mak/config.mak
 
 MODULE=1

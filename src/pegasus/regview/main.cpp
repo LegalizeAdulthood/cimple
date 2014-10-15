@@ -58,6 +58,7 @@
 
 #define INTEROP_NAMESPACE "root/PG_InterOp"
 #define DEFAULT_PROVIDING_NAMESPACE "root/cimv2"
+#define PROVIDER_MODULE_CLASSNAME "PG_PROVIDER_MODULE";
 #define PROVIDER_CLASSNAME "PG_Provider"
 #define CAPABILITIES_CLASSNAME "PG_ProviderCapabilities"
 
@@ -77,32 +78,48 @@ bool module_opt = false;
 String module_to_display;
 bool verbose_opt = false;
 bool help_opt = false;
+bool summary_opt = false;
+bool null_opt = false;
 Array<String> target_classlist;
 
 //------------------------------------------------------------------------------
 //
 // print() - Print an instance or its elements. Note that this is incomplete
-// and only prints Uint16, DateTime and String data types.
+// and only prints DateTime, boolean, and String data types specifically.
+// All others are driven by the template
 //
 //------------------------------------------------------------------------------
+
+template<class T>
+static void _print_elem( T x )
+{
+    cout << x;
+}
 
 static void _print_elem(const String& x)
 {
     cout << '"' << x << '"';
 }
 
-static void _print_elem(Uint16 x)
+static void _print_elem(Boolean x)
 {
-    cout << x;
+    cout << x ? "true" : "false";
 }
-
+static void _print_elem(CIMObjectPath& x)
+{
+    cout << x.toString();
+}
 static void _print_elem(const CIMDateTime& x)
 {
     cout << x.toString();
 }
 
+/*
+    Print a CIMValue output. Template to be generated for every
+    used CIMType.
+*/
 template<class T>
-static void _print_value(const CIMValue& v, T*)
+static void _print_cimValue(const CIMValue& v, T*)
 {
     if (v.isNull())
     {
@@ -122,7 +139,7 @@ static void _print_value(const CIMValue& v, T*)
             _print_elem(x[i]);
 
             if (i + 1 != x.size())
-                cout << ", ";
+                cout << ",";
         }
 
         cout << "};";
@@ -135,6 +152,8 @@ static void _print_value(const CIMValue& v, T*)
         cout << ';';
     }
 }
+
+// print a complete instance out
 
 void print(CIMInstance& inst, bool showNullValues = true)
 {
@@ -157,14 +176,49 @@ void print(CIMInstance& inst, bool showNullValues = true)
         switch (prop.getType())
         {
             case CIMTYPE_STRING:
-                _print_value(v, (String*)0);
+                _print_cimValue(v, (String*)0);
                 break;
-
+            case CIMTYPE_CHAR16:
+                _print_cimValue(v, (Char16*)0);
+                break;
+            case CIMTYPE_UINT8:
+                _print_cimValue(v, (Uint8*)0);
+                break;
+            case CIMTYPE_SINT8:
+                _print_cimValue(v, (Uint8*)0);
+                break;
             case CIMTYPE_UINT16:
-                _print_value(v, (Uint16*)0);
+                _print_cimValue(v, (Uint16*)0);
+                break;
+            case CIMTYPE_SINT16:
+                _print_cimValue(v, (Uint16*)0);
+                break;
+            case CIMTYPE_UINT32:
+                _print_cimValue(v, (Uint32*)0);
+                break;
+            case CIMTYPE_SINT32:
+                _print_cimValue(v, (Uint32*)0);
+                break;
+            case CIMTYPE_UINT64:
+                _print_cimValue(v, (Uint64*)0);
+                break;
+            case CIMTYPE_SINT64:
+                _print_cimValue(v, (Uint64*)0);
+                break;
+            case CIMTYPE_REAL32:
+                _print_cimValue(v, (Real32*)0);
+                break;
+            case CIMTYPE_REAL64:
+                _print_cimValue(v, (Real64*)0);
+                break;
+            case CIMTYPE_BOOLEAN:
+                _print_cimValue(v, (Boolean*)0);
+                break;
+            case CIMTYPE_REFERENCE:
+                _print_cimValue(v, (CIMObjectPath*)0);
                 break;
             case CIMTYPE_DATETIME:
-                _print_value(v, (Uint16*)0);
+                _print_cimValue(v, (CIMDateTime*)0);
                 break;
 
             default:
@@ -188,6 +242,31 @@ String _spaces(Uint32 count = 1)
     return(s);
 }
 
+// Generate newline and indent spaces per input parameter.
+String _indentNewline(Uint32 indent)
+{
+    String s = "\n";
+    while (indent-- > 0)
+    {
+        s.append(" ");
+    }
+    return(s);
+
+}
+
+/*
+    Functions to generate a string from a single CIM Type value
+*/
+//template<class T>
+//String _toString( T x )
+//{
+//    return(x);
+//}
+
+String _toString(Boolean x)
+{
+    return(x ? "true" : "false");
+}
 String _toString(const Array<String> in)
 {
     String s;
@@ -202,23 +281,6 @@ String _toString(const Array<String> in)
     return s;
 }
 
-String _toString(const Array<Uint16> in)
-{
-    String s;
-    for (Uint32 i = 0 ; i < in.size() ; i++)
-    {
-        if (i > 0)
-        {
-            s.append(",");
-        }
-        char temp[22];
-        Uint32 size;
-        const char* x  = Uint16ToString(temp, in[i], size);
-        s.append(x);
-    }
-    return s;
-}
-
 String _toString(Uint16 in)
 {
     String s;
@@ -228,6 +290,92 @@ String _toString(Uint16 in)
     s.append(x);
     return s;
 }
+
+String _toString(const Array<Uint16> in)
+{
+    String s;
+    for (Uint32 i = 0 ; i < in.size() ; i++)
+    {
+        if (i > 0)
+        {
+            s.append(",");
+        }
+        s.append(_toString(in[i]));
+    }
+    return s;
+}
+
+//------------------------------------------------------------------------------
+//
+// get the value of a property from an instance
+// 
+// -----------------------------------------------------------------------------
+
+// Find a property in an instance. Returns the findPropery position and if
+// it is not found, sets return to PEG_NOT_FOUND and issues an error message.
+Uint32 findProperty(const CIMInstance& inst, const String& name)
+{
+    Uint32 pos;
+    if ((pos = inst.findProperty(name)) == PEG_NOT_FOUND)
+    {
+        printf("ERROR: property %s not found in instance of class %s\n",
+               (const char *) name.getCString(),
+               (const char *)inst.getClassName().getString().getCString());
+    }
+//  else
+//  {
+//      printf("property %s isfound in instance of class %s\n",
+//             (const char *) name.getCString(),
+//             (const char *)inst.getClassName().getString().getCString());
+//  }
+    return pos;
+}
+
+// Get the value of a single property.  Returns the value in the rtn
+// parameter. If property not found, outpus an eeeor message.
+
+template<class T>
+bool getPropertyValue(const CIMInstance& instance,
+                          const String& name,
+                          T& rtn)
+{
+    Uint32 pos;
+    if ((pos = findProperty(instance,name)) != PEG_NOT_FOUND)
+    {
+        CIMConstProperty p = instance.getProperty(pos);
+        CIMValue v = p.getValue();
+        v.get(rtn);
+        return true;
+    }
+    return false;
+}
+
+//------------------------------------------------------------------------------
+//
+// get the value of a property with name from instance.  Must be a 
+// String property.
+//
+//------------------------------------------------------------------------------
+//
+
+String get_property_value_string(const CIMInstance& instance, const String& name)
+{
+    Uint32 pos;
+    String s = String::EMPTY;
+    if ((pos = instance.findProperty(name)) != PEG_NOT_FOUND)
+    {
+        CIMConstProperty p = instance.getProperty(pos);
+        CIMValue v = p.getValue();
+        v.get(s);
+        return s;
+    }
+    else
+        printf("property %s not found\n", (const char *) name.getCString());
+    return s;
+}
+
+
+
 
 /******************************************************************************
 **
@@ -242,7 +390,7 @@ static void _toString_elem(String& s, const String& x)
 
 static void _toString_elem(String& s, Uint16 x)
 {
-    s.append(x);
+    s.append(_toString(x));
 }
 
 static void _toString_elem(String& s, const CIMDateTime& x)
@@ -270,7 +418,7 @@ String _tostring_cimvalue(const CIMValue& v, T*)
                 _toString_elem(s, x[i]);
     
                 if (i + 1 != x.size())
-                    s.append(", ");
+                    s.append(",");
             }
         }
         else
@@ -283,9 +431,19 @@ String _tostring_cimvalue(const CIMValue& v, T*)
     return(s);
 }
 
-String _property_value(CIMInstance& inst, const String& propName,
+/*
+    Return a string that represents the value of a property in the
+    instance.
+    propName - Name of property in the instance
+    display - display name - Alternate name to be displayed. This defines
+        what is displayed.  Since it is optional, the default is to not
+        display the name surrounded by the [ ]
+    showNull - If true, Null values are displayed. Default is to not
+    display properties that have NULL value.
+*/
+String dispPropertyValueString(CIMInstance& inst, const String& propName,
                           const String& display = String::EMPTY,
-                          Boolean showNull = false)
+                          Boolean showNull = null_opt)
 {
     Uint32 pos;
     String rtn = String::EMPTY;
@@ -294,7 +452,6 @@ String _property_value(CIMInstance& inst, const String& propName,
         rtn.append(display);
         rtn.append("[");
     }
-
     
     if ((pos = inst.findProperty(propName)) != PEG_NOT_FOUND)
     {
@@ -315,15 +472,20 @@ String _property_value(CIMInstance& inst, const String& propName,
                 break;
 
             case CIMTYPE_DATETIME:
-                rtn.append(_tostring_cimvalue(v, (Uint16*)0));
+                rtn.append(_tostring_cimvalue(v, (CIMDateTime*)0));
                 break;
 
             default:
-                ;
+                printf("ERROR. Code does not support CIMTYpe %s\n",
+                       cimTypeToString(p.getType()));
+
         }
     }
     else
-        printf("property %s not found\n", (const char *) propName.getCString());
+        printf("property %s not found in instance %s\n",
+               (const char *) propName.getCString(),
+               (const char *) inst.getPath().toString().getCString());
+
     if (display != String::EMPTY)
     {
         rtn.append("]");
@@ -358,7 +520,7 @@ bool match_args(const Array<String>& list, const String& target)
 // (from Value value to ValueMap value or vice versa) or with another pair
 // of qualifiers with a relationship similar to the Value/ValueMap pair.
 //
-String translateValue(
+String mapValue(
     const String & value,
     const CIMName & propName,
     const CIMName & sourceQualifier,
@@ -394,7 +556,6 @@ String translateValue(
             }
         }
     }
-
     return mappedValue;
 }
 
@@ -403,19 +564,19 @@ String translateValue(
 // it can be found when searching the Values qualifier (or some similar
 // qualifier).
 //
-String translateValue(Uint16 value,
+String mapValue(Uint16 value,
     const CIMName & propName,
     const CIMName & sourceQualifier,
     const CIMName & targetQualifier,
     const CIMClass & classDef)
 {
-    return translateValue(CIMValue(value).toString(), propName,
+    return mapValue(CIMValue(value).toString(), propName,
       sourceQualifier, targetQualifier, classDef);
 }
 
 // translate all of the values in an array into a comma separated
 // return string.
-String translateValues(const Array<Uint16> values,
+String mapValues(const Array<Uint16> values,
     const CIMName & propName,
     const CIMName & sourceQualifier,
     const CIMName & targetQualifier,
@@ -425,14 +586,65 @@ String translateValues(const Array<Uint16> values,
     for (Uint32 i = 0 ; i < values.size() ; i++)
     {
         if (s.size() != 0)
-            s.append(", ");
+            s.append(",");
 
-        s.append(translateValue(values[i], propName,
+        s.append(mapValue(values[i], propName,
           sourceQualifier, targetQualifier, classDef));
     }
     return s;
 }
+/*
+    get a string representing the property value mapped by the
+    value and valueMap qualifiers. If the property does not exist,
+    the only indication is a ERROR output to the user.
+    TODO: Right now we do not use the showNull or displayName options.
+*/
+String getMappedPropertyValue(const CIMClass& c,
+    const CIMInstance& inst,
+    const String& propName,
+    const String& displayName = String(),
+    Boolean showNull = null_opt)
+{
+    String s;
+    // Add test for existence of the qualifiers in the class
+    Uint32 pos;
+    if ((pos = inst.findProperty(propName)) != PEG_NOT_FOUND)
+    {
+        CIMConstProperty p = inst.getProperty(pos);
+        CIMValue v = p.getValue();
+        if (v.isNull() && !showNull)
+        {
+            return(String::EMPTY);
+        }
+        if (p.isArray())
+        {
+            Array<Uint16> values;
+            // following returns a bool
+            if(getPropertyValue(inst, String(propName), values))    
+            {
+                    s.append(mapValues(values, propName,"ValueMap",
+                                    "Values", c));
+            }
+        }
+        else
+        {
+            Uint16 value;
+            if(getPropertyValue(inst, String(propName), value))
+            {
+                   s.append(mapValue(value, propName,"ValueMap",
+                                    "Values", c));
+            }
+        }
+    }
+    else
+    {
+        printf("ERROR: property %s not found in instance of class %s\n",
+              (const char *) propName.getCString(),
+              (const char *)c.getClassName().getString().getCString());
+    }
+    return s;
 
+}
 //------------------------------------------------------------------------------
 //
 // get_class()
@@ -514,111 +726,6 @@ bool enumerateInstances(
 }
 //------------------------------------------------------------------------------
 //
-// get the value of a property with name from instance.  Must be a 
-// String property.
-//
-//------------------------------------------------------------------------------
-// 
-String get_property_value(const CIMInstance& instance,const String& name)
-{
-    Uint32 pos;
-    String s = String::EMPTY;
-    if ((pos = instance.findProperty(name)) != PEG_NOT_FOUND)
-    {
-        CIMConstProperty p = instance.getProperty(pos);
-        CIMValue v = p.getValue();
-        v.get(s);
-        return s;
-    }
-    else
-        printf("property %s not found\n", (const char *) name.getCString());
-    return s;
-}
-
-bool get_property_value(const CIMInstance& instance, const String& name,
-                        String& rtn)
-{
-    Uint32 pos;
-    if ((pos = instance.findProperty(name)) != PEG_NOT_FOUND)
-    {
-        CIMConstProperty p = instance.getProperty(pos);
-        CIMValue v = p.getValue();
-        v.get(rtn);
-        return true;
-    }
-    else
-        printf("property %s not found\n", (const char *) name.getCString());
-    return false;
-}
-
-bool get_property_value(const CIMInstance& instance, const String& name,
-                        Uint16& rtn)
-{
-    Uint32 pos;
-    if ((pos = instance.findProperty(name)) != PEG_NOT_FOUND)
-    {
-        CIMConstProperty p = instance.getProperty(pos);
-        CIMValue v = p.getValue();
-        v.get(rtn);
-        return true;
-    }
-    else
-        printf("property %s not found\n", (const char *) name.getCString());
-    return false;
-}
-
-bool get_property_value(const CIMInstance& inst,
-                     const String& name,
-                     Array<String>& rtn)
-{
-    Uint32 pos;
-    if ((pos = inst.findProperty(name)) != PEG_NOT_FOUND)
-    {
-        CIMConstProperty p = inst.getProperty(pos);
-        CIMValue v = p.getValue();
-        v.get(rtn);
-        return true;
-    }
-    else
-        printf("property %s not found\n", (const char *) name.getCString());
-    return false;
-}
-
-bool get_property_value(const CIMInstance& inst,
-                     const String& name,
-                     Array<Uint16>& rtn)
-{
-    Uint32 pos;
-    if ((pos = inst.findProperty(name)) != PEG_NOT_FOUND)
-    {
-        CIMConstProperty p = inst.getProperty(pos);
-        CIMValue v = p.getValue();
-        v.get(rtn);
-        return true;
-    }
-    else
-        printf("property %s not found\n", (const char *) name.getCString());
-    return false;
-}
-
-bool get_property_value(const CIMInstance& inst,
-                     const String& name,
-                     CIMDateTime& rtn)
-{
-    Uint32 pos;
-    if ((pos = inst.findProperty(name)) != PEG_NOT_FOUND)
-    {
-        CIMConstProperty p = inst.getProperty(pos);
-        CIMValue v = p.getValue();
-        v.get(rtn);
-        return true;
-    }
-    else
-        printf("property %s not found\n", (const char *) name.getCString());
-    return false;
-}
-//------------------------------------------------------------------------------
-//
 // find_capabilities(name) - Find capabilities instances for this provider name
 // The key properties are ProviderModuleName and ProviderName. 
 // NOTE: This would be simpler with a get_instance but that does not work
@@ -653,9 +760,9 @@ int find_capabilities(CIMClient& client,
     for (Uint32 i = 0 ; i < instances.size() ; i++)
     {
         String thisProviderModuleName =
-            get_property_value(instances[i], String("ProviderModuleName"));
+            get_property_value_string(instances[i], String("ProviderModuleName"));
         String thisProviderName =
-            get_property_value(instances[i], String("ProviderName"));
+            get_property_value_string(instances[i], String("ProviderName"));
 
         if (thisProviderName == targetProviderName &&
             thisProviderModuleName == targetProviderModuleName)
@@ -704,10 +811,10 @@ int find_providerModules(CIMClient& client,
     for (Uint32 i = 0 ; i < instances.size() ; i++)
     {
         if (String::compareNoCase(targetClass,
-            get_property_value(instances[i], "ClassName")) == 0)
+            get_property_value_string(instances[i], "ClassName")) == 0)
         {
             String thisProviderModuleName =
-                get_property_value(instances[i], String("ProviderModuleName"));
+                get_property_value_string(instances[i], String("ProviderModuleName"));
             providerModuleList.append(thisProviderModuleName);
         }
     }
@@ -739,7 +846,7 @@ Array<CIMInstance> find_providers(CIMClient& client,
     for (Uint32 i = 0 ; i < providers.size() ; i++)
     {
         String providerModuleName = 
-            get_property_value(providers[i], String("ProviderModuleName"));
+            get_property_value_string(providers[i], String("ProviderModuleName"));
         if (providerModuleName == name)
         {
             rtn.append(providers[i]);
@@ -792,7 +899,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "cC:vVhm")) != -1)
+    while ((opt = getopt(argc, argv, "cC:vVhmns")) != -1)
     {
         switch (opt)
         {
@@ -819,6 +926,14 @@ int main(int argc, char** argv)
 
             case 'm':
                 module_opt = true;
+                break;
+
+            case 'n':
+                null_opt = true;
+                break;
+
+            case 's':
+                summary_opt = true;
                 break;
 
             default:
@@ -885,12 +1000,10 @@ int main(int argc, char** argv)
 
     for(Uint32 i = 0 ; i < providerModules.size() ; i++)
     {
-        cout << "ProvidersModules " << i << endl;
-        Uint32 pos;
         String providerModuleName;
 
         providerModuleName =
-            get_property_value(providerModules[i],String("Name"));
+            get_property_value_string(providerModules[i],String("Name"));
 
         // find if any of the remaining arguments matches the current
         // provider module name
@@ -903,20 +1016,20 @@ int main(int argc, char** argv)
         // display
 
         Uint16 user_context;
-        get_property_value(providerModules[i], "UserContext", user_context);
+        getPropertyValue(providerModules[i], "UserContext", user_context);
 
         ///// THE FOLLOWING CAUSES OUT_OF_BOUNDS
 //      CIMDateTime install_date;
-//      get_property_value(providers[i],String("InstallDate"),
+//      get_property_value(providerModules[i],String("InstallDate"),
 //                         install_date);
 //      String designated_user_context =
 //          get_property_value(providerModules[i],
 //             String("DesignatedUserContext"));
 //
 //      Array<Uint16> module_operational_status;
-//      get_property_value(providers[i],String("OperationalStatus"),
+//      get_property_value(providerModules[i],String("OperationalStatus"),
 //                                 module_operational_status);
-// 
+
         // if there is a arg list and the module name does not match
         // any entries in this list, bypass
 
@@ -928,31 +1041,37 @@ int main(int argc, char** argv)
         else
         {
             cout << providerModuleName;
-            if (!module_opt)
+            cout << "[#" << i << "]";
+            if (!module_opt && !summary_opt)
             {
                 cout << ": "
-                     << _property_value(providerModules[i], "InterfaceType")
+                     << dispPropertyValueString(providerModules[i], "InterfaceType")
                      << _spaces()
-                     << _property_value(providerModules[i], "InterfaceVersion",
+                     << dispPropertyValueString(providerModules[i], "InterfaceVersion",
                                          "Ver")
                      << _spaces()
-                     << _property_value(providerModules[i], "Vendor", "Vendor")
+                     << dispPropertyValueString(providerModules[i], "Vendor", "Vendor")
                      << _spaces()
-                     << _property_value(providerModules[i], "Location", "Loc");
+                     << dispPropertyValueString(providerModules[i], "Location", "Loc");
             }
     
-                if (verbose_opt)
-                {
-                    cout << _spaces()
-                    << _property_value(providerModules[i], "UserContext",
-                                        "UserContext");
-    
-                    //_printVariable("Installed", install_date.toString());
-    //              if (health_state != CIMDateTime())
-    //                  _printVariable("HealthState", _toString(health_state));
-    //              _printVariable("OperationalStatus",
-    //                       _toString(operational_status));
-                }
+            if (verbose_opt)
+            {
+                cout << _spaces()
+                << dispPropertyValueString(providerModules[i], "UserContext",
+                                    "UserContext")
+                << dispPropertyValueString(providerModules[i],"InstallDate",
+                                   "InstallDate")
+//              << dispPropertyValueString(providerModules[i],"OperationalStatus",
+//                                 "OperationalStatus")
+                ;
+                //printVariable("Installed", install_date.toString());
+
+//              if (health_state != CIMDateTime())
+//                  _printVariable("HealthState", _toString(health_state));
+//              _printVariable("OperationalStatus",
+//                       _toString(operational_status));
+            }
             cout << endl;
         }
         // if module_option set, display only the module level
@@ -976,21 +1095,32 @@ int main(int argc, char** argv)
             printf("Error, providerModule Name property not found\n");
             continue;
         }
-
+            // get the providercapabilities class to support output
+            // formatting
+            CIMClass providerClass;
+            if (!get_class(client,INTEROP_NAMESPACE,
+                          PROVIDER_CLASSNAME,providerClass))
+            {
+                err("error: get_class %s %s",INTEROP_NAMESPACE,
+                    PROVIDER_CLASSNAME);
+                exit(1);
+            }
         // For each Provider Object
         for (Uint32 j = 0 ; j < providers.size() ; j++)
         {
-            cout << "providers " << j << endl;
             String providerName =
-                get_property_value(providers[j],String("Name"));
+                get_property_value_string(providers[j],String("Name"));
 
             // TODO move this one into the output definition
+            // These are in error.  They should be the string form under
+            // the rule that this is generalized. Right now the work
+            // only because these properties are String CIMTypes.
             Array<String> status_descriptions;
-            get_property_value(providers[j],String("StatusDescriptions"),
+            getPropertyValue(providers[j], String("StatusDescriptions"),
                                status_descriptions);
 
             String this_provider_module_name = 
-            get_property_value(providers[j],String("ProviderModuleName"));
+            get_property_value_string(providers[j], String("ProviderModuleName"));
 
             // test to be sure we have good linkage to instance
             // of provider module name.  This is probably not needed.
@@ -1003,61 +1133,67 @@ int main(int argc, char** argv)
                 continue;
             }
 
-            // Display the capabilities information
+            // Display the Provider information
 
             if (class_opt)
             {
-                cout << "ProviderModule = " << providerModuleName << endl;
-                print(providers[i]);
+                cout << "ProviderModule = " << providerModuleName 
+                    << "[#" << j << "]" << endl;
+                print(providers[j]);
             }
             else
             {
-                // output the provider information line
+                // output the provider name
                 cout << _spaces(4)
-                     << providerName << ":"
-                     << _property_value(providers[j], "Status", "Status")
-                     << _property_value(providers[j], "HealthState",
-                                        "HealthState")
-                     << _property_value(providers[j], "OperationalStatus",
-                                        "OperationalStatus")
-                     << endl;
+                     << providerName << "[#" << j << "]";
+                // if not summary output the provider basic information
+                if (!summary_opt)
+                {
+                    cout << ":" 
+                         << dispPropertyValueString(providers[j], "Status", "Status")
+                         << dispPropertyValueString(providers[j], "HealthState",
+                                            "HealthState")
+                         << dispPropertyValueString(providers[j], "OperationalStatus",
+                                            "OperationalStatus")
+                    ;
+                }
+                if (verbose_opt)
+                {
+                    cout << _indentNewline(16)
+                         << dispPropertyValueString(providers[j], "Status", "Status")
+                    ;
+                }
+                cout << endl;
             }
+
             // get capabilities instances for this provider and module
+
             Array<CIMInstance> caps;
+            // if summary only do not output the capabilities.
+            if (summary_opt)
+            {
+                continue;
+            }
             if(find_capabilities(client, providerName, providerModuleName, caps)
                != 0)
             {
                 continue;
             }
-
-            // for each capability returned print out the capabilities
-            // line
+            // get the class capabilities class to support output
+            // formatting
+            CIMClass capabilitiesClass;
+            if (!get_class(client,INTEROP_NAMESPACE,
+                          CAPABILITIES_CLASSNAME,capabilitiesClass))
+            {
+                err("error: get_class %s %s",INTEROP_NAMESPACE,
+                    CAPABILITIES_CLASSNAME);
+                exit(1);
+            }
+            // for each capability object return print out the capabilities
             for (Uint32 k = 0 ; k < caps.size(); k++)
             {
-                // get the Provider type and map the value and value map
-                // qualifiers
-                
-                Array<Uint16> provider_types;
-                get_property_value(caps[k], String("ProviderType"),
-                                   provider_types);
-    
-                String pt = _toString(provider_types);
-
-                String pts;
-                CIMClass c;
-                if (!get_class(client,INTEROP_NAMESPACE,
-                              CAPABILITIES_CLASSNAME,c))
-                {
-                    err("error: get_class %s %s",INTEROP_NAMESPACE,
-                        CAPABILITIES_CLASSNAME);
-                    exit(1);
-                }
-                String providerTypeString =
-                    translateValues(provider_types, "ProviderType","ValueMap",
-                                    "Values", c);
                 if (class_opt)
                 {
-
                     cout << "ProviderModule:Provider = " 
                         << providerModuleName 
                         << ":" << providerName << endl;
@@ -1065,15 +1201,26 @@ int main(int argc, char** argv)
                 }
                 else
                 {
+                    // get the Provider type and map the value and value map
+                    // qualifiers to produce the providerTypeString
+    
+                    Array<Uint16> provider_types;
+                    getPropertyValue(caps[k], String("ProviderType"),
+                                       provider_types);
                     // Display the capabilities information
                     cout << _spaces(8)
-                        << _property_value(caps[k], "ClassName") << ": "
-                        << _property_value(caps[k], "NameSpaces", "NameSpaces")
+                        << dispPropertyValueString(caps[k], "ClassName") << ":"
                         << _spaces(1)
-                        << providerTypeString
-                        << _property_value(caps[k], "supportedProperties",
-                                            "Properties")
-                        << _property_value(caps[k], "supportedMethods",
+                        << getMappedPropertyValue(capabilitiesClass, caps[k],
+                                            "ProviderType")
+                        << "[" << _toString(provider_types) << "]"
+                        << _spaces(1)
+                        << dispPropertyValueString(caps[k],
+                                "NameSpaces", "NameSpaces")
+                        << dispPropertyValueString(caps[k],
+                                "supportedProperties",
+                                "Properties")
+                        << dispPropertyValueString(caps[k], "supportedMethods",
                                             "Methods")
                         << endl;
                 }

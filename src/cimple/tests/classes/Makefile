@@ -26,5 +26,5 @@ tests:
 	$(TARGET)
 
 genclass:
-	genclass Employee Manager Link A B C AA BB OutOfOfficeNotice Everything \
+	$(BINDIR) genclass Employee Manager Link A B C AA BB OutOfOfficeNotice Everything \
 	EverythingDefaults

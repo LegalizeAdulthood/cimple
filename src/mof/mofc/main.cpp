@@ -31,6 +31,7 @@
 #include <getopt.h>
 #include "MOF_Parser.h"
 
+bool Options_ouput = false;
 //------------------------------------------------------------------------------
 //
 // _process_command_line_options()
@@ -51,7 +52,7 @@ static int _process_command_line_options(int& argc, char**& argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "I:dw")) != -1)
+    while ((opt = getopt(argc, argv, "I:dwo")) != -1)
     {
         switch (opt)
         {
@@ -80,6 +81,11 @@ static int _process_command_line_options(int& argc, char**& argv)
             case 'w':
             {
                 MOF_Options::warn = true;
+                break;
+            }
+            case 'o':
+            {
+                Options_ouput = true;
                 break;
             }
             case '?':
@@ -124,6 +130,7 @@ Where:\n\
         -I path -- include path\n\
         -d -- enabled debug printing\n\
         -w -- enable warnings\n\
+        -o -- display the interemediate output tables\n\
 \n"
 
 int main(int argc, char** argv)
@@ -167,7 +174,7 @@ int main(int argc, char** argv)
     // Print out all the declarations:
     //
 
-    if (MOF_Options::debug)
+    if (MOF_Options::debug || Options_ouput)
     {
         MOF_Class_Decl::print_static_list();
         MOF_Instance_Decl::print_static_list();

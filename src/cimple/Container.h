@@ -28,9 +28,10 @@
     Define a virtual base class for containers. The containers provide a 
     common abstraction for the conversion of instances between CIMPLE and
     the adapter instance formats.  
-    Each adapter must implement the folloowing functions:
+    Each adapter must implement the following functions:
     get_size() - Number of features in the adapter instance
-    get_value() - Get the value of a particular feature from the adapter instance
+    get_value() - Get the value of a particular feature from the adapter
+        instance
     get_name() - get the Name of the feature
     set_Value - set the value into the adapter instance.  Ex. create the
     property with this value or modify an existing property.
@@ -66,7 +67,7 @@ public:
 
     virtual int get_value(size_t pos, Value::Type type, Value& value) = 0;
 
-    /* set the defined feature including is value into the instance
+    /* Set the defined feature including its value into the instance
        defined by the container.
        @paramname char* name of the feature (reference or property)
        @param value Value& reference to the value to be set into the feature

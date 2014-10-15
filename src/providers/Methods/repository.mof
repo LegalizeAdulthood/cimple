@@ -8,6 +8,8 @@ class Methods
 {
     [key] uint32 key;
 
+    // test input and output and alternatives for in and out qualifier
+    // expression
     string foo(
 	[in] uint32 arg1, 
 	[in] string arg2, 
@@ -16,16 +18,20 @@ class Methods
 	[in(false), out] string arg5, 
 	[in(false), out] boolean arg6);
 
+    // test ref arguments
     string foo2(
 	[in] Argument ref arg1, 
 	[in(false), out] Argument ref arg2);
 
+    // test static qualifier
     [Static] string foo3();
 
+    // test string array in and out
     uint32 foo4(
         [in] string arr1[],
         [in(false), out] string arr2[]);
 
+    // test alternatives for in/out qualifier expression
     uint32 foo5(
         [in(true), out(false)] uint32 in_arg,
         [in(true), out(true)] uint32 in_out_arg,
