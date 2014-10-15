@@ -3071,7 +3071,7 @@ int main(int argc, char** argv)
 
             case 'f':
             case 'F':
-			 {
+            {
                 if (!optarg)
                 {
                     err("missing argument on -f or -F option");
@@ -3080,7 +3080,7 @@ int main(int argc, char** argv)
 
                 class_list_file = optarg;
                 break;
-			}
+            }
 
             case 'S':
                 sources_opt = true;

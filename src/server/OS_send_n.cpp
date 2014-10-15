@@ -33,20 +33,20 @@ ssize_t OS::send_n(Sock sock, const void* buffer, size_t size)
 
     while (r)
     {
-	ssize_t n = OS::send(sock, p, r);
+        ssize_t n = OS::send(sock, p, r);
 
-	if (n == -1)
-	{
-	    if (errno == EWOULDBLOCK)
-		return size - r;
-	    else 
-		return -1;
-	}
-	else if (n == 0)
-	    return size - r;
+        if (n == -1)
+        {
+            if (errno == EWOULDBLOCK)
+                return size - r;
+            else 
+                return -1;
+        }
+        else if (n == 0)
+            return size - r;
 
-	r -= n;
-	p += n;
+        r -= n;
+        p += n;
     }
 
     return size - r;

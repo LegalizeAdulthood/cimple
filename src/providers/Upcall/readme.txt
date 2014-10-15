@@ -20,29 +20,29 @@ Creating an upcall involves the following steps:
 
    For the example, the genclass call is:
 
-	genclass -r Upcall CIM_ComputerSystem
-	
+        genclass -r Upcall CIM_ComputerSystem
+
 This causes class meta data to be generated for both the target provider 
 (Upcall) and for the other classes referenced by the target class.  In 
 this case since CIM_ComputerSystem is part of a class hiearchy in the CIM 
 model, metadata is generated for all of the elements of the Class 
 hiearchy/accesabilty chain including: 
-	CIM_ComputerSystem
-	CIM_ConcreteJob
-	CIM_EnabledLogicalElement
-	CIM_Job
-	CIM_LogicalElement
-	CIM_ManagedElement
-	CIM_MagagedSystemElement
-	CIM_System
+        CIM_ComputerSystem
+        CIM_ConcreteJob
+        CIM_EnabledLogicalElement
+        CIM_Job
+        CIM_LogicalElement
+        CIM_ManagedElement
+        CIM_MagagedSystemElement
+        CIM_System
 
 2. Generate the Upcall provider with genprov and genmod.  Note that there is
    no reference to the Upcall classes in either genprov or genmod. For this
    example, the commands to be executed are:
 
-	genprov Upcall
+        genprov Upcall
 
-	genmod Upcall Upcall
+        genmod Upcall Upcall
 
    Note that this does not generate a CIM_ComputerSystem provider.
 
@@ -51,12 +51,12 @@ hiearchy/accesabilty chain including:
 
 4. Implement the Upcall functions for CIM_ComputerSystem.  The upcall interface
    is part of the cimom class and includes functions for:
-	  * enumerate_instances (enum_instances)
-	  * get_instance
-	  * create_instance
-	  * delete_instance
-	  * modify_instace
-	  * invoke_method
+          * enumerate_instances (enum_instances)
+          * get_instance
+          * create_instance
+          * delete_instance
+          * modify_instace
+          * invoke_method
    
    The upcall mechanism does not support references or association
    operations.
@@ -72,36 +72,36 @@ hiearchy/accesabilty chain including:
             of CIMPLE CIM_ComputerSystem* instances
          */
 
-	static int _enum_CIM_ComputerSystem()
-	{
-	    // Create the cimple Model for CIM_ComputerSystem
-	    CIM_ComputerSystem* model = CIM_ComputerSystem::create();
-	
-	    // Define the instance enumerator
-	    Instance_Enumerator ie;
-	
-	    // Call the enumerate function for CIM_ComputerSystem
-	    if (cimom::enum_instances("root/cimv2", model, ie) != 0)
-		return -1;
-	
-	    // Iterate the responses.
-	    for (; ie; ie++)
-	    {
-		// get the next iteration form the iterator
-	
-		Ref<Instance> inst = ie();
-		
-		// cast to an instance of CIM_ComputerSystem
-	         
-		CIM_ComputerSystem* ccs = cast<CIM_ComputerSystem*>(inst.ptr());
-	
-		// put it in the return array
+        static int _enum_CIM_ComputerSystem()
+        {
+            // Create the cimple Model for CIM_ComputerSystem
+            CIM_ComputerSystem* model = CIM_ComputerSystem::create();
+        
+            // Define the instance enumerator
+            Instance_Enumerator ie;
+        
+            // Call the enumerate function for CIM_ComputerSystem
+            if (cimom::enum_instances("root/cimv2", model, ie) != 0)
+                return -1;
+        
+            // Iterate the responses.
+            for (; ie; ie++)
+            {
+                // get the next iteration form the iterator
+        
+                Ref<Instance> inst = ie();
+                
+                // cast to an instance of CIM_ComputerSystem
+                 
+                CIM_ComputerSystem* ccs = cast<CIM_ComputerSystem*>(inst.ptr());
+        
+                // put it in the return array
 
-		print(ccs);
-	    }
-	
-	    return 0;
-	}
+                print(ccs);
+            }
+        
+            return 0;
+        }
 
 
     The provider implements the upcall both as a standalone function as shown 

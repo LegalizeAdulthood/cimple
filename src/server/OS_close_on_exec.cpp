@@ -32,7 +32,7 @@ int OS::close_on_exec(Sock sock)
 {
     int result;
     SF_RESTART(
-	::fcntl(sock, F_SETFD, ::fcntl(sock, F_GETFD) | FD_CLOEXEC), result);
+        ::fcntl(sock, F_SETFD, ::fcntl(sock, F_GETFD) | FD_CLOEXEC), result);
     return result;
 }
 

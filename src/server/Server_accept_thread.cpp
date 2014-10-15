@@ -33,9 +33,9 @@ void* Server::accept_thread(void* args)
 
     for (;;)
     {
-	Sock_Addr addr;
-	Sock sock = OS::accept(server->_listen_sock, addr);
-	OS::close(sock);
+        Sock_Addr addr;
+        Sock sock = OS::accept(server->_listen_sock, addr);
+        OS::close(sock);
     }
 
     return 0;

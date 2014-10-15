@@ -31,10 +31,10 @@ Sock OS::listener_socket(const Sock_Addr& addr)
     Sock sock;
 
     if ((sock = OS::socket()) == -1 ||
-	OS::set_reuse_addr(sock) == -1 ||
+        OS::set_reuse_addr(sock) == -1 ||
         OS::bind(sock, addr) == -1 ||
-	OS::listen(sock) == -1)
-	return -1;
+        OS::listen(sock) == -1)
+        return -1;
 
     return sock;
 }

@@ -21,18 +21,18 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const Super* model,
-	Super*& instance);
+        const Super* model,
+        Super*& instance);
 
     Enum_Instances_Status enum_instances(
-	const Super* model,
-	Enum_Instances_Handler<Super>* handler);
+        const Super* model,
+        Enum_Instances_Handler<Super>* handler);
 
     Create_Instance_Status create_instance(
         Super* instance);
 
     Delete_Instance_Status delete_instance(
-	const Super* instance);
+        const Super* instance);
 
     Modify_Instance_Status modify_instance(
         const Super* model,

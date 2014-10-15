@@ -40,11 +40,11 @@ public:
 
 #if 0
     Instance* get_instance(
-	Instance_Name* instance_name,
-	bool local_only,
-	bool include_qualifiers,
-	bool include_class_origin,
-	Property_List* property_list);
+        Instance_Name* instance_name,
+        bool local_only,
+        bool include_qualifiers,
+        bool include_class_origin,
+        Property_List* property_list);
 #endif
 
 private:

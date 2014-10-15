@@ -43,8 +43,8 @@ void Server::run()
 
     for (size_t i = 0; i < SF_NUM_ACCEPT_THREADS; i++)
     {
-	Thread thread;
-	OS::create_thread(thread, Server::accept_thread, this);
+        Thread thread;
+        OS::create_thread(thread, Server::accept_thread, this);
     }
 
     // Wait for all threads to exit:

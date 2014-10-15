@@ -65,7 +65,7 @@ class SNIA_SpareConfigurationCapabilities : CIM_Capabilities {
       [Description (
           "Set to true if this storage system automatically fails over. "
           "If set to false, the client must use the FailOver extinsic "
-		  "method, although that method may not be supported. ")]
+          "method, although that method may not be supported. ")]
    boolean AutomaticFailOver = FALSE;
 
       [Description (
@@ -186,7 +186,7 @@ class SNIA_SpareConfigurationService : CIM_Service {
           "In Use", "DMTF Reserved",
           "Method Parameters Checked - Job Started",
           "Consistency Check Already in Progress",
-		  "No Parity to Check",
+          "No Parity to Check",
           "Method Reserved", "Vendor Specific" }]
    uint32 CheckParityConsistency ( 
          [IN ( false ), OUT, Description (

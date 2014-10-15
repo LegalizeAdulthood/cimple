@@ -21,35 +21,35 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const ThingLink* model,
-	ThingLink*& instance);
+        const ThingLink* model,
+        ThingLink*& instance);
 
     Enum_Instances_Status enum_instances(
-	const ThingLink* model,
-	Enum_Instances_Handler<ThingLink>* handler);
+        const ThingLink* model,
+        Enum_Instances_Handler<ThingLink>* handler);
 
     Create_Instance_Status create_instance(
         ThingLink* instance);
 
     Delete_Instance_Status delete_instance(
-	const ThingLink* instance);
+        const ThingLink* instance);
 
     Modify_Instance_Status modify_instance(
         const ThingLink* model,
         const ThingLink* instance);
 
     Enum_Associator_Names_Status enum_associator_names(
-	const Instance* instance,
-	const String& result_class,
-	const String& role,
-	const String& result_role,
-	Enum_Associator_Names_Handler<Instance>* handler);
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associator_Names_Handler<Instance>* handler);
 
     Enum_References_Status enum_references(
-	const Instance* instance,
-	const ThingLink* model,
-	const String& role,
-	Enum_References_Handler<ThingLink>* handler);
+        const Instance* instance,
+        const ThingLink* model,
+        const String& role,
+        Enum_References_Handler<ThingLink>* handler);
 
     Enum_Associators_Status enum_associators(
         const Instance* instance,

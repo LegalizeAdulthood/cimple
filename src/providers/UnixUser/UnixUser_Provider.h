@@ -21,18 +21,18 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const UnixUser* model,
-	UnixUser*& instance);
+        const UnixUser* model,
+        UnixUser*& instance);
 
     Enum_Instances_Status enum_instances(
-	const UnixUser* model,
-	Enum_Instances_Handler<UnixUser>* handler);
+        const UnixUser* model,
+        Enum_Instances_Handler<UnixUser>* handler);
 
     Create_Instance_Status create_instance(
         UnixUser* instance);
 
     Delete_Instance_Status delete_instance(
-	const UnixUser* instance);
+        const UnixUser* instance);
 
     Modify_Instance_Status modify_instance(
         const UnixUser* model,

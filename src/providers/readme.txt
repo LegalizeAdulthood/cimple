@@ -19,7 +19,7 @@ forms of module registration, etc.
 
 Generally all of these tests are based on using the CIMPLE tools to generate
 the providers but not all of the providers use the latest version of the
-tools so there are variations in the generated provider files. 	These tests
+tools so there are variations in the generated provider files.  These tests
 also include typicaly the targets for genclass, genprov, genmod and sometimes
 genproj to make them easy to regenerate.
 

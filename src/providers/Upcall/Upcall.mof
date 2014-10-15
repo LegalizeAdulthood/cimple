@@ -21,10 +21,10 @@ class Upcall
     is zero, the test is repeated until stopped.  If the delay is zero, the
     provider defualts it to 1000 milliseconds (1 second).
 
-    returns 0 if successful.  1 if test already started.	
-    */    	
+    returns 0 if successful.  1 if test already started.    
+    */      
     [Static] uint32 StartTest ([in] uint32 count,
-		 [in] uint32 delay);
+         [in] uint32 delay);
 
     // stop the test if it is started
     // returns 0 if test was started.

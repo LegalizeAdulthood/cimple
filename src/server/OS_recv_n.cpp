@@ -32,31 +32,31 @@ ssize_t OS::recv_n(Sock sock, void* buffer, size_t size)
     char* p = (char*)buffer;
 
     if (size == 0)
-	return -1;
+        return -1;
 
     while (r)
     {
-	ssize_t n = OS::recv(sock, p, r);
+        ssize_t n = OS::recv(sock, p, r);
 
-	if (n == -1)
-	{
-	    if (errno == EWOULDBLOCK)
-	    {
-		size_t total = size - r;
+        if (n == -1)
+        {
+            if (errno == EWOULDBLOCK)
+            {
+                size_t total = size - r;
 
-		if (total)
-		    return total;
+                if (total)
+                    return total;
 
-		return -1;
-	    }
-	    else
-		return -1;
-	}
-	else if (n == 0)
-	    return size - r;
+                return -1;
+            }
+            else
+                return -1;
+        }
+        else if (n == 0)
+            return size - r;
 
-	r -= n;
-	p += n;
+        r -= n;
+        p += n;
     }
 
     return size - r;
