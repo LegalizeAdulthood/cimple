@@ -94,7 +94,7 @@ This change log was started effective with version 2.00
     * Updated Using_CIMPLE.pdf file to version 2 document
     * Added Release Notes for 2.0.0 to distribution
 
-2.07  Goals, minor cleanups to wmi
+2.0.7  Goals, minor cleanups to wmi
     * Remove duplicate CIMPLE_NAMESPACE_END in Atomic_WIN32_IX86_MSVC.cpp
     * Extend tag vg to dir.mak to automate valgrind testing.
     * Minor clean up to several readme files
@@ -115,10 +115,92 @@ This change log was started effective with version 2.00
     * Added new wmi providers and commonized wmi Makefiles
     * Added methods test for Person wmi provider.
     * 2.07 Not released.  Went straight to 2.0.8 release
-2.08 - 26 March 2008
+2.0.8 - 26 March 2009
     * Add readme.txt files to some of the providers
     * Added beginning of automated tests using wmic for wmi providers but
       very incomplete.
+2.0.9 - 21 April 2009 (Internal release)
+    * Add function try_lock to mutex functions.
+    * Expand mutex test program (cimple/tests/Mutex)
+    * Add CIMPLE_HOME as environment variable definition for the
+      runtime components HOME directory for CIMPLE.   This is the directory
+      in which the configfile (.cimplerc) is located and the log subdirectory
+      located (.cimple). If the environment variable CIMPLE_HOME does not
+      exist, no log is created and the config file is not accessed
+      To use this, set CIMPLE_HOME=directory name. 
+      NOTE: This is a behavior change in that earlier versions used HOME
+      as the environment variable to locate a directory for the config file
+      and log files.
+    * Add provider to test more complex association functions
+      (providers/derivedAssoc)
+2.0.11 13 May 2009
+    * Correct bug with Property Lists and CMPI providers. The CMPI adapter
+      was not correctly processing Property Lists.  Note that this uncovered
+      a bug in Pegasus with property list processing in CMPI (8493) in that all
+      key properties are required in the returned Instance if the object
+      path is not set.  This no longer creates a problem in CIMPLE 
+      CMPI providers but was filed as a Pegasus bug (8493).
+    * Fix compile error with mutex trylock and windows. Added trylock function
+      to src/posix/pthread.h
+    * Added initial files for persistence in src/cimple (Enc*, Instance_Enc*
+      tests/Enc/* tests/instance_enc/* tests/serialize/*. NOTE: persistence
+      not complete for this temporary release and is NOT usable. In this 
+      version the new components are normally not compiled.
+    * Added several readme files for tests providers and tools.
+    * Add regview tool that displays info on registered providers for PEGASUS.
+      Note that this is Pegasus only. Not automatically compiled.
+    * Added test provider derivedAssoc to test for association issue with
+      derived associations reported by user.  Concluded the CIMPLE correctly
+      handles this case.
+    * Added ability for user to set env var that CIMPLE will use to look for
+      directory for .cimplerc file and where logs will be located.  This
+      was originally fixed at "HOME". This version changes the default to
+      "CIMPLE_HOME" and adds an option to the configure mechanism
+      (--cimplehome-envvar). NOTE: With this release no logs will be created
+      without either a) setting the environment variable CIMPLE_HOME or b)
+      defining an alternate to CIMPLE_HOME with the configure
+      --cimplehome-envvar parameter. To use HOME for these files add the
+      following to the configure (--cimplehome-envvar=HOME).
+    * Modified logging calls for speed by adding an initial test before
+      log macro calls are formatted. Note that this applies only to macro
+      generated logs.
+    * Added target to a number of test providers (manual-test) that uses
+      Pegasus cimcli to exercise the provider.  This serves for quick tests
+      and allows the user to see better what the provider produces than
+      the usual test client that is part of most CIMPLE test providers.
+      Note that these are typically not automated tests in that they
+      are not as through as the test clients.
+    * Expanded the test client for providers/All to cover more cases and in
+      particular expand the tests for propertLists.
+    * Expanded the Makefile for a number of the test providers so that
+      they can test both the C++ and CMPI builds of the corresponding providers.
+      This uses a test environment variable (CIMPLE_PROVIDER_BUILD_CMPI) to
+      force the provider to be build with either CMPI or C++ interfaces.
+    * Added new target to top level Makefile (cmpiworld) to force testing
+      of CMPI build test providers for those test providers that include
+      the CIMPLE_PROVIDER_BUILD_CMPI variable. Made most src/provider providers
+      compilable with both c++ and CMPI so that they can be compiled either way.
+      Note that this means user must add line include ../common.mak to
+      Makefile for any providers created with this option to complete
+      all of the provider module requirements.
+    * Modified Makefile for file2c tool so that it can be installed.
+    * Modify windows pthread implementation to handle nonrecursive Mutex.
+      Before this, the implementation just used the native Windows calls
+      so treated all Mutexes as recursive.  Note that this is a behavior
+      change on Windows platforms.
+2.0.12 24 July 2009
+    * Fix issue with cmpi providers returning NULL for key properties that
+      was introduced in 2.0.11.
+    * Corrected error in configuration.bat where extra space was being inserted
+      into a line in options.h
+    * Implement multi class wmi provider module as a test (See
+      src/wmi/ThingsProvidcr)
+     
+
+
+
+       
+
 
 
 	

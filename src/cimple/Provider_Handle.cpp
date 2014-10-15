@@ -168,7 +168,7 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
 
     // First see if the provider supports enum_associator_names().
 
-    printf("cimple enum_associator_names\n");
+    //printf("cimple enum_associator_names\n");
 
     Enum_Associator_Names_Status enum_associator_names_status = 
         (Enum_Associator_Names_Status)_proc(
@@ -215,7 +215,7 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
 
     // Enumerate the association provider.
 
-    printf("Provider_handle call enum_instances for _enum_associator_names::_proc\n");
+    //printf("Provider_handle call enum_instances for _enum_associator_names::_proc\n");
 
     Enum_Instances_Status status = enum_instances(
         model, _enum_associator_names::_proc , &args);

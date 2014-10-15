@@ -64,12 +64,18 @@ inline const char* host_name(const CMPIObjectPath* op)
     return char_ptr(CMGetHostname(op, NULL));
 }
 
+/*
+    Create a CIMPLE reference from a CMPI object path
+*/
 CMPIrc make_cimple_reference(
     const CMPIBroker* cb,
     const Meta_Class* mc,
     const CMPIObjectPath* op,
     Instance*& inst);
 
+/*
+    Create a CIMPLE instance from a CMPI instance and objectpath
+*/
 CMPIrc make_cimple_instance(
     const CMPIBroker* cb,
     const Meta_Class* mc,
@@ -92,11 +98,26 @@ CMPIrc make_cmpi_object_path(
     const char* ns,
     CMPIObjectPath*& cop);
 
+/*
+    Create a CMPI instance from a CIMPLE instance.
+
+    @param cb CMPI Broker
+    @param inst CIMPLE Instance. This is the input instance for the 
+    conversion
+    @param ns Namespace
+    @param cop CIMObjectPath for the cimple instance. Creates this
+    cmpi object path if it does not already exist.
+    @param properties - propertylist from input
+    @ci CMPIInstance Instance that is created from the cimple instance
+    @return CMPI status
+
+*/
 CMPIrc make_cmpi_instance(
     const CMPIBroker* cb,
     const Instance* inst, 
     const char* ns,
     const CMPIObjectPath* cop,
+    const char**properties,
     CMPIInstance*& ci);
 
 CMPIrc make_cmpi_method(

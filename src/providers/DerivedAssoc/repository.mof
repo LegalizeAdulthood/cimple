@@ -1,0 +1,3 @@
+// repository.mof aggregates the classes in this test case
+// for cimple compile
+#pragma include ("providerclasses.mof")

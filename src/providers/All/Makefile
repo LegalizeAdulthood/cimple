@@ -18,20 +18,19 @@ TEST_NAMESPACE=root/cimv2
 ## Changing Provider interfaces requires reregistering the provider.
 ifdef CIMPLE_PROVIDER_BUILD_CMPI
     CIMPLE_CMPI_MODULE=1
-    DEFINES += -DCIMPLE_CMPI_MODULE
-    LIBRARIES += cimplecmpiadap
-
 else
     CIMPLE_PEGASUS_MODULE=1
-    DEFINES += -DCIMPLE_PEGASUS_MODULE
-    LIBRARIES += cimplepegadap
 endif
 
+## required to ecpand CIMPLE_***_MODULE definitions
 include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
 regmod:
+	$(BINDIR)/regmod -c $(TARGET)
+
+register:
 	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
@@ -45,6 +44,10 @@ genmod:
 
 genproj:
 	$(BINDIR)/genproj EA All_Class
+	
+unregister:
+	$(BINDIR)/regmod -v -u -c $(Target)
+
 	
 ##==============================================================================
 ##
@@ -63,11 +66,34 @@ register-sfcb:
 	cp All_Class.reg $(SFCB_REGSDIR)/All_Class.reg
 	sfcbrepos
 
-## live manual tests using Pegasus cimcli	
+##==============================================================================
+##
+## Live manual tests using Pegasus cimcli
+## These tests are simply a demonstration that the provider works.  They
+## do not tests the results today, simply assure that there is no exception
+## on response
+##==============================================================================	
 manual-test:
 	cimcli ns -l localhost
 	cimcli gc All_Class -l localhost -n $(TEST_NAMESPACE)
 	cimcli ni All_Class -l localhost -n $(TEST_NAMESPACE)
 	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE)
+	
+propertylist:
+	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE) -pl Key,uint8Scalar,booleanScalar
+
+pl2:
+	cimcli ei All_Class -l localhost -n $(TEST_NAMESPACE) -pl uint8Scalar,booleanScalar
+		
+cmpi:
+	$(MAKE) clean
+	-cimserver -s
+	export CIMPLE_PROVIDER_BUILD_CMPI=1 
+	$(MAKE)
+	$(MAKE) insmod
+	cimserver
+	$(MAKE) register
+    
+    
 	
 

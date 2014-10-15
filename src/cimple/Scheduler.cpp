@@ -49,11 +49,11 @@ static void _insert_timer(List& list, Timer* timer)
         // insert in time sequence
         for (List_Elem* p = list.head; p; p = p->next)
         {
-        	if (timer->deadline < ((Timer*)p)->deadline)
-        	{
-        	    list.insert_before(p, timer);
-        	    return;
-        	}
+            if (timer->deadline < ((Timer*)p)->deadline)
+            {
+                list.insert_before(p, timer);
+                return;
+            }
         }
     }
 
@@ -76,9 +76,9 @@ Scheduler::~Scheduler()
 {
     for (List_Elem* p = _list.head; p; )
     {
-    	List_Elem* next = p->next;
-    	delete p;
-    	p = next;
+        List_Elem* next = p->next;
+        delete p;
+        p = next;
     }
 }
 
@@ -112,19 +112,19 @@ bool Scheduler::remove_timer(size_t timer_id)
 
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-    	Timer* timer = (Timer*)p;
+        Timer* timer = (Timer*)p;
     
-    	if (timer->id == timer_id)
-    	{
-    	    // Found!
-    	    _list.remove(p);
-    	    _id_pool.put(timer->id);
-    	    delete timer;
+        if (timer->id == timer_id)
+        {
+            // Found!
+            _list.remove(p);
+            _id_pool.put(timer->id);
+            delete timer;
             if (_auto_dispatch && _list.empty())
                 stop_dispatcher();
 
-    	    return true;
-    	}
+            return true;
+        }
     }
 
     // Not found!
@@ -143,12 +143,12 @@ void Scheduler::dispatch()
     // continuous threads, execute timer before exiting.
     if (_list.empty())
     {
-    	_lock.unlock();
+        _lock.unlock();
         if (_auto_dispatch)
             stop_dispatcher();
         else
             Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
-    	return;
+        return;
     }
 
     // Sleep until the closest deadline
@@ -158,48 +158,48 @@ void Scheduler::dispatch()
 
     if (now < closest_deadline)
     {
-    	uint64 diff = closest_deadline - now;
+        uint64 diff = closest_deadline - now;
     
-    	if (diff > MAX_TIME_INSIDE_DISPATCH_USEC)
-    	{
-    	    _lock.unlock();
-    	    Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
-    	    return;
-    	}
+        if (diff > MAX_TIME_INSIDE_DISPATCH_USEC)
+        {
+            _lock.unlock();
+            Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
+            return;
+        }
     
-    	_lock.unlock();
-    	Time::sleep(diff);
-    	_lock.lock();
+        _lock.unlock();
+        Time::sleep(diff);
+        _lock.lock();
     
-    	now = closest_deadline;
+        now = closest_deadline;
     }
 
     // Dispatch expired timers (there will be at least one).
 
     for (;;)
     {
-    	Timer* timer = (Timer*)_list.head;
+        Timer* timer = (Timer*)_list.head;
 
         // if current timer not expired, terminate loop
 
-    	if (!timer || now < timer->deadline)
-    	    break;
+        if (!timer || now < timer->deadline)
+            break;
     
-    	_list.remove(timer);
+        _list.remove(timer);
 
         // Call the function to be executed for this timer.
 
-    	_lock.unlock();
-    	uint64 new_timeout = timer->proc(timer->arg);
-    	_lock.lock();
+        _lock.unlock();
+        uint64 new_timeout = timer->proc(timer->arg);
+        _lock.lock();
 
         // if the function returns zero, delete this timer
         // else reinsert the timer with the returned timeout.
         // 
-    	if (new_timeout == 0)
-    	    delete timer;
-    	else
-    	{
+        if (new_timeout == 0)
+            delete timer;
+        else
+        {
             if (!_auto_dispatch)
             {
                 timer->deadline = Time::now() + new_timeout;
@@ -215,7 +215,7 @@ void Scheduler::dispatch()
                 else
                     delete timer;
             }
-    	}
+        }
     }
 
     if (_auto_dispatch && _list.empty())
@@ -273,9 +273,9 @@ int Scheduler::clean()
     // Clean out all elements in the list
     for (List_Elem* p = _list.head; p; )
     {
-    	List_Elem* next = p->next;
-    	delete p;
-    	p = next;
+        List_Elem* next = p->next;
+        delete p;
+        p = next;
     }
 
     // set the list to clear

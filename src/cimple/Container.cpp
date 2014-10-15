@@ -38,23 +38,36 @@ Container::Container(const Meta_Repository* mr) : _mr(mr)
 Container::~Container()
 {
 }
-
+/*
+    Convert an instance from the adapter format to CIMPLE. Creates a new
+    instance if inst is NULL. Only property and references are converted.
+    This uses the adapter get_value(), get_size(), and get_name() functions
+    to access the characteristics of each feature to be converted.
+*/
 int Container::convert(const Meta_Class* mc, uint32 flags, Instance*& inst)
 {
     const char* cn = mc->name;
 
-    // Create hew new instance (if incoming one is null).
+    // Create hew new instance (if incoming one is null) and nullify
+    // all properties
 
     if (!inst)
         inst = create(mc);
 
     nullify_properties(inst);
 
+    // get property count from the adapter
+
     size_t size = get_size();
 
+    // for each feature in the adapter instance, get the name, match
+    // with the Meta_Feature, filter features that do not match flags,
+    // and get the feature value from the adapter and insert into the
+    // CIMPLE instance
+    
     for (size_t i = 0; i < size; i++)
     {
-        // Get name of this element.
+        // Get name of this feature from the adapter
 
         String name;
 
@@ -89,7 +102,9 @@ int Container::convert(const Meta_Class* mc, uint32 flags, Instance*& inst)
             continue;
         }
 
-        // Get value of this element.
+        // Get value of this feature from adapter Useing the get_value()
+        // defined by the adapter subclass to get the value from the adapter
+        // feature
 
         Value value;
 
@@ -111,6 +126,15 @@ int Container::convert(const Meta_Class* mc, uint32 flags, Instance*& inst)
     return 0;
 }
 
+/*
+    Convert a CIMPLE instance to the type for the adapter that invokes
+    this call.  It only converts features with flags corresponding to the
+    flags parameter. Uses set_value, from the adapter definition to 
+    create/modify the features in the adapter instance. 
+    This function is the general conversion for all adapters.
+    This convertes only the instance and is intended to be applied after
+    any unwanted properties are nullified in the CIMPLE instance.
+*/
 int Container::convert(const Instance* instance, uint32 flags)
 {
     if (!instance)
@@ -129,8 +153,6 @@ int Container::convert(const Instance* instance, uint32 flags)
 
         if (flags && !(mf->flags & flags))
             continue;
-
-        // ATTN: is skipping null properties correct?
 
         // Skip methods, null properties, and null references.
 
@@ -163,7 +185,9 @@ int Container::convert(const Instance* instance, uint32 flags)
             }
         }
 
-        // Set the value.
+        // Set the value. This calls the set_value defined for the
+        // adapter which is responsible for setting the value into
+        // the feature for the adapter specific instance.
 
         Value v;
 

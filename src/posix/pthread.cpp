@@ -29,10 +29,53 @@
 #include <cassert>
 #include <cstdio>
 #include <windows.h>
+#include <errno.h>
 
 #define for if (0) ; else for
 
 POSIX_NAMESPACE_BEGIN
+
+//==============================================================================
+//
+// pthread_mutexattr_t
+//
+//==============================================================================
+
+struct pthread_mutexattr_rep_t
+{
+    int kind;
+};
+
+int pthread_mutexattr_init(
+    pthread_mutexattr_t* attr)
+{
+    assert(sizeof(pthread_mutexattr_t) >= sizeof(pthread_mutexattr_rep_t));
+    memset(attr, 0, sizeof(pthread_mutexattr_t));
+    return 0;
+}
+
+int pthread_mutexattr_destroy(
+    pthread_mutexattr_t* attr)
+{
+    return 0;
+}
+
+int pthread_mutexattr_settype(
+    pthread_mutexattr_t* attr,
+    int kind)
+{
+    // Set kind into attribute (PTHREAD_MUTEX_FAST_NP or 
+    // PTHREAD_MUTEX_RECURSIVE_NP.
+
+    if (attr)
+    {
+        pthread_mutexattr_rep_t* rep = (pthread_mutexattr_rep_t*)attr;
+        rep->kind = kind;
+        return 0;
+    }
+
+    return -1;
+}
 
 //==============================================================================
 //
@@ -44,6 +87,8 @@ struct pthread_mutex_rep_t
 {
     HANDLE handle;
     size_t count;
+    // PTHREAD_MUTEX_FAST_NP or PTHREAD_MUTEX_RECURSIVE_NP
+    bool recursive;
 };
 
 pthread_mutex_t::pthread_mutex_t()
@@ -74,6 +119,20 @@ int pthread_mutex_init(
 
     pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
     rep->count = 0;
+
+    if (attr)
+    {
+        pthread_mutexattr_rep_t* attrrep = (pthread_mutexattr_rep_t*)attr;
+
+        if (attrrep->kind & PTHREAD_MUTEX_RECURSIVE_NP)
+            rep->recursive = true;
+        else
+            rep->recursive = false;
+    }
+    else
+    {
+        rep->recursive = false;
+    }
 
     if ((rep->handle = CreateMutex(NULL, FALSE, NULL)) == NULL)
         return -1;
@@ -106,14 +165,59 @@ int pthread_mutex_lock(
     if (WaitForSingleObject(rep->handle, INFINITE) == WAIT_FAILED)
         return -1;
 
+    if (!rep->recursive && rep->count == 1)
+    {
+        // Avoid double lock on non-recursive mutex.
+        ReleaseMutex(rep->handle);
+        return -1;
+    }
+
     rep->count++;
 
+    return 0;
+}
+
+
+int pthread_mutex_trylock(
+    pthread_mutex_t* mutex)
+{
+    pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
+
+    DWORD rc = 0;
+    rc = WaitForSingleObject(rep->handle, (DWORD)0);
+
+    //printf("waitforSingleObject rtn = %ld\n", rc);
+    if (rc == WAIT_TIMEOUT)
+    {
+        //printf("waitforSingleObject WAIT_TIMEOUT rtn = %ld\n", rc);
+        return(EBUSY);
+    }
+    else if (rc == WAIT_FAILED)
+    {
+        //printf("waitforSingleObject WAIT_FAILED = %ld\n", rc);
+        return(-1);
+    }
+
+    //printf("waitforSingleObject Supposidly no error = %ld\n", rc);
+    if (!rep->recursive && rep->count == 1)
+    {
+        //printf("pthread return recurse limit hit. EBUSY= %d \n", EBUSY);
+        // Avoid double lock on non-recursive mutex.
+        assert(ReleaseMutex(rep->handle));
+        //printf("pthread returning EBUSY\n");
+        return(-1);
+    }
+
+    rep->count++;
     return 0;
 }
 
 int pthread_mutex_unlock(
     pthread_mutex_t* mutex)
 {
+    if (!mutex)
+        return -1;
+
     pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
 
     if (rep->count == 0)
@@ -121,45 +225,11 @@ int pthread_mutex_unlock(
         return -1;
     }
 
-#if 0
-    // ATTN: FIX: MEB: this asserts on Windows on shutdown of cimserver.
-    assert(rep->count > 0);
-#endif
-
     rep->count--;
 
     if (!ReleaseMutex(rep->handle))
         return -1;
 
-    return 0;
-}
-
-//==============================================================================
-//
-// pthread_mutexattr_t
-//
-//==============================================================================
-
-int pthread_mutexattr_init(
-    pthread_mutexattr_t* attr)
-{
-    memset(attr, 0, sizeof(pthread_mutexattr_t));
-    return 0;
-}
-
-int pthread_mutexattr_destroy(
-    pthread_mutexattr_t* attr)
-{
-    return 0;
-}
-
-int pthread_mutexattr_settype(
-    pthread_mutexattr_t* attr,
-    int kind)
-{
-    // There is nothing to do here. All mutexes are recursive in Windows
-    // so it does not matter whether the kind is PTHREAD_MUTEX_FAST_NP
-    // or PTHREAD_MUTEX_RECURSIVE_NP.
     return 0;
 }
 

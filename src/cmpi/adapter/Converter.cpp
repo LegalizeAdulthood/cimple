@@ -58,16 +58,16 @@ CMPIrc make_cmpi_object_path(
     return CMPI_RC_OK;
 }
 
-/* Create a cmpi instance based on the instance, the
+/* Create a cmpi instance based on the input CIMPLE instance, the
    cop and the namespace provided.  If the cop does not exist, create it from
    the instance.
-
 */
 CMPIrc make_cmpi_instance(
     const CMPIBroker* cb,
     const Instance* inst, 
     const char* ns,
     const CMPIObjectPath* cop,
+    const char** properties,
     CMPIInstance*& ci)
 {
     const Meta_Class* mc = inst->meta_class;
@@ -77,6 +77,8 @@ CMPIrc make_cmpi_instance(
 
     if (!cop)
     {
+        // TODO remove this warning before release. Primarily for testing
+        CIMPLE_WARN(("No ObjectPath built before call to make_CMPI_instance"));
         CMPIObjectPath* tmp = 0;
 
         if (make_cmpi_object_path(cb, inst, ns, tmp) != CMPI_RC_OK)
@@ -88,15 +90,35 @@ CMPIrc make_cmpi_instance(
     // Create CMPI instance:
 
     ci = CMNewInstance(cb, cop, 0);
+
+    // return error if no instance returned
+    if (!ci)
+        return CMPI_RC_ERR_FAILED;
+
+    // Set the properties list into instance if there is a properties
+    // list
+    if (properties)
     {
+        CMPIStatus status = CMSetPropertyFilter(ci, properties, 0);
+        if (status.rc != CMPI_RC_OK)
+        {
+            return status.rc;
+        }
+    }
+
+    {
+        // create the instance container
         CMPIInstance_Container cont(mr, cb, ns, ci);
 
+        // convert the CIMPLE instance to a CMPI instance. This calls
+        // the cimple convert function which in turns will call the
+        // set_value in the CMPI container for each feature to be
+        // converted.        
         if (cont.convert(inst, 0) != 0)
         {
             return CMPI_RC_ERR_FAILED;
         }
     }
-
     return CMPI_RC_OK;
 }
 
@@ -107,10 +129,16 @@ CMPIrc make_cimple_instance(
     const CMPIInstance* ci,
     Instance*& inst)
 {
+    // Create the container for this instance
+
     CMPIInstance_Container cont(
         mc->meta_repository, cb, name_space(cop), (CMPIInstance*)ci);
 
     inst = 0;
+
+    //Call the cimple convert function. Note that this function will,
+    // in turn call the CMPI specific set_value() function to build the
+    // CMPI instance.
 
     if (cont.convert(mc, 0, inst) != 0 || !inst)
         return CMPI_RC_ERR_FAILED;

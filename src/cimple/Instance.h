@@ -24,6 +24,35 @@
 **==============================================================================
 */
 
+/**
+ * Instance is the core of CIMPLE. For the users, instances are 
+ * created and manipulated through the templates defined below. 
+ * Many of the functions in this file are support functions for 
+ * the templates. 
+ * Generally, to create an instance of a Class defined in mof 
+ * and instantiated through CIMPLE genclass, the user uses the 
+ * create method of the CIMPLE_CLASS template. 
+ *     #include myClass.h
+ *     myClass* myclass = myClass.create.create(true);
+ *  
+ * This template includes corresponding methods for clone and 
+ * destroy 
+ *  
+ * The CIMPLE_METHOD template provides the basis for create, 
+ * clone, and destroy for methods. 
+ *  
+ * Note that many functions are public despite the fact that the 
+ * provider writer will probably never neeed them since they are 
+ * part of the generation. 
+ *  
+ * Some of the function that should be used include: 
+ *     key_eq - test for key equality between instances
+ *     copy - copy non-null properties from one instance to
+ *     another
+ *     copy_keys
+ *     identical
+ *     The cast operator defined below
+ */
 #ifndef _cimple_Instance_h
 #define _cimple_Instance_h
 
@@ -31,9 +60,15 @@
 #include "Meta_Class.h"
 #include "Array.h"
 #include "Atomic.h"
+#include "Buffer.h"
 
 #define CIMPLE_MAX_REFERENCES_PER_CLASS 16
 
+/*
+    Create the CIMPLE Class for the provider defined. This defines the
+    create, destroy and clone methods for the CIMPLE class defined for
+    this property.  
+*/
 #define CIMPLE_CLASS(CLASS) \
     public: \
         static const Meta_Class static_meta_class; \
@@ -84,7 +119,7 @@ struct Meta_Property;
  *  CIM method objects. To improve efficiencty and reduce code
  *  size,  it is not designed as a pure object-oriented class
  *  but as a structure with a set of supporting functions. The
- *  function provide the ability to create, destroy, modify,
+ *  function provides the ability to create, destroy, modify,
  *  access internal information, and test intances.
 */
 struct CIMPLE_CIMPLE_LINKAGE Instance
@@ -98,7 +133,8 @@ struct CIMPLE_CIMPLE_LINKAGE Instance
 
 /** Creates an instance from the given meta class. For each property, the 
     null flag is set to false. The caller must eventually pass the new object 
-*   to destroy().
+*   to destroy(). Normally this is not called by the user but
+*   through the CIMPLE_CLASS template defined above.
 *   @param meta_class Meta_Class* pointer to the CIMPLE meta
 *                     class from which this instance will be
 *                     created
@@ -405,8 +441,41 @@ void ref(const Instance* instance);
 CIMPLE_CIMPLE_LINKAGE
 void unref(const Instance* instance);
 
+/** 
+ * Filter the property and reference features of a CIMPLE 
+ * instance nullifying those that are not in the propertylist. 
+ * If the propertylist is null, all the features are 
+ * keptnon-null. If the property list is empty, no properties 
+ * are kept non-null. The keepKeys parameter determines if the 
+ * key properties may be nullified as part of the operation. 
+ * The purpose of this function is normally to filter out 
+ * properties that are not part of the CIM operation for those 
+ * operations that include a propertylist. 
+ * Generally this operation is for the use of the adapters and 
+ * the provider writer would not use it. Property filtering for 
+ * CIM Operations is the responsibility of each CIMPLE adapter. 
+ * For the provider writer to determine the properties that are 
+ * required for the response to an operation, the model 
+ * parameter can be used.  Those properties that are listed in 
+ * an input property list (and all key properties) and set 
+ * non-null in the model property. 
+ * 
+ * @param instance - Instance for which properties are to be 
+ *                 filtered
+ * @param properties - list of properties to be kept in the 
+ *                   instance. All other properties are set NULL
+ * @param keepKeys - boolean that determines whether the key 
+ *                 properties are to be set in accord with the
+ *                 property list or forced to non-null.  If
+ *                 true, the key properties are forced to
+ *                 non-null.
+ * 
+ * @return CIMPLE_CIMPLE_LINKAGE int - If zero, 
+ */
 CIMPLE_CIMPLE_LINKAGE
-int filter_properties(Instance* instance, const char* const* properties);
+int filter_properties(Instance* instance, const char* const* properties,
+                      boolean keepKeys = true);
+
 
 // This function parses a CIM model path of the following form to an instance.
 //
@@ -486,6 +555,8 @@ int __put_property_from_str(
     const Meta_Property* mp, 
     const char* str);
 
+
 CIMPLE_NAMESPACE_END
+
 
 #endif /* _cimple_Instance_h */

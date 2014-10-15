@@ -400,7 +400,7 @@ private:
 
 /******************************************************************************
 **
-**  inline defintion of those functions that are faster with inline 
+**  inline definition of those functions that are faster with inline 
 **  implementations.
 **
 *******************************************************************************/

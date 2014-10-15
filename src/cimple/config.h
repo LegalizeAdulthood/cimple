@@ -148,8 +148,8 @@
 //
 //==============================================================================
 
-// NOTE: This only applies to selected windows compilers. We must clasify compilers
-// here by version for windows.
+// NOTE: This only applies to selected windows compilers.
+// We must clasify compilers here by version for windows.
 #ifdef __USE_GNU
 # define CIMPLE_FUNCTION __FUNCTION__
 #elif defined (CIMPLE_WINDOWS)
@@ -385,7 +385,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 2
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 8
+#define CIMPLE_REVISION 12
 
 //==============================================================================
 //

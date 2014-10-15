@@ -57,7 +57,7 @@ struct POSIX_LINKAGE pthread_mutex_t
     pthread_mutex_t();
     ~pthread_mutex_t();
     pthread_mutex_t(pthread_mutex_initializer_t);
-    char opaque[16];
+    char opaque[32];
 };
 
 struct pthread_mutexattr_t
@@ -70,6 +70,9 @@ POSIX_LINKAGE int pthread_mutex_init(
     const pthread_mutexattr_t* attr);
 
 POSIX_LINKAGE int pthread_mutex_lock(
+    pthread_mutex_t* mutex);
+
+POSIX_LINKAGE int pthread_mutex_trylock(
     pthread_mutex_t* mutex);
 
 POSIX_LINKAGE int pthread_mutex_unlock(
@@ -98,7 +101,7 @@ enum pthread_once_init_t { PTHREAD_ONCE_INIT };
 
 struct POSIX_LINKAGE pthread_once_t 
 {
-    char opaque[32];
+    char opaque[64];
     pthread_once_t(pthread_once_init_t);
 };
 
@@ -181,7 +184,7 @@ enum pthread_cond_initializer_t { PTHREAD_COND_INITIALIZER };
 
 struct pthread_cond_t
 {
-    char opaque[32];
+    char opaque[64];
 };
 
 struct pthread_condattr_t;

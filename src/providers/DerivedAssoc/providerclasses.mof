@@ -1,0 +1,20 @@
+class CMPL_Base
+{
+    [Key] uint32 Key;
+    String info;
+}; 
+class CMPL_Derived : CMPL_Base
+{
+    String info2;
+}; 
+Class CMPL_Other{
+    [Key] uint32 Key;
+    String moreinfo;
+
+};
+[Association]
+class CMPL_Assoc
+{ 
+              [key] CMPL_Base REF Antecedent; 
+              [key] CMPL_Other REF Dependant;   
+}; 

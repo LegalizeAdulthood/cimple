@@ -399,6 +399,7 @@ int CMPI_Thread_Context::create_instance(
         instance,
         name_space,
         cop,
+        0,
         ci);
 
     if (rc != CMPI_RC_OK)
@@ -507,6 +508,7 @@ int CMPI_Thread_Context::modify_instance(
         instance,
         name_space,
         cop,
+        0,
         ci);
 
     if (rc != CMPI_RC_OK)

@@ -24,6 +24,88 @@
 **==============================================================================
 */
 
+/**
+*   This file defines a container for instances that allows a
+*   number of general and CIMPLE operation specific functions to
+*   be performed against a set of instances in the container.
+*   The general functions include:
+*       insert an instance
+*       find an instance
+*       lookup an instance
+*       remove an instance
+*       clear the entire map
+*   To provide support for the CIMPLE instance operations,
+*   additional functions are defined so that the user can define
+*   access to the map for create, modify, delete, get and
+*   enumerate instances with a single line of code.
+* 
+*   EXAMPLE:
+*   The following example manages the operations against a
+*   map created during the load operation for the class
+*   CMPL_Base. The map is defined in the CMPL_Base_Provider.h
+*   file as follows:
+*     @END@
+
+    private:
+        Instance_Map<CMPL_Base> _map;
+
+*   The following function in the .cpp file creates instances.
+
+         Load_Status CMPL_Base_Provider::load()
+        {
+            CMPL_Base* instance;
+            
+            instance = CMPL_Base::create();
+            instance->Key.value = 1;
+            instance->info.value = "First Instance";
+            _map.insert(instance);
+        
+            instance = CMPL_Base::create();
+            instance->Key.value = 2;
+            instance->info.value = "Second Instance";
+            _map.insert(instance);
+            return LOAD_OK;
+        }
+* 
+*       The following implements the get, enum, modify, delete,
+*       and create functions for the map defined above
+*       Get_Instance_Status CMPL_Base_Provider::get_instance(
+            const CMPL_Base* model,
+            CMPL_Base*& instance)
+        {
+*           return _map_get_instance(model, instance);
+        }
+        Enum_Instances_Status CMPL_Base_Provider::enum_instances(
+            const CMPL_Base* model,
+            Enum_Instances_Handler<CMPL_Base>* handler)
+        {
+            TRACE;
+            return _map.enum_instances(model, handler);
+            return ENUM_INSTANCES_OK;
+        }
+        
+        Create_Instance_Status CMPL_Base_Provider::create_instance(
+            CMPL_Base* instance)
+        {
+            TRACE;
+            return _map.create_instance(instance);
+        }
+        
+        Delete_Instance_Status CMPL_Base_Provider::delete_instance(
+            const CMPL_Base* instance)
+        {
+            TRACE;
+            return _map.delete_instance(instance);
+        }
+        
+        Modify_Instance_Status CMPL_Base_Provider::modify_instance(
+            const CMPL_Base* model,
+            const CMPL_Base* instance)
+        {
+            TRACE;
+            return _map.modify_instance(model, instance);
+}
+*/
 #ifndef _cimple_Instance_Map_h
 #define _cimple_Instance_Map_h
 
@@ -40,6 +122,9 @@ public:
 
     ~Instance_Map_Base();
 
+    /**
+     * Clear all instances from the map and destroy them
+     */
     void clear();
 
 protected:
@@ -87,24 +172,101 @@ public:
 
     ~Instance_Map();
 
+    /** 
+     * Insert an instance into the map. If an instances is already 
+     * in the map (ad determined by the map find command, returns 
+     * error code 
+     * 
+     * @param instance Instance to be inserted
+     * 
+     * @return size_t Location where the instance was 
+     * inserted. Returns -1 if an instance with the key properties 
+     * of the input instance is already in the map. 
+     */
     size_t insert(CLASS* instance);
+
+    /**
+     * find the instance defined by the input parameter in the map. 
+     * key properties in the input equal to the instance in the map, 
+     * constitues equality.   Note that this test does not test 
+     * other properties than the key properties. 
+     *  
+     * @param instance Instance to be compared
+     * 
+     * @return size_t Location where the instance was 
+     * inserted. If no equal instance is found, -1 is returned.
+     */ 
 
     size_t find(const CLASS* instance);
 
+    /** 
+     * Returns the instance found if an instance in the map matches 
+     * the keys on the input instance 
+     * 
+     * @param instance Instance to lookup.
+     * 
+     * @return CLASS* containing the instance if keys match. 
+     *         Returns 0 if matching instance not found in the map.
+     */
     CLASS* lookup(const CLASS* instance);
 
+    /** 
+     * removes a single instance from the map based on the input 
+     * position parameter. If the parameter is out of the range of 
+     * the instances in the map, returns without removing any 
+     * instance 
+     * 
+     * @param pos size_t position of instance to remove from the map
+     */
     void remove(size_t pos);
 
+    /** 
+     * size returns the number of instances in the map
+     * 
+     * 
+     * @return size_t Number of instances in the map
+     */
     size_t size() const;
 
+    /** 
+     * Return the instance at the position determined by the input 
+     * parameter 
+     * 
+     * @param pos
+     * 
+     * @return CLASS*
+     */
     CLASS* operator[](size_t pos);
 
     const CLASS* operator[](size_t pos) const;
 
+    /** 
+     * Get instance from the map that matches the instance and 
+     * model.  This function allows the CIMPLE getInstance(...) 
+     * function to directly call a map of instances of the defined 
+     * class to get instances. 
+     * 
+     * @param model - 
+     * @param instance - Instance containing the key properties to 
+     *        be used to find an instance in the map.
+     * 
+     * @return Get_Instance_Status
+     */
     Get_Instance_Status get_instance(
         const CLASS* model, 
         CLASS*& instance);
 
+    /** 
+     * Returns all instances from the map.  This function can be 
+     * used directly by the CIMPLE enumerateInstances functions to 
+     * get predefined instances from a map. 
+     *  
+     * 
+     * @param model
+     * @param handler
+     * 
+     * @return Enum_Instances_Status
+     */
     Enum_Instances_Status enum_instances(
         const CLASS* model,
         Enum_Instances_Handler<CLASS>* handler);

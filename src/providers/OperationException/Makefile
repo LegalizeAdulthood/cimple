@@ -20,17 +20,34 @@ SOURCES += CIMPLE_Exception_Provider.cpp
 SOURCES += CIMPLE_ExceptionLink_Provider.cpp
 SOURCES += module.cpp
 
-##
-## Module defined as Pegasus C++ interface
-##
-CIMPLE_PEGASUS_MODULE=1
-DEFINES += -DCIMPLE_PEGASUS_MODULE
+## Allow building providers for either CMPI or Pegasus C++ provider interface
+## Changing Provider interfaces requires reregistering the provider.
+ifdef CIMPLE_PROVIDER_BUILD_CMPI
+    CIMPLE_CMPI_MODULE=1
+else
+    CIMPLE_PEGASUS_MODULE=1
+endif
 
-LIBRARIES += cimplepegadap
+
 LIBRARIES += cimple
+
+## Provides definitions based on CIMPL_***_MODULE type.
+include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
+
+genclass:
+	$(BINDIR)/genclass -r CIMPLE_Exception CIMPLE_ExceptionLink
+
+genprov:
+	$(BINDIR)/genprov CIMPLE_Exception CIMPLE_ExceptionLink
+
+genmod:
+	$(BINDIR)/genmod EA CIMPLE_Exception
+
+genproj:
+	$(BINDIR)/genproj CIMPLE_Exception CIMPLE_Exception CIMPLE_ExceptionLink
 ##
 ## simple module registration for Pegasus
 ## registers for namespace root/cimv2
@@ -39,6 +56,5 @@ regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
 
-genproj:
-	$(BINDIR)/genproj CIMPLE_Exception CIMPLE_Exception CIMPLE_ExceptionLink
+
 

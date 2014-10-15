@@ -102,6 +102,14 @@ do
       enable_scheduler=1
       ;;
 
+    --enable-instance-persistence)
+      enable_instance_persistence=1
+      ;;
+
+    --cimplehome-envvar=*)
+      cimplehome_envvar=$optarg
+      ;;
+
     *)
       echo "$0: unknown option:  $opt"
       exit 1
@@ -362,6 +370,12 @@ if [ -n "$with_pegasus" ]; then
   fi
 fi
 
+if [ -z "$cimplehome_envvar" ]; then
+    cimplehome_envvar=CIMPLE_HOME
+fi
+
+
+
 ##==============================================================================
 ##
 ## These options (if non-empty) must denote absolute directory names.
@@ -497,10 +511,12 @@ echo "ENABLE_DEBUG_OPT=$enable_debug" >> $fn
 echo "ENABLE_STATIC_OPT=$enable_static" >> $fn
 echo "ENABLE_EMBEDDED_INSTANCES_OPT=$enable_embedded_instances" >> $fn
 echo "ENABLE_SCHEDULER_OPT=$enable_scheduler" >> $fn
+echo "ENABLE_INSTANCE_PERSISTENCE_OPT=$enable_instance_persistence" >> $fn
 echo "PLATFORM=$platform" >> $fn
 echo "LIBBASE_OPT=$libbase" >> $fn
 echo "WITH_PEGASUS_LIBDIR_OPT=$with_pegasus_libdir" >> $fn
 echo "WITH_PEGASUS_INCLUDES_OPT=$with_pegasus_includes" >> $fn
+echo "CIMPLEHOME_ENVVAR_OPT=$cimplehome_envvar" >> $fn
 
 if [ ! -z "$with_namespace" ]; then
     echo "WITH_NAMESPACE_OPT=$with_namespace" >> $fn

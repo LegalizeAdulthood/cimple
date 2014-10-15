@@ -33,6 +33,7 @@ using namespace cimple;
 
 int main(int argc, char** argv)
 {
+    ///printf("Test+++ %s\n",argv[0]);
     {
         Value v;
         v.set_value(uint32(10));

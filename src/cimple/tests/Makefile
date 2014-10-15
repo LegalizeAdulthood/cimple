@@ -3,6 +3,7 @@ include $(TOP)/mak/config.mak
 
 DIRS = \
     array \
+    atomicint \
     cast \
     class \
     clone \

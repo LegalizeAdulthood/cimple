@@ -33,7 +33,7 @@ using namespace cimple;
 
 int main(int argc, char** argv)
 {
-    CIMPLE_INFO("Start Log test");
+    CIMPLE_INFO(("Start Log test"));
     CIMPLE_INFO(("Test String for Log String"));
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

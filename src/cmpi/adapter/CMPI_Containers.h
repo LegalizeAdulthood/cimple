@@ -24,6 +24,12 @@
 **==============================================================================
 */
 
+/*   CMPI implementation of the cikmple container class
+     Provides CMPI implementation of the get and set functions for
+     CMPI instance information and storage of CMPI operation specific
+     information such as the CMPI_Broker reference for the operation
+*/
+
 #ifndef _pegadapter_CMPI_Containers_h
 #define _pegadapter_CMPI_Containers_h
 

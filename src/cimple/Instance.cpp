@@ -937,14 +937,15 @@ bool keys_non_null(const Instance* inst)
     return true; 
 }
 
-int filter_properties(Instance* instance, const char* const* properties)
+int filter_properties(Instance* instance, const char* const* properties,
+                      boolean keepKeys)
 {
     CIMPLE_ASSERT(instance != 0);
     CIMPLE_ASSERT(instance->__magic == CIMPLE_INSTANCE_MAGIC);
 
     const Meta_Class* mc = instance->meta_class;
 
-    // Handle case where properties null.
+    // Handle case where properties null. All properties are kept
 
     if (!properties)
     {
@@ -952,14 +953,21 @@ int filter_properties(Instance* instance, const char* const* properties)
         return 0;
     }
 
-    // Handle case where "properties" is non-null.
+    // Handle case where "properties" is non-null. If we keep keys, we
+    // nullify all non-key properties
 
-    nullify_non_keys(instance);
+    if (keepKeys)
+    {
+        nullify_non_keys(instance);
+    }
+    else
+    {
+        nullify_properties(instance);
+    }
 
     while (*properties)
     {
         // Find the property:
-
         const Meta_Feature* mf = find_feature(mc, *properties++);
 
         if (!mf)
@@ -2265,5 +2273,6 @@ int __put_property_from_str(
 
     return 0;
 }
+
 
 CIMPLE_NAMESPACE_END

@@ -1,0 +1,22 @@
+// Place class defined compatible with creation and registration
+// of WMI provider
+
+[dynamic, provider("ThingsProvider")]
+class Thing1
+{
+    [Key] uint32 id;
+    string name;
+
+    [implemented, static]
+    uint32 foo([in] string arg);
+};
+
+[dynamic, provider("ThingsProvider")]
+class Thing2
+{
+    [Key] uint32 id;
+    string name;
+
+    [implemented, static]
+    uint32 foo([in] string arg);
+};

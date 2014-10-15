@@ -30,8 +30,14 @@
 #include <cstdio>
 #include <cstdarg>
 #include "config.h"
+#include "String.h"
 
 CIMPLE_NAMESPACE_BEGIN
+
+// Flag to control if logging is used at all.  When set false
+// logging is bypassed as part of each macro call.
+CIMPLE_CIMPLE_LINKAGE
+extern boolean _log_enabled_state;
 
 enum Log_Level
 {
@@ -45,7 +51,7 @@ enum Log_Level
 CIMPLE_CIMPLE_LINKAGE
 CIMPLE_PRINTF_ATTR(4, 5)
 
-/**
+/* INTERNAL ONLY
  * Create a log entry with the defined parameters formatting the
  * the output from input paramters. This call creates a single 
  * log entry with information about the file and line number 
@@ -71,18 +77,23 @@ void log(
     const char* fmt, ...);
 
 /** 
- * create a log entry with the defined parameters
+ * Create a log entry with the defined parameters
  * 
  * @param level Log_Level representing one of the 5 defined 
  * log levels. See the Log_level enum and the string literals 
- * defined in log.h 
+ * defined in log.h. The alternative to this function is to use 
+ * the macros defined below (ex. CIMPLE_FATAL) that simplify the 
+ * generation of logs 
  * @param file const char* current file normally defined with __FILE__
  * @param line size_t defines the line number of the log entry. 
  * Normally this is simply __LINE__.
  * @param fmt char* defines the format of the output using the printf 
  * formated output definitions.
  * @param ap va_list
-
+ * /code 
+ * Example: 
+ *     vlog(LL_DBG, __FILE__, __LINE__, "variable x = %u", x);
+ * /endcode
  */
 CIMPLE_CIMPLE_LINKAGE
 void vlog(
@@ -92,9 +103,25 @@ void vlog(
     const char* fmt,
     va_list ap);
 
+/**
+    Open a log file getting information for the log level from
+    a configuration file defined by the name parameter. Normally
+    this function is not used except by the logging functions
+    themselves.
+    @param name - name for the config file containing
+                information about the configuration.  This
+                function looks specifically for the parameter
+                LOGLEVEL
+*/
 CIMPLE_CIMPLE_LINKAGE
 void open_log(const char* name);
 
+/*
+    Structure defined as part of each macro generation for logs that
+    defines the level, file, line and invoke method for the call.
+    This is used by the logging macros CIMPLE_FATAL, etc. defined
+    below.
+*/
 struct Log_Call_Frame
 {
     Log_Level level;
@@ -113,68 +140,122 @@ struct Log_Call_Frame
         va_end(ap);
     }
 };
+
 /**
- * 	Macro to simplify definition of fatal log entry. the ARGS
- *  consists of the fmt and argument components equivalent to
- *  the log method. The macro supplies the LL_FATAL, __FILE__
- *  and __LINE__ parameters
- *  WARNING: Invocations of this macro MUST USE double quotes
- *  for the ARGS.
- *  Example:
- *              CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str())); 
+    Macro to simplify definition of fatal log entry. the ARGS
+    consists of the fmt and argument components equivalent to
+    the log method. The macro supplies the LL_FATAL, __FILE__
+    and __LINE__ parameters WARNING: Invocations of this macro
+    MUST USE double quotes for the ARGS.
+    /code
+    Example:
+       CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str())); 
+    /endcode
  */
 #define CIMPLE_FATAL(ARGS) \
     do \
     { \
-        Log_Call_Frame frame(LL_FATAL, __FILE__, __LINE__); \
-        frame.invoke ARGS; \
+        if (_log_enabled_state) \
+        { \
+            Log_Call_Frame frame(LL_FATAL, __FILE__, __LINE__); \
+            frame.invoke ARGS; \
+        } \
     } \
     while (0)
 
 /**
     Macro to simplify definition of ERROR severity log entries.
-    The ARGS consists of the fmt and argument componens equivalent
-    to the log method
+    The ARGS consists of the fmt and argument components
+    equivalent to the log method and using definitons from
+    printf.
+    WARNING: Invocations of this macro MUST USE double quotes
+    for the ARGS.
+    /code
     Example:
-        CIMPLE_ERROR(("no such method: %s", methodName.c_str()));
+        CIMPLE_ERR(("no such method: %s", methodName.c_str()));
+    /endcode  
 */
 #define CIMPLE_ERR(ARGS) \
     do \
     { \
-        Log_Call_Frame frame(LL_ERR, __FILE__, __LINE__); \
-        frame.invoke ARGS; \
+        if (_log_enabled_state) \
+        { \
+            Log_Call_Frame frame(LL_ERR, __FILE__, __LINE__); \
+            frame.invoke ARGS; \
+        } \
     } \
     while (0)
 /**
+    Macro to simplify definition of WARN severity log entries.
+    The ARGS consists of the fmt and argument components
+    equivalent to the log method and using definitons from
+    printf.
+    WARNING: Invocations of this macro MUST USE double quotes
+    for the ARGS.
+    /code
+    Example:
+        CIMPLE_WARN(("no such method: %s", methodName.c_str()));
+    /endcode  
 */
 #define CIMPLE_WARN(ARGS) \
     do \
     { \
+        if(_log_enabled_state) \
+        { \
         Log_Call_Frame frame(LL_WARN, __FILE__, __LINE__); \
         frame.invoke ARGS; \
+        } \
     } \
     while (0)
 /**
-
+    Macro to simplify definition of ERROR severity log entries.
+    The ARGS consists of the fmt and argument components
+    equivalent to the log method and using definitons from
+    printf.
+    WARNING: Invocations of this macro MUST USE double quotes
+    for the ARGS.
+    /code
     Example:
-        CIMPLE_INFO(("ignored null CMPI string"));
+       CIMPLE_INFO(("ignored null CMPI string"));
+    /endcode  
 */
 #define CIMPLE_INFO(ARGS) \
     do \
     { \
+        if(_log_enabled_state) \
+        {   \
         Log_Call_Frame frame(LL_INFO, __FILE__, __LINE__); \
         frame.invoke ARGS; \
+        } \
     } \
     while (0)
 /**
+*   Macro to simplify definition of debug (LL_DBG) severity log
+*   entries. The ARGS consists of the fmt and argument
+*   components equivalent to the log method and using definitons
+*   from printf. WARNING: Invocations of this macro MUST USE
+*   double quotes for the ARGS.
+    /code
+    Example:
+       CIMPLE_DBG(("Enter Function"));
+    /endcode  
 */
 #define CIMPLE_DBG(ARGS) \
     do \
     { \
+        if(_log_enabled_state) \
+        {   \
         Log_Call_Frame frame(LL_DBG, __FILE__, __LINE__); \
         frame.invoke ARGS; \
+        } \
     } \
     while (0)
+
+CIMPLE_CIMPLE_LINKAGE
+int log_enable(boolean x);
+
+CIMPLE_CIMPLE_LINKAGE
+int log_set_level(String& level);
 
 CIMPLE_NAMESPACE_END
 

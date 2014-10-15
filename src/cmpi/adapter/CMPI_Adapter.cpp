@@ -418,15 +418,21 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
 
 namespace enum_instances
 {
+    // CMPI data structure for reponse handling.
     struct Data
     {
         const CMPIBroker* broker;
         const CMPIResult* result;
         const CMPIObjectPath* cop;
-        const char* const* properties;
+        const char** properties;
         CMPIrc rc;
     };
 
+    // response processor for enumerate instances for CMPI.
+    // This function handles a single instance. It Filters properties
+    // and converts CIMPLE instances returned by the provider handler
+    // to CMPI instances..
+    
     static bool _proc(
         Instance* inst,
         Enum_Instances_Status status,
@@ -444,9 +450,33 @@ namespace enum_instances
         if (data->rc != CMPI_RC_OK)
             return false;
 
-        // Filter out unwanted properties.
+        // Create CMPI object path.
+    
+        CMPIObjectPath* instCop = NULL;
+    
+        CMPIrc rc = make_cmpi_object_path(
+            data->broker,
+            inst,
+            name_space(data->cop),
+            instCop);
+    
+        if (rc != CMPI_RC_OK)
+        {
+            // Propagate error!
+            return false;
+        }
 
-        filter_properties(inst, data->properties);
+        // Filter out unwanted properties from instance so that response
+        // matches the property list
+        // instance by setting unwanted properties to NULL. This filter call
+        // removes any key properties not on the list.
+        // Remove the filter properties call. cmpi properties are filtered by
+        // make_cmpi_instance() now that the CMSetPropertyFilter() 
+        // Function has been added and the property list passed to
+        // make_cmpi_instance. This has the advantage that cmpi traces
+        // this action when trace is turned on.
+        //
+        //filter_properties(inst, data->properties, false);
 
         // Convert to a CMPI instance and deliver:
 
@@ -456,13 +486,15 @@ namespace enum_instances
             data->broker, 
             inst, 
             name_space(data->cop), 
-            data->cop, 
+            instCop,
+            data->properties,
             ci); 
 
         if (data->rc != CMPI_RC_OK)
             return false;
 
         CMReturnInstance(data->result, ci);
+
         return true;
     }
 }
@@ -500,16 +532,23 @@ CMPIStatus CMPI_Adapter::enumInstances(
         CMReturn(rc);
     }
 
-    // Filter properties:
+    // Filter properties in reference: This provides an instance with
+    // properties non-null so that the provider has a list
+    // of the properties that the client wants in the
+    // model object provided. 
 
     if (properties)
-        filter_properties(cimple_ref, properties);
+        filter_properties(cimple_ref, properties, true);
 
     // Invoke provider:
 
     enum_instances::Data data = 
         { adapter->broker, result, cop, properties, CMPI_RC_OK };
 
+    // call the enum_instances::_proc function through the
+    // cimple ProviderHandle::enum_instances function with the
+    // enum_instances::_proc function as the response handler
+    
     Enum_Instances_Status status = 
         adapter->enum_instances(cimple_ref, enum_instances::_proc, &data); 
 
@@ -581,10 +620,12 @@ CMPIStatus CMPI_Adapter::getInstance(
 
     de_nullify_properties(cimple_ref);
 
-    // Filter properties:
+    // Filter properties: Filters all properties except keys
+    // This is used so the provider can determine which
+    // properties are in any operation input property list.
 
     if (properties)
-        filter_properties(cimple_ref, properties);
+        filter_properties(cimple_ref, properties, true);
 
     // Invoke provider:
 
@@ -626,7 +667,12 @@ CMPIStatus CMPI_Adapter::getInstance(
     CMPIInstance* ci;
 
     rc = make_cmpi_instance(
-        adapter->broker, inst, name_space(cop), cop, ci); 
+        adapter->broker,
+        inst,
+        name_space(cop),
+        cop,
+        properties,
+        ci); 
 
     if (rc == CMPI_RC_OK)
     {
@@ -776,7 +822,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
 
     Instance* model = clone(inst);
     Ref<Instance> model_d(model);
-    filter_properties(model, properties);
+    filter_properties(model, properties, true);
 
     // Invoke the provider:
 
@@ -1226,8 +1272,13 @@ static bool _indication_proc(Instance* inst, void* client_data)
 
         CMPIInstance* ci = 0;
 
-        CMPIrc rc = make_cmpi_instance(adapter->broker, 
-            inst, name_space.c_str(), 0, ci); 
+        CMPIrc rc = make_cmpi_instance(
+            adapter->broker, 
+            inst,
+            name_space.c_str(),
+            0,
+            0,
+            ci); 
 
         // Deliver the indication (we cannot do anything about failures).
 
@@ -1410,6 +1461,7 @@ namespace associators1
             inst, 
             result_namespace.c_str(),
             0,
+            data->properties,
             ci); 
 
         if (data->rc != CMPI_RC_OK)
@@ -1778,7 +1830,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
 
 //------------------------------------------------------------------------------
 //
-// CMPI_Adapter::references()
+// CMPI_Adapter::references() response instance processor
 //
 //------------------------------------------------------------------------------
 
@@ -1813,16 +1865,37 @@ namespace references
         if (data->rc != CMPI_RC_OK)
             return false;
 
+        // Create CMPI object path.
+    
+        CMPIObjectPath* instCop = NULL;
+    
+        CMPIrc rc = make_cmpi_object_path(
+            data->broker,
+            inst,
+            data->name_space,
+            instCop);
+    
+        if (rc != CMPI_RC_OK)
+        {
+            // Propagate error!
+            return false;
+        }
+
         // Filter the properties.
 
-        filter_properties(inst, data->properties);
+        filter_properties(inst, data->properties, false);
 
         // Convert to CMPI instance.
 
         CMPIInstance* ci = 0;
 
         data->rc = make_cmpi_instance(
-            data->broker, inst, data->name_space, 0, ci);
+            data->broker,
+            inst,
+            data->name_space,
+            instCop,
+            data->properties,
+            ci);
 
         if (data->rc != CMPI_RC_OK)
             return false;

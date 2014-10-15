@@ -1266,11 +1266,16 @@ int CMPIInstance_Container::get_value(
     return 0;
 }
 
+/*
+    Extension of virtual method in cimple/Container. Sets value input
+    into CMPI property defined by name using the CMPI function
+    CMSetProperty. Returns 0 if the set_value is valid. Returns
+    -1 and does a log entry if invalid.
+*/
 int CMPIInstance_Container::set_value(
     const char* name, const Value& value, uint32 flags)
 {
     CMPIData data;
-
     if (_to_cmpi_data(_mr, _cb, _ns, value, flags, data) != 0)
     {
         CIMPLE_WARN(("_to_cmpi_data() failed: feature=%s", name));

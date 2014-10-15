@@ -105,6 +105,20 @@ world: clean all regress
 
 ##==============================================================================
 ##
+## cmpiworld:  Run build, tests, register, live, tests, regression tests against
+##         with an environment variable set to create CMPI providers for
+##         those test providers that can be rebuilt for both C++ and cmpi
+##         This is primarily a test target for the developers of CIMPLE
+##            
+##
+##==============================================================================
+
+cmpiworld:
+	CIMPLE_PROVIDER_BUILD_CMPI=1
+	$(MAKE) world
+
+##==============================================================================
+##
 ## tag: Tag CVS with the release tag defined below.
 ##
 ##==============================================================================
@@ -113,7 +127,7 @@ world: clean all regress
 # NOTE: Developers. src/cimple/config.h version definition MUST match this one
 MAJOR=2
 MINOR=0
-REVISION=8
+REVISION=12
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 

@@ -1,4 +1,4 @@
-LIBRARY "GadgetProvider.dll"
+LIBRARY "cimplewmiadap.dll"
 
 EXPORTS
         DllMain PRIVATE

@@ -1,0 +1,41 @@
+// This class defines all of the CIM data types in both scalar and array form
+// with properties to allow testing of all CIM types in CIM Operations
+
+class All_Properties
+{
+    [Key] uint32 Key;
+
+    // Scalar properties:
+    boolean booleanScalar;
+    uint8 uint8Scalar;
+    sint8 sint8Scalar;
+    uint16 uint16Scalar;
+    sint16 sint16Scalar;
+    uint32 uint32Scalar;
+    sint32 sint32Scalar;
+    uint64 uint64Scalar;
+    sint64 sint64Scalar;
+    real32 real32Scalar;
+    real64 real64Scalar;
+    char16 char16Scalar;
+    string stringScalar;
+    datetime datetimeScalar;
+    [EmbeddedInstance("All_Part")] string instanceScalar;
+    [EmbeddedObject] string objectScalar;
+
+    // Array properties:
+    boolean booleanArray[];
+    uint8 uint8Array[];
+    sint8 sint8Array[];
+    uint16 uint16Array[];
+    sint16 sint16Array[];
+    uint32 uint32Array[];
+    sint32 sint32Array[];
+    uint64 uint64Array[];
+    sint64 sint64Array[];
+    real32 real32Array[];
+    real64 real64Array[];
+    char16 char16Array[];
+    string stringArray[];
+    datetime datetimeArray[];
+};

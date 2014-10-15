@@ -24,6 +24,13 @@
 **==============================================================================
 */
 
+/*
+    Seralization value packing and unpacking functions.
+    These functions pack into a Buffer in binary form and
+    correspondingly unpack from a Buffer.
+    Functions are provided for all CIM Data types.
+*/
+
 #include "Enc.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -39,21 +46,21 @@ uint64 swap_uint64(uint64 x)
 #ifdef _GNU_SOURCE
 
     return
-	 (((x) & 0xff00000000000000ull) >> 56) | 
-	 (((x) & 0x00ff000000000000ull) >> 40) | 
-	 (((x) & 0x0000ff0000000000ull) >> 24) |
-	 (((x) & 0x000000ff00000000ull) >>  8) |
-	 (((x) & 0x00000000ff000000ull) <<  8) |
-	 (((x) & 0x0000000000ff0000ull) << 24) |
-	 (((x) & 0x000000000000ff00ull) << 40) |
-	 (((x) & 0x00000000000000ffull) << 56);
+     (((x) & 0xff00000000000000ull) >> 56) | 
+     (((x) & 0x00ff000000000000ull) >> 40) | 
+     (((x) & 0x0000ff0000000000ull) >> 24) |
+     (((x) & 0x000000ff00000000ull) >>  8) |
+     (((x) & 0x00000000ff000000ull) <<  8) |
+     (((x) & 0x0000000000ff0000ull) << 24) |
+     (((x) & 0x000000000000ff00ull) << 40) |
+     (((x) & 0x00000000000000ffull) << 56);
 
 #else /* _GNU_SOURCE */
 
     union
     {
-	uint64 x;
-	uint8 data[8];
+        uint64 x;
+        uint8 data[8];
     }
     u;
 
@@ -80,6 +87,17 @@ void pack_uint64(Buffer& out, const uint64& x)
 
 #ifdef CIMPLE_CONVERSE_ENDIAN
     *ptr = swap_uint64(x);
+#else
+    *ptr = x;
+#endif
+}
+
+void pack_sint64(Buffer& out, const sint64& x)
+{
+    sint64* ptr = (sint64*)align_buffer(out, sizeof(sint64));
+
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    *ptr = swap_sint64(x);
 #else
     *ptr = x;
 #endif
@@ -118,20 +136,6 @@ void pack_datetime(Buffer& out, const Datetime& x)
     pack_uint32(out, x.offset());
 }
 
-void __pack_array(
-    Buffer& out, 
-    const Array_Base& x,
-    Pack_Elem pack_elem)
-{
-    // ATTN: make this faster by not aligning each element (only the first
-    // element should be aligned.
-
-    pack_uint32(out, x.size());
-
-    for (size_t i = 0; i < x.size(); i++)
-	pack_elem(out, x.get_raw(i));
-}
-
 //==============================================================================
 //
 // unpack
@@ -152,6 +156,20 @@ void unpack_uint16(const Buffer& in, size_t& pos, uint16& x)
     pos += sizeof(uint16);
 }
 
+void unpack_sint16(const Buffer& in, size_t& pos, sint16& x)
+{
+    pos = align(pos, sizeof(sint16));
+    sint16* ptr = (sint16*)(in.data() + pos);
+
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    x = swap_sint16(*ptr);
+#else
+    x = *ptr;
+#endif
+
+    pos += sizeof(sint16);
+}
+
 void unpack_uint32(const Buffer& in, size_t& pos, uint32& x)
 {
     pos = align(pos, sizeof(uint32));
@@ -166,6 +184,20 @@ void unpack_uint32(const Buffer& in, size_t& pos, uint32& x)
     pos += sizeof(uint32);
 }
 
+void unpack_sint32(const Buffer& in, size_t& pos, sint32& x)
+{
+    pos = align(pos, sizeof(sint32));
+    sint32* ptr = (sint32*)(in.data() + pos);
+
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    x = swap_sint32(*ptr);
+#else
+    x = *ptr;
+#endif
+
+    pos += sizeof(sint32);
+}
+
 void unpack_uint64(const Buffer& in, size_t& pos, uint64& x)
 {
     pos = align(pos, sizeof(uint64));
@@ -178,6 +210,20 @@ void unpack_uint64(const Buffer& in, size_t& pos, uint64& x)
 #endif
 
     pos += sizeof(uint64);
+}
+
+void unpack_sint64(const Buffer& in, size_t& pos, sint64& x)
+{
+    pos = align(pos, sizeof(sint64));
+    sint64* ptr = (sint64*)(in.data() + pos);
+
+#ifdef CIMPLE_CONVERSE_ENDIAN
+    x = swap_sint64(*ptr);
+#else
+    x = *ptr;
+#endif
+
+    pos += sizeof(sint64);
 }
 
 void unpack_real32(const Buffer& in, size_t& pos, real32& x)
@@ -222,31 +268,271 @@ void unpack_datetime(const Buffer& in, size_t& pos, Datetime& x)
     x.set(usec, offset);
 }
 
-void __unpack_array(
-    const Buffer& in,
-    size_t& pos,
-    Array_Base& x,
-    Unpack_Elem unpack_elem)
+void pack_boolean_array(Buffer& out, const Array<boolean>& x)
 {
-    // Unpack array size.
+    pack_uint32(out, uint32(x.size()));
 
-    uint32 size = 0;
+    for (size_t i = 0; i < x.size(); i++)
+        pack_boolean(out, x[i]);
+}
+
+void pack_uint8_array(Buffer& out, const Array<uint8>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_uint8(out, x[i]);
+}
+
+void pack_sint8_array(Buffer& out, const Array<sint8>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_sint8(out, x[i]);
+}
+
+void pack_uint16_array(Buffer& out, const Array<uint16>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_uint16(out, x[i]);
+}
+
+void pack_sint16_array(Buffer& out, const Array<sint16>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_sint16(out, x[i]);
+}
+
+void pack_uint32_array(Buffer& out, const Array<uint32>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_uint32(out, x[i]);
+}
+
+void pack_sint32_array(Buffer& out, const Array<sint32>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_sint32(out, x[i]);
+}
+
+void pack_uint64_array(Buffer& out, const Array<uint64>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_uint64(out, x[i]);
+}
+
+void pack_sint64_array(Buffer& out, const Array<sint64>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_sint64(out, x[i]);
+}
+
+void pack_real32_array(Buffer& out, const Array<real32>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_real32(out, x[i]);
+}
+
+void pack_real64_array(Buffer& out, const Array<real64>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_real64(out, x[i]);
+}
+
+void pack_char16_array(Buffer& out, const Array<char16>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_char16(out, x[i]);
+}
+
+void pack_string_array(Buffer& out, const Array<String>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_string(out, x[i]);
+}
+
+void pack_datetime_array(Buffer& out, const Array<Datetime>& x)
+{
+    pack_uint32(out, uint32(x.size()));
+
+    for (size_t i = 0; i < x.size(); i++)
+        pack_datetime(out, x[i]);
+}
+
+void unpack_boolean_array(const Buffer& in, size_t& pos, Array<boolean>& x)
+{
+    uint32 size;
     unpack_uint32(in, pos, size);
-
-    // Unpack the elements.
 
     while (size--)
     {
-	// Note: this trick only works for the raw data types.
-	union
-	{
-	    uint64 align1;
-	    real64 align2;
-	    char data[sizeof(Datetime)];
-	}
-	u;
-	unpack_elem(in, pos, u.data);
-	x.append_raw(u.data, 1);
+        boolean tmp;
+        unpack_boolean(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_uint8_array(const Buffer& in, size_t& pos, Array<uint8>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        uint8 tmp;
+        unpack_uint8(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_sint8_array(const Buffer& in, size_t& pos, Array<sint8>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        sint8 tmp;
+        unpack_sint8(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_uint16_array(const Buffer& in, size_t& pos, Array<uint16>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        uint16 tmp;
+        unpack_uint16(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_sint16_array(const Buffer& in, size_t& pos, Array<sint16>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        sint16 tmp;
+        unpack_sint16(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_uint32_array(const Buffer& in, size_t& pos, Array<uint32>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        uint32 tmp;
+        unpack_uint32(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_sint32_array(const Buffer& in, size_t& pos, Array<sint32>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        sint32 tmp;
+        unpack_sint32(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_uint64_array(const Buffer& in, size_t& pos, Array<uint64>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        uint64 tmp;
+        unpack_uint64(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_sint64_array(const Buffer& in, size_t& pos, Array<sint64>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        sint64 tmp;
+        unpack_sint64(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_real32_array(const Buffer& in, size_t& pos, Array<real32>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        real32 tmp;
+        unpack_real32(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_real64_array(const Buffer& in, size_t& pos, Array<real64>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        real64 tmp;
+        unpack_real64(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_char16_array(const Buffer& in, size_t& pos, Array<char16>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        char16 tmp;
+        unpack_char16(in, pos, tmp);
+        x.append(tmp);
     }
 }
 
@@ -257,9 +543,22 @@ void unpack_string_array(const Buffer& in, size_t& pos, Array<String>& x)
 
     while (size--)
     {
-	String tmp;
-	unpack_string(in, pos, tmp);
-	x.append(tmp);
+        String tmp;
+        unpack_string(in, pos, tmp);
+        x.append(tmp);
+    }
+}
+
+void unpack_datetime_array(const Buffer& in, size_t& pos, Array<Datetime>& x)
+{
+    uint32 size;
+    unpack_uint32(in, pos, size);
+
+    while (size--)
+    {
+        Datetime tmp;
+        unpack_datetime(in, pos, tmp);
+        x.append(tmp);
     }
 }
 

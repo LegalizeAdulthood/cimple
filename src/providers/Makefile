@@ -43,6 +43,8 @@ DIRS = \
 ### right now.
 ### Widget/modify
 
+## The providers that use Embedded Instance support are only enabled
+## if this support is enabled.
 
 ifeq ($(ENABLE_EMBEDDED_INSTANCES_OPT),1)
     DIRS += Embedded Embedded/TestEmbedded All All/TestAll

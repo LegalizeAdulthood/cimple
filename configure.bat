@@ -48,6 +48,13 @@ set prev=
     set prev=
   )
 
+
+  if "%prev%" == "cimplehome-envvar" (
+    set cimplehome_envvar=%1
+    set found=1
+    set prev=
+  )
+
   if "%prev%" == "with-pegasus" (
     set with_pegasus=%1
     set found=1
@@ -116,6 +123,11 @@ set prev=
 
   if "%1" == "--datadir" (
     set prev=datadir
+    set found=1
+  )
+
+  if "%1" == "--cimplehome-envvar" (
+    set prev=cimplehome-envvar
     set found=1
   )
 
@@ -269,6 +281,10 @@ if "%datadir%" == "" (
   set datadir=%prefix%/share
 )
 
+if "%cimplehome_envvar%" == "" (
+  set cimplehome_envvar=CIMPLE_HOME
+)
+
 if "%with_schema%" == "" (
   set with_schema=%datadir%/cimple/schema/cim214
 )
@@ -298,6 +314,7 @@ echo enable_wmi=%enable_wmi%
 echo enable_static=%enable_static%
 echo enable_embedded_instances=%enable_embedded_instances%
 echo enable_scheduler=%enable_scheduler%
+echo cimplehome-envvar=%cimplehome_envvar%
 :skip
 
 ::==============================================================================
@@ -319,6 +336,7 @@ echo WITH_CMPI_OPT=%with_cmpi%>> config.options
 echo WITH_OPENWBEM_OPT=%with_openwbem%>> config.options
 echo WITH_SCHEMA_OPT=%with_schema%>> config.options
 echo LIBBASE_OPT=lib>> config.options
+echo CIMPLEHOME_ENVVAR_OPT=%cimplehome_envvar%>> config.options
 
 if not "%enable_debug%" == "" (
     echo WIN_ENABLE_DEBUG_OPT=TRUE>> config.options
@@ -359,6 +377,7 @@ set bindir=
 set libdir=
 set includedir=
 set datadir=
+set cimplehome_envvar=
 set with_pegasus=
 set with_pegasus_includes=
 set with_pegasus_libdir=

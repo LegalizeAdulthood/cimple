@@ -30,12 +30,17 @@ Get_Instance_Status All_Class_Provider::get_instance(
 {
     CIMPLE_DBG(("get_instance key = %u", model->Key.value));
 
+    if (_instance == 0)
+    {
+        return GET_INSTANCE_NOT_FOUND;
+    }
     if ((key_eq(model, _instance)))
     {
         instance = _instance->clone();
+        print(_instance);
+        print(instance);
         return GET_INSTANCE_OK;
     }
-
     return GET_INSTANCE_NOT_FOUND;
 }
 
@@ -91,6 +96,9 @@ Enum_Instances_Status All_Class_Provider::enum_instances(
     inst->instanceScalar = part;
     inst->objectScalar = part->clone();
 
+    //inst->instanceArray.set(Array<CIMInstance>:make(part, part->clone()));
+    //inst->objectArray.set(Array<CIMObject>:make(part, part->clone()));
+
     handler->handle(inst);
 
 #if 0
@@ -136,8 +144,13 @@ Create_Instance_Status All_Class_Provider::create_instance(
 Delete_Instance_Status All_Class_Provider::delete_instance(
     const All_Class* instance)
 {
-    assert(instance);
+
     CIMPLE_DBG(("delete_instance key = %u", instance->Key.value));
+
+    if (_instance == 0)
+    {
+        return DELETE_INSTANCE_NOT_FOUND;
+    }
 
     if((key_eq(instance, _instance)))
     {
@@ -155,7 +168,12 @@ Modify_Instance_Status All_Class_Provider::modify_instance(
     // simply substitute new instance for old
 
     CIMPLE_DBG(("modify_instance key = %u", instance->Key.value));
+
     assert(instance);
+    if (_instance == 0)
+    {
+        return MODIFY_INSTANCE_NOT_FOUND;
+    }
     if((key_eq(instance, _instance)))
     {
         unref(_instance);

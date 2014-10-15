@@ -31,6 +31,8 @@
 #include "File_Lock.h"
 #include "Buffer.h"
 #include "Datetime.h"
+#include "config.h"
+#include "options.h"
 
 #ifdef CIMPLE_WINDOWS
 # include <windows.h>
@@ -38,9 +40,13 @@
 # include <direct.h>
 #endif
 
-#define DEFAULT_NAME "cimple"
+#define DEFAULT_CONFIG_FILE_NAME ".cimple"
 
 CIMPLE_NAMESPACE_BEGIN
+
+static String cimple_home_envvar = CIMPLEHOME_ENVVAR ;
+
+boolean _log_enabled_state = true;
 
 static File_Lock* _lock;
 static FILE* _os;
@@ -121,6 +127,25 @@ static char* _get_opt_value(const char* path, const char* opt)
     return 0;
 }
 
+// validate the text provided against the possible log level
+// string definitions.  Return 0 if valid with the correct enum
+// in level or -1 if no match.
+// Does a no case match against the level definition strings.
+static int _validate_log_level(const char * txt, Log_Level& level)
+{
+    for (size_t i = 0; i < _num_strings; i++)
+    {
+        if (strcasecmp(_strings[i], txt) == 0)
+        {
+            level = Log_Level(i);
+            return 0;
+        }
+    }
+    return -1;
+}
+// get the log level string definition from the
+// config file and if it is valid return 0.  If it is invalid
+// return -1
 static int _get_log_level(const char* path, Log_Level& level)
 {
     char* value = _get_opt_value(path, "LOG_LEVEL");
@@ -128,25 +153,22 @@ static int _get_log_level(const char* path, Log_Level& level)
     if (!value)
         return -1;
 
-    for (size_t i = 0; i < _num_strings; i++)
-    {
-        if (strcasecmp(_strings[i], value) == 0)
-        {
-            level = Log_Level(i);
-            free(value);
-            return 0;
-        }
-    }
+    int rtn = _validate_log_level(value, level);
 
     free(value);
-    return -1;
+    return rtn;
 }
 
+// Initialize the log files using status from the config file if
+// it exists. The name of the config file is defined by the
+// name variable on input.
 static void _initialize(const char* name)
 {
-    // Get home path:
+    // Get home path for CIMPLE_HOME.
+    // Defined originally in options as define and 
+    // as String in this file.
 
-    const char* home = getenv("HOME");
+    const char* home = getenv(cimple_home_envvar.c_str());
 
     if (!home)
         return;
@@ -155,7 +177,7 @@ static void _initialize(const char* name)
 
     char conf_path[1024];
     {
-        sprintf(conf_path, "%s/.%src", home, name);
+        sprintf(conf_path, "%s/%src", home, name);
 
         if (_get_log_level(conf_path, _level) != 0)
             return;
@@ -165,7 +187,7 @@ static void _initialize(const char* name)
 
     char root_path[1024];
     {
-        sprintf(root_path, "%s/.%s", home, name);
+        sprintf(root_path, "%s/%s", home, name);
 #ifdef CIMPLE_WINDOWS
         _mkdir(root_path);
 #else
@@ -193,6 +215,8 @@ static void _initialize(const char* name)
 
     _lock = new File_Lock(lock_file_path);
 
+    // Fail if cannot create lock file.  This is the out if everything
+    // fails.
     if (!_lock->okay())
     {
         delete _lock;
@@ -236,7 +260,7 @@ void vlog(
 
     if (_initialized == 0)
     {
-        _initialize(DEFAULT_NAME);
+        _initialize(DEFAULT_CONFIG_FILE_NAME);
         _initialized = 1;
     }
 
@@ -298,6 +322,25 @@ void log(Log_Level level, const char* file, size_t line, const char* fmt, ...)
     va_start(ap, fmt);
     vlog(level, file, line, fmt, ap);
     va_end(ap);
+}
+
+int log_enable(boolean x)
+{
+    // if same state
+    if (_log_enabled_state == x)
+        return -1;
+
+    // else set new state
+    _log_enabled_state = x;
+    return 0;
+}
+
+// sets the log level based on the input string provided.
+// returns 0 if successful or -1 if the string is invalid.
+int log_set_level(String level)
+{
+    // try to set the new state and return result
+    return(_validate_log_level(level.c_str(), _level));
 }
 
 CIMPLE_NAMESPACE_END

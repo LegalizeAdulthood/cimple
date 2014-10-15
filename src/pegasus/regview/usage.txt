@@ -1,0 +1,30 @@
+Usage: %s [-Vcvhm] [-c classname] [modules]
+
+Where:
+    -V           : Print the version
+    -v           : Verbose mode. Displays additonal information
+    -h           : Print this help text
+    -c           : Display Pegasus registration classes in place of 
+                   formatted output
+    -C  ClassName: Display registration for particular class. This
+                   parameter may be repeated.
+    -m           : Show only Provider Modules registered
+
+Synopsis: Display information about Pegasus CIMServer provider registration.
+     Displays registration provider registration settings and status.
+
+Output form is:
+    <moduleName>: <InterfaceType> Ver[<InterfaceVersion>] Location[<Location>]
+        <providerName>: <status>
+            <class Name>: Namespaces[<Namespaces>] <Provider Types>
+Example:
+%%<regview CMPL_Time_Module
+    CMPL_Time_Module: C++Default Ver[2.5.0] Vendor[Pegasus] Loc[cimpletime]
+        CMPL_Time_Provider:
+            CMPL_Time: NameSpaces[root/cimv2] Instance, Method
+
+
+
+
+
+

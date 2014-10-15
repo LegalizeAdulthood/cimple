@@ -40,6 +40,7 @@ void test(const char* name, Type expected_type)
 
 int main(int argc, char** argv)
 {
+    printf("Test+++ %s\n",argv[0]);
     test("boolean", BOOLEAN);
     test("uint8", UINT8);
     test("sint8", SINT8);

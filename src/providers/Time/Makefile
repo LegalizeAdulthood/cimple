@@ -12,10 +12,12 @@ SOURCES = \
     repository.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++
+## Allow building providers for either CMPI or Pegasus C++ provider interface
+## Changing Provider interfaces requires reregistering the provider.
 ifdef CIMPLE_PROVIDER_BUILD_CMPI
-   CIMPLE_CMPI_MODULE=1
+    CIMPLE_CMPI_MODULE=1
 else
-   CIMPLE_PEGASUS_MODULE=1
+    CIMPLE_PEGASUS_MODULE=1
 endif
 
 include ../common.mak

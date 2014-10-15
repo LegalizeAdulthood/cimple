@@ -31,6 +31,7 @@ using namespace cimple;
 
 int main(int argc, char** argv)
 {
+    printf("Test+++ %s\n",argv[0]);
     uint64 start = Time::now();
     Time::sleep(2 * 1000 * 1000);
     uint64 finish = Time::now();

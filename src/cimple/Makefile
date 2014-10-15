@@ -53,7 +53,13 @@ SOURCES = \
     Strings.cpp \
     Type.cpp \
     Property.cpp \
-    TSD.cpp
+    TSD.cpp \
+
+## The encoder functions are optional components
+## so compiled only when flag set.
+ifdef ENABLE_INSTANCE_PERSISTENCE_OPT
+    SOURCES += Enc.cpp Instance_Enc.cpp
+endif
 
 ## The scheduler is an optional component so is
 ## compiled only if flag set
@@ -82,7 +88,9 @@ CIMPLE_DOXYGEN_FILES = \
     Thread.h \
     Stack.h \
     octets.h \
-    AtomicCounter.h
+    AtomicCounter.h \
+
+CIMPLE_DOXYGEN_FILES += Enc.h Instance_Enc.h
 
 ## Obsolete 
  ifdef ENABLE_SCHEDULER_OPT

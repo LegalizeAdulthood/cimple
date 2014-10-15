@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006 Michael E. Brasher, K. Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -159,7 +159,7 @@ inline void Buffer::clear()
 inline void Buffer::append(char x)
 {
     if (_size == _cap)
-	_append_aux();
+        _append_aux();
 
     _data[_size++] = x;
 }
@@ -167,7 +167,7 @@ inline void Buffer::append(char x)
 inline void Buffer::append(const char* data, size_t size)
 {
     if (_size + size > _cap)
-	reserve(_size + size);
+        reserve(_size + size);
 
     memcpy(_data + _size, data, size);
     _size += size;
@@ -186,7 +186,7 @@ inline void Buffer::remove(size_t i)
 inline void Buffer::grow(size_t size)
 {
     if (_size + size > _cap)
-	reserve(_size + size);
+        reserve(_size + size);
 
     _size += size;
 }
@@ -194,7 +194,7 @@ inline void Buffer::grow(size_t size)
 inline void Buffer::resize(size_t size)
 {
     if (size > _cap)
-	reserve(size);
+        reserve(size);
 
     _size = size;
 }

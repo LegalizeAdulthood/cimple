@@ -130,7 +130,9 @@ endif
 ##
 ##==============================================================================
 
-VALGRIND=valgrind
+ifndef VALGRIND
+  VALGRIND=valgrind
+endif
 
 ifndef DIFF
   DIFF = diff
@@ -149,7 +151,7 @@ ifndef COPY
 endif
 ##==============================================================================
 ##
-## ENABLE_DEBUG_OPT
+## ENABLE_DEBUG_OPT - Set corresponding compile flag
 ##
 ##==============================================================================
 

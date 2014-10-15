@@ -23,6 +23,12 @@
 **
 **==============================================================================
 */
+/*
+    Structure and functions to define and access the meta data for CIM
+    Classes. The user should never have to access this directly.  The
+    genclass utility creates .h and .cpp files that use this structure
+    and functions.
+*/
 
 #ifndef _cimple_Meta_Class_h
 #define _cimple_Meta_Class_h

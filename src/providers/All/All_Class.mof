@@ -42,7 +42,7 @@ class All_Class
     string stringArray[];
     datetime datetimeArray[];
 
-/*
+/*  temporarily disabled because of issues with some environments
     [EmbeddedInstance("All_Part")] string instanceArray[];
     [EmbeddedObject] string objectArray[];
 */

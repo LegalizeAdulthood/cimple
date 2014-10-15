@@ -472,7 +472,8 @@ public:
     }
 };
 
-// Instance/Method provider proc.
+// Instance/Method provider proc. Calls the provider function defined
+// by the operation parameter.
 template<class PROVIDER>
 class Provider_Proc_T
 {

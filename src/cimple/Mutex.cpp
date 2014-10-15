@@ -27,6 +27,7 @@
 #include "Mutex.h"
 #include "Magic.h"
 #include <pthread.h>
+#include <errno.h>
 #include <cassert>
 
 #if defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
@@ -117,30 +118,100 @@ void Mutex::lock()
     {
         pthread_t self = pthread_self();
 
-        pthread_mutex_lock(&rep->mutex);
+        // set lock. We should never get error return
+        assert(pthread_mutex_lock(&rep->mutex) == 0);
+
+        if (rep->count == 0)
         {
-            if (rep->count == 0)
-            {
-                rep->owner = self;
-            }
-            else if (!pthread_equal(rep->owner, self))
-            {
-                while (rep->count > 0)
-                    pthread_cond_wait(&rep->cond, &rep->mutex);
-
-                rep->owner = self;
-            }
-
-            rep->count++;
+            rep->owner = self;
         }
+        else if (!pthread_equal(rep->owner, self))
+        {
+            while (rep->count > 0)
+                pthread_cond_wait(&rep->cond, &rep->mutex);
+
+            rep->owner = self;
+        }
+
+        rep->count++;
+
         pthread_mutex_unlock(&rep->mutex);
     }
     else
-        pthread_mutex_lock(&rep->mutex);
+        assert(pthread_mutex_lock(&rep->mutex) == 0);
 
 #else /* CIMPLE_NO_RECURSIVE_MUTEXES */
 
-    pthread_mutex_lock(&((MutexRep*)_rep)->mutex);
+    assert(pthread_mutex_lock(&((MutexRep*)_rep)->mutex) == 0);
+
+#endif /* CIMPLE_NO_RECURSIVE_MUTEXES */
+}
+
+
+int Mutex::try_lock()
+{
+    CIMPLE_ASSERT(((MutexRep*)_rep)->magic);
+    MutexRep* rep = (MutexRep*)_rep;
+
+#ifdef CIMPLE_NO_RECURSIVE_MUTEXES
+
+    if (rep->recursive)
+    {
+        pthread_t self = pthread_self();
+
+        // If error return from trylock, pass back to user.
+        rtncode int;
+        if ((rtncode = pthread_mutex_trylock(&rep->mutex)) != 0);
+        {
+            return(rtncode);
+        }
+        if (rep->count == 0)
+        {
+            rep->owner = self;
+        }
+        else if (!pthread_equal(rep->owner, self))
+        {
+            while (rep->count > 0)
+                pthread_cond_wait(&rep->cond, &rep->mutex);
+
+            rep->owner = self;
+        }
+
+        rep->count++;
+        pthread_mutex_unlock(&rep->mutex);
+    }
+    else
+    {
+        int rc = 0;
+        if (rc = pthread_mutex_trylock(&((MutexRep*)_rep)->mutex) != 0 )
+        {
+            if (rc == EBUSY)
+            {
+                return(-1);
+            }
+            return(-1);
+    }
+    else
+        return(0);
+    }
+        return pthread_mutex_trylock(&rep->mutex);
+
+#else /* CIMPLE_NO_RECURSIVE_MUTEXES */
+
+    int rc = 0;
+    if ((rc = pthread_mutex_trylock(&((MutexRep*)_rep)->mutex)) != 0 )
+    {
+        //printf("trylock rtn 0  = %d. EBUSY = %d\n",rc, EBUSY);
+        if (rc == EBUSY)
+        {
+            return(-1);
+        }
+        //printf("trylock rtn = %d\n", rc);
+        //assert(false);
+        return(-1);
+    }
+    else
+        return(0);
 
 #endif /* CIMPLE_NO_RECURSIVE_MUTEXES */
 }
