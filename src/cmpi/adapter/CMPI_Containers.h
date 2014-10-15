@@ -39,7 +39,11 @@ public:
     typedef CMPIInstance Rep;
 
     CMPIInstance_Container(
-        const Meta_Repository* mr, const CMPIBroker* cb, Rep* rep);
+        const Meta_Repository* mr, 
+        const CMPIBroker* cb, 
+        const char* name_space,
+        Rep* rep);
+
     virtual ~CMPIInstance_Container();
     virtual size_t get_size();
     virtual int get_name(size_t pos, String& name);
@@ -50,6 +54,7 @@ private:
     CMPIInstance_Container(const CMPIInstance_Container&);
     CMPIInstance_Container& operator=(const CMPIInstance_Container&);
     const CMPIBroker* _cb;
+    const char* _ns;
     Rep* _rep;
 };
 
@@ -60,7 +65,10 @@ public:
     typedef CMPIObjectPath Rep;
 
     CMPIObjectPath_Container(
-        const Meta_Repository* mr, const CMPIBroker* cb, Rep* rep);
+        const Meta_Repository* mr, 
+        const CMPIBroker* cb, 
+        const char* name_space,
+        Rep* rep);
     virtual ~CMPIObjectPath_Container();
     virtual size_t get_size();
     virtual int get_name(size_t pos, String& name);
@@ -71,6 +79,7 @@ private:
     CMPIObjectPath_Container(const CMPIObjectPath_Container&);
     CMPIObjectPath_Container& operator=(const CMPIObjectPath_Container&);
     const CMPIBroker* _cb;
+    const char* _ns;
     Rep* _rep;
 };
 
@@ -81,7 +90,10 @@ public:
     typedef CMPIArgs Rep;
 
     CMPIArgs_Container(
-        const Meta_Repository* mr, const CMPIBroker* cb, Rep* rep);
+        const Meta_Repository* mr, 
+        const CMPIBroker* cb, 
+        const char* name_space,
+        Rep* rep);
     virtual ~CMPIArgs_Container();
     virtual size_t get_size();
     virtual int get_name(size_t pos, String& name);
@@ -94,6 +106,7 @@ private:
     CMPIArgs_Container(const CMPIArgs_Container&);
     CMPIArgs_Container& operator=(const CMPIArgs_Container&);
     const CMPIBroker* _cb;
+    const char* _ns;
     Rep* _rep;
     CMPIData _return_value;
 };

@@ -32,14 +32,6 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-static void _set_namespace_callback(Instance* inst, void* data)
-{
-    const char* ns = (const char*)data;
-
-    if (inst->__name_space.size() == 0)
-        inst->__name_space = ns;
-}
-
 CMPIrc make_cmpi_object_path(
     const CMPIBroker* cb,
     const cimple::Instance* inst, 
@@ -50,14 +42,12 @@ CMPIrc make_cmpi_object_path(
     const Meta_Repository* mr = mc->meta_repository;
     const char* cn = mc->name;
 
-    visit((Instance*)inst, _set_namespace_callback, (void*)ns);
-
     cop = CMNewObjectPath(cb, ns, cn, 0);
 
     if (!cop)
         return CMPI_RC_ERR_FAILED;
 
-    CMPIObjectPath_Container cont(mr, cb, (CMPIObjectPath*)cop);
+    CMPIObjectPath_Container cont(mr, cb, ns, (CMPIObjectPath*)cop);
 
     if (cont.convert(inst, CIMPLE_FLAG_KEY) != 0)
         return CMPI_RC_ERR_FAILED;
@@ -75,10 +65,6 @@ CMPIrc make_cmpi_instance(
     const Meta_Class* mc = inst->meta_class;
     const Meta_Repository* mr = mc->meta_repository;
 
-    // Fill in namespace (if still empty):
-
-    visit((Instance*)inst, _set_namespace_callback, (void*)ns);
-
     // Create CMPI object path (if not already created):
 
     if (!cop)
@@ -95,7 +81,7 @@ CMPIrc make_cmpi_instance(
 
     ci = CMNewInstance(cb, cop, 0);
     {
-        CMPIInstance_Container cont(mr, cb, ci);
+        CMPIInstance_Container cont(mr, cb, ns, ci);
 
         if (cont.convert(inst, 0) != 0)
         {
@@ -109,14 +95,20 @@ CMPIrc make_cmpi_instance(
 CMPIrc make_cimple_instance(
     const CMPIBroker* cb,
     const cimple::Meta_Class* mc,
+    const CMPIObjectPath* cop,
     const CMPIInstance* ci,
     Instance*& inst)
 {
-    CMPIInstance_Container cont(mc->meta_repository, cb, (CMPIInstance*)ci);
-    inst = cont.convert(mc, 0);
+    CMPIInstance_Container cont(
+        mc->meta_repository, cb, name_space(cop), (CMPIInstance*)ci);
 
-    if (!inst)
+    inst = 0;
+
+    if (cont.convert(mc, 0, inst) != 0 || !inst)
         return CMPI_RC_ERR_FAILED;
+
+    if (cop)
+        __set_name_space_recursive(inst, name_space(cop), false);
 
     return CMPI_RC_OK;
 }
@@ -124,14 +116,19 @@ CMPIrc make_cimple_instance(
 CMPIrc make_cimple_reference(
     const CMPIBroker* cb,
     const Meta_Class* mc,
-    const CMPIObjectPath* op,
+    const CMPIObjectPath* cop,
     Instance*& inst)
 {
-    CMPIObjectPath_Container cont(mc->meta_repository, cb, (CMPIObjectPath*)op);
-    inst = cont.convert(mc, CIMPLE_FLAG_KEY);
+    CMPIObjectPath_Container cont(
+        mc->meta_repository, cb, name_space(cop), (CMPIObjectPath*)cop);
 
-    if (!inst)
+    inst = 0;
+
+    if (cont.convert(mc, CIMPLE_FLAG_KEY, inst) != 0 || !inst)
         return CMPI_RC_ERR_FAILED;
+
+    if (cop)
+        __set_name_space_recursive(inst, name_space(cop), false);
 
     return CMPI_RC_OK;
 }
@@ -140,15 +137,21 @@ CMPIrc make_cimple_method(
     const CMPIBroker* cb,
     const Meta_Class* mc,
     const Meta_Method* mm,
+    const CMPIObjectPath* cop,
     const CMPIArgs* in,
     void* client_data,
     Instance*& inst)
 {
-    CMPIArgs_Container cont(mc->meta_repository, cb, (CMPIArgs*)in);
-    inst = cont.convert((Meta_Class*)mm, CIMPLE_FLAG_IN);
+    CMPIArgs_Container cont(
+        mc->meta_repository, cb, name_space(cop), (CMPIArgs*)in);
 
-    if (!inst)
+    inst = 0;
+
+    if (cont.convert((Meta_Class*)mm, CIMPLE_FLAG_IN, inst) != 0 || !inst)
         return CMPI_RC_ERR_FAILED;
+
+    if (cop)
+        __set_name_space_recursive(inst, name_space(cop), false);
 
     return CMPI_RC_OK;
 }
@@ -161,9 +164,9 @@ CMPIrc make_cmpi_method(
     CMPIValue& return_value,
     CMPIType& return_type)
 {
-    visit((Instance*)meth, _set_namespace_callback, (void*)ns);
+    CMPIArgs_Container cont(
+        meth->meta_class->meta_repository, cb, ns, out);
 
-    CMPIArgs_Container cont(meth->meta_class->meta_repository, cb, out);
     memset(&cont.return_value(), 0, sizeof(CMPIData));
 
     if (cont.convert(meth, CIMPLE_FLAG_OUT) != 0)

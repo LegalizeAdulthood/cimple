@@ -1,39 +1,12 @@
 
-CIMPLE 0.99.0 Release Notes (March 30, 2007)
-============================================
 
-Below are the major changes for CIMPLE 0.99.0. Note that three minor changes 
-must be made to existing providers. First, they must either be linked against
-libcimplepegadap (for Pegasus) or libcimplecmpiadap (for CMPI). Second, you
-must place the CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT in module.cpp to use the
-Pegasus interface. Third, you must remove the inclusion of "CIMPI.h" in the
-module.cpp.
+    1.  Must regenerate classes, providers, and modules. Must change
+        Array<Class*> parameters from this:
 
-1.  Implemented Pegasus adapter, allowing CIMPLE providers to masquerade 
-    as Pegasus C++ providers. This eliminates the need for the Pegasus
-    provider manager as well as the need to patch Pegasus. The CIMPLE 
-    provider manager is now obsolete. 
+            Array<Class*>& param1
 
-2.  Load/Unload of providers now works according to the underlying
-    scheme (whether Pegasus or CMPI).
+        To this:
 
-3.  There are no longer special naming requirements for provider 
-    libraries (previous versions required a "cmpl" prefix).
+            Property< Array<Class*> >& param1
 
-4.  Regmod now automatically detects the provider interface to use
-    while registering the provider. A provider either links to
-    libcimplepegadap.so (Pegasus) or libcimplecmpiadap.so. (CMPI).
-    Regmod searches for one of these entry points to determine whether
-    to register as a Pegasus or CMPI provider.
-
-5.  The provider timer() operation has been disabled for now until
-    a workable CMPI threading model can be found.
-
-6.  There is no longer any need for a provider to include any CMPI-
-    specific header files.
-
-7.  You must now inject the following macro into the provider's module.cpp 
-    file in order to use the Pegasus provider interface.
-
-	CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
-
+        And must set to non-null.

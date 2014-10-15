@@ -6,7 +6,7 @@ MODULE=1
 SHARED_LIBRARY = cimplemethods
 
 SOURCES = \
-    Arg.cpp \
+    Argument.cpp \
     Methods.cpp \
     Methods_Provider.cpp \
     module.cpp \

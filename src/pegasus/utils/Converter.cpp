@@ -1,0 +1,212 @@
+/*
+**==============================================================================
+**
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+** 
+** Permission is hereby granted, free of charge, to any person obtaining a
+** copy of this software and associated documentation files (the "Software"),
+** to deal in the Software without restriction, including without limitation
+** the rights to use, copy, modify, merge, publish, distribute, sublicense,
+** and/or sell copies of the Software, and to permit persons to whom the
+** Software is furnished to do so, subject to the following conditions:
+** 
+** The above copyright notice and this permission notice shall be included in
+** all copies or substantial portions of the Software.
+** 
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+** SOFTWARE.
+**
+**==============================================================================
+*/
+
+#include <cimple/cimple.h>
+#include <pegasus/utils/pegasus.h>
+#include <cassert>
+#include <cimple/Error.h>
+#include "Converter.h"
+#include <pegasus/utils/Str.h>
+#include <pegasus/utils/Containers.h>
+
+CIMPLE_NAMESPACE_BEGIN
+
+int Converter::to_cimple_instance(
+    const char* ns,
+    const Pegasus::CIMInstance& pi,
+    const Meta_Class* mc,
+    Instance*& inst)
+{
+    const Meta_Repository* mr = mc->meta_repository;
+
+    InstanceContainer cont(mr, ns, pi);
+    inst = 0;
+
+    int rc = cont.convert(mc, 0, inst);
+
+    if (rc != 0 || !inst)
+        return -1;
+
+    __set_name_space_recursive(inst, ns, false);
+    return 0;
+}
+
+int Converter::to_cimple_key(
+    const char* ns,
+    const Pegasus::CIMObjectPath& op,
+    const Meta_Class* mc,
+    Instance*& inst)
+{
+    const Meta_Repository* mr = mc->meta_repository;
+
+    ObjectPathContainer cont(mr, ns, op);
+    inst = 0;
+
+    int rc = cont.convert(mc, CIMPLE_FLAG_KEY, inst);
+
+    if (rc != 0 || !inst)
+        return -1;
+
+    __set_name_space_recursive(inst, ns, false);
+    return 0;
+}
+
+int Converter::to_cimple_method(
+    const char* ns,
+    const Pegasus::Array<Pegasus::CIMParamValue>& params,
+    const char* method_name,
+    const Meta_Class* mc,
+    uint32 flags,
+    Instance*& meth)
+{
+    const Meta_Repository* mr = mc->meta_repository;
+    assert(mr);
+
+    const Meta_Method* mm = find_method(mc, method_name);
+
+    if (!mm)
+        return -1;
+
+    ParamValueContainer cont(mr, ns, params);
+
+    int rc = cont.convert((const Meta_Class*)mm, flags, meth);
+
+    if (rc != 0 || !meth)
+        return -1;
+
+    __set_name_space_recursive(meth, ns, false);
+    return 0;
+}
+
+int Converter::to_pegasus_instance(
+    const Pegasus::String& hn,
+    const Pegasus::CIMNamespaceName& ns,
+    const Instance* inst, 
+    Pegasus::CIMInstance& ci_out)
+{
+    CIMPLE_ASSERT(inst);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    // First create object path:
+
+    Pegasus::CIMObjectPath cop;
+    {
+        cop.setClassName(inst->meta_class->name);
+        cop.setHost(hn);
+        cop.setNameSpace(ns);
+
+        Str tns(ns);
+
+        ObjectPathContainer cont(
+            inst->meta_class->meta_repository, *tns, cop);
+
+        if (cont.convert(inst, CIMPLE_FLAG_KEY) != 0)
+            return -1;
+
+        cop = cont.rep();
+    }
+
+    // Now create instance.
+
+    Pegasus::CIMInstance ci(inst->meta_class->name);
+    {
+        Str tns(ns);
+
+        InstanceContainer cont(inst->meta_class->meta_repository, *tns, ci);
+
+        if (cont.convert(inst, 0) != 0)
+            return -1;
+
+        ci = cont.rep();
+    }
+
+    // Set the object path.
+
+    ci.setPath(cop);
+
+    ci_out = ci;
+
+    return 0;
+}
+
+int Converter::to_pegasus_object_path(
+    const Pegasus::String& hn,
+    const Pegasus::CIMNamespaceName& ns,
+    const Instance* inst,
+    Pegasus::CIMObjectPath& cop_out)
+{
+    CIMPLE_ASSERT(inst);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    Pegasus::CIMObjectPath cop;
+    {
+        cop.setClassName(inst->meta_class->name);
+        cop.setHost(hn);
+        cop.setNameSpace(ns);
+
+        Str tns(ns);
+
+        ObjectPathContainer cont(
+            inst->meta_class->meta_repository, *tns, cop);
+
+        if (cont.convert(inst, CIMPLE_FLAG_KEY) != 0)
+            return -1;
+
+        cop = cont.rep();
+    }
+
+    cop_out = cop;
+    return 0;
+}
+
+int Converter::to_pegasus_method(
+    const Pegasus::String& hn,
+    const Pegasus::CIMNamespaceName& ns,
+    const Instance* meth,
+    uint32 flags,
+    Pegasus::Array<Pegasus::CIMParamValue>& params,
+    Pegasus::CIMValue& return_value)
+{
+    CIMPLE_ASSERT(meth != 0);
+    CIMPLE_ASSERT(meth->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    {
+        Pegasus::Array<Pegasus::CIMParamValue> cpvs;
+        ParamValueContainer cont(
+            meth->meta_class->meta_repository, *Str(ns), cpvs);
+        cont.return_value().clear();
+
+        if (cont.convert(meth, flags) != 0)
+            return -1;
+
+        params = cont.rep();
+        return_value = cont.return_value();
+    }
+
+    return 0;
+}
+
+CIMPLE_NAMESPACE_END

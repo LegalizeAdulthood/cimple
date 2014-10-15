@@ -285,6 +285,28 @@ public:
     */
     size_t find(const T& x) const;
 
+    /** Make an array with one element.
+    */
+    static Array<T> make(const T& x0);
+
+    /** Make an array with two elements.
+    */
+    static Array<T> make(const T& x0, const T& x1);
+
+    /** Make an array with three elements.
+    */
+    static Array<T> make(const T& x0, const T& x1, const T& x2);
+
+    /** Make an array with four elements.
+    */
+    static Array<T> make(const T& x0, const T& x1, const T& x2, 
+        const T& x3);
+
+    /** Make an array with five elements.
+    */
+    static Array<T> make(const T& x0, const T& x1, const T& x2, 
+        const T& x3, const T& x4);
+
 private:
 
     __Array_Rep* _rep;
@@ -449,6 +471,65 @@ template<class T>
 inline size_t Array<T>::find(const T& x) const
 {
     return __find(_rep, &x);
+}
+
+template<class T>
+inline Array<T> Array<T>::make(const T& x0)
+{
+    Array<T> a;
+    a.append(x0);
+    return a;
+}
+
+template<class T>
+inline Array<T> Array<T>::make(const T& x0, const T& x1)
+{
+    Array<T> a;
+    a.append(x0);
+    a.append(x1);
+    return a;
+}
+
+template<class T>
+inline Array<T> Array<T>::make(const T& x0, const T& x1, const T& x2)
+{
+    Array<T> a;
+    a.append(x0);
+    a.append(x1);
+    a.append(x2);
+    return a;
+}
+
+template<class T>
+inline Array<T> Array<T>::make(
+    const T& x0, 
+    const T& x1, 
+    const T& x2,
+    const T& x3)
+{
+    Array<T> a;
+    a.append(x0);
+    a.append(x1);
+    a.append(x2);
+    a.append(x3);
+    return a;
+}
+
+template<class T>
+inline Array<T> Array<T>::make(
+    const T& x0, 
+    const T& x1, 
+    const T& x2,
+    const T& x3,
+    const T& x4)
+{
+    Array<T> a;
+    a.append(x0);
+    a.append(x1);
+    a.append(x2);
+    a.append(x3);
+    a.append(x4);
+    return a;
 }
 
 template<class T>

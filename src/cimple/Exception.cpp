@@ -32,6 +32,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 static const char* _messages[] =
 {
+    "FAILED",
     "BAD_CAST",
     "BAD_NAME",
     "ALREADY_EXISTS",
@@ -44,9 +45,25 @@ static const char* _messages[] =
     "TYPE_MISMATCH",
     "NULL_ACCESS",
     "BOUNDS",
+    "BAD_URL",
+    "ALREADY_CONNECTED",
+    "CONNECT_FAILED",
+    "CONVERSION_ERROR",
+    "NOT_FOUND",
+    "EXHAUSTED_ENUMERATOR",
+    "UNINITIALIZED_ENUMERATOR",
+    "NOT_CONNECTED",
+    "UNKNOWN_CLASS",
+    "UNKNOWN_METHOD",
+    "UNKNOWN_PARAM",
 };
 
 static size_t _num_messages = sizeof(_messages) / sizeof(_messages[0]);
+
+Exception::Exception(Code code) : _code(code)
+{
+    _message = _messages[int(_code) - 1];
+}
 
 Exception::Exception(Code code, const char* format, ...) : _code(code)
 {

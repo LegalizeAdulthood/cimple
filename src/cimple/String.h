@@ -116,9 +116,17 @@ public:
 
     size_t find(char c) const;
 
+
 private:
     __String_Rep* _rep;
+    static __String_Rep _empty;
+    friend void _ref(const __String_Rep* rep);
+    friend void _unref(const __String_Rep* rep);
 };
+
+inline String::String() : _rep(&_empty)
+{
+}
 
 inline String& String::operator=(const String& s)
 {

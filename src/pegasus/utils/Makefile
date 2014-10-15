@@ -5,7 +5,8 @@ STATIC_LIBRARY = cimplepegutils
 
 SOURCES = \
     print.cpp \
-    Containers.cpp
+    Containers.cpp \
+    Converter.cpp
 
 LIBRARIES = \
     pegcommon

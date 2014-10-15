@@ -50,8 +50,8 @@ public:
 
     Invoke_Method_Status foo2(
         const Methods* self,
-        const Arg* arg1,
-        Arg*& arg2,
+        const Argument* arg1,
+        Argument*& arg2,
         Property<String>& return_value);
 
     Invoke_Method_Status foo3(

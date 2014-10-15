@@ -73,6 +73,7 @@ CMPIrc make_cimple_reference(
 CMPIrc make_cimple_instance(
     const CMPIBroker* cb,
     const Meta_Class* mc,
+    const CMPIObjectPath* cop,
     const CMPIInstance* ci,
     Instance*& inst);
 
@@ -80,6 +81,7 @@ CMPIrc make_cimple_method(
     const CMPIBroker* cb,
     const Meta_Class* mc,
     const Meta_Method* mm,
+    const CMPIObjectPath* cop,
     const CMPIArgs* in,
     void* client_data,
     Instance*& meth);

@@ -39,19 +39,33 @@ public:
 
     enum Code
     {
-        BAD_CAST = 1,
-        BAD_NAME = 2,
-        ALREADY_EXISTS = 3,
-        INCOMPATIBLE_OVERRIDE = 4,
-        BAD_SUBSCRIPT = 5,
-        NO_SUCH_FEATURE = 6,
-        NO_SUCH_PROPERTY = 7,
-        NO_SUCH_REFERENCE = 8,
-        NO_SUCH_METHOD = 9,
-        TYPE_MISMATCH = 10,
-        NULL_ACCESS = 11,
-        BOUNDS= 12,
+        FAILED = 1,
+        BAD_CAST = 2,
+        BAD_NAME = 3,
+        ALREADY_EXISTS = 4,
+        INCOMPATIBLE_OVERRIDE = 5,
+        BAD_SUBSCRIPT = 6,
+        NO_SUCH_FEATURE = 7,
+        NO_SUCH_PROPERTY = 8,
+        NO_SUCH_REFERENCE = 9,
+        NO_SUCH_METHOD = 10,
+        TYPE_MISMATCH = 11,
+        NULL_ACCESS = 12,
+        BOUNDS = 13,
+        BAD_URL = 14,
+        ALREADY_CONNECTED = 15,
+        CONNECT_FAILED = 16,
+        CONVERSION_ERROR = 17,
+        NOT_FOUND = 18,
+        EXHAUSTED_ENUMERATOR = 19,
+        UNINITIALIZED_ENUMERATOR = 20,
+        NOT_CONNECTED = 21,
+        UNKNOWN_CLASS = 22,
+        UNKNOWN_METHOD = 23,
+        UNKNOWN_PARAM = 24,
     };
+
+    Exception(Code code);
 
     CIMPLE_PRINTF_ATTR(3, 4)
     Exception(Code code, const char* format, ...);

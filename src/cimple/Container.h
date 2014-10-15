@@ -54,7 +54,7 @@ public:
         const char* name, const Value& value, uint32 flags) = 0;
 
     // Only features with the given flags are converted.
-    Instance* convert(const Meta_Class* mc, uint32 flags);
+    int convert(const Meta_Class* mc, uint32 flags, Instance*& instance);
 
     // Only features with the given flags are converted.
     int convert(const Instance* instance, uint32 flags);

@@ -6,6 +6,10 @@ INSTALL=1
 LIBRARY = cimple
 
 SOURCES = \
+    Arg.cpp \
+    Ops.cpp \
+    Instance_Hnd.cpp \
+    Instance_Ref.cpp \
     log.cpp \
     File_Lock.cpp \
     integer.cpp \
@@ -13,7 +17,6 @@ SOURCES = \
     Container.cpp \
     Buffer.cpp \
     octets.cpp \
-    Provider2.cpp \
     Exception.cpp \
     config.cpp \
     ptr_array.cpp \
@@ -46,8 +49,6 @@ SOURCES = \
     Strings.cpp \
     Type.cpp \
     Property.cpp \
-    Handle.cpp \
-    Reference.cpp \
     TSD.cpp
 
 DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE

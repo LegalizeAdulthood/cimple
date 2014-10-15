@@ -40,7 +40,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-static void __default_construct(
+void __default_construct(
     const Meta_Class* mc,
     Instance* inst,
     bool clear,
@@ -289,7 +289,7 @@ static void __uninitialized_copy(Instance* i1, const Instance* i2)
     }
 }
 
-static void __destruct(Instance* inst)
+void __destruct(Instance* inst)
 {
     CIMPLE_ASSERT(inst != 0);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
@@ -446,6 +446,11 @@ bool identical(const Instance* i1, const Instance* i2)
                     if (tmp1 && !tmp2 || !tmp1 && tmp2)
                         return false;
                 }
+
+                // Check null flag (which follows array).
+
+                if (*((uint8*)(&r1 + 1)) != *((uint8*)(&r2 + 1)))
+                    return false;
             }
             else
             {
@@ -578,7 +583,7 @@ static void __copy(
             void* p1 = __property_of(dest, mp);
             const void* p2 = __property_of(src, mp);
 
-            if (model && null_of(mp, model))
+            if (model && null_of(mp, __property_of(model, mp)))
                 continue;
 
             null_of(mp, p1) = null_of(mp, p2);
@@ -605,12 +610,15 @@ static void __copy(
 
             if (mr->subscript)
             {
-                // Skip references not in model (ATTN: no way to represent
-                // null ref-arrays).
+                // Skip references not in model.
 
-                if (model && __array_ref_of(model, mr).size() == 0)
-                    continue;
+                if (model)
+                {
+                    const Array_Ref& tmp = __array_ref_of(model, mr);
 
+                    if (!*((uint8*)&tmp + 1))
+                        continue;
+                }
 
                 Array_Ref& r1 = __array_ref_of(dest, mr);
                 const Array_Ref& r2 = __array_ref_of(src, mr);
@@ -624,6 +632,8 @@ static void __copy(
                     else
                         r1.append(0);
                 }
+
+                *((uint8*)(&r1 + 1)) = *((const uint8*)(&r2 + 1));
             }
             else
             {
@@ -714,6 +724,29 @@ void __set_null_flags(
                     null_of(mp, prop) = flag;
             }
         }
+#if 0
+// ATTN: this breaks the Containers test.
+        else if (flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+
+            if (mr->subscript)
+            {
+                const Array_Ref& r = __array_ref_of(inst, mr);
+
+                if (flags & CIMPLE_FLAG_KEY)
+                {
+                    if (include_keys)
+                        *((uint8*)(&r + 1)) = flag;
+                }
+                else
+                {
+                    if (include_non_keys)
+                        *((uint8*)(&r + 1)) = flag;
+                }
+            }
+        }
+#endif
     }
 }
 
@@ -911,7 +944,7 @@ int filter_properties(Instance* instance, const char* const* properties)
         return 0;
     }
 
-    // Handle case where properties is non-null.
+    // Handle case where "properties" is non-null.
 
     nullify_non_keys(instance);
 
@@ -941,20 +974,20 @@ int filter_properties(Instance* instance, const char* const* properties)
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
-#if 0
             const Meta_Reference* mr = (const Meta_Reference*)mf;
 
             if (mr->subscript)
             {
-                // Unreachable!
-                continue;
+                const Array_Ref& r = __array_ref_of(instance, mr);
+                *((uint8*)(&r + 1)) = 0;
             }
+            else
+            {
+                Instance*& ref = __ref_of(instance, mr);
 
-            Instance*& ref = __ref_of(instance, mr);
-
-            if (!ref)
-                ref = create(mr->meta_class);
-#endif
+                if (!ref)
+                    ref = create(mr->meta_class);
+            }
         }
         else
         {
@@ -1650,8 +1683,11 @@ void __print_aux(
 
     iprintf(level, "{\n");
 
-    iprintf(level, 
-        "    string __name_space = \"%s\";\n", inst->__name_space.c_str());
+    if (inst->__name_space.size())
+    {
+        iprintf(level, 
+            "    string __name_space = \"%s\";\n", inst->__name_space.c_str());
+    }
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
@@ -1687,22 +1723,31 @@ void __print_aux(
             {
                 const Array_Ref& r = __array_ref_of(inst, mr);
 
-                iprintf(level, "%s %s[] =\n", mr->meta_class->name, mr->name);
-                iprintf(level, "{\n");
-                level++;
+                iprintf(level, "%s %s[] =", mr->meta_class->name, mr->name);
 
-                for (size_t i = 0; i < r.size(); i++)
+                if (*((uint8*)(&r + 1)))
                 {
-                    const Instance* tmp = r[i];
-
-                    if (tmp)
-                        __print_aux(tmp, 0, level, false);
-                    else
-                        iprintf(level, "NULL\n");
+                    iprintf(level, " NULL;\n");
                 }
+                else
+                {
+                    printf("\n");
+                    iprintf(level, "{\n");
+                    level++;
 
-                level--;
-                iprintf(level, "};\n");
+                    for (size_t i = 0; i < r.size(); i++)
+                    {
+                        const Instance* tmp = r[i];
+
+                        if (tmp)
+                            __print_aux(tmp, 0, level, false);
+                        else
+                            iprintf(level, "NULL\n");
+                    }
+
+                    level--;
+                    iprintf(level, "};\n");
+                }
             }
             else
             {
@@ -1754,7 +1799,7 @@ void __create_refs(Instance* inst)
     }
 }
 
-void visit(Instance* inst, void (*func)(Instance*, void*), void* data)
+void __visit(Instance* inst, void (*func)(Instance*, void*), void* data)
 {
     CIMPLE_ASSERT(inst != 0);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
@@ -1777,17 +1822,111 @@ void visit(Instance* inst, void (*func)(Instance*, void*), void* data)
                 Array<Instance*>& a = *((Array<Instance*>*)field);
 
                 for (size_t i = 0; i < a.size(); i++)
-                    visit(a[i], func, data);
+                    __visit(a[i], func, data);
             }
             else
             {
                 Instance* tmp = *((Instance**)field);
 
                 if (tmp)
-                    visit(tmp, func, data);
+                    __visit(tmp, func, data);
             }
         }
     }
+}
+
+void clear(Instance* inst)
+{
+    CIMPLE_ASSERT(inst != 0);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    // Clear __name_space:
+
+    inst->__name_space.clear();
+
+    // Clear each Property:
+
+    const Meta_Class* mc = inst->meta_class;
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+        uint32 flags = mc->meta_features[i]->flags;
+
+        if (flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            void* field = __property_of(inst, mp);
+
+            if (mp->subscript)
+            {
+                __Array_Base* base = (__Array_Base*)field;
+                __remove(base->rep, 0, base->rep->size);
+            }
+            else
+            {
+                if (mp->type == STRING)
+                    ((String*)field)->clear();
+                else if (mp->type == DATETIME)
+                    ((Datetime*)field)->clear();
+                else
+                    memset(field, 0, type_size[mp->type]);
+            }
+
+            null_of(mp, field) = 1;
+        }
+        else if (flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (Meta_Reference*)mc->meta_features[i];
+
+            if (mr->subscript)
+            {
+                Array_Ref& r = __array_ref_of(inst, mr);
+
+                for (size_t i = 0; i < r.size(); i++)
+                {
+                    if (r[i])
+                        unref(r[i]);
+                }
+
+                r.clear();
+                *(uint8*)(&r + 1) = 1;
+            }
+            else
+            {
+                Instance*& inst = __ref_of(inst, mr);
+
+                if (inst)
+                {
+                    unref(inst);
+                    inst = 0;
+                }
+            }
+        }
+    }
+}
+
+struct __Set_Name_Space_Recursive_Data
+{
+    bool force;
+    const char* name_space;
+};
+
+static void _set_namespace_callback(Instance* inst, void* data_)
+{
+    __Set_Name_Space_Recursive_Data* data = 
+        (__Set_Name_Space_Recursive_Data*)data_;
+
+    if (inst->__name_space.size() == 0 || data->force)
+        inst->__name_space = data->name_space;
+}
+
+void __set_name_space_recursive(
+    Instance* inst, 
+    const char* name_space, 
+    bool force)
+{
+    __Set_Name_Space_Recursive_Data data = { force, name_space };
+    __visit(inst, _set_namespace_callback, &data);
 }
 
 CIMPLE_NAMESPACE_END

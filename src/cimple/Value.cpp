@@ -26,6 +26,7 @@
 
 #include "log.h"
 #include "Value.h"
+#include "Property.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -1164,9 +1165,16 @@ int Value::set(const Instance* instance, const Meta_Feature* mf)
     else if (mf->flags & CIMPLE_FLAG_REFERENCE)
     {
         const Meta_Reference* mr = (const Meta_Reference*)mf;
-
         field = (char*)instance + mr->offset;
-        _null = *((Instance**)field) == 0;
+
+        if (mr->subscript)
+        {
+            _null = ((Property<Array_Ref>*)field)->null;
+        }
+        else
+        {
+            _null = *((Instance**)field) == 0;
+        }
     }
 
     _type = type_of(mf);

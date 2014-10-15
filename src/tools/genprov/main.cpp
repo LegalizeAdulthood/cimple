@@ -137,7 +137,7 @@ void format_method_signature(
         if (cn)
         {
             if (p->array_index)
-                out.format("Array<%s*>& %s", cn, p->name);
+                out.format("Property< Array<%s*> >& %s", cn, p->name);
             else
             {
                 if (p->qual_mask & MOF_QT_OUT)

@@ -67,6 +67,7 @@ static void _release(Array<Instance*>& a)
 
 static Instance* _to_cimple_instance(
     const Meta_Repository* mr,
+    const char* ns,
     const Pegasus::CIMInstance ci)
 {
     Str cn(ci.getClassName());
@@ -78,11 +79,17 @@ static Instance* _to_cimple_instance(
         return 0;
     }
 
-    return InstanceContainer(mr, ci).convert(mc, 0);
+    Instance* inst = 0;
+
+    if (InstanceContainer(mr, ns, ci).convert(mc, 0, inst) != 0 || !inst)
+        return 0;
+
+    return inst;
 }
 
 static int _to_cimple_value(
     const Meta_Repository* mr,
+    const char* ns,
     const Pegasus::CIMValue& cv, 
     Value& v)
 {
@@ -239,7 +246,7 @@ static int _to_cimple_value(
 
                 for (size_t i = 0; i < x.size(); i++)
                 {
-                    Instance* inst = _to_cimple_instance(mr, x[i]);
+                    Instance* inst = _to_cimple_instance(mr, ns, x[i]);
 
                     if (!inst)
                     {
@@ -276,7 +283,7 @@ static int _to_cimple_value(
                     }
 
                     Pegasus::CIMInstance ci(x[i]);
-                    Instance* inst = _to_cimple_instance(mr, ci);
+                    Instance* inst = _to_cimple_instance(mr, ns, ci);
 
                     if (!inst)
                     {
@@ -313,10 +320,12 @@ static int _to_cimple_value(
                         return -1;
                     }
 
-                    Instance* inst = ObjectPathContainer(mr, x[i]).convert(
-                            mc, CIMPLE_FLAG_KEY);
+                    Instance* inst = 0;
+                    
+                    int rc = ObjectPathContainer(mr, ns, x[i]).convert(
+                        mc, CIMPLE_FLAG_KEY, inst);
 
-                    if (!inst)
+                    if (rc != 0 || !inst)
                     {
                         _release(a);
                         CIMPLE_WARN((
@@ -481,7 +490,7 @@ static int _to_cimple_value(
                     Pegasus::CIMInstance x;
                     cv.get(x);
 
-                    Instance* inst = _to_cimple_instance(mr, x);
+                    Instance* inst = _to_cimple_instance(mr, ns, x);
 
                     if (!inst)
                     {
@@ -516,7 +525,7 @@ static int _to_cimple_value(
                     }
 
                     Pegasus::CIMInstance ci(x);
-                    Instance* inst = _to_cimple_instance(mr, ci);
+                    Instance* inst = _to_cimple_instance(mr, ns, ci);
 
                     v.set_value(inst);
                     v.null(cv.isNull());
@@ -538,10 +547,12 @@ static int _to_cimple_value(
                     return -1;
                 }
 
-                Instance* inst = ObjectPathContainer(mr, x).convert(
-                    mc, CIMPLE_FLAG_KEY);
+                Instance* inst = 0;
+                
+                int rc = ObjectPathContainer(mr, ns, x).convert(
+                    mc, CIMPLE_FLAG_KEY, inst);
 
-                if (!inst)
+                if (rc != 0 || !inst)
                 {
                     CIMPLE_WARN(("ObjectPathContainer::convert() failed: %s", 
                         *cn));
@@ -564,6 +575,7 @@ static int _to_cimple_value(
 
 static int _to_pegasus_instance(
     const Meta_Repository* mr,
+    const char* ns,
     const Instance* x, 
     Pegasus::CIMInstance& ci)
 {
@@ -575,7 +587,7 @@ static int _to_pegasus_instance(
 
     Pegasus::CIMInstance tmp(x->meta_class->name);
 
-    InstanceContainer cont(mr, tmp);
+    InstanceContainer cont(mr, ns, tmp);
 
     if (cont.convert(x, 0) != 0)
     {
@@ -589,6 +601,7 @@ static int _to_pegasus_instance(
 
 static int _to_pegasus_object_path(
     const Meta_Repository* mr,
+    const char* ns,
     const Instance* x, 
     Pegasus::CIMObjectPath& cop)
 {
@@ -601,7 +614,12 @@ static int _to_pegasus_object_path(
     Pegasus::CIMObjectPath tmp;
     tmp.setClassName(x->meta_class->name);
 
-    ObjectPathContainer cont(mr, tmp);
+    if (x->__name_space.size())
+        tmp.setNameSpace(x->__name_space.c_str());
+    else if (ns)
+        tmp.setNameSpace(ns);
+
+    ObjectPathContainer cont(mr, ns, tmp);
 
     if (cont.convert(x, CIMPLE_FLAG_KEY) != 0)
     {
@@ -613,8 +631,9 @@ static int _to_pegasus_object_path(
     return 0;
 }
 
-static int _to_pegasus_value(
+int _to_pegasus_value(
     const Meta_Repository* mr,
+    const char* ns,
     const Value& v,
     uint32 flags,
     Pegasus::CIMValue& cv)
@@ -928,7 +947,7 @@ static int _to_pegasus_value(
             {
                 Pegasus::CIMInstance ci;
 
-                if (_to_pegasus_instance(mr, x, ci) != 0)
+                if (_to_pegasus_instance(mr, ns, x, ci) != 0)
                 {
                     CIMPLE_WARN(("_to_pegasus_instance() failed"));
                     return -1;
@@ -940,7 +959,7 @@ static int _to_pegasus_value(
             {
                 Pegasus::CIMInstance ci;
 
-                if (_to_pegasus_instance(mr, x, ci) != 0)
+                if (_to_pegasus_instance(mr, ns, x, ci) != 0)
                 {
                     CIMPLE_WARN(("_to_pegasus_instance() failed"));
                     return -1;
@@ -952,7 +971,7 @@ static int _to_pegasus_value(
             {
                 Pegasus::CIMObjectPath cop;
 
-                if (_to_pegasus_object_path(mr, x, cop) != 0)
+                if (_to_pegasus_object_path(mr, ns, x, cop) != 0)
                 {
                     CIMPLE_WARN(("_to_pegasus_object_path() failed"));
                     return -1;
@@ -1114,7 +1133,7 @@ static int _to_pegasus_value(
                 {
                     Pegasus::CIMInstance tmp;
 
-                    if (_to_pegasus_instance(mr, x[i], tmp) != 0)
+                    if (_to_pegasus_instance(mr, ns, x[i], tmp) != 0)
                     {
                         CIMPLE_WARN(("_to_pegasus_instance() failed"));
                         return -1;
@@ -1135,7 +1154,7 @@ static int _to_pegasus_value(
                 {
                     Pegasus::CIMInstance tmp;
 
-                    if (_to_pegasus_instance(mr, x[i], tmp) != 0)
+                    if (_to_pegasus_instance(mr, ns, x[i], tmp) != 0)
                     {
                         CIMPLE_WARN(("_to_pegasus_instance() failed"));
                         return -1;
@@ -1154,7 +1173,7 @@ static int _to_pegasus_value(
                 {
                     Pegasus::CIMInstance tmp;
 
-                    if (_to_pegasus_instance(mr, x[i], tmp) != 0)
+                    if (_to_pegasus_instance(mr, ns, x[i], tmp) != 0)
                     {
                         CIMPLE_WARN(("_to_pegasus_instance() failed"));
                         return -1;
@@ -1175,7 +1194,7 @@ static int _to_pegasus_value(
                 {
                     Pegasus::CIMObjectPath tmp;
 
-                    if (_to_pegasus_object_path(mr, x[i], tmp) != 0)
+                    if (_to_pegasus_object_path(mr, ns, x[i], tmp) != 0)
                     {
                         CIMPLE_WARN(("_to_pegasus_object_path() failed"));
                         return -1;
@@ -1201,9 +1220,11 @@ static int _to_pegasus_value(
 
 InstanceContainer::InstanceContainer(
     const Meta_Repository* mr,
+    const char* ns,
     const InstanceContainer::Rep& rep)
     : 
     Container(mr),
+    _ns(ns),
     _rep(rep)
 {
 }
@@ -1263,7 +1284,7 @@ int InstanceContainer::get_value(size_t pos, Value::Type type, Value& value)
         Pegasus::CIMProperty cp = _rep.getProperty(pos);
         const Pegasus::CIMValue& cv = cp.getValue();
 
-        if (_to_cimple_value(_mr, cv, value) != 0)
+        if (_to_cimple_value(_mr, _ns, cv, value) != 0)
         {
             CIMPLE_WARN(("_to_cimple_value() failed"));
             return -1;
@@ -1304,7 +1325,7 @@ int InstanceContainer::set_value(
 
         Pegasus::CIMValue cv;
 
-        if (_to_pegasus_value(_mr, value, flags, cv) != 0)
+        if (_to_pegasus_value(_mr, _ns, value, flags, cv) != 0)
         {
             CIMPLE_WARN(("_to_pegasus_value() failed"));
             return -1;
@@ -1355,9 +1376,11 @@ int InstanceContainer::set_value(
 
 ObjectPathContainer::ObjectPathContainer(
     const Meta_Repository* mr,
+    const char* ns,
     const ObjectPathContainer::Rep& rep)
     : 
     Container(mr),
+    _ns(ns),
     _rep(rep)
 {
 }
@@ -1438,10 +1461,12 @@ int ObjectPathContainer::get_value(size_t pos, Value::Type type, Value& value)
                         return -1;
                     }
 
-                    Instance* inst = ObjectPathContainer(_mr, op).convert(
-                        mc, CIMPLE_FLAG_KEY);
+                    Instance* inst = 0;
+                    
+                    int rc = ObjectPathContainer(_mr, _ns, op).convert(
+                        mc, CIMPLE_FLAG_KEY, inst);
 
-                    if (!inst)
+                    if (rc != 0 || !inst)
                     {
                         CIMPLE_WARN(("ObjectPathContainer::convert() failed"));
                         return -1;
@@ -1640,7 +1665,7 @@ int ObjectPathContainer::set_value(
 
         Pegasus::CIMValue cv;
 
-        if (_to_pegasus_value(_mr, value, flags, cv) != 0)
+        if (_to_pegasus_value(_mr, _ns, value, flags, cv) != 0)
         {
             CIMPLE_WARN(("_to_pegasus_value() failed"));
             return -1;
@@ -1699,9 +1724,11 @@ int ObjectPathContainer::set_value(
 
 ParamValueContainer::ParamValueContainer(
     const Meta_Repository* mr,
+    const char* ns,
     const ParamValueContainer::Rep& rep)
     : 
     Container(mr),
+    _ns(ns),
     _rep(rep)
 {
 }
@@ -1752,7 +1779,7 @@ int ParamValueContainer::get_value(size_t pos, Value::Type type, Value& value)
         Pegasus::CIMParamValue pv = _rep[pos];
         const Pegasus::CIMValue& cv = pv.getValue();
 
-        if (_to_cimple_value(_mr, cv, value) != 0)
+        if (_to_cimple_value(_mr, _ns, cv, value) != 0)
         {
             CIMPLE_WARN(("_to_cimple_value() failed"));
             return -1;
@@ -1792,7 +1819,7 @@ int ParamValueContainer::set_value(
 
         Pegasus::CIMValue cv;
 
-        if (_to_pegasus_value(_mr, value, flags, cv) != 0)
+        if (_to_pegasus_value(_mr, _ns, value, flags, cv) != 0)
         {
             CIMPLE_WARN(("_to_pegasus_value() failed"));
             return -1;

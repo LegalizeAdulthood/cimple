@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<Test1>* handler);
 
     Create_Instance_Status create_instance(
-	const Test1* instance);
+        Test1* instance);
 
     Delete_Instance_Status delete_instance(
 	const Test1* instance);

@@ -120,20 +120,23 @@ static char* _get_opt_value(const char* path, const char* opt)
     return 0;
 }
 
-static Log_Level _get_log_level(const char* path)
+static int _get_log_level(const char* path, Log_Level& level)
 {
     char* value = _get_opt_value(path, "LOG_LEVEL");
     
     if (!value)
-        return LL_INFO;
+        return -1;
 
     for (size_t i = 0; i < _num_strings; i++)
     {
         if (strcasecmp(_strings[i], value) == 0)
-            return Log_Level(i);
+        {
+            level = Log_Level(i);
+            return 0;
+        }
     }
 
-    return LL_INFO;
+    return -1;
 }
 
 static void _initialize()
@@ -151,7 +154,9 @@ static void _initialize()
     {
         strlcpy(config_file_path, home, sizeof(config_file_path));
         strlcat(config_file_path, "/.cimplerc", sizeof(config_file_path));
-        _level = _get_log_level(config_file_path);
+
+        if (_get_log_level(config_file_path, _level) != 0)
+            return;
     }
 
     // Create $HOME/.cimple directory.

@@ -38,7 +38,8 @@ public:
 
     typedef Pegasus::CIMInstance Rep;
 
-    InstanceContainer(const Meta_Repository* mr, const Rep& rep);
+    InstanceContainer(
+        const Meta_Repository* mr, const char* ns, const Rep& rep);
     virtual ~InstanceContainer();
     virtual size_t get_size();
     virtual int get_name(size_t pos, String& name);
@@ -50,6 +51,7 @@ public:
 private:
     InstanceContainer(const InstanceContainer&);
     InstanceContainer& operator=(const InstanceContainer&);
+    const char* _ns;
     Rep _rep;
 };
 
@@ -59,7 +61,8 @@ public:
 
     typedef Pegasus::CIMObjectPath Rep;
 
-    ObjectPathContainer(const Meta_Repository* mr, const Rep& rep);
+    ObjectPathContainer(
+        const Meta_Repository* mr, const char* ns, const Rep& rep);
 
     virtual ~ObjectPathContainer();
 
@@ -73,6 +76,7 @@ public:
 private:
     ObjectPathContainer(const ObjectPathContainer&);
     ObjectPathContainer& operator=(const ObjectPathContainer&);
+    const char* _ns;
     Rep _rep;
 };
 
@@ -82,7 +86,8 @@ public:
 
     typedef Pegasus::Array<Pegasus::CIMParamValue> Rep;
 
-    ParamValueContainer(const Meta_Repository* mr, const Rep& rep);
+    ParamValueContainer(
+        const Meta_Repository* mr, const char* ns, const Rep& rep);
 
     virtual ~ParamValueContainer();
 
@@ -98,6 +103,7 @@ public:
 private:
     ParamValueContainer(const ParamValueContainer&);
     ParamValueContainer& operator=(const ParamValueContainer&);
+    const char* _ns;
     Rep _rep;
     Pegasus::CIMValue _return_value;
 };

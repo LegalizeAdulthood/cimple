@@ -533,12 +533,12 @@ Invoke_Method_Status All_Class_Provider::datetimeArrayParams(
 
 Invoke_Method_Status All_Class_Provider::objectArrayParams(
     const All_Class* self,
-    const Array<Instance*>& p1,
-    Array<Instance*>& p2,
+    const Property< Array<Instance*> >& p1,
+    Property< Array<Instance*> >& p2,
     Property<uint32>& return_value)
 {
-    for (size_t i = 0; i < p1.size(); i++)
-        p2.append(clone(p1[i]));
+    for (size_t i = 0; i < p1.value.size(); i++)
+        p2.value.append(clone(p1.value[i]));
 
     return_value.set(100);
     return INVOKE_METHOD_OK;
@@ -546,12 +546,14 @@ Invoke_Method_Status All_Class_Provider::objectArrayParams(
 
 Invoke_Method_Status All_Class_Provider::instanceArrayParams(
     const All_Class* self,
-    const Array<All_Part*>& p1,
-    Array<All_Part*>& p2,
+    const Property< Array<All_Part*> >& p1,
+    Property< Array<All_Part*> >& p2,
     Property<uint32>& return_value)
 {
-    for (size_t i = 0; i < p1.size(); i++)
-        p2.append(p1[i]->clone());
+    for (size_t i = 0; i < p1.value.size(); i++)
+        p2.value.append(p1.value[i]->clone());
+
+    p2.null = false;
 
     return_value.set(100);
     return INVOKE_METHOD_OK;
@@ -564,7 +566,6 @@ Invoke_Method_Status All_Class_Provider::referenceScalarParams(
     Property<uint32>& return_value)
 
 {
-print(p1);
     p2 = p1->clone();
     return_value.set(100);
     return INVOKE_METHOD_OK;
@@ -572,16 +573,15 @@ print(p1);
 
 Invoke_Method_Status All_Class_Provider::referenceArrayParams(
     const All_Class* self,
-    const Array<All_Part*>& p1,
-    Array<All_Part*>& p2,
+    const Property< Array<All_Part*> >& p1,
+    Property< Array<All_Part*> >& p2,
     Property<uint32>& return_value)
 
 {
-    for (size_t i = 0; i < p1.size(); i++)
-    {
-print(p1[i]);
-        p2.append(p1[i]->clone());
-    }
+    for (size_t i = 0; i < p1.value.size(); i++)
+        p2.value.append(p1.value[i]->clone());
+
+    p2.null = false;
 
     return_value.set(100);
     return INVOKE_METHOD_OK;

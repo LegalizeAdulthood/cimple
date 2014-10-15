@@ -19,7 +19,6 @@
 #include "All_Part.h"
 #include "All_Part.h"
 #include "All_Part.h"
-#include "All_Part.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -62,8 +61,6 @@ public:
     Property<Array_char16> char16Array;
     Property<Array_String> stringArray;
     Property<Array_Datetime> datetimeArray;
-    Array<All_Part*> instanceArray;
-    Array<Instance*> objectArray;
 
     CIMPLE_CLASS(All_Class)
 };
@@ -510,8 +507,8 @@ public:
 class All_Class_objectArrayParams_method : public Instance
 {
 public:
-    Array<Instance*> p1;
-    Array<Instance*> p2;
+    Property< Array<Instance*> > p1;
+    Property< Array<Instance*> > p2;
     Property<uint32> return_value;
     CIMPLE_METHOD(All_Class_objectArrayParams_method)
 };
@@ -520,8 +517,8 @@ public:
 class All_Class_instanceArrayParams_method : public Instance
 {
 public:
-    Array<All_Part*> p1;
-    Array<All_Part*> p2;
+    Property< Array<All_Part*> > p1;
+    Property< Array<All_Part*> > p2;
     Property<uint32> return_value;
     CIMPLE_METHOD(All_Class_instanceArrayParams_method)
 };
@@ -530,8 +527,8 @@ public:
 class All_Class_referenceArrayParams_method : public Instance
 {
 public:
-    Array<All_Part*> p1;
-    Array<All_Part*> p2;
+    Property< Array<All_Part*> > p1;
+    Property< Array<All_Part*> > p2;
     Property<uint32> return_value;
     CIMPLE_METHOD(All_Class_referenceArrayParams_method)
 };

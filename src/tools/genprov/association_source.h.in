@@ -13,7 +13,7 @@ Enum_Associators_Status <CLASS>_Provider::enum_associators(
     const String& result_class,
     const String& role,
     const String& result_role,
-    Enum_Associators<Instance>* handler)
+    Enum_Associators_Handler<Instance>* handler)
 {
     return ENUM_ASSOCIATORS_UNSUPPORTED;
 }

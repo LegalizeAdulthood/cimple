@@ -202,8 +202,10 @@ Examples:\n\
 OPTIONS:\n\
     -V              Print CIMPLE version.\n\
     -h              Print this help message.\n\
-    -n NAMESPACE    subscription namespace.\n\
-    -S NAMESPACE    source namespace (CIM_IndicationFilter.SourceNamespace).\n\
+    -n NAMESPACE    The subscription namespace, where the subscription\n\
+                    instances are placed (default is \"root/cimv2\").\n\
+    -S NAMESPACE    The source namespace, where the indication provider is\n\
+                    registered (default is \"root/cimv2\").\n\
     -N NAME         Name of filter and handler (Name property).\n\
     -Q QUERY        query (default: \"select * from CIM_Indication\").\n\
     -s SECONDS      Seconds to listen for (default: 1000000).\n\

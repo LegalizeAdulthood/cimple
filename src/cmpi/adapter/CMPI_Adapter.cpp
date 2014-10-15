@@ -300,16 +300,16 @@ namespace enum_instance_names
     };
 
     static bool _proc(
-        Instance* cimple_inst,
+        Instance* inst,
         Enum_Instances_Status status,
         void* client_data)
     {
         Data* data = (Data*)client_data;
 
-        if (!cimple_inst)
+        if (!inst)
             return false;
 
-        Ref<Instance> cimple_inst_d(cimple_inst);
+        Ref<Instance> cimple_inst_d(inst);
 
         // Ignore if an error was already encountered.
 
@@ -318,18 +318,18 @@ namespace enum_instance_names
 
         // Convert to a CMPI object path and deliver:
 
-        CMPIObjectPath* cmpi_op = 0;
+        CMPIObjectPath* cop = 0;
 
         data->rc = make_cmpi_object_path(
             data->broker,
-            cimple_inst,
+            inst,
             data->name_space,
-            cmpi_op);
+            cop);
 
         if (data->rc != CMPI_RC_OK)
             return false;
 
-        CMReturnObjectPath(data->result, cmpi_op);
+        CMReturnObjectPath(data->result, cop);
         return true;
     }
 }
@@ -338,7 +338,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
     CMPIInstanceMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op)
+    const CMPIObjectPath* cop)
 {
     CMPI_Adapter* adapter = _adapter(mi);
     CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
@@ -348,7 +348,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
 
     // Convert to CIMPLE reference:
 
-    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -357,7 +357,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
 
     if (rc != CMPI_RC_OK)
     {
@@ -373,7 +373,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
 
     // Invoke provider:
 
-    const char* ns = name_space(cmpi_op);
+    const char* ns = name_space(cop);
 
     enum_instance_names::Data data = 
         { adapter->broker, result, ns, CMPI_RC_OK };
@@ -415,20 +415,20 @@ namespace enum_instances
     {
         const CMPIBroker* broker;
         const CMPIResult* result;
-        const CMPIObjectPath* cmpi_op;
+        const CMPIObjectPath* cop;
         const char* const* properties;
         CMPIrc rc;
     };
 
     static bool _proc(
-        Instance* cimple_inst,
+        Instance* inst,
         Enum_Instances_Status status,
         void* client_data)
     {
         Data* data = (Data*)client_data;
-        Ref<Instance> destroyer(cimple_inst);
+        Ref<Instance> destroyer(inst);
 
-        if (!cimple_inst)
+        if (!inst)
             return false;
 
         // Ignore if an error was already encountered.
@@ -438,23 +438,23 @@ namespace enum_instances
 
         // Filter out unwanted properties.
 
-        filter_properties(cimple_inst, data->properties);
+        filter_properties(inst, data->properties);
 
         // Convert to a CMPI instance and deliver:
 
-        CMPIInstance* cmpi_inst = 0;
+        CMPIInstance* ci = 0;
 
         data->rc = make_cmpi_instance(
             data->broker, 
-            cimple_inst, 
-            name_space(data->cmpi_op), 
-            data->cmpi_op, 
-            cmpi_inst); 
+            inst, 
+            name_space(data->cop), 
+            data->cop, 
+            ci); 
 
         if (data->rc != CMPI_RC_OK)
             return false;
 
-        CMReturnInstance(data->result, cmpi_inst);
+        CMReturnInstance(data->result, ci);
         return true;
     }
 }
@@ -463,7 +463,7 @@ CMPIStatus CMPI_Adapter::enumInstances(
     CMPIInstanceMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cop, 
     const char** properties)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -474,7 +474,7 @@ CMPIStatus CMPI_Adapter::enumInstances(
 
     // Convert to CIMPLE reference:
 
-    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -483,7 +483,7 @@ CMPIStatus CMPI_Adapter::enumInstances(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -500,7 +500,7 @@ CMPIStatus CMPI_Adapter::enumInstances(
     // Invoke provider:
 
     enum_instances::Data data = 
-        { adapter->broker, result, cmpi_op, properties, CMPI_RC_OK };
+        { adapter->broker, result, cop, properties, CMPI_RC_OK };
 
     Enum_Instances_Status status = 
         adapter->enum_instances(cimple_ref, enum_instances::_proc, &data); 
@@ -533,7 +533,7 @@ CMPIStatus CMPI_Adapter::getInstance(
     CMPIInstanceMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cop, 
     const char** properties)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -545,7 +545,7 @@ CMPIStatus CMPI_Adapter::getInstance(
 
     // Convert to CIMPLE reference:
 
-    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -554,7 +554,7 @@ CMPIStatus CMPI_Adapter::getInstance(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -574,12 +574,12 @@ CMPIStatus CMPI_Adapter::getInstance(
 
     // Invoke provider:
 
-    Instance* cimple_inst = 0;
+    Instance* inst = 0;
 
     Get_Instance_Status status = 
-        adapter->get_instance(cimple_ref, cimple_inst);
+        adapter->get_instance(cimple_ref, inst);
 
-    Ref<Instance> cimple_inst_d(cimple_inst);
+    Ref<Instance> cimple_inst_d(inst);
 
     switch (status)
     {
@@ -597,14 +597,14 @@ CMPIStatus CMPI_Adapter::getInstance(
 
     // Create CMPI instance:
 
-    CMPIInstance* cmpi_inst;
+    CMPIInstance* ci;
 
     rc = make_cmpi_instance(
-        adapter->broker, cimple_inst, name_space(cmpi_op), cmpi_op, cmpi_inst); 
+        adapter->broker, inst, name_space(cop), cop, ci); 
 
     if (rc == CMPI_RC_OK)
     {
-        CMReturnInstance(result, cmpi_inst);
+        CMReturnInstance(result, ci);
         CMReturnDone(result);
         adapter->ret(FL, "getInstance", CMPI_RC_OK);
         CMReturn(CMPI_RC_OK);
@@ -624,8 +624,8 @@ CMPIStatus CMPI_Adapter::createInstance(
     CMPIInstanceMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
-    const CMPIInstance* cmpi_inst)
+    const CMPIObjectPath* cop, 
+    const CMPIInstance* ci)
 {
     CMPI_Adapter* adapter = _adapter(mi);
     CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
@@ -635,7 +635,7 @@ CMPIStatus CMPI_Adapter::createInstance(
 
     // Create CIMPLE instance:
 
-    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -643,8 +643,9 @@ CMPIStatus CMPI_Adapter::createInstance(
         CMReturn(CMPI_RC_ERR_FAILED);
     }
 
-    Instance* cimple_inst = 0;
-    CMPIrc rc = make_cimple_instance(0, mc, cmpi_inst, cimple_inst);
+    Instance* inst = 0;
+
+    CMPIrc rc = make_cimple_instance(adapter->broker, mc, cop, ci, inst);
 
     if (rc != CMPI_RC_OK)
     {
@@ -652,21 +653,21 @@ CMPIStatus CMPI_Adapter::createInstance(
         CMReturn(rc);
     }
 
-    Ref<Instance> cmpi_inst_d(cimple_inst);
+    Ref<Instance> cmpi_inst_d(inst);
 
     // Invoke the provider:
 
     Create_Instance_Status status =
-        adapter->create_instance(cimple_inst);
+        adapter->create_instance(inst);
 
     switch (status)
     {
         case CREATE_INSTANCE_OK:
         {
-            CMPIObjectPath* cmpi_op_out;
+            CMPIObjectPath* cop_out;
 
-            CMPIrc rc = make_cmpi_object_path(adapter->broker, cimple_inst, 
-                name_space(cmpi_op), cmpi_op_out);
+            CMPIrc rc = make_cmpi_object_path(adapter->broker, inst, 
+                name_space(cop), cop_out);
 
             if (rc != CMPI_RC_OK)
             {
@@ -674,7 +675,7 @@ CMPIStatus CMPI_Adapter::createInstance(
                 CMReturn(rc);
             }
 
-            CMReturnObjectPath(result, cmpi_op_out);
+            CMReturnObjectPath(result, cop_out);
             CMReturnDone(result);
             adapter->ret(FL, "createInstance", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
@@ -703,8 +704,8 @@ CMPIStatus CMPI_Adapter::modifyInstance(
     CMPIInstanceMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
-    const CMPIInstance* cmpi_inst,
+    const CMPIObjectPath* cop, 
+    const CMPIInstance* ci,
     const char** properties)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -715,7 +716,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
 
     // Create CIMPLE instance:
 
-    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -723,8 +724,8 @@ CMPIStatus CMPI_Adapter::modifyInstance(
         CMReturn(CMPI_RC_ERR_FAILED);
     }
 
-    Instance* cimple_inst = 0;
-    CMPIrc rc = make_cimple_instance(0, mc, cmpi_inst, cimple_inst);
+    Instance* inst = 0;
+    CMPIrc rc = make_cimple_instance(adapter->broker, mc, cop, ci, inst);
 
     if (rc != CMPI_RC_OK)
     {
@@ -732,23 +733,23 @@ CMPIStatus CMPI_Adapter::modifyInstance(
         CMReturn(rc);
     }
 
-    Ref<Instance> cmpi_inst_d(cimple_inst);
+    Ref<Instance> cmpi_inst_d(inst);
 
     // Create model.
 
-    Instance* model = clone(cimple_inst);
-    Ref<Instance> model_d(cimple_inst);
+    Instance* model = clone(inst);
+    Ref<Instance> model_d(inst);
     filter_properties(model, properties);
 
     // Invoke the provider:
 
     Modify_Instance_Status status = adapter->modify_instance(
-        model, cimple_inst);
+        model, inst);
 
     switch (status)
     {
         case MODIFY_INSTANCE_OK:
-            CMReturnObjectPath(result, cmpi_op);
+            CMReturnObjectPath(result, cop);
             CMReturnDone(result);
             adapter->ret(FL, "modifyInstance", CMPI_RC_OK);
             CMReturn(CMPI_RC_OK);
@@ -776,7 +777,7 @@ CMPIStatus CMPI_Adapter::deleteInstance(
     CMPIInstanceMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op)
+    const CMPIObjectPath* cop)
 {
     CMPI_Adapter* adapter = _adapter(mi);
     CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
@@ -786,7 +787,7 @@ CMPIStatus CMPI_Adapter::deleteInstance(
 
     // Convert to CIMPLE reference:
 
-    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -795,7 +796,7 @@ CMPIStatus CMPI_Adapter::deleteInstance(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
 
     Ref<Instance> cimple_ref_d(cimple_ref);
 
@@ -878,7 +879,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     CMPIMethodMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cop, 
     const char* method, 
     const CMPIArgs* in,
     CMPIArgs* out)
@@ -891,7 +892,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 
     // Find CIMPLE method object:
 
-    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_model_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -909,7 +910,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 
     // Validate the object path:
 
-    const char* cn = class_name(cmpi_op);
+    const char* cn = class_name(cop);
 
     if (!cn || strcasecmp(cn, mm->name) == 0)
     {
@@ -917,7 +918,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
         CMReturn(CMPI_RC_ERR_INVALID_CLASS);
     }
 
-    if (CMGetKeyCount(cmpi_op, NULL) > 0 && (mm->flags & CIMPLE_FLAG_STATIC))
+    if (CMGetKeyCount(cop, NULL) > 0 && (mm->flags & CIMPLE_FLAG_STATIC))
     {
         adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
@@ -926,7 +927,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
 
     if (rc != CMPI_RC_OK)
     {
@@ -939,7 +940,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     // Create the method:
 
     Instance* cimple_meth = 0;
-    rc = make_cimple_method(0, mc, mm, in, adapter, cimple_meth);
+    rc = make_cimple_method(0, mc, mm, cop, in, adapter, cimple_meth);
 
     if (rc != CMPI_RC_OK)
     {
@@ -972,7 +973,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 
     CMPIValue return_value;
     CMPIType return_type;
-    const char* ns = name_space(cmpi_op);
+    const char* ns = name_space(cop);
 
     rc = make_cmpi_method(
         adapter->broker, ns, cimple_meth, out, return_value, return_type);
@@ -1139,7 +1140,7 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
 //
 //------------------------------------------------------------------------------
 
-static bool _indication_proc(Instance* cimple_inst, void* client_data)
+static bool _indication_proc(Instance* inst, void* client_data)
 {
     // This function is called by the CIMPLE Indication_Handler<> in order to 
     // deliver a single indication.
@@ -1149,10 +1150,10 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 
     // If this is the final call, just return.
 
-    if (cimple_inst == 0)
+    if (inst == 0)
         return false;
 
-    Ref<Instance> cimple_inst_d(cimple_inst);
+    Ref<Instance> cimple_inst_d(inst);
 
     // Do once for each CIM namespace:
 
@@ -1162,10 +1163,10 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 
         // Convert CIMPLE instance to CMPI instance:
 
-        CMPIInstance* cmpi_inst = 0;
+        CMPIInstance* ci = 0;
 
         CMPIrc rc = make_cmpi_instance(adapter->broker, 
-            cimple_inst, name_space.c_str(), 0, cmpi_inst); 
+            inst, name_space.c_str(), 0, ci); 
 
         // Deliver the indication (we cannot do anything about failures).
 
@@ -1183,7 +1184,7 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
                 thread_context->cmpi_broker(),
                 thread_context->cmpi_context(),
                 name_space.c_str(),
-                cmpi_inst);
+                ci);
         }
     }
 
@@ -1316,13 +1317,13 @@ namespace associators1
     };
 
     static bool _proc(
-        const Instance* cimple_inst, 
+        const Instance* inst, 
         Enum_Associators_Status status, 
         void* client_data)
     {
         Data* data = (Data*)client_data;
 
-        if (!cimple_inst)
+        if (!inst)
             return false;
 
         // Ignore if an error was already encountered.
@@ -1332,14 +1333,14 @@ namespace associators1
 
         // Convert to a CMPI instance.
 
-        CMPIInstance* cmpi_inst = 0;
+        CMPIInstance* ci = 0;
 
         data->rc = make_cmpi_instance(
             data->broker, 
-            cimple_inst, 
+            inst, 
             data->name_space,
             0,
-            cmpi_inst); 
+            ci); 
 
         if (data->rc != CMPI_RC_OK)
         {
@@ -1349,7 +1350,7 @@ namespace associators1
 
         // Deliver instance to requestor:
 
-        CMReturnInstance(data->result, cmpi_inst);
+        CMReturnInstance(data->result, ci);
 
         return true;
     }
@@ -1368,13 +1369,13 @@ namespace associators2
     };
 
     static bool _proc(
-        const Instance* cimple_inst, 
+        const Instance* inst, 
         Enum_Associator_Names_Status status, 
         void* client_data)
     {
         Data* data = (Data*)client_data;
 
-        if (!cimple_inst)
+        if (!inst)
             return false;
 
         // Ignore if an error was already encountered.
@@ -1384,20 +1385,20 @@ namespace associators2
 
         // Convert to a CMPI object path and deliver:
 
-        CMPIObjectPath* cmpi_op = 0;
+        CMPIObjectPath* cop = 0;
 
         data->rc = make_cmpi_object_path(
             data->broker,
-            cimple_inst,
+            inst,
             data->name_space,
-            cmpi_op);
+            cop);
 
         // Now use the CMPI broker to get the full instance.
 
-        CMPIInstance* cmpi_inst = CBGetInstance(
-            data->broker, data->context, cmpi_op, data->properties, NULL);
+        CMPIInstance* ci = CBGetInstance(
+            data->broker, data->context, cop, data->properties, NULL);
 
-        if (!cmpi_inst)
+        if (!ci)
         {
             data->rc = CMPI_RC_ERR_FAILED;
             return false;
@@ -1405,7 +1406,7 @@ namespace associators2
 
         // Deliver instance to requestor:
 
-        CMReturnInstance(data->result, cmpi_inst);
+        CMReturnInstance(data->result, ci);
 
         return true;
     }
@@ -1415,7 +1416,7 @@ CMPIStatus CMPI_Adapter::associators(
     CMPIAssociationMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cop, 
     const char* assoc_class_, 
     const char* result_class_,
     const char* role_, 
@@ -1435,9 +1436,9 @@ CMPIStatus CMPI_Adapter::associators(
 
     CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
 
-    // Lookup meta class for cmpi_op (not the same as the provider class).
+    // Lookup meta class for cop (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -1448,7 +1449,7 @@ CMPIStatus CMPI_Adapter::associators(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -1460,7 +1461,7 @@ CMPIStatus CMPI_Adapter::associators(
     // First try enum_associators().
     {
         associators2::Data data = { adapter->broker, 
-            context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
+            context, result, name_space(cop), properties, CMPI_RC_OK };
 
         Enum_Associators_Status status = adapter->enum_associators(
             cimple_ref,
@@ -1489,7 +1490,7 @@ CMPIStatus CMPI_Adapter::associators(
     // Next try enum_associator_names().
     {
         associators2::Data data = { adapter->broker, 
-            context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
+            context, result, name_space(cop), properties, CMPI_RC_OK };
 
         Enum_Associator_Names_Status status = adapter->enum_associator_names(
             cimple_ref,
@@ -1537,13 +1538,13 @@ namespace associator_names
     };
 
     static bool _proc(
-        const Instance* cimple_inst, 
+        const Instance* inst, 
         Enum_Associator_Names_Status status,
         void* client_data)
     {
         Data* data = (Data*)client_data;
 
-        if (!cimple_inst)
+        if (!inst)
             return false;
 
         // Ignore if an error was already encountered.
@@ -1553,16 +1554,16 @@ namespace associator_names
 
         // Convert to a CMPI object path and deliver:
 
-        CMPIObjectPath* cmpi_op = 0;
+        CMPIObjectPath* cop = 0;
 
         data->rc = make_cmpi_object_path(
             data->broker,
-            cimple_inst,
+            inst,
             data->name_space,
-            cmpi_op);
+            cop);
 
         if (data->rc == CMPI_RC_OK)
-            CMReturnObjectPath(data->result, cmpi_op);
+            CMReturnObjectPath(data->result, cop);
 
         return true;
     }
@@ -1572,7 +1573,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
     CMPIAssociationMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cop, 
     const char* assoc_class_, 
     const char* result_class_,
     const char* role_, 
@@ -1591,9 +1592,9 @@ CMPIStatus CMPI_Adapter::associatorNames(
 
     CIMPLE_ASSERT(strcasecmp(assoc_class, adapter->mc->name) == 0);
 
-    // Lookup meta class for cmpi_op (not the same as the provider class).
+    // Lookup meta class for cop (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -1604,7 +1605,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -1616,7 +1617,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
     // Invoke the provider:
 
     associator_names::Data data = 
-        { adapter->broker, context, result, name_space(cmpi_op), CMPI_RC_OK };
+        { adapter->broker, context, result, name_space(cop), CMPI_RC_OK };
 
     Enum_Associator_Names_Status status = adapter->enum_associator_names(
         cimple_ref,
@@ -1664,7 +1665,7 @@ namespace references
     };
 
     static bool _proc(
-        Instance* cimple_inst, 
+        Instance* inst, 
         Enum_References_Status status,
         void* client_data)
     {
@@ -1672,10 +1673,10 @@ namespace references
 
         // Ignore the final call.
 
-        if (!cimple_inst)
+        if (!inst)
             return false;
 
-        Ref<Instance> cimple_inst_d(cimple_inst);
+        Ref<Instance> cimple_inst_d(inst);
 
         // Ignore errors on prior call.
 
@@ -1684,21 +1685,21 @@ namespace references
 
         // Filter the properties.
 
-        filter_properties(cimple_inst, data->properties);
+        filter_properties(inst, data->properties);
 
         // Convert to CMPI instance.
 
-        CMPIInstance* cmpi_inst = 0;
+        CMPIInstance* ci = 0;
 
         data->rc = make_cmpi_instance(
-            data->broker, cimple_inst, data->name_space, 0, cmpi_inst);
+            data->broker, inst, data->name_space, 0, ci);
 
         if (data->rc != CMPI_RC_OK)
             return false;
 
         // Deliver the instance.
 
-        CMReturnInstance(data->result, cmpi_inst);
+        CMReturnInstance(data->result, ci);
 
         return true;
     }
@@ -1708,7 +1709,7 @@ CMPIStatus CMPI_Adapter::references(
     CMPIAssociationMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cop, 
     const char* result_class_, 
     const char* role_,
     const char** properties)
@@ -1722,9 +1723,9 @@ CMPIStatus CMPI_Adapter::references(
 
     adapter->ent(FL, "references");
 
-    // Lookup meta class for cmpi_op (not the same as the provider class).
+    // Lookup meta class for cop (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -1737,7 +1738,7 @@ CMPIStatus CMPI_Adapter::references(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -1756,7 +1757,7 @@ CMPIStatus CMPI_Adapter::references(
     // Invoke the provider:
 
     references::Data data = { adapter->broker, 
-        context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
+        context, result, name_space(cop), properties, CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
         cimple_ref, cimple_model, role, references::_proc, &data);
@@ -1801,7 +1802,7 @@ namespace reference_names
     };
 
     static bool _proc(
-        Instance* cimple_inst, 
+        Instance* inst, 
         Enum_References_Status status,
         void* client_data)
     {
@@ -1809,10 +1810,10 @@ namespace reference_names
 
         // Ignore the final call.
 
-        if (!cimple_inst)
+        if (!inst)
             return false;
 
-        Ref<Instance> cimple_inst_d(cimple_inst);
+        Ref<Instance> cimple_inst_d(inst);
 
         // Ignore errors on prior call.
 
@@ -1821,21 +1822,21 @@ namespace reference_names
 
         // Filter out non-key properties:
 
-        nullify_non_keys(cimple_inst);
+        nullify_non_keys(inst);
 
         // Convert to CMPI object path:
 
-        CMPIObjectPath* cmpi_op = 0;
+        CMPIObjectPath* cop = 0;
 
         data->rc = make_cmpi_object_path(
-            data->broker, cimple_inst, data->name_space, cmpi_op);
+            data->broker, inst, data->name_space, cop);
 
         if (data->rc != CMPI_RC_OK)
             return false;
 
         // Deliver the instance.
 
-        CMReturnObjectPath(data->result, cmpi_op);
+        CMReturnObjectPath(data->result, cop);
 
         return true;
     }
@@ -1845,7 +1846,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
     CMPIAssociationMI* mi, 
     const CMPIContext* context, 
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cop, 
     const char* result_class_, 
     const char* role_)
 {
@@ -1858,9 +1859,9 @@ CMPIStatus CMPI_Adapter::referenceNames(
     const char* result_class = result_class_ ? result_class_ : "";
     const char* role = role_ ? role_ : "";
 
-    // Lookup meta class for cmpi_op (not the same as the provider class).
+    // Lookup meta class for cop (not the same as the provider class).
 
-    const Meta_Class* mc = adapter->find_meta_class(class_name(cmpi_op));
+    const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
     if (!mc)
     {
@@ -1873,7 +1874,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -1893,7 +1894,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
     // Invoke the provider:
 
     reference_names::Data data = { 
-        adapter->broker, context, result, name_space(cmpi_op), CMPI_RC_OK };
+        adapter->broker, context, result, name_space(cop), CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
         cimple_ref, cimple_model, role, reference_names::_proc, &data);

@@ -12,18 +12,20 @@
 using namespace Pegasus;
 using namespace cimple;
 
+const char* ns = "root/cimv2";
+
 void roundtrip(CIMInstance& ci, const Meta_Class* mc)
 {
-    Instance* inst1;
+    Instance* inst1 = 0;
     {
-        InstanceContainer cont(mc->meta_repository, ci);
-        inst1 = cont.convert(mc, false);
+        InstanceContainer cont(mc->meta_repository, ns, ci);
+        cont.convert(mc, false, inst1);
         assert(inst1);
     }
 
     CIMInstance ci2(mc->name);
     {
-        InstanceContainer cont(mc->meta_repository, ci2);
+        InstanceContainer cont(mc->meta_repository, ns, ci2);
 
         if (cont.convert(inst1, 0) != 0)
         {
@@ -31,13 +33,13 @@ void roundtrip(CIMInstance& ci, const Meta_Class* mc)
         }
     }
 
-    Instance* inst2;
+    Instance* inst2 = 0;
     {
-        InstanceContainer cont(mc->meta_repository, ci2);
-        inst2 = cont.convert(mc, 0);
+        InstanceContainer cont(mc->meta_repository, ns, ci2);
+        cont.convert(mc, 0, inst2);
     }
 
-#if 0
+#if 1
     print(inst1);
     print(inst2);
 #endif
@@ -71,8 +73,9 @@ void test1()
     ci.addProperty(CIMProperty("junk", Pegasus::String("No such property")));
     roundtrip(ci, &Class1::static_meta_class);
 
-    InstanceContainer cont(Class1::static_meta_class.meta_repository, ci);
-    Instance* tmp = cont.convert(&Class1::static_meta_class, 0);
+    InstanceContainer cont(Class1::static_meta_class.meta_repository, ns, ci);
+    Instance* tmp = 0;
+    cont.convert(&Class1::static_meta_class, 0, tmp);
     assert(tmp);
 
     Class1* inst = cast<Class1*>(tmp);
@@ -108,8 +111,9 @@ void test2()
 {
     CIMObjectPath op("Class1.p1=99,p2=\"Hello\",p3=true");
 
-    ObjectPathContainer cont(Class1::static_meta_class.meta_repository, op);
-    Instance* tmp = cont.convert(&Class1::static_meta_class, CIMPLE_FLAG_KEY);
+    ObjectPathContainer cont(Class1::static_meta_class.meta_repository, ns, op);
+    Instance* tmp = 0;
+    cont.convert(&Class1::static_meta_class, CIMPLE_FLAG_KEY, tmp);
     assert(tmp);
 
     Class1* inst = cast<Class1*>(tmp);
@@ -140,8 +144,9 @@ void test3()
     ci.addProperty(CIMProperty("right", right));
     roundtrip(ci, &Assoc1::static_meta_class);
 
-    InstanceContainer cont(Assoc1::static_meta_class.meta_repository, ci);
-    Instance* tmp = cont.convert(&Assoc1::static_meta_class, 0);
+    InstanceContainer cont(Assoc1::static_meta_class.meta_repository, ns, ci);
+    Instance* tmp = 0;
+    cont.convert(&Assoc1::static_meta_class, 0, tmp);
     assert(tmp);
 
     Assoc1* inst = cast<Assoc1*>(tmp);
@@ -176,8 +181,9 @@ void test4()
     ci.addProperty(CIMProperty("right", right));
     roundtrip(ci, &Assoc2::static_meta_class);
 
-    InstanceContainer cont(Assoc2::static_meta_class.meta_repository, ci);
-    Instance* tmp = cont.convert(&Assoc2::static_meta_class, 0);
+    InstanceContainer cont(Assoc2::static_meta_class.meta_repository, ns, ci);
+    Instance* tmp = 0;
+    cont.convert(&Assoc2::static_meta_class, 0, tmp);
     assert(tmp);
 
     Assoc2* inst = cast<Assoc2*>(tmp);
@@ -198,8 +204,9 @@ void test5()
 {
     CIMObjectPath op("Class2.key=12345");
 
-    ObjectPathContainer cont(Class2::static_meta_class.meta_repository, op);
-    Instance* tmp = cont.convert(&Class2::static_meta_class, CIMPLE_FLAG_KEY);
+    ObjectPathContainer cont(Class2::static_meta_class.meta_repository, ns, op);
+    Instance* tmp = 0;
+    cont.convert(&Class2::static_meta_class, CIMPLE_FLAG_KEY, tmp);
     assert(tmp);
 
     Class2* inst = cast<Class2*>(tmp);
@@ -221,8 +228,11 @@ void test6()
     class3.addProperty(CIMProperty("embedded", CIMValue(CIMObject(class2))));
     roundtrip(class3, &Class3::static_meta_class);
 
-    InstanceContainer cont(Class1::static_meta_class.meta_repository, class3);
-    Instance* tmp = cont.convert(&Class3::static_meta_class, 0);
+    InstanceContainer cont(
+        Class1::static_meta_class.meta_repository, ns, class3);
+    Instance* tmp;
+    tmp = 0;
+    cont.convert(&Class3::static_meta_class, 0, tmp);
     assert(tmp);
 
     Class3* inst = cast<Class3*>(tmp);
@@ -256,8 +266,10 @@ void test7()
     class3.addProperty(CIMProperty("embedded", CIMValue(class2)));
     roundtrip(class3, &Class3::static_meta_class);
 
-    InstanceContainer cont(Class1::static_meta_class.meta_repository, class3);
-    Instance* tmp = cont.convert(&Class4::static_meta_class, 0);
+    InstanceContainer cont(
+        Class1::static_meta_class.meta_repository, ns, class3);
+    Instance* tmp = 0;
+    cont.convert(&Class4::static_meta_class, 0, tmp);
     assert(tmp);
 
     Class4* inst = cast<Class4*>(tmp);
@@ -306,8 +318,10 @@ void test8()
     class3.addProperty(CIMProperty("embedded", CIMValue(embedded)));
     roundtrip(class3, &Class5::static_meta_class);
 
-    InstanceContainer cont(Class1::static_meta_class.meta_repository, class3);
-    Instance* tmp = cont.convert(&Class5::static_meta_class, 0);
+    InstanceContainer cont(
+        Class1::static_meta_class.meta_repository, ns, class3);
+    Instance* tmp = 0;
+    cont.convert(&Class5::static_meta_class, 0, tmp);
     assert(tmp);
 
     Class5* inst = cast<Class5*>(tmp);
@@ -319,11 +333,11 @@ void test8()
 
     // embedded:
     {
-        assert(inst->embedded.size() == 2);
+        assert(inst->embedded.value.size() == 2);
 
-        for (size_t i = 0; i < inst->embedded.size(); i++)
+        for (size_t i = 0; i < inst->embedded.value.size(); i++)
         {
-            Class2* inst2 = cast<Class2*>(inst->embedded[i]);
+            Class2* inst2 = cast<Class2*>(inst->embedded.value[i]);
             assert(inst2);
 
             if (i == 0)
@@ -350,8 +364,9 @@ void test9()
     ci.addProperty(CIMProperty("right", right));
     roundtrip(ci, &Assoc1::static_meta_class);
 
-    InstanceContainer cont(Assoc1::static_meta_class.meta_repository, ci);
-    Instance* tmp = cont.convert(&Assoc1::static_meta_class, 0);
+    InstanceContainer cont(Assoc1::static_meta_class.meta_repository, ns, ci);
+    Instance* tmp = 0;
+    cont.convert(&Assoc1::static_meta_class, 0, tmp);
     assert(tmp);
 
     unref(tmp);

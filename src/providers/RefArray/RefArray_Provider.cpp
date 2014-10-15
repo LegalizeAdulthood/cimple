@@ -55,17 +55,17 @@ Modify_Instance_Status RefArray_Provider::modify_instance(
 
 Invoke_Method_Status RefArray_Provider::SendRefArray(
     const RefArray* self,
-    const Array<RefArrayParam*>& arr1,
-    Array<RefArrayParam*>& arr2,
+    const Property< Array<RefArrayParam*> >& arr1,
+    Property< Array<RefArrayParam*> >& arr2,
     Property<uint32>& return_value)
 {
     arr2.clear();
 
-    for (size_t i = 0; i < arr1.size(); i++)
-        arr2.append(arr1[i]->clone());
+    for (size_t i = 0; i < arr1.value.size(); i++)
+        arr2.value.append(arr1.value[i]->clone());
 
-    return_value.value = 123;
-    return_value.null = false;
+    arr2.null = false;
+    return_value.set(123);
 
     return INVOKE_METHOD_OK;
 }

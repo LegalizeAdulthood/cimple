@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_4BF74E2DACCB131FBD5F51B62822AF72;
+extern const Meta_Repository __meta_repository_1FC180012B9811FDB4B0EFB0C8308BE9;
 
 /*[1302]*/
 extern const Meta_Property
@@ -597,38 +597,6 @@ _All_Class_datetimeArray =
     -1, /* subscript */
     CIMPLE_OFF(All_Class,datetimeArray),
     0, /* value */
-};
-
-extern const Meta_Reference
-_All_Class_instanceArray;
-
-/*[1914]*/
-const Meta_Reference _All_Class_instanceArray =
-{
-    { 0 }, /* refs */
-    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_INSTANCE,
-    "instanceArray",
-    0, /* meta_qualifiers */
-    0, /* num_meta_qualifiers */
-    -1, /* subscript */
-    &All_Part::static_meta_class,
-    CIMPLE_OFF(All_Class,instanceArray)
-};
-
-extern const Meta_Reference
-_All_Class_objectArray;
-
-/*[1914]*/
-const Meta_Reference _All_Class_objectArray =
-{
-    { 0 }, /* refs */
-    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,
-    "objectArray",
-    0, /* meta_qualifiers */
-    0, /* num_meta_qualifiers */
-    -1, /* subscript */
-    &Instance::static_meta_class,
-    CIMPLE_OFF(All_Class,objectArray)
 };
 
 /*[1669]*/
@@ -3539,8 +3507,6 @@ static Meta_Feature* _All_Class_MFA[] =
     (Meta_Feature*)(void*)&_All_Class_char16Array,
     (Meta_Feature*)(void*)&_All_Class_stringArray,
     (Meta_Feature*)(void*)&_All_Class_datetimeArray,
-    (Meta_Feature*)(void*)&_All_Class_instanceArray,
-    (Meta_Feature*)(void*)&_All_Class_objectArray,
     (Meta_Feature*)(void*)&All_Class_booleanReturn_method::static_meta_class,
     (Meta_Feature*)(void*)&All_Class_uint8Return_method::static_meta_class,
     (Meta_Feature*)(void*)&All_Class_sint8Return_method::static_meta_class,
@@ -3677,8 +3643,6 @@ static const Meta_Feature_Local _locals[] =
     {1},
     {1},
     {1},
-    {1},
-    {1},
 };
 
 /*[2092]*/
@@ -3695,7 +3659,7 @@ const Meta_Class All_Class::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    &__meta_repository_4BF74E2DACCB131FBD5F51B62822AF72,
+    &__meta_repository_1FC180012B9811FDB4B0EFB0C8308BE9,
 };
 
 CIMPLE_NAMESPACE_END

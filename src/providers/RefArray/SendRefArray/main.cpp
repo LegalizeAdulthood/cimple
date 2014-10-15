@@ -52,8 +52,13 @@ void test1()
 
         const String NAMESPACE = "root/cimv2";
         Array<CIMObjectPath> arr1;
+
         CIMObjectPath x0("RefArrayParam.key=1");
+        x0.setNameSpace("root/cimv2");
+
         CIMObjectPath x1("RefArrayParam.key=2");
+        x1.setNameSpace("root/cimv2");
+
         arr1.append(x0);
         arr1.append(x1);
 
@@ -74,9 +79,6 @@ void test1()
 
         CIMObjectPath y0 = arr2[0];
         CIMObjectPath y1 = arr2[1];
-
-        x0.setNameSpace("root/cimv2");
-        x1.setNameSpace("root/cimv2");
 
         assert(y0.identical(x0));
         assert(y1.identical(x1));

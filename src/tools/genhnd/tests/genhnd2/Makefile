@@ -3,7 +3,9 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_genhnd1
 
-SOURCES = $(wildcard *.cpp)
+SOURCES = main.cpp
+
+# $(wildcard *.cpp)
 
 LIBRARIES = cimple
 

@@ -5,7 +5,7 @@
 #include <cimple/Provider_Handle.h>
 #include <cimple/Buffer.h>
 #include "Pegasus_Adapter.h"
-#include "Converter.h"
+#include <pegasus/utils/Converter.h>
 #include <pegasus/utils/Str.h>
 #include "Pegasus_Thread_Context.h"
 
@@ -15,7 +15,7 @@
 # define TRACE
 #endif
 
-#define INDICATION_NAMESPACE "root/cimv2"
+// #define INDICATION_NAMESPACE "root/cimv2"
 
 // Export cimple_pegasus_adapter() only for shared library.
 #ifdef CIMPLE_STATIC
@@ -29,7 +29,7 @@ CIMPLE_NAMESPACE_BEGIN
 static P_String _get_host_name()
 {
 /*
-MEB: get host name here.
+ATTN: get host name here.
 */
     return P_String();
 }
@@ -140,7 +140,7 @@ Pegasus_Adapter::~Pegasus_Adapter()
 
 void Pegasus_Adapter::initialize(P_CIMOMHandle& handle)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
 
     _cimom_handle = &handle;
 
@@ -153,7 +153,7 @@ void Pegasus_Adapter::initialize(P_CIMOMHandle& handle)
 
 void Pegasus_Adapter::terminate(void)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
 
     P_OperationContext context;
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
@@ -169,7 +169,9 @@ void Pegasus_Adapter::getInstance(
     const P_CIMPropertyList& propertyList,
     P_InstanceResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -181,7 +183,7 @@ void Pegasus_Adapter::getInstance(
 
     Instance* model = 0;
 
-    if (Converter::to_cimple_key(objectPath, mc, model) != 0)
+    if (Converter::to_cimple_key(*ns, objectPath, mc, model) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> model_d(model);
@@ -257,7 +259,7 @@ void Pegasus_Adapter::enumerateInstances(
     const P_CIMPropertyList& propertyList,
     P_InstanceResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -346,7 +348,7 @@ void Pegasus_Adapter::enumerateInstanceNames(
     const P_CIMObjectPath& objectPath,
     P_ObjectPathResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -386,7 +388,9 @@ void Pegasus_Adapter::createInstance(
     const P_CIMInstance& instance,
     P_ObjectPathResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -398,7 +402,7 @@ void Pegasus_Adapter::createInstance(
 
     Instance* ci = 0;
 
-    if (Converter::to_cimple_instance(instance, mc, ci) != 0)
+    if (Converter::to_cimple_instance(*ns, instance, mc, ci) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ci_d(ci);
@@ -432,7 +436,9 @@ void Pegasus_Adapter::modifyInstance(
     const P_CIMPropertyList& propertyList,
     P_ResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -444,7 +450,7 @@ void Pegasus_Adapter::modifyInstance(
 
     Instance* ci = 0;
 
-    if (Converter::to_cimple_instance(instance, mc, ci) != 0)
+    if (Converter::to_cimple_instance(*ns, instance, mc, ci) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ci_d(ci);
@@ -476,7 +482,9 @@ void Pegasus_Adapter::deleteInstance(
     const P_CIMObjectPath& objectPath,
     P_ResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -488,7 +496,7 @@ void Pegasus_Adapter::deleteInstance(
 
     Instance* ci = 0;
 
-    if (Converter::to_cimple_key(objectPath, mc, ci) != 0)
+    if (Converter::to_cimple_key(*ns, objectPath, mc, ci) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ci_d(ci);
@@ -507,24 +515,26 @@ void Pegasus_Adapter::deleteInstance(
 
 void Pegasus_Adapter::invokeMethod(
     const P_OperationContext& context,
-    const P_CIMObjectPath& objectPath,
+    const P_CIMObjectPath& cop,
     const P_CIMName& methodName,
     const Pegasus::Array<P_CIMParamValue>& inParameters,
     P_MethodResultResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(cop.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
     // Find model meta class:
 
-    const Meta_Class* mc = find_model_meta_class(objectPath);
+    const Meta_Class* mc = find_model_meta_class(cop);
 
     // Convert instance name to CIMPLE reference.
 
     Instance* ref = 0;
 
-    if (Converter::to_cimple_key(objectPath, mc, ref) != 0)
+    if (Converter::to_cimple_key(*ns, cop, mc, ref) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ref_d(ref);
@@ -534,8 +544,11 @@ void Pegasus_Adapter::invokeMethod(
     Str meth_name(methodName);
     Instance* meth = 0;
 
-    if (Converter::to_cimple_method(inParameters, *meth_name, mc, meth) != 0)
+    if (Converter::to_cimple_method(
+        *ns, inParameters, *meth_name, mc, CIMPLE_FLAG_IN, meth) != 0)
+    {
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     Ref<Instance> meth_d(meth);
 
@@ -557,8 +570,8 @@ void Pegasus_Adapter::invokeMethod(
     Pegasus::Array<P_CIMParamValue> out_params;
     P_CIMValue return_value;
 
-    if (Converter::to_pegasus_method(_get_host_name(), 
-        objectPath.getNameSpace(), meth, out_params, return_value) != 0)
+    if (Converter::to_pegasus_method(_get_host_name(), cop.getNameSpace(), 
+        meth, CIMPLE_FLAG_OUT, out_params, return_value) != 0)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -743,7 +756,9 @@ void Pegasus_Adapter::associators(
     const P_CIMPropertyList& propertyList,
     P_ObjectResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -759,7 +774,7 @@ void Pegasus_Adapter::associators(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -842,8 +857,6 @@ static bool _enum_associator_names_proc(
     Enum_Associator_Names_Status status,
     void* client_data)
 {
-    TRACE;
-
     Handle_Associator_Names_Request_Data* data = 
         (Handle_Associator_Names_Request_Data*)client_data;
 
@@ -880,7 +893,9 @@ void Pegasus_Adapter::associatorNames(
     const P_String& resultRole,
     P_ObjectPathResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -897,7 +912,7 @@ void Pegasus_Adapter::associatorNames(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -950,8 +965,6 @@ static bool _enumerate_references_proc(
     Enum_References_Status status,
     void* client_data)
 {
-    TRACE;
-
     Handle_References_Request_Data* data = 
         (Handle_References_Request_Data*)client_data;
 
@@ -989,7 +1002,9 @@ void Pegasus_Adapter::references(
     const P_CIMPropertyList& propertyList,
     P_ObjectResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -1008,7 +1023,7 @@ void Pegasus_Adapter::references(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
     }
@@ -1064,8 +1079,6 @@ static bool _enumerate_reference_names_proc(
     Enum_References_Status status,
     void* client_data)
 {
-    TRACE;
-
     Handle_Reference_Names_Request_Data* data = 
         (Handle_Reference_Names_Request_Data*)client_data;
 
@@ -1100,7 +1113,9 @@ void Pegasus_Adapter::referenceNames(
     const P_String& role,
     P_ObjectPathResponseHandler& handler)
 {
-    TRACE;
+    Auto_Mutex am(mutex);
+
+    Str ns(objectPath.getNameSpace());
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
@@ -1119,7 +1134,7 @@ void Pegasus_Adapter::referenceNames(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -1157,12 +1172,13 @@ void Pegasus_Adapter::referenceNames(
 struct Indication_Proc_Data
 {
     P_IndicationResponseHandler* handler;
-    P_CIMNamespaceName name_space;
+    Pegasus_Adapter* adapter;
 };
 
 static bool _indication_proc(Instance* indication, void* client_data)
 {
     Indication_Proc_Data* data = (Indication_Proc_Data*)client_data;
+    Auto_Mutex am(data->adapter->mutex);
 
     // Delete client data on last call.
 
@@ -1172,28 +1188,32 @@ static bool _indication_proc(Instance* indication, void* client_data)
         return false;
     }
 
-    // Convert CIMPLE indication to Pegasus indication.
+    // Deliver indication on every namespace
 
-    P_CIMInstance pegasus_indication;
-
-    if (Converter::to_pegasus_instance(_get_host_name(), 
-        data->name_space, indication, pegasus_indication) != 0)
-        return false;
-
-    // Build an object path for this indication.
-
-    try
+    for (size_t i = 0; i < data->adapter->source_name_spaces.size(); i++)
     {
-        P_CIMObjectPath objectPath;
-        objectPath.setHost(_get_host_name());
-        objectPath.setNameSpace(INDICATION_NAMESPACE);
-        objectPath.setClassName(indication->meta_class->name);
-        pegasus_indication.setPath(objectPath);
-        data->handler->deliver(pegasus_indication);
-    }
-    catch (...)
-    {
-        // Ignore!
+        const String& ns = data->adapter->source_name_spaces[i];
+
+        // Convert CIMPLE indication to Pegasus indication.
+
+        P_CIMInstance pegasus_indication;
+
+        if (Converter::to_pegasus_instance(_get_host_name(), 
+            ns.c_str(), indication, pegasus_indication) != 0)
+        {
+            return false;
+        }
+
+        // Build an object path for this indication.
+
+        try
+        {
+            data->handler->deliver(pegasus_indication);
+        }
+        catch (...)
+        {
+            // Ignore!
+        }
     }
 
     // Keep them coming!
@@ -1203,6 +1223,8 @@ static bool _indication_proc(Instance* indication, void* client_data)
 void Pegasus_Adapter::enableIndications(
     P_IndicationResponseHandler& handler)
 {
+    Auto_Mutex am(mutex);
+
     if (_handler_refs.get() == 0)
     {
         // Save the handler.
@@ -1214,7 +1236,7 @@ void Pegasus_Adapter::enableIndications(
 
         Indication_Proc_Data* data = new Indication_Proc_Data;
         data->handler = _handler;
-        data->name_space = P_String(INDICATION_NAMESPACE);
+        data->adapter = this;
         _provider->enable_indications(_indication_proc, data);
     }
 
@@ -1223,6 +1245,8 @@ void Pegasus_Adapter::enableIndications(
 
 void Pegasus_Adapter::disableIndications()
 {
+    Auto_Mutex am(mutex);
+
     _handler_refs.dec();
 
     if (_handler_refs.get() == 0)
@@ -1244,15 +1268,31 @@ void Pegasus_Adapter::createSubscription(
     const P_CIMPropertyList& propertyList,
     const P_Uint16 repeatNotificationPolicy)
 {
+    Auto_Mutex am(mutex);
+
     try
     {
-        // ATTN: save namespace and use it to determine which namespace
-        // to deliver events on.
+        // Save the  source namespace so that we will have a complete list
+        // of namespaces on which to deliver every indication.
 
         P_SubscriptionFilterQueryContainer c =
             context.get(P_SubscriptionFilterQueryContainer::NAME);
 
-        // c.getSourceNameSpace()
+        Str ns(c.getSourceNameSpace());
+
+        bool found = false;
+
+        for (size_t i = 0; i < source_name_spaces.size(); i++)
+        {
+            if (strcasecmp(source_name_spaces[i].c_str(), *ns) == 0)
+                found = true;
+        }
+
+        if (!found)
+            source_name_spaces.append(*ns);
+
+        // Note: we make no attempt to ever remove these namespaces when
+        // the subscriptions are removed.
     }
     catch (...)
     {

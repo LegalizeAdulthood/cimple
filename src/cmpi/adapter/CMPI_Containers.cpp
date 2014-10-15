@@ -178,7 +178,14 @@ struct to_cimple_scalar<Datetime>
 {
     static int func(const Meta_Repository* mr, const CMPIValue& v, Datetime& x)
     {
-        CMPIString* s = CMGetStringFormat(v.dateTime, NULL);
+        CMPIStatus status;
+        CMPIString* s = CMGetStringFormat(v.dateTime, &status);
+
+        if (status.rc != CMPI_RC_OK)
+        {
+            CIMPLE_WARN(("CMGetStringFormat() failed"));
+            return -1;
+        }
 
         if (!x.set(_c_str(CMGetStringFormat(v.dateTime, NULL))))
         {
@@ -255,7 +262,7 @@ struct to_cimple_array_value
 
             T t;
 
-            if (to_cimple_scalar<T>::func(mr, data.value, t) != 0)
+            if (to_cimple_scalar<T>::func(mr, tmp.value, t) != 0)
             {
                 CIMPLE_WARN(("conversion error"));
                 return -1;
@@ -292,6 +299,7 @@ struct to_cimple_scalar_value
 static Instance* _to_cimple_instance(
     const Meta_Repository* mr,
     const CMPIBroker* cb,
+    const char* ns,
     CMPIObjectPath* cop)
 {
     if (!cop)
@@ -316,12 +324,20 @@ static Instance* _to_cimple_instance(
         return 0;
     }
 
-    return CMPIObjectPath_Container(mr, cb, cop).convert(mc, CIMPLE_FLAG_KEY);
+    Instance* inst = 0;
+
+    CMPIObjectPath_Container cont(mr, cb, ns, cop);
+    
+    if (cont.convert(mc, CIMPLE_FLAG_KEY, inst) != 0 || !inst)
+        return 0;
+
+    return inst;
 }
 
 static Instance* _to_cimple_instance(
     const Meta_Repository* mr,
     const CMPIBroker* cb,
+    const char* ns,
     CMPIInstance* ci)
 {
     if (!ci)
@@ -353,16 +369,163 @@ static Instance* _to_cimple_instance(
         return 0;
     }
 
-    return CMPIInstance_Container(mr, cb, ci).convert(mc, 0);
+    CMPIInstance_Container cont(mr, cb, ns, ci);
+    
+    Instance* inst = 0;
+
+    if (cont.convert(mc, 0, inst) != 0 || !inst)
+        return 0;
+
+    return inst;
 }
 
 static int _to_cimple_value(
     const Meta_Repository* mr,
     const CMPIBroker* cb,
+    const char* ns,
     const CMPIData& data,
     Value& v)
 {
-    bool null = data.state & CMPI_nullValue;
+    // Handle nulls up-front:
+
+    if (data.state & CMPI_nullValue)
+    {
+        switch (data.type)
+        {
+            case CMPI_boolean:
+                v.set_value((boolean)0);
+                break;
+
+            case CMPI_uint8:
+                v.set_value((uint8)0);
+                break;
+
+            case CMPI_sint8:
+                v.set_value((sint8)0);
+                break;
+
+            case CMPI_uint16:
+                v.set_value((uint16)0);
+                break;
+
+            case CMPI_sint16:
+                v.set_value((sint16)0);
+                break;
+
+            case CMPI_uint32:
+                v.set_value((uint32)0);
+                break;
+
+            case CMPI_sint32:
+                v.set_value((sint32)0);
+                break;
+
+            case CMPI_uint64:
+                v.set_value((uint64)0);
+                break;
+
+            case CMPI_sint64:
+                v.set_value((sint64)0);
+                break;
+
+            case CMPI_real32:
+                v.set_value((real32)0);
+                break;
+
+            case CMPI_real64:
+                v.set_value((real64)0);
+                break;
+
+            case CMPI_char16:
+                v.set_value((char16)0);
+                break;
+
+            case CMPI_string:
+                v.set_value(String());
+                break;
+
+            case CMPI_dateTime:
+                v.set_value(Datetime());
+                break;
+
+            case CMPI_instance:
+            case CMPI_ref:
+                v.set_value((Instance*)0);
+                break;
+
+            case CMPI_booleanA:
+                v.set_value(Array<boolean>());
+                break;
+
+            case CMPI_uint8A:
+                v.set_value(Array<uint8>());
+                break;
+
+            case CMPI_sint8A:
+                v.set_value(Array<sint8>());
+                break;
+
+            case CMPI_uint16A:
+                v.set_value(Array<uint16>());
+                break;
+
+            case CMPI_sint16A:
+                v.set_value(Array<sint16>());
+                break;
+
+            case CMPI_uint32A:
+                v.set_value(Array<uint32>());
+                break;
+
+            case CMPI_sint32A:
+                v.set_value(Array<sint32>());
+                break;
+
+            case CMPI_uint64A:
+                v.set_value(Array<uint64>());
+                break;
+
+            case CMPI_sint64A:
+                v.set_value(Array<sint64>());
+                break;
+
+            case CMPI_real32A:
+                v.set_value(Array<real32>());
+                break;
+
+            case CMPI_real64A:
+                v.set_value(Array<real64>());
+                break;
+
+            case CMPI_char16A:
+                v.set_value(Array<char16>());
+                break;
+
+            case CMPI_stringA:
+                v.set_value(Array<String>());
+                break;
+
+            case CMPI_dateTimeA:
+                v.set_value(Array<Datetime>());
+                break;
+
+            case CMPI_instanceA:
+            case CMPI_refA:
+                v.set_value(Array<Instance*>());
+                break;
+
+            default:
+            {
+                CIMPLE_WARN(("unknown type"));
+                return -1;
+            }
+        }
+
+        v.null(true);
+        return 0;
+    };
+
+    // Non handle non-nulls:
 
     switch (data.type)
     {
@@ -416,9 +579,9 @@ static int _to_cimple_value(
                 Instance* inst;
                 
                 if (data.type == CMPI_instance)
-                    inst = _to_cimple_instance(mr, cb, data.value.inst);
+                    inst = _to_cimple_instance(mr, cb, ns, data.value.inst);
                 else
-                    inst = _to_cimple_instance(mr, cb, data.value.ref);
+                    inst = _to_cimple_instance(mr, cb, ns, data.value.ref);
 
                 if (!inst)
                 {
@@ -427,12 +590,10 @@ static int _to_cimple_value(
                 }
 
                 v.set_value(inst);
-                v.null(null);
             }
             else
             {
                 v.set_value((Instance*)0);
-                v.null(null);
             }
             return 0;
         }
@@ -484,13 +645,6 @@ static int _to_cimple_value(
         {
             Array<Instance*> x;
 
-            if (data.state & CMPI_nullValue)
-            {
-                v.set_value(x);
-                v.null(true);
-                return 0;
-            }
-
             if (!data.value.array)
             {
                 return -1;
@@ -526,9 +680,9 @@ static int _to_cimple_value(
                     Instance* inst;
                     
                     if (data.type == CMPI_instanceA)
-                        inst = _to_cimple_instance(mr, cb, tmp.value.inst);
+                        inst = _to_cimple_instance(mr, cb, ns, tmp.value.inst);
                     else
-                        inst = _to_cimple_instance(mr, cb, tmp.value.ref);
+                        inst = _to_cimple_instance(mr, cb, ns, tmp.value.ref);
 
                     if (!inst)
                     {
@@ -554,8 +708,8 @@ static int _to_cimple_value(
 template<class T>
 struct to_cmpi_scalar
 {
-    static int func(const Meta_Repository* mr, 
-        const CMPIBroker* cb, const T& x, CMPIType type, CMPIData& d)
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+        const char* ns, const T& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
         d.type = type;
@@ -567,8 +721,8 @@ struct to_cmpi_scalar
 template<>
 struct to_cmpi_scalar<boolean>
 {
-    static int func(const Meta_Repository* mr, 
-        const CMPIBroker* cb, const boolean& x, CMPIType type, CMPIData& d)
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+        const char* ns, const boolean& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
         d.type = type;
@@ -580,8 +734,8 @@ struct to_cmpi_scalar<boolean>
 template<>
 struct to_cmpi_scalar<String>
 {
-    static int func(const Meta_Repository* mr, 
-        const CMPIBroker* cb, const String& x, CMPIType type, CMPIData& d)
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+        const char* ns, const String& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
         d.type = type;
@@ -593,8 +747,8 @@ struct to_cmpi_scalar<String>
 template<>
 struct to_cmpi_scalar<Datetime>
 {
-    static int func(const Meta_Repository* mr, 
-        const CMPIBroker* cb, const Datetime& x, CMPIType type, CMPIData& d)
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+        const char* ns, const Datetime& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
         d.type = type;
@@ -606,8 +760,8 @@ struct to_cmpi_scalar<Datetime>
 template<>
 struct to_cmpi_scalar<Instance*>
 {
-    static int func(const Meta_Repository* mr, 
-        const CMPIBroker* cb, Instance* x, CMPIType type, CMPIData& d)
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+        const char* ns_, Instance* x, CMPIType type, CMPIData& d)
     {
         memset(&d, 0, sizeof(d));
 
@@ -617,26 +771,41 @@ struct to_cmpi_scalar<Instance*>
             return -1;
         }
 
+        // Get namespace:
+
         const char* ns = x->__name_space.c_str();
-        const char* cn = x->meta_class->name;
 
         if (*ns == '\0')
+            ns = ns_;
+
+        if (!ns || *ns == '\0')
         {
             CIMPLE_WARN(("null namespace"));
             return -1;
         }
 
+        // Get classname:
+
+        const char* cn = x->meta_class->name;
+
+        if (*cn == '\0')
+        {
+            CIMPLE_WARN(("null classname"));
+            return -1;
+        }
+
         // Whether CMPI_ref or CMPI_instance, always create an object path.
 
-        CMPIObjectPath* cop = CMNewObjectPath(cb, ns, cn, 0);
+        CMPIStatus status;
+        CMPIObjectPath* cop = CMNewObjectPath(cb, ns, cn, &status);
         {
-            if (!cop)
+            if (status.rc != CMPI_RC_OK || !cop)
             {
                 CIMPLE_WARN(("CMNewObjectPath() failed"));
                 return -1;
             }
 
-            CMPIObjectPath_Container cont(mr, cb, cop);
+            CMPIObjectPath_Container cont(mr, cb, ns, cop);
 
             if (cont.convert(x, CIMPLE_FLAG_KEY) != 0)
             {
@@ -655,15 +824,16 @@ struct to_cmpi_scalar<Instance*>
         }
         else if (type == CMPI_instance)
         {
-            CMPIInstance* ci = CMNewInstance(cb, cop, 0);
+            CMPIStatus status;
+            CMPIInstance* ci = CMNewInstance(cb, cop, &status);
 
-            if (!ci)
+            if (status.rc != CMPI_RC_OK || !ci)
             {
                 CIMPLE_WARN(("CMNewInstance() failed"));
                 return -1;
             }
 
-            CMPIInstance_Container cont(mr, cb, ci);
+            CMPIInstance_Container cont(mr, cb, ns, ci);
 
             if (cont.convert(x, 0) != 0)
             {
@@ -673,22 +843,26 @@ struct to_cmpi_scalar<Instance*>
 
             d.type = CMPI_instance;
             d.value.inst = ci;
+            return 0;
         }
         else
         {
             CIMPLE_WARN(("unexpected type"));
             return -1;
         }
-
-        return 0;
     }
 };
 
 template<class T>
 struct to_cmpi_array
 {
-    static int func(const Meta_Repository* mr, 
-        const CMPIBroker* cb, const Array<T>& a, CMPIType type, CMPIData& d)
+    static int func(
+        const Meta_Repository* mr, 
+        const CMPIBroker* cb, 
+        const char* ns,
+        const Array<T>& a, 
+        CMPIType type, 
+        CMPIData& d)
     {
         d.state = 0;
         d.type = (CMPI_ARRAY | type);
@@ -698,13 +872,20 @@ struct to_cmpi_array
         {
             CMPIData tmp;
 
-            if (to_cmpi_scalar<T>::func(mr, cb, a[i], type, tmp) != 0)
+            if (to_cmpi_scalar<T>::func(mr, cb, ns, a[i], type, tmp) != 0)
             {
                 CIMPLE_WARN(("element conversion failed"));
                 return -1;
             }
 
-            CMSetArrayElementAt(d.value.array, i, &tmp.value, type);
+            CMPIStatus status = CMSetArrayElementAt(
+                d.value.array, i, &tmp.value, type);
+
+            if (status.rc != CMPI_RC_OK)
+            {
+                CIMPLE_WARN(("CMSetArrayElementAt() failed"));
+                return -1;
+            }
         }
 
         return 0;
@@ -714,6 +895,7 @@ struct to_cmpi_array
 static int _to_cmpi_data(
     const Meta_Repository* mr, 
     const CMPIBroker* cb, 
+    const char* ns,
     const Value& v, 
     uint32 flags,
     CMPIData& data)
@@ -732,91 +914,104 @@ static int _to_cmpi_data(
         {
             boolean x;
             v.get_value(x);
-            return to_cmpi_scalar<boolean>::func(mr, cb, x, CMPI_boolean, data);
+            return to_cmpi_scalar<boolean>::func(
+                mr, cb, ns, x, CMPI_boolean, data);
         }
 
         case Value::UINT8:
         {
             uint8 x;
             v.get_value(x);
-            return to_cmpi_scalar<uint8>::func(mr, cb, x, CMPI_uint8, data);
+            return to_cmpi_scalar<uint8>::func(
+                mr, cb, ns, x, CMPI_uint8, data);
         }
 
         case Value::SINT8:
         {
             sint8 x;
             v.get_value(x);
-            return to_cmpi_scalar<sint8>::func(mr, cb, x, CMPI_sint8, data);
+            return to_cmpi_scalar<sint8>::func(
+                mr, cb, ns, x, CMPI_sint8, data);
         }
 
         case Value::UINT16:
         {
             uint16 x;
             v.get_value(x);
-            return to_cmpi_scalar<uint16>::func(mr, cb, x, CMPI_uint16, data);
+            return to_cmpi_scalar<uint16>::func(
+                mr, cb, ns, x, CMPI_uint16, data);
         }
 
         case Value::SINT16:
         {
             sint16 x;
             v.get_value(x);
-            return to_cmpi_scalar<sint16>::func(mr, cb, x, CMPI_sint16, data);
+            return to_cmpi_scalar<sint16>::func(
+                mr, cb, ns, x, CMPI_sint16, data);
         }
 
         case Value::UINT32:
         {
             uint32 x;
             v.get_value(x);
-            return to_cmpi_scalar<uint32>::func(mr, cb, x, CMPI_uint32, data);
+            return to_cmpi_scalar<uint32>::func(
+                mr, cb, ns, x, CMPI_uint32, data);
         }
 
         case Value::SINT32:
         {
             sint32 x;
             v.get_value(x);
-            return to_cmpi_scalar<sint32>::func(mr, cb, x, CMPI_sint32, data);
+            return to_cmpi_scalar<sint32>::func(
+                mr, cb, ns, x, CMPI_sint32, data);
         }
 
         case Value::UINT64:
         {
             uint64 x;
             v.get_value(x);
-            return to_cmpi_scalar<uint64>::func(mr, cb, x, CMPI_uint64, data);
+            return to_cmpi_scalar<uint64>::func(
+                mr, cb, ns, x, CMPI_uint64, data);
         }
 
         case Value::SINT64:
         {
             sint64 x;
             v.get_value(x);
-            return to_cmpi_scalar<sint64>::func(mr, cb, x, CMPI_sint64, data);
+            return to_cmpi_scalar<sint64>::func(
+                mr, cb, ns, x, CMPI_sint64, data);
         }
 
         case Value::REAL32:
         {
             real32 x;
             v.get_value(x);
-            return to_cmpi_scalar<real32>::func(mr, cb, x, CMPI_real32, data);
+            return to_cmpi_scalar<real32>::func(
+                mr, cb, ns, x, CMPI_real32, data);
         }
 
         case Value::REAL64:
         {
             real64 x;
             v.get_value(x);
-            return to_cmpi_scalar<real64>::func(mr, cb, x, CMPI_real64, data);
+            return to_cmpi_scalar<real64>::func(
+                mr, cb, ns, x, CMPI_real64, data);
         }
 
         case Value::CHAR16:
         {
             char16 x;
             v.get_value(x);
-            return to_cmpi_scalar<char16>::func(mr, cb, x, CMPI_char16, data);
+            return to_cmpi_scalar<char16>::func(
+                mr, cb, ns, x, CMPI_char16, data);
         }
 
         case Value::STRING:
         {
             String x;
             v.get_value(x);
-            return to_cmpi_scalar<String>::func(mr, cb, x, CMPI_string, data);
+            return to_cmpi_scalar<String>::func(
+                mr, cb, ns, x, CMPI_string, data);
         }
 
         case Value::DATETIME:
@@ -824,7 +1019,7 @@ static int _to_cmpi_data(
             Datetime x;
             v.get_value(x);
             return to_cmpi_scalar<Datetime>::func(
-                mr, cb, x, CMPI_dateTime, data);
+                mr, cb, ns, x, CMPI_dateTime, data);
         }
 
         case Value::INSTANCE:
@@ -836,12 +1031,12 @@ static int _to_cmpi_data(
                 flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
             {
                 return to_cmpi_scalar<Instance*>::func(
-                    mr, cb, x, CMPI_instance, data);
+                    mr, cb, ns, x, CMPI_instance, data);
             }
             else
             {
                 return to_cmpi_scalar<Instance*>::func(
-                    mr, cb, x, CMPI_ref, data);
+                    mr, cb, ns, x, CMPI_ref, data);
             }
         }
 
@@ -849,91 +1044,104 @@ static int _to_cmpi_data(
         {
             Array<boolean> x;
             v.get_value(x);
-            return to_cmpi_array<boolean>::func(mr, cb, x, CMPI_boolean, data);
+            return to_cmpi_array<boolean>::func(
+                mr, cb, ns, x, CMPI_boolean, data);
         }
 
         case Value::UINT8_ARRAY:
         {
             Array<uint8> x;
             v.get_value(x);
-            return to_cmpi_array<uint8>::func(mr, cb, x, CMPI_uint8, data);
+            return to_cmpi_array<uint8>::func(
+                mr, cb, ns, x, CMPI_uint8, data);
         }
 
         case Value::SINT8_ARRAY:
         {
             Array<sint8> x;
             v.get_value(x);
-            return to_cmpi_array<sint8>::func(mr, cb, x, CMPI_sint8, data);
+            return to_cmpi_array<sint8>::func(
+                mr, cb, ns, x, CMPI_sint8, data);
         }
 
         case Value::UINT16_ARRAY:
         {
             Array<uint16> x;
             v.get_value(x);
-            return to_cmpi_array<uint16>::func(mr, cb, x, CMPI_uint16, data);
+            return to_cmpi_array<uint16>::func(
+                mr, cb, ns, x, CMPI_uint16, data);
         }
 
         case Value::SINT16_ARRAY:
         {
             Array<sint16> x;
             v.get_value(x);
-            return to_cmpi_array<sint16>::func(mr, cb, x, CMPI_sint16, data);
+            return to_cmpi_array<sint16>::func(
+                mr, cb, ns, x, CMPI_sint16, data);
         }
 
         case Value::UINT32_ARRAY:
         {
             Array<uint32> x;
             v.get_value(x);
-            return to_cmpi_array<uint32>::func(mr, cb, x, CMPI_uint32, data);
+            return to_cmpi_array<uint32>::func(
+                mr, cb, ns, x, CMPI_uint32, data);
         }
 
         case Value::SINT32_ARRAY:
         {
             Array<sint32> x;
             v.get_value(x);
-            return to_cmpi_array<sint32>::func(mr, cb, x, CMPI_sint32, data);
+            return to_cmpi_array<sint32>::func(
+                mr, cb, ns, x, CMPI_sint32, data);
         }
 
         case Value::UINT64_ARRAY:
         {
             Array<uint64> x;
             v.get_value(x);
-            return to_cmpi_array<uint64>::func(mr, cb, x, CMPI_uint64, data);
+            return to_cmpi_array<uint64>::func(
+                mr, cb, ns, x, CMPI_uint64, data);
         }
 
         case Value::SINT64_ARRAY:
         {
             Array<sint64> x;
             v.get_value(x);
-            return to_cmpi_array<sint64>::func(mr, cb, x, CMPI_sint64, data);
+            return to_cmpi_array<sint64>::func(
+                mr, cb, ns, x, CMPI_sint64, data);
         }
 
         case Value::REAL32_ARRAY:
         {
             Array<real32> x;
             v.get_value(x);
-            return to_cmpi_array<real32>::func(mr, cb, x, CMPI_real32, data);
+            return to_cmpi_array<real32>::func(
+                mr, cb, ns, x, CMPI_real32, data);
         }
 
         case Value::REAL64_ARRAY:
         {
             Array<real64> x;
             v.get_value(x);
-            return to_cmpi_array<real64>::func(mr, cb, x, CMPI_real64, data);
+            return to_cmpi_array<real64>::func(
+                mr, cb, ns, x, CMPI_real64, data);
         }
 
         case Value::CHAR16_ARRAY:
         {
             Array<char16> x;
             v.get_value(x);
-            return to_cmpi_array<char16>::func(mr, cb, x, CMPI_char16, data);
+            return to_cmpi_array<char16>::func(
+                mr, cb, ns, x, CMPI_char16, data);
         }
 
         case Value::STRING_ARRAY:
         {
             Array<String> x;
             v.get_value(x);
-            return to_cmpi_array<String>::func(mr, cb, x, CMPI_string, data);
+            return to_cmpi_array<String>::func(
+                mr, cb, ns, x, CMPI_string, data);
         }
 
         case Value::DATETIME_ARRAY:
@@ -941,7 +1149,7 @@ static int _to_cmpi_data(
             Array<Datetime> x;
             v.get_value(x);
             return to_cmpi_array<Datetime>::func(
-                mr, cb, x, CMPI_dateTime, data);
+                mr, cb, ns, x, CMPI_dateTime, data);
         }
 
         case Value::INSTANCE_ARRAY:
@@ -953,12 +1161,12 @@ static int _to_cmpi_data(
                 flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
             {
                 return to_cmpi_array<Instance*>::func(
-                    mr, cb, x, CMPI_instance, data);
+                    mr, cb, ns, x, CMPI_instance, data);
             }
             else
             {
                 return to_cmpi_array<Instance*>::func(
-                    mr, cb, x, CMPI_ref, data);
+                    mr, cb, ns, x, CMPI_ref, data);
             }
         }
     }
@@ -976,9 +1184,12 @@ static int _to_cmpi_data(
 //==============================================================================
 
 CMPIInstance_Container::CMPIInstance_Container(
-    const Meta_Repository* mr, const CMPIBroker* cb, Rep* rep)
+    const Meta_Repository* mr, 
+    const CMPIBroker* cb, 
+    const char* ns,
+    Rep* rep)
     : 
-    Container(mr), _cb(cb), _rep(rep)
+    Container(mr), _cb(cb), _ns(ns), _rep(rep)
 {
 }
 
@@ -999,8 +1210,26 @@ int CMPIInstance_Container::get_name(size_t pos, String& name)
         return -1;
     }
 
-    CMPIString* tmp;
-    CMGetPropertyAt(_rep, pos, &tmp, NULL);
+    CMPIString* tmp = 0;
+
+    try
+    {
+        CMPIStatus status;
+        CMGetPropertyAt(_rep, pos, &tmp, &status);
+
+        if (status.rc != CMPI_RC_OK)
+        {
+            CIMPLE_WARN(("CMGetPropertyAt() failed"));
+            return -1;
+        }
+    }
+    catch (...)
+    {
+        CMPICount n = CMGetPropertyCount(_rep, NULL);
+        CIMPLE_WARN((
+            "CMGetPropertyAt() threw exception: index=%u size=%u", pos, n));
+        return -1;
+    }
 
     name = _c_str(tmp);
     return 0;
@@ -1020,7 +1249,7 @@ int CMPIInstance_Container::get_value(
     CMPIString* name;
     CMPIData data = CMGetPropertyAt(_rep, pos, &name, NULL);
 
-    if (_to_cimple_value(_mr, _cb, data, value) != 0)
+    if (_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
     {
         CIMPLE_WARN(("_to_cimple_value() failed"));
         return -1;
@@ -1041,7 +1270,7 @@ int CMPIInstance_Container::set_value(
 {
     CMPIData data;
 
-    if (_to_cmpi_data(_mr, _cb, value, flags, data) != 0)
+    if (_to_cmpi_data(_mr, _cb, _ns, value, flags, data) != 0)
     {
         CIMPLE_WARN(("_to_cmpi_data() failed: feature=%s", name));
         return -1;
@@ -1051,7 +1280,7 @@ int CMPIInstance_Container::set_value(
 
     if (status.rc != CMPI_RC_OK)
     {
-        CIMPLE_WARN(("CMSetProperty() failed"));
+        CIMPLE_WARN(("CMSetProperty() failed: %s", name));
         return -1;
     }
 
@@ -1065,10 +1294,14 @@ int CMPIInstance_Container::set_value(
 //==============================================================================
 
 CMPIObjectPath_Container::CMPIObjectPath_Container(
-    const Meta_Repository* mr, const CMPIBroker* cb, Rep* rep)
+    const Meta_Repository* mr, 
+    const CMPIBroker* cb, 
+    const char* ns,
+    Rep* rep)
     : 
     Container(mr),
     _cb(cb),
+    _ns(ns),
     _rep(rep)
 {
 }
@@ -1111,7 +1344,7 @@ int CMPIObjectPath_Container::get_value(
     CMPIString* name;
     CMPIData data = CMGetKeyAt(_rep, pos, &name, NULL);
 
-    if (_to_cimple_value(_mr, _cb, data, value) != 0)
+    if (_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
     {
         CIMPLE_WARN(("_to_cimple_value() failed"));
         return -1;
@@ -1195,7 +1428,7 @@ int CMPIObjectPath_Container::set_value(
 {
     CMPIData data;
 
-    if (_to_cmpi_data(_mr, _cb, value, flags, data) != 0)
+    if (_to_cmpi_data(_mr, _cb, _ns, value, flags, data) != 0)
     {
         CIMPLE_WARN(("_to_cmpi_data() failed: feature=%s", name));
         return -1;
@@ -1219,10 +1452,14 @@ int CMPIObjectPath_Container::set_value(
 //==============================================================================
 
 CMPIArgs_Container::CMPIArgs_Container(
-    const Meta_Repository* mr, const CMPIBroker* cb, Rep* rep)
+    const Meta_Repository* mr, 
+    const CMPIBroker* cb, 
+    const char* ns,
+    Rep* rep)
     : 
     Container(mr),
     _cb(cb),
+    _ns(ns),
     _rep(rep)
 {
 }
@@ -1264,7 +1501,7 @@ int CMPIArgs_Container::get_value(size_t pos, Value::Type type, Value& value)
     CMPIString* name;
     CMPIData data = CMGetArgAt(_rep, pos, &name, NULL);
 
-    if (_to_cimple_value(_mr, _cb, data, value) != 0)
+    if (_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
     {
         CIMPLE_WARN(("_to_cimple_value() failed"));
         return -1;
@@ -1294,7 +1531,7 @@ int CMPIArgs_Container::set_value(
 {
     CMPIData data;
 
-    if (_to_cmpi_data(_mr, _cb, value, flags, data) != 0)
+    if (_to_cmpi_data(_mr, _cb, _ns, value, flags, data) != 0)
     {
         CIMPLE_WARN(("_to_cmpi_data() failed: feature=%s", name));
         return -1;

@@ -40,8 +40,11 @@ class All_Class
     char16 char16Array[];
     string stringArray[];
     datetime datetimeArray[];
+
+/*
     [EmbeddedInstance("All_Part")] string instanceArray[];
     [EmbeddedObject] string objectArray[];
+*/
 
     // Return types:
     boolean booleanReturn();

@@ -47,11 +47,13 @@
 #include "io.h"
 #include "flavor.h"
 #include "scope.h"
-#include "Handle.h"
-#include "Reference.h"
 #include "Thread.h"
 #include "Mutex.h"
 #include "Auto_Mutex.h"
 #include "log.h"
+#include "Instance_Hnd.h"
+#include "Instance_Ref.h"
+#include "Ops.h"
+#include "Arg.h"
 
 #endif /* _cimple_h */

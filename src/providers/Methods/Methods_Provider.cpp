@@ -110,13 +110,13 @@ Invoke_Method_Status Methods_Provider::foo(
 
 Invoke_Method_Status Methods_Provider::foo2(
     const Methods* self,
-    const Arg* arg1,
-    Arg*& arg2,
+    const Argument* arg1,
+    Argument*& arg2,
     Property<String>& return_value)
 {
     TRACE;
 
-    arg2 = Arg::create();
+    arg2 = Argument::create();
     arg2->key.value = 12345;
     arg2->key.null = false;
 

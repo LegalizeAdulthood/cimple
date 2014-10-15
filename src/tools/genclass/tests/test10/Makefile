@@ -4,7 +4,7 @@ include $(TOP)/mak/config.mak
 LIBRARY = junk
 
 SOURCES = \
-    Arg.cpp \
+    Argument.cpp \
     Methods2.cpp \
     Methods.cpp \
     repository.cpp

@@ -285,14 +285,14 @@ public:
 
     Invoke_Method_Status objectArrayParams(
         const All_Class* self,
-        const Array<Instance*>& p1,
-        Array<Instance*>& p2,
+        const Property< Array<Instance*> >& p1,
+        Property< Array<Instance*> >& p2,
         Property<uint32>& return_value);
 
     Invoke_Method_Status instanceArrayParams(
         const All_Class* self,
-        const Array<All_Part*>& p1,
-        Array<All_Part*>& p2,
+        const Property< Array<All_Part*> >& p1,
+        Property< Array<All_Part*> >& p2,
         Property<uint32>& return_value);
 
     Invoke_Method_Status referenceScalarParams(
@@ -303,8 +303,8 @@ public:
 
     Invoke_Method_Status referenceArrayParams(
         const All_Class* self,
-        const Array<All_Part*>& p1,
-        Array<All_Part*>& p2,
+        const Property< Array<All_Part*> >& p1,
+        Property< Array<All_Part*> >& p2,
         Property<uint32>& return_value);
 
     /*@END@*/

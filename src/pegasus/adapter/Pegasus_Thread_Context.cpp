@@ -26,7 +26,8 @@
 
 #include <cimple/cimple.h>
 #include "Pegasus_Thread_Context.h"
-#include "Converter.h"
+#include <pegasus/utils/Converter.h>
+#include <pegasus/utils/Str.h>
 #include <cimple/Thread.h>
 
 CIMPLE_NAMESPACE_BEGIN
@@ -181,8 +182,10 @@ Ref<Instance> Pegasus_Thread_Context::instance_enumerator_get(
 
     Instance* instance = 0;
 
+    Str ns(rep->instances[rep->pos].getPath().getNameSpace());
+
     if (Converter::to_cimple_instance(
-        rep->instances[rep->pos], rep->meta_class, instance) == 0)
+        *ns, rep->instances[rep->pos], rep->meta_class, instance) == 0)
     {
         return Ref<Instance>(instance);
     }
@@ -223,9 +226,10 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
         // Convert to CIMPLE instance.
 
         Instance* instance = 0;
+        const char* ns = "";
 
         if (Converter::to_cimple_instance(
-            cim_instance, model->meta_class, instance) != 0)
+            ns, cim_instance, model->meta_class, instance) != 0)
         {
             destroy(instance);
             return Ref<Instance>();

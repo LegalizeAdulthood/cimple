@@ -139,6 +139,11 @@ public:
     const Meta_Class* find_model_meta_class(
         const Pegasus::CIMObjectPath& objectPath) const;
 
+public:
+
+    Array<String> source_name_spaces;
+    Mutex mutex;
+
 private:
 
     Pegasus::CIMOMHandle* _handle;

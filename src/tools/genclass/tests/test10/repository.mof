@@ -1,4 +1,4 @@
-class Arg
+class Argument
 {
     [key] uint32 key;
 };
@@ -16,8 +16,8 @@ class Methods
 	[in(false), out] boolean arg6);
 
     string foo2(
-	[in] Arg ref arg1, 
-	[in(false), out] Arg ref arg2);
+	[in] Argument ref arg1, 
+	[in(false), out] Argument ref arg2);
 
     [Static] string foo3();
 

@@ -117,13 +117,14 @@ static Ref<Instance> _next_instance(
         if (data.type != CMPI_instance)
             return Ref<Instance>();
 
-        CMPIInstance* cmpi_instance = data.value.inst;
+        CMPIInstance* ci = data.value.inst;
 
         Instance* instance = 0;
 
         CMPIrc rc = make_cimple_instance(
             0,
             meta_class,
+            CMGetObjectPath(ci, 0),
             data.value.inst,
             instance);
 
@@ -240,13 +241,13 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
 
     // Create CMPI object path.
 
-    CMPIObjectPath* cmpi_object_path = NULL;
+    CMPIObjectPath* cop = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
         context->cmpi_broker(),
         model,
         name_space,
-        cmpi_object_path);
+        cop);
 
     if (rc != CMPI_RC_OK)
     {
@@ -258,10 +259,10 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
 
     CMPIStatus status;
 
-    CMPIInstance* cmpi_instance = CBGetInstance(
+    CMPIInstance* ci = CBGetInstance(
         context->cmpi_broker(),
         context->cmpi_context(),
-        cmpi_object_path,
+        cop,
         NULL,
         &status);
 
@@ -272,7 +273,8 @@ Ref<Instance> CMPI_Thread_Context::get_instance(
 
     Instance* instance = 0;
 
-    rc = make_cimple_instance(0, model->meta_class, cmpi_instance, instance);
+    rc = make_cimple_instance(
+        0, model->meta_class, cop, ci, instance);
 
     if (rc != CMPI_RC_OK)
     {
@@ -300,13 +302,13 @@ int CMPI_Thread_Context::create_instance(
 
     // Create CMPI object path.
 
-    CMPIObjectPath* cmpi_object_path = NULL;
+    CMPIObjectPath* cop = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
         context->cmpi_broker(),
         instance,
         name_space,
-        cmpi_object_path);
+        cop);
 
     if (rc != CMPI_RC_OK)
     {
@@ -316,14 +318,14 @@ int CMPI_Thread_Context::create_instance(
 
     // Create CMPI instance.
 
-    CMPIInstance* cmpi_instance = NULL;
+    CMPIInstance* ci = NULL;
 
     rc = make_cmpi_instance(
         context->cmpi_broker(),
         instance,
         name_space,
-        cmpi_object_path,
-        cmpi_instance);
+        cop,
+        ci);
 
     if (rc != CMPI_RC_OK)
     {
@@ -338,8 +340,8 @@ int CMPI_Thread_Context::create_instance(
     CMPIObjectPath* cmpi_object_path_tmp = CBCreateInstance(
         context->cmpi_broker(),
         context->cmpi_context(),
-        cmpi_object_path,
-        cmpi_instance,
+        cop,
+        ci,
         &status);
 
     if (status.rc != CMPI_RC_OK)
@@ -365,13 +367,13 @@ int CMPI_Thread_Context::delete_instance(
 
     // Create CMPI object path.
 
-    CMPIObjectPath* cmpi_object_path = NULL;
+    CMPIObjectPath* cop = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
         context->cmpi_broker(),
         instance,
         name_space,
-        cmpi_object_path);
+        cop);
 
     if (rc != CMPI_RC_OK)
     {
@@ -384,7 +386,7 @@ int CMPI_Thread_Context::delete_instance(
     CMPIStatus status = CBDeleteInstance(
         context->cmpi_broker(),
         context->cmpi_context(),
-        cmpi_object_path);
+        cop);
 
     if (status.rc != CMPI_RC_OK)
         return -1;
@@ -409,13 +411,13 @@ int CMPI_Thread_Context::modify_instance(
 
     // Create CMPI object path.
 
-    CMPIObjectPath* cmpi_object_path = NULL;
+    CMPIObjectPath* cop = NULL;
 
     CMPIrc rc = make_cmpi_object_path(
         context->cmpi_broker(),
         instance,
         name_space,
-        cmpi_object_path);
+        cop);
 
     if (rc != CMPI_RC_OK)
     {
@@ -425,14 +427,14 @@ int CMPI_Thread_Context::modify_instance(
 
     // Create CMPI instance.
 
-    CMPIInstance* cmpi_instance = NULL;
+    CMPIInstance* ci = NULL;
 
     rc = make_cmpi_instance(
         context->cmpi_broker(),
         instance,
         name_space,
-        cmpi_object_path,
-        cmpi_instance);
+        cop,
+        ci);
 
     if (rc != CMPI_RC_OK)
     {
@@ -445,8 +447,8 @@ int CMPI_Thread_Context::modify_instance(
     CMPIStatus status = CBModifyInstance(
         context->cmpi_broker(),
         context->cmpi_context(),
-        cmpi_object_path,
-        cmpi_instance,
+        cop,
+        ci,
         NULL);
 
     if (status.rc != CMPI_RC_OK)

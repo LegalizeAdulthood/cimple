@@ -6,8 +6,6 @@ INSTALL=1
 LIBRARY = cimplepegadap
 
 SOURCES = \
-    Integer.cpp \
-    Converter.cpp \
     Pegasus_Adapter.cpp \
     Pegasus_Thread_Context.cpp \
     pegasus_unsupported.cpp

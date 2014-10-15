@@ -27,6 +27,7 @@
 #include "log.h"
 #include "Container.h"
 #include "Buffer.h"
+#include "Property.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -38,15 +39,14 @@ Container::~Container()
 {
 }
 
-Instance* Container::convert(const Meta_Class* mc, uint32 flags)
+int Container::convert(const Meta_Class* mc, uint32 flags, Instance*& inst)
 {
     const char* cn = mc->name;
 
-    // Create hew new instance.
+    // Create hew new instance (if incoming one is null).
 
-    Instance* inst = create(mc);
-
-    // Nullify all properties for now.
+    if (!inst)
+        inst = create(mc);
 
     nullify_properties(inst);
 
@@ -57,7 +57,13 @@ Instance* Container::convert(const Meta_Class* mc, uint32 flags)
         // Get name of this element.
 
         String name;
-        get_name(i, name);
+
+        if (get_name(i, name) != 0)
+        {
+            CIMPLE_WARN((
+                "get_name() failed: class=%s, index=%u", cn, uint32(i)));
+            continue;
+        }
 
         const Meta_Feature* mf = find_feature(
             mc, name.c_str(), CIMPLE_FLAG_PROPERTY | CIMPLE_FLAG_REFERENCE);
@@ -102,7 +108,7 @@ Instance* Container::convert(const Meta_Class* mc, uint32 flags)
         }
     }
 
-    return inst;
+    return 0;
 }
 
 int Container::convert(const Instance* instance, uint32 flags)
@@ -135,7 +141,7 @@ int Container::convert(const Instance* instance, uint32 flags)
         else if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (const Meta_Property*)mf;
-            const void* field = (const char*)instance + mp->offset;
+            const char* field = (const char*)instance + mp->offset;
 
             if (null_of(mp, field))
                 continue;
@@ -143,12 +149,17 @@ int Container::convert(const Instance* instance, uint32 flags)
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
             const Meta_Reference* mr = (const Meta_Reference*)mf;
-            const void* field = (const char*)instance + mr->offset;
+            const char* field = (const char*)instance + mr->offset;
 
-            if (*((Instance**)field) == 0)
+            if (mr->subscript)
             {
-                // Skip null reference!
-                continue;
+                if (((Property<Array_Ref>*)field)->null)
+                    continue;
+            }
+            else
+            {
+                if (*((Instance**)field) == 0)
+                    continue;
             }
         }
 

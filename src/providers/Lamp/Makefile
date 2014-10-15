@@ -31,6 +31,9 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -n root/cimv2 -s -c $(TARGET)
 
+regmodxyz:
+	$(BINDIR)/regmod -n root/xyz -s -c $(TARGET)
+
 genclass:
 	$(BINDIR)/genclass -r Lamp ModernLamp LampLink LampIndic LampIndicA LampIndicB LampIndicC Persistent
 

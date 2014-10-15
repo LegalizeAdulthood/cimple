@@ -387,9 +387,31 @@ void __print_aux(
     size_t level, 
     bool keys_only);
 
+CIMPLE_CIMPLE_LINKAGE
+void __default_construct(
+    const Meta_Class* mc,
+    Instance* inst,
+    bool clear,
+    bool defaults);
+
+CIMPLE_CIMPLE_LINKAGE
+void __destruct(Instance* inst);
+
+CIMPLE_CIMPLE_LINKAGE
+void clear(Instance* inst);
+
 // Call func() on every instances reachable from inst (including inst).
 CIMPLE_CIMPLE_LINKAGE
-void visit(Instance* inst, void (*func)(Instance*, void*), void* data);
+void __visit(Instance* inst, void (*func)(Instance*, void*), void* data);
+
+// Set the __name_space member of #inst# and every instance reachable
+// from #inst#. Do not change __name_space member if already non-empty,
+// unless #force# is true.
+CIMPLE_CIMPLE_LINKAGE
+void __set_name_space_recursive(
+    Instance* inst, 
+    const char* name_space, 
+    bool force);
 
 CIMPLE_NAMESPACE_END
 

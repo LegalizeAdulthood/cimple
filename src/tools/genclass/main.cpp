@@ -805,7 +805,7 @@ void gen_feature_decls(
                 if (prop->array_index == 0)
                     out("    Instance* %s;\n", prop->name);
                 else
-                    out("    Array<Instance*> %s;\n", prop->name);
+                    out("    Property< Array<Instance*> > %s;\n", prop->name);
             }
             else
             {
@@ -816,7 +816,7 @@ void gen_feature_decls(
                     if (prop->array_index == 0)
                         out("    %s* %s;\n", ecn, prop->name);
                     else
-                        out("    Array<%s*> %s;\n", ecn, prop->name);
+                        out("    Property< Array<%s*> > %s;\n", ecn,prop->name);
                 }
                 else
                     gen_property_decl(class_decl, prop);
@@ -940,7 +940,7 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
 void gen_param_ref_decl(const MOF_Parameter* param)
 {
     if (param->array_index)
-        out("    Array<%s*> %s;\n", param->ref_name, param->name);
+        out("    Property< Array<%s*> > %s;\n", param->ref_name, param->name);
     else
         out("    %s* %s;\n", param->ref_name, param->name);
 }
@@ -971,9 +971,9 @@ void gen_param_prop_decl(
         const char* ecn = get_embedded_class_name(param);
 
         if (ecn)
-            out("    Array<%s*> %s;\n", ecn, param->name);
+            out("    Property< Array<%s*> > %s;\n", ecn, param->name);
         else if (param->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-            out("    Array<Instance*> %s;\n", param->name);
+            out("    Property< Array<Instance*> > %s;\n", param->name);
         else
             out("    Property<Array_%s> %s;\n", tmp, param->name);
     }

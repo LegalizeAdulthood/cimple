@@ -40,8 +40,8 @@ public:
 
     Invoke_Method_Status SendRefArray(
         const RefArray* self,
-        const Array<RefArrayParam*>& arr1,
-        Array<RefArrayParam*>& arr2,
+        const Property< Array<RefArrayParam*> >& arr1,
+        Property< Array<RefArrayParam*> >& arr2,
         Property<uint32>& return_value);
 };
 

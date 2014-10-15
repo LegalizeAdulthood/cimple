@@ -1,17 +1,16 @@
 
-    (A) Handle CIM namespace setting in converters.
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
-    (A) Comprehensive "all-types" test.
+    (A) Namespace handling.
+
+    BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 
     (B) Determine whether skipping of null properties is really desirable
         in converters.
 
-    (A) Add more detailed error reporting in Pegasus adapter.
+    (B) Split out things needed by brevity into a separate library?
 
-    (A) Is it sufficient to have empty arrays but not null arrays? For
-        example:
+    CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-            class SomeCIMPLEGeneratedClass
-            {
-                Array<Instance*> arr;
-            };
+    (C) Add more detailed error reporting in Pegasus adapter.
+

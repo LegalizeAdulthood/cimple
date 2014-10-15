@@ -33,21 +33,17 @@ CIMPLE_NAMESPACE_BEGIN
 
 static const uint32 INITIAL_STRING_SIZE = 32;
 
-// Export to avoid multiple copies via shared libraries.
-#ifdef CIMPLE_STATIC
-CIMPLE_EXPORT 
-#endif
-__String_Rep _string_empty;
+__String_Rep String::_empty;
 
-static inline void _ref(const __String_Rep* rep)
+inline void _ref(const __String_Rep* rep)
 {
-    if (rep != &_string_empty)
+    if (rep != &String::_empty)
         Atomic_inc(&((__String_Rep*)rep)->refs);
 }
 
-static inline void _unref(const __String_Rep* rep)
+inline void _unref(const __String_Rep* rep)
 {
-    if (rep != &_string_empty && 
+    if (rep != &String::_empty && 
         Atomic_dec_and_test(&((__String_Rep*)rep)->refs))
         ::operator delete((__String_Rep*)rep);
 }
@@ -109,10 +105,6 @@ static void _append_char(__String_Rep*& _rep, char c)
     _rep = rep;
 }
 
-String::String() : _rep(&_string_empty)
-{
-}
-
 String::String(const char* s)
 {
     if (*s)
@@ -123,7 +115,7 @@ String::String(const char* s)
         _rep->size = n;
     }
     else
-        _rep = &_string_empty;
+        _rep = &_empty;
 }
 
 String::String(const char* s, size_t n)
@@ -136,7 +128,7 @@ String::String(const char* s, size_t n)
         _rep->size = n;
     }
     else
-        _rep = &_string_empty;
+        _rep = &_empty;
 }
 
 String::String(const char* s1, const char* s2)
@@ -275,7 +267,7 @@ void String::clear()
         else
         {
             _unref(_rep);
-            _rep = &_string_empty;
+            _rep = &_empty;
         }
     }
 }
