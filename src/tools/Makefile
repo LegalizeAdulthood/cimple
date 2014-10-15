@@ -6,9 +6,12 @@ DIRS = \
     gencommon \
     genclass \
     genclass/tests \
+    genhnd \
+    genhnd/tests \
     genprov \
     genmod \
     genproj \
+    genmak \
     genprov/tests \
     file2c
 

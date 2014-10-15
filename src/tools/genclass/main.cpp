@@ -55,6 +55,7 @@ static bool qualifier_opt = false;
 static bool descriptions_opt = false;
 static bool boolean_qualifiers_opt = false;
 static string class_list_file;
+static bool sources_opt = false;
 
 string meta_repository_name;
 
@@ -372,7 +373,7 @@ void gen_qual_scalar_def(
     out("/*[%u]*/\n", __LINE__);
     out("const Meta_Qualifier\n%s_MQ =\n", var.c_str());
     out("{\n");
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
     out("    \"%s\", /* name */\n", mq->name);
     out("    %s, /* type */\n", toupper(type_str).c_str());
     out("    0, /* array */\n");
@@ -514,7 +515,7 @@ void gen_qual_array_def(
     out("/*[%u]*/\n", __LINE__);
     out("const Meta_Qualifier\n%s_MQ =\n", var.c_str());
     out("{\n");
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
     out("    \"%s\", /* name */\n", mq->name);
     out("    %s, /* type */\n", _type_name(mqd->data_type));
     out("    1, /* array */\n");
@@ -1327,7 +1328,7 @@ void gen_property_def(
     out("{\n");
 
     // Refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Flags field:
     {
@@ -1400,7 +1401,7 @@ void gen_reference_def(
     out("{\n");
 
     // Meta_Reference.refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Meta_Reference.flags:
     {
@@ -1459,7 +1460,7 @@ void gen_param_ref_def(
     }
 
     // Refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Flags:
     {
@@ -1519,7 +1520,7 @@ void gen_param_prop_def(
     out("{\n");
 
     // Refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Flags:
     {
@@ -1584,7 +1585,7 @@ void gen_embedded_param_def(
     }
 
     // Refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Flags:
     {
@@ -1673,7 +1674,7 @@ void gen_meth_return_def(
 
     // Refs:
 
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Flags:
     // ATTN: can boolean qualifiers appear on the return value?
@@ -1733,7 +1734,7 @@ void gen_meth_embedded_return_def(
 
     // Meta_Reference.refs:
 
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Meta_Reference.flags:
 
@@ -1851,7 +1852,7 @@ void gen_method_def(
     out("{\n");
 
     // Refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Flags:
 
@@ -1916,7 +1917,7 @@ void gen_embedded_def(
     out("{\n");
 
     // Meta_Reference.refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Meta_Reference.flags:
     // ATTN: can boolean qualifiers appear here?
@@ -2095,7 +2096,7 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
     out("{\n");
 
     // Refs:
-    out("    { 0 }, /* refs */\n");
+    out("    CIMPLE_ATOMIC_INITIALIZER, /* refs */\n");
 
     // Flags:
     {
@@ -2228,6 +2229,22 @@ Duplicate_Classes duplicate_classes;
 
 static vector<string> _generated_classes;
 
+static void _append_genmak(const char* buffer)
+{
+    // Append generated source file name to .genmak.tmp
+
+    if (sources_opt)
+    {
+        FILE* os = fopen(".genclass", "a");
+
+        if (!os)
+            err("failed to open .genclass");
+
+        fprintf(os, "%s\n", buffer);
+        fclose(os);
+    }
+}
+
 void generate_class(const char* class_name)
 {
     // Avoid generating any class more than once:
@@ -2317,6 +2334,7 @@ void generate_class(const char* class_name)
 
         fclose(_os);
         printf("Created %s\n", buffer);
+        _append_genmak(buffer);
     }
 }
 
@@ -2612,10 +2630,8 @@ void gen_repository(const vector<string>& classes)
 
         gen_repository_source_file(classes);
         printf("Created %s\n", FILENAME);
-
-        // Close the file.
-
         fclose(_os);
+        _append_genmak(FILENAME);
     }
 }
 
@@ -2693,6 +2709,9 @@ int main(int argc, char** argv)
 
     MOF_Options::warn = true;
 
+    // Remove .genclass file if any.
+
+    unlink(".genclass");
 
     // Add the current directory to the search path:
 
@@ -2700,7 +2719,7 @@ int main(int argc, char** argv)
 
     // Process command-line options.
 
-    for (int opt; (opt = getopt(argc, argv, "I:M:hrVlesqdbf:H")) != -1; )
+    for (int opt; (opt = getopt(argc, argv, "SI:M:hrVlesqdbf:H")) != -1; )
     {
         switch (opt)
         {
@@ -2776,6 +2795,10 @@ int main(int argc, char** argv)
                 class_list_file = optarg;
                 break;
 
+            case 'S':
+                sources_opt = true;
+                break;
+
             default:
                 err("invalid option: %c; try -h for help", opt);
                 break;
@@ -2843,4 +2866,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-

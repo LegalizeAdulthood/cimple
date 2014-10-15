@@ -38,6 +38,66 @@ Enum_Instances_Status All_Class_Provider::enum_instances(
     const All_Class* model,
     Enum_Instances_Handler<All_Class>* handler)
 {
+    All_Class* inst = All_Class::create(true);
+    inst->Key.set(99);
+    inst->booleanScalar.set(false);
+    inst->uint8Scalar.set(8);
+    inst->sint8Scalar.set(-8);
+    inst->uint16Scalar.set(16);
+    inst->sint16Scalar.set(-16);
+    inst->uint32Scalar.set(32);
+    inst->sint32Scalar.set(-32);
+    inst->uint64Scalar.set(64);
+    inst->sint64Scalar.set(-64);
+    inst->real32Scalar.set(32);
+    inst->real64Scalar.set(64);
+    inst->char16Scalar.set('A');
+    inst->stringScalar.set("Hello");
+    inst->datetimeScalar.set(Datetime::now());
+
+    inst->booleanArray.set(Array<boolean>::make(true, false, true));
+    inst->uint8Array.set(Array<uint8>::make(8, 8, 8));
+    inst->sint8Array.set(Array<sint8>::make(-8, -8, -8));
+    inst->uint16Array.set(Array<uint16>::make(16, 16, 16));
+    inst->sint16Array.set(Array<sint16>::make(-16, -16, -16));
+    inst->uint32Array.set(Array<uint32>::make(32, 32, 32));
+    inst->sint32Array.set(Array<sint32>::make(-32, -32, -32));
+    inst->uint64Array.set(Array<uint64>::make(64, 64, 64));
+    inst->sint64Array.set(Array<sint64>::make(-64, -64, -64));
+    inst->real32Array.set(Array<real32>::make(32, 32, 32));
+    inst->real64Array.set(Array<real64>::make(64, 64, 64));
+    inst->char16Array.set(Array<char16>::make('A', 'B', 'C'));
+    inst->stringArray.set(Array<String>::make("Red", "Green", "Blue"));
+    inst->datetimeArray.set(Array<Datetime>::make(
+        Datetime::now(), Datetime::now(), Datetime::now()));
+
+    All_Part* part = All_Part::create(true);
+    part->Key.set(8888);
+
+    inst->instanceScalar = part;
+    inst->objectScalar = part->clone();
+
+    handler->handle(inst);
+
+#if 0
+    All_Part* instanceScalar;
+    Instance* objectScalar;
+    Property<Array_boolean> booleanArray;
+    Property<Array_uint8> uint8Array;
+    Property<Array_sint8> sint8Array;
+    Property<Array_uint16> uint16Array;
+    Property<Array_sint16> sint16Array;
+    Property<Array_uint32> uint32Array;
+    Property<Array_sint32> sint32Array;
+    Property<Array_uint64> uint64Array;
+    Property<Array_sint64> sint64Array;
+    Property<Array_real32> real32Array;
+    Property<Array_real64> real64Array;
+    Property<Array_char16> char16Array;
+    Property<Array_String> stringArray;
+    Property<Array_Datetime> datetimeArray;
+#endif
+
     return ENUM_INSTANCES_OK;
 }
 

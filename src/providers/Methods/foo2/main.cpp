@@ -44,22 +44,22 @@ int main(int argc, char** argv)
 
         // Define input arguments:
 
-        Array<CIMParamValue> inParams;
-        Array<CIMParamValue> outParams;
+        Array<CIMParamValue> in;
+        Array<CIMParamValue> out;
 
         // Invoke the method:
 
         const String NAMESPACE = "root/cimv2";
         const String methodName = "foo2";
 
-        inParams.append(CIMParamValue("arg1", CIMObjectPath("Arg.key=99999")));
+        in.append(CIMParamValue("arg1", CIMObjectPath("Arg.key=99999")));
 
         CIMValue value = client.invokeMethod(
             NAMESPACE,
             instanceName,
             methodName,
-            inParams,
-            outParams);
+            in,
+            out);
 
         {
             assert(value.getType() == CIMTYPE_STRING);
@@ -67,6 +67,17 @@ int main(int argc, char** argv)
             value.get(t);
             assert(t == "thanks");
         }
+
+        // Check output argument:
+
+        assert(out.size() == 1);
+        {
+            assert(out[0].getParameterName() == "arg2");
+            CIMValue value = out[0].getValue();
+            CIMObjectPath cop;
+            value.get(cop);
+        }
+        
     }
     catch(Exception& e)
     {

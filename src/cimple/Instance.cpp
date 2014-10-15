@@ -37,6 +37,9 @@
 #include "Strings.h"
 #include "Ref.h"
 #include "io.h"
+#include "boolean.h"
+#include "integer.h"
+#include "real.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -77,7 +80,8 @@ void __default_construct(
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            void* prop = __property_of(inst, mp);
+            void* prop = 0;
+            prop = __property_of(inst, mp);
 
             if (mp->subscript)
             {
@@ -239,8 +243,12 @@ static void __uninitialized_copy(Instance* i1, const Instance* i2)
         if (flags & CIMPLE_FLAG_PROPERTY)
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-            void* p1 = __property_of(i1, mp);
-            const void* p2 = __property_of(i2, mp);
+
+            void* p1 = 0;
+            p1 = __property_of(i1, mp);
+
+            const void* p2 = 0;
+            p2 = __property_of(i2, mp);
 
             // Note: the null flags were copied above with memcpy().
 
@@ -1893,12 +1901,12 @@ void clear(Instance* inst)
             }
             else
             {
-                Instance*& inst = __ref_of(inst, mr);
+                Instance*& tmp = __ref_of(inst, mr);
 
-                if (inst)
+                if (tmp)
                 {
-                    unref(inst);
-                    inst = 0;
+                    unref(tmp);
+                    tmp = 0;
                 }
             }
         }
@@ -1927,6 +1935,322 @@ void __set_name_space_recursive(
 {
     __Set_Name_Space_Recursive_Data data = { force, name_space };
     __visit(inst, _set_namespace_callback, &data);
+}
+
+int __put_property_from_str(
+    Instance* inst,
+    const Meta_Property* mp, 
+    const char* str)
+{
+    CIMPLE_ASSERT(inst != 0);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    const Meta_Class* mc = inst->meta_class;
+    void* field = (char*)inst + mp->offset;
+    null_of(mp, field) = 0;
+
+    if (mp->subscript)
+    {
+        switch (mp->type)
+        {
+            case BOOLEAN:
+            {
+                boolean x;
+
+                if (str_to_boolean(str, x) != 0)
+                    return -1;
+
+                ((Array<boolean>*)field)->append(x);
+                break;
+            }
+
+            case UINT8:
+            {
+                uint8 x;
+
+                if (str_to_uint8(str, x) != 0)
+                    return -1;
+
+                ((Array<uint8>*)field)->append(x);
+                break;
+            }
+
+            case SINT8:
+            {
+                sint8 x;
+
+                if (str_to_sint8(str, x) != 0)
+                    return -1;
+
+                ((Array<sint8>*)field)->append(x);
+                break;
+            }
+
+            case UINT16:
+            {
+                uint16 x;
+
+                if (str_to_uint16(str, x) != 0)
+                    return -1;
+
+                ((Array<uint16>*)field)->append(x);
+                break;
+            }
+
+            case SINT16:
+            {
+                sint16 x;
+
+                if (str_to_sint16(str, x) != 0)
+                    return -1;
+
+                ((Array<sint16>*)field)->append(x);
+                break;
+            }
+
+            case UINT32:
+            {
+                uint32 x;
+
+                if (str_to_uint32(str, x) != 0)
+                    return -1;
+
+                ((Array<uint32>*)field)->append(x);
+                break;
+            }
+
+            case SINT32:
+            {
+                sint32 x;
+
+                if (str_to_sint32(str, x) != 0)
+                    return -1;
+
+                ((Array<sint32>*)field)->append(x);
+                break;
+            }
+
+            case UINT64:
+            {
+                uint64 x;
+
+                if (str_to_uint64(str, x) != 0)
+                    return -1;
+
+                ((Array<uint64>*)field)->append(x);
+                break;
+            }
+
+            case SINT64:
+            {
+                sint64 x;
+
+                if (str_to_sint64(str, x) != 0)
+                    return -1;
+
+                ((Array<sint64>*)field)->append(x);
+                break;
+            }
+
+            case REAL32:
+            {
+                real32 x;
+
+                if (str_to_real32(str, x) != 0)
+                    return -1;
+
+                ((Array<real32>*)field)->append(x);
+                break;
+            }
+
+            case REAL64:
+            {
+                real64 x;
+
+                if (str_to_real64(str, x) != 0)
+                    return -1;
+
+                ((Array<real64>*)field)->append(x);
+                break;
+            }
+
+            case CHAR16:
+            {
+                // ATTN: handle 16-bit ASCII character representation.
+                ((Array<char16>*)field)->append(*str);
+                break;
+            }
+
+            case STRING:
+            {
+                ((Array<String>*)field)->append(str);
+                break;
+            }
+
+            case DATETIME:
+            {
+                Datetime x;
+
+                if (!x.set(str))
+                    return -1;
+
+                ((Array<Datetime>*)field)->append(x);
+                break;
+            }
+        }
+    }
+    else
+    {
+        switch (mp->type)
+        {
+            case BOOLEAN:
+            {
+                boolean x;
+
+                if (str_to_boolean(str, x) != 0)
+                    return -1;
+
+                *((boolean*)field) = x;
+                break;
+            }
+
+            case UINT8:
+            {
+                uint8 x;
+
+                if (str_to_uint8(str, x) != 0)
+                    return -1;
+
+                *((uint8*)field) = x;
+                break;
+            }
+
+            case SINT8:
+            {
+                sint8 x;
+
+                if (str_to_sint8(str, x) != 0)
+                    return -1;
+
+                *((sint8*)field) = x;
+                break;
+            }
+
+            case UINT16:
+            {
+                uint16 x;
+
+                if (str_to_uint16(str, x) != 0)
+                    return -1;
+
+                *((uint16*)field) = x;
+                break;
+            }
+
+            case SINT16:
+            {
+                sint16 x;
+
+                if (str_to_sint16(str, x) != 0)
+                    return -1;
+
+                *((sint16*)field) = x;
+                break;
+            }
+
+            case UINT32:
+            {
+                uint32 x;
+
+                if (str_to_uint32(str, x) != 0)
+                    return -1;
+
+                *((uint32*)field) = x;
+                break;
+            }
+
+            case SINT32:
+            {
+                sint32 x;
+
+                if (str_to_sint32(str, x) != 0)
+                    return -1;
+
+                *((sint32*)field) = x;
+                break;
+            }
+
+            case UINT64:
+            {
+                uint64 x;
+
+                if (str_to_uint64(str, x) != 0)
+                    return -1;
+
+                *((uint64*)field) = x;
+                break;
+            }
+
+            case SINT64:
+            {
+                sint64 x;
+
+                if (str_to_sint64(str, x) != 0)
+                    return -1;
+
+                *((sint64*)field) = x;
+                break;
+            }
+
+            case REAL32:
+            {
+                real32 x;
+
+                if (str_to_real32(str, x) != 0)
+                    return -1;
+
+                *((real32*)field) = x;
+                break;
+            }
+
+            case REAL64:
+            {
+                real64 x;
+
+                if (str_to_real64(str, x) != 0)
+                    return -1;
+
+                *((real64*)field) = x;
+                break;
+            }
+
+            case CHAR16:
+            {
+                // ATTN: handle 16-bit ASCII character representation.
+                *((char16*)field) = *str;
+                break;
+            }
+
+            case STRING:
+            {
+                *((String*)field) = str;
+                break;
+            }
+
+            case DATETIME:
+            {
+                Datetime x;
+
+                if (!x.set(str))
+                    return -1;
+
+                *((Datetime*)field) = x;
+                break;
+            }
+        }
+    }
+
+    return 0;
 }
 
 CIMPLE_NAMESPACE_END

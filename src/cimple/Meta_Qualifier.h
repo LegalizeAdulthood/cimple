@@ -57,8 +57,6 @@ struct Meta_Qualified_Object
 CIMPLE_CIMPLE_LINKAGE
 void print(const Meta_Qualifier* mq, bool& first);
 
-enum Tag { TAG };
-
 CIMPLE_CIMPLE_LINKAGE
 void print(
     const Meta_Qualifier* const* meta_qualifiers,

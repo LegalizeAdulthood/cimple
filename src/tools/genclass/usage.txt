@@ -39,4 +39,5 @@ OPTIONS:
     -d      -- Generate Description qualifiers.
     -b      -- Generate boolean qualifiers (in addition to bit mask).
     -f file -- Read class names from this file (one per line).
+    -S      -- Create .genclass file that contains generated .cpp files.
 

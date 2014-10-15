@@ -47,6 +47,10 @@
 # include "Atomic_DARWIN_IX86_GNU.h"
 #elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
 # include "Atomic_WIN32_IX86_MSVC.h"
+#elif defined(CIMPLE_PLATFORM_VXWORKS_XSCALE_GNU)
+# include "Atomic_VXWORKS_XSCALE_GNU.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
+# include "Atomic_SOLARIS_SPARC_GNU.h"
 #else
 # error "unsupported platform"
 #endif

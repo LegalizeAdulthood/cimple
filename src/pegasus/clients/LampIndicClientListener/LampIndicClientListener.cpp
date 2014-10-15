@@ -27,26 +27,57 @@ public:
 
 bool _success = false;
 
+static void _dump(const String& s)
+{
+    CString cstr(s.getCString());
+    
+    for (const char* p = (const char*)cstr; *p; p++)
+    {
+        char c = *p;
+
+        if (isprint(c))
+            printf("%c", c);
+        else
+            printf("[%2X]", (unsigned char)c);
+    }
+
+    printf("\n");
+}
+
 void LampIndicConsumer::consumeIndication(
     const OperationContext& context,
     const String& url,
     const CIMInstance& indication)
 {
-    CIMConstProperty prop = indication.getProperty(
-        indication.findProperty("IndicationIdentifier"));
+    {
+        CIMConstProperty prop = indication.getProperty(
+            indication.findProperty("IndicationIdentifier"));
 
-    String ident;
-    prop.getValue().get(ident);
+        String ident;
+        prop.getValue().get(ident);
 
-    static size_t _count = 0;
+        static size_t _count = 0;
 
-    // cout << ident << endl;
-    assert(ident == "HELLO" || ident == "GOODBYE");
+        // cout << ident << endl;
+        assert(ident == "HELLO" || ident == "GOODBYE");
 
-    printf("Consume indication...\n");
+        printf("Consume indication...\n");
 
-    if (++_count == 5)
-        _success = true;
+        if (++_count == 5)
+            _success = true;
+    }
+
+    {
+        CIMConstProperty prop = indication.getProperty(
+            indication.findProperty("message"));
+
+        String message;
+        prop.getValue().get(message);
+
+        _dump(message);
+
+        cout << message << endl;
+    }
 }
 
 static CIMObjectPath _createFilter(CIMClient& client)

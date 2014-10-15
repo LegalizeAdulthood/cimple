@@ -413,6 +413,12 @@ void __set_name_space_recursive(
     const char* name_space, 
     bool force);
 
+CIMPLE_CIMPLE_LINKAGE
+int __put_property_from_str(
+    Instance* inst,
+    const Meta_Property* mp, 
+    const char* str);
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Instance_h */

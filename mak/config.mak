@@ -67,6 +67,14 @@ ifneq ($(WITH_CMPI_OPT),)
     CMPI_VOID_RETURN_BUG_OPT=1
   endif
 
+  ifneq ($(call grep,enumInstances,$(WITH_CMPI_OPT)/cmpift.h),)
+    CMPI_ENUM_INSTANCES_BUG_OPT=1
+  endif
+
+  ifneq ($(call grep,modifyInstance,$(WITH_CMPI_OPT)/cmpift.h),)
+    CMPI_MODIFY_INSTANCE_BUG_OPT=1
+  endif
+
 endif
 
 ##==============================================================================
@@ -121,7 +129,7 @@ endif
 ##==============================================================================
 
 ifeq ($(wildcard $(TOP)),)
-    $(error "TOP does not refer to a legal directory")
+  $(error "TOP does not refer to a legal directory")
 endif
 
 ##==============================================================================
@@ -131,7 +139,7 @@ endif
 ##==============================================================================
 
 ifndef ROOT
-    ROOT = $(call abs_path, $(TOP))
+  ROOT = $(call abs_path, $(TOP))
 endif
 
 ##==============================================================================
@@ -140,7 +148,9 @@ endif
 ##
 ##==============================================================================
 
-BINDIR = $(ROOT)/bin
+ifndef BINDIR
+  BINDIR = $(ROOT)/bin
+endif
 
 ##==============================================================================
 ##
@@ -148,7 +158,9 @@ BINDIR = $(ROOT)/bin
 ##
 ##==============================================================================
 
-LIBDIR = $(ROOT)/$(LIBBASE_OPT)
+ifndef LIBDIR
+  LIBDIR = $(ROOT)/$(LIBBASE_OPT)
+endif
 
 ##==============================================================================
 ##
@@ -176,7 +188,9 @@ endif
 ##
 ##==============================================================================
 
-INCLUDES += -I$(TOP)/src
+INCLUDES += -I$(TOP)/src 
+INCLUDES += -I$(TOP)/src/stdincludes/$(PLATFORM)
+INCLUDES += -I$(INCLUDEDIR_OPT)
 
 ##==============================================================================
 ##

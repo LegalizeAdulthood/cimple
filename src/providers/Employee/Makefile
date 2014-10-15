@@ -40,3 +40,6 @@ genclass:
 
 genproj:
 	$(BINDIR)/genproj Employee Employee Manager Link OutOfOfficeNotice
+
+regmod-dump:
+	$(BINDIR)/regmod -d -c $(TARGET)

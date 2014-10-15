@@ -26,6 +26,7 @@
 
 #include "Type.h"
 #include "Array.h"
+#include <cctype>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -228,5 +229,117 @@ void print_array(Type type, const void* elements_, size_t num_elements)
     }
 }
 
-CIMPLE_NAMESPACE_END
+int type_name_to_type(const char* name, Type& type)
+{
+    size_t n = strlen(name);
 
+    if (n == 0)
+        return -1;
+
+    char c1 = tolower(name[0]);
+    char c2 = tolower(name[n-1]);
+    size_t code = n ^ c1 ^ c2;
+
+    switch(code)
+    {
+        case 9:
+            if (strcasecmp(name, "datetime") == 0)
+            {
+                type = DATETIME;
+                return 0;
+            }
+            break;
+        case 11:
+            if (strcasecmp(name, "boolean") == 0)
+            {
+                type = BOOLEAN;
+                return 0;
+            }
+            break;
+        case 18:
+            if (strcasecmp(name, "string") == 0)
+            {
+                type = STRING;
+                return 0;
+            }
+            break;
+        case 64:
+            if (strcasecmp(name, "real64") == 0)
+            {
+                type = REAL64;
+                return 0;
+            }
+            break;
+        case 65:
+            if (c1 == 'u' && strcasecmp(name, "uint32") == 0)
+            {
+                type = UINT32;
+                return 0;
+            }
+            if (c1 == 's' && strcasecmp(name, "sint64") == 0)
+            {
+                type = SINT64;
+                return 0;
+            }
+            break;
+        case 67:
+            if (strcasecmp(name, "sint16") == 0)
+            {
+                type = SINT16;
+                return 0;
+            }
+            break;
+        case 69:
+            if (strcasecmp(name, "uint16") == 0)
+            {
+                type = UINT16;
+                return 0;
+            }
+            break;
+        case 70:
+            if (strcasecmp(name, "real32") == 0)
+            {
+                type = REAL32;
+                return 0;
+            }
+            break;
+        case 71:
+            if (c1 == 's' && strcasecmp(name, "sint32") == 0)
+            {
+                type = SINT32;
+                return 0;
+            }
+            if (c1 == 'u' && strcasecmp(name, "uint64") == 0)
+            {
+                type = UINT64;
+                return 0;
+            }
+            break;
+        case 72:
+            if (strcasecmp(name, "uint8") == 0)
+            {
+                type = UINT8;
+                return 0;
+            }
+            break;
+        case 78:
+            if (strcasecmp(name, "sint8") == 0)
+            {
+                type = SINT8;
+                return 0;
+            }
+            break;
+        case 83:
+            if (strcasecmp(name, "char16") == 0)
+            {
+                type = CHAR16;
+                return 0;
+            }
+            break;
+    }
+
+    // Failed!
+    return -1;
+}
+
+CIMPLE_NAMESPACE_END

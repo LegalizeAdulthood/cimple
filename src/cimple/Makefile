@@ -6,6 +6,9 @@ INSTALL=1
 LIBRARY = cimple
 
 SOURCES = \
+    Exception.cpp \
+    boolean.cpp \
+    real.cpp \
     Arg.cpp \
     Ops.cpp \
     Instance_Hnd.cpp \
@@ -17,7 +20,6 @@ SOURCES = \
     Container.cpp \
     Buffer.cpp \
     octets.cpp \
-    Exception.cpp \
     config.cpp \
     ptr_array.cpp \
     io.cpp \

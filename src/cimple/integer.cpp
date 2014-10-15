@@ -31,7 +31,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-static char _digit[256] = 
+static int _digit[256] = 
 {
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
@@ -50,7 +50,6 @@ static char _digit[256] =
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 };
-
 
 static int _isdigit[256] = 
 {
@@ -427,6 +426,239 @@ int str_to_uint32(const char* str, uint32& self)
 
     self = (uint32)x;
     return 0;
+}
+
+struct Uint_Str
+{
+    const char* str;
+    size_t size;
+};
+
+static Uint_Str _uint_strings[] =
+{
+    { "0", 1 },
+    { "1", 1 },
+    { "2", 1 },
+    { "3", 1 },
+    { "4", 1 },
+    { "5", 1 },
+    { "6", 1 },
+    { "7", 1 },
+    { "8", 1 },
+    { "9", 1 },
+    { "10", 2 },
+    { "11", 2 },
+    { "12", 2 },
+    { "13", 2 },
+    { "14", 2 },
+    { "15", 2 },
+    { "16", 2 },
+    { "17", 2 },
+    { "18", 2 },
+    { "19", 2 },
+    { "20", 2 },
+    { "21", 2 },
+    { "22", 2 },
+    { "23", 2 },
+    { "24", 2 },
+    { "25", 2 },
+    { "26", 2 },
+    { "27", 2 },
+    { "28", 2 },
+    { "29", 2 },
+    { "30", 2 },
+    { "31", 2 },
+    { "32", 2 },
+    { "33", 2 },
+    { "34", 2 },
+    { "35", 2 },
+    { "36", 2 },
+    { "37", 2 },
+    { "38", 2 },
+    { "39", 2 },
+    { "40", 2 },
+    { "41", 2 },
+    { "42", 2 },
+    { "43", 2 },
+    { "44", 2 },
+    { "45", 2 },
+    { "46", 2 },
+    { "47", 2 },
+    { "48", 2 },
+    { "49", 2 },
+    { "50", 2 },
+    { "51", 2 },
+    { "52", 2 },
+    { "53", 2 },
+    { "54", 2 },
+    { "55", 2 },
+    { "56", 2 },
+    { "57", 2 },
+    { "58", 2 },
+    { "59", 2 },
+    { "60", 2 },
+    { "61", 2 },
+    { "62", 2 },
+    { "63", 2 },
+    { "64", 2 },
+    { "65", 2 },
+    { "66", 2 },
+    { "67", 2 },
+    { "68", 2 },
+    { "69", 2 },
+    { "70", 2 },
+    { "71", 2 },
+    { "72", 2 },
+    { "73", 2 },
+    { "74", 2 },
+    { "75", 2 },
+    { "76", 2 },
+    { "77", 2 },
+    { "78", 2 },
+    { "79", 2 },
+    { "80", 2 },
+    { "81", 2 },
+    { "82", 2 },
+    { "83", 2 },
+    { "84", 2 },
+    { "85", 2 },
+    { "86", 2 },
+    { "87", 2 },
+    { "88", 2 },
+    { "89", 2 },
+    { "90", 2 },
+    { "91", 2 },
+    { "92", 2 },
+    { "93", 2 },
+    { "94", 2 },
+    { "95", 2 },
+    { "96", 2 },
+    { "97", 2 },
+    { "98", 2 },
+    { "99", 2 },
+    { "100", 3 },
+    { "101", 3 },
+    { "102", 3 },
+    { "103", 3 },
+    { "104", 3 },
+    { "105", 3 },
+    { "106", 3 },
+    { "107", 3 },
+    { "108", 3 },
+    { "109", 3 },
+    { "110", 3 },
+    { "111", 3 },
+    { "112", 3 },
+    { "113", 3 },
+    { "114", 3 },
+    { "115", 3 },
+    { "116", 3 },
+    { "117", 3 },
+    { "118", 3 },
+    { "119", 3 },
+    { "120", 3 },
+    { "121", 3 },
+    { "122", 3 },
+    { "123", 3 },
+    { "124", 3 },
+    { "125", 3 },
+    { "126", 3 },
+    { "127", 3 },
+};
+
+template<class U>
+struct uint_to_str
+{
+    static const char* func(char buf[22], U x, size_t& size)
+    {
+        if (x < 128)
+        {
+            size = _uint_strings[x].size;
+            return _uint_strings[x].str;
+        }
+
+        char* p = &buf[21];
+        *p = '\0';
+
+        do
+        {
+            *--p = '0' + (x % 10);
+            x = x / 10;
+        }
+        while (x);
+
+        size = &buf[21] - p;
+        return p;
+    }
+};
+
+template<class S, class U>
+struct sint_to_str
+{
+    static const char* func(char buf[22], S x, size_t& size)
+    {
+        if (x < 0)
+        {
+            char* p = &buf[21];
+            *p = '\0';
+
+            U t = U(-x);
+
+            do
+            {
+                *--p = '0' + (t % 10);
+                t = t / 10;
+            }
+            while (t);
+
+            *--p = '-';
+
+            size = &buf[21] - p;
+            return p;
+        }
+        else
+            return uint_to_str<U>::func(buf, U(x), size);
+    }
+};
+
+const char* uint8_to_str(char buf[22], uint8 x, size_t& size)
+{
+    return uint_to_str<uint8>::func(buf, x, size);
+}
+
+const char* uint16_to_str(char buf[22], uint16 x, size_t& size)
+{
+    return uint_to_str<uint16>::func(buf, x, size);
+}
+
+const char* uint32_to_str(char buf[22], uint32 x, size_t& size)
+{
+    return uint_to_str<uint32>::func(buf, x, size);
+}
+
+const char* uint64_to_str(char buf[22], uint64 x, size_t& size)
+{
+    return uint_to_str<uint64>::func(buf, x, size);
+}
+
+const char* sint8_to_str(char buf[22], sint8 x, size_t& size)
+{
+    return sint_to_str<sint8, uint8>::func(buf, x, size);
+}
+
+const char* sint16_to_str(char buf[22], sint16 x, size_t& size)
+{
+    return sint_to_str<sint16,uint16>::func(buf, x, size);
+}
+
+const char* sint32_to_str(char buf[22], sint32 x, size_t& size)
+{
+    return sint_to_str<sint32, uint32>::func(buf, x, size);
+}
+
+const char* sint64_to_str(char buf[22], sint64 x, size_t& size)
+{
+    return sint_to_str<sint64, uint64>::func(buf, x, size);
 }
 
 CIMPLE_NAMESPACE_END

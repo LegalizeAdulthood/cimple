@@ -1,7 +1,11 @@
 TOP=.
 include $(TOP)/mak/config.mak
 
-DIRS = src schema
+DIRS = src mak
+
+ifneq ($(PLATFORM),VXWORKS_XSCALE_GNU)
+  DIRS += schema
+endif
 
 include $(TOP)/mak/rules.mak
 
@@ -17,7 +21,8 @@ check:
 distclean: clean
 	$(call rm,config.options)
 	$(call rm,src/cimple/options.h)
-	$(call rmdirhier,$(LIBDIR))
+	$(call rmdirhier,./lib)
+	$(call rmdirhier,./lib64)
 	$(call rmdirhier,$(BINDIR))
 
 ##==============================================================================
@@ -78,7 +83,7 @@ world: clean all regress
 ##==============================================================================
 
 MAJOR=1
-MINOR=1
+MINOR=2
 REVISION=0
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
@@ -122,4 +127,14 @@ publish:
 	rm -rf /tmp/$(TARDIST)
 	rm -rf /tmp/$(ZIPDIST)
 
+##==============================================================================
+##
+## clean-all
+##
+##==============================================================================
 
+clean-all:
+	rm -rf ./lib
+	rm -rf ./lib64
+	rm -rf ./bin
+	rm -f `find . -name '*.o'`

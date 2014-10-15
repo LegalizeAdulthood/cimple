@@ -29,6 +29,8 @@
 
 #include "config.h"
 
+#define CIMPLE_ATOMIC_INITIALIZER { 0 }
+
 CIMPLE_NAMESPACE_BEGIN
 
 //------------------------------------------------------------------------------

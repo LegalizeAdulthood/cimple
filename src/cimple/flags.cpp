@@ -36,6 +36,7 @@ const char* flag_names[] =
     "Terminal", /* 28 */
     "Weak", /* 29 */
     "Write", /* 30 */
+    "EmbeddedInstance", /* 31 */
 };
 
 const size_t num_flag_names = sizeof(flag_names) / sizeof(flag_names[0]);

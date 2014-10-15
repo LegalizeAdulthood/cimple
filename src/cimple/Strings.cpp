@@ -193,5 +193,27 @@ size_t strlcat(char* dest, const char* src, size_t size)
     return i;
 }
 
-CIMPLE_NAMESPACE_END
+int find_token(
+    const char* str, 
+    const char* delimiters, 
+    const char*& start,
+    const char*& end)
+{
+    // Find start of next token (first non-delimiter character in str).
 
+    size_t n = strspn(str, delimiters);
+
+    if (str[n] == '\0')
+        return -1;
+
+    start = str + n;
+
+    // Find terminating delimiter character or null (whichever is first).
+
+    n = strcspn(start, delimiters);
+    end = start + n;
+
+    return 0;
+}
+
+CIMPLE_NAMESPACE_END

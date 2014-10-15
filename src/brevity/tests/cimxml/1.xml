@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CIM CIMVERSION="2.0" DTDVERSION="2.0">
+    <MESSAGE ID="1000" PROTOCOLVERSION="1.0">
+        <SIMPLERSP>
+            <IMETHODRESPONSE NAME="EnumerateInstances">
+                <IRETURNVALUE>
+                    <VALUE.NAMEDINSTANCE>
+                        <INSTANCENAME CLASSNAME="PG_ComputerSystem">
+                            <KEYBINDING NAME="CreationClassName">
+                                <KEYVALUE VALUETYPE="string">
+                                    CIM_ComputerSystem
+                                </KEYVALUE>
+                            </KEYBINDING>
+                            <KEYBINDING NAME="Name">
+                                <KEYVALUE VALUETYPE="string">
+                                    localhost.localdomain
+                                </KEYVALUE>
+                            </KEYBINDING>
+                        </INSTANCENAME>
+                        <INSTANCE CLASSNAME="PG_ComputerSystem">
+                            <PROPERTY NAME="Caption" TYPE="string">
+                                <VALUE>
+                                    Computer System
+                                </VALUE>
+                            </PROPERTY>
+                            <PROPERTY NAME="Description" TYPE="string">
+                                <VALUE>
+                                    Linux version 2.6.15-1.1831_FC4 (bhcompile@hs20-bc1-7.build.redhat.com) (gcc version 4.0.2 20051125 (Red Hat 4.0.2-8)) #1 SMP Tue Feb 7 13:37:59 EST 2006
+                                </VALUE>
+                            </PROPERTY>
+                            <PROPERTY NAME="Status" TYPE="string">
+                                <VALUE>
+                                    OK
+                                </VALUE>
+                            </PROPERTY>
+                            <PROPERTY NAME="CreationClassName" TYPE="string">
+                                <VALUE>
+                                    CIM_ComputerSystem
+                                </VALUE>
+                            </PROPERTY>
+                            <PROPERTY NAME="Name" TYPE="string">
+                                <VALUE>
+                                    localhost.localdomain
+                                </VALUE>
+                            </PROPERTY>
+                            <PROPERTY NAME="NameFormat" TYPE="string">
+                                <VALUE>
+                                    IP
+                                </VALUE>
+                            </PROPERTY>
+                            <PROPERTY.ARRAY NAME="PowerManagementCapabilities" TYPE="uint16">
+                                <VALUE.ARRAY>
+                                    <VALUE>
+                                        1
+                                    </VALUE>
+                                </VALUE.ARRAY>
+                            </PROPERTY.ARRAY>
+                            <PROPERTY NAME="PowerManagementSupported" TYPE="boolean">
+                                <VALUE>
+                                    FALSE
+                                </VALUE>
+                            </PROPERTY>
+                            <PROPERTY NAME="PowerState" TYPE="uint16">
+                                <VALUE>
+                                    1
+                                </VALUE>
+                            </PROPERTY>
+                        </INSTANCE>
+                    </VALUE.NAMEDINSTANCE>
+                </IRETURNVALUE>
+            </IMETHODRESPONSE>
+        </SIMPLERSP>
+    </MESSAGE>
+</CIM>

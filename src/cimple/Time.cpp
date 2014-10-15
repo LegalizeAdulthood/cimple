@@ -27,9 +27,13 @@
 #include <cimple/config.h>
 #include "Time.h"
 
-#include <sys/time.h>
-#include <sys/types.h>
-#include <unistd.h>
+#ifdef CIMPLE_VXWORKS
+# include <sys/times.h>
+#else
+# include <sys/time.h>
+# include <sys/types.h>
+# include <unistd.h>
+#endif
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -40,9 +44,9 @@ const uint64 Time::SEC = 1000000;
 uint64 Time::now()
 {
 #ifdef CIMPLE_WINDOWS
-    struct posix::timeval  tv;
+    struct posix::timeval tv;
 #else
-    struct timeval  tv;
+    struct timeval tv;
 #endif
     struct timezone ignore;
     memset(&tv, 0, sizeof(tv));
@@ -65,7 +69,6 @@ void Time::sleep(uint64 timeout_usec)
 
 #endif
 }
-
 
 CIMPLE_NAMESPACE_END
 

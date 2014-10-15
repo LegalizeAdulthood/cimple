@@ -60,6 +60,10 @@
 # include "platform_DARWIN_PPC_GNU.h"
 #elif defined(CIMPLE_PLATFORM_DARWIN_IX86_GNU)
 # include "platform_DARWIN_IX86_GNU.h"
+#elif defined(CIMPLE_PLATFORM_VXWORKS_XSCALE_GNU)
+# include "platform_VXWORKS_XSCALE_GNU.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
+# include "platform_SOLARIS_SPARC_GNU.h"
 #else
 # error "Unknown platform"
 #endif
@@ -352,7 +356,7 @@ CIMPLE_NAMESPACE_END
 //==============================================================================
 
 #define CIMPLE_MAJOR 1
-#define CIMPLE_MINOR 1
+#define CIMPLE_MINOR 2
 #define CIMPLE_REVISION 0
 
 //==============================================================================

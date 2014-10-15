@@ -34,6 +34,39 @@ CIMPLE_NAMESPACE_BEGIN
 
 //==============================================================================
 //
+// Local definitions:
+//
+//==============================================================================
+
+static CMPIEnumeration* cimple_CBEnumInstances(
+    const CMPIBroker* mb, 
+    const CMPIContext* ctx,
+    const CMPIObjectPath* op, 
+    const char** properties, 
+    CMPIStatus* rc)
+{
+#if defined(CIMPLE_HAVE_CMPI_ENUM_INSTANCES_BUG)
+    return (mb->bft->enumInstances (mb, ctx, op, properties, rc));
+#else
+    return (mb->bft->enumerateInstances (mb, ctx, op, properties, rc));
+#endif
+}
+
+inline static CMPIStatus cimple_CBSetInstance(
+    const CMPIBroker* mb, 
+    const CMPIContext* ctx,
+    const CMPIObjectPath* op, 
+    const CMPIInstance* inst)
+{
+#if defined(CIMPLE_HAVE_CMPI_MODIFY_INSTANCE_BUG)
+    return (mb->bft->modifyInstance(mb, ctx, op, inst, NULL));
+#else
+    return (mb->bft->setInstance(mb, ctx, op, inst, NULL));
+#endif
+}
+
+//==============================================================================
+//
 // _top()
 //
 //==============================================================================
@@ -172,7 +205,7 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
 
     CMPIStatus status;
 
-    CMPIEnumeration* enumeration = CBEnumInstances(
+    CMPIEnumeration* enumeration = cimple_CBEnumInstances(
         context->cmpi_broker(), 
         context->cmpi_context(),
         object_path,
@@ -444,12 +477,11 @@ int CMPI_Thread_Context::modify_instance(
 
     // Create instance.
 
-    CMPIStatus status = CBModifyInstance(
+    CMPIStatus status = cimple_CBSetInstance(
         context->cmpi_broker(),
         context->cmpi_context(),
         cop,
-        ci,
-        NULL);
+        ci);
 
     if (status.rc != CMPI_RC_OK)
         return -1;

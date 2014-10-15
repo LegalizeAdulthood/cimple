@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include "linkage.h"
+#include <cstdarg>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -89,7 +90,7 @@ public:
     CIMPLE_PRINTF_ATTR(2, 3)
     size_t format(const char* format, ...);
 
-    size_t format(const char* format, va_list ap);
+    size_t vformat(const char* format, va_list ap);
 
     void append_uint16(uint16 x);
 

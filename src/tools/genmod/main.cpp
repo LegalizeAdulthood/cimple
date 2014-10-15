@@ -265,7 +265,6 @@ static void gen_module(const char* module_name, int argc, char** argv)
     fprintf(os, "#endif\n");
 
     printf("Created %s\n", file_name);
-    printf("\n");
 
     fclose(os);
 }

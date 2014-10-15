@@ -39,6 +39,8 @@
 # include <direct.h>
 #endif
 
+#define DEFAULT_NAME "cimple"
+
 CIMPLE_NAMESPACE_BEGIN
 
 static File_Lock* _lock;
@@ -139,7 +141,7 @@ static int _get_log_level(const char* path, Log_Level& level)
     return -1;
 }
 
-static void _initialize()
+static void _initialize(const char* name)
 {
     // Get home path:
 
@@ -148,27 +150,25 @@ static void _initialize()
     if (!home)
         return;
 
-    // Read LOG_LEVEL from .cimplerc configuration file.
+    // Read LOG_LEVEL from .<name>rc configuration file.
 
-    char config_file_path[1024];
+    char conf_path[1024];
     {
-        strlcpy(config_file_path, home, sizeof(config_file_path));
-        strlcat(config_file_path, "/.cimplerc", sizeof(config_file_path));
+        sprintf(conf_path, "%s/.%src", home, name);
 
-        if (_get_log_level(config_file_path, _level) != 0)
+        if (_get_log_level(conf_path, _level) != 0)
             return;
     }
 
     // Create $HOME/.cimple directory.
 
-    char cimple_dir_path[1024];
+    char root_path[1024];
     {
-        strlcpy(cimple_dir_path, home, sizeof(cimple_dir_path));
-        strlcat(cimple_dir_path, "/.cimple", sizeof(cimple_dir_path));
+        sprintf(root_path, "%s/.%s", home, name);
 #ifdef CIMPLE_WINDOWS
-        _mkdir(cimple_dir_path);
+        _mkdir(root_path);
 #else
-        mkdir(cimple_dir_path, 0777);
+        mkdir(root_path, 0777);
 #endif
     }
 
@@ -176,7 +176,7 @@ static void _initialize()
 
     char log_file_path[1024];
     {
-        strlcpy(log_file_path, cimple_dir_path, sizeof(log_file_path));
+        strlcpy(log_file_path, root_path, sizeof(log_file_path));
         strlcat(log_file_path, "/messages", sizeof(log_file_path));
     }
 
@@ -184,7 +184,7 @@ static void _initialize()
 
     char lock_file_path[1024];
     {
-        strlcpy(lock_file_path, cimple_dir_path, sizeof(log_file_path));
+        strlcpy(lock_file_path, root_path, sizeof(log_file_path));
         strlcat(lock_file_path, "/messages.lock", sizeof(lock_file_path));
     }
 
@@ -211,6 +211,17 @@ static void _initialize()
     }
 }
 
+void open_log(const char* name)
+{
+    // Initialize on the first call.
+
+    if (_initialized == 0)
+    {
+        _initialize(name);
+        _initialized = 1;
+    }
+}
+
 void vlog(
     Log_Level level, 
     const char* file, 
@@ -224,7 +235,7 @@ void vlog(
 
     if (_initialized == 0)
     {
-        _initialize();
+        _initialize(DEFAULT_NAME);
         _initialized = 1;
     }
 
@@ -259,15 +270,16 @@ void vlog(
     // Format message prefix:
 
     Buffer buffer;
-    buffer.format(
-        "%s %s: %s(%d): ", datetime, _strings[int(level)], file, line);
+    buffer.format("%s %s: %s(%d): ", datetime, _strings[int(level)], 
+        file, (uint32)line);
 
     // Format message body:
 
-    buffer.format(fmt, ap);
+    buffer.vformat(fmt, ap);
 
     if (buffer[buffer.size()-1] != '\n')
         buffer.append('\n');
+
 
     // Write to log file:
 

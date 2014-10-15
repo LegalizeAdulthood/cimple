@@ -1,3 +1,5 @@
+.PHONY: install_mak
+
 all:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i all $(NL) )
 

@@ -64,9 +64,9 @@ inline size_t type_size_of(const Meta_Property* mp)
 
 /** Returns the null flag of the given property.
 */
-inline uint8& null_of(const Meta_Property* mp, const void* prop)
+inline uint8& null_of(const Meta_Property* mp, const void* field)
 {
-    return *((uint8*)prop + type_size_of(mp));
+    return *((uint8*)field + type_size_of(mp));
 }
 
 CIMPLE_CIMPLE_LINKAGE

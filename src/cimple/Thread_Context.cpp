@@ -28,22 +28,41 @@
 #include "Array.h"
 #include "Thread_Context.h"
 
+#ifdef CIMPLE_VXWORKS
+# include "TSD.h"
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
-Thread_Context::Thread_Context()
+//==============================================================================
+//
+// Thread-specific-data routines (VXWORKS)
+//
+//==============================================================================
+
+#if defined(CIMPLE_VXWORKS)
+
+static TSD _tsd;
+
+static void* _get_tsd()
 {
+    return _tsd.get();
 }
 
-Thread_Context::~Thread_Context()
+static void _set_tsd(void* data)
 {
+    return _tsd.set(data);
 }
 
-struct Stack
-{
-    enum { MAX_SIZE = 16 };
-    Thread_Context* data[MAX_SIZE];
-    size_t size;
-};
+#endif /* defined(CIMPLE_VXWORKS) */
+
+//==============================================================================
+//
+// Thread-specific-data routines (non-VXWORKS)
+//
+//==============================================================================
+
+#if !defined(CIMPLE_VXWORKS)
 
 // Export to avoid multiple copies via shared libraries.
 #ifdef CIMPLE_STATIC
@@ -62,20 +81,59 @@ static void _make_key()
     pthread_key_create(&_thread_context_key, NULL);
 }
 
-static Stack* _stack()
+static void* _get_tsd()
 {
     pthread_once(&_thread_context_key_once, _make_key);
+    return pthread_getspecific(_thread_context_key);
+}
 
-    Stack* stack = (Stack*)pthread_getspecific(_thread_context_key);
+static void _set_tsd(void* data)
+{
+    pthread_once(&_thread_context_key_once, _make_key);
+    pthread_setspecific(_thread_context_key, data);
+}
+
+#endif /* !defined(CIMPLE_VXWORKS) */
+
+//==============================================================================
+//
+// Stack:
+//
+//==============================================================================
+
+struct Stack
+{
+    enum { MAX_SIZE = 16 };
+    Thread_Context* data[MAX_SIZE];
+    size_t size;
+};
+
+static Stack* _stack()
+{
+    Stack* stack = (Stack*)_get_tsd();
 
     if (stack == 0)
     {
         stack = new Stack;
         stack->size = 0;
-        pthread_setspecific(_thread_context_key, stack);
+        _set_tsd(stack);
     }
 
     return stack;
+}
+
+//==============================================================================
+//
+// Thread_Context
+//
+//==============================================================================
+
+Thread_Context::Thread_Context()
+{
+}
+
+Thread_Context::~Thread_Context()
+{
 }
 
 void Thread_Context::push(Thread_Context* context)
@@ -94,7 +152,7 @@ void Thread_Context::pop()
 
     if (stack->size == 0)
     {
-        pthread_setspecific(_thread_context_key, NULL);
+        _set_tsd(NULL);
         delete stack;
     }
 }
@@ -120,4 +178,3 @@ MEB
 }
 
 CIMPLE_NAMESPACE_END
-

@@ -20,19 +20,29 @@ static void _send_indication(
 {
     TRACE;
 
+    char utf8_chars[] = 
+    {
+        '\xCE', '\x99', '\xCE', '\xBF', '\xCF', '\x8D',
+        '\xCE', '\xBD', '\xCE', '\xB9', '\xCE', '\xBA',
+        '\xCE', '\xBF', '\xCE', '\xBD', '\xCF', '\x84',
+        '\0'
+    };
+
     // printf("func: %s\n", func);
 
     if (handler)
     {
         LampIndicA* indic = LampIndicA::create();
-        indic->IndicationIdentifier.value = "GOODBYE";
-        indic->IndicationIdentifier.null = false;
-        indic->message.value = "Same old message";
-        indic->message.null = false;
+        indic->IndicationIdentifier.set("GOODBYE");
+#if 0
+        indic->message.set("Same old message");
+#else
+        indic->message.set(utf8_chars);
+#endif
 
         LampIndic* tmp = cast<LampIndic*>(indic);
 
-        handler->handle(cast<LampIndic*>(indic));
+        handler->handle(tmp);
     }
 }
 

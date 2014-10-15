@@ -107,7 +107,7 @@ void Value::clear()
 
         case INSTANCE_ARRAY:
         {
-            Array_Instance* inst = (Array_Instance*)_array;
+            Array_Instance* inst = (Array_Instance*)(void*)_array;
             Instance** p = inst->data();
             Instance** end = inst->data() + inst->size();
 
@@ -331,7 +331,7 @@ int Value::get_value(Array_boolean& x) const
     if (_type != Value::BOOLEAN_ARRAY)
         return -1;
 
-    x = *((Array_boolean*)_array);
+    x = *((Array_boolean*)(void*)_array);
     return 0;
 }
 
@@ -340,7 +340,7 @@ int Value::get_value(Array_uint8& x) const
     if (_type != Value::UINT8_ARRAY)
         return -1;
 
-    x = *((Array_uint8*)_array);
+    x = *((Array_uint8*)(void*)_array);
     return 0;
 }
 
@@ -349,7 +349,7 @@ int Value::get_value(Array_sint8& x) const
     if (_type != Value::SINT8_ARRAY)
         return -1;
 
-    x = *((Array_sint8*)_array);
+    x = *((Array_sint8*)(void*)_array);
     return 0;
 }
 
@@ -358,7 +358,7 @@ int Value::get_value(Array_uint16& x) const
     if (_type != Value::UINT16_ARRAY)
         return -1;
 
-    x = *((Array_uint16*)_array);
+    x = *((Array_uint16*)(void*)_array);
     return 0;
 }
 
@@ -367,7 +367,7 @@ int Value::get_value(Array_sint16& x) const
     if (_type != Value::SINT16_ARRAY)
         return -1;
 
-    x = *((Array_sint16*)_array);
+    x = *((Array_sint16*)(void*)_array);
     return 0;
 }
 
@@ -376,7 +376,7 @@ int Value::get_value(Array_uint32& x) const
     if (_type != Value::UINT32_ARRAY)
         return -1;
 
-    x = *((Array_uint32*)_array);
+    x = *((Array_uint32*)(void*)_array);
     return 0;
 }
 
@@ -385,7 +385,7 @@ int Value::get_value(Array_sint32& x) const
     if (_type != Value::SINT32_ARRAY)
         return -1;
 
-    x = *((Array_sint32*)_array);
+    x = *((Array_sint32*)(void*)_array);
     return 0;
 }
 
@@ -394,7 +394,7 @@ int Value::get_value(Array_uint64& x) const
     if (_type != Value::UINT64_ARRAY)
         return -1;
 
-    x = *((Array_uint64*)_array);
+    x = *((Array_uint64*)(void*)_array);
     return 0;
 }
 
@@ -403,7 +403,7 @@ int Value::get_value(Array_sint64& x) const
     if (_type != Value::SINT64_ARRAY)
         return -1;
 
-    x = *((Array_sint64*)_array);
+    x = *((Array_sint64*)(void*)_array);
     return 0;
 }
 
@@ -412,7 +412,7 @@ int Value::get_value(Array_real32& x) const
     if (_type != Value::REAL32_ARRAY)
         return -1;
 
-    x = *((Array_real32*)_array);
+    x = *((Array_real32*)(void*)_array);
     return 0;
 }
 
@@ -421,7 +421,7 @@ int Value::get_value(Array_real64& x) const
     if (_type != Value::REAL64_ARRAY)
         return -1;
 
-    x = *((Array_real64*)_array);
+    x = *((Array_real64*)(void*)_array);
     return 0;
 }
 
@@ -430,7 +430,7 @@ int Value::get_value(Array_char16& x) const
     if (_type != Value::CHAR16_ARRAY)
         return -1;
 
-    x = *((Array_char16*)_array);
+    x = *((Array_char16*)(void*)_array);
     return 0;
 }
 
@@ -439,7 +439,7 @@ int Value::get_value(Array_String& x) const
     if (_type != Value::STRING_ARRAY)
         return -1;
 
-    x = *((Array_String*)_array);
+    x = *((Array_String*)(void*)_array);
     return 0;
 }
 
@@ -448,7 +448,7 @@ int Value::get_value(Array_Datetime& x) const
     if (_type != Value::DATETIME_ARRAY)
         return -1;
 
-    x = *((Array_Datetime*)_array);
+    x = *((Array_Datetime*)(void*)_array);
     return 0;
 }
 
@@ -457,7 +457,7 @@ int Value::get_value(Array_Instance& x) const
     if (_type != Value::INSTANCE_ARRAY)
         return -1;
 
-    x = *((Array_Instance*)_array);
+    x = *((Array_Instance*)(void*)_array);
     return 0;
 }
 
@@ -1150,7 +1150,7 @@ int Value::set(const Instance* instance, const Meta_Feature* mf)
 {
     clear();
 
-    const void* field;
+    const void* field = 0;
 
     if (mf->flags & CIMPLE_FLAG_METHOD)
     {

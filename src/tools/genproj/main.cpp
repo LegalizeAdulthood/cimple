@@ -3,6 +3,7 @@
 #include <getopt.h>
 #include <cstdlib>
 #include <cstring>
+#include <cctype>
 #include <cstdio>
 #include <string>
 #include <unistd.h>
@@ -12,6 +13,9 @@
 #include "usage.h"
 
 using namespace std;
+
+static bool genmak_opt = false;
+static bool force_opt = false;
 
 #if defined(CIMPLE_WINDOWS)
 
@@ -51,6 +55,7 @@ static void gen_project(const char* module_name, int argc, char** argv)
     string genclass;
     string genprov;
     string genmod;
+    string genmak;
 
     if (which("genclass.exe", genclass) != 0)
         err("genclass.exe not found on PATH");
@@ -61,11 +66,15 @@ static void gen_project(const char* module_name, int argc, char** argv)
     if (which("genmod.exe", genmod) != 0)
         err("genmod.exe not found on PATH");
 
+    if (which("genmak.exe", genmak) != 0)
+        err("genmak.exe not found on PATH");
+
 #else /* CIMPLE_WINDOWS */
 
     string genclass = string(CIMPLE_BINDIR) + "/genclass";
     string genprov = string(CIMPLE_BINDIR) + "/genprov";
     string genmod = string(CIMPLE_BINDIR) + "/genmod";
+    string genmak = string(CIMPLE_BINDIR) + "/genmak";
 
     if (!exists(genclass))
         err("required program missing: %s", genclass.c_str());
@@ -76,12 +85,16 @@ static void gen_project(const char* module_name, int argc, char** argv)
     if (!exists(genmod))
         err("required program missing: %s", genmod.c_str());
 
+    if (!exists(genmak))
+        err("required program missing: %s", genmak.c_str());
+
 #endif /* !CIMPLE_WINDOWS */
+
+    vector<string> sources;
 
     // Run genclass:
     {
-        printf("==== genclass:\n");
-        string cmd = genclass + string(" -r");
+        string cmd = genclass + string(" -r -S");
 
         for (int i = 0; i < argc; i++)
             cmd += string(" ") + string(argv[i]);
@@ -93,11 +106,34 @@ static void gen_project(const char* module_name, int argc, char** argv)
 
         if (status != 0)
             exit(1);
+
+        // Read source file names from .genclass:
+        {
+            FILE* is = fopen(".genclass", "r");
+            char buffer[1024];
+
+            if (!is)
+                err("failed to open .genclass file\n");
+
+            while (fgets(buffer, sizeof(buffer), is) != NULL)
+            {
+                char* p = buffer;
+
+                while (*p)
+                    p++;
+
+                while (p != buffer && isspace(p[-1]))
+                    *--p = '\0';
+
+                sources.push_back(buffer);
+            }
+
+            fclose(is);
+        }
     }
 
     // Run genprov:
     {
-        printf("==== genprov:\n");
         string cmd = genprov;
 
         for (int i = 0; i < argc; i++)
@@ -110,11 +146,17 @@ static void gen_project(const char* module_name, int argc, char** argv)
 
         if (status != 0)
             exit(1);
+
+        for (int i = 0; i < argc; i++)
+        {
+            char buffer[1024];
+            sprintf(buffer, "%s_Provider.cpp", argv[i]);
+            sources.push_back(buffer);
+        }
     }
 
     // Run genmod:
     {
-        printf("==== genmod:\n");
         string cmd = genmod + string(" ") + string(module_name);
 
         for (int i = 0; i < argc; i++)
@@ -124,6 +166,31 @@ static void gen_project(const char* module_name, int argc, char** argv)
 
         if (status == -1)
             err("failed to execute %s", genmod.c_str());
+
+        if (status != 0)
+            exit(1);
+
+        sources.push_back("module.cpp");
+    }
+
+    // Run genmak:
+
+    if (genmak_opt)
+    {
+        string cmd = genmak + string(" ");
+
+        if (force_opt)
+            cmd += "-f ";
+        
+        cmd += string(module_name);
+
+        for (size_t i = 0; i < sources.size(); i++)
+            cmd += string(" ") + sources[i];
+
+        int status = system(cmd.c_str());
+
+        if (status == -1)
+            err("failed to execute %s", genmak.c_str());
 
         if (status != 0)
             exit(1);
@@ -140,7 +207,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "hV")) != -1)
+    while ((opt = getopt(argc, argv, "hVmf")) != -1)
     {
         switch (opt)
         {
@@ -154,6 +221,18 @@ int main(int argc, char** argv)
             {
                 printf("%s\n", CIMPLE_VERSION_STRING);
                 exit(0);
+            }
+
+            case 'm':
+            {
+                genmak_opt = true;
+                break;
+            }
+
+            case 'f':
+            {
+                force_opt = true;
+                break;
             }
 
             default:
@@ -179,4 +258,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-

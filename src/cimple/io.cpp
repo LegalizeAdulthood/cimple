@@ -24,6 +24,7 @@
 **==============================================================================
 */
 
+#include "config.h"
 #include <cstdarg>
 #include "io.h"
 
@@ -31,19 +32,6 @@ CIMPLE_NAMESPACE_BEGIN
 
 char* str_printf(const char* format, ...)
 {
-#ifdef _GNU_SOURCE
-
-    va_list ap;
-    char* str;
-
-    va_start(ap, format);
-    vasprintf(&str, format, ap);
-    va_end(ap);
-
-    return str;
-
-#else /* _GNU_SOURCE */
-
     int n;
     int size = 128;
     char *p;
@@ -55,7 +43,7 @@ char* str_printf(const char* format, ...)
     for (;;)
     {
         va_start(ap, format);
-        n = _vsnprintf(p, size, format, ap);
+        n = vsnprintf(p, size, format, ap);
         va_end(ap);
 
         if (n > -1 && n < size)
@@ -71,20 +59,10 @@ char* str_printf(const char* format, ...)
     }
 
     return 0;
-
-#endif /* _GNU_SOURCE */
 }
 
 char* str_vprintf(const char* format, va_list ap)
 {
-#ifdef _GNU_SOURCE
-
-    char* str;
-    vasprintf(&str, format, ap);
-    return str;
-
-#else /* _GNU_SOURCE */
-
     int n;
     int size = 128;
     char *p;
@@ -94,7 +72,7 @@ char* str_vprintf(const char* format, va_list ap)
 
     for (;;)
     {
-        n = _vsnprintf(p, size, format, ap);
+        n = vsnprintf(p, size, format, ap);
 
         if (n > -1 && n < size)
             return p;
@@ -109,8 +87,6 @@ char* str_vprintf(const char* format, va_list ap)
     }
 
     return 0;
-
-#endif /* _GNU_SOURCE */
 }
 
 int iprintf(size_t level, const char* format, ...)

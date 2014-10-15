@@ -55,5 +55,10 @@
 #include "Instance_Ref.h"
 #include "Ops.h"
 #include "Arg.h"
+#include "Buffer.h"
+#include "integer.h"
+#include "real.h"
+#include "boolean.h"
+#include "Stack.h"
 
 #endif /* _cimple_h */

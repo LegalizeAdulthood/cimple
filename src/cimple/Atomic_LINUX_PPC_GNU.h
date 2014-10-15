@@ -29,6 +29,8 @@
 
 #include "config.h"
 
+#define CIMPLE_ATOMIC_INITIALIZER { 0 }
+
 //------------------------------------------------------------------------------
 // WARNING: this implementation does not work on multi-processor PPC 
 // architectures or on the IBM-405 processor.

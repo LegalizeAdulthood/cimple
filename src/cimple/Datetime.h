@@ -30,6 +30,15 @@
 #include "config.h"
 #include "String.h"
 
+/*
+ATTN: get rid of this!
+*/
+#if defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
+# ifdef SEC
+#  undef SEC
+# endif
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
 /** This class represents either a timestamp or an interval (as specified by 

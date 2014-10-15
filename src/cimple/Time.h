@@ -29,6 +29,15 @@
 
 #include "config.h"
 
+/*
+ATTN: get rid of this!
+*/
+#if defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
+# ifdef SEC
+#  undef SEC
+# endif
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
 struct CIMPLE_CIMPLE_LINKAGE Time

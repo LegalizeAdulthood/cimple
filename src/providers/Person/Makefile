@@ -24,7 +24,7 @@ include ../common.mak
 include $(TOP)/mak/rules.mak
 
 regmod:
-	$(BINDIR)/regmod -v -c $(TARGET)
+	$(BINDIR)/regmod -c $(TARGET)
 
 genclass:
 	$(BINDIR)/genclass -r Person PersonLink Salesman SalesmanLink
@@ -69,3 +69,4 @@ live:
 	$(CIMCLI) rn Person.ssn=3
 	$(CIMCLI) rn Person.ssn=4
 	$(CIMCLI) rn Person.ssn=5
+

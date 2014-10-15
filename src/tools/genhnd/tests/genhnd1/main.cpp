@@ -131,8 +131,8 @@ void test6()
     pres1.First_value("John");
     pres1.Last_value("Adams");
 
-    pres1.print();
-    pres2.print();
+    //pres1.print();
+    //pres2.print();
 }
 
 void test7()

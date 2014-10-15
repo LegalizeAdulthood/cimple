@@ -116,7 +116,8 @@ Instance_Enumerator_Rep* Pegasus_Thread_Context::instance_enumerator_create(
 
     Pegasus_Thread_Context* context = _top();
 
-    Pegasus_Instance_Enumerator_Rep* rep = new Pegasus_Instance_Enumerator_Rep;
+    Pegasus_Instance_Enumerator_Rep* rep = 0;
+    rep = new Pegasus_Instance_Enumerator_Rep;
     rep->meta_class = model->meta_class;
     rep->pos = 0;
 

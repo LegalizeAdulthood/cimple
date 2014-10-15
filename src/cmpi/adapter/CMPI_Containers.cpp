@@ -1227,7 +1227,8 @@ int CMPIInstance_Container::get_name(size_t pos, String& name)
     {
         CMPICount n = CMGetPropertyCount(_rep, NULL);
         CIMPLE_WARN((
-            "CMGetPropertyAt() threw exception: index=%u size=%u", pos, n));
+            "CMGetPropertyAt() threw exception: index=%u size=%u", 
+                (uint32)pos, (uint32)n));
         return -1;
     }
 

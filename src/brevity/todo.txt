@@ -1,0 +1,5 @@
+
+    (A) Implement incremental enumerators (that pull objects off the
+        wire with next). This will require solving the re-entrancy
+        problem.
+

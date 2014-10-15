@@ -195,8 +195,9 @@ int Converter::to_pegasus_method(
 
     {
         Pegasus::Array<Pegasus::CIMParamValue> cpvs;
+        Str tmp_ns(ns);
         ParamValueContainer cont(
-            meth->meta_class->meta_repository, *Str(ns), cpvs);
+            meth->meta_class->meta_repository, *tmp_ns, cpvs);
         cont.return_value().clear();
 
         if (cont.convert(meth, flags) != 0)

@@ -52,3 +52,4 @@ live:
 	$(CIMCLI) rn 'Lamp.model="A"'
 	$(CIMCLI) a 'Lamp.model="A"'
 	$(CIMCLI) r 'Lamp.model="A"'
+

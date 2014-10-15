@@ -102,6 +102,9 @@ void print_scalar(Type type, const void* value);
 CIMPLE_CIMPLE_LINKAGE
 void print_array(Type type, const void* elements, size_t num_elements);
 
+CIMPLE_CIMPLE_LINKAGE 
+int type_name_to_type(const char* name, Type& type);
+
 extern void print_string(const char* str);
 
 CIMPLE_NAMESPACE_END

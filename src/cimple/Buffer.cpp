@@ -169,7 +169,7 @@ size_t Buffer::format(const char* format, ...)
     return 0;
 }
 
-size_t Buffer::format(const char* format, va_list ap)
+size_t Buffer::vformat(const char* format, va_list ap)
 {
     size_t size = 128;
 

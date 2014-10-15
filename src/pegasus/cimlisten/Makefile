@@ -1,7 +1,7 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
-INSTALL=1
+#INSTALL=1
 
 BINARY = cimlisten
 

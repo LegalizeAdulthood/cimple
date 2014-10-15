@@ -9,4 +9,6 @@ This utility generates an entire "project" by running the following programs:
 OPTIONS:
     -V      -- print the version.
     -h      -- print this message.
+    -m      -- generate the Makefile.
+    -f      -- force overwrite of the Makefile.
 

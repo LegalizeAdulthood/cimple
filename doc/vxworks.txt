@@ -1,0 +1,4 @@
+Configuring to build vxworks-xscale:
+====================================
+
+    ./configure --host=arm-wrs-vxworks-gnu --prefix=$PEGASUS_ROOT/VXWORKS_XSCALE_GNU --with-pegasus-includes=$PEGASUS_ROOT/src --with-pegasus-libdir=$PEGASUS_ROOT/VXWORKS_XSCALE_GNU/lib

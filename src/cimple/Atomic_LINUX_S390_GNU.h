@@ -32,6 +32,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+#define CIMPLE_ATOMIC_INITIALIZER { 0, PTHREAD_SPINLOCK_INITIALIZER }
+
 struct Atomic
 { 
     volatile int n; 

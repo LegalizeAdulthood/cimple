@@ -38,6 +38,14 @@ if [ -z "$host" ]; then
       host=ppc-unknown-linux-gnu
       ;;
 
+    sun4*:SunOS:*:*)
+      host=sparc-sun-solaris-gnu
+      ;;
+
+    i386*:Darwin:*:*)
+      host=i386-apple-darwin-gnu
+      ;;
+
     *)
         echo "$0: Failed to guess host"
         echo "  machine=$machine"

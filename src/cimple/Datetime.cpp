@@ -29,11 +29,16 @@
 #include "config.h"
 #include "Atomic.h"
 #include <sys/types.h>
-#include <sys/time.h>
 #include <cctype>
 #include <time.h>
 #include "Datetime.h"
 #include "Time.h"
+
+#ifdef CIMPLE_VXWORKS
+# include <sys/times.h>
+#else
+# include <sys/time.h>
+#endif
 
 CIMPLE_NAMESPACE_BEGIN
 

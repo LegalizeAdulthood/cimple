@@ -58,6 +58,9 @@ void vlog(
     const char* fmt,
     va_list ap);
 
+CIMPLE_CIMPLE_LINKAGE
+void open_log(const char* name);
+
 struct Log_Call_Frame
 {
     Log_Level level;
@@ -76,7 +79,6 @@ struct Log_Call_Frame
         va_end(ap);
     }
 };
-
 
 #define CIMPLE_FATAL(ARGS) \
     do \

@@ -204,7 +204,7 @@ make_shlib = link $(LINK_FLAGS) \
     -implib:$(call lib_target,$(1)) \
     $(2) \
     $(call _full_libs,$(3)) \
-    posix.lib \
+    cimpleposix.lib \
     $(_SYS_LIBS) $(EXTRA_SYS_LIBS) $(NL)
 
 ##==============================================================================
@@ -247,7 +247,7 @@ make_bin = $(CXX) $(FLAGS) \
     -Fe$(call binary_target,$(1)) \
     $(2) \
     $(call _full_libs,$(3)) \
-    posix.lib \
+    cimpleposix.lib \
     $(_SYS_LIBS) \
     -link $(LDPATH)
 

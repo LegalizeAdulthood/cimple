@@ -53,6 +53,13 @@ size_t strlcpy(char* dest, const char* src, size_t size);
 CIMPLE_CIMPLE_LINKAGE
 size_t strlcat(char* dest, const char* src, size_t size);
 
+CIMPLE_CIMPLE_LINKAGE
+int find_token(
+    const char* str, 
+    const char* delimiters, 
+    const char*& start,
+    const char*& end);
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Strings_h */

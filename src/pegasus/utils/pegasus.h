@@ -35,6 +35,11 @@
 # define PEGASUS_EMBEDDED_INSTANCE_SUPPORT
 #endif
 
+namespace Pegasus
+{
+    class MessageLoaderParms;
+}
+
 #include <Pegasus/Common/String.h>
 #include <Pegasus/Common/CIMName.h>
 #include <Pegasus/Common/Exception.h>

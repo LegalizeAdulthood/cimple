@@ -2,7 +2,9 @@ TOP = ../..
 POSIX_MAKEFILE=1
 include $(TOP)/mak/config.mak
 
-STATIC_LIBRARY = posix
+STATIC_LIBRARY = cimpleposix
+
+INSTALL=1
 
 SOURCES = \
     dirent.cpp \

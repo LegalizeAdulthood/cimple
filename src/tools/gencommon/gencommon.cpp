@@ -101,7 +101,7 @@ static int _find_schema_mof(const char* path, string& schema_mof)
 
 void setup_mof_path()
 {
-    char* mof_path = getenv("CIMPLE_MOF_PATH");
+    const char* mof_path = getenv("CIMPLE_MOF_PATH");
 
 #if defined(CIMPLE_WINDOWS)
     if (!mof_path)
@@ -191,4 +191,3 @@ void load_repository(const vector<string>& extra_mof_files)
     for (size_t i = 0; i < mof_files.size(); i++)
         MOF_parse_file(mof_files[i].c_str());
 }
-

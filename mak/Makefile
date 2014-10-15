@@ -3,31 +3,20 @@ include $(TOP)/mak/config.mak
 
 all:
 
-include $(TOP)/mak/rules.mak
+CIMPLEDIR=$(DATADIR_OPT)/cimple
+MAKDIR=$(CIMPLEDIR)/mak
 
-vars:
-	@ echo LIBDIR{$(LIBDIR)}
-	@ echo BINDIR{$(BINDIR)}
-	@ echo HOST_OPT{$(HOST_OPT)}
-	@ echo PREFIX_OPT{$(PREFIX_OPT)}
-	@ echo BINDIR_OPT{$(BINDIR_OPT)}
-	@ echo LIBDIR_OPT{$(LIBDIR_OPT)}
-	@ echo INCLUDEDIR_OPT{$(INCLUDEDIR_OPT)}
-	@ echo DATADIR_OPT{$(DATADIR_OPT)}
-	@ echo WITH_PEGASUS_OPT{$(WITH_PEGASUS_OPT)}
-	@ echo WITH_CMPI_OPT{$(WITH_CMPI_OPT)}
-	@ echo WITH_OPENWBEM_OPT{$(WITH_OPENWBEM_OPT)}
-	@ echo WITH_SCHEMA_OPT{$(WITH_SCHEMA_OPT)}
-	@ echo ENABLE_DEBUG_OPT{$(ENABLE_DEBUG_OPT)}
-	@ echo ENABLE_STATIC_OPT{$(ENABLE_STATIC_OPT)}
-	@ echo ENABLE_EMBEDDED_INSTANCES_OPT{$(ENABLE_EMBEDDED_INSTANCES_OPT)}
-	@ echo PLATFORM{$(PLATFORM)}
-	@ echo LIBBASE_OPT{$(LIBBASE_OPT)}
-	@ echo WITH_PEGASUS_LIBDIR_OPT{$(WITH_PEGASUS_LIBDIR_OPT)}
-	@ echo WITH_PEGASUS_INCLUDES_OPT{$(WITH_PEGASUS_INCLUDES_OPT)}
-	@ echo CMPI_VOID_RETURN_BUG_OPT{$(CMPI_VOID_RETURN_BUG_OPT)}
-	@ echo DESTDIR{$(DESTDIR)}
-	@ echo RPATH{$(RPATH)}
-	@ echo LDPATH{$(LDPATH)}
-	@ echo LD_LIBRARY_PATH{$(LD_LIBRARY_PATH)}
-	@ echo WITH_NAMESPACE_OPT{$(WITH_NAMESPACE_OPT)}
+install: uninstall
+	$(call mkdirhier,$(DESTDIR)$(CIMPLEDIR))
+	$(call cpdirhier,$(TOP)/mak,$(DESTDIR)$(MAKDIR))
+	$(call cp,$(TOP)/config.options,$(DESTDIR)$(CIMPLEDIR))
+
+uninstall:
+	$(call rmdirhier,$(DESTDIR)$(MAKDIR))
+	$(call rm,$(DESTDIR)$(CIMPLEDIR)/config.options)
+
+install:
+
+clean:
+
+include $(TOP)/mak/rules.mak

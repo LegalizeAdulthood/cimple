@@ -1,0 +1,10 @@
+
+Configuring for use with inova-pegasus distribution:
+====================================================
+
+    $ ./configure --prefix=PREFIX --with-pegasus=PREFIX
+
+For example:
+
+    $ ./configure --prefix=/usr/inova/pegasus --with-pegasus=/usr/inova/pegasus
+

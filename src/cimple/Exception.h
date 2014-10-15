@@ -39,30 +39,36 @@ public:
 
     enum Code
     {
+        // Statndard CIM status codes:
         FAILED = 1,
-        BAD_CAST = 2,
-        BAD_NAME = 3,
-        ALREADY_EXISTS = 4,
-        INCOMPATIBLE_OVERRIDE = 5,
-        BAD_SUBSCRIPT = 6,
-        NO_SUCH_FEATURE = 7,
-        NO_SUCH_PROPERTY = 8,
-        NO_SUCH_REFERENCE = 9,
-        NO_SUCH_METHOD = 10,
-        TYPE_MISMATCH = 11,
-        NULL_ACCESS = 12,
-        BOUNDS = 13,
-        BAD_URL = 14,
-        ALREADY_CONNECTED = 15,
-        CONNECT_FAILED = 16,
-        CONVERSION_ERROR = 17,
-        NOT_FOUND = 18,
-        EXHAUSTED_ENUMERATOR = 19,
-        UNINITIALIZED_ENUMERATOR = 20,
-        NOT_CONNECTED = 21,
-        UNKNOWN_CLASS = 22,
-        UNKNOWN_METHOD = 23,
-        UNKNOWN_PARAM = 24,
+        ACCESS_DENIED = 2,
+        INVALID_NAMESPACE = 3,
+        INVALID_PARAMETER = 4,
+        INVALID_CLASS = 5,
+        NOT_FOUND = 6,
+        NOT_SUPPORTED = 7,
+        CLASS_HAS_CHILDREN = 8,
+        CLASS_HAS_INSTANCES = 9,
+        INVALID_SUPERCLASS = 10,
+        ALREADY_EXISTS = 11,
+        NO_SUCH_PROPERTY = 12,
+        TYPE_MISMATCH = 13,
+        QUERY_LANGUAGE_NOT_SUPPORTED = 14,
+        INVALID_QUERY = 15,
+        METHOD_NOT_AVAILABLE = 16,
+        METHOD_NOT_FOUND = 17,
+        NAMESPACE_NOT_EMPTY = 20,
+
+        // Extended error codes:
+        BAD_CAST = 1000,
+        NULL_ACCESS,
+        BAD_URL,
+        ALREADY_CONNECTED,
+        NOT_CONNECTED,
+        CONNECT_FAILED,
+        BAD_XML,
+        BAD_ENUMERATOR,
+        BAD_CONVERSION,
     };
 
     Exception(Code code);
@@ -77,6 +83,8 @@ public:
     Exception& operator=(const Exception& x);
 
     const String& message() const;
+
+    static bool valid_cim_code(uint32 code);
 
 private:
     Code _code;

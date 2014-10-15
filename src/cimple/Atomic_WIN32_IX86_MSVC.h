@@ -27,6 +27,7 @@
 #ifndef _cimple_Atomic_WIN32_IX86_MSVC_h
 #define _cimple_Atomic_WIN32_IX86_MSVC_h
 
+#define CIMPLE_ATOMIC_INITIALIZER { 0 }
 
 #include "config.h"
 

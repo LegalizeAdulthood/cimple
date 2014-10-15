@@ -44,7 +44,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 static int _get_mac_addr(uint8 addr[6])
 {
-#if defined(CIMPLE_OS_DARWIN)
+#if defined(CIMPLE_OS_DARWIN) || defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
 
 /*
 ATTN: fix this:

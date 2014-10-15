@@ -151,7 +151,7 @@ void Instance_Ref::_set_inst_array(void* x_, const void* y_)
 
 void Instance_Ref::_throw_null_access(const char* name) const
 {
-    throw Exception(Exception::NULL_ACCESS, "accessed null feature: %s_Ref.%s",
+    throw Exception(Exception::NULL_ACCESS, "on feature %s_Ref.%s",
         _inst->meta_class->name, name);
 }
 

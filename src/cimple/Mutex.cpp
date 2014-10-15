@@ -28,47 +28,158 @@
 #include "Magic.h"
 #include <pthread.h>
 
+#if defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
+# define PTHREAD_MUTEX_RECURSIVE_NP PTHREAD_MUTEX_RECURSIVE
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
 struct MutexRep
 {
     Magic<0x482A8C83> magic;
     pthread_mutex_t mutex;
+#ifdef CIMPLE_NO_RECURSIVE_MUTEXES
+    int recursive;
+    pthread_cond_t cond;
+    pthread_t owner;
+    int count;
+#endif
 };
 
 Mutex::Mutex(bool recursive)
 {
-    new(_rep) MutexRep();
+    CIMPLE_ASSERT(sizeof(MutexRep) <= sizeof(_rep));
+
+    MutexRep* rep = (MutexRep*)_rep;
+    new(rep) MutexRep();
+
+#ifdef CIMPLE_NO_RECURSIVE_MUTEXES
+
+    memset(rep, 0, sizeof(MutexRep));
+    pthread_mutex_init(&rep->mutex, NULL);
+
+    if (recursive)
+    {
+        rep->recursive = 1;
+        pthread_cond_init(&rep->cond, NULL);
+        rep->owner = 0;
+        rep->count = 0;
+    }
+    else
+        rep->recursive = 0;
+
+#else /* CIMPLE_NO_RECURSIVE_MUTEXES */
 
     if (recursive)
     {
         pthread_mutexattr_t attr;
         pthread_mutexattr_init(&attr);
         pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
-        pthread_mutex_init(&((MutexRep*)_rep)->mutex, &attr);
+        pthread_mutex_init(&rep->mutex, &attr);
         pthread_mutexattr_destroy(&attr);
     }
     else
-        pthread_mutex_init(&((MutexRep*)_rep)->mutex, NULL);
+        pthread_mutex_init(&rep->mutex, NULL);
+
+#endif /* CIMPLE_NO_RECURSIVE_MUTEXES */
 }
 
 Mutex::~Mutex()
 {
     CIMPLE_ASSERT(((MutexRep*)_rep)->magic);
-    pthread_mutex_destroy(&((MutexRep*)_rep)->mutex);
-    ((MutexRep*)_rep)->~MutexRep();
+
+    MutexRep* rep = (MutexRep*)_rep;
+
+#ifdef CIMPLE_NO_RECURSIVE_MUTEXES
+
+    pthread_mutex_destroy(&rep->mutex);
+
+    if (rep->recursive)
+        pthread_cond_destroy(&rep->cond);
+
+#else /* CIMPLE_NO_RECURSIVE_MUTEXES */
+
+    pthread_mutex_destroy(&rep->mutex);
+    rep->~MutexRep();
+
+#endif /* CIMPLE_NO_RECURSIVE_MUTEXES */
 }
 
 void Mutex::lock()
 {
     CIMPLE_ASSERT(((MutexRep*)_rep)->magic);
+    MutexRep* rep = (MutexRep*)_rep;
+
+#ifdef CIMPLE_NO_RECURSIVE_MUTEXES
+
+    if (rep->recursive)
+    {
+        pthread_t self = pthread_self();
+
+        pthread_mutex_lock(&rep->mutex);
+        {
+            if (rep->count == 0)
+            {
+                rep->owner = self;
+            }
+            else if (!pthread_equal(rep->owner, self))
+            {
+                while (rep->count > 0)
+                    pthread_cond_wait(&rep->cond, &rep->mutex);
+
+                rep->owner = self;
+            }
+
+            rep->count++;
+        }
+        pthread_mutex_unlock(&rep->mutex);
+    }
+    else
+        pthread_mutex_lock(&rep->mutex);
+
+#else /* CIMPLE_NO_RECURSIVE_MUTEXES */
+
     pthread_mutex_lock(&((MutexRep*)_rep)->mutex);
+
+#endif /* CIMPLE_NO_RECURSIVE_MUTEXES */
 }
 
 void Mutex::unlock()
 {
     CIMPLE_ASSERT(((MutexRep*)_rep)->magic);
+    MutexRep* rep = (MutexRep*)_rep;
+
+#ifdef CIMPLE_NO_RECURSIVE_MUTEXES
+
+    if (rep->recursive)
+    {
+        pthread_t self = pthread_self();
+
+        pthread_mutex_lock(&rep->mutex);
+        {
+            // If not locked or if calling thread is not the locker.
+
+            if (rep->count == 0 || !pthread_equal(rep->owner, self))
+                assert(0);
+
+            rep->count--;
+
+            if (rep->count == 0)
+            {
+                rep->owner = 0;
+                pthread_cond_signal(&rep->cond);
+            }
+        }
+        pthread_mutex_unlock(&rep->mutex);
+    }
+    else
+        pthread_mutex_unlock(&rep->mutex);
+
+#else /* CIMPLE_NO_RECURSIVE_MUTEXES */
+
     pthread_mutex_unlock(&((MutexRep*)_rep)->mutex);
+
+#endif /* CIMPLE_NO_RECURSIVE_MUTEXES */
 }
 
 CIMPLE_NAMESPACE_END

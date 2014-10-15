@@ -43,7 +43,7 @@ Configure examples.
             --libdir=$PEGASUS_HOME/lib \
             --with-pegasus=$PEGASUS_HOME \
             --with-pegasus-libdir=$PEGASUS_HOME/lib \
-            --with-pegasus-includes=$PEGASUS_ROOT/include \
+            --with-pegasus-includes=$PEGASUS_ROOT/src \
             --with-cmpi=$PEGASUS_ROOT/src/Pegasus/Provider/CMPI
 
 Options:
@@ -58,6 +58,8 @@ Options:
                                     s390x-unknown-linux-gnu
                                     ppc-unknown-linux-gnu
                                     ppc64-unknown-linux-gnu
+                                    arm-wrs-vxworks-gnu
+                                    sparc-sun-solaris-gnu
     --prefix=DIR                Install under DIR
     --bindir=DIR                Install programs here.
     --libdir=DIR                Install libraries here.

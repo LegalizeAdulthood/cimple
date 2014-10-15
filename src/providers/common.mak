@@ -5,5 +5,5 @@ endif
 
 ifdef CIMPLE_PEGASUS_MODULE
   DEFINES += -DCIMPLE_PEGASUS_MODULE
-  LIBRARIES += cimplepegadap cimple pegprovider pegcommon
+  LIBRARIES += cimplepegadap cimple
 endif

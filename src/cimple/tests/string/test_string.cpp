@@ -453,8 +453,6 @@ int main(int argc, char** argv)
         v.remove(0, 1);
         v.remove(0, 1);
         v.remove(0, 1);
-
-        printf("+++++ passed all tests (%s)\n", argv[0]);
     }
 
     // Octet string testing.
@@ -491,6 +489,7 @@ int main(int argc, char** argv)
         assert(arr.size() == sizeof(data1));
     }
 
+    printf("+++++ passed all tests (%s)\n", argv[0]);
+
     return 0;
 }
-

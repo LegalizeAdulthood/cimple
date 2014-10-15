@@ -36,10 +36,6 @@ ifeq ($(ENABLE_EMBEDDED_INSTANCES_OPT),1)
     DIRS += Embedded Embedded/TestEmbedded All All/TestAll
 endif
 
-ifdef CIMPLE_UNIX
-  DIRS += UnixUser
-endif
-
 include $(TOP)/mak/dir.mak
 include ../pegasus/check-pegasus.mak
 include ../cmpi/check-cmpi.mak

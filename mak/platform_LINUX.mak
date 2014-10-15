@@ -102,8 +102,6 @@ else
   FLAGS += -O2
 endif
 
-#FLAGS += -Wswitch-enum -Wno-unused-label
-
 ##==============================================================================
 ##
 ## OBJ
@@ -166,7 +164,6 @@ else
   LDPATH = $(addprefix -L,$(LIBDIR) $(WITH_PEGASUS_LIBDIR_OPT))
 endif
 
-
 ##==============================================================================
 ##
 ## LD_LIBRARY_PATH
@@ -185,29 +182,18 @@ endif
 ##
 ##==============================================================================
 
-ifdef UNDEFINED
-  RPATH_OPTION = -Wl,-rpath=
-  RPATH_ARGS = $(LIBDIR_OPT)
+RPATH_OPTION = -Wl,-rpath=
+RPATH_ARGS = $(LIBDIR_OPT)
 
-  ifneq ($(WITH_PEGASUS_LIBDIR_OPT),)
-    RPATH_ARGS += $(WITH_PEGASUS_LIBDIR_OPT)
-  endif
-
-  RPATH = $(addprefix $(RPATH_OPTION),$(RPATH_ARGS))
+ifdef RPATH1
+ RPATH_ARGS += $(RPATH1)
 endif
 
-##==============================================================================
-##
-## STATIC_CXX
-##
-##     Name of static standard C++ library. To link libstdc++ statically:
-##
-##         ln -s $(STATIC_CXX) libstdc++.a
-##         g++ -o erp -L.
-##
-##==============================================================================
+ifdef RPATH2
+ RPATH_ARGS += $(RPATH2)
+endif
 
-STATIC_CXX=$(shell $(CXX) --print-file-name=libstdc++.a)
+RPATH = $(addprefix $(RPATH_OPTION),$(RPATH_ARGS))
 
 ##==============================================================================
 ##
@@ -318,14 +304,6 @@ make_c_obj = $(CC) -c $(FLAGS) $(DEFINES) $(INCLUDES) -o $*.o $*.c
 ##==============================================================================
 
 abs_path = $(shell mkdir -p $(1); cd $(1); pwd)
-
-##==============================================================================
-##
-## VALGRIND
-##
-##==============================================================================
-
-VALGRIND = valgrind --tool=memcheck --alignment=8 --leak-check=yes
 
 ##==============================================================================
 ##

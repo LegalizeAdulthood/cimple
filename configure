@@ -47,7 +47,7 @@ do
       ;;
 
     --includedir=*)
-      incdir=$optarg
+      includedir=$optarg
       ;;
 
     --datadir=*)
@@ -178,6 +178,14 @@ if [ "$with_pegasus_env" = "1" ]; then
         host=ppc64-unknown-linux-gnu
         ;;
 
+      SOLARIS_SPARC_GNU)
+        host=sparc-sun-solaris-gnu
+        ;;
+
+      DARWIN_IX86_GNU)
+        host=i386-apple-darwin-gnu
+        ;;
+
       *)
           echo "$0: unsupported platform: PEGASUS_PLATFORM=$PEGASUS_PLATFORM"
           exit 1
@@ -235,6 +243,22 @@ case "$host" in
     ppc64-unknown-linux-gnu)
         platform=LINUX_PPC64_GNU
         libbase=lib64
+        ;;
+
+    arm-wrs-vxworks-gnu)
+        platform=VXWORKS_XSCALE_GNU
+        libbase=lib
+        enable_static=1
+        ;;
+
+    sparc-sun-solaris-gnu)
+        platform=SOLARIS_SPARC_GNU
+        libbase=lib
+        ;;
+
+    i386-apple-darwin-gnu)
+        platform=DARWIN_IX86_GNU
+        libbase=lib
         ;;
 
     *)
