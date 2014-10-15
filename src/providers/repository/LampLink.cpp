@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_11737B1039C317579F5467253A6F1AFD;
+extern const Meta_Repository __meta_repository_48D39CF2E1A81164BA57916E443B1258;
 
 extern const Meta_Reference _LampLink_left;
 
@@ -60,7 +60,7 @@ const Meta_Class LampLink::static_meta_class =
     0, /* num_super_classes */
     2, /* num_keys */
     0xF296277D,/* crc */
-    &__meta_repository_11737B1039C317579F5467253A6F1AFD,
+    &__meta_repository_48D39CF2E1A81164BA57916E443B1258,
 };
 
 CIMPLE_NAMESPACE_END

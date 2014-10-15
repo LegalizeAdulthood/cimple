@@ -232,6 +232,8 @@ template<> struct __Array_Traits_Factory<void*> :
 //
 //==============================================================================
 
+struct Instance;
+
 template<> struct __Array_Traits_Factory<struct Instance*> : 
     public __Array_Traits_Factory_Raw<void*> { };
 
@@ -251,8 +253,6 @@ template<> struct __Array_Traits_Factory<const Meta_Class*> :
 // __Array_Traits_Factory<struct Instance*> specialization.
 //
 //==============================================================================
-
-struct Instance;
 
 template<> struct __Array_Traits_Factory<const Instance*> : 
     public __Array_Traits_Factory_Raw<void*> { };

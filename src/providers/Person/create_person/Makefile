@@ -5,6 +5,8 @@ LIBRARIES = pegclient pegcommon
 
 EXTRA_INCLUDES = $(SYS_INCLUDES)
 
+LOCAL_DEFINES = -DPEGASUS_INTERNALONLY
+
 PROGRAM = create_person
 
 SOURCES = create_person.cpp

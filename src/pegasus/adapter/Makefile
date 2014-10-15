@@ -4,6 +4,8 @@ include $(ROOT)/mak/config.mak
 
 LIBRARY = cimplepegadap
 
+LOCAL_DEFINES = -DPEGASUS_INTERNALONLY
+
 SOURCES = \
     Pegasus_Thread_Context.cpp \
     Pegasus_Adapter.cpp \

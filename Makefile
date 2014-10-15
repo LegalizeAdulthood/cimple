@@ -80,12 +80,22 @@ regress:
 ##
 ##==============================================================================
 
-VERSION=0.99.20-beta
-PREFIX=$(HOME)/inova/www.cimple.org
-PACKAGE=$(PREFIX)/cimple-$(VERSION).tar.gz
+VERSION=0.99.22-beta
+TAG=cimple_0_99_22_beta
+PRIOR_TAG=cimple_0_99_20_beta
+
+##------------------------------------------------------------------------------
+
+TARBALL=cimple-$(VERSION).tar.gz
+DIFF_FILE=cimple-$(VERSION).diff
+RELEASE_NOTES=cimple-$(VERSION)-release-notes.txt
+PREFIX=$(HOME)/websites/www.cimple.org
 
 release:
 	$(MAKE) distclean > /dev/null
-	@ ( cd ..; tar zcf $(PACKAGE) cimple )
-	@ cp doc/release-notes-$(VERSION).txt $(PREFIX)
+	cvs tag -F $(TAG)
+	- cvs diff -r $(PRIOR_TAG) > $(PREFIX)/$(DIFF_FILE)
+	( cd ..; tar zcf $(PREFIX)/$(TARBALL) cimple )
+	cp doc/$(RELEASE_NOTES) $(PREFIX)/
 	@ echo "Created $(PACKAGE)..."
+

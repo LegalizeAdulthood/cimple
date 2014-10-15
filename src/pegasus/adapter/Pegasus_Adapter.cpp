@@ -466,7 +466,7 @@ void Pegasus_Adapter::invokeMethod(
     handler.deliver(return_value); 
 
     for (size_t i = 0; i < out_params.size(); i++)
-	handler.deliverParamValue(out_params[i]);
+	handler.deliverParamValue(out_params[Pegasus::Uint32(i)]);
 
     handler.complete();
 }

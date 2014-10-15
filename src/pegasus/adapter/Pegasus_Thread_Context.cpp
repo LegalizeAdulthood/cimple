@@ -40,6 +40,28 @@ Pegasus_Thread_Context::Pegasus_Thread_Context(
     _operation_context(operation_context),
     _delete_operation_context(delete_operation_context)
 {
+#if 0
+    // Experimental code to test feasibility of providing a username to
+    // the provider.
+    try
+    {
+        const Pegasus::OperationContext::Container& c =  
+            _operation_context->get(Pegasus::IdentityContainer::NAME);
+
+        const Pegasus::IdentityContainer* ic = 
+            dynamic_cast<const Pegasus::IdentityContainer*>(&c);
+
+        if (ic)
+        {
+            Pegasus::CString cstr = ic->getUserName().getCString();
+            printf("USERNAME[%s]\n", (const char*)cstr);
+        }
+    }
+    catch (...)
+    {
+        assert(0);
+    }
+#endif
 }
 
 Pegasus_Thread_Context::~Pegasus_Thread_Context()

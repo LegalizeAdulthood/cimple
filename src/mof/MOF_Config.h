@@ -83,6 +83,8 @@ inline MOF_sint64 strtoll(const char* str, char** end_ptr, int base)
 {
     return strtol(str, end_ptr, base);
 }
+# pragma warning ( disable : 4996 )
 #endif
+
 
 #endif /* _MOF_Config_h */

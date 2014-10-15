@@ -138,7 +138,8 @@ struct _to_pegasus_array_helper
 	Pegasus::CIMValue& value)
     {
 	const Array<CT>& tmp = *((const Array<CT>*)field);
-	Pegasus::Array<PT> array((const PT*)tmp.data(), tmp.size());
+	Pegasus::Array<PT> 
+	    array((const PT*)tmp.data(), Pegasus::Uint32(tmp.size()));
 	value.set(array);
     }
 };
@@ -226,7 +227,7 @@ static void _to_pegasus_array(
 	    Array_String& tmp = *((Array_String*)f);
 
 	    Pegasus::Array<Pegasus::String> array;
-	    array.reserveCapacity(tmp.size());
+	    array.reserveCapacity(Pegasus::Uint32(tmp.size()));
 
 	    for (size_t i = 0; i < tmp.size(); i++)
 		array.append(tmp[i].c_str());
@@ -240,7 +241,7 @@ static void _to_pegasus_array(
 	    Array<Datetime>& tmp = *((Array<Datetime>*)f);
 
 	    Pegasus::Array<Pegasus::CIMDateTime> array;
-	    array.reserveCapacity(tmp.size());
+	    array.reserveCapacity(Pegasus::Uint32(tmp.size()));
 
 	    for (size_t i = 0; i < tmp.size(); i++)
 	    {
@@ -318,7 +319,8 @@ static int _to_pegasus_value(
 	    if (is_array)
 		array_size = mp->subscript == -1 ? 0 : mp->subscript;
 
-	    value.setNullValue(Pegasus::CIMType(mp->type), is_array, array_size);
+	    value.setNullValue(Pegasus::CIMType(mp->type), is_array, 
+		Pegasus::Uint32(array_size));
 	    return 0;
 	}
 
@@ -601,6 +603,7 @@ static int _to_cimple_property(
 
 	    case Pegasus::CIMTYPE_REFERENCE:
 	    case Pegasus::CIMTYPE_OBJECT:
+	    case Pegasus::CIMTYPE_INSTANCE:
 		CIMPLE_ERROR(("unexpected condition"));
 		return -1;
 	}
@@ -671,7 +674,7 @@ static int _to_cimple_property(
 
 		Array<String> a;
 
-		for (size_t i = 0; i < tmp.size(); i++)
+		for (Pegasus::Uint32 i = 0; i < tmp.size(); i++)
 		    a.append(String(CStr(tmp[i])));
 
 		(*((Property<Array_String>*)f)).value = a;
@@ -686,7 +689,7 @@ static int _to_cimple_property(
 
 		Array<Datetime> a;
 
-		for (size_t i = 0; i < tmp.size(); i++)
+		for (Pegasus::Uint32 i = 0; i < tmp.size(); i++)
 		{
 		    Datetime dt;
 		    dt.set(CStr(tmp[i].toString()));
@@ -700,6 +703,7 @@ static int _to_cimple_property(
 
 	    case Pegasus::CIMTYPE_REFERENCE:
 	    case Pegasus::CIMTYPE_OBJECT:
+	    case Pegasus::CIMTYPE_INSTANCE:
 		CIMPLE_ERROR(("unexpected condition"));
 		return -1;
 	}
@@ -730,7 +734,7 @@ typedef const Pegasus::CIMValue (*Get_Value_Proc)(
 static const Pegasus::String _bindings_get_name(const void* data, size_t index)
 {
     Key_Bindings* bindings = (Key_Bindings*)data;
-    return (*bindings)[index].getName().getString();
+    return (*bindings)[Pegasus::Uint32(index)].getName().getString();
 }
 
 static const Pegasus::CIMValue _bindings_get_value(
@@ -742,7 +746,7 @@ static const Pegasus::CIMValue _bindings_get_value(
 
     try
     {
-	CStr cstr(bindings[index].getValue());
+	CStr cstr(bindings[Pegasus::Uint32(index)].getValue());
 	return Pegasus::XmlReader::stringToValue(0, cstr, expected_type);
     }
     catch (...)
@@ -754,7 +758,8 @@ static const Pegasus::CIMValue _bindings_get_value(
 static const Pegasus::String _instance_get_name(const void* data, size_t index)
 {
     Pegasus::CIMInstance* instance = (Pegasus::CIMInstance*)data;
-    return (*instance).getProperty(index).getName().getString();
+    return (*instance).getProperty(
+	Pegasus::Uint32(index)).getName().getString();
 }
 
 static const Pegasus::CIMValue _instance_get_value(
@@ -763,13 +768,13 @@ static const Pegasus::CIMValue _instance_get_value(
     Pegasus::CIMType expected_type)
 {
     Pegasus::CIMInstance* instance = (Pegasus::CIMInstance*)data;
-    return (*instance).getProperty(index).getValue();
+    return (*instance).getProperty(Pegasus::Uint32(index)).getValue();
 }
 
 static const Pegasus::String _params_get_name(const void* data, size_t index)
 {
     Params* params = (Params*)data;
-    return (*params)[index].getParameterName();
+    return (*params)[Pegasus::Uint32(index)].getParameterName();
 }
 
 static const Pegasus::CIMValue _params_get_value(
@@ -778,7 +783,7 @@ static const Pegasus::CIMValue _params_get_value(
     Pegasus::CIMType expected_type)
 {
     Params* params = (Params*)data;
-    return (*params)[index].getValue();
+    return (*params)[Pegasus::Uint32(index)].getValue();
 }
 
 static Instance* _make_cimple_instance(
@@ -1062,7 +1067,7 @@ int Converter::de_nullify_properties(
     {
 	// Do not denullify keys.
 
-	CStr name(pl[i]);
+	CStr name(pl[Pegasus::Uint32(i)]);
 
 	const Meta_Property* mp = (Meta_Property*)find_feature(mc, name);
 

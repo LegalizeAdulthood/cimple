@@ -44,4 +44,6 @@ namespace posix { };
 
 using namespace posix;
 
+#pragma warning ( disable : 4996 )
+
 #endif /* _cimple_posix_linkage_h */

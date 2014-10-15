@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_11737B1039C317579F5467253A6F1AFD;
+extern const Meta_Repository __meta_repository_48D39CF2E1A81164BA57916E443B1258;
 
 extern const Meta_Property _CIM_ManagedElement_Caption;
 
@@ -516,7 +516,7 @@ const Meta_Class CIM_MediaAccessDevice::static_meta_class =
     CIMPLE_ARRAY_SIZE(_super_classes),
     4, /* num_keys */
     0x2961C797,/* crc */
-    &__meta_repository_11737B1039C317579F5467253A6F1AFD,
+    &__meta_repository_48D39CF2E1A81164BA57916E443B1258,
 };
 
 CIMPLE_NAMESPACE_END

@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_11737B1039C317579F5467253A6F1AFD;
+extern const Meta_Repository __meta_repository_48D39CF2E1A81164BA57916E443B1258;
 
 extern const Meta_Property _MyEmbeddedClass_msg;
 
@@ -49,7 +49,7 @@ const Meta_Class MyEmbeddedClass::static_meta_class =
     0, /* num_super_classes */
     0, /* num_keys */
     0x6055EE67,/* crc */
-    &__meta_repository_11737B1039C317579F5467253A6F1AFD,
+    &__meta_repository_48D39CF2E1A81164BA57916E443B1258,
 };
 
 CIMPLE_NAMESPACE_END

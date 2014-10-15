@@ -72,10 +72,10 @@ void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
 	const char* STANDARD_FORMAT =  "%08u%02u%02u%02u.%06u:000";
 	const char* PRETTY_FORMAT =  "%08u %02u %02u %02u.%06u:000";
 
-	uint32 seconds = (_usec / SEC) % 60;
-	uint32 minutes = (_usec / MIN) % 60;
-	uint32 hours = (_usec / HOUR) % 24;
-	uint32 days = _usec / DAY;
+	uint32 seconds = uint32((_usec / SEC) % 60);
+	uint32 minutes = uint32((_usec / MIN) % 60);
+	uint32 hours = uint32((_usec / HOUR) % 24);
+	uint32 days = uint32(_usec / DAY);
 
 	sprintf(
 	    buffer, 
@@ -125,11 +125,11 @@ void Datetime::get_interval(
     uint32& seconds, 
     uint32& microseconds)
 {
-    seconds = (_usec / SEC) % 60;
-    minutes = (_usec / MIN) % 60;
-    hours = (_usec / HOUR) % 24;
-    days = _usec / DAY;
-    microseconds = _usec % 1000000;
+    seconds = uint32((_usec / SEC) % 60);
+    minutes = uint32((_usec / MIN) % 60);
+    hours = uint32((_usec / HOUR) % 24);
+    days = uint32(_usec / DAY);
+    microseconds = uint32(_usec % 1000000);
 }
 
 void Datetime::set_interval(
@@ -175,7 +175,7 @@ void Datetime::get_timestamp(
     hours = tm->tm_hour;
     minutes = tm->tm_min;
     seconds = tm->tm_sec;
-    microseconds = _usec % 1000000;
+    microseconds = uint32(_usec % 1000000);
     utc = _offset;
 }
 
@@ -318,7 +318,7 @@ bool Datetime::set(const char* str)
 
 	set_timestamp(
 	    year, month, day, hours, minutes, seconds, microseconds,
-	    sign == '+' ? utc : -utc);
+	    (sign == '+') ? utc : -sint32(utc));
 
 	return true;
     }

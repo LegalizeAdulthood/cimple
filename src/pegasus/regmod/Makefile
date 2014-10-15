@@ -2,6 +2,8 @@ ROOT = $(PEGASUS_ROOT)
 DIR = cimple/regmod
 include $(ROOT)/mak/config.mak
 
+LOCAL_DEFINES = -DPEGASUS_INTERNALONLY
+
 PROGRAM = regmod
 
 SOURCES = main.cpp

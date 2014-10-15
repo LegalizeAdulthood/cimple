@@ -112,7 +112,7 @@
 //==============================================================================
 
 #define CIMPLE_CLASS_DEPENDENCY(CLASS) \
-    static const char __class_##CLASS[] = "@(#)CLASS_DEPENDENCY=" #CLASS;
+    const char* __class_##CLASS = "@(#)CLASS_DEPENDENCY=" #CLASS;
 
 //==============================================================================
 //

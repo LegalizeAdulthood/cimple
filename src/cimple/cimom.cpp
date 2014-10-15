@@ -45,7 +45,9 @@ Instance_Enumerator::Instance_Enumerator() : _rep(0)
 Instance_Enumerator::~Instance_Enumerator()
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
+
+    if (!context)
+        return;
 
     context->instance_enumerator_destroy(_rep);
 }
@@ -53,7 +55,9 @@ Instance_Enumerator::~Instance_Enumerator()
 Instance_Enumerator::operator bool() const
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
+
+    if (!context)
+        return false;
 
     return context->instance_enumerator_more(_rep);
 }
@@ -61,17 +65,19 @@ Instance_Enumerator::operator bool() const
 void Instance_Enumerator::operator++(int)
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
 
-    context->instance_enumerator_next(_rep);
+    if (context)
+        context->instance_enumerator_next(_rep);
 }
 
 Ref<Instance> Instance_Enumerator::operator()() const
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
 
-    return context->instance_enumerator_get(_rep);
+    if (context)
+        return context->instance_enumerator_get(_rep);
+
+    return Ref<Instance>();
 }
 
 //==============================================================================
@@ -86,7 +92,6 @@ int cimom::enum_instances(
     Instance_Enumerator& enumerator)
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
 
     if (!context)
 	return -1;
@@ -107,7 +112,6 @@ Ref<Instance> cimom::get_instance(
     const Instance* model)
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
 
     if (context)
 	return context->get_instance(name_space, model);
@@ -120,7 +124,6 @@ int cimom::create_instance(
     const Instance* instance)
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
 
     if (context)
 	return context->create_instance(name_space, instance);
@@ -133,7 +136,6 @@ int cimom::delete_instance(
     const Instance* instance)
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
 
     if (context)
 	return context->delete_instance(name_space, instance);
@@ -146,7 +148,6 @@ int cimom::modify_instance(
     const Instance* instance)
 {
     Thread_Context* context = Thread_Context::top();
-    assert(context != 0);
 
     if (context)
 	return context->modify_instance(name_space, instance);

@@ -27,7 +27,6 @@
 #include <Pegasus/Common/Config.h>
 #include <cassert>
 #include <Pegasus/Client/CIMClient.h>
-#include <Pegasus/Common/XmlWriter.h>
 
 PEGASUS_USING_PEGASUS;
 PEGASUS_USING_STD;

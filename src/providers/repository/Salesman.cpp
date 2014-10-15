@@ -13,7 +13,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_11737B1039C317579F5467253A6F1AFD;
+extern const Meta_Repository __meta_repository_48D39CF2E1A81164BA57916E443B1258;
 
 extern const Meta_Property _Person_ssn;
 
@@ -66,7 +66,7 @@ const Meta_Class Salesman::static_meta_class =
     CIMPLE_ARRAY_SIZE(_super_classes),
     1, /* num_keys */
     0x7EA2FB5C,/* crc */
-    &__meta_repository_11737B1039C317579F5467253A6F1AFD,
+    &__meta_repository_48D39CF2E1A81164BA57916E443B1258,
 };
 
 CIMPLE_NAMESPACE_END
