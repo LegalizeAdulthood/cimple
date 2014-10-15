@@ -29,7 +29,7 @@
 
 using namespace cimple;
 
-int main(int arg, char** argv)
+int main(int /* argc */, char** argv)
 {
     Erp* inst = Erp::create();
     assert(inst != 0);

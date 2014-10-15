@@ -31,7 +31,7 @@
 
 using namespace cimple;
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** /* argv */)
 {
 #if 0
     AAA2* aaa2 = AAA2::create();

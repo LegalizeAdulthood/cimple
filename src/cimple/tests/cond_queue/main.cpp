@@ -83,7 +83,7 @@ static void* _reader(void* arg)
     return 0;
 }
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     // set up Cond_Queue with max 16 items in the queue
     Cond_Queue queue(16);

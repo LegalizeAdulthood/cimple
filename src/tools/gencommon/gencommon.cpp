@@ -124,7 +124,7 @@ void load_class_list_file(vector<string>& classes, const string& path)
 
 static string _schema_mof;
 
-static int _find_schema_mof(const char* path, string& schema_mof, bool verbose)
+static int _find_schema_mof(const char* path, string& schema_mof, bool /* verbose */)
 {
     schema_mof.erase(schema_mof.begin(), schema_mof.end());
 
@@ -284,7 +284,7 @@ int find_file(const char* path)
     return -1;
 }
 
-void load_repository(const vector<string>& extra_mof_files, bool verbose)
+void load_repository(const vector<string>& extra_mof_files, bool /* verbose */)
 {
     // Add the current directory to the search path:
 

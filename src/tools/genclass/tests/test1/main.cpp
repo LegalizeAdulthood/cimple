@@ -5,7 +5,7 @@
 
 using namespace cimple;
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
 #if 0
     for (size_t i = 0; i < 100; i++)

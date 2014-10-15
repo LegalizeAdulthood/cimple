@@ -85,7 +85,7 @@ static inline void _reserve(__String_Rep*& _rep, size_t n)
 }
 
 
-static void _append_char(__String_Rep*& _rep, char c)
+static void _append_char(__String_Rep*& _rep, char /* c */)
 {
     __String_Rep* rep;
 

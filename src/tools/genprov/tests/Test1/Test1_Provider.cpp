@@ -21,34 +21,34 @@ Unload_Status Test1_Provider::unload()
 }
 
 Get_Instance_Status Test1_Provider::get_instance(
-    const Test1* model,
-    Test1*& instance)
+    const Test1* /* model */,
+    Test1*& /* instance */)
 {
     return GET_INSTANCE_UNSUPPORTED;
 }
 
 Enum_Instances_Status Test1_Provider::enum_instances(
-    const Test1* model,
-    Enum_Instances_Handler<Test1>* handler)
+    const Test1* /* model */,
+    Enum_Instances_Handler<Test1>* /* handler */)
 {
     return ENUM_INSTANCES_OK;
 }
 
 Create_Instance_Status Test1_Provider::create_instance(
-    Test1* instance)
+    Test1* /* instance */)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
 
 Delete_Instance_Status Test1_Provider::delete_instance(
-    const Test1* instance)
+    const Test1* /* instance */)
 {
     return DELETE_INSTANCE_UNSUPPORTED;
 }
 
 Modify_Instance_Status Test1_Provider::modify_instance(
-    const Test1* model,
-    const Test1* instance)
+    const Test1* /* model */,
+    const Test1* /* instance */)
 {
     return MODIFY_INSTANCE_UNSUPPORTED;
 }

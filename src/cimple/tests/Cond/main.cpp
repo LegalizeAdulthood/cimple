@@ -55,7 +55,7 @@ int consumers_completed = 0;
 Mutex mutex(false);
 Cond cond;
 
-int main(int argc, char *argv[])
+int main(int /* argc */, char *argv[])
 {
     int r;
     void* value = 0;
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
 // Producer waits a second and then increments a variable and
 // signals the consumer that the varaible has been incremented.
-void* producer_signal (void* arg)
+void* producer_signal (void* /* arg */)
 {
     printf ("Signaling Producer: making item.\n");
     Time::sleep (1 * Time::SEC);
@@ -141,7 +141,7 @@ void* producer_signal (void* arg)
 
 // Producer waits a second and then increments a variable and
 // signals the consumer that the varaible has been incremented.
-void* producer_broadcast (void* arg)
+void* producer_broadcast (void* /* arg */)
 {
     printf ("Broadcasting Producer: making item.\n");
     Time::sleep (2 * Time::SEC);
@@ -156,7 +156,7 @@ void* producer_broadcast (void* arg)
     return NULL;
 }
 
-void* consumer (void* arg)
+void* consumer (void* /* arg */)
 {
     printf ("Consumer: waiting...\n");
 

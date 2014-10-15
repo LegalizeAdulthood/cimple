@@ -506,7 +506,7 @@ void test08()
 }
 #endif   // CIMPLE_ENABLE_ADAPTER_TRACE
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     verbose = getenv("CIMPLE_TEST_VERBOSE") ? true : false;
 

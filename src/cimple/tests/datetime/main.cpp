@@ -36,7 +36,7 @@ void check_datetime(const char* str)
     assert(strcmp(str, dt.ascii().c_str()) == 0);
 }
 
-int main(int arc, char** argv)
+int main(int /* argc */, char** argv)
 {
     {
         Datetime dt1 = Datetime::now();

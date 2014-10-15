@@ -96,7 +96,7 @@ namespace _enum_associator_names
     // 
     static bool _proc(
         Instance* assoc_instance, 
-        Enum_Instances_Status status, 
+        Enum_Instances_Status /* status */,
         void* client_data)
     {
         PENTRY("_enum_associator_names::_proc");
@@ -302,7 +302,7 @@ namespace enum_references
 
     static bool _proc(
         Instance* reference, 
-        Enum_Instances_Status status, 
+        Enum_Instances_Status /* status */, 
         void* client_data)
     {
         PENTRY("enum_references::_proc");
@@ -457,7 +457,7 @@ namespace get_instance
 
     static bool _proc(
         Instance* instance, 
-        Enum_Instances_Status status, 
+        Enum_Instances_Status /* status */,
         void* client_data)
     {
         PENTRY("get_instance::_proc");

@@ -35,8 +35,8 @@ MOF_Element* MOF_Parameter::clone() const
 }
 
 int MOF_Parameter::compatible(
-    const char* class_name,
-    const char* method_name,
+    const char* /* class_name */,
+    const char* /* method_name */,
     MOF_Parameter* p1,
     MOF_Parameter* p2)
 {

@@ -165,7 +165,7 @@ const Meta_Class* Instance_Ref::meta_class() const
     return _inst->meta_class;
 }
 
-bool Instance_Ref::is_a(const Instance_Ref& x)
+bool Instance_Ref::is_a(const Instance_Ref&)
 {
     // Anything is a subclass of Instance.
     return true;

@@ -30,7 +30,7 @@
 
 using namespace cimple;
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     Property<uint32> a;
     a.value = 99;

@@ -29,7 +29,7 @@
 
 using namespace cimple;
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     YourClass* your = YourClass::create();
 

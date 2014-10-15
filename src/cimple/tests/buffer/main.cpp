@@ -621,7 +621,7 @@ static void* test01(void* arg)
     return arg;
 }
 
-int main(int argc, char *argv[])
+int main(int /* argc */, char *argv[])
 {
     test01((void*)0);
 
@@ -631,7 +631,7 @@ int main(int argc, char *argv[])
     Thread threads[N];
     if (verbose)
     {
-        printf("Repeat test with Multiple %d Threads\n", N);
+        printf("Repeat test with Multiple %d Threads\n", int(N));
     }
 
     // Set up the multiple threads

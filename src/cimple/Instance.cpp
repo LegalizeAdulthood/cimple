@@ -1666,7 +1666,7 @@ void __print_scalar(FILE* os, uint32 type, const void* ptr)
     }
 }
 
-void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth)
+void __print_array(FILE* os, uint32 type, const void* ptr, size_t /* depth */)
 {
     fprintf(os, "{ ");
 

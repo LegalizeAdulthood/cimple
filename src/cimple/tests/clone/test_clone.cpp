@@ -30,7 +30,7 @@
 
 using namespace cimple;
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     MyClass* inst1 = MyClass::create();
     inst1->str.value = "Hello";

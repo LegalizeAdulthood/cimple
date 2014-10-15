@@ -214,7 +214,7 @@ void write_method(
 
 void write_methods(
     FILE* os,
-    const char* class_name, 
+    const char* /* class_name */, 
     const MOF_Class_Decl* class_decl,
     bool do_definition)
 {
@@ -496,7 +496,7 @@ void expand(string& text, const string& pattern, const string& replacement)
     }
 }
 
-int patch(string& data, const char* cn, const Patch& patch, bool def)
+int patch(string& data, const char* cn, const Patch& patch, bool /* def */)
 {
     string rt = patch.returns;
     string fn = patch.func;
@@ -902,7 +902,7 @@ int main(int argc, char** argv)
     if (optind == argc && class_list_file.size() == 0)
     {
         fprintf(stderr,"Error: No arguments and no classlist file.\n");
-        fprintf(stderr,"%s",(char*)USAGE, arg0);
+        fprintf(stderr, (char*)USAGE, arg0);
         exit(1);
     }
 	
@@ -926,7 +926,7 @@ int main(int argc, char** argv)
 
     // Create providers.
 	
-	for (int j = 0; j < classes.size(); j++)
+	for (int j = 0; j < int(classes.size()); j++)
         genprov(classes[j]);
 
     return 0;

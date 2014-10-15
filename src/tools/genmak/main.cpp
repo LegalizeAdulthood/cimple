@@ -31,7 +31,7 @@ static bool valid_library_name(const char* path)
     return p != path;
 }
 
-static void genmak(const char* pname, const char* library_name,
+static void genmak(const char* /* pname */, const char* library_name,
                    int argc, char** argv)
 {
     // Check library name:

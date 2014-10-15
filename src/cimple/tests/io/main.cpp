@@ -159,7 +159,7 @@ static void* test01(void* arg)
     return arg;
 }
 
-int main(int argc, char *argv[])
+int main(int /* argc */, char *argv[])
 {
     // execute the test in the main thread
     test01((void*)0);

@@ -38,7 +38,7 @@ void print(Array_String& v)
     printf("\n");
 }
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     {
         Array_uint32 v;

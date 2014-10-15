@@ -441,7 +441,7 @@ static void gen_module_file(const char* module_name, vector<string>& classes)
 
     vector<const MOF_Class_Decl*> cds;
 
-    for (int i = 0; i < classes.size(); i++)
+    for (int i = 0; i < int(classes.size()); i++)
     {
         // Lookup class.
 

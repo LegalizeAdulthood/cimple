@@ -108,9 +108,9 @@ int cimom::enum_instances(
 }
 
 int cimom::enum_instances(
-    const char* name_space, 
-    const Instance* model,
-    Array<Instance>& instances)
+    const char* /* name_space */, 
+    const Instance* /* model */,
+    Array<Instance>& /* instances */)
 {
     printf("NOT IMPLEMENTED.\n");
     // absolute assert. Should NEVER be called

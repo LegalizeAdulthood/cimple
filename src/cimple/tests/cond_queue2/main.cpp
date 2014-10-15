@@ -70,7 +70,7 @@ static void* _reader(void* arg)
     return 0;
 }
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** /* argv */)
 {
     // define a condition queue
     Cond_Queue queue(1);

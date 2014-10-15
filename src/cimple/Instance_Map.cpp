@@ -102,7 +102,7 @@ Get_Instance_Status Instance_Map_Base::_get_instance(
 }
 
 Enum_Instances_Status Instance_Map_Base::_enum_instances(
-    const Instance* model,
+    const Instance* /* model */,
     Enum_Instances_Proc proc,
     void* client_data)
 {

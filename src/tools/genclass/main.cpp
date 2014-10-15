@@ -549,7 +549,7 @@ void gen_value_scalar_def(
     nl();
 }
 
-void gen_flavors(const MOF_Qualifier_Decl* mqd, const MOF_Qualifier* mq)
+void gen_flavors(const MOF_Qualifier_Decl* /* mqd */, const MOF_Qualifier* mq)
 {
     // Now override with qualifier flavor.
 
@@ -1246,7 +1246,7 @@ void gen_param_prop_decl(
 }
 
 void gen_param_decls(
-    const char* class_name, 
+    const char* /* class_name */, 
     const MOF_Method_Decl* meth)
 {
     for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)

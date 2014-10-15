@@ -29,7 +29,7 @@
 
 using namespace cimple;
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     CIM_DatabaseAdministrator* inst = CIM_DatabaseAdministrator::create();
 

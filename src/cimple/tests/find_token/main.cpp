@@ -44,7 +44,7 @@ void get_toks(const char* str, Array<String>& toks)
     }
 }
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     {
         Array<String> toks;

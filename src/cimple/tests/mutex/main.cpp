@@ -504,7 +504,7 @@ static histogram h(20, 100, 0);
 // for each thread execute the work function WORKLOOP times.  If the
 // work function is busy, execute it in this thread. The try_lock allows
 // us to do this.
-static void *threadfunc(void *parm)
+static void *threadfunc(void* /* parm */)
 {
     uint32 localProcessingCompleted = 0;
     uint32 numberOfLocalProcessingBursts = 0;
@@ -607,7 +607,7 @@ void test04()
 }
 
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
 
 

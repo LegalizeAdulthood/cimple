@@ -146,7 +146,7 @@ void test7()
     assert(SubClass_Hnd::is_a(super2));
 }
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     test1();
     test2();

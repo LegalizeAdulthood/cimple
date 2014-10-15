@@ -171,7 +171,7 @@ static MOF_Qualifier_Info* _clone_propagated(
 
 MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
     const char* class_name,
-    const char* inst_name,
+    const char* /* inst_name */,
     const char* feature_name,
     const char* param_name,
     MOF_Qualifier* local_qualifiers,

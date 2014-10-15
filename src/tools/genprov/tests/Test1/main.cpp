@@ -26,7 +26,7 @@
 
 #include <cimple/cimple.h>
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     printf("+++++ passed all tests (%s)\n", argv[0]);
     return 0;
