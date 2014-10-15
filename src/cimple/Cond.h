@@ -59,7 +59,11 @@ public:
 private:
     Cond(const Cond&);
     Cond& operator=(const Cond&);
-    char _rep[64];
+    union
+    {
+        double alignemnt;
+        char _rep[128];
+    };
 };
 
 CIMPLE_NAMESPACE_END

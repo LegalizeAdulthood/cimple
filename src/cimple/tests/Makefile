@@ -13,6 +13,7 @@ DIRS = \
     class \
     clone \
     print \
-    datetime
+    datetime \
+    cond_queue
 
 include $(TOP)/mak/rules.mak

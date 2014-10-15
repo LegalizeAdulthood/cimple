@@ -45,11 +45,7 @@ static CMPIEnumeration* cimple_CBEnumInstances(
     const char** properties, 
     CMPIStatus* rc)
 {
-#if defined(CIMPLE_HAVE_CMPI_ENUM_INSTANCES_BUG)
-    return (mb->bft->enumInstances (mb, ctx, op, properties, rc));
-#else
-    return (mb->bft->enumerateInstances (mb, ctx, op, properties, rc));
-#endif
+    return (mb->bft->enumerateInstances(mb, ctx, op, properties, rc));
 }
 
 inline static CMPIStatus cimple_CBSetInstance(
@@ -58,11 +54,7 @@ inline static CMPIStatus cimple_CBSetInstance(
     const CMPIObjectPath* op, 
     const CMPIInstance* inst)
 {
-#if defined(CIMPLE_HAVE_CMPI_MODIFY_INSTANCE_BUG)
     return (mb->bft->modifyInstance(mb, ctx, op, inst, NULL));
-#else
-    return (mb->bft->setInstance(mb, ctx, op, inst, NULL));
-#endif
 }
 
 //==============================================================================

@@ -146,24 +146,11 @@ CMPI_Adapter::CMPI_Adapter(
     sd->instance_ft.miName = sd->inst_mi_name;
 
     sd->instance_ft.cleanup = CMPI_Adapter::instanceCleanup;
-
-#if defined(CIMPLE_HAVE_CMPI_ENUM_INSTANCES_BUG)
-    sd->instance_ft.enumInstanceNames = CMPI_Adapter::enumInstanceNames;
-    sd->instance_ft.enumInstances = CMPI_Adapter::enumInstances;
-#else
     sd->instance_ft.enumerateInstanceNames = CMPI_Adapter::enumInstanceNames;
     sd->instance_ft.enumerateInstances = CMPI_Adapter::enumInstances;
-#endif
-
     sd->instance_ft.getInstance = CMPI_Adapter::getInstance;
     sd->instance_ft.createInstance = CMPI_Adapter::createInstance;
-
-#if defined(CIMPLE_HAVE_CMPI_MODIFY_INSTANCE_BUG)
     sd->instance_ft.modifyInstance = CMPI_Adapter::modifyInstance;
-#else
-    sd->instance_ft.setInstance = CMPI_Adapter::modifyInstance;
-#endif
-
     sd->instance_ft.deleteInstance = CMPI_Adapter::deleteInstance;
     sd->instance_ft.execQuery = CMPI_Adapter::execQuery;
 

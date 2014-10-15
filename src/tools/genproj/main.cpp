@@ -16,6 +16,7 @@ using namespace std;
 
 static bool genmak_opt = false;
 static bool force_opt = false;
+static bool enum_opt = false;
 
 #if defined(CIMPLE_WINDOWS)
 
@@ -95,6 +96,9 @@ static void gen_project(const char* module_name, int argc, char** argv)
     // Run genclass:
     {
         string cmd = genclass + string(" -r -S");
+
+        if (enum_opt)
+            cmd += " -e";
 
         for (int i = 0; i < argc; i++)
             cmd += string(" ") + string(argv[i]);
@@ -207,7 +211,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "hVmf")) != -1)
+    while ((opt = getopt(argc, argv, "hVmfe")) != -1)
     {
         switch (opt)
         {
@@ -232,6 +236,12 @@ int main(int argc, char** argv)
             case 'f':
             {
                 force_opt = true;
+                break;
+            }
+
+            case 'e':
+            {
+                enum_opt = true;
                 break;
             }
 

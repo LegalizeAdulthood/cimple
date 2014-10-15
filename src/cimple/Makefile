@@ -6,6 +6,7 @@ INSTALL=1
 LIBRARY = cimple
 
 SOURCES = \
+    Cond_Queue.cpp \
     Exception.cpp \
     boolean.cpp \
     real.cpp \

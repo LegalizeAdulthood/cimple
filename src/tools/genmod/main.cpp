@@ -230,17 +230,27 @@ static void gen_module(const char* module_name, int argc, char** argv)
 
         if (mask & MOF_QT_INDICATION)
         {
-            fprintf(os, "  CIMPLE_CMPI_INDICATION_PROVIDER(%s_Provider);\n",
-                cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_INDICATION_PROVIDER(%s_Provider);\n", cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_INDICATION_PROVIDER2(%s_Provider, %s);\n",
+                cn, cn);
         }
         else if (mask & MOF_QT_ASSOCIATION)
         {
-            fprintf(os, "  CIMPLE_CMPI_ASSOCIATION_PROVIDER(%s_Provider);\n",
+            fprintf(os, 
+                "  CIMPLE_CMPI_ASSOCIATION_PROVIDER(%s_Provider);\n",
                 cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_ASSOCIATION_PROVIDER2(%s_Provider, %s);\n",
+                cn, cn);
         }
         else
         {
-            fprintf(os, "  CIMPLE_CMPI_INSTANCE_PROVIDER(%s_Provider);\n", cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_INSTANCE_PROVIDER(%s_Provider);\n", cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_INSTANCE_PROVIDER2(%s_Provider, %s);\n", cn, cn);
         }
     }
 

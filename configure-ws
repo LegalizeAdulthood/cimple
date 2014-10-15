@@ -1,0 +1,3 @@
+#!/bin/sh
+PEGASUS=/usr/ws/sdk/openpegasus
+./configure --prefix=/usr/ws/server/cimple --with-pegasus=$PEGASUS --with-pegasus-libdir=$PEGASUS/lib64 --with-pegasus-includes=$PEGASUS/include --with-cmpi=$PEGASUS/include

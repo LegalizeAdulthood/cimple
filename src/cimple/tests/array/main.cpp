@@ -162,6 +162,16 @@ int main(int argc, char** argv)
         w.remove(0, 2);
         assert(w.size() == 0);
 
+
+        Array_String x;
+        x = w;
+
+        Array_String y;
+        y.append("junk");
+        y = w;
+
+        Array_String xx(y);
+
         // print(w);
     }
 
@@ -189,6 +199,14 @@ int main(int argc, char** argv)
         assert(x.size() == 2);
         assert(x[0] == true);
         assert(x[1] == false);
+
+        Array<boolean> y;
+        y = x;
+        x = y;
+
+        Array<boolean> z;
+        z.append(true);
+        z = y;
     }
 
     assert(sizeof(Array<String>) == sizeof(__Array_Base));

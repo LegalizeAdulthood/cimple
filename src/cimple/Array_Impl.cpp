@@ -165,8 +165,11 @@ void __destruct(__Array_Rep* rep)
 
 void __assign(__Array_Rep*& rep, const __Array_Rep* x)
 {
-    _release(rep);
-    rep = _clone(x->traits, x->data, x->size);
+    if (rep != x)
+    {
+        _release(rep);
+        rep = _clone(x->traits, x->data, x->size);
+    }
 }
 
 void __reserve(__Array_Rep*& rep, size_t capacity)

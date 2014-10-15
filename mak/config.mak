@@ -63,16 +63,8 @@ include $(TOP)/mak/platform_$(PLATFORM).mak
 
 ifneq ($(WITH_CMPI_OPT),)
 
-  ifneq ($(call grep,void...enableIndications,$(WITH_CMPI_OPT)/cmpift.h),)
+  ifneq ($(call grep,void.*enableIndications,$(WITH_CMPI_OPT)/cmpift.h),)
     CMPI_VOID_RETURN_BUG_OPT=1
-  endif
-
-  ifneq ($(call grep,enumInstances,$(WITH_CMPI_OPT)/cmpift.h),)
-    CMPI_ENUM_INSTANCES_BUG_OPT=1
-  endif
-
-  ifneq ($(call grep,modifyInstance,$(WITH_CMPI_OPT)/cmpift.h),)
-    CMPI_MODIFY_INSTANCE_BUG_OPT=1
   endif
 
 endif

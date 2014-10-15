@@ -24,27 +24,49 @@
 **==============================================================================
 */
 
-#ifndef _cimple_cmpi_h
-#define _cimple_cmpi_h
+#include <Pegasus/Common/Config.h>
+#include <cassert>
+#include <Pegasus/Client/CIMClient.h>
 
-#include <cimple/cimple.h>
+PEGASUS_USING_PEGASUS;
+PEGASUS_USING_STD;
 
-#if defined(CIMPLE_PLATFORM_LINUX_IX86_GNU)
-#   define CMPI_PLATFORM_LINUX_GENERIC_GNU 1
-#elif defined(CIMPLE_PLATFORM_LINUX_X86_64_GNU)
-#   define CMPI_PLATFORM_LINUX_GENERIC_GNU 1
-#elif defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
-#   define CMPI_PLATFORM_WIN32_IX86_MSVC 1
-#elif defined(CIMPLE_PLATFORM_LINUX_PPC_GNU)
-#   define CMPI_PLATFORM_LINUX_PPC_GNU 1
-#elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
-#   define  CMPI_PLATFORM_SOLARIS_SPARC_GNU 1 
-#endif
+#define CIMPLE_TRACE printf("%d\n", __LINE__)
 
-#define enumInstances enumerateInstances
-#define enumInstanceNames enumerateInstanceNames
-#include <cmpidt.h>
-#include <cmpift.h>
-#include <cmpimacs.h>
+int main(int argc, char** argv)
+{
+    try
+    {
+        CIMClient client;
+        client.connectLocal();
 
-#endif /* _cimple_cmpi_h */
+        // Define object path:
+
+        CIMObjectPath cop("Employee.Id=4004");
+        CIMInstance ci("Employee");
+        ci.setPath(cop);
+
+        ci.addProperty(CIMProperty("Id", Uint32(4004)));
+        ci.addProperty(CIMProperty("First", String("Michael")));
+        ci.addProperty(CIMProperty("Last", String("Jackson")));
+        ci.addProperty(CIMProperty("Gender", Uint32(1)));
+        ci.addProperty(CIMProperty("Active", Boolean(true)));
+
+        // Invoke the method:
+
+        const String NAMESPACE = "root/cimv2";
+
+        CIMObjectPath cop2 = client.createInstance(NAMESPACE, ci);
+
+        assert(cop.toString() == cop2.toString());
+    }
+    catch(Exception& e)
+    {
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
+    }
+
+    PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);
+
+    return 0;
+}

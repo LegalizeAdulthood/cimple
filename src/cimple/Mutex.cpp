@@ -27,6 +27,7 @@
 #include "Mutex.h"
 #include "Magic.h"
 #include <pthread.h>
+#include <cassert>
 
 #if defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
 # define PTHREAD_MUTEX_RECURSIVE_NP PTHREAD_MUTEX_RECURSIVE
@@ -36,7 +37,6 @@ CIMPLE_NAMESPACE_BEGIN
 
 struct MutexRep
 {
-    Magic<0x482A8C83> magic;
     pthread_mutex_t mutex;
 #ifdef CIMPLE_NO_RECURSIVE_MUTEXES
     int recursive;
@@ -44,18 +44,19 @@ struct MutexRep
     pthread_t owner;
     int count;
 #endif
+    Magic<0x482A8C83> magic;
 };
 
 Mutex::Mutex(bool recursive)
 {
-    CIMPLE_ASSERT(sizeof(MutexRep) <= sizeof(_rep));
+    assert(sizeof(MutexRep) <= sizeof(_rep));
 
     MutexRep* rep = (MutexRep*)_rep;
+    memset(rep, 0, sizeof(MutexRep));
     new(rep) MutexRep();
 
 #ifdef CIMPLE_NO_RECURSIVE_MUTEXES
 
-    memset(rep, 0, sizeof(MutexRep));
     pthread_mutex_init(&rep->mutex, NULL);
 
     if (recursive)

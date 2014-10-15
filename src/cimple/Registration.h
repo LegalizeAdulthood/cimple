@@ -163,6 +163,34 @@ struct __CMPI_Static_Data
     __CIMPLE_CMPI_PROVIDER('M', Method, PROVIDER) \
     __CIMPLE_CMPI_PROVIDER('N', Indication, PROVIDER)
 
+// These entry points are for brokers that use the classname
+// as the provider name.
+
+#define __CIMPLE_CMPI_PROVIDER2(TYPE,TYPE_NAME,PROVIDER,CLASS) \
+    extern "C" CIMPLE_EXPORT void* CLASS##_Create_##TYPE_NAME##MI( \
+        void* cmpi_broker, \
+        void* cmpi_context, \
+        void* cmpi_status) \
+    { \
+        return PROVIDER##_Create_##TYPE_NAME##MI( \
+            cmpi_broker, \
+            cmpi_context,  \
+            cmpi_status); \
+    }
+
+#define CIMPLE_CMPI_INSTANCE_PROVIDER2(PROVIDER,CLASS)  \
+    __CIMPLE_CMPI_PROVIDER2('I', Instance, PROVIDER, CLASS) \
+    __CIMPLE_CMPI_PROVIDER2('M', Method, PROVIDER, CLASS)
+
+#define CIMPLE_CMPI_ASSOCIATION_PROVIDER2(PROVIDER, CLASS)  \
+    __CIMPLE_CMPI_PROVIDER2('I', Instance, PROVIDER, CLASS) \
+    __CIMPLE_CMPI_PROVIDER2('M', Method, PROVIDER, CLASS) \
+    __CIMPLE_CMPI_PROVIDER2('A', Association, PROVIDER, CLASS)
+
+#define CIMPLE_CMPI_INDICATION_PROVIDER2(PROVIDER, CLASS)  \
+    __CIMPLE_CMPI_PROVIDER2('M', Method, PROVIDER, CLASS) \
+    __CIMPLE_CMPI_PROVIDER2('N', Indication, PROVIDER, CLASS)
+
 //==============================================================================
 //
 // CIMPLE_CLASS_DEPENDENCY()

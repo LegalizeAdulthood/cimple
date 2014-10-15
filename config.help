@@ -25,7 +25,7 @@ Configure examples.
     Building CIMPLE for use with a Pegasus source distribution using the
     Pegasus environment variables to automatically deduce the options.
 
-        ./configure --pegasus-env
+        ./configure --with-pegasus-env
 
     Building CIMPLE for use with a Pegasus source distribution.
 

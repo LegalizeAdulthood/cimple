@@ -37,7 +37,7 @@ CIMPLE_NAMESPACE_BEGIN
     available. The enqueue() method blocks until there are less than
     max_size elements.
 */
-class CIMPLE_LIBCIMPLE_LINKAGE Cond_Queue
+class CIMPLE_CIMPLE_LINKAGE Cond_Queue
 {
 public:
 

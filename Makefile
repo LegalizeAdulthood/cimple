@@ -84,7 +84,7 @@ world: clean all regress
 
 MAJOR=1
 MINOR=2
-REVISION=0
+REVISION=4
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 
@@ -138,3 +138,4 @@ clean-all:
 	rm -rf ./lib64
 	rm -rf ./bin
 	rm -f `find . -name '*.o'`
+

@@ -29,6 +29,7 @@ DIRS = \
     CIM_ConcreteJob/meth \
     Delegate \
     Employee \
+    Employee/ci \
     Time \
     Time/InvokeTime \
 
