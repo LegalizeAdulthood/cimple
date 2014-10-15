@@ -20,9 +20,8 @@ export CIMPLE_HOME_TEST=$(CURDIR)
 ## This test tests for exact log output information.
 tests:
 ##  remove any temporary files
-	@ $(RM) .cimple -rf
+	@ $(RM) -rf .cimple 
 	@ $(RM) -rf .cimplerc
-	@ $(RM) -rf result
 
 	echo CIMPLE_HOME_TEST = $(CIMPLE_HOME_TEST)
 
@@ -38,13 +37,9 @@ ifdef DISABLE_LOG_MACROS_OPT
 endif
 	@ $(RM) .cimple -rf
 	@ $(RM) .cimplerc -rf
-	@ $(RM) result -rf
-
-
 ##
 vg:
 	echo CIMPLE_HOME_TEST = $(CIMPLE_HOME_TEST)
 	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)
-	$(RM) .cimple -rf
-	$(RM) .cimplerc
-	$(RM) result
+	@ $(RM) .cimple -rf
+	@ $(RM) .cimplerc

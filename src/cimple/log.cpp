@@ -46,6 +46,16 @@
     and by a file lock so that multiple processes could write to the
     same log file (The latter is required in the case of pegasus
     out of process logs)
+    If there are errors in the config file, the config file cannot be read,
+    or the log file created, this code creates entries in an emergency
+    log file in a fixed location (/tmp for linux and / for windows). Only
+    these emergency LOG_ERR and LOG_DIAG messages go into this file.
+    If the user is having problems with getting logs output for some reason
+    there is a macro LOG_DIAG that generates output and that can be
+    enabled by defining CIMPLE_LOG_DIAG_ENABLE (see below for the
+    definition) within this file. Note that
+    this is NOT part of the configuration and should be used only if there
+    are real questions about log output.
  
     FUTURE TODO:
        - Enable logging by provider or provider module
@@ -73,14 +83,33 @@
 # include <direct.h>
 #endif
 
+/***************************************************************************** 
+** 
+** log.cpp internal compile options
+**
+*****************************************************************************/ 
+// Enable this define to turn on the LOG_DIAG macros. This macro generates
+// emergency log outputs for the various steps of log output and should be
+// used ONLY to debug issues where the user expects log output but there is
+// none.  When enabled it generates entries to the emergency log file for
+// many of the steps if reading the config file and initializing the log files.
+// Uncommnet the following line to enable the diagnostics.
+//#define CIMPLE_LOG_DIAG_ENABLE 1
+
+// This define enables the capability to show log handling errors to an
+// emergency log file in those cases where CIMPLE gets errors in the 
+// processing of the config file or the generation of logs.  Normally there
+// should be nothing in this file unless the log process itself has an
+// error.  This also generates output to stdout so that it can be viewed if
+// the provider is executing in the foreground.  Normally this define should
+// be set.  In earlier versions of CIMPLE is was controlled by CIMPLE_DEBUG
+// but with 2.0.22 is was separated from CIMPLE_DEBUG and controlled by the
+// following define which is enabled
+#define CIMPLE_SHOW_LOG_ERRORS_ENABLE 1
+
 // Define the name for the directory that normally used by CIMPLE including
 // for log output.  Also defines the prefix for the configuration file.
 #define DEFAULT_CONFIG_FILE_NAME ".cimple"
-
-// Temporary define to include code being used to test windows
-// rollover which has a problem with rename. Remove comment
-// from following line to test
-//#define WINDOWS_TEMP_TEST
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -146,6 +175,116 @@ static const char* _log_level_strings[] =
 static const size_t _num_strings =
     sizeof(_log_level_strings) / sizeof(_log_level_strings[0]);
 
+//**************************************************************************
+// Internal function to output errors  and diagnosticsin Log file handling.
+// This should only be called by functions in log.cpp and only through the
+// LOG_ERR and LOG_DIAG macros.
+#if !defined CIMPLE_SHOW_LOG_ERRORS_ENABLE || !defined CIMPLE_LOG_DIAG_ENABLE
+
+    //CIMPLE_PRINTF_ATTR(3, 4) // generates warning flag
+static void  _log_err_output(
+    const char* ErrName,
+    const char* file,
+    size_t line, 
+    const char* fmt,
+    va_list ap)
+{
+    Buffer buffer;
+    char datetime[Datetime::BUFFER_SIZE];
+    {
+        Datetime dt = Datetime::now();
+        dt.ascii(datetime, true);
+        char* dot = strchr(datetime, '.');
+
+        if (dot)
+            *dot = '\0';
+    }
+    buffer.format("%s:%s: %s(%u) : ", datetime, ErrName,
+        file, (uint32)line);
+
+    buffer.vformat(fmt, ap);
+
+    if (buffer[buffer.size()-1] != '\n')
+        buffer.append('\n');
+
+    printf("%s",buffer.data());
+
+    // Write the data to the emergency log buffer if can open file
+
+#ifdef CIMPLE_WINDOWS_MSVC
+    char emer_file_path[1024];
+    char * sysroot = getenv("SystemRoot");
+    strlcpy(emer_file_path, sysroot, sizeof(emer_file_path));
+    strlcat(emer_file_path, "\\Temp\\cimple_log_file_err_messages.log",
+        sizeof(emer_file_path));
+#else
+    const char* emer_file_path = "/tmp/cimple_log_err_messages";
+#endif
+
+    FILE * err_file_handle = fopen(emer_file_path, "a");
+    if (err_file_handle)
+    {
+        fwrite(buffer.data(), buffer.size(), 1, err_file_handle);
+        fclose(err_file_handle);
+    }
+}
+#endif
+
+//*************************************************************
+// The LOG_DIAG function is normally disabled and should be used only
+// in case you are having real issues debugging CIMPLE logging (ex.
+// do not get any logs).
+// Defines a macro (LOG_DIAG) to generate output for diagnosing issues
+// in handling of the log files by log.cpp.  This is special
+// because it displays operation of the logging functions themselves
+// so that log output cannot be used.
+// It is provided so that it can be optionally compiled if there
+// are issues with the operation of logging.
+// It outputs a printf to stdout so that info is only visible
+// when provider operating in forground.
+// THIS IS USED ONLY BY THE log.cpp module to generate info about
+// what is happening in log.cpp
+// ex.
+// LOG_DIAG(("Cannot create log file %s\n", file_name));
+// DO NOT USE THIS FOR ANYTHING EXCEPT TESTING OF ISSUES IN log.cpp
+// as it generates lots of output.
+//***************************************************************
+
+#ifdef CIMPLE_LOG_DIAG_ENABLE
+
+// struct define frame that contains output info and
+// invoke method to execute for LOG_DIAG
+struct Log_Diag_Call_Frame
+{
+    const char* file;
+    size_t line;
+
+    // holds line number of call
+    Log_Diag_Call_Frame(const char* file_, size_t line_) : 
+        file(file_), line(line_) { }
+    
+    //CIMPLE_PRINTF_ATTR(1, 2) generates error on linux
+    inline void invoke(const char* format, ...) 
+    {
+        va_list ap;
+        va_start(ap, format);
+        _log_err_output("LOG DIAGNOSTIC",  file, line, format, ap);
+        va_end(ap);
+    }
+};
+
+// define the macro that implements LOG_DIAG behavior
+# define LOG_DIAG(ARGS) \
+    do \
+    { \
+        Log_Diag_Call_Frame frame(__FILE__,__LINE__); \
+        frame.invoke ARGS ; \
+    } \
+    while (0)
+#else    // CIMPLE_LOG_DIAG NOT Enabled
+# define LOG_DIAG(ARGS)
+#endif
+
 //*************************************************************
 // Define a macro to generate output for errors in creation and 
 // handling of the log files.  This is special because the normal
@@ -154,29 +293,15 @@ static const size_t _num_strings =
 // mode and outputs a simple printf so that info is only visible
 // when provider operating in forground.
 // THIS IS USED ONLY BY THE log.cpp module to generate info about
-// errors in log file handling.
+// errors in log file config, initialization, and handling.
 // ex.
-// LOG_ERR(("Cannot create log file\n"));
+// LOG_ERR(("Cannot create log file %s\n", name));
 //***************************************************************
-#ifdef CIMPLE_DEBUG
-// internal function to output errors in Log file handling.
 
-    //CIMPLE_PRINTF_ATTR(3, 4) // generates warning flag
-static void  _log_err_output(
-    const char* file,
-    size_t line, 
-    const char* fmt,
-    va_list ap)
-{
-    Buffer buffer;
-    // TODO Add time to this possibly
-    buffer.vformat(fmt, ap);
-    printf("LOG FILE ERROR %s(%zd) : %s\n",file, line,
-       buffer.data());
-}
+#ifdef CIMPLE_SHOW_LOG_ERRORS_ENABLE
 
 // struct define frame that contains output info and
-// invoke method to execute
+// invoke method to execute for LOG_ERR
 struct Log_Err_Call_Frame
 {
     const char* file;
@@ -191,10 +316,12 @@ struct Log_Err_Call_Frame
     {
         va_list ap;
         va_start(ap, format);
-        _log_err_output(file, line, format, ap);
+        _log_err_output("LOG FILE ERROR", file, line, format, ap);
         va_end(ap);
     }
 };
+
+// define the macro that executes LOG_ERR behavior
 # define LOG_ERR(ARGS) \
     do \
     { \
@@ -202,7 +329,7 @@ struct Log_Err_Call_Frame
         frame.invoke ARGS ; \
     } \
     while (0)
-#else
+#else           // CIMPLE_DEBUG not enabled.
 # define LOG_ERR(ARGS)
 #endif
 
@@ -212,7 +339,9 @@ struct Log_Err_Call_Frame
 // Handlers for reading the configuration file
 // 
 // ************************************************************
-
+// TODO: This function forces open, and full read of the config file for
+// each parameter.  Change to common function so that we only read file 
+// once.
 static char* _get_opt_value(const char* path, const char* opt)
 {
     size_t opt_len = strlen(opt);
@@ -222,7 +351,12 @@ static char* _get_opt_value(const char* path, const char* opt)
     FILE* is = fopen(path, "r");
 
     if (!is)
+    {
+        LOG_ERR(("Cannot Open config file %s", path));
         return 0;
+    }
+
+    LOG_DIAG(("Config file %s opened for option %s", path, opt));
 
     // Scan file looking for option.
 
@@ -278,13 +412,14 @@ static char* _get_opt_value(const char* path, const char* opt)
     return 0;
 }
 
-// validate the text provided against the possible log level
+// Validate the text provided against the possible log level
 // string definitions.  Return 0 if valid with the correct enum
 // in level or -1 if no match.
 // Does a no case match against the level definition strings.
 // Returns 0 if txt matches one of the defined log_level strings and
 // also the level.
-// @return 0 if OK else -1
+// @return 0 if OK else -1.
+
 static int _validate_log_level(const char * txt, Log_Level& level)
 {
     for (size_t i = 0; i < _num_strings; i++)
@@ -292,38 +427,54 @@ static int _validate_log_level(const char * txt, Log_Level& level)
         if (strcasecmp(_log_level_strings[i], txt) == 0)
         {
             level = Log_Level(i);
+            LOG_DIAG(("LOG_LEVEL set to %u %s ",
+                level, _log_level_strings[i]));
             return 0;
         }
     }
+    level = LL_DBG;
+    LOG_ERR(("LOG_LEVEL param \"%s\"invalid. Set to %s.",
+             txt, _log_level_strings[level]));
     return -1;   // return invalid
 }
 
 // get the log level string definition from the
 // config file and if it is valid return 0.  If it is invalid
 // return -1. If variable not in file, return 1;
-static int _get_log_level(const char* path, Log_Level& level)
+static int _get_log_level_param(const char* path, Log_Level& level)
 {
     char* value_str = _get_opt_value(path, "LOG_LEVEL");
     
-    // return variable not in file status
+    // return. variable not in file status
     if (!value_str)
+    {
+        free(value_str);
         return 1;
+    }
 
     int rtn = _validate_log_level(value_str, level);
 
-    free(value_str);
     return rtn;
 }
 
 // Get a Uint32 value corresponding to the option name "name".  If the
-// name is not found
+// name is not found return 1.  If error in conversion return -1.
+// Good value return 0. 
+// @param path - Path to config file
+// @param name - Name of parameter
+// @param value - Return value and also default if not found.
+// @param maxValue - Maximum allowable value for this parameter.
+// TODO: Consider possible minimum value also.
 static int _get_log_opt_uint32(const char* path,
                                const char * name,
-                               uint32& value)
+                               uint32& value,
+                               uint32 maxValue)
 {
     char * value_str = _get_opt_value(path, name);
     if (!value_str)
     {
+        LOG_DIAG(("Config Param %s not found. Default %u",
+            name, value));
         return 1;
     }
     sint64 temp;
@@ -333,13 +484,28 @@ static int _get_log_opt_uint32(const char* path,
 
     if (temp < 0 || (temp > CIMPLE_UINT32_MAX) || (*end != '\0'))
     {
+        LOG_ERR(("Config error: %s value %s invalid", name, value_str));
+        free(value_str);
+        return -1;
+    }
+    if (temp > maxValue)
+    {
+        LOG_ERR(("Config error: %s value %lu exceeds max %u",
+                  name, temp, maxValue));
+        free(value_str);
         return -1;
     }
     value = (uint32)temp;
+    LOG_DIAG(("Config set %s to value %u", name, value));
     free(value_str);
     return 0;
 }
 
+// Get a boolean option name=value pair. value must be "true" or "false"
+// @param path - config file path
+// @param name - name of parameter
+// @param return value and also default since this function sets the
+// value 
 static int _get_log_opt_bool(const char* path,
                              const char * name,
                              bool& value)
@@ -347,6 +513,9 @@ static int _get_log_opt_bool(const char* path,
     char * value_str = _get_opt_value(path, name);
     if (!value_str)
     {
+        LOG_DIAG(("Config Param %s not found. default %s",
+                 name, (value? "true" : "false")));
+        free(value_str);
         return 1;
     }
     if (strcasecmp(value_str, "TRUE") == 0)
@@ -358,21 +527,31 @@ static int _get_log_opt_bool(const char* path,
         value = false;
     }
     else
+    {
+        LOG_ERR(("Config error: %s param value %s invalid",
+            name, value_str));
+        free(value_str);
         return -1;
+    }
 
     free(value_str);
+    LOG_DIAG(("Set boolean %s %s", name,
+        (value? "true" : "false")));
     return 0;
 }
 
-// get the new value for the max_log_file_size parameter
+// get the new value for the max_log_file_size parameter. Any valid Uint32
+// is legal for this parameter
 static int _get_log_maxLogFileSize_param(const char* path, uint32& rtnValue)
 {
-    return(_get_log_opt_uint32(path, "MAX_LOG_FILE_SIZE", rtnValue));
+    return(_get_log_opt_uint32(path, "MAX_LOG_FILE_SIZE", rtnValue,
+        CIMPLE_UINT32_MAX));
 }
 
 static int _get_log_maxLogBackupFiles_param(const char* path, uint32& rtnValue)
 {
-    return(_get_log_opt_uint32(path, "MAX_LOG_BACKUP_FILES", rtnValue));
+    return(_get_log_opt_uint32(path, "MAX_LOG_BACKUP_FILES", rtnValue,
+        MAXIMUM_NUMBER_BACKUP_FILES));
 }
 
 static int _get_log_enable_param(const char* path, bool& rtnValue)
@@ -381,10 +560,13 @@ static int _get_log_enable_param(const char* path, bool& rtnValue)
 }
 
 // Read config file for each defined name=value pair.  Any error aborts
-// the read.
+// the read. 
+// return 0 - good read. 1 values not found, -1 Error but continue
+// -2 return permanent error, get out.
 int _read_config(char * conf_path)
 {
-    if (_get_log_level(conf_path, _level) == -1)
+    LOG_DIAG(("Enter _read_config"));
+    if (_get_log_level_param(conf_path, _level) == -1)
         return -1;
 
     if (_get_log_maxLogFileSize_param(conf_path, _max_log_file_size) == -1)
@@ -396,6 +578,7 @@ int _read_config(char * conf_path)
     if( _get_log_enable_param(conf_path, _log_enabled_state) == -1)
         return -1;
 
+    LOG_DIAG(("Exit _read_config success"));
     return 0;
 }
 
@@ -414,6 +597,7 @@ static void _initialize(const char* name)
     {
         return;
     }
+    LOG_DIAG(("Enter log config _initialize() for config file %s", name));
     // Get home path for CIMPLE_HOME.
     // Defined originally in options as define and 
     // as String in this file.
@@ -421,7 +605,13 @@ static void _initialize(const char* name)
     const char* home = getenv(cimple_home_envvar.c_str());
 
     if (!home)
+    {
+        LOG_ERR(("No CIMPLE_HOME env var defined. Looking for %s",
+            cimple_home_envvar.c_str()));
         return;
+    }
+    LOG_DIAG(("CIMPLE home %s from env var %s",
+        home,cimple_home_envvar.c_str()));
 
     // Read parameters from .<name>rc configuration file.
     char conf_path[1024];
@@ -430,8 +620,11 @@ static void _initialize(const char* name)
 
     // WARNING: errors here are not really caught since the only way
     // to display is the log and these represent a log error.
-    if (_read_config(conf_path) == -1)
+    if (_read_config(conf_path) == -2)
+    {
+        LOG_ERR(("Config file input error. %s", conf_path));
         return;
+    }
 
     // Create $HOME/.cimple directory.
 
@@ -451,6 +644,7 @@ static void _initialize(const char* name)
         strlcpy(log_file_path, root_path, sizeof(log_file_path));
         strlcat(log_file_path, "/messages", sizeof(log_file_path));
     }
+    LOG_DIAG(("Log file at %s",log_file_path));
 
     // Form path to lock file:
 
@@ -468,20 +662,27 @@ static void _initialize(const char* name)
     }
     
     // Fail if cannot create lock file.  This is the out if everything
-    // fails.
+    // fails. And means we do not initialize at all.  Also means we
+    // keep trying to initialize.
+    // TODO: This should probably mark logging disabled and get out
+    // after setting initialize. Otherwise we keep retrying.
     if (!_file_lock->okay())
     {
       delete _file_lock;
       _file_lock = 0;
-      LOG_ERR(("log file lock create error %s", lock_file_path));
+      LOG_ERR(("Log file lock create error %s", lock_file_path));
       return;
     }
+
+    LOG_DIAG(("Log lock ok file at %s", lock_file_path));
 
     // initialize _log_file_size by getting size of file and putting
     // it into the variable
     // TODO why are we both setting to zero anc getting from FILE??
     _current_log_file_size = 0;
     FileSystem::get_size(log_file_path, _current_log_file_size);
+
+    LOG_DIAG(("Log file size %u",_current_log_file_size));
 
     // Open log file for append.
     // The handle should always be zero here or we are reopening 
@@ -498,6 +699,7 @@ static void _initialize(const char* name)
         return;
     }
     _initialized = true;
+    LOG_DIAG(("log file initialized"));
 }
 
 // create a file path name from _log_file_path with the suffix .<number>
@@ -515,7 +717,7 @@ bool _delete_log_backup_file(uint32 number)
     {
         if (!FileSystem::delete_file(delete_file_name.c_str()))
         {
-            LOG_ERR(("ERROR: log backup file %s not deleted\n",
+            LOG_ERR(("log backup file %s not deleted\n",
                     delete_file_name.c_str()));
             return false;
         }
@@ -526,7 +728,7 @@ void _log_file_close()
 {
     if (!(fclose(_log_file_handle) == 0))
     {
-        LOG_ERR(("ERROR: log file close failed. Error = %s\n",
+        LOG_ERR(("log file close failed. Error = %s\n",
              strerror(errno)));
     }
     _log_file_handle = 0;
@@ -535,6 +737,7 @@ void _log_file_close()
 // Close log file and delete all current log files.
 bool _delete_all_log_files()
 {
+    LOG_DIAG(("Delete all log files"));
     pthread_mutex_lock(&_mutex);
     bool rtn = true;
     // lock file to prevent other process from touching
@@ -598,6 +801,8 @@ bool _rename_log_backup_file(uint32 number)
 // the protection of that mutex and filelock. 
 void _rollover_log_file()
 {
+    LOG_DIAG(("Roll over log file. current size = %u",
+        _current_log_file_size));
     // close the existing log file
     _log_file_close();
 
@@ -667,11 +872,18 @@ void vlog(
 
     // Initialize from the .cimplerc config file on the first call.
 
-    //printf("vlog _log_file_handle vlog = %p\n", _log_file_handle);
     if (!_initialized)
     {
         _initialize(DEFAULT_CONFIG_FILE_NAME);
     }
+
+    // This is the final check if there are problems with log output
+    // enable this and there should be an entry in the emergency log output
+    // for every log call. Enable with caution and only to confirm that
+    // logs are being called.
+#ifdef CIMPLE_LOG_DIAG
+    //LOG_DIAG(("vlog called to output log file %s line %u", file, line));
+#endif
 
     // Bail out if initialize failed. This is a permanent test so that
     // all logging is disabled if we cannot initialize the file.

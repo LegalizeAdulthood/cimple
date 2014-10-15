@@ -502,7 +502,11 @@ fi
 ##==============================================================================
 
 fn=config.options
-rm -f $fn
+
+if [ -f $fn ]; then
+    echo backup $fn to $fn.bak
+    mv -f $fn $fn.bak
+fi
 
 ScriptName=`basename $0`
 
@@ -540,7 +544,6 @@ if [ ! -z "$enable_scheduler" ]; then
     echo "ENABLE_SCHEDULER_OPT=$enable_scheduler" >> $fn
 fi
 
-echo disable_log_macros $disable_log_macros
 if [ ! -z "$disable_log_macros" ]; then
     echo "DISABLE_LOG_MACROS_OPT=$disable_log_macros" >> $fn
 fi
@@ -556,6 +559,8 @@ fi
 if [ ! -z "$with_namespace" ]; then
     echo "WITH_NAMESPACE_OPT=$with_namespace" >> $fn
 fi
+
+echo "##End-Of-File" >> $fn
 
 echo "Created $fn."
 echo "Configured for $host."

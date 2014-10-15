@@ -375,9 +375,9 @@ This change log was started effective with version 2.00
     * Remove some printf statements that were in CIMPLE adapters/infrastructure.
       There should be no console output except in unit tests, test providers,
       and command line utilities.
-    * Add test to windows configure script to test for correct compiler.
-      Generates errors if there is no compiler or not the correct
-      32 bit vs 64 bit definition.
+    * Add test to windows configure.bat script to test for correct compiler.
+      Generates errors if there is no compiler for windows or not the correct
+      32 bit vs 64 bit definition is not applied for windows.
     * Add comments to generated config.options and options.h files explaining
       things that are not obvious. Modifies configure and configure.bat
 
@@ -397,6 +397,32 @@ This change log was started effective with version 2.00
       test option of CIMPLE in windows is dependent on the mu function in
       Pegasus for a couple of command line functions (diff and.  This only affects
       test and will be removed.
+
+2.0.22 - 31 May 2011  (cimple_2_0_12-branch, tag cimple cimple_2_0_20)
+    * Extend the capability to display errors that occur in log.cpp when
+      logging is intialized (config file errors, log file create/write errors,
+      etc) to both stdout and to an emergency log file. The emergency log
+      file is located at either \ for windows or /tmp for *nix systems
+      and only contains entries that represent errors in the logging process
+      itself. In the previous release this was only enabled in CIMPLE_DEBUG
+      mode.  This has been modified to be enabled unless specifically disabled
+      in log.cpp because the errors can be generated in both development
+      and production (inability to write logs, config errors, etc.)
+    * Modify log.cpp to set log level to DBG if the configuration parameter
+      in .cimplrc (LOG_LEVEL=<value>) value is not one of the defined
+      values. Before this caused the log not to be output at all.
+    * Add a compilable option to log.cpp so that the user can get details
+      of the log handling process in those cases where they might be
+      having problems outputting logs.  This is enabled with the #define
+      CIMPLE_LOG_DIAG_ENABLE in src/cimple/log.cpp (it is not part of the
+      configuration file) and should be used only in development mode and if
+      there are real issues outputting logs.
+    * Extend the
+    * Add capability to configure.bat to include configure command line in
+      the config.options file, and to backup the file to config.options.bat
+      if the file exists when configure is executed.
+      Add capability to configure to the *nix configure file to create a
+      backup file (config.options.bak)
 
 ====================================================================
 
