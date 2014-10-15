@@ -20,7 +20,7 @@ Unload_Status Example_Provider::unload()
     return UNLOAD_OK;
 }
 
-Timer_Status Example_Provider::timer(uint64& timeout)
+Timer_Status Example_Provider::timer(uint64& timeout_msec)
 {
     return TIMER_CANCEL;
 }
@@ -29,7 +29,7 @@ Get_Instance_Status Example_Provider::get_instance(
     const Example* model,
     Example*& instance)
 {
-    return GET_INSTANCE_NOT_FOUND;
+    return GET_INSTANCE_UNSUPPORTED;
 }
 
 Enum_Instances_Status Example_Provider::enum_instances(
@@ -109,7 +109,15 @@ Invoke_Method_Status Example_Provider::foo5(
 }
 
 int Example_Provider::proc(
-    int operation, void* arg0, void* arg1, void* arg2, void* arg3)
+    int operation, 
+    void* arg0, 
+    void* arg1, 
+    void* arg2, 
+    void* arg3,
+    void* arg4,
+    void* arg5,
+    void* arg6,
+    void* arg7)
 {
     // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
     // GENERATED.
@@ -119,7 +127,7 @@ int Example_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(
-	    operation, arg0, arg1, arg2, arg3);
+	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;

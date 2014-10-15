@@ -87,7 +87,15 @@ Invoke_Method_Status LinuxComputerSystem_Provider::SetPowerState(
 }
 
 int LinuxComputerSystem_Provider::proc(
-    int operation, void* arg0, void* arg1, void* arg2, void* arg3)
+    int operation,
+    void* arg0, 
+    void* arg1, 
+    void* arg2, 
+    void* arg3,
+    void* arg4,
+    void* arg5,
+    void* arg6,
+    void* arg7)
 {
     // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
     // GENERATED.
@@ -97,7 +105,7 @@ int LinuxComputerSystem_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(
-	    operation, arg0, arg1, arg2, arg3);
+	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;

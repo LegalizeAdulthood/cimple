@@ -309,6 +309,11 @@ inline bool operator==(const Datetime& x, const Datetime& y)
     return x.usec() == y.usec() && x.offset() == y.offset();
 }
 
+inline void clear(Datetime& x) 
+{ 
+    x.clear(); 
+}
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Datetime_h */

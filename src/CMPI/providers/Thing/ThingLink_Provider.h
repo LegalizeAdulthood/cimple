@@ -39,8 +39,29 @@ public:
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
 	const ThingLink* instance);
 
+    CIMPLE_HIDE Enum_Associator_Names_Status enum_associator_names(
+	const Instance* instance,
+	const String& result_class,
+	const String& role,
+	const String& result_role,
+	Enum_Associator_Names_Handler<Instance>* handler);
+
+    CIMPLE_HIDE Enum_References_Status enum_references(
+	const Instance* instance,
+	const ThingLink* model,
+	const String& role,
+	Enum_References_Handler<ThingLink>* handler);
+
     static CIMPLE_HIDE int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+	int operation, 
+	void* arg0, 
+	void* arg1, 
+	void* arg2, 
+	void* arg3,
+	void* arg4,
+	void* arg5,
+	void* arg6,
+	void* arg7);
 
 private:
 

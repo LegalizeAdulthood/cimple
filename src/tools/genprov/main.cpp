@@ -30,6 +30,10 @@ using namespace std;
 #include "indication_source_infix1.h"
 #include "indication_source_infix2.h"
 #include "module_source.h"
+#include "association_header.h"
+#include "association_source.h"
+#include "association_source_infix1.h"
+#include "association_source_infix2.h"
 
 static inline const char* _to_string(int data_type)
 {
@@ -169,6 +173,10 @@ void write_provider_header(
 	err("cannot open %s\n", path.c_str());
 
     write_file(os, class_name, header_prefix);
+
+    if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
+	write_file(os, class_name, association_header);
+
     write_methods(os, class_name, class_decl, false);
     write_file(os, class_name, header_suffix);
     printf("Created %s\n", path.c_str());
@@ -250,6 +258,8 @@ void write_proc(
     {
 	if (class_decl->qual_mask & MOF_QT_INDICATION)
 	    write_file(os, class_name, indication_source_infix1);
+	else if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
+	    write_file(os, class_name, association_source_infix1);
 	else
 	    write_file(os, class_name, source_infix1);
 
@@ -259,6 +269,8 @@ void write_proc(
 
     if (class_decl->qual_mask & MOF_QT_INDICATION)
 	write_file(os, class_name, indication_source_infix2);
+    else if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
+	write_file(os, class_name, association_source_infix2);
     else
 	write_file(os, class_name, source_infix2);
 
@@ -289,6 +301,10 @@ void write_provider_source(
 	err("cannot open %s\n", path.c_str());
 
     write_file(os, class_name, source_prefix);
+
+    if (class_decl->qual_mask & MOF_QT_ASSOCIATION)
+	write_file(os, class_name, association_source);
+
     write_methods(os, class_name, class_decl, true);
     write_proc(os, class_name, class_decl);
     write_file(os, class_name, source_suffix);

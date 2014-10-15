@@ -67,6 +67,18 @@ extern char is_integer[];
 CIMPLE_LIBCIMPLE_LINKAGE 
 extern char is_raw[];
 
+inline void clear(boolean& x) { x = false; }
+inline void clear(uint8& x) { x = 0; }
+inline void clear(sint8& x) { x = 0; }
+inline void clear(uint16& x) { x = 0; }
+inline void clear(sint16& x) { x = 0; }
+inline void clear(uint32& x) { x = 0; }
+inline void clear(sint32& x) { x = 0; }
+inline void clear(uint64& x) { x = 0; }
+inline void clear(sint64& x) { x = 0; }
+inline void clear(real32& x) { x = 0.0; }
+inline void clear(real64& x) { x = 0.0; }
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Type_h */

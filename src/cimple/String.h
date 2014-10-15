@@ -83,6 +83,8 @@ public:
 
     size_t size() const;
 
+    bool empty() const;
+
     size_t capacity() const;
 
     char operator[](size_t i) const;
@@ -208,6 +210,11 @@ inline size_t String::size() const
     return _rep->size;
 }
 
+inline bool String::empty() const
+{
+    return _rep->size == 0;
+}
+
 inline size_t String::capacity() const
 {
     return _rep->cap;
@@ -294,6 +301,11 @@ inline bool operator!=(const String& s1, const char* s2)
 inline bool operator!=(const char* s1, const String& s2)
 {
     return !operator==(s1, s2);
+}
+
+inline void clear(String& x) 
+{ 
+    x.clear(); 
 }
 
 CIMPLE_NAMESPACE_END

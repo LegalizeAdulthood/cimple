@@ -48,6 +48,7 @@ using namespace std;
 const char* arg0;
 static FILE* _os = 0;
 bool linkage_opt = false;
+bool enum_opt = false;
 
 char data_type_tag(int data_type)
 {
@@ -329,8 +330,95 @@ static inline const char* _to_string(int data_type)
     return MOF_Data_Type::to_string(data_type);
 }
 
+string normalize_value_qual_name(const char* name)
+{
+    string r;
+
+    for (const char* p = name; *p; p++)
+    {
+	if (isalnum(*p) || *p == '_')
+	    r += *p;
+	else
+	    r += '_';
+    }
+
+    return r;
+}
+
 void gen_property_decl(const MOF_Property_Decl* prop)
 {
+    // Process Values/ValueMap qualifiers.
+
+    const MOF_Qualifier* values_qual  = 0;
+    const MOF_Qualifier* value_map_qual  = 0;
+
+    if (enum_opt)
+    {
+	for (const MOF_Qualifier* q = prop->qualifiers; 
+	    q; 
+	    q = (const MOF_Qualifier*)q->next)
+	{
+	    if (strcasecmp(q->name, "Values") == 0)
+		values_qual  = q;
+	    else if (strcasecmp(q->name, "ValueMap") == 0)
+		value_map_qual  = q;
+	}
+    }
+
+    do
+    {
+	if (values_qual && value_map_qual)
+	{
+	    vector<string> values;
+	    vector<long> value_map;
+
+	    assert(values_qual->params);
+
+	    for (MOF_Literal* l = values_qual->params; 
+		l; 
+		l = (MOF_Literal*)l->next)
+	    {
+		assert(l->value_type == TOK_STRING_VALUE);
+		string tmp = normalize_value_qual_name(l->string_value);
+		values.push_back(tmp);
+	    }
+
+	    for (MOF_Literal* l = value_map_qual->params; 
+		l; l = (MOF_Literal*)l->next)
+	    {
+		assert(l->value_type == TOK_STRING_VALUE);
+		long tmp = atol(l->string_value);
+		value_map.push_back(tmp);
+	    }
+
+	    // Check for duplicates:
+
+	    if (values.size() != value_map.size())
+		break;
+
+	    out("    struct\n");
+	    out("    {\n");
+	    out("        enum\n");
+	    out("        {\n");
+
+	    for (size_t i = 0; i < values.size(); i++)
+	    {
+		out("            ");
+		out("enum_%s = %ld,\n", values[i].c_str(), value_map[i]);
+	    }
+
+	    out("        };\n");
+
+	    out("        %s value;\n", _to_string(prop->data_type));
+	    out("        uint8 null;\n");
+	    out("    }\n");
+	    out("    %s;\n", prop->name);
+
+	    return;
+	}
+    }
+    while (0);
+
     const char* tmp = _to_string(prop->data_type);
     int i = prop->array_index;
 
@@ -1532,7 +1620,7 @@ int main(int argc, char** argv)
 
     bool gen_repository_opt = false;
 
-    for (int opt; (opt = getopt(argc, argv, "I:M:hrvl")) != -1; )
+    for (int opt; (opt = getopt(argc, argv, "I:M:hrvle")) != -1; )
     {
         switch (opt)
         {
@@ -1582,6 +1670,10 @@ int main(int argc, char** argv)
 
             case 'l':
 		linkage_opt = true;
+		break;
+
+            case 'e':
+		enum_opt = true;
 		break;
 
 	    default:

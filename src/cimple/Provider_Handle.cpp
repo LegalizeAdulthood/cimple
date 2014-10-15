@@ -28,14 +28,14 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-namespace enum_associator_names
+namespace _enum_associator_names
 {
     struct Args
     {
 	const Instance* instance;
-	const char* result_class;
-	const char* role;
-	const char* result_role;
+	String result_class;
+	String role;
+	String result_role;
 	Enum_Associator_Names_Proc proc;
 	void* client_data;
     };
@@ -60,15 +60,18 @@ namespace enum_associator_names
 	ssize_t r = get_associators(
 	    args->instance, 
 	    assoc_instance,
-	    args->result_class, 
-	    args->role, 
-	    args->result_role, 
+	    args->result_class.c_str(), 
+	    args->role.c_str(), 
+	    args->result_role.c_str(), 
 	    associator_names);
 
 	// Call user's callback for each associator name found (if any).
 
 	for (ssize_t i = 0; i < r; i++)
-	    args->proc(associator_names[i], args->client_data);
+	{
+	    args->proc(associator_names[i], 
+		ENUM_ASSOCIATOR_NAMES_OK, args->client_data);
+	}
 
 	destroy(assoc_instance);
 
@@ -79,13 +82,13 @@ namespace enum_associator_names
 
 Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
     const Instance* instance,
-    const char* result_class,
-    const char* role,
-    const char* result_role,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
     Enum_Associator_Names_Proc proc,
     void* client_data)
 {
-    // Get meta class:
+    // Get meta-class.
 
     const Meta_Class* mc;
     get_meta_class(mc);
@@ -95,9 +98,40 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
     if (!(mc->flags & CIMPLE_FLAG_ASSOCIATION))
 	return ENUM_ASSOCIATOR_NAMES_FAILED;
 
+    // First see if the provider supports enum_associator_names().
+
+    Enum_Associator_Names_Status enum_associator_names_status = 
+	(Enum_Associator_Names_Status)_proc(
+	    OPERATION_ENUM_ASSOCIATOR_NAMES,
+	    _provider, 
+	    (void*)instance, 
+	    (void*)&result_class, 
+	    (void*)&role, 
+	    (void*)&result_role,
+	    (void*)proc, 
+	    (void*)client_data,
+	    0);
+
+    switch (enum_associator_names_status)
+    {
+	case ENUM_ASSOCIATOR_NAMES_OK:
+	    return ENUM_ASSOCIATOR_NAMES_OK;
+
+	case ENUM_ASSOCIATOR_NAMES_FAILED:
+	    return ENUM_ASSOCIATOR_NAMES_FAILED;
+
+	case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
+	    break;
+    }
+
+    // Create a model.
+
+    Instance* model = create(mc);
+    nullify_non_keys(model);
+
     // Save arguments to pass to callback.
 
-    enum_associator_names::Args args;
+    _enum_associator_names::Args args;
     args.instance = instance;
     args.result_class = result_class;
     args.role = role;
@@ -105,19 +139,14 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
     args.proc = proc;
     args.client_data = client_data;
 
-    // Create the model:
-
-    Instance* model = create(mc);
-    nullify_non_keys(model);
-
     // Enumerate the association provider.
 
     Enum_Instances_Status status = enum_instances(
-	model, enum_associator_names::_proc , &args);
+	model, _enum_associator_names::_proc , &args);
 
     // Call one last time to signal the end:
 
-    proc(0, client_data);
+    proc(0, ENUM_ASSOCIATOR_NAMES_OK, client_data);
 
     // Destroy the association model.
 
@@ -141,7 +170,7 @@ namespace enum_references
     struct Args
     {
 	const Instance* instance;
-	const char* role;
+	String role;
 	Enum_References_Proc proc;
 	void* client_data;
     };
@@ -164,8 +193,8 @@ namespace enum_references
 	// If this association instance is a reference of our original instance,
 	// then call the user's callback:
 
-	if (is_reference_of(args->instance, reference, args->role))
-	    args->proc(reference, args->client_data);
+	if (is_reference_of(args->instance, reference, args->role.c_str()))
+	    args->proc(reference, ENUM_REFERENCES_OK, args->client_data);
 	else
 	    destroy(reference);
 
@@ -176,8 +205,8 @@ namespace enum_references
 
 Enum_References_Status Provider_Handle::enum_references(
     const Instance* instance,
-    const char* role,
-    bool keys_only,
+    const Instance* model,
+    const String& role,
     Enum_References_Proc proc,
     void* client_data)
 {
@@ -191,12 +220,31 @@ Enum_References_Status Provider_Handle::enum_references(
     if (!(mc->flags & CIMPLE_FLAG_ASSOCIATION))
 	return ENUM_REFERENCES_FAILED;
 
-    // Create the reference model to be enumerated.
+    // First see if the provider supports enum_references().
 
-    Instance* model = cimple::create(mc);
+    Enum_References_Status enum_references_status = 
+	(Enum_References_Status)_proc(
+	    OPERATION_ENUM_REFERENCES,
+	    _provider, 
+	    (void*)instance, 
+	    (void*)model, 
+	    (void*)&role, 
+	    (void*)proc, 
+	    (void*)client_data,
+	    0,
+	    0);
 
-    if (keys_only)
-	nullify_non_keys(model);
+    switch (enum_references_status)
+    {
+	case ENUM_REFERENCES_OK:
+	    return ENUM_REFERENCES_OK;
+
+	case ENUM_REFERENCES_FAILED:
+	    return ENUM_REFERENCES_FAILED;
+
+	case ENUM_REFERENCES_UNSUPPORTED:
+	    break;
+    }
 
     // If this is the initial call of the enumeration, create the args object.
 
@@ -214,11 +262,7 @@ Enum_References_Status Provider_Handle::enum_references(
 
     // Call one last time to signal the end:
 
-    proc(0, client_data);
-
-    // Destroy the model:
-
-    destroy(model);
+    proc(0, ENUM_REFERENCES_OK, client_data);
 
     // Return status:
 
@@ -273,7 +317,8 @@ Get_Instance_Status Provider_Handle::get_instance(
     // Use OPERATION_GET_INSTANCE:
 
     Get_Instance_Status get_instance_status = (Get_Instance_Status)_proc(
-	OPERATION_GET_INSTANCE, _provider, (void*)model, &instance, 0);
+	OPERATION_GET_INSTANCE, 
+	_provider, (void*)model, &instance, 0, 0, 0, 0, 0);
 
     if (get_instance_status != GET_INSTANCE_UNSUPPORTED)
 	return get_instance_status;

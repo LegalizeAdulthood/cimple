@@ -28,6 +28,8 @@ static const Meta_Class* _meta_classes[] =
     &LinuxComputerSystem::static_meta_class,
     &Person::static_meta_class,
     &Link::static_meta_class,
+    &Person2::static_meta_class,
+    &Link2::static_meta_class,
     &Arg::static_meta_class,
     &Methods::static_meta_class,
     &UnixUser::static_meta_class,

@@ -40,7 +40,8 @@ void __cimple_assert(
 {
     // Print general assertion failure message:
 
-    fprintf(stderr, "%s(%d): %s(): assert: %s\n\n", file, line, function, cond);
+    fprintf(stderr, "%s(%d): %s(): assert: %s\n\n", 
+	file, int(line), function, cond);
 
 #ifdef __USE_GNU
 
@@ -72,7 +73,7 @@ void __cimple_trace(
 {
     // char buffer[Threads::ID_SIZE];
     // Threads::id(buffer);
-    fprintf(stderr, "TRACE: %s(%d): %s\n", file, line, function);
+    fprintf(stderr, "TRACE: %s(%d): %s\n", file, int(line), function);
 }
 
 CIMPLE_NAMESPACE_END

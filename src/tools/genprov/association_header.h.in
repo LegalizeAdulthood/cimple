@@ -1,0 +1,13 @@
+    CIMPLE_HIDE Enum_Associator_Names_Status enum_associator_names(
+	const Instance* instance,
+	const char* result_class,
+	const char* role,
+	const char* result_role,
+	Enum_Associator_Names_Handler<Instance>* handler);
+
+    CIMPLE_HIDE Enum_References_Status enum_references(
+	const Instance* instance,
+	const <CLASS>* model,
+	const char* role,
+	Enum_References_Handler<<CLASS>>* handler);
+

@@ -53,84 +53,86 @@ enum Destroy_Provider_Status
 enum Load_Status
 {
     LOAD_OK = 0,
-    LOAD_FAILED = 1,
+    LOAD_FAILED = 30,
 };
 
 enum Unload_Status
 {
     UNLOAD_OK = 0,
-    UNLOAD_FAILED = 2,
+    UNLOAD_FAILED = 40,
 };
 
 enum Timer_Status
 {
     TIMER_RESCHEDULE = 0,
-    TIMER_CANCEL = 3,
+    TIMER_CANCEL = 50,
 };
 
 enum Get_Instance_Status
 {
     GET_INSTANCE_OK = 0,
-    GET_INSTANCE_NOT_FOUND = 4,
-    GET_INSTANCE_UNSUPPORTED = 5,
+    GET_INSTANCE_NOT_FOUND = 60,
+    GET_INSTANCE_UNSUPPORTED = 61,
 };
 
 enum Enum_Instances_Status
 {
-    ENUM_INSTANCES_OK = 6,
-    ENUM_INSTANCES_FAILED = 7,
+    ENUM_INSTANCES_OK = 0,
+    ENUM_INSTANCES_FAILED = 70,
 };
 
 enum Create_Instance_Status
 {
     CREATE_INSTANCE_OK = 0,
-    CREATE_INSTANCE_DUPLICATE = 8,
-    CREATE_INSTANCE_UNSUPPORTED = 9,
+    CREATE_INSTANCE_DUPLICATE = 80,
+    CREATE_INSTANCE_UNSUPPORTED = 81,
 };
 
 enum Delete_Instance_Status
 {
     DELETE_INSTANCE_OK = 0,
-    DELETE_INSTANCE_NOT_FOUND = 10,
-    DELETE_INSTANCE_UNSUPPORTED = 11,
+    DELETE_INSTANCE_NOT_FOUND = 90,
+    DELETE_INSTANCE_UNSUPPORTED = 91,
 };
 
 enum Modify_Instance_Status
 {
     MODIFY_INSTANCE_OK = 0,
-    MODIFY_INSTANCE_NOT_FOUND = 12,
-    MODIFY_INSTANCE_UNSUPPORTED = 13,
+    MODIFY_INSTANCE_NOT_FOUND = 100,
+    MODIFY_INSTANCE_UNSUPPORTED = 101,
 };
 
 enum Enum_Associator_Names_Status
 {
     ENUM_ASSOCIATOR_NAMES_OK = 0,
-    ENUM_ASSOCIATOR_NAMES_FAILED = 14,
+    ENUM_ASSOCIATOR_NAMES_FAILED = 110,
+    ENUM_ASSOCIATOR_NAMES_UNSUPPORTED = 111,
 };
 
 enum Enum_References_Status
 {
     ENUM_REFERENCES_OK = 0,
-    ENUM_REFERENCES_FAILED = 15,
+    ENUM_REFERENCES_FAILED = 120,
+    ENUM_REFERENCES_UNSUPPORTED = 121,
 };
 
 enum Invoke_Method_Status
 {
     INVOKE_METHOD_OK = 0,
-    INVOKE_METHOD_FAILED = 16,
-    INVOKE_METHOD_UNSUPPORTED = 17,
+    INVOKE_METHOD_FAILED = 130,
+    INVOKE_METHOD_UNSUPPORTED = 131,
 };
 
 enum Enable_Indications_Status
 {
     ENABLE_INDICATIONS_OK = 0,
-    ENABLE_INDICATIONS_FAILED = 18,
+    ENABLE_INDICATIONS_FAILED = 140,
 };
 
 enum Disable_Indications_Status
 {
     DISABLE_INDICATIONS_OK = 0,
-    DISABLE_INDICATIONS_FAILED = 19,
+    DISABLE_INDICATIONS_FAILED = 150,
 };
 
 enum Get_Repository_Status
@@ -155,6 +157,8 @@ enum Provider_Operation
     OPERATION_ENABLE_INDICATIONS,
     OPERATION_DISABLE_INDICATIONS,
     OPERATION_GET_REPOSITORY,
+    OPERATION_ENUM_ASSOCIATOR_NAMES,
+    OPERATION_ENUM_REFERENCES,
 };
 
 //==============================================================================
@@ -207,8 +211,6 @@ private:
 
 // ATTN: there is no way to tell the caller to quit calling!
 
-// ATTN: get rid of status argument and instance == 0 protocol.
-
 // If instance is null, then status is set:
 typedef bool (*Enum_Instances_Proc)(
     Instance* instance, 
@@ -234,26 +236,93 @@ public:
     void* _client_data;
 };
 
+//==============================================================================
+//
+// Enum_Associator_Names_Handler<>
+//
+//==============================================================================
+
 /** Called each time a qualifying associator name is found. A null value for
-    associator_name indicates the final call. This callback must NOT pass
-    associator_name to destroy(). Also, associator_name is not valid beyond
-    the scope of this function (it is destroyed immediately after this
-    callback is invoked).
+    associator_name indicates the final call (in which status is set). This 
+    callback must NOT pass associator_name to destroy(). Also, associator_name 
+    is not valid beyond the scope of this function (it is destroyed immediately
+    after this callback is invoked).
 */
-typedef void (*Enum_Associator_Names_Proc)(
+typedef bool (*Enum_Associator_Names_Proc)(
     const Instance* associator_name,
+    Enum_Associator_Names_Status status,
     void* client_data); 
+
+template<class CLASS>
+class Enum_Associator_Names_Handler
+{
+public:
+
+    Enum_Associator_Names_Handler(
+	Enum_Associator_Names_Proc proc, void* client_data) :
+	_proc(proc), _client_data(client_data)
+    {
+    }
+
+    bool handle(CLASS* instance)
+    {
+	return _proc(instance, ENUM_ASSOCIATOR_NAMES_OK, _client_data);
+    }
+
+    Enum_Associator_Names_Proc _proc;
+    void* _client_data;
+};
+
+//==============================================================================
+//
+// Enum_References_Handler<>
+//
+//==============================================================================
 
 /** Called each time a qualifying reference is found. A null value for
     reference indicates the final call. This callback must pass
     reference to destroy().
 */
-typedef void (*Enum_References_Proc)(
+typedef bool (*Enum_References_Proc)(
     Instance* reference,
+    Enum_References_Status status,
     void* client_data);
 
+template<class CLASS>
+class Enum_References_Handler
+{
+public:
+
+    Enum_References_Handler(Enum_References_Proc proc, void* client_data) :
+	_proc(proc), _client_data(client_data)
+    {
+    }
+
+    bool handle(CLASS* instance)
+    {
+	return _proc(instance, ENUM_REFERENCES_OK, _client_data);
+    }
+
+    Enum_References_Proc _proc;
+    void* _client_data;
+};
+
+//==============================================================================
+//
+// Provider_Proc()
+//
+//==============================================================================
+
 typedef int (*Provider_Proc)(
-    int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+    int operation, 
+    void* arg0, 
+    void* arg1, 
+    void* arg2, 
+    void* arg3,
+    void* arg4,
+    void* arg5,
+    void* arg6,
+    void* arg7);
 
 /** Every provider must resolve this symbol.
 */
@@ -272,7 +341,15 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3)
+	int operation, 
+	void* arg0, 
+	void* arg1, 
+	void* arg2, 
+	void* arg3, 
+	void* arg4, 
+	void* arg5, 
+	void* arg6, 
+	void* arg7)
     {
 	switch (operation)
 	{
@@ -332,7 +409,7 @@ public:
     }
 };
 
-/** Instance/Association/Method provider proc.
+/** Instance/Method provider proc.
 */
 template<class PROVIDER>
 class Provider_Proc_T
@@ -342,7 +419,15 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3)
+	int operation, 
+	void* arg0, 
+	void* arg1, 
+	void* arg2, 
+	void* arg3, 
+	void* arg4, 
+	void* arg5, 
+	void* arg6, 
+	void* arg7)
     {
 	switch (operation)
 	{
@@ -355,7 +440,7 @@ public:
 	    case OPERATION_GET_REPOSITORY:
 	    {
 		return Provider_Proc_Common_T<PROVIDER>::proc(
-		    operation, arg0, arg1, arg2, arg2);
+		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	    }
 
 	    case OPERATION_GET_INSTANCE:
@@ -418,7 +503,15 @@ public:
     typedef Indication_Handler<CLASS> INDICATION_HANDLER;
 
     static int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3)
+	int operation, 
+	void* arg0, 
+	void* arg1, 
+	void* arg2, 
+	void* arg3, 
+	void* arg4, 
+	void* arg5, 
+	void* arg6, 
+	void* arg7)
     {
 	switch (operation)
 	{
@@ -431,7 +524,7 @@ public:
 	    case OPERATION_GET_REPOSITORY:
 	    {
 		return Provider_Proc_Common_T<PROVIDER>::proc(
-		    operation, arg0, arg1, arg2, arg2);
+		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	    }
 
 	    case OPERATION_ENABLE_INDICATIONS:
@@ -449,6 +542,116 @@ public:
 	    {
 		PROVIDER* provider = (PROVIDER*)arg0;
 		return provider->disable_indications();
+	    }
+
+	    default:
+	    {
+		// Not handled!
+		return -1;
+	    }
+	}
+    }
+};
+
+/** Instance/Method provider proc.
+*/
+template<class PROVIDER>
+class Association_Provider_Proc_T
+{
+public:
+
+    typedef typename PROVIDER::Class CLASS;
+
+    static int proc(
+	int operation, 
+	void* arg0, 
+	void* arg1, 
+	void* arg2, 
+	void* arg3, 
+	void* arg4, 
+	void* arg5, 
+	void* arg6, 
+	void* arg7)
+    {
+	switch (operation)
+	{
+	    case OPERATION_GET_META_CLASS:
+	    case OPERATION_CREATE_PROVIDER:
+	    case OPERATION_DESTROY_PROVIDER:
+	    case OPERATION_LOAD:
+	    case OPERATION_UNLOAD:
+	    case OPERATION_TIMER:
+	    case OPERATION_GET_REPOSITORY:
+	    case OPERATION_GET_INSTANCE:
+	    case OPERATION_ENUM_INSTANCES:
+	    case OPERATION_CREATE_INSTANCE:
+	    case OPERATION_DELETE_INSTANCE:
+	    case OPERATION_MODIFY_INSTANCE:
+	    {
+		return Provider_Proc_T<PROVIDER>::proc(
+		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+	    }
+
+	    case OPERATION_ENUM_ASSOCIATOR_NAMES:
+	    {
+		// arg0: provider
+		// arg1: instance
+		// arg2: result_class
+		// arg3: role
+		// arg4: result_role
+		// arg5: proc
+		// arg6: client_data
+
+		PROVIDER* provider = (PROVIDER*)arg0;
+
+		Enum_Associator_Names_Handler<Instance> handler(
+		    (Enum_Associator_Names_Proc)arg5, (void*)arg6);
+
+		Enum_Associator_Names_Status status = 
+		    provider->enum_associator_names(
+			(const Instance*)arg1, /* instance */
+			*((const String*)arg2), /* result_class */
+			*((const String*)arg3), /* role */
+			*((const String*)arg4), /* result_role */
+			&handler);
+
+		// ATTN: a hack for now since otherwise the user's
+		// callback would be called here and by the Provider_Handle
+		// method with the same name as well.
+		if (status != ENUM_ASSOCIATOR_NAMES_UNSUPPORTED)
+		    handler._proc(0, status, handler._client_data);
+
+		return status;
+	    }
+
+	    case OPERATION_ENUM_REFERENCES:
+	    {
+		// arg0: provider
+		// arg1: instance
+		// arg2: model
+		// arg3: role
+		// arg4: proc
+		// arg5: client_data
+
+		PROVIDER* provider = (PROVIDER*)arg0;
+
+		Enum_References_Handler<CLASS> handler(
+		    (Enum_References_Proc)arg4, (void*)arg5);
+
+		Enum_References_Status status = 
+		    provider->enum_references(
+			(const Instance*)arg1, /* instance */
+			(const CLASS*)arg2, /* model */
+			*((const String*)arg3), /* role */
+			&handler);
+
+		// ATTN: a hack for now since otherwise the user's
+		// callback would be called here and by the Provider_Handle
+		// method with the same name as well.
+		if (status != ENUM_REFERENCES_UNSUPPORTED)
+		    handler._proc(0, status, handler._client_data);
+
+		return status;
 	    }
 
 	    default:

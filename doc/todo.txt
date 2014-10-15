@@ -9,11 +9,29 @@
 
     (A) Should we create the Pegasus C++ interface adapter?
 
+    (A) Should we switch to using Class references to manage memory?
+
+    (A) Should we switch to using Prpert_Ref<> type?
+
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
     N
     N Now
     N
     NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+
+    (A) Create Pegasus/CIMPLE Adapter
+
+    (A) Multi-tennant CIMOM
+
+    (A) Be sure dynamic module registration is possible (right now we use
+	static registration objects).
+
+    (A) How would the CGI provider find its provider scripts.
+
+    (A) Consider versioning of providers.
+
+    (A) Test whole property-list filtering scheme throughout CIMPLE. Be sure
+	to clear properties that the CIMOM did not ask for.
 
     (A) Lifecycle indications broken.
 

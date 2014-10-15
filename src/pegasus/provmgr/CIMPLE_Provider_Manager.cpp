@@ -795,8 +795,9 @@ struct Handle_Associators_Request_Data
     bool error;
 };
 
-static void _enum_associator_proc(
+static bool _enum_associator_proc(
     const Instance* assoc_name,
+    Enum_Associator_Names_Status status,
     void* client_data)
 {
     FTRACE;
@@ -809,7 +810,7 @@ static void _enum_associator_proc(
     // Ignore last call or if already in an error state:
 
     if (!assoc_name || data->error)
-	return;
+	return false;
 
     // Create a model for the get_instance() call below.
 
@@ -820,7 +821,7 @@ static void _enum_associator_proc(
     {
 	_set_status(handler, "key_to_instance() failed");
 	data->error = true;
-	return;
+	return false;
     }
 
     // Validate selected properties.
@@ -830,7 +831,7 @@ static void _enum_associator_proc(
     {
 	_set_status(handler, "%s", Error::get());
 	data->error = true;
-	return;
+	return false;
     }
 
     // Now get the instance from the provdier.
@@ -843,7 +844,7 @@ static void _enum_associator_proc(
     {
 	_set_status(handler, "%s", Status_to_string(stat));
 	data->error = true;
-	return;
+	return false;
     }
 
     Destroyer<Instance> inst_d(inst);
@@ -857,10 +858,13 @@ static void _enum_associator_proc(
     {
 	_set_status(handler, "%s", Error::get());
 	data->error = true;
-	return;
+	return false;
     }
 
     handler.deliver(pi);
+
+    // Keep them coming!
+    return true;
 }
 
 Message* CIMPLE_Provider_Manager::_handleAssociatorsRequest(
@@ -953,8 +957,9 @@ struct Handle_Associator_Names_Request_Data
     bool error;
 };
 
-static void _enum_associator_names_proc(
+static bool _enum_associator_names_proc(
     const Instance* assoc_name,
+    Enum_Associator_Names_Status status,
     void* client_data)
 {
     FTRACE;
@@ -967,7 +972,7 @@ static void _enum_associator_names_proc(
     // Ignore last call or if already in an error state:
 
     if (!assoc_name || data->error)
-	return;
+	return false;
 
     // Convert assoc_name to an Pegasus object path:
 
@@ -978,12 +983,15 @@ static void _enum_associator_names_proc(
     {
 	_set_status(handler, "%s", Error::get());
 	data->error = true;
-	return;
+	return false;
     }
 
     // Deliver the object path:
 
     handler.deliver(op);
+
+    // Keep them coming!
+    return true;
 }
 
 Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
@@ -1076,8 +1084,9 @@ struct Handle_References_Request_Data
     bool error;
 };
 
-static void _enumerate_references_proc(
+static bool _enumerate_references_proc(
     Instance* reference,
+    Enum_References_Status status,
     void* client_data)
 {
     FTRACE;
@@ -1089,7 +1098,7 @@ static void _enumerate_references_proc(
     // Ignore last call and return if already got an error.
 
     if (!reference || data->error)
-	return;
+	return false;
 
     Destroyer<Instance> reference_d(reference);
 
@@ -1102,10 +1111,13 @@ static void _enumerate_references_proc(
     {
 	_set_status(handler, "%s", Error::get());
 	data->error = true;
-	return;
+	return false;
     }
 
     handler.deliver(pi);
+
+    // Keep them coming!
+    return true;
 }
 
 Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
@@ -1157,6 +1169,12 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
 
     Destroyer<Instance> ck_d(ck);
 
+    // Create the model.
+    // ATTN: filter model!
+
+    const Meta_Class* result_meta_class = _disp->get_meta_class(result_class);
+    Instance* model = cimple::create(result_meta_class);
+
     // Invoke provider.
 
     handler.processing();
@@ -1168,8 +1186,10 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
     data.error = false;
 
     State state;
-    Status stat = _disp->enum_references(ck, result_class, role, false,
-	_enumerate_references_proc, &data);
+    Status stat = _disp->enum_references(
+	ck, model, result_class, role, _enumerate_references_proc, &data);
+
+    destroy(model);
 
     if (data.error)
 	return response;
@@ -1199,8 +1219,9 @@ struct Handle_Reference_Names_Request_Data
     bool error;
 };
 
-static void _enumerate_reference_names_proc(
+static bool _enumerate_reference_names_proc(
     Instance* reference,
+    Enum_References_Status status,
     void* client_data)
 {
     FTRACE;
@@ -1212,7 +1233,7 @@ static void _enumerate_reference_names_proc(
     // Ignore last call and return if already got an error.
 
     if (!reference || data->error)
-	return;
+	return false;
 
     Destroyer<Instance> reference_d(reference);
 
@@ -1225,10 +1246,13 @@ static void _enumerate_reference_names_proc(
     {
 	_set_status(handler, "%s", Error::get());
 	data->error = true;
-	return;
+	return false;
     }
 
     handler.deliver(op);
+
+    // Keep them coming.
+    return true;
 }
 
 Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
@@ -1280,6 +1304,12 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
 
     Destroyer<Instance> ck_d(ck);
 
+    // Create the model.
+
+    const Meta_Class* result_meta_class = _disp->get_meta_class(result_class);
+    Instance* model = cimple::create(result_meta_class);
+    nullify_non_keys(model);
+
     // Invoke provider.
 
     handler.processing();
@@ -1291,8 +1321,10 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
     data.error = false;
 
     State state;
-    Status stat = _disp->enum_references(ck, result_class, role, true,
+    Status stat = _disp->enum_references(ck, model, result_class, role,
 	_enumerate_reference_names_proc, &data);
+
+    destroy(model);
 
     if (data.error)
 	return response;

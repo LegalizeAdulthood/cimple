@@ -24,6 +24,10 @@ gen:
 	$(call file2c, indication_source_prefix)
 	$(call file2c, indication_source_infix1)
 	$(call file2c, indication_source_infix2)
+	$(call file2c, association_header)
+	$(call file2c, association_source)
+	$(call file2c, association_source_infix1)
+	$(call file2c, association_source_infix2)
 	$(call file2c, module_source)
 
 usage:

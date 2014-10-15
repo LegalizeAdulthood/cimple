@@ -1,0 +1,148 @@
+
+RCS file: /home/cvs/cimple/Makefile,v
+Working file: Makefile
+head: 1.26
+branch:
+locks: strict
+access list:
+symbolic names:
+	cimple_0_98_beta: 1.26
+	cimple_0_97_beta: 1.26
+	cimple_0_96: 1.14
+	cmpi_phase1_complete: 1.14
+	after_flat_classes: 1.14
+	flat_classes: 1.14
+	version_0_95_4: 1.14
+	version_0_95_3: 1.14
+	ppc_standalone_port: 1.14
+	version_0_95_2: 1.14
+	version_0_95_1: 1.14
+	version_0_95: 1.14
+	version_0_94: 1.14
+	version_0_93: 1.14
+	version_0_92: 1.14
+	version_0_91: 1.14
+	version_0_90: 1.14
+	version_0_80: 1.14
+	version_0_79: 1.14
+	version_0_78: 1.14
+	version_0_77: 1.14
+	version_0_76: 1.14
+	remove-defined-tag: 1.9
+	pre_cxx_inheritance_rework: 1.9
+	CIMPLE_ALPHA_01_Shipment: 1.9
+	release: 1.1.1.1
+	vendor: 1.1.1
+keyword substitution: kv
+total revisions: 27;	selected revisions: 27
+description:
+----------------------------
+revision 1.26
+date: 2006/02/15 22:12:35;  author: peglite;  state: Exp;  lines: +1 -1
+update
+----------------------------
+revision 1.25
+date: 2006/02/14 15:39:22;  author: peglite;  state: Exp;  lines: +1 -1
+update
+----------------------------
+revision 1.24
+date: 2006/02/14 15:38:25;  author: peglite;  state: Exp;  lines: +3 -2
+update
+----------------------------
+revision 1.23
+date: 2006/02/14 03:37:04;  author: peglite;  state: Exp;  lines: +2 -2
+new
+----------------------------
+revision 1.22
+date: 2006/02/14 03:10:29;  author: peglite;  state: Exp;  lines: +1 -0
+update
+----------------------------
+revision 1.21
+date: 2006/02/14 02:29:39;  author: peglite;  state: Exp;  lines: +1 -1
+update
+----------------------------
+revision 1.20
+date: 2006/02/14 02:28:25;  author: peglite;  state: Exp;  lines: +1 -1
+update
+----------------------------
+revision 1.19
+date: 2006/02/14 02:26:13;  author: peglite;  state: Exp;  lines: +8 -1
+update
+----------------------------
+revision 1.18
+date: 2006/02/12 21:12:15;  author: peglite;  state: Exp;  lines: +1 -4
+update
+----------------------------
+revision 1.17
+date: 2006/02/11 01:58:25;  author: peglite;  state: Exp;  lines: +7 -0
+new
+----------------------------
+revision 1.16
+date: 2006/02/11 01:53:38;  author: peglite;  state: Exp;  lines: +27 -15
+new
+----------------------------
+revision 1.15
+date: 2006/02/10 17:49:02;  author: peglite;  state: Exp;  lines: +2 -2
+Windows port ongoing
+----------------------------
+revision 1.14
+date: 2005/12/01 17:41:38;  author: peglite;  state: Exp;  lines: +1 -8
+update
+----------------------------
+revision 1.13
+date: 2005/11/30 19:53:38;  author: peglite;  state: Exp;  lines: +3 -3
+update
+----------------------------
+revision 1.12
+date: 2005/11/30 19:52:14;  author: peglite;  state: Exp;  lines: +9 -3
+update
+----------------------------
+revision 1.11
+date: 2005/11/30 19:46:06;  author: peglite;  state: Exp;  lines: +4 -4
+update
+----------------------------
+revision 1.10
+date: 2005/11/30 19:22:27;  author: peglite;  state: Exp;  lines: +13 -0
+update
+----------------------------
+revision 1.9
+date: 2005/09/05 14:11:38;  author: peglite;  state: Exp;  lines: +0 -3
+update
+----------------------------
+revision 1.8
+date: 2005/09/05 12:44:16;  author: peglite;  state: Exp;  lines: +1 -1
+update
+----------------------------
+revision 1.7
+date: 2005/09/05 12:04:22;  author: peglite;  state: Exp;  lines: +3 -0
+update
+----------------------------
+revision 1.6
+date: 2005/07/14 04:27:38;  author: peglite;  state: Exp;  lines: +1 -1
+update
+----------------------------
+revision 1.5
+date: 2005/07/14 04:18:49;  author: peglite;  state: Exp;  lines: +0 -3
+update
+----------------------------
+revision 1.4
+date: 2005/07/11 21:33:48;  author: peglite;  state: Exp;  lines: +1 -1
+update
+----------------------------
+revision 1.3
+date: 2005/06/20 01:40:05;  author: peglite;  state: Exp;  lines: +0 -1
+update
+----------------------------
+revision 1.2
+date: 2005/06/18 17:34:42;  author: peglite;  state: Exp;  lines: +4 -0
+update
+----------------------------
+revision 1.1
+date: 2005/03/16 12:55:59;  author: peglite;  state: Exp;
+branches:  1.1.1;
+Initial revision
+----------------------------
+revision 1.1.1.1
+date: 2005/03/16 12:55:59;  author: peglite;  state: Exp;  lines: +0 -0
+new
+=============================================================================

@@ -40,7 +40,7 @@ CIMPLE_NAMESPACE_BEGIN
 class Cache;
 class Envelope;
 
-/** The dispacter is the main API to the CIMPLE CIM engine. It maintains a the 
+/** The dispatcher is the main API to the CIMPLE CIM engine. It maintains a the 
     collection of providers and dispatches CIM operations to them.
 */
 class CIMPLEDISP_LINKAGE Dispatcher
@@ -84,9 +84,9 @@ public:
 
     Status enum_references(
 	const Instance* instance,
+	const Instance* model,
 	const char* result_class,
 	const char* role,
-	bool keys_only,
 	Enum_References_Proc proc,
 	void* client_data);
 

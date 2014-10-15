@@ -31,6 +31,7 @@
 #include "Meta_Class.h"
 #include "Array.h"
 #include "Destroyer.h"
+#include "Atomic.h"
 
 #define CIMPLE_MAX_REFERENCES_PER_CLASS 16
 
@@ -85,6 +86,7 @@ struct Meta_Property;
 struct Instance
 {
     uint32 magic;
+    Atomic refs;
     const Meta_Class* meta_class;
 };
 
@@ -306,6 +308,15 @@ private:
 
 CIMPLE_LIBCIMPLE_LINKAGE
 void destroyer(Instance* p);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+const char* class_name(const Instance* instance);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+void ref(const Instance* instance);
+
+CIMPLE_LIBCIMPLE_LINKAGE
+void unref(const Instance* instance);
 
 CIMPLE_NAMESPACE_END
 

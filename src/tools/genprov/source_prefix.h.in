@@ -29,7 +29,7 @@ Get_Instance_Status <CLASS>_Provider::get_instance(
     const <CLASS>* model,
     <CLASS>*& instance)
 {
-    return GET_INSTANCE_NOT_FOUND;
+    return GET_INSTANCE_UNSUPPORTED;
 }
 
 Enum_Instances_Status <CLASS>_Provider::enum_instances(

@@ -25,6 +25,8 @@
 #include "LinuxComputerSystem.h"
 #include "Person.h"
 #include "Link.h"
+#include "Person2.h"
+#include "Link2.h"
 #include "Arg.h"
 #include "Methods.h"
 #include "UnixUser.h"

@@ -11,6 +11,8 @@ CLASSES = \
     LinuxComputerSystem \
     Person \
     Link \
+    Person2 \
+    Link2 \
     Methods \
     UnixUser \
     MyEmbeddedClass \
@@ -45,11 +47,13 @@ SOURCES = \
     Fan.cpp \
     House.cpp \
     Link.cpp \
+    Link2.cpp \
     LinuxComputerSystem.cpp \
     Methods.cpp \
     MyEmbeddedClass.cpp \
     MyIndication.cpp \
     Person.cpp \
+    Person2.cpp \
     repository.cpp \
     UnixUser.cpp \
     Thing.cpp \

@@ -71,14 +71,23 @@ Modify_Instance_Status Thing_Provider::modify_instance(
 }
 
 int Thing_Provider::proc(
-    int operation, void* arg0, void* arg1, void* arg2, void* arg3)
+    int operation,
+    void* arg0, 
+    void* arg1, 
+    void* arg2, 
+    void* arg3,
+    void* arg4,
+    void* arg5,
+    void* arg6,
+    void* arg7)
 {
     // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
     // GENERATED.
 
     typedef Thing Class;
     typedef Thing_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(operation, arg0, arg1, arg2, arg3);
+    return Provider_Proc_T<Provider>::proc(
+	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END

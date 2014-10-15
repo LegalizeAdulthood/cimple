@@ -1048,17 +1048,20 @@ namespace associators
 	CMPIrc rc;
     };
 
-    static void _proc(const Instance* cimple_inst, void* client_data)
+    static bool _proc(
+	const Instance* cimple_inst, 
+	Enum_Associator_Names_Status status, 
+	void* client_data)
     {
 	Data* data = (Data*)client_data;
 
 	if (!cimple_inst)
-	    return;
+	    return false;
 
 	// Ignore if an error was already encountered.
 
 	if (data->rc != CMPI_RC_OK)
-	    return;
+	    return false;
 
 	// Convert to a CMPI object path and deliver:
 
@@ -1078,12 +1081,14 @@ namespace associators
 	if (!cmpi_inst)
 	{
 	    data->rc = CMPI_RC_ERR_FAILED;
-	    return;
+	    return false;
 	}
 
 	// Deliver instance to requestor:
 
 	CMReturnInstance(data->result, cmpi_inst);
+
+	return true;
     }
 }
 
@@ -1155,17 +1160,20 @@ namespace associator_names
 	CMPIrc rc;
     };
 
-    static void _proc(const Instance* cimple_inst, void* client_data)
+    static bool _proc(
+	const Instance* cimple_inst, 
+	Enum_Associator_Names_Status status,
+	void* client_data)
     {
 	Data* data = (Data*)client_data;
 
 	if (!cimple_inst)
-	    return;
+	    return false;
 
 	// Ignore if an error was already encountered.
 
 	if (data->rc != CMPI_RC_OK)
-	    return;
+	    return false;
 
 	// Convert to a CMPI object path and deliver:
 
@@ -1179,6 +1187,8 @@ namespace associator_names
 
 	if (data->rc == CMPI_RC_OK)
 	    CMReturnObjectPath(data->result, cmpi_op);
+
+	return true;
     }
 }
 
@@ -1250,21 +1260,24 @@ namespace references
 	CMPIrc rc;
     };
 
-    static void _proc(Instance* cimple_inst, void* client_data)
+    static bool _proc(
+	Instance* cimple_inst, 
+	Enum_References_Status status,
+	void* client_data)
     {
 	Data* data = (Data*)client_data;
 
 	// Ignore the final call.
 
 	if (!cimple_inst)
-	    return;
+	    return false;
 
 	Destroyer<Instance> cimple_inst_d(cimple_inst);
 
 	// Ignore errors on prior call.
 
 	if (data->rc != CMPI_RC_OK)
-	    return;
+	    return false;
 
 	// Filter the properties.
 
@@ -1278,11 +1291,13 @@ namespace references
 	    data->broker, cimple_inst, data->name_space, 0, cmpi_inst);
 
 	if (data->rc != CMPI_RC_OK)
-	    return;
+	    return false;
 
 	// Deliver the instance.
 
 	CMReturnInstance(data->result, cmpi_inst);
+
+	return true;
     }
 }
 
@@ -1319,13 +1334,21 @@ CMPIStatus Adapter::references(
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
 
+    // Create a model.
+
+    const Meta_Class* model_meta_class = 0;
+    adapter->get_meta_class(model_meta_class);
+    Instance* cimple_model = cimple::create(model_meta_class);
+
     // Invoke the provider:
 
     references::Data data = { adapter->broker, 
 	context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
-        cimple_ref, role, false, references::_proc, &data);
+        cimple_ref, cimple_model, role, references::_proc, &data);
+
+    destroy(cimple_model);
 
     switch (status)
     {
@@ -1333,6 +1356,7 @@ CMPIStatus Adapter::references(
 	    CMReturn(CMPI_RC_OK);
 
         case ENUM_REFERENCES_FAILED:
+        case ENUM_REFERENCES_UNSUPPORTED:
 	    CMReturn(CMPI_RC_ERR_FAILED);
     }
 
@@ -1357,21 +1381,24 @@ namespace reference_names
 	CMPIrc rc;
     };
 
-    static void _proc(Instance* cimple_inst, void* client_data)
+    static bool _proc(
+	Instance* cimple_inst, 
+	Enum_References_Status status,
+	void* client_data)
     {
 	Data* data = (Data*)client_data;
 
 	// Ignore the final call.
 
 	if (!cimple_inst)
-	    return;
+	    return false;
 
 	Destroyer<Instance> cimple_inst_d(cimple_inst);
 
 	// Ignore errors on prior call.
 
 	if (data->rc != CMPI_RC_OK)
-	    return;
+	    return false;
 
 	// Filter out non-key properties:
 
@@ -1385,11 +1412,13 @@ namespace reference_names
 	    data->broker, cimple_inst, data->name_space, cmpi_op);
 
 	if (data->rc != CMPI_RC_OK)
-	    return;
+	    return false;
 
 	// Deliver the instance.
 
 	CMReturnObjectPath(data->result, cmpi_op);
+
+	return true;
     }
 }
 
@@ -1425,13 +1454,22 @@ CMPIStatus Adapter::referenceNames(
     if (rc != CMPI_RC_OK)
 	CMReturn(rc);
 
+    // Create a model.
+
+    const Meta_Class* model_meta_class = 0;
+    adapter->get_meta_class(model_meta_class);
+    Instance* cimple_model = cimple::create(model_meta_class);
+    nullify_non_keys(cimple_model);
+
     // Invoke the provider:
 
     reference_names::Data data = { 
 	adapter->broker, context, result, name_space(cmpi_op), CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
-        cimple_ref, role, false, reference_names::_proc, &data);
+        cimple_ref, cimple_model, role, reference_names::_proc, &data);
+
+    destroy(cimple_model);
 
     switch (status)
     {
@@ -1439,6 +1477,7 @@ CMPIStatus Adapter::referenceNames(
 	    CMReturn(CMPI_RC_OK);
 
         case ENUM_REFERENCES_FAILED:
+        case ENUM_REFERENCES_UNSUPPORTED:
 	    CMReturn(CMPI_RC_ERR_FAILED);
     }
 

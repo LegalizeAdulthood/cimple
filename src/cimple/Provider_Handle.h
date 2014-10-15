@@ -76,19 +76,18 @@ public:
 
     Disable_Indications_Status disable_indications();
 
-
     Enum_Associator_Names_Status enum_associator_names(
 	const Instance* instance,
-	const char* result_class,
-	const char* role,
-	const char* result_role,
+	const String& result_class,
+	const String& role,
+	const String& result_role,
 	Enum_Associator_Names_Proc proc,
 	void* client_data);
 
     Enum_References_Status enum_references(
 	const Instance* instance,
-	const char* role,
-	bool keys_only,
+	const Instance* model,
+	const String& role,
 	Enum_References_Proc proc,
 	void* client_data);
 
@@ -106,39 +105,39 @@ inline Provider_Handle::Provider_Handle(Provider_Proc proc) :
     _proc(proc), _provider(0)
 {
     (Create_Provider_Status)_proc(
-	OPERATION_CREATE_PROVIDER, (void*)&_provider, 0, 0, 0);
+	OPERATION_CREATE_PROVIDER, (void*)&_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Provider_Handle::~Provider_Handle()
 {
     (Destroy_Provider_Status)_proc(
-	OPERATION_DESTROY_PROVIDER, (void*)_provider, 0, 0, 0);
+	OPERATION_DESTROY_PROVIDER, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Get_Meta_Class_Status Provider_Handle::get_meta_class(
     const Meta_Class*& meta_class)
 {
-    return (Get_Meta_Class_Status)_proc(
-	OPERATION_GET_META_CLASS, (Meta_Class**)&meta_class, 0, 0, 0);
+    return (Get_Meta_Class_Status)_proc(OPERATION_GET_META_CLASS, 
+	(Meta_Class**)&meta_class, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Load_Status Provider_Handle::load()
 {
     return (Load_Status)_proc(
-	OPERATION_LOAD, (void*)_provider, 0, 0, 0);
+	OPERATION_LOAD, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Unload_Status Provider_Handle::unload()
 {
     return (Unload_Status)_proc(
-	OPERATION_UNLOAD, (void*)_provider, 0, 0, 0);
+	OPERATION_UNLOAD, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Timer_Status Provider_Handle::timer(
     uint64& timeout)
 {
     return (Timer_Status)_proc(
-	OPERATION_TIMER, (void*)_provider, &timeout, 0, 0);
+	OPERATION_TIMER, (void*)_provider, &timeout, 0, 0, 0, 0, 0, 0);
 }
 
 inline Enum_Instances_Status Provider_Handle::enum_instances(
@@ -147,28 +146,29 @@ inline Enum_Instances_Status Provider_Handle::enum_instances(
     void* client_data)
 {
     return (Enum_Instances_Status)_proc(OPERATION_ENUM_INSTANCES,
-	_provider, (void*)model, (void*)enum_instances_proc, client_data);
+	_provider, (void*)model, (void*)enum_instances_proc, client_data,
+	0, 0, 0, 0);
 }
 
 inline Create_Instance_Status Provider_Handle::create_instance(
     const Instance* instance)
 {
-    return (Create_Instance_Status)_proc(
-	OPERATION_CREATE_INSTANCE, _provider, (void*)instance, 0, 0);
+    return (Create_Instance_Status)_proc(OPERATION_CREATE_INSTANCE, 
+	_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
 inline Delete_Instance_Status Provider_Handle::delete_instance(
     const Instance* instance)
 {
-    return (Delete_Instance_Status)_proc(
-	OPERATION_DELETE_INSTANCE, (void*)_provider, (void*)instance, 0, 0);
+    return (Delete_Instance_Status)_proc(OPERATION_DELETE_INSTANCE, 
+	(void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
 inline Modify_Instance_Status Provider_Handle::modify_instance(
     const Instance* instance)
 {
-    return (Modify_Instance_Status)_proc(
-	OPERATION_MODIFY_INSTANCE, (void*)_provider, (void*)instance, 0, 0);
+    return (Modify_Instance_Status)_proc(OPERATION_MODIFY_INSTANCE, 
+	(void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
 inline Invoke_Method_Status Provider_Handle::invoke_method(
@@ -176,7 +176,7 @@ inline Invoke_Method_Status Provider_Handle::invoke_method(
     const Instance* method)
 {
     return (Invoke_Method_Status)_proc(OPERATION_INVOKE_METHOD, 
-	(void*)_provider, (void*)instance, (void*)method, 0);
+	(void*)_provider, (void*)instance, (void*)method, 0, 0, 0, 0, 0);
 }
 
 inline Enable_Indications_Status Provider_Handle::enable_indications(
@@ -185,13 +185,13 @@ inline Enable_Indications_Status Provider_Handle::enable_indications(
 {
     return (Enable_Indications_Status)_proc(
 	OPERATION_ENABLE_INDICATIONS, (void*)_provider, 
-	    (void*)indication_proc, client_data, 0);
+	    (void*)indication_proc, client_data, 0, 0, 0, 0, 0);
 }
 
 inline Disable_Indications_Status Provider_Handle::disable_indications()
 {
     return (Disable_Indications_Status)_proc(
-	OPERATION_DISABLE_INDICATIONS, (void*)_provider, 0, 0, 0);
+	OPERATION_DISABLE_INDICATIONS, (void*)_provider, 0, 0, 0, 0, 0, 0, 0);
 }
 
 inline Get_Repository_Status Provider_Handle::get_repository(
@@ -199,7 +199,7 @@ inline Get_Repository_Status Provider_Handle::get_repository(
     size_t& num_meta_classes)
 {
     return (Get_Repository_Status)_proc(OPERATION_GET_REPOSITORY, 
-	(void*)&meta_classes, (void*)&num_meta_classes, 0, 0);
+	(void*)&meta_classes, (void*)&num_meta_classes, 0, 0, 0, 0, 0, 0);
 }
 
 CIMPLE_NAMESPACE_END

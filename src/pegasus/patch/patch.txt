@@ -11,7 +11,8 @@ Add right after similar blocks around line 441.
         {
             ProviderManagerContainer* pmc = new ProviderManagerContainer(
                 "cimpleprovmgr", "CIMPLE", "CIMPLE",
-                _indicationCallback, _subscriptionInitComplete);
+                _indicationCallback,
+                _subscriptionInitComplete);
             _providerManagerTable.append(pmc);
             return pmc->getProviderManager();
         }

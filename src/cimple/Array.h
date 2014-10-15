@@ -306,6 +306,12 @@ bool operator==(const Array<T>& x, const Array<T>& y)
     return __equal(x, y, Equal<T>::proc);
 }
 
+template<class T> 
+inline void clear(Array<T>& x) 
+{ 
+    x.clear(); 
+}
+
 #define CIMPLE_T boolean
 #include "Array_Special.h"
 #include "Array_Equal.h"

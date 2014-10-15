@@ -31,5 +31,6 @@ OPTIONS:
     -r      -- generate repository.h and repository.cpp.
     -v      -- print the version number.
     -h      -- Print this message.
+    -e      -- Generate enum tags for Values/ValueMap qualifiers.
     -l      -- Generate linkage specifiers for Windows DLLs.
 

@@ -314,6 +314,9 @@ Status Dispatcher::enum_associator_names(
 
 	case ENUM_ASSOCIATOR_NAMES_FAILED:
 	    return STATUS_FAILED;
+
+	case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
+	    return STATUS_FAILED;
     }
 
     // Unreachable!
@@ -328,9 +331,9 @@ Status Dispatcher::enum_associator_names(
 
 Status Dispatcher::enum_references(
     const Instance* instance,
+    const Instance* model,
     const char* result_class,
     const char* role,
-    bool keys_only,
     Enum_References_Proc proc,
     void* client_data)
 {
@@ -346,7 +349,7 @@ Status Dispatcher::enum_references(
     // Delegate to envelope:
 
     Enum_References_Status status = env->enum_references(
-	instance, role, keys_only, proc, client_data);
+	instance, model, role, proc, client_data);
 
     switch (status)
     {
@@ -354,6 +357,9 @@ Status Dispatcher::enum_references(
 	    return STATUS_OK;
 
 	case ENUM_REFERENCES_FAILED:
+	    return STATUS_FAILED;
+
+	case ENUM_REFERENCES_UNSUPPORTED:
 	    return STATUS_FAILED;
     }
 

@@ -1,0 +1,19 @@
+Enum_Associator_Names_Status <CLASS>_Provider::enum_associator_names(
+    const Instance* instance,
+    const char* result_class,
+    const char* role,
+    const char* result_role,
+    Enum_Associator_Names_Handler<Instance>* handler)
+{
+    return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
+}
+
+Enum_References_Status <CLASS>_Provider::enum_references(
+    const Instance* instance,
+    const <CLASS>* model,
+    const char* role,
+    Enum_References_Handler<<CLASS>>* handler)
+{
+    return ENUM_REFERENCES_UNSUPPORTED;
+}
+

@@ -47,6 +47,10 @@ void __construct(
     inst->meta_class = mc;
     inst->magic = CIMPLE_INSTANCE_MAGIC;
 
+    // Initialize the reference count to one.
+
+    Atomic_create(&inst->refs, 1);
+
     // The create() function has already zero-filled the object, which suffices
     // to initialize most properties. Others must be default constructed.
     // These include arrays and strings.
@@ -126,6 +130,10 @@ void __destruct(Instance* inst)
 		destroy(instance);
 	}
     }
+
+    // Release the atomic reference count.
+
+    Atomic_destroy(&inst->refs);
 }
 
 void destroy(Instance* inst)
@@ -916,6 +924,25 @@ void destroyer(Instance* p)
 {
     if (p) 
 	destroy(p); 
+}
+
+const char* class_name(const Instance* instance)
+{
+    CIMPLE_ASSERT(instance != 0);
+    CIMPLE_ASSERT(instance->magic == CIMPLE_INSTANCE_MAGIC);
+    return instance->meta_class->name;
+}
+
+void ref(const Instance* instance)
+{
+    if (instance)
+	Atomic_inc(&((Instance*)instance)->refs);
+}
+
+void unref(const Instance* instance)
+{
+    if (instance && Atomic_dec_and_test(&((Instance*)instance)->refs))
+	destroy((Instance*)instance);
 }
 
 CIMPLE_NAMESPACE_END

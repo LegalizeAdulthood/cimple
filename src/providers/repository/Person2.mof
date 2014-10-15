@@ -1,0 +1,14 @@
+class Person2
+{
+    [key] uint32 ssn;
+    string first;
+    string last;
+};
+
+
+[Association]
+class Link2
+{
+    [key] Person2 ref parent;
+    [key] Person2 ref child;
+};
