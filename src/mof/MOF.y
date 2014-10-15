@@ -1445,10 +1445,13 @@ string_literal
 **==============================================================================
 */
 
+#if MOF_DEBUG_MODE
 static void MOF_trace(const char* str)
 {
-#if MOF_DEBUG_MODE
     printf("MOF_trace(): \"%s\"\n", str);
-#endif
 }
-
+#else
+static void MOF_trace(const char*)
+{
+}
+#endif

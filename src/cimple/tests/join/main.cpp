@@ -48,7 +48,7 @@ static void* _proc(void* arg)
     return arg;
 }
 
-int main(int argc, char** argv)
+int main(int /* argc */, char** argv)
 {
     // Single thread test.  Used to find memory leak.
     //Thread myThread;
