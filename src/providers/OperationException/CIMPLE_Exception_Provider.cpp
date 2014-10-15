@@ -157,9 +157,9 @@ Invoke_Method_Status CIMPLE_Exception_Provider::setException(
     printf("Enter setException\n");
     _exception = Exception.value;
 
-	_getInstanceDefault = getInstanceDefault.value;
+    _getInstanceDefault = getInstanceDefault.value;
 
- 	_associatorsDefault = associatorsDefault.value;
+    _associatorsDefault = associatorsDefault.value;
    
     printf("setException  Exception Value = %u\n", _exception);
     printf("   getInstanceDefault Value = %s\n", _print(_getInstanceDefault));
@@ -167,7 +167,7 @@ Invoke_Method_Status CIMPLE_Exception_Provider::setException(
 
     CIMPLE_INFO(("setException  Exception Value = %u\n", _exception));
     return_value.set(0);
-	
+
     return INVOKE_METHOD_OK;
 }
 

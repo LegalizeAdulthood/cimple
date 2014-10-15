@@ -21,18 +21,18 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const Lamp* model,
-	Lamp*& instance);
+        const Lamp* model,
+        Lamp*& instance);
 
     Enum_Instances_Status enum_instances(
-	const Lamp* model,
-	Enum_Instances_Handler<Lamp>* handler);
+        const Lamp* model,
+        Enum_Instances_Handler<Lamp>* handler);
 
     Create_Instance_Status create_instance(
         Lamp* instance);
 
     Delete_Instance_Status delete_instance(
-	const Lamp* instance);
+        const Lamp* instance);
 
     Modify_Instance_Status modify_instance(
         const Lamp* model,

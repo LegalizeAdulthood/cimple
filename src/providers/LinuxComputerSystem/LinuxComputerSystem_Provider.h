@@ -21,18 +21,18 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const LinuxComputerSystem* model,
-	LinuxComputerSystem*& instance);
+        const LinuxComputerSystem* model,
+        LinuxComputerSystem*& instance);
 
     Enum_Instances_Status enum_instances(
-	const LinuxComputerSystem* model,
-	Enum_Instances_Handler<LinuxComputerSystem>* handler);
+        const LinuxComputerSystem* model,
+        Enum_Instances_Handler<LinuxComputerSystem>* handler);
 
     Create_Instance_Status create_instance(
         LinuxComputerSystem* instance);
 
     Delete_Instance_Status delete_instance(
-	const LinuxComputerSystem* instance);
+        const LinuxComputerSystem* instance);
 
     Modify_Instance_Status modify_instance(
         const LinuxComputerSystem* model,

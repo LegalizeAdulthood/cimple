@@ -5,10 +5,10 @@ class Person
     string last;
 
     uint32 hello(
-	[IN]
-	String message,
-	[OUT]
-	String response);
+        [IN]
+        String message,
+        [OUT]
+        String response);
 };
 
 class Salesman : Person

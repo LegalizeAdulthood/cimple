@@ -43,13 +43,13 @@ class CMPL_ResponseStressTest
          "approximate size of the returned instances. This persists "
          "until the provider is reloaded."),
       static] Uint32 set(
-	    [in] uint64 ResponseCount,
-	    [in] uint64 ResponseInstanceSize);
+        [in] uint64 ResponseCount,
+        [in] uint64 ResponseInstanceSize);
 
     [ Description ("Method returns the current control parameters. "),
       static] Uint32 get(
-	    [out] uint64 ResponseCount,
-	    [out] uint64 ResponseInstanceSize);
+        [out] uint64 ResponseCount,
+        [out] uint64 ResponseInstanceSize);
 
     [ Description ("Method stops the provider from generating instances. "
         "Reset by the next operation or method request. This is an  "

@@ -12,9 +12,9 @@ class Arrays
     Datetime arrDatetime[];
 
     uint32 setReturnCount(
-	[IN] uint32 returnCount,
-	[OUT] uint32 prevReturnCount);
+        [IN] uint32 returnCount,
+        [OUT] uint32 prevReturnCount);
 
     uint32 getReturnCount(
-	[OUT] uint32 returnCount);
+        [OUT] uint32 returnCount);
 };

@@ -21,18 +21,18 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const Fan* model,
-	Fan*& instance);
+        const Fan* model,
+        Fan*& instance);
 
     Enum_Instances_Status enum_instances(
-	const Fan* model,
-	Enum_Instances_Handler<Fan>* handler);
+        const Fan* model,
+        Enum_Instances_Handler<Fan>* handler);
 
     Create_Instance_Status create_instance(
         Fan* instance);
 
     Delete_Instance_Status delete_instance(
-	const Fan* inst);
+        const Fan* inst);
 
     Modify_Instance_Status modify_instance(
         const Fan* model,

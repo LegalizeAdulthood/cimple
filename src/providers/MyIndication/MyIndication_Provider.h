@@ -21,7 +21,7 @@ public:
     Unload_Status unload();
 
     Enable_Indications_Status enable_indications(
-	Indication_Handler<MyIndication>* indication_handler);
+        Indication_Handler<MyIndication>* indication_handler);
 
     Disable_Indications_Status disable_indications();
 

@@ -41,7 +41,7 @@ Enable_Indications_Status MyIndication_Provider::enable_indications(
     Indication_Handler<MyIndication>* indication_handler)
 {
     // printf("=== MyIndication_Provider::enable_indications()\n");
-	// This is part of genprov generatedskeleton
+    // This is part of genprov generatedskeleton
     _indication_handler = indication_handler;
 
     return ENABLE_INDICATIONS_OK;

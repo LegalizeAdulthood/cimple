@@ -21,18 +21,18 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const CIM_DiskDrive* model,
-	CIM_DiskDrive*& instance);
+        const CIM_DiskDrive* model,
+        CIM_DiskDrive*& instance);
 
     Enum_Instances_Status enum_instances(
-	const CIM_DiskDrive* model,
-	Enum_Instances_Handler<CIM_DiskDrive>* handler);
+        const CIM_DiskDrive* model,
+        Enum_Instances_Handler<CIM_DiskDrive>* handler);
 
     Create_Instance_Status create_instance(
         CIM_DiskDrive* instance);
 
     Delete_Instance_Status delete_instance(
-	const CIM_DiskDrive* instance);
+        const CIM_DiskDrive* instance);
 
     Modify_Instance_Status modify_instance(
         const CIM_DiskDrive* model,

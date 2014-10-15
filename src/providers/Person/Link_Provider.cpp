@@ -48,8 +48,8 @@ Get_Instance_Status Link_Provider::get_instance(
 
     if (link)
     {
-	instance = link->clone();
-	return GET_INSTANCE_OK;
+        instance = link->clone();
+        return GET_INSTANCE_OK;
     }
 
     return GET_INSTANCE_NOT_FOUND;
@@ -60,7 +60,7 @@ Enum_Instances_Status Link_Provider::enum_instances(
     Enum_Instances_Handler<Link>* handler)
 {
     for (size_t i = 0; i < _map.size(); i++)
-	handler->handle(_map[i]->clone());
+        handler->handle(_map[i]->clone());
 
     return ENUM_INSTANCES_OK;
 }
@@ -68,7 +68,7 @@ Enum_Instances_Status Link_Provider::enum_instances(
 Create_Instance_Status Link_Provider::create_instance(const Link* instance)
 {
     if (_map.find(instance) != size_t(-1))
-	return CREATE_INSTANCE_DUPLICATE;
+        return CREATE_INSTANCE_DUPLICATE;
 
     print(instance);
 
@@ -82,7 +82,7 @@ Delete_Instance_Status Link_Provider::delete_instance(const Link* instance)
     size_t pos = _map.find(instance);
 
     if (pos == size_t(-1))
-	return DELETE_INSTANCE_NOT_FOUND;
+        return DELETE_INSTANCE_NOT_FOUND;
 
     destroy(_map[pos]);
     _map.remove(pos);
@@ -95,7 +95,7 @@ Modify_Instance_Status Link_Provider::modify_instance(const Link* instance)
     size_t pos = _map.find(instance);
 
     if (pos == size_t(-1))
-	return MODIFY_INSTANCE_NOT_FOUND;
+        return MODIFY_INSTANCE_NOT_FOUND;
 
     copy(_map[pos], instance);
 
@@ -143,7 +143,7 @@ int Link_Provider::proc(
     typedef Link Class;
     typedef Link_Provider Provider;
     return Association_Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 

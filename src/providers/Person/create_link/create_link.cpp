@@ -38,24 +38,24 @@ int main(int argc, char** argv)
 {
     try
     {
-	CIMClient client;
-	client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        CIMClient client;
+        client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
 
-	CIMInstance instance("Link");
+        CIMInstance instance("Link");
 
-	instance.addProperty(
-	    CIMProperty("parent", CIMObjectPath("Person.ssn=1")));
+        instance.addProperty(
+            CIMProperty("parent", CIMObjectPath("Person.ssn=1")));
 
-	instance.addProperty(
-	    CIMProperty("child", CIMObjectPath("Person.ssn=123")));
+        instance.addProperty(
+            CIMProperty("child", CIMObjectPath("Person.ssn=123")));
 
-	CIMObjectPath return_object_path = client.createInstance(
-	    NAMESPACE, instance);
+        CIMObjectPath return_object_path = client.createInstance(
+            NAMESPACE, instance);
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);
