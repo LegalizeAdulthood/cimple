@@ -13,7 +13,7 @@ void gen_repository_header_file(const vector<string>& classes)
     out("#include <cimple/cimple.h>\n");
 
     for (size_t i = 0; i < classes.size(); i++)
-	out("#include \"%s.h\"\n", classes[i].c_str());
+        out("#include \"%s.h\"\n", classes[i].c_str());
 
     nl();
 
@@ -47,7 +47,7 @@ void gen_repository_source_file(const vector<string>& classes)
     out("{\n");
 
     for (size_t i = 0; i < classes.size(); i++)
-	out("    &%s::static_meta_class,\n", classes[i].c_str());
+        out("    &%s::static_meta_class,\n", classes[i].c_str());
 
     out("};\n");
     nl();
@@ -75,31 +75,31 @@ void gen_repository(const vector<string>& classes)
     //
 
     {
-	//
-	// Open the file.
-	//
+        //
+        // Open the file.
+        //
 
-	const char FILENAME[] = "repository.h";
+        const char FILENAME[] = "repository.h";
 
-	if ((_os = fopen(FILENAME, "wb")) == 0)
-	{
-	    err("error: cannot open \"%s\"", FILENAME);
-	    exit(1);
-	}
+        if ((_os = fopen(FILENAME, "wb")) == 0)
+        {
+            err("error: cannot open \"%s\"", FILENAME);
+            exit(1);
+        }
 
-	//
-	// Generate file.
-	//
+        //
+        // Generate file.
+        //
 
-	gen_repository_header_file(classes);
+        gen_repository_header_file(classes);
 
-	printf("created %s\n", FILENAME);
+        printf("created %s\n", FILENAME);
 
-	//
-	// Close the file.
-	//
+        //
+        // Close the file.
+        //
 
-	fclose(_os);
+        fclose(_os);
     }
 
     //
@@ -107,34 +107,34 @@ void gen_repository(const vector<string>& classes)
     //
 
     {
-	//
-	// Open the file.
-	//
+        //
+        // Open the file.
+        //
 
-	const char FILENAME[] = "repository.cpp";
+        const char FILENAME[] = "repository.cpp";
 
-	if ((_os = fopen(FILENAME, "wb")) == 0)
-	{
-	    err("error: cannot open \"%s\"", FILENAME);
-	    exit(1);
-	}
+        if ((_os = fopen(FILENAME, "wb")) == 0)
+        {
+            err("error: cannot open \"%s\"", FILENAME);
+            exit(1);
+        }
 
-	//
-	// Generate file.
-	//
+        //
+        // Generate file.
+        //
 
-	gen_repository_source_file(classes);
+        gen_repository_source_file(classes);
 
-	//
-	// Generate entry point: cimple_repository()
-	//
+        //
+        // Generate entry point: cimple_repository()
+        //
 
-	printf("Created %s\n", FILENAME);
+        printf("Created %s\n", FILENAME);
 
-	//
-	// Close the file.
-	//
+        //
+        // Close the file.
+        //
 
-	fclose(_os);
+        fclose(_os);
     }
 }

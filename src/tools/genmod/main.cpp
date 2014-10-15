@@ -670,7 +670,7 @@ int main(int argc, char** argv)
             // we claim it for all the others also.
             case 'f':
             case 'F':
-			{
+            {
                 if (!optarg)
                 {
                     err("missing argument on -f or -F option");
@@ -679,7 +679,7 @@ int main(int argc, char** argv)
 
                 class_list_file = optarg;
                 break;
-			}
+            }
             case 'h':
             {
                 fprintf(stderr, (char*)USAGE, arg0);
@@ -726,7 +726,7 @@ int main(int argc, char** argv)
     // generate the class list from a combination of the command line input
     // and any defined class list file
 
-	vector<string> classes;
+    vector<string> classes;
 
     if (class_list_file.size())
         load_class_list_file(classes, class_list_file);
@@ -736,7 +736,7 @@ int main(int argc, char** argv)
 
     for (int i = optind + 1; i < argc; i++)
         append_unique(classes, argv[i]);
-		
+
     // Load repository. 
 
     load_repository(mof_files);
@@ -744,8 +744,8 @@ int main(int argc, char** argv)
     // Generate module file.
 
     //// remove this gen_module_file(argv[0], argc - 1, argv + 1);
-	
-	gen_module_file(argv[0], classes);
+
+    gen_module_file(argv[0], classes);
 
     // Generate guid.h file.
 

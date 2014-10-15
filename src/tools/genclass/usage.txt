@@ -10,9 +10,9 @@ a file containing the class names.
 
 Genclass to process the following MOF files:
 
-    1. 	First CIM_Schema.mof or first file of form cimv[0-9]*.mof (required).
-    2. 	Second repository.mof (optional).
-    3.	Finally any files given by the -M option (optional).
+    1.  First CIM_Schema.mof or first file of form cimv[0-9]*.mof (required).
+    2.  Second repository.mof (optional).
+    3.  Finally any files given by the -M option (optional).
 
 Genclass requires the CIMPLE_MOF_PATH environment variable to be set, where
 it expects to find CIM_Schema.mof or cimv[0-9]*.mof (which contains the CIM 
@@ -24,9 +24,9 @@ example:
 
 Genclass searches for user-defined MOF files in the following way:
 
-    1. 	First in the current directory.
-    2. 	Second under $CIMPLE_MOF_PATH.
-    3. 	Finally, under directories given by the -I options.
+    1.  First in the current directory.
+    2.  Second under $CIMPLE_MOF_PATH.
+    3.  Finally, under directories given by the -I options.
 
 OPTIONS:
     -V      -- print the version number.

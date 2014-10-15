@@ -57,7 +57,7 @@ inline Person_Ref::~Person_Ref()
 inline Person_Ref& Person_Ref::operator=(const Person_Ref& x)
 {
     if (_instance != x._instance)
-	ref(_instance = x._instance);
+        ref(_instance = x._instance);
 
     return *this;
 }

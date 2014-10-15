@@ -859,8 +859,8 @@ int main(int argc, char** argv)
                 break;
             } 
 
-			case 'F':
-			 {
+            case 'F':
+            {
                 if (!optarg)
                 {
                     err("missing argument on -F option");
@@ -869,7 +869,7 @@ int main(int argc, char** argv)
 
                 class_list_file = optarg;
                 break;
-			}
+            }
             case 'f':
                 force_opt = true;
                 break;
@@ -905,10 +905,10 @@ int main(int argc, char** argv)
         fprintf(stderr, (char*)USAGE, arg0);
         exit(1);
     }
-	
+
     //  Build class list from file and command line input
  
-	vector<string> classes;
+    vector<string> classes;
 
     // append classes to class list file if -F option
 
@@ -925,8 +925,8 @@ int main(int argc, char** argv)
     load_repository(mof_files);
 
     // Create providers.
-	
-	for (int j = 0; j < int(classes.size()); j++)
+    
+    for (int j = 0; j < int(classes.size()); j++)
         genprov(classes[j]);
 
     return 0;

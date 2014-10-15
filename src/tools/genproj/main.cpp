@@ -287,8 +287,8 @@ int main(int argc, char** argv)
                 genmak_opt = true;
                 break;
             }
-			case 'F':
-			 {
+            case 'F':
+            {
                 if (!optarg)
                 {
                     err("missing argument on -F option");
@@ -297,7 +297,7 @@ int main(int argc, char** argv)
 
                 class_list_file = optarg;
                 break;
-			}
+            }
             case 'f':
             {
                 force_opt = true;
