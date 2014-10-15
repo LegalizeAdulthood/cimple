@@ -81,13 +81,23 @@ public:
         const char* name_space, 
         const Instance* instance) = 0;
 
+    virtual int invoke_method(
+        const char* name_space, 
+        const Instance* instance,
+        Instance* meth) = 0;
+
     virtual void allow_unload(bool flag) = 0;
+
+    virtual bool get_username(String&) = 0;
 
     static void push(Thread_Context* context);
 
     static void pop();
 
     static Thread_Context* top();
+
+    // Pointer to next item on stack (one lower).
+    Thread_Context* _next;
 };
 
 CIMPLE_NAMESPACE_END

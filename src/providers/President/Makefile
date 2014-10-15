@@ -4,12 +4,12 @@ include $(TOP)/mak/config.mak
 MODULE=1
 
 SHARED_LIBRARY = cimplePresident
+
 SOURCES = repository.cpp President.cpp module.cpp President_Provider.cpp
 
 CIMPLE_CMPI_MODULE=1
-
+#CIMPLE_PEGASUS_MODULE=1
 include ../common.mak
-
 
 include $(TOP)/mak/rules.mak
 
@@ -24,4 +24,7 @@ genprov:
 
 genmod:
 	$(BINDIR)/genmod President President
+	
+genproj:
+	$(BINDIR)/genproj President President	
 

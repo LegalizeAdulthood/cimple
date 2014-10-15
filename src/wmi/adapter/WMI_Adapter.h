@@ -35,6 +35,15 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+// For now, disable the rpcsal annotation headers until
+// we figure out if we need them
+#ifdef USE_RPCSAL
+#include <Rpcsal.h>
+#else
+#define __RPC__in
+#define __RPC__out
+#endif
+
 class __declspec(dllexport) WMI_Adapter : 
     public IWbemServices,
     public IWbemProviderInit,

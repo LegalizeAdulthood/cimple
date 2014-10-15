@@ -17,8 +17,12 @@ SOURCES = \
     SalesmanLink_Provider.cpp \
     module.cpp
 
-#CIMPLE_PEGASUS_MODULE=1
-CIMPLE_CMPI_MODULE=1
+## Allow building providers for eithe CMPI or Pegasus C++
+ifdef CIMPLE_PROVIDER_BUILD_CMPI
+   CIMPLE_CMPI_MODULE=1
+else
+   CIMPLE_PEGASUS_MODULE=1
+endif
 
 include ../common.mak
 
@@ -41,33 +45,39 @@ genmod:
 
 live:
 	$(CIMCLI) gi Person.ssn=1
-	$(CIMCLI) ni Person
+	$(CIMCLI) ni Person  --sum -count 6
 	$(CIMCLI) ni PersonLink
-	$(CIMCLI) ni PersonLink
-	$(CIMCLI) ni Fan
+	$(CIMCLI) ni PersonLink --sum -count 5 
+	$(CIMCLI) ni Fan --sum -count 3
+	
 	$(CIMCLI) ei Person
+	$(CIMCLI) ei Person --sum -count 6
 	$(CIMCLI) ei PersonLink
-	$(CIMCLI) ei PersonLink
-	$(CIMCLI) ei Fan
-	$(CIMCLI) an Person
-	$(CIMCLI) an Person.ssn=1
-	$(CIMCLI) an Person.ssn=2
-	$(CIMCLI) an Person.ssn=3
-	$(CIMCLI) an Person.ssn=4
-	$(CIMCLI) an Person.ssn=5
-	$(CIMCLI) a Person.ssn=1
-	$(CIMCLI) a Person.ssn=2
-	$(CIMCLI) a Person.ssn=3
-	$(CIMCLI) a Person.ssn=4
-	$(CIMCLI) a Person.ssn=5
+	$(CIMCLI) ei PersonLink --sum -count 5
+	$(CIMCLI) ei Fan --sum -count 3
+	
+	$(CIMCLI) an Person 
+	$(CIMCLI) an Person.ssn=1 --sum -count 2
+	$(CIMCLI) an Person.ssn=2 --sum -count 2
+	$(CIMCLI) an Person.ssn=3 --sum -count 2
+	$(CIMCLI) an Person.ssn=4 --sum -count 2
+	$(CIMCLI) an Person.ssn=5 --sum -count 0
+	
+	$(CIMCLI) a Person.ssn=1 --sum -count 2
+	$(CIMCLI) a Person.ssn=2 --sum -count 2
+	$(CIMCLI) a Person.ssn=3 --sum -count 2
+	$(CIMCLI) a Person.ssn=4 --sum -count 2
+	$(CIMCLI) a Person.ssn=5 --sum -count 0
+	
 	$(CIMCLI) r Person.ssn=1
 	$(CIMCLI) r Person.ssn=2
 	$(CIMCLI) r Person.ssn=3
 	$(CIMCLI) r Person.ssn=4
 	$(CIMCLI) r Person.ssn=5
-	$(CIMCLI) rn Person.ssn=1
-	$(CIMCLI) rn Person.ssn=2
-	$(CIMCLI) rn Person.ssn=3
-	$(CIMCLI) rn Person.ssn=4
-	$(CIMCLI) rn Person.ssn=5
+	
+	$(CIMCLI) rn Person.ssn=1 --sum -count 2
+	$(CIMCLI) rn Person.ssn=2 --sum -count 2
+	$(CIMCLI) rn Person.ssn=3 --sum -count 2
+	$(CIMCLI) rn Person.ssn=4 --sum -count 2
+	$(CIMCLI) rn Person.ssn=5 --sum -count 0
 

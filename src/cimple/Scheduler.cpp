@@ -44,26 +44,31 @@ struct Timer : public List_Elem
 static void _insert_timer(List& list, Timer* timer)
 {
     // Keep list sorted in ascending order of deadline.
-
-    if (list.empty())
+    if (!list.empty())
     {
-	list.append(timer);
-	return;
-    }
-
-    for (List_Elem* p = list.head; p; p = p->next)
-    {
-	if (timer->deadline < ((Timer*)p)->deadline)
-	{
-	    list.insert_before(p, timer);
-	    return;
-	}
+        // insert in time sequence
+        for (List_Elem* p = list.head; p; p = p->next)
+        {
+        	if (timer->deadline < ((Timer*)p)->deadline)
+        	{
+        	    list.insert_before(p, timer);
+        	    return;
+        	}
+        }
     }
 
     list.append(timer);
 }
 
-Scheduler::Scheduler() : _thread_running(false)
+Scheduler::Scheduler() :
+    _dispatcher_thread_running(false),
+    _auto_dispatch(false)
+{
+}
+
+Scheduler::Scheduler(bool autoDispatcherStart) :
+    _dispatcher_thread_running(false),
+    _auto_dispatch(autoDispatcherStart)
 {
 }
 
@@ -71,13 +76,15 @@ Scheduler::~Scheduler()
 {
     for (List_Elem* p = _list.head; p; )
     {
-	List_Elem* next = p->next;
-	delete p;
-	p = next;
+    	List_Elem* next = p->next;
+    	delete p;
+    	p = next;
     }
 }
 
-size_t Scheduler::add_timer(uint64 timeout, Timer_Proc proc, void* arg)
+size_t Scheduler::add_timer(uint64 timeout,
+                            Timer_Proc proc,
+                            void* arg)
 {
     Auto_Mutex auto_lock(_lock);
 
@@ -93,6 +100,9 @@ size_t Scheduler::add_timer(uint64 timeout, Timer_Proc proc, void* arg)
 
     _insert_timer(_list, timer);
 
+    if (_auto_dispatch && !_dispatcher_thread_running)
+        start_dispatcher();
+
     return timer->id;
 }
 
@@ -102,16 +112,19 @@ bool Scheduler::remove_timer(size_t timer_id)
 
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-	Timer* timer = (Timer*)p;
+    	Timer* timer = (Timer*)p;
+    
+    	if (timer->id == timer_id)
+    	{
+    	    // Found!
+    	    _list.remove(p);
+    	    _id_pool.put(timer->id);
+    	    delete timer;
+            if (_auto_dispatch && _list.empty())
+                stop_dispatcher();
 
-	if (timer->id == timer_id)
-	{
-	    // Found!
-	    _list.remove(p);
-	    _id_pool.put(timer->id);
-	    delete timer;
-	    return true;
-	}
+    	    return true;
+    	}
     }
 
     // Not found!
@@ -121,17 +134,21 @@ bool Scheduler::remove_timer(size_t timer_id)
 void Scheduler::dispatch()
 {
     // We will spend no more than this duration in this dispatch() function.
+    // Currently 100 milliseconds
     const uint64 MAX_TIME_INSIDE_DISPATCH_USEC = 1000 * 1000;
-
-    // Stay in this function no longer than 100 milliseconds.
 
     _lock.lock();
 
+    // if list empty exit without any other processing. If we are using
+    // continuous threads, execute timer before exiting.
     if (_list.empty())
     {
-	_lock.unlock();
-	Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
-	return;
+    	_lock.unlock();
+        if (_auto_dispatch)
+            stop_dispatcher();
+        else
+            Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
+    	return;
     }
 
     // Sleep until the closest deadline
@@ -141,89 +158,135 @@ void Scheduler::dispatch()
 
     if (now < closest_deadline)
     {
-	uint64 diff = closest_deadline - now;
-
-	if (diff > MAX_TIME_INSIDE_DISPATCH_USEC)
-	{
-	    _lock.unlock();
-	    Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
-	    return;
-	}
-
-	_lock.unlock();
-	Time::sleep(diff);
-	_lock.lock();
-
-	now = closest_deadline;
+    	uint64 diff = closest_deadline - now;
+    
+    	if (diff > MAX_TIME_INSIDE_DISPATCH_USEC)
+    	{
+    	    _lock.unlock();
+    	    Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
+    	    return;
+    	}
+    
+    	_lock.unlock();
+    	Time::sleep(diff);
+    	_lock.lock();
+    
+    	now = closest_deadline;
     }
 
     // Dispatch expired timers (there will be at least one).
 
     for (;;)
     {
-	Timer* timer = (Timer*)_list.head;
+    	Timer* timer = (Timer*)_list.head;
 
-	if (!timer || now < timer->deadline)
-	    break;
+        // if current timer not expired, terminate loop
 
-	_list.remove(timer);
+    	if (!timer || now < timer->deadline)
+    	    break;
+    
+    	_list.remove(timer);
 
-	_lock.unlock();
-	uint64 new_timeout = timer->proc(timer->arg);
-	_lock.lock();
+        // Call the function to be executed for this timer.
 
-	if (new_timeout == 0)
-	    delete timer;
-	else
-	{
-	    timer->deadline = Time::now() + new_timeout;
-	    _insert_timer(_list, timer);
-	}
+    	_lock.unlock();
+    	uint64 new_timeout = timer->proc(timer->arg);
+    	_lock.lock();
+
+        // if the function returns zero, delete this timer
+        // else reinsert the timer with the returned timeout.
+        // 
+    	if (new_timeout == 0)
+    	    delete timer;
+    	else
+    	{
+            if (!_auto_dispatch)
+            {
+                timer->deadline = Time::now() + new_timeout;
+                _insert_timer(_list, timer);
+            }
+            else   // if autothreading
+            {
+                if (_dispatcher_thread_running)
+                {
+                    timer->deadline = Time::now() + new_timeout;
+                    _insert_timer(_list, timer);
+                }
+                else
+                    delete timer;
+            }
+    	}
     }
+
+    if (_auto_dispatch && _list.empty())
+        stop_dispatcher();
 
     _lock.unlock();
 }
 
+// Run the dispatcher while the running flag is true
+
 void* Scheduler::_thread_proc(void* arg)
 {
     Scheduler* sched = (Scheduler*)arg;
-
-    while (sched->_thread_running)
-	sched->dispatch();
+    while (sched->_dispatcher_thread_running)
+        sched->dispatch();
 
     return 0;
 }
 
-int Scheduler::start_thread()
+// Start the dispatcher by creating a joinable thread.
+int Scheduler::start_dispatcher()
 {
-    // ATTN: use Thread class so that these go through the handlers.
-
     Auto_Mutex auto_lock(_lock);
 
-    if (_thread_running)
-	return -1;
+    if (_dispatcher_thread_running)
+        return -1;
 
-    _thread_running = true;
+    _dispatcher_thread_running = true;
 
     return Thread::create_joinable(_thread, _thread_proc, this);
 
     return 0;
 }
 
-int Scheduler::stop_thread()
+int Scheduler::stop_dispatcher()
 {
     Auto_Mutex auto_lock(_lock);
 
-    if (!_thread_running)
-	return -1;
+    if (!_dispatcher_thread_running)
+        return -1;
 
     // Setting this to false will cause _thread_proc() to fall out of its
     // loop and terminate.
 
-    _thread_running = false;
-
+    _dispatcher_thread_running = false;
 
     return 0;
+}
+
+int Scheduler::clean()
+{
+    if (_dispatcher_thread_running)
+        return -1;
+
+    // Clean out all elements in the list
+    for (List_Elem* p = _list.head; p; )
+    {
+    	List_Elem* next = p->next;
+    	delete p;
+    	p = next;
+    }
+
+    // set the list to clear
+    _list.clear();
+
+    return 0;
+}
+
+Thread& Scheduler::thread_id()
+{
+    return _thread;
 }
 
 CIMPLE_NAMESPACE_END

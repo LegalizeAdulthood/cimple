@@ -2755,7 +2755,7 @@ int main(int argc, char** argv)
             }
 
             case 'h':
-                printf((char*)USAGE);
+                printf("%s", (char*)USAGE);
                 exit(0);
                 break;
 
@@ -2817,11 +2817,11 @@ int main(int argc, char** argv)
         meta_repository_name = string("__meta_repository_") + string(uuid_str);
     }
 
-    // We expect at least one argument (or -c option)
+    // We expect at least one argument (or -f option)
 
     if (optind == argc && !schema_opt && class_list_file.size() == 0)
     {
-        printf((char*)USAGE);
+        printf("%s",(char*)USAGE);
         exit(1);
     }
 

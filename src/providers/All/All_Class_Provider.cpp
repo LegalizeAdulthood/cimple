@@ -13,11 +13,14 @@ All_Class_Provider::~All_Class_Provider()
 
 Load_Status All_Class_Provider::load()
 {
+    CIMPLE_DBG(("Load"));
     return LOAD_OK;
 }
 
 Unload_Status All_Class_Provider::unload()
 {
+    if (_instance)
+        unref(_instance);
     return UNLOAD_OK;
 }
 
@@ -25,7 +28,9 @@ Get_Instance_Status All_Class_Provider::get_instance(
     const All_Class* model,
     All_Class*& instance)
 {
-    if (_instance && model->Key == _instance->Key)
+    CIMPLE_DBG(("get_instance key = %u", model->Key.value));
+
+    if ((key_eq(model, _instance)))
     {
         instance = _instance->clone();
         return GET_INSTANCE_OK;
@@ -34,10 +39,17 @@ Get_Instance_Status All_Class_Provider::get_instance(
     return GET_INSTANCE_NOT_FOUND;
 }
 
+// Note that the enum_instances operation returns a set of
+// instances that are completely different than the create and delete
+// use.
+// ATTN: Need to add this as a test on client
 Enum_Instances_Status All_Class_Provider::enum_instances(
     const All_Class* model,
     Enum_Instances_Handler<All_Class>* handler)
 {
+    CIMPLE_DBG(("enum_instances"));
+
+    // This test simple returns a single predefined instance
     All_Class* inst = All_Class::create(true);
     inst->Key.set(99);
     inst->booleanScalar.set(false);
@@ -53,23 +65,25 @@ Enum_Instances_Status All_Class_Provider::enum_instances(
     inst->real64Scalar.set(64);
     inst->char16Scalar.set('A');
     inst->stringScalar.set("Hello");
-    inst->datetimeScalar.set(Datetime::now());
+    inst->datetimeScalar.set(Datetime("20070101120000.000000-360"));
 
     inst->booleanArray.set(Array<boolean>::make(true, false, true));
-    inst->uint8Array.set(Array<uint8>::make(8, 8, 8));
-    inst->sint8Array.set(Array<sint8>::make(-8, -8, -8));
-    inst->uint16Array.set(Array<uint16>::make(16, 16, 16));
-    inst->sint16Array.set(Array<sint16>::make(-16, -16, -16));
-    inst->uint32Array.set(Array<uint32>::make(32, 32, 32));
-    inst->sint32Array.set(Array<sint32>::make(-32, -32, -32));
-    inst->uint64Array.set(Array<uint64>::make(64, 64, 64));
-    inst->sint64Array.set(Array<sint64>::make(-64, -64, -64));
+    inst->uint8Array.set(Array<uint8>::make(0, 8, 254));
+    inst->sint8Array.set(Array<sint8>::make(-125, -8, 126));
+    inst->uint16Array.set(Array<uint16>::make(819, 0, 16, 999));
+    inst->sint16Array.set(Array<sint16>::make(-819, 0, 16, 999));
+    inst->uint32Array.set(Array<uint32>::make(8192, 0, 16, 9999));
+    inst->sint32Array.set(Array<sint32>::make(-8192, 0, 16, 15000));
+    inst->uint64Array.set(Array<uint64>::make(8192, 0, 16, 9999));
+    inst->sint64Array.set(Array<sint64>::make(-8192, 0, 16, 9999));
     inst->real32Array.set(Array<real32>::make(32, 32, 32));
     inst->real64Array.set(Array<real64>::make(64, 64, 64));
     inst->char16Array.set(Array<char16>::make('A', 'B', 'C'));
-    inst->stringArray.set(Array<String>::make("Red", "Green", "Blue"));
+    inst->stringArray.set(Array<String>::make("Red", "Green", "Blue", ""));
     inst->datetimeArray.set(Array<Datetime>::make(
-        Datetime::now(), Datetime::now(), Datetime::now()));
+        Datetime("20070101120000.000000-360"),
+        Datetime("20070101120000.000000-360"),
+        Datetime("20070101120000.000000-360")));
 
     All_Part* part = All_Part::create(true);
     part->Key.set(8888);
@@ -105,8 +119,12 @@ Create_Instance_Status All_Class_Provider::create_instance(
     All_Class* instance)
 {
     assert(instance);
-    print(instance);
+    CIMPLE_DBG(("create_instance key = %u", instance->Key.value));
 
+    // save the received instance.   This
+    // test assumes that there will be only a single
+    // active instance and unrefs any existing instance.
+    
     if (_instance)
         unref(_instance);
 
@@ -118,14 +136,37 @@ Create_Instance_Status All_Class_Provider::create_instance(
 Delete_Instance_Status All_Class_Provider::delete_instance(
     const All_Class* instance)
 {
-    return DELETE_INSTANCE_UNSUPPORTED;
+    assert(instance);
+    CIMPLE_DBG(("delete_instance key = %u", instance->Key.value));
+
+    if((key_eq(instance, _instance)))
+    {
+        unref(_instance);
+        _instance = 0;
+        return DELETE_INSTANCE_OK;
+    }
+    return DELETE_INSTANCE_NOT_FOUND;
 }
 
 Modify_Instance_Status All_Class_Provider::modify_instance(
     const All_Class* model,
     const All_Class* instance)
 {
-    return MODIFY_INSTANCE_UNSUPPORTED;
+    // simply substitute new instance for old
+
+    CIMPLE_DBG(("modify_instance key = %u", instance->Key.value));
+    assert(instance);
+    if((key_eq(instance, _instance)))
+    {
+        unref(_instance);
+
+        // Update the instance with the modified properties
+
+        copy(_instance, instance, model);
+
+        return MODIFY_INSTANCE_OK;
+    }
+    return MODIFY_INSTANCE_NOT_FOUND;
 }
 
 Invoke_Method_Status All_Class_Provider::booleanReturn(

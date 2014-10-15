@@ -24,6 +24,13 @@
 **==============================================================================
 */
 
+/*
+    Test the thread and join functions.  Creates a number of threads
+    each of which calls a function to sleep and then exit.  After starting
+    the threads, the main thread waits for these threads to join the
+    main thread.  Tests that each thread returns the proper return argument.
+*/
+
 #include <cassert>
 #include <cimple/Thread.h>
 #include <cimple/Time.h>
@@ -34,7 +41,7 @@ static void* _proc(void* arg)
 {
     char* str = (char*)arg;
     // printf("[%s]\n", str);
-    Time::sleep(1000 * 1000);
+    Time::sleep(Time::SEC);
 
     Thread::exit(arg);
 
@@ -43,25 +50,49 @@ static void* _proc(void* arg)
 
 int main(int argc, char** argv)
 {
-    const size_t N = 64;
+
+    // Single thread test.  Used to find memory leak.
+    Thread myThread;
+
+    {
+        int r = Thread::create_joinable(myThread, _proc, (void*)"abc");
+        assert(r == 0);
+    }
+
+    {
+        void* value = 0;
+        int r = Thread::join(myThread, value);
+
+        assert(r == 0);
+        assert(strcmp((char*)value,"abc") == 0);
+    }
+    //return 0;  // enable this to just do one thread for memory leak testing
+
+
+    const size_t N = 164;
     Thread threads[N];
 
     for (size_t i = 0; i < N; i++)
     {
         char buffer[64];
         sprintf(buffer, "%d", int(i));
-        Thread::create_joinable(threads[i], _proc, strdup(buffer));
+        int r = Thread::create_joinable(threads[i], _proc, strdup(buffer));
+        assert(r == 0);
     }
 
     for (size_t i = 0; i < N; i++)
     {
+        // Create corresponding counter for join.
         char buffer[64];
         sprintf(buffer, "%d", int(i));
 
+        // execute the join
         void* value = 0;
         int r = Thread::join(threads[i], value);
         // printf("join[%s][%s]\n", (char*)value, buffer);
         assert(r == 0);
+
+        // test that we have returned the proper arg value
         assert(strcmp(buffer, (char*)value) == 0);
     }
 

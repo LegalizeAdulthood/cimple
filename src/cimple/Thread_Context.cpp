@@ -1,7 +1,8 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+** Copyright (c) 2003, 2004, 2005, 2006, 20007, 2008, 2009
+**               Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -44,12 +45,12 @@ CIMPLE_NAMESPACE_BEGIN
 
 static TSD _tsd;
 
-static void* _get_tsd()
+static Thread_Context* _get_top()
 {
-    return _tsd.get();
+    return (Thread_Context*)_tsd.get();
 }
 
-static void _set_tsd(void* data)
+static void _set_top(Thread_Context* data)
 {
     return _tsd.set(data);
 }
@@ -81,13 +82,13 @@ static void _make_key()
     pthread_key_create(&_thread_context_key, NULL);
 }
 
-static void* _get_tsd()
+static Thread_Context* _get_top()
 {
     pthread_once(&_thread_context_key_once, _make_key);
-    return pthread_getspecific(_thread_context_key);
+    return (Thread_Context*)pthread_getspecific(_thread_context_key);
 }
 
-static void _set_tsd(void* data)
+static void _set_top(Thread_Context* data)
 {
     pthread_once(&_thread_context_key_once, _make_key);
     pthread_setspecific(_thread_context_key, data);
@@ -97,38 +98,11 @@ static void _set_tsd(void* data)
 
 //==============================================================================
 //
-// Stack:
-//
-//==============================================================================
-
-struct Stack
-{
-    enum { MAX_SIZE = 16 };
-    Thread_Context* data[MAX_SIZE];
-    size_t size;
-};
-
-static Stack* _stack()
-{
-    Stack* stack = (Stack*)_get_tsd();
-
-    if (stack == 0)
-    {
-        stack = new Stack;
-        stack->size = 0;
-        _set_tsd(stack);
-    }
-
-    return stack;
-}
-
-//==============================================================================
-//
 // Thread_Context
 //
 //==============================================================================
 
-Thread_Context::Thread_Context()
+Thread_Context::Thread_Context() : _next(0)
 {
 }
 
@@ -138,43 +112,34 @@ Thread_Context::~Thread_Context()
 
 void Thread_Context::push(Thread_Context* context)
 {
-    assert(context != 0);
-    Stack* stack = _stack();
-    assert(stack->size < Stack::MAX_SIZE);
-    stack->data[stack->size++] = context;
+    Thread_Context* top = _get_top();
+
+    if (top)
+    {
+        context->_next = top;
+    }
+    else
+    {
+        context->_next = 0;
+    }
+
+    _set_top(context);
 }
 
 void Thread_Context::pop()
 {
-    Stack* stack = _stack();
-    assert(stack->size > 0);
-    stack->size--;
+    Thread_Context* top = _get_top();
 
-    if (stack->size == 0)
+    if (top)
     {
-        _set_tsd(NULL);
-        delete stack;
+        _set_top(top->_next);
+        top->_next = 0;
     }
 }
 
 Thread_Context* Thread_Context::top()
 {
-    Stack* stack = _stack();
-
-    if (stack->size != 0)
-    {
-        Thread_Context* context = stack->data[stack->size-1];
-        assert(context != 0);
-        return context;
-    }
-
-/*
-MEB
-*/
-#if 0
-    assert(0);
-#endif
-    return 0;
+    return (Thread_Context*)_get_top();
 }
 
 CIMPLE_NAMESPACE_END

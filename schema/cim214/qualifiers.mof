@@ -241,19 +241,3 @@ Qualifier Weak : boolean = false,
 Qualifier Write : boolean = false, 
     Scope(property);
 
-// Added for Windows.
-Qualifier Dynamic : boolean = false, 
-    Scope(class, association, indication);
-
-// Added for Windows.
-Qualifier PropertyContext : string = Null, 
-    Scope(property);
-
-// Added for Windows.
-Qualifier Implemented : boolean = false, 
-    Scope(method);
-
-[indication]
-class __ExtrinsicEvent
-{
-};

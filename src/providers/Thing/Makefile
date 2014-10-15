@@ -33,9 +33,10 @@ genmod:
 	$(BINDIR)/genmod Thing Thing ThingLink
 
 live:
-	$(CIMCLI) ei Thing
+	$(CIMCLI) ei Thing --sum -count 10
+	$(CIMCLI) ni Thing --sum -count 10
 	$(CIMCLI) gi Thing.key=200
-	$(CIMCLI) a Thing.key=100
-	$(CIMCLI) an Thing.key=100
-	$(CIMCLI) r Thing.key=100
-	$(CIMCLI) rn Thing.key=100
+	$(CIMCLI) a Thing.key=100 --sum -count 1
+	$(CIMCLI) an Thing.key=100 --sum -count 1
+	$(CIMCLI) r Thing.key=100 --sum -count 1
+	$(CIMCLI) rn Thing.key=100 --sum -count 1

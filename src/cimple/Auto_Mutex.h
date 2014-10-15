@@ -32,8 +32,12 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** The Auto_Mutex class is used to lock an existing mutex upon construction 
-    and unlock it upon destruction. For example:
+/** The Auto_Mutex class is used to automatically lock an
+*   existing mutex upon construction of the Auto_Mutex and
+*   unlock it upon destruction (when it goes out of scope). The
+*   Automutex is particularly useful where there are many places
+*   a mutux should be unlocked and especially with
+*   exceptions.For example:
 
     \code
     static Mutex _mutex;
@@ -54,11 +58,12 @@ class CIMPLE_CIMPLE_LINKAGE Auto_Mutex
 {
 public:
 
-    /** This constructor locks the mutex.
+    /** The constructor locks the mutex.
+     *  @param mutex Mutex& existing mutex to be locked
     */
     Auto_Mutex(Mutex& mutex);
 
-    /** This destructor unlocks the mutex passed to the constructor.
+    /** The destructor unlocks the mutex passed to the constructor.
     */
     ~Auto_Mutex();
 

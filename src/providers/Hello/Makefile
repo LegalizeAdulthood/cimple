@@ -11,7 +11,14 @@ SOURCES = \
     Hello_Provider.cpp \
     module.cpp
 
-CIMPLE_CMPI_MODULE=1
+## Allow building providers for either CMPI or Pegasus C++ provider interface
+ifdef CIMPLE_PROVIDER_BUILD_CMPI
+   CIMPLE_CMPI_MODULE=1
+else
+   CIMPLE_PEGASUS_MODULE=1
+endif
+
+##CIMPLE_CMPI_MODULE=1
 
 include ../common.mak
 
@@ -22,3 +29,23 @@ regmod:
 
 genclass:
 	$(BINDIR)/genclass -r Hello
+
+genprov:
+	$(BINDIR)/genprov Hello
+
+genmod:
+	$(BINDIR)/genmod Hello Hello
+
+genproj:
+	$(BINDIR)/genproj Hello Hello
+
+live:
+	cimcli ei -l localhost Hello
+	cimcli ni -l localhost Hello
+
+## live manual tests using Pegasus cimcli	
+manual-test:
+	cimcli ns -l localhost
+	cimcli gc -l localhost Hello
+	cimcli ei -l localhost Hello
+	cimcli ni -l localhost Hello

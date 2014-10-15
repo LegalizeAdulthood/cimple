@@ -98,6 +98,10 @@ do
       enable_embedded_instances=1
       ;;
 
+    --enable-scheduler)
+      enable_scheduler=1
+      ;;
+
     *)
       echo "$0: unknown option:  $opt"
       exit 1
@@ -126,7 +130,6 @@ fi
 # --with-pegasus-env
 
 if [ "$with_pegasus_env" = "1" ]; then
-
   if [ -z "$PEGASUS_HOME" ]; then
     echo "$0: --with-pegasus-env needs PEGASUS_HOME environment variable."
     exit 1
@@ -182,6 +185,22 @@ if [ "$with_pegasus_env" = "1" ]; then
         host=sparc-sun-solaris-gnu
         ;;
 
+      SOLARIS_IX86_CC)
+        host=x86-sun-solaris-cc
+        ;;
+
+      SOLARIS_SPARC_CC)
+        host=sparc-sun-solaris-cc
+        ;;
+
+      SOLARIS_X86_64_CC)
+        host=x86_64-sun-solaris-cc
+        ;;
+
+      SOLARIS_SPARC_64_CC)
+        host=sparc_64-sun-solaris-cc
+        ;;
+
       DARWIN_IX86_GNU)
         host=i386-apple-darwin-gnu
         ;;
@@ -205,7 +224,7 @@ if [ "$with_pegasus_env" = "1" ]; then
 
 fi
 
-# --host:
+# --host: Set platform and libbase based on host input parameter or by guessing
 
 if [ -z "$host" ]; then
   source ./config.guess > /dev/null
@@ -257,6 +276,26 @@ case "$host" in
     sparc-sun-solaris-gnu)
         platform=SOLARIS_SPARC_GNU
         libbase=lib
+        ;;
+
+    x86-sun-solaris-cc)
+        platform=SOLARIS_IX86_CC
+        libbase=lib
+        ;;
+
+    sparc-sun-solaris-cc)
+        platform=SOLARIS_SPARC_CC
+        libbase=lib
+        ;;
+
+    x86_64-sun-solaris-cc)
+        platform=SOLARIS_X86_64_CC
+        libbase=lib64
+        ;;
+
+    sparc_64-sun-solaris-cc)
+        platform=SOLARIS_SPARC_64_CC
+        libbase=lib64
         ;;
 
     i386-apple-darwin-gnu)
@@ -457,6 +496,7 @@ echo "WITH_SCHEMA_OPT=$with_schema" >> $fn
 echo "ENABLE_DEBUG_OPT=$enable_debug" >> $fn
 echo "ENABLE_STATIC_OPT=$enable_static" >> $fn
 echo "ENABLE_EMBEDDED_INSTANCES_OPT=$enable_embedded_instances" >> $fn
+echo "ENABLE_SCHEDULER_OPT=$enable_scheduler" >> $fn
 echo "PLATFORM=$platform" >> $fn
 echo "LIBBASE_OPT=$libbase" >> $fn
 echo "WITH_PEGASUS_LIBDIR_OPT=$with_pegasus_libdir" >> $fn

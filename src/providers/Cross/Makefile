@@ -8,6 +8,8 @@ SHARED_LIBRARY = cimpleCross
 SOURCES = \
     Cross.cpp \
     Cross_Provider.cpp \
+    CrossSubClass.cpp \
+    CrossSubClass_Provider.cpp \
     Left.cpp \
     Left_Provider.cpp \
     Right.cpp \
@@ -15,32 +17,67 @@ SOURCES = \
     module.cpp \
     repository.cpp
 
-#CIMPLE_PEGASUS_MODULE=1
-CIMPLE_CMPI_MODULE=1
+## Allow building providers for either CMPI or Pegasus C++ provider interface
+ifdef CIMPLE_PROVIDER_BUILD_CMPI
+   CIMPLE_CMPI_MODULE=1
+else
+   CIMPLE_PEGASUS_MODULE=1
+endif
+
 include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-regmod:
-	$(BINDIR)/regmod -n root/PG_InterOp -n root/cimv2 -c -s $(TARGET)
+## Define the Namespaces to be used
+NS_LEFT=root/PG_Interop
+NS_RIGHT=root/cimv2
+
+genproj:
+	$(BINDIR)/genproj Cross Cross CrossSubClass Left Right
 
 genclass:
 	$(BINDIR)/genclass -r Cross
 
 genprov:
 	$(BINDIR)/genprov Cross
+	$(BINDIR)/genprov CrossSubClass
 	$(BINDIR)/genprov Left
 	$(BINDIR)/genprov Right
 
 genmod:
-	$(BINDIR)/genmod Cross Cross Left Right
+	$(BINDIR)/genmod Cross Cross CrossSubClass Left Right
 
-regLeft:
-	$(BINDIR)/regmod -n Left -c $(TARGET) Left
+regmod:
+	$(BINDIR)/regmod -n $(NS_LEFT) -n $(NS_RIGHT) -c $(TARGET) Left
+	$(BINDIR)/regmod -n $(NS_LEFT) -n $(NS_RIGHT) -c $(TARGET) Right
+	$(BINDIR)/regmod -n $(NS_LEFT) -n $(NS_RIGHT) -c $(TARGET) Cross
+	$(BINDIR)/regmod -n $(NS_LEFT) -n $(NS_RIGHT) -c $(TARGET) CrossSubClass
 
-regRight:
-	$(BINDIR)/regmod -n Right -c $(TARGET) Right
+# unregister the providers and classes
+unregister:
+	$(BINDIR)/regmod -n $(NS_LEFT) -u -c $(TARGET) Left
+	$(BINDIR)/regmod -n $(NS_RIGHT) -u -c $(TARGET) Right
+	$(BINDIR)/regmod -n $(NS_LEFT) -n $(NS_RIGHT) -u -c $(TARGET) Cross
+	$(BINDIR)/regmod -n $(NS_LEFT) -n $(NS_RIGHT) -u -c $(TARGET) CrossSubClass
 
-regCross:
-	$(BINDIR)/regmod -n Left -n Right -c $(TARGET) Cross
+## The following is a purely Pegasus capability and requires running server
+## Useful for complete cleanup if model has changed for this provider
+reregister:
+	cimprovider -d -m Cross_Module
+	$(MAKE) unregister
+	$(MAKE) insmod
+	$(MAKE) regmod
+
+
+manual-test:
+	cimcli ei Cross
+	cimcli ei Left
+	cimcli ei Right
+	cimcli  an Left.key=1 -n $(NS_LEFT)
+	cimcli  an Right.key=1 -n $(NS_RIGHT)
+	cimcli  a Left.key=1 -n $(NS_LEFT)
+	cimcli  a Right.key=1 -n $(NS_RIGHT)
+
+
+
 

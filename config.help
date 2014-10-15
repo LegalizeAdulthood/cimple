@@ -60,10 +60,14 @@ Options:
                                     ppc64-unknown-linux-gnu
                                     arm-wrs-vxworks-gnu
                                     sparc-sun-solaris-gnu
+                                    x86-sun-solaris-cc
+                                    sparc-sun-solaris-cc
+                                    x86_64-sun-solaris-cc
+                                    sparc_64-sun-solaris-cc
     --prefix=DIR                Install under DIR
     --bindir=DIR                Install programs here.
     --libdir=DIR                Install libraries here.
-    --incluedir=DIR             Install include files here.
+    --includedir=DIR            Install include files here.
     --datadir=DIR               Install data files here (MOF files installed
                                 under $datadir/cimple/schema).
     --with-pegasus=DIR          Build with Pegasus support and find Pegasus

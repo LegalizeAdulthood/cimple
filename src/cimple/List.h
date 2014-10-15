@@ -31,32 +31,106 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+/**
+ * Defines the basic structure  of a single element of a list. 
+ * The user can create inherited structures incorporating user 
+ * data as subclasses of #List_Elem. An example of the use of 
+ * list is in the Scheduler.cpp class 
+ */
 struct List_Elem
 {
     List_Elem* prev;
     List_Elem* next;
 };
 
-struct CIMPLE_LIBCIMPLE_LINKAGE List
+/** 
+ * This Class implements a list mechanism within the CIMPLE 
+ * environment. The List mechanism includes methods for 
+ * inserting #List_Elem entities, removing them, clearing the
+ * list, and determing if there are any elements in the list( 
+ * #empty) and the number of items in the list. The list is 
+ * build as a double linked list mechanism. Note that by itself, 
+ * this class is incomplete and is intended to be extended by 
+ * the user. Thus, for example, there is no compare function to 
+ * find any particlar position in the list. 
+ * 
+ */
+struct CIMPLE_CIMPLE_LINKAGE List
 {
-    List() : head(0), tail(0) { }
+    ///
+    List() : head(0), tail(0), _size(0) { }
 
-    void clear() { head = 0; tail = 0; }
+    /** 
+     * Clears the list to empty.  Warning. This does not free memory
+     * for any items in the list. It simply resets the head and tail
+     * to zero indicating that the list is clear
+     * 
+     */
+    void clear() { head = 0; tail = 0; _size = 0; }
 
+    /** 
+     * Append an item to the list, i.e. insert it at the tail of the 
+     * list. 
+     * 
+     * @param p List_Elem* pointer to the entity to append to the 
+     *          list
+     */
     void append(List_Elem* p);
 
+    /** 
+     * Prepend an item to the list, i.e. insert it at head of the 
+     * list. 
+     * 
+     * @param p List_Elem* pointer to the entity to prepend to the 
+     *          list
+     */
     void prepend(List_Elem* p);
 
+    /** 
+     * Remove a single item from the list.
+     * 
+     * @param p List_Elem* pointer to the entity to remove from the 
+     *          list
+     */
     void remove(List_Elem* p);
 
+    /** 
+     * Insert an item at specified point in a list.  Inserts after 
+     * the item defined by pos. 
+     * 
+     * @param pos
+     * @param p
+     */
     void insert_after(List_Elem* pos, List_Elem* p);
 
+    /** 
+     * Insert an item at a specfied point in a list. Inserts before 
+     * the defined position. 
+     * 
+     * @param pos in queue to insert
+     * @param p element to insert
+     */
     void insert_before(List_Elem* pos, List_Elem* p);
 
+    /** 
+     * Determine if the list is empty ( i.e. head of queue == 0)
+     * 
+     * @return bool
+     */
     bool empty() const { return head == 0; }
+
+    /** 
+     * Return number of entries in the list
+     * @return size_t Number of entries in the queue
+     */
+    size_t size();
 
     List_Elem* head;
     List_Elem* tail;
+
+private:
+
+    size_t _size;
 };
 
 CIMPLE_NAMESPACE_END

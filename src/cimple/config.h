@@ -1,7 +1,8 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+** Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009
+**               Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -64,6 +65,14 @@
 # include "platform_VXWORKS_XSCALE_GNU.h"
 #elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
 # include "platform_SOLARIS_SPARC_GNU.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_IX86_CC)
+# include "platform_SOLARIS_IX86_CC.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_CC)
+# include "platform_SOLARIS_SPARC_CC.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_X86_64_CC)
+# include "platform_SOLARIS_X86_64_CC.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_64_CC)
+# include "platform_SOLARIS_SPARC_64_CC.h"
 #else
 # error "Unknown platform"
 #endif
@@ -139,6 +148,8 @@
 
 #ifdef __USE_GNU
 # define CIMPLE_FUNCTION __FUNCTION__
+#elif defined (__SUNPRO_C) || (__SUNPRO_CC)
+# define CIMPLE_FUNCTION __func__
 #else
 # define CIMPLE_FUNCTION "unknown"
 #endif
@@ -357,7 +368,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 2
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 0
+#define CIMPLE_REVISION 6
 
 //==============================================================================
 //

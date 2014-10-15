@@ -1,0 +1,24 @@
+class CMPL_Caller
+{
+    [Key] String Key;
+
+};
+
+class CMPL_Callee
+{
+    uint32 foo1(
+        [In] uint32 in1,
+        [In] string in2,
+        [In(false), Out] uint32 out1,
+        [In(false), Out] string out2);
+
+    [Static]
+    uint32 foo2(
+        [In] uint32 in1,
+        [In] string in2,
+        [In(false), Out] uint32 out1,
+        [In(false), Out] string out2);
+
+
+    [Key] string Key;
+};

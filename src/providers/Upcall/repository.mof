@@ -1,4 +1,1 @@
-class Upcall
-{
-    [Key] uint32 key;
-};
+#pragma include ("Upcall.mof")

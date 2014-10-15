@@ -1,0 +1,6 @@
+[Association]
+class Cross
+{
+    [Key] Left REF left;
+    [Key] Right REF right;
+};

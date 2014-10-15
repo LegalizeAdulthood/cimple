@@ -1,0 +1,4 @@
+class Right
+{
+    [Key] uint32 key;
+};

@@ -92,7 +92,7 @@ int File_Lock::lock()
     if (_rep->fd == -1)
         return -1;
 
-    CIMPLE_RESTART(fcntl(_rep->fd, F_SETLKW, &_rep->lock), r);
+    CIMPLE_RESTART(fcntl(_rep->fd, F_SETLKW, &_rep->lock), r) ;
 
     if (r != 0)
         return -1;
@@ -106,7 +106,7 @@ int File_Lock::unlock()
         return -1;
 
     int r;
-    CIMPLE_RESTART(fcntl(_rep->fd, F_SETLKW, &_rep->unlock), r);
+    CIMPLE_RESTART(fcntl(_rep->fd, F_SETLKW, &_rep->unlock), r) ;
 
     return r;
 }

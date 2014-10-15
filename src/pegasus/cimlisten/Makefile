@@ -1,6 +1,8 @@
 TOP = ../../..
 include $(TOP)/mak/config.mak
 
+## Remove the comment on the INSTALL variable assignment to install
+## this utility
 #INSTALL=1
 
 BINARY = cimlisten

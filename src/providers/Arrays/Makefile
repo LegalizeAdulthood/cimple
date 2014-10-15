@@ -28,3 +28,10 @@ genprov:
 
 genmod:
 	$(BINDIR)/genmod Arrays Arrays
+
+live:
+	$(CIMCLI) ni Arrays --sum -count 1
+	$(CIMCLI) ei Arrays	--sum -count 1
+manual-test:
+	$(CIMCLI) ni Arrays
+	$(CIMCLI) ei Arrays

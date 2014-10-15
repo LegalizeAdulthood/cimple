@@ -69,17 +69,31 @@ enum Timer_Status
     TIMER_CANCEL = 50,
 };
 
+/*  Enumerates for error codes.  These were done with separate enums
+    for each operation to allow defining different
+    return possibilities for each operation and to provide a tool
+    so that we can be sure that they are all integrated into the
+    various adapters. Today the CMPI adapter will report differences in
+    the case statements from the error enums as warnings. The Pegasus
+    adapter will not.
+    The provider developer can only return the error codes defined
+    for the particular operation as responses to that operation.
+*/
 enum Get_Instance_Status
 {
     GET_INSTANCE_OK = 0,
     GET_INSTANCE_NOT_FOUND = 60,
     GET_INSTANCE_UNSUPPORTED = 61,
+    GET_INSTANCE_INVALID_PARAMETER = 62,
+    GET_INSTANCE_ACCESS_DENIED = 63,
+    GET_INSTANCE_FAILED = 64,
 };
 
 enum Enum_Instances_Status
 {
     ENUM_INSTANCES_OK = 0,
     ENUM_INSTANCES_FAILED = 70,
+    ENUM_INSTANCES_ACCESS_DENIED = 71,
 };
 
 enum Create_Instance_Status
@@ -87,6 +101,9 @@ enum Create_Instance_Status
     CREATE_INSTANCE_OK = 0,
     CREATE_INSTANCE_DUPLICATE = 80,
     CREATE_INSTANCE_UNSUPPORTED = 81,
+    CREATE_INSTANCE_INVALID_PARAMETER = 82,
+    CREATE_INSTANCE_ACCESS_DENIED = 83,
+    CREATE_INSTANCE_FAILED = 84,
 };
 
 enum Delete_Instance_Status
@@ -94,6 +111,8 @@ enum Delete_Instance_Status
     DELETE_INSTANCE_OK = 0,
     DELETE_INSTANCE_NOT_FOUND = 90,
     DELETE_INSTANCE_UNSUPPORTED = 91,
+    DELETE_INSTANCE_ACCESS_DENIED = 92,
+    DELETE_INSTANCE_FAILED = 93,
 };
 
 enum Modify_Instance_Status
@@ -101,6 +120,9 @@ enum Modify_Instance_Status
     MODIFY_INSTANCE_OK = 0,
     MODIFY_INSTANCE_NOT_FOUND = 100,
     MODIFY_INSTANCE_UNSUPPORTED = 101,
+    MODIFY_INSTANCE_INVALID_PARAMETER = 102,
+    MODIFY_INSTANCE_ACCESS_DENIED = 103,
+    MODIFY_INSTANCE_FAILED = 104,
 };
 
 enum Enum_Associator_Names_Status
@@ -108,6 +130,7 @@ enum Enum_Associator_Names_Status
     ENUM_ASSOCIATOR_NAMES_OK = 0,
     ENUM_ASSOCIATOR_NAMES_FAILED = 110,
     ENUM_ASSOCIATOR_NAMES_UNSUPPORTED = 111,
+    ENUM_ASSOCIATOR_NAMES_ACCESS_DENIED = 112,
 };
 
 enum Enum_References_Status
@@ -115,6 +138,7 @@ enum Enum_References_Status
     ENUM_REFERENCES_OK = 0,
     ENUM_REFERENCES_FAILED = 120,
     ENUM_REFERENCES_UNSUPPORTED = 121,
+    ENUM_REFERENCES_ACCESS_DENIED = 122,
 };
 
 enum Invoke_Method_Status
@@ -122,6 +146,7 @@ enum Invoke_Method_Status
     INVOKE_METHOD_OK = 0,
     INVOKE_METHOD_FAILED = 130,
     INVOKE_METHOD_UNSUPPORTED = 131,
+    INVOKE_METHOD_ACCESS_DENIED = 132,
 };
 
 enum Enable_Indications_Status
@@ -146,6 +171,7 @@ enum Enum_Associators_Status
     ENUM_ASSOCIATORS_OK = 0,
     ENUM_ASSOCIATORS_FAILED = 170,
     ENUM_ASSOCIATORS_UNSUPPORTED = 171,
+    ENUM_ASSOCIATORS_ACCESS_DENIED = 172,
 };
 
 enum Provider_Operation

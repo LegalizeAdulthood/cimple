@@ -184,6 +184,11 @@ set prev=
     set found=1
   )
 
+  if "%1" == "--enable-scheduler" (
+    set enable_scheduler=1
+    set found=1
+  )
+
   if "%1" == "" (
     set found=1
   )
@@ -292,6 +297,7 @@ echo enable_debug=%enable_debug%
 echo enable_wmi=%enable_wmi%
 echo enable_static=%enable_static%
 echo enable_embedded_instances=%enable_embedded_instances%
+echo enable_scheduler=%enable_scheduler%
 :skip
 
 ::==============================================================================
@@ -328,6 +334,10 @@ if not "%enable_static%" == "" (
 
 if not "%enable_embedded_instances%" == "" (
     echo WIN_ENABLE_EMBEDDED_INSTANCES_OPT=TRUE>> config.options
+)
+
+if not "%enable_scheduler%" == "" (
+    echo WIN_ENABLE_SCHEDULER_OPT=TRUE>> config.options
 )
 
 if not "%with_namespace%" == "" (

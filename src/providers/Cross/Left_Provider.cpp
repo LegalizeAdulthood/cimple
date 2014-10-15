@@ -31,10 +31,21 @@ Enum_Instances_Status Left_Provider::enum_instances(
     const Left* model,
     Enum_Instances_Handler<Left>* handler)
 {
-    Left* left = Left::create();
-    left->key.value = 100;
-    handler->handle(left);
-
+    {
+        Left* left = Left::create();
+        left->key.value = 1;
+        handler->handle(left);
+    }
+    {
+        Left* left = Left::create();
+        left->key.value = 2;
+        handler->handle(left);
+    }
+    {
+        Left* left = Left::create();
+        left->key.value = 3;
+        handler->handle(left);
+    }
     return ENUM_INSTANCES_OK;
 }
 

@@ -374,6 +374,21 @@ int main(int argc, char** argv)
         assert(t == "xello world");
     }
 
+    // find()
+    {
+        String s("abcXYZabcdefLMNOP");
+        
+        assert(s.find('a') == 0);
+        assert(s.find('X') == 3);
+        assert(s.find('P') == (s.size() - 1));
+        assert(s.find('a', 4) == 6);
+        String def("def");
+        assert(s.find(def) == 9);
+        assert(s.find("def") == 9);
+        assert(s.find("blah") == (size_t)-1);
+        String blah("blah");
+        assert(s.find(blah) == (size_t)-1);
+    }
     // remove()
     {
         String s("abcXYZdefLMNOP");

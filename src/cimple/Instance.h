@@ -80,7 +80,12 @@ CIMPLE_NAMESPACE_BEGIN
 
 struct Meta_Property;
 
-/** Base class for all generated CIM classes and CIM method objects.
+/** Instance is the base class for all generated CIM classes and
+ *  CIM method objects. To improve efficiencty and reduce code
+ *  size,  it is not designed as a pure object-oriented class
+ *  but as a structure with a set of supporting functions. The
+ *  function provide the ability to create, destroy, modify,
+ *  access internal information, and test intances.
 */
 struct CIMPLE_CIMPLE_LINKAGE Instance
 {
@@ -93,45 +98,90 @@ struct CIMPLE_CIMPLE_LINKAGE Instance
 
 /** Creates an instance from the given meta class. For each property, the 
     null flag is set to false. The caller must eventually pass the new object 
-    to destroy().
+*   to destroy().
+*   @param meta_class Meta_Class* pointer to the CIMPLE meta
+*                     class from which this instance will be
+*                     created
+*   @param defaults bool parameter defining whether the complete
+*                   instance or only the key properties are
+*                   included
+*   @return Instance* The created instance. 
 */
 CIMPLE_CIMPLE_LINKAGE
 Instance* create(const Meta_Class* meta_class, bool defaults = false);
 
 /** Creates an instance from the given meta method. Sets all null flags to
-    false. The caller must eventually pass the new object to destroy.
+*   false. The caller must eventually pass the new object to destroy.
+*   @param meta_meth Meta_Method* pointer to the CIMPLE meta
+*                     meta_method from which this instance will
+*                     be created
+*   @return Instance* the created instance
+*  
+*   EXAMPLE:
+*   \code
+*       SomeClass* inst = SomeClass::create(mc);
+*   \endcode
 */
 CIMPLE_CIMPLE_LINKAGE
 Instance* create(const Meta_Method* meta_meth);
 
-/** Releases all memory held by this instance and and then passes it to 
-    delete.
+/** Releases all memory held by this instance and then passes it
+*   to delete.
 */
 CIMPLE_CIMPLE_LINKAGE
 void destroy(Instance* instance);
 
 /** Makes an exact copy of the given instance. The caller must eventually pass
-    the new instance to destroy().
+*   the new instance to destroy().
+*   @param instance Instance* defining the instance to be
+*                   cloned.
+*   @return Instance* The exact copy of the input instance.
+*  
+*   EXAMPLE
+*   /code
+*       Instance* new = clone(oldInstance);
+*   /endcode
 */
 CIMPLE_CIMPLE_LINKAGE
 Instance* clone(const Instance* instance);
 
-/** Similar to clone() but only copies over the key fields.
+/** Similar to clone() but only copies over the key fields. The
+    caller must eventually pass the new instance to destroy().
 */
 CIMPLE_CIMPLE_LINKAGE
 Instance* key_clone(const Instance* instance);
 
-/** Returns class name of this instance. */
+/** Returns class name of this instance.
+ *  @param instance Instance* pointer to the target instance.
+ *  @return char* containing the instance name.
+ */
 inline const char* class_name_of(const Instance* instance)
 {
     return instance->meta_class->name;
 }
 
-/** Print this instance to the standard output device.
+/** Print this instance to the standard output device. This is
+ *  primarily a diagnostic tool.
+ *  @param instance Instance* pointer to the instance to be
+ *                  printed
+ *  @param keys_only bool defines whether the complete instance
+ *                   or only keys features will be printed. If
+ *                   true only keys will be printed.  This is an
+ *                   optional parameter.
+ *  \code
+ *      ... Class defined for provider is myClass
+ *      Instance* myInstance = myClass::create(true);
+ *      ... set properties
+ *      print(myInstance);
+ *  \endcode
 */
 CIMPLE_CIMPLE_LINKAGE
 void print(const Instance* instance, bool keys_only = false);
 
+/** 
+   Print this instance to the defined file output. Only keys are
+   printed if the keys_only flag is true. 
+ */
 CIMPLE_CIMPLE_LINKAGE
 void fprint(FILE* os, const Instance* instance, bool keys_only = false);
 
@@ -165,8 +215,11 @@ inline void de_nullify_keys(const Instance* inst)
 }
 
 /** Returns true if the keys in instance1 match the keys in instance2 
-    (i.e., have the same names, types, values, and null fields). The 
-    instances can be of different classes.
+*   (i.e., have the same names, types, values, and null
+*   fields). The instances can be of different classes.
+*   @param instance1
+*   @param instance2
+*   @return bool true if all key properties match, else false
 */
 CIMPLE_CIMPLE_LINKAGE
 bool key_eq(const Instance* instance1, const Instance* instance2);
@@ -177,7 +230,17 @@ CIMPLE_CIMPLE_LINKAGE
 void copy(Instance* dest, const Instance* src);
 
 /** Copy properties from dest to src, whose features are non-null in model.
-*/
+ *  This copy is designed specifically to support the paradigm
+ *  for instance updating of the DMTF CIM modify_instance
+ *  operation.
+ *  
+ *  @param dest Instance* that is the destination instance for
+ *              non-null properties.
+ *  @param src  Instance* that is the source for the copy
+ *  @param model Instance* that defines the model for the
+ *               operation and defines the valid non-null
+ *               properties.
+ */
 CIMPLE_CIMPLE_LINKAGE
 void copy(Instance* dest, const Instance* src, const Instance* model);
 
@@ -266,8 +329,8 @@ bool is_reference_of(
 CIMPLE_CIMPLE_LINKAGE
 bool keys_non_null(const Instance* instance);
 
-/** The is_a operator is used to determine wether an instance is a subclass
-    of a given class. For example:
+/** The is_a operator is used to determine whether an instance
+*   is a subclass of a given class. For example:
 
     \code
     Derived* inst = Derived::create();
@@ -345,7 +408,7 @@ void unref(const Instance* instance);
 CIMPLE_CIMPLE_LINKAGE
 int filter_properties(Instance* instance, const char* const* properties);
 
-// This function parses a CIM model path of the following form.
+// This function parses a CIM model path of the following form to an instance.
 //
 //     MyClass.key1=value1,key2=value2
 //

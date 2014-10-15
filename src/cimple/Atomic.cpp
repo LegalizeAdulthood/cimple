@@ -27,47 +27,9 @@
 #include "Atomic.h"
 #include "config.h"
 
-
 #if defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC)
 
-#include <intrin.h>
-
-CIMPLE_NAMESPACE_BEGIN
-
-void Atomic_create(Atomic* atomic, int x)
-{
-    atomic->n = long(x);
-}
-
-void Atomic_destroy(Atomic* atomic)
-{
-}
-
-int Atomic_get(const Atomic* atomic)
-{
-    return int(atomic->n);
-}
-
-void Atomic_set(Atomic* atomic, int x)
-{
-    atomic->n = long(x);
-}
-
-void Atomic_inc(Atomic* atomic)
-{
-    _InterlockedIncrement(&atomic->n);
-}
-
-int Atomic_dec_and_test(Atomic* atomic)
-{
-    return _InterlockedDecrement(&atomic->n) == 0;
-}
-
-void Atomic_dec(Atomic* atomic)
-{
-    _InterlockedDecrement(&atomic->n);
-}
+#include "Atomic_WIN32_IX86_MSVC.cpp"
 
 #endif /* defined(CIMPLE_PLATFORM_WIN32_IX86_MSVC) */
 
-CIMPLE_NAMESPACE_END

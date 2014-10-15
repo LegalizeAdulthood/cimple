@@ -6,6 +6,7 @@ INSTALL=1
 LIBRARY = cimple
 
 SOURCES = \
+    Atomic.cpp \
     Cond_Queue.cpp \
     Exception.cpp \
     boolean.cpp \
@@ -54,7 +55,40 @@ SOURCES = \
     Property.cpp \
     TSD.cpp
 
+## The scheduler is an optional component so is
+## compiled only if flag set
+ifdef ENABLE_SCHEDULER_OPT
+    SOURCES += List.cpp Id_Pool.cpp Scheduler.cpp
+endif
 
+## obsolete, see top/doc/SDK
+CIMPLE_DOXYGEN_FILES = \
+    Instance.h \
+    Ref.h \
+    String.h \
+    Array.h \
+    DateTime.h \
+    Thread.h \
+    Cond.h \
+    Cond_Queue.h \
+    Mutex.h \
+    AutoMutex.h \
+    TSD.h \
+    cimom.h \
+    Stack.h \
+    log.h \
+    Arg.h \
+    Time.h \
+    Thread.h \
+    Stack.h \
+    octets.h \
+    AtomicCounter.h
+
+## Obsolete 
+ ifdef ENABLE_SCHEDULER_OPT
+    CIMPLE_DOXYGEN_FILES += List.h Id_Pool.h Scheduler.h
+endif
+   
 DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
 
 INSTALL_HEADERS_DIR = cimple
@@ -62,3 +96,10 @@ INSTALL_HEADERS_DIR = cimple
 INSTALL_HEADERS = $(wildcard *.h)
 
 include $(TOP)/mak/rules.mak
+
+doc: docclean
+        
+	doxygen
+
+docclean:
+	rm doxygenout -rf

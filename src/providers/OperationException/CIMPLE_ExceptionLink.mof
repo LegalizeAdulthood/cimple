@@ -1,0 +1,12 @@
+[Association]
+class CIMPLE_ExceptionLink
+{
+    [key] CIMPLE_Exception ref left;
+        [key] CIMPLE_Exception ref right;
+
+    uint32 setException(Uint32 Exception,
+	Boolean getInstanceDefault,
+	Boolean associatorsDefault);
+    Uint32 testException();
+};
+

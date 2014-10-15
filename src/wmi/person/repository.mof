@@ -1,11 +1,5 @@
-[dynamic, provider("Person")]
-class Person
-{
-    [Key] string SSN;
-    string FirstName;
-    string LastName;
+// Includes both the wmi qualifiers and the 
+// classes required for this provider
+#pragma include ("wmiqualifiers.mof")
+#pragma include ("ProviderClasses.mof")
 
-
-    [implemented, static]
-    uint32 foo([in] string arg);
-};

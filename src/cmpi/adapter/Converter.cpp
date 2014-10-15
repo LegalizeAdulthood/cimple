@@ -32,6 +32,9 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+/* Create a cmpi object path based instance and namespace provided.
+   NOTE: Ignores any namespace in the cimple instance.
+*/
 CMPIrc make_cmpi_object_path(
     const CMPIBroker* cb,
     const cimple::Instance* inst, 
@@ -55,6 +58,11 @@ CMPIrc make_cmpi_object_path(
     return CMPI_RC_OK;
 }
 
+/* Create a cmpi instance based on the instance, the
+   cop and the namespace provided.  If the cop does not exist, create it from
+   the instance.
+
+*/
 CMPIrc make_cmpi_instance(
     const CMPIBroker* cb,
     const Instance* inst, 

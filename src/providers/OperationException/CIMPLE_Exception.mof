@@ -1,0 +1,20 @@
+/* This class used as basis to test all of the possible
+   cimple provider defined exception returns.
+   The goal is tthat the setException function will
+   tell the provider what exception to return.
+   A client can test this by calling the various operations
+   including the method testException to determine if this
+   particular exception is returned.
+*/
+class CIMPLE_Exception
+{
+    [Key] uint32 Key;
+    Uint32 exception;
+    boolean Flag;
+    
+    uint32 setException(Uint32 Exception,
+	Boolean getInstanceDefault,
+	Boolean associatorsDefault);
+    Uint32 testException();
+};
+

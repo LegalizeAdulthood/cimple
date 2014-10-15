@@ -228,9 +228,10 @@ public:
     */
     const T& operator[](size_t pos) const;
 
-    /** Increases the internal allocation to accomodate the given number of
-        elements if capacity is greater than capacity(). Note that this function
-        has no effect on the size() of the array.
+    /** Increases the internal allocation to accomodate the given
+    *   number of elements if capacity is greater than capacity().
+    *   Note that this function has no effect on the size() of the
+    *   array.
     */
     void reserve(size_t capacity);
 

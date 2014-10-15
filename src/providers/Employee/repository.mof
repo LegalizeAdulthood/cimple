@@ -21,6 +21,8 @@ class Manager : Employee
 {
     uint32 NumEmployees;
     uint32 Budget;
+
+    [Static] uint32 GetEmployeeCount2();
 };
 
 [Association]

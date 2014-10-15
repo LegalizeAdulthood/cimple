@@ -44,12 +44,12 @@ uint32 Id_Pool::get()
 
     if (_pool.size())
     {
-	size_t pos = _pool.size() - 1;
-	id = _pool[pos];
-	_pool.remove(pos);
+    	size_t pos = _pool.size() - 1;
+    	id = _pool[pos];
+    	_pool.remove(pos);
     }
     else
-	id = _next++;
+    	id = _next++;
 
     _mutex.unlock();
 

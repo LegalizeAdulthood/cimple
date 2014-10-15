@@ -33,7 +33,9 @@
 CIMPLE_NAMESPACE_BEGIN
 
 /** Atomic_Counter is an integer counter whose methods can be invoked safely
-    by multiple threads.
+*   by multiple threads while insuring the atomicity of the
+*   operations on the Atomic Counter. The Atomic_Counter
+*   represents an integer.
 */
 class Atomic_Counter
 {
@@ -100,6 +102,7 @@ inline Atomic_Counter::~Atomic_Counter()
     Atomic_destroy(&_rep);
 }
 
+
 inline Atomic_Counter& Atomic_Counter::operator=(Atomic_Counter& x)
 {
     if (this != &x)
@@ -117,6 +120,7 @@ inline void Atomic_Counter::inc()
 {
     Atomic_inc(&_rep);
 }
+
 
 inline void Atomic_Counter::dec()
 {

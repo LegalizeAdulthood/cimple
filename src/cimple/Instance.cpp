@@ -451,7 +451,7 @@ bool identical(const Instance* i1, const Instance* i2)
                     if (tmp1 && tmp2 && !identical(tmp1, tmp2))
                         return false;
 
-                    if (tmp1 && !tmp2 || !tmp1 && tmp2)
+                    if ((tmp1 && !tmp2) || (!tmp1 && tmp2))
                         return false;
                 }
 
@@ -468,7 +468,7 @@ bool identical(const Instance* i1, const Instance* i2)
                 if (tmp1 && tmp2 && !identical(tmp1, tmp2))
                     return false;
 
-                if (tmp1 && !tmp2 || !tmp1 && tmp2)
+                if ((tmp1 && !tmp2) || (!tmp1 && tmp2))
                     return false;
             }
         }
@@ -541,7 +541,7 @@ bool key_eq(const Instance* i1, const Instance* i2)
             if (ti1 && ti2 && !key_eq(ti1, ti2))
                 return false;
 
-            if (ti1 && !ti2 || !ti1 && ti2)
+            if ((ti1 && !ti2) || (!ti1 && ti2))
                 return false;
         }
     }

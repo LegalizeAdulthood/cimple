@@ -400,11 +400,27 @@ int WMI_Thread_Context::modify_instance(
     return _put_instance(name_space, instance, WBEM_FLAG_UPDATE_ONLY);
 }
 
+int WMI_Thread_Context::invoke_method(
+    const char* name_space,
+    const Instance* instance,
+    Instance* meth)
+{
+    return -1;
+}
+
 void WMI_Thread_Context::allow_unload(bool flag)
 {
-    // There is programmatic way to prevent unload of a provider.
+    // There is no programmatic way to prevent unload of a provider.
     // Instead, the provider developer should set the "ClearAfter"
     // property of the __CacheControl instance for this provider.
+}
+
+bool WMI_Thread_Context::get_username(String& user_name)
+{
+    //TBD: This code incomplete so simply returns false until
+    // we sort out if we have access to operation user name
+    // in wmi.
+    return false;
 }
 
 CIMPLE_NAMESPACE_END

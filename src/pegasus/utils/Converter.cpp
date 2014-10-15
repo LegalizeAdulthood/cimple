@@ -1,7 +1,8 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+** Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009
+**               Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -152,6 +153,44 @@ int Converter::to_pegasus_instance(
     return 0;
 }
 
+/*
+    Converter for CIMPLE associator instances.  Tests for namespace in the
+    instance and uses this one in place of the input namespace to
+    create the instance.  This is part of associators where the
+    namespace may be part of the returned associations in cross
+    namespace associations
+*/
+int Converter::to_pegasus_assoc_instance(
+    const Pegasus::String& hn,
+    const Pegasus::CIMNamespaceName& ns,
+    const Instance* inst, 
+    Pegasus::CIMInstance& ci_out)
+{
+    CIMPLE_ASSERT(inst);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    Pegasus::CIMNamespaceName result_namespace;
+
+    if(inst->__name_space.empty())
+    {
+        result_namespace = ns;
+    }
+    else
+    {
+       result_namespace = 
+           Pegasus::CIMNamespaceName(inst->__name_space.c_str());
+    }
+
+    return(to_pegasus_instance(hn, result_namespace, inst, ci_out));
+}
+
+/*
+    Convert for CIMPLE object paths.  Creates a pegasus
+    Object Path using the key information from the input instance,
+    the host information, and the namespace information provided
+    Note that this function takes only the key information from
+    the CIMPLE instance.
+*/
 int Converter::to_pegasus_object_path(
     const Pegasus::String& hn,
     const Pegasus::CIMNamespaceName& ns,
@@ -180,6 +219,38 @@ int Converter::to_pegasus_object_path(
 
     cop_out = cop;
     return 0;
+}
+
+/*
+    Create object path from CIMPLE Instance.  If there is no namespace
+    defined in the path, use the namespace provided by ns. This differs
+    from to_pegasus_object_path in using the existing path namespace if
+    it exists.
+    NOTE: This concept needs to be in Provider_Handler to be adapter
+    independent.
+*/
+int Converter::to_pegasus_assoc_object_path(
+    const Pegasus::String& hn,
+    const Pegasus::CIMNamespaceName& ns,
+    const Instance* inst,
+    Pegasus::CIMObjectPath& cop_out)
+{
+    CIMPLE_ASSERT(inst);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    Pegasus::CIMNamespaceName result_namespace;
+
+    if(inst->__name_space.empty())
+    {
+        result_namespace = ns;
+    }
+    else
+    {
+       result_namespace = 
+           Pegasus::CIMNamespaceName(inst->__name_space.c_str());
+    }
+
+    return(to_pegasus_object_path(hn, result_namespace, inst, cop_out));
 }
 
 int Converter::to_pegasus_method(

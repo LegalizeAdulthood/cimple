@@ -42,6 +42,9 @@ int main(int argc, char** argv)
     {
         Value v;
         v.set_value("one");
+        String s;
+        v.get_value(s);
+        assert(s == "one");
         v.print();
     }
 

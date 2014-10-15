@@ -32,12 +32,22 @@ Enum_Instances_Status Person_Provider::enum_instances(
     const Person* model,
     Enum_Instances_Handler<Person>* handler)
 {
-    Person* p = Person::create();
-    p->SSN.set("444-55-6666");
-    p->FirstName.set("John");
-    p->LastName.set("Smith");
-
-    handler->handle(p);
+    {
+        Person* p = Person::create();
+        p->SSN.set("444-55-6666");
+        p->FirstName.set("John");
+        p->LastName.set("Smith");
+    
+        handler->handle(p);
+    }
+    {
+        Person* p = Person::create();
+        p->SSN.set("111-22-3333");
+        p->FirstName.set("Jane");
+        p->LastName.set("Jones");
+    
+        handler->handle(p);
+    }
 
     return ENUM_INSTANCES_OK;
 }

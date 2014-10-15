@@ -44,12 +44,46 @@ enum Log_Level
 
 CIMPLE_CIMPLE_LINKAGE
 CIMPLE_PRINTF_ATTR(4, 5)
+
+/**
+ * Create a log entry with the defined parameters formatting the
+ * the output from input paramters. This call creates a single 
+ * log entry with information about the file and line number 
+ * from which the log entry occurred, and information from a 
+ * format string and additional parameters. 
+ * @param level Log_Level representing one of the 5 defined 
+ * log levels. See the Log_level enum and the string literals 
+ * defined in log.h 
+ * @param file const char* current file normally defined with __FILE__ 
+ * @Param line size_t defines the line number of the log entry. 
+ *       Normally this is simply __LINE__.
+ * @Param fmt char* defines the format of the output using the printf 
+ * formated output definitions.
+ * Any other arguments are arguments for processing of the fmt.
+ *  
+ * Example 
+ *     log(LL_DBG, "my name is %s; my age is %d", "John", 12);
+ */
 void log(
     Log_Level level, 
     const char* file, 
     size_t line, 
     const char* fmt, ...);
 
+/** 
+ * create a log entry with the defined parameters
+ * 
+ * @param level Log_Level representing one of the 5 defined 
+ * log levels. See the Log_level enum and the string literals 
+ * defined in log.h 
+ * @param file const char* current file normally defined with __FILE__
+ * @param line size_t defines the line number of the log entry. 
+ * Normally this is simply __LINE__.
+ * @param fmt char* defines the format of the output using the printf 
+ * formated output definitions.
+ * @param ap va_list
+
+ */
 CIMPLE_CIMPLE_LINKAGE
 void vlog(
     Log_Level level, 
@@ -79,7 +113,16 @@ struct Log_Call_Frame
         va_end(ap);
     }
 };
-
+/**
+ * 	Macro to simplify definition of fatal log entry. the ARGS
+ *  consists of the fmt and argument components equivalent to
+ *  the log method. The macro supplies the LL_FATAL, __FILE__
+ *  and __LINE__ parameters
+ *  WARNING: Invocations of this macro MUST USE double quotes
+ *  for the ARGS.
+ *  Example:
+ *              CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str())); 
+ */
 #define CIMPLE_FATAL(ARGS) \
     do \
     { \
@@ -88,6 +131,13 @@ struct Log_Call_Frame
     } \
     while (0)
 
+/**
+    Macro to simplify definition of ERROR severity log entries.
+    The ARGS consists of the fmt and argument componens equivalent
+    to the log method
+    Example:
+        CIMPLE_ERROR(("no such method: %s", methodName.c_str()));
+*/
 #define CIMPLE_ERR(ARGS) \
     do \
     { \
@@ -95,7 +145,8 @@ struct Log_Call_Frame
         frame.invoke ARGS; \
     } \
     while (0)
-
+/**
+*/
 #define CIMPLE_WARN(ARGS) \
     do \
     { \
@@ -103,7 +154,11 @@ struct Log_Call_Frame
         frame.invoke ARGS; \
     } \
     while (0)
+/**
 
+    Example:
+        CIMPLE_INFO(("ignored null CMPI string"));
+*/
 #define CIMPLE_INFO(ARGS) \
     do \
     { \
@@ -111,7 +166,8 @@ struct Log_Call_Frame
         frame.invoke ARGS; \
     } \
     while (0)
-
+/**
+*/
 #define CIMPLE_DBG(ARGS) \
     do \
     { \

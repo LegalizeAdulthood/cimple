@@ -1,0 +1,7 @@
+// mof for a simple class that is used as the embedded object
+// in the All_Class
+class All_Part
+{
+    [Key] uint32 Key;
+};
+

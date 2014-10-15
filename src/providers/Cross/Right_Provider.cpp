@@ -31,9 +31,21 @@ Enum_Instances_Status Right_Provider::enum_instances(
     const Right* model,
     Enum_Instances_Handler<Right>* handler)
 {
-    Right* right = Right::create();
-    right->key.value = 100;
-    handler->handle(right);
+    {
+        Right* right = Right::create();
+        right->key.value = 1;
+        handler->handle(right);
+    }
+    {
+        Right* right = Right::create();
+        right->key.value = 2;
+        handler->handle(right);
+    }
+    {
+        Right* right = Right::create();
+        right->key.value = 3;
+        handler->handle(right);
+    }
 
     return ENUM_INSTANCES_OK;
 }

@@ -12,9 +12,11 @@
 
 @titlepage
 @title Using the WMI Adapter for CIMPLE
-@author Michael E. Brasher
+@author Michael E. Brasher, Karl Schopmeyer
 @author November 4, 2008
-Copyright @copyright{} 2008 by Michael Brasher
+Copyright @copyright{} 2008 by Michael Brasher, Karl Schopmeyer
+
+Version 1.1, 15 December 2008
 @end titlepage
 
 @c =============================================================================
@@ -57,12 +59,28 @@ be able to make existing CIMPLE providers work with WMI.
 
 @chapter Installing CIMPLE for WMI
 
+The WMI adpater compiles today with a variety of Microsoft compilers
+including
+
+VC2003 with the service pack
+VC2005 with the service pack
+VC2008
+
+@noindent
+It has not been tested with VC 6. Note that the requirement for the
+platform or windows SDK varies by compiler version.  In general the
+goal is to not require the SDK but the current versions of the wmi
+adapter depend on the SDK for a few functions.
+
+@noindent
 To build CIMPLE and the WMI adapter, open a Windows terminal session
 (@code{cmd.exe}). Run the Visual Studio setup scripts. Verify that the Visual 
 Studio C++ compiler is on your path (@code{cl.exe}). Obtain GNU make 
 (@code{make.exe}) and add it to your path. GNU make for Windows is available 
 from the "tools" link on the OpenPegasus home page 
-(see @uref{http://openpegasus.org}).
+(see @uref{http://openpegasus.org}). Note that the make provided by
+Micrososft is not compatible with the cimple make files. You must use
+GNU make.
 
 @noindent
 Unpack the CIMPLE distribution. From the root of the distribution type.
@@ -119,8 +137,9 @@ is like building a CIMPLE provider for other servers, but there are a few
 minor differences.
 
 @noindent
-We start with the following MOF definition (which we place in 
-@code{repository.mof}).
+We start with the following MOF definition (which we place in
+@code{repository.mof}).This example is part of the cimple distribution
+in in the directory @code{cimple/src/wmi/person}.
 
 @example
 [dynamic, provider("Person")]
@@ -136,16 +155,31 @@ class Person
 @end example
 
 @noindent
-The @code{dynamic}, @code{provider}, and @code{implemented} qualifiers are 
-unique to WMI. The string given by the @code{provider} qualifier must match 
-the name of the provider DLL (without the extension).
+The @code{dynamic} and @code{implemented} qualifiers are
+unique to WMI.  They are not part of the currently defined qualifier
+set in the DMTF specifications. Therefore, we may be required to add
+them to the qualifier definitions in qualifiers.mof in the CIM mof
+schema to get the class definition to compile with genclass. They have
+been inserted in the schemas provided. The definitions that must be
+inserted are:
+
+@example
+qualifiers.mof:Qualifier Dynamic : boolean = false,
+qualifiers.mof:Qualifier Implemented : boolean = false,
+@end example
+
+The @code{provider} qualifier is also required for wmi provider
+registration but it should be part of the existing DMTF qualifier
+definitions either  in qualifiers.mof or optionalqualifiers.mof.
+The value for this provider MUST match the name of the provider DLL
+(without the extension).
 
 @noindent
-Next we use the @code{genprov} command to generate the classes, provider,
+Next we use the @code{genproj} command to generate the classes, provider,
 and module.
 
 @example
-C:\> genmod Person Person
+C:\> genproj Person Person
 Created Person.h
 Created Person.cpp
 created repository.h
@@ -190,6 +224,7 @@ EXPORTS
 Then we create the following Makefile.
 
 @example
+## TOP defines location of the cimple mak directory
 TOP=../../..
 include $(TOP)/mak/config.mak
 
@@ -221,9 +256,9 @@ This creates a DLL called @code{Person.dll}.
 
 @chapter Registering a WMI provider
 
-@noindent
-This chapter shows how to register a WMI provider. First we must copy the
-provider DLL to the WMI providers directory, Usually located here:
+@noindent This chapter shows how to register a WMI provider using the
+Microsoft tools. First we must copy the provider DLL to the WMI
+providers directory, Usually located here:
 
 @example
 C:\windows\system32\wbem\
@@ -251,6 +286,10 @@ Finally, we register our WMI provider as a COM server:
 regsvr32 /s C:\windows\system32\wbem\Person.dll
 @end example
 
+@noindent
+In the examples provided with cimple, these operations are integrated
+into the Makefile provided as the target reg.
+
 @c =============================================================================
 @c
 @c Chapter: Verifying a WMI provider
@@ -259,9 +298,33 @@ regsvr32 /s C:\windows\system32\wbem\Person.dll
 
 @chapter Verifying a WMI provider
 
-We recommend using the WMI @code{wbemtest.exe} client program to verify
-providers you write with CIMPLE. You may also use many other WMI client tools. 
-For a full discussion of these, see the book "Developing WMI solutions: A 
-Guide to Windows Management Instrumentation" by Craig Tunstall and Gwyn Cole.
+There several tools available help verify the providers once it
+installed including:
+
+@itemize @bullet
+@item @code{cimbrowser.exe} - Part of a wmi toolset available from Micrososft under the name CIMTest.  This is a complete graphic wmi cim browser.
+@item @code{wbemtest.exe} - Client program that executes wmi cim operations from a  set of check boxes. 
+@end itemize
+
+@noindent
+Either of these tools is helpful to  verify the providers you write with CIMPLE.
+You may also use many other WMI client tools. 
+
+@noindent
+In any case, to verify this first provider you should confirm that the
+Person class was installed in the property namespace (normally
+Root/cimv2) and that the provider returns two instances of the Person
+class.
+
+@noindent
+You can validate the response from the defined method as follows:
+
+TBD
+
+
+@noindent
+For a full discussion of these tools and more information on wmi, see
+the book "Developing WMI solutions: A Guide to Windows Management
+Instrumentation" by Craig Tunstall and Gwyn Cole.
 
 @bye

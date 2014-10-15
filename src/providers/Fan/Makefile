@@ -28,3 +28,6 @@ genprov:
 
 genmod:
 	$(BINDIR)/genmod Fan Fan
+	
+genproj:
+	$(BINDIR)/genproj Fan Fan	

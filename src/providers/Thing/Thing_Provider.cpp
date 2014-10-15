@@ -10,17 +10,36 @@ Thing_Provider::~Thing_Provider()
 {
 }
 
+static Thing* _create(uint32 key)
+{
+    Thing* thing = Thing::create();
+    thing->key.set(key);
+    thing->p0.set("This is a String");
+    thing->p1.set("This is a String");
+    thing->p2.set("This is a String");
+    thing->p3.set("This is a String");
+    thing->p4.set("This is a String");
+    thing->p5.set("This is a String");
+    thing->p6.set("This is a String");
+    thing->p7.set("This is a String");
+    thing->p8.set("This is a String");
+    thing->p9.set("This is a String");
+
+    return thing;
+}
+
 Load_Status Thing_Provider::load()
 {
-    Thing* thing;
-    
-    thing = Thing::create();
-    thing->key.value = 100;
-    _map.insert(thing);
-
-    thing = Thing::create();
-    thing->key.value = 200;
-    _map.insert(thing);
+    _map.insert(_create(100));
+    _map.insert(_create(200));
+    _map.insert(_create(300));
+    _map.insert(_create(400));
+    _map.insert(_create(500));
+    _map.insert(_create(600));
+    _map.insert(_create(700));
+    _map.insert(_create(800));
+    _map.insert(_create(900));
+    _map.insert(_create(1000));
 
     return LOAD_OK;
 }

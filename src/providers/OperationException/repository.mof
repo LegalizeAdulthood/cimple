@@ -1,0 +1,3 @@
+#pragma include("CIMPLE_Exception.mof")
+
+#pragma include("CIMPLE_ExceptionLink.mof")

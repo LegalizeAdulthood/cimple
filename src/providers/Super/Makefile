@@ -28,3 +28,6 @@ regmod:
 
 live:
 	$(CIMCLI) ei Super
+	$(CIMCLI) ni Super --sum -count 2
+	$(CIMCLI) ni Sub1 --sum -count 1
+	$(CIMCLI) ni Sub2 --sum -count 1

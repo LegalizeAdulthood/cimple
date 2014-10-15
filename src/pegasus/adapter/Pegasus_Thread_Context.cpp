@@ -29,6 +29,7 @@
 #include <pegasus/utils/Converter.h>
 #include <pegasus/utils/Str.h>
 #include <cimple/Thread.h>
+#include <cimple/log.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -41,28 +42,6 @@ Pegasus_Thread_Context::Pegasus_Thread_Context(
     _operation_context(operation_context),
     _delete_operation_context(delete_operation_context)
 {
-#if 0
-    // Experimental code to test feasibility of providing a username to
-    // the provider.
-    try
-    {
-        const P_OperationContext::Container& c =  
-            _operation_context->get(P_IdentityContainer::NAME);
-
-        const P_IdentityContainer* ic = 
-            dynamic_cast<const P_IdentityContainer*>(&c);
-
-        if (ic)
-        {
-            P_CString cstr = ic->getUserName().getCString();
-            printf("USERNAME[%s]\n", (const char*)cstr);
-        }
-    }
-    catch (...)
-    {
-        assert(0);
-    }
-#endif
 }
 
 Pegasus_Thread_Context::~Pegasus_Thread_Context()
@@ -364,6 +343,14 @@ int Pegasus_Thread_Context::modify_instance(
     return -1;
 }
 
+int Pegasus_Thread_Context::invoke_method(
+    const char* name_space,
+    const Instance* instance,
+    Instance* meth)
+{
+    return -1;
+}
+
 void Pegasus_Thread_Context::allow_unload(bool flag)
 {
     Pegasus_Thread_Context* context = _top();
@@ -372,6 +359,43 @@ void Pegasus_Thread_Context::allow_unload(bool flag)
         context->cimom_handle()->allowProviderUnload();
     else
         context->cimom_handle()->disallowProviderUnload();
+}
+
+bool Pegasus_Thread_Context::get_username(String& user_name)
+{
+    // Experimental code to test feasibility of providing a username to
+    // the provider.
+    Pegasus_Thread_Context* context = _top();
+
+    if (context != 0)
+    {
+        // Get the pegasus operation context container and find out if
+        // it contains the name item
+
+        if (_operation_context->contains(P_IdentityContainer::NAME))
+        {
+            const P_OperationContext::Container& c =  
+                _operation_context->get(P_IdentityContainer::NAME);
+    
+            const P_IdentityContainer* ic = 
+                dynamic_cast<const P_IdentityContainer*>(&c);
+
+            // TBD - We may be able to remove this if statement.
+            if (ic)
+            {
+                user_name = ic->getUserName().getCString();
+                return true;
+            }
+            else
+            {
+                CIMPLE_ERR(("get_username:  Identy Container Error"));
+            }
+        }
+    }
+    else
+        CIMPLE_ERR(("get_username: Null context found"));
+
+    return false;
 }
 
 CIMPLE_NAMESPACE_END

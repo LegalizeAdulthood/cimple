@@ -1,7 +1,8 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+** Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009
+**               Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),

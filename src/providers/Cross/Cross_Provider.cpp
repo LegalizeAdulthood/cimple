@@ -31,17 +31,37 @@ Enum_Instances_Status Cross_Provider::enum_instances(
     const Cross* model,
     Enum_Instances_Handler<Cross>* handler)
 {
-    Cross* cross = Cross::create();
 
-    cross->left = Left::create();
-    cross->left->__name_space = "Left";
-    cross->left->key.value = 100;
+    // create single instance pointing from left namespace
+    // to right namespace
+    // TODO: Get namespaces from input parameters rather than
+    // fixing them in the code.
+    // 
+    {
+        Cross* cross = Cross::create();
+        cross->left = Left::create();
+        cross->left->__name_space = "root/PG_Interop";
+        cross->left->key.value = 1;
+    
+        cross->right = Right::create();
+        cross->right->__name_space = "root/cimv2";
+        cross->right->key.value = 1;
+    
+        handler->handle(cross);
+    }
 
-    cross->right = Right::create();
-    cross->right->__name_space = "Right";
-    cross->right->key.value = 100;
+    // This instance is not cross namespace
+    {
 
-    handler->handle(cross);
+        Cross* cross = Cross::create();
+        cross->left = Left::create();
+        cross->left->key.value = 2;
+    
+        cross->right = Right::create();
+        cross->right->key.value = 2;
+    
+        handler->handle(cross);
+    }
 
     return ENUM_INSTANCES_OK;
 }
@@ -91,40 +111,7 @@ Enum_Associators_Status Cross_Provider::enum_associators(
     const String& result_role,
     Enum_Associators_Handler<Instance>* handler)
 {
-printf("***** enum_associators()\n");
-
-    // Left:
-    {
-        Left* left = cast<Left*>(instance);
-
-        if (left && left->key.value == 100)
-        {
-            Right* right = Right::create();
-            right->__name_space = "Right";
-            right->key.set(100);
-            handler->handle(right);
-
-            return ENUM_ASSOCIATORS_OK;
-        }
-    }
-
-    // Right:
-    {
-        Right* right = cast<Right*>(instance);
-
-        if (right && right->key.value == 100)
-        {
-            Left* left = Left::create();
-            left->__name_space = "Right";
-            left->key.set(100);
-            handler->handle(left);
-
-            return ENUM_ASSOCIATORS_OK;
-        }
-    }
-
-    return ENUM_ASSOCIATORS_FAILED;
-    // return ENUM_ASSOCIATORS_UNSUPPORTED;
+    return ENUM_ASSOCIATORS_UNSUPPORTED;
 }
 
 /*@END@*/

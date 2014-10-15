@@ -1228,7 +1228,7 @@ int main(int argc, char** argv)
             }
 
             case 'h':
-                printf((char*)USAGE);
+                printf("%s",(char*)USAGE);
                 exit(0);
                 break;
 
@@ -1251,7 +1251,7 @@ int main(int argc, char** argv)
 
     if (optind == argc && !schema_opt)
     {
-        printf((char*)USAGE);
+        printf("%s", (char*)USAGE);
         exit(1);
     }
 

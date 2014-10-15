@@ -266,6 +266,10 @@ static void gen_module(const char* module_name, int argc, char** argv)
 
     gen_warning(os);
 
+    // Generate the NOCHKSRC flag for pegasus chksrc program
+    // The output code will have lines longer than 80 characters.
+    fprintf(os,"/* NOCHKSRC */\n");
+
     // Includes:
 
     fprintf(os, "#include <cimple/cimple.h>\n");

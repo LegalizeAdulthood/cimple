@@ -35,6 +35,7 @@ public:
         const Hello* instance);
 
     Modify_Instance_Status modify_instance(
+        const Hello* model,
         const Hello* instance);
 };
 

@@ -39,7 +39,8 @@ void roundtrip(CIMInstance& ci, const Meta_Class* mc)
         cont.convert(mc, 0, inst2);
     }
 
-#if 1
+#if 0
+    printf("Roundtrip instances\n");
     print(inst1);
     print(inst2);
 #endif
@@ -255,6 +256,7 @@ void test6()
     unref(tmp);
 }
 
+
 void test7()
 {
     CIMInstance class2("Class2");
@@ -270,6 +272,7 @@ void test7()
         Class1::static_meta_class.meta_repository, ns, class3);
     Instance* tmp = 0;
     cont.convert(&Class4::static_meta_class, 0, tmp);
+
     assert(tmp);
 
     Class4* inst = cast<Class4*>(tmp);
@@ -279,6 +282,7 @@ void test7()
     assert(inst->key.value == 200);
     assert(inst->key.null == false);
 
+#ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
     // embedded:
     {
         assert(inst->embedded);
@@ -288,12 +292,16 @@ void test7()
         assert(inst2->key.value == 100);
         assert(inst2->key.null == false);
     }
+#else
+    assert(!inst->embedded);
+#endif
 
     unref(tmp);
 }
 
-#ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
 
+
+#ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
 void test8()
 {
 

@@ -11,7 +11,12 @@ SOURCES = \
     module.cpp \
     repository.cpp
 
-CIMPLE_CMPI_MODULE=1
+## Allow building providers for either CMPI or Pegasus C++
+ifdef CIMPLE_PROVIDER_BUILD_CMPI
+   CIMPLE_CMPI_MODULE=1
+else
+   CIMPLE_PEGASUS_MODULE=1
+endif
 
 include ../common.mak
 
@@ -31,3 +36,8 @@ genmod:
 
 genproj:
 	$(BINDIR)/genproj CMPL_Time CMPL_Time
+	
+manual-test:
+	ciminvoke CMPL_Time SetTime Time=20070101120000.123456-360
+	ciminvoke CMPL_Time GetTime
+    

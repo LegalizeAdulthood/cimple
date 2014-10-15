@@ -115,7 +115,7 @@ static void _fill_random(void* data, size_t size)
 
     uint64 s1 = get_mac_addr();
     uint64 s2 = _get_time();
-    srand((s1 >> 32) ^ s1 ^ (s2 >> 32) | s2);
+    srand(((s1 >> 32) ^ s1 ^ (s2 >> 32)) | s2);
 
     while (r--)
         *p++ = rand();

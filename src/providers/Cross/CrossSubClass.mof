@@ -1,0 +1,6 @@
+// subclass of Cross to allow filtered associations
+
+class CrossSubClass : Cross
+{
+    String addedProperty;
+};

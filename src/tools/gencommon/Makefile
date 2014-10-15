@@ -19,4 +19,4 @@ usage:
 	file2c usage.txt -n USAGE > usage.h
 
 zzz:
-	echo $(DEFINES)
+	echo $(DEFINES) $(SRC_DIR)

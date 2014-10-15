@@ -32,21 +32,42 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** This class provides a thread-safe queue implementation so that threads
-    may exchange data. The dequeue() function blocks until an entry is
-    available. The enqueue() method blocks until there are less than
-    max_size elements.
+/** This class provides a thread-safe condition queue
+*   implementation so that threads may exchange data. The
+*   dequeue() function blocks until an entry is available. The
+*   enqueue() method blocks until there are less than max_size
+*   elements.
 */
 class CIMPLE_CIMPLE_LINKAGE Cond_Queue
 {
 public:
 
+    /**
+     * Construct a conditon queue with a maximum size defined 
+     * by the varaible. The enqueue method() blocks untill there are
+     * less than #max_size# elements in the queue. 
+     *  
+     * @param max_size size_t defining the number of elements in the 
+     * queue before the enqueue() blocks. 
+     */
     Cond_Queue(size_t max_size);
 
     ~Cond_Queue();
 
+    /**
+     * Enqueue an entry to the condition queue 
+     *  
+     * @param entry void* Any single pointer entitiy can be enqueued 
+     * and will be passed to the dequeue 
+     */
     void enqueue(void* entry);
 
+    /**
+     * Dequeue an entry from the condition queue. The dequeue blocks 
+     * until there is an entry available in the queue. 
+     *  
+     * @return void* entry that was enqueued to the queue. 
+     */
     void* dequeue();
 
 private:

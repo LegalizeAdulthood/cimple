@@ -1,3 +1,29 @@
+/*
+**==============================================================================
+**
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+** 
+** Permission is hereby granted, free of charge, to any person obtaining a
+** copy of this software and associated documentation files (the "Software"),
+** to deal in the Software without restriction, including without limitation
+** the rights to use, copy, modify, merge, publish, distribute, sublicense,
+** and/or sell copies of the Software, and to permit persons to whom the
+** Software is furnished to do so, subject to the following conditions:
+** 
+** The above copyright notice and this permission notice shall be included in
+** all copies or substantial portions of the Software.
+** 
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+** SOFTWARE.
+**
+**==============================================================================
+*/
+
 #include <cimple/config.h>
 #include <pegasus/utils/pegasus.h>
 #include <cimple/Registration.h>
@@ -8,14 +34,13 @@
 #include <pegasus/utils/Converter.h>
 #include <pegasus/utils/Str.h>
 #include "Pegasus_Thread_Context.h"
+#include <cimple/log.h>
 
 #if 0
 # define TRACE CIMPLE_TRACE
 #else
 # define TRACE
 #endif
-
-// #define INDICATION_NAMESPACE "root/cimv2"
 
 // Export cimple_pegasus_adapter() only for shared library.
 #ifdef CIMPLE_STATIC
@@ -74,7 +99,42 @@ static void _check(int cimple_error)
             code = Pegasus::CIM_ERR_ALREADY_EXISTS;
             break;
 
+        case GET_INSTANCE_INVALID_PARAMETER:
+        case CREATE_INSTANCE_INVALID_PARAMETER:
+        case MODIFY_INSTANCE_INVALID_PARAMETER:
+               code = Pegasus::CIM_ERR_INVALID_PARAMETER;
+               break;
+    
+        case GET_INSTANCE_ACCESS_DENIED:
+        case ENUM_INSTANCES_ACCESS_DENIED:
+        case CREATE_INSTANCE_ACCESS_DENIED:
+        case DELETE_INSTANCE_ACCESS_DENIED:
+        case MODIFY_INSTANCE_ACCESS_DENIED:
+        case ENUM_ASSOCIATOR_NAMES_ACCESS_DENIED:
+        case ENUM_REFERENCES_ACCESS_DENIED:
+        case INVOKE_METHOD_ACCESS_DENIED:
+        case ENUM_ASSOCIATORS_ACCESS_DENIED:
+            code = Pegasus::CIM_ERR_ACCESS_DENIED;
+            break;
+
+		// define FAILED enums to separate user defined FAILED calls
+        // from the default if the return code is not in the status enums.
+        case GET_INSTANCE_FAILED:
+        case ENUM_INSTANCES_FAILED:
+        case CREATE_INSTANCE_FAILED:
+        case DELETE_INSTANCE_FAILED:
+        case MODIFY_INSTANCE_FAILED:
+        case ENUM_REFERENCES_FAILED:
+        case INVOKE_METHOD_FAILED:
+        case ENUM_ASSOCIATORS_FAILED:
+        case ENUM_ASSOCIATOR_NAMES_FAILED:
+            code = Pegasus::CIM_ERR_FAILED;
+            break;
+            
+        // Invalid error code defaults to CIM_ERR_FAILED but with
+        // log entry.
         default:
+            CIMPLE_ERR(("Invalid Error return code = %u\n", cimple_error));
             code = Pegasus::CIM_ERR_FAILED;
     }
 
@@ -682,8 +742,8 @@ static bool _enum_associator_proc_1(
 
     P_CIMInstance ci;
 
-    if (Converter::to_pegasus_instance(_get_host_name(), 
-        data->objectPath.getNameSpace(), associator, ci) != 0)
+    if (Converter::to_pegasus_assoc_instance(_get_host_name(), 
+        data->objectPath.getNameSpace(),associator, ci) != 0)
     {
         data->error = true;
         return false;
@@ -747,7 +807,7 @@ static bool _enum_associator_proc_2(
 
     P_CIMObjectPath objectPath;
 
-    if (Converter::to_pegasus_object_path(_get_host_name(), 
+    if (Converter::to_pegasus_assoc_object_path(_get_host_name(), 
         data->objectPath.getNameSpace(), associator_name, objectPath) != 0)
     {
         data->error = true;
@@ -908,7 +968,7 @@ static bool _enum_associator_names_proc(
 
     P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(_get_host_name(), 
+    if (Converter::to_pegasus_assoc_object_path(_get_host_name(), 
         data->objectPath.getNameSpace(), assoc_name, op) != 0)
     {
         data->error = true;

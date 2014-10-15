@@ -1,6 +1,16 @@
 class Thing
 {
     [Key] uint32 key;
+    string p0;
+    string p1;
+    string p2;
+    string p3;
+    string p4;
+    string p5;
+    string p6;
+    string p7;
+    string p8;
+    string p9;
 };
 
 [Association]

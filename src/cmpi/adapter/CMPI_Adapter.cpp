@@ -396,6 +396,12 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
             adapter->ret(FL, "enumInstanceNames", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
         }
+
+        case ENUM_INSTANCES_ACCESS_DENIED:
+        {
+            adapter->ret(FL, "enumInstanceNames", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+        }
     }
 
 
@@ -427,10 +433,11 @@ namespace enum_instances
         void* client_data)
     {
         Data* data = (Data*)client_data;
-        Ref<Instance> destroyer(inst);
 
         if (!inst)
             return false;
+
+        Ref<Instance> inst_destroyer(inst);
 
         // Ignore if an error was already encountered.
 
@@ -516,6 +523,12 @@ CMPIStatus CMPI_Adapter::enumInstances(
             adapter->ret(FL, "enumInstances", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
         }
+
+        case ENUM_INSTANCES_ACCESS_DENIED:
+        {
+            adapter->ret(FL, "enumInstances", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+        }
     }
 
     CMReturnDone(result);
@@ -580,7 +593,7 @@ CMPIStatus CMPI_Adapter::getInstance(
     Get_Instance_Status status = 
         adapter->get_instance(cimple_ref, inst);
 
-    Ref<Instance> cimple_inst_d(inst);
+    Ref<Instance> inst_destroyer(inst);
 
     switch (status)
     {
@@ -592,6 +605,18 @@ CMPIStatus CMPI_Adapter::getInstance(
             CMReturn(CMPI_RC_ERR_NOT_FOUND);
 
         case GET_INSTANCE_UNSUPPORTED:
+            adapter->ret(FL, "getInstance", CMPI_RC_ERR_FAILED);
+            CMReturn(CMPI_RC_ERR_FAILED);
+
+        case GET_INSTANCE_INVALID_PARAMETER:
+            adapter->ret(FL, "getInstance", CMPI_RC_ERR_INVALID_PARAMETER);
+            CMReturn(CMPI_RC_ERR_INVALID_PARAMETER);
+
+        case GET_INSTANCE_ACCESS_DENIED:
+            adapter->ret(FL, "getInstance", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+
+        case GET_INSTANCE_FAILED:
             adapter->ret(FL, "getInstance", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
     }
@@ -654,7 +679,7 @@ CMPIStatus CMPI_Adapter::createInstance(
         CMReturn(rc);
     }
 
-    Ref<Instance> cmpi_inst_d(inst);
+    Ref<Instance> inst_destroyer(inst);
 
     // Invoke the provider:
 
@@ -685,10 +710,21 @@ CMPIStatus CMPI_Adapter::createInstance(
         case CREATE_INSTANCE_DUPLICATE:
             adapter->ret(FL, "createInstance", CMPI_RC_ERR_ALREADY_EXISTS);
             CMReturn(CMPI_RC_ERR_ALREADY_EXISTS);
-
         case CREATE_INSTANCE_UNSUPPORTED:
             adapter->ret(FL, "createInstance", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+
+        case CREATE_INSTANCE_INVALID_PARAMETER:
+            adapter->ret(FL, "createInstance", CMPI_RC_ERR_INVALID_PARAMETER);
+            CMReturn(CMPI_RC_ERR_INVALID_PARAMETER);
+
+        case CREATE_INSTANCE_ACCESS_DENIED:
+            adapter->ret(FL, "createInstance", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+
+        case CREATE_INSTANCE_FAILED:
+            adapter->ret(FL, "createInstance", CMPI_RC_ERR_FAILED);
+            CMReturn(CMPI_RC_ERR_FAILED);
     }
 
     adapter->ret(FL, "createInstance", CMPI_RC_OK);
@@ -734,7 +770,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
         CMReturn(rc);
     }
 
-    Ref<Instance> cmpi_inst_d(inst);
+    Ref<Instance> inst_destroyer(inst);
 
     // Create model.
 
@@ -762,6 +798,18 @@ CMPIStatus CMPI_Adapter::modifyInstance(
         case MODIFY_INSTANCE_UNSUPPORTED:
             adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+
+        case MODIFY_INSTANCE_FAILED:
+            adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_FAILED);
+            CMReturn(CMPI_RC_ERR_FAILED);
+
+        case MODIFY_INSTANCE_INVALID_PARAMETER:
+            adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_INVALID_PARAMETER);
+            CMReturn(CMPI_RC_ERR_INVALID_PARAMETER);
+
+        case MODIFY_INSTANCE_ACCESS_DENIED:
+            adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
     }
 
     adapter->ret(FL, "modifyInstance", CMPI_RC_OK);
@@ -824,6 +872,14 @@ CMPIStatus CMPI_Adapter::deleteInstance(
         case DELETE_INSTANCE_UNSUPPORTED:
             adapter->ret(FL, "deleteInstance", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+
+        case DELETE_INSTANCE_FAILED:
+            adapter->ret(FL, "deleteInstance", CMPI_RC_ERR_FAILED);
+            CMReturn(CMPI_RC_ERR_FAILED);
+
+        case DELETE_INSTANCE_ACCESS_DENIED:
+            adapter->ret(FL, "deleteInstance", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
     }
 
     CMReturnDone(result);
@@ -968,6 +1024,10 @@ CMPIStatus CMPI_Adapter::invokeMethod(
         case INVOKE_METHOD_UNSUPPORTED:
             adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+
+        case INVOKE_METHOD_ACCESS_DENIED:
+            adapter->ret(FL, "invokeMethod", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
     }
 
     // Convert to CMPI out arguments:
@@ -1154,7 +1214,7 @@ static bool _indication_proc(Instance* inst, void* client_data)
     if (inst == 0)
         return false;
 
-    Ref<Instance> cimple_inst_d(inst);
+    Ref<Instance>inst_destroyer(inst);
 
     // Do once for each CIM namespace:
 
@@ -1327,19 +1387,28 @@ namespace associators1
         if (!inst)
             return false;
 
+        Ref<Instance> inst_destroyer(inst);
+
         // Ignore if an error was already encountered.
 
         if (data->rc != CMPI_RC_OK)
             return false;
 
-        // Convert to a CMPI instance.
+        // Account for cross namespace associations
 
+        // If the inst includes a namespace we must use that one
+        // rather than the operation namespace.
+        String result_namespace = (inst->__name_space.empty()?
+                                    String(data->name_space)
+                                    :
+                                    inst->__name_space);
+ 
         CMPIInstance* ci = 0;
 
         data->rc = make_cmpi_instance(
             data->broker, 
             inst, 
-            data->name_space,
+            result_namespace.c_str(),
             0,
             ci); 
 
@@ -1357,6 +1426,9 @@ namespace associators1
     }
 }
 
+/*  attempt to get an instance using the CMPI broker
+    based on the cop
+*/
 namespace associators2
 {
     struct Data
@@ -1379,10 +1451,19 @@ namespace associators2
         if (!inst)
             return false;
 
+        Ref<Instance> inst_destroyer(inst);
+
         // Ignore if an error was already encountered.
 
         if (data->rc != CMPI_RC_OK)
             return false;
+
+        // If the inst includes a namespace we must use that one
+        // rather than the operation namespace.
+        String result_namespace = (inst->__name_space.empty()?
+                                    String(data->name_space)
+                                    :
+                                    inst->__name_space);
 
         // Convert to a CMPI object path and deliver:
 
@@ -1391,7 +1472,7 @@ namespace associators2
         data->rc = make_cmpi_object_path(
             data->broker,
             inst,
-            data->name_space,
+            result_namespace.c_str(),
             cop);
 
         // Now use the CMPI broker to get the full instance.
@@ -1441,10 +1522,16 @@ CMPIStatus CMPI_Adapter::associators(
 
     const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
+    // Note that if the requestecd class is not one of the known
+    // classes in the hiearchy of classes for this provider we return
+    // immediatly without attempting to create any references.  Note
+    // that this is a CMPI_RC_OK response since there is no definition
+    // for an INVALID_CLASS response in the specification. An association
+    // provider should not return INVALID_CLASS
     if (!mc)
     {
-        adapter->ret(FL, "associators", CMPI_RC_ERR_INVALID_CLASS);
-        CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+        adapter->ret(FL, "associators", CMPI_RC_OK);
+        CMReturn(CMPI_RC_OK);
     }
 
     // Convert to CIMPLE reference:
@@ -1452,6 +1539,8 @@ CMPIStatus CMPI_Adapter::associators(
     Instance* cimple_ref = 0;
     CMPIrc rc = make_cimple_reference(0, mc, cop, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
+
+    print(cimple_ref);
 
     if (rc != CMPI_RC_OK)
     {
@@ -1461,7 +1550,7 @@ CMPIStatus CMPI_Adapter::associators(
 
     // First try enum_associators().
     {
-        associators2::Data data = { adapter->broker, 
+        associators1::Data data = { adapter->broker, 
             context, result, name_space(cop), properties, CMPI_RC_OK };
 
         Enum_Associators_Status status = adapter->enum_associators(
@@ -1482,13 +1571,18 @@ CMPIStatus CMPI_Adapter::associators(
                 adapter->ret(FL, "associators", CMPI_RC_ERR_FAILED);
                 CMReturn(CMPI_RC_ERR_FAILED);
 
+            case ENUM_ASSOCIATORS_ACCESS_DENIED:
+                adapter->ret(FL, "associators", CMPI_RC_ERR_ACCESS_DENIED);
+                CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+
             case ENUM_ASSOCIATORS_UNSUPPORTED:
                 // Fall through to case below.
                 break;
         }
     }
 
-    // Next try enum_associator_names().
+    // Next try enum_associator_names() because of the fallthrough
+
     {
         associators2::Data data = { adapter->broker, 
             context, result, name_space(cop), properties, CMPI_RC_OK };
@@ -1511,6 +1605,10 @@ CMPIStatus CMPI_Adapter::associators(
                 adapter->ret(FL, "associators", CMPI_RC_ERR_FAILED);
                 CMReturn(CMPI_RC_ERR_FAILED);
 
+            case ENUM_ASSOCIATOR_NAMES_ACCESS_DENIED:
+                adapter->ret(FL, "associators", CMPI_RC_ERR_ACCESS_DENIED);
+                CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+
             case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
                 adapter->ret(FL, "associators", CMPI_RC_ERR_NOT_SUPPORTED);
                 CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
@@ -1527,6 +1625,12 @@ CMPIStatus CMPI_Adapter::associators(
 //
 //------------------------------------------------------------------------------
 
+//
+// Callback function for associator_names processing.  Converts the provided
+// instance to a cmpi_object_path and delivers it to the cimserver.
+// This function includes a structure to define data for the procedure and
+// a callback procedure _proc in their own namespace.
+// 
 namespace associator_names
 {
     struct Data
@@ -1548,6 +1652,17 @@ namespace associator_names
         if (!inst)
             return false;
 
+        // If the inst includes a namespace we must use that one
+        // rather than the operation namespace.
+        // TODO: This whole concept should move to Provider_handler
+        // to be protocol independent.
+        String result_namespace = (inst->__name_space.empty()?
+                                    String(data->name_space)
+                                    :
+                                    inst->__name_space);
+                                                    
+        Ref<Instance> inst_destroyer(inst);
+
         // Ignore if an error was already encountered.
 
         if (data->rc != CMPI_RC_OK)
@@ -1560,7 +1675,7 @@ namespace associator_names
         data->rc = make_cmpi_object_path(
             data->broker,
             inst,
-            data->name_space,
+            result_namespace.c_str(),
             cop);
 
         if (data->rc == CMPI_RC_OK)
@@ -1569,6 +1684,10 @@ namespace associator_names
         return true;
     }
 }
+
+//
+//  associatorNames handler for CMPI
+//
 
 CMPIStatus CMPI_Adapter::associatorNames(
     CMPIAssociationMI* mi, 
@@ -1638,6 +1757,10 @@ CMPIStatus CMPI_Adapter::associatorNames(
             adapter->ret(FL, "associatorNames", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
 
+        case ENUM_ASSOCIATOR_NAMES_ACCESS_DENIED:
+            adapter->ret(FL, "associatorNames", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+
         case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
             adapter->ret(FL, "associatorNames", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
@@ -1677,7 +1800,7 @@ namespace references
         if (!inst)
             return false;
 
-        Ref<Instance> cimple_inst_d(inst);
+        Ref<Instance> inst_destroyer(inst);
 
         // Ignore errors on prior call.
 
@@ -1775,6 +1898,10 @@ CMPIStatus CMPI_Adapter::references(
             adapter->ret(FL, "references", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
 
+        case ENUM_REFERENCES_ACCESS_DENIED:
+            adapter->ret(FL, "references", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
+
         case ENUM_REFERENCES_UNSUPPORTED:
             adapter->ret(FL, "references", CMPI_RC_ERR_NOT_SUPPORTED);
             CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
@@ -1814,7 +1941,7 @@ namespace reference_names
         if (!inst)
             return false;
 
-        Ref<Instance> cimple_inst_d(inst);
+        Ref<Instance> inst_destroyer(inst);
 
         // Ignore errors on prior call.
 
@@ -1911,6 +2038,10 @@ CMPIStatus CMPI_Adapter::referenceNames(
         case ENUM_REFERENCES_FAILED:
             adapter->ret(FL, "referenceNames", CMPI_RC_ERR_FAILED);
             CMReturn(CMPI_RC_ERR_FAILED);
+
+        case ENUM_REFERENCES_ACCESS_DENIED:
+            adapter->ret(FL, "referenceNames", CMPI_RC_ERR_ACCESS_DENIED);
+            CMReturn(CMPI_RC_ERR_ACCESS_DENIED);
 
         case ENUM_REFERENCES_UNSUPPORTED:
             adapter->ret(FL, "referenceNames", CMPI_RC_ERR_NOT_SUPPORTED);

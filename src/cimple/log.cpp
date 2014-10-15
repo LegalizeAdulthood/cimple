@@ -1,4 +1,3 @@
-
 /*
 **==============================================================================
 **
@@ -80,7 +79,7 @@ static char* _get_opt_value(const char* path, const char* opt)
         if (buffer[0] == '#')
             continue;
 
-        // Trim traling whitespace.
+        // Trim trailing whitespace.
 
         char* p = buffer;
 
@@ -134,10 +133,12 @@ static int _get_log_level(const char* path, Log_Level& level)
         if (strcasecmp(_strings[i], value) == 0)
         {
             level = Log_Level(i);
+            free(value);
             return 0;
         }
     }
 
+    free(value);
     return -1;
 }
 

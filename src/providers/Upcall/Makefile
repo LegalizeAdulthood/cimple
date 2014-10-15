@@ -36,3 +36,30 @@ genprov:
 
 genmod:
 	$(BINDIR)/genmod Upcall Upcall
+
+genproj:
+	$(BINDIR)/genproj Upcall Upcall CIM_ComputerSystem
+
+manual-test:
+	cimcli gc Upcall
+	cimcli ni Upcall
+	cimcli ei Upcall
+
+## Start the execution of the repetitive test of an upcall
+## There are two parameters on the call count and delay
+## each is a Uint32. Count if nonzero defines the number
+## of repetitions.  Delay if nonzero defines the delay in
+## milliseconds between each repetition of the upcall
+starttest:
+	cimcli im Upcall StartTest count=100
+
+## stop a test that is being executed.
+stoptest:
+	cimcli im Upcall StopTest
+
+live:
+	cimcli ni Upcall
+	cimcli ei Upcall
+	cimcli im Upcall StartTest count=1000
+	$(SLEEP) 3
+	cimcli im Upcall StopTest

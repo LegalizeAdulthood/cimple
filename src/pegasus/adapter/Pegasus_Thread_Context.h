@@ -94,7 +94,14 @@ public:
         const char* name_space, 
         const Instance* instance);
 
+    virtual int invoke_method(
+        const char* name_space,
+        const Instance* instance,
+        Instance* meth);
+
     virtual void allow_unload(bool flag);
+
+    virtual bool get_username(String& user_name);
 
 private:
 

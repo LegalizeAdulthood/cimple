@@ -28,34 +28,53 @@
 #define _cimple_Id_Pool_h
 
 #include "config.h"
-#include "Raw_Array.h"
+#include "Array.h"
 #include "Mutex.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** This class maitains a pool of integer identifiers. It defines two 
-    operations: get() and put(). The get() method obtains an integer 
-    identifier from the pool. The put() method returns an integer identifier 
-    to the pool. All outstanding identifiers are guaranteed to be unique. 
-    Instances of this object can be safely shared among threads. Note that 
-    get() never returns zero, so zero can be used to represent the "null" id.
-    Both get() and put() are O(1) operations.
+/** This class maintains a pool of integer identifiers. It
+*   defines two operations: get() and put(). The get() method
+*   obtains an integer identifier from the pool. The put()
+*   method returns an integer identifier to the pool. All
+*   outstanding identifiers are guaranteed to be unique.
+*   Instances of this object can be safely shared among threads.
+*   Note that get() never returns zero, so zero can be used to
+*   represent the "null" id. Both get() and put() are O(1)
+*   operations.
+*  
+*   The pool is of unlimited size and will use all uint32
+*   integers except zero.
 */
-class CIMPLE_LIBCIMPLE_LINKAGE Id_Pool
+class CIMPLE_CIMPLE_LINKAGE Id_Pool
 {
 public:
 
+    /**
+     * Constructor creates an Id Pool
+     */
     Id_Pool();
 
+    /**
+     * Destructor
+     */
     ~Id_Pool();
 
+    /**
+     * get an Id from the pool 
+     * @return uint32 Id that is guaranteed to be unique among the 
+     *         gotten Ids from this pool.  Zero is never returned
+     */
     uint32 get();
 
+    /**
+     * return ad id to the pool.
+     */
     void put(uint32 id);
 
 private:
 
-    Raw_Array<uint32> _pool;
+    Array<uint32> _pool;
     uint32 _next;
     Mutex _mutex;
 }; 

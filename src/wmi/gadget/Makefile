@@ -38,13 +38,13 @@ SOURCEPATH=$(subst /,\,$(TARGET))
 
 DESTPATH=c:\WINDOWS\system32\wbem\$(LIBRARY).dll
 
-reg:
+register:
 	copy $(SOURCEPATH) $(DESTPATH)
-	mofcomp repository.mof
-	mofcomp register.mof
+	mofcomp -N:root/cimv2 repository.mof
+	mofcomp -N:root/cimv2 register.mof
 	regsvr32 /s $(DESTPATH)
 
-unreg:
+unregister:
 	regsvr32 /u /s $(DESTPATH)
 	del /f $(DESTPATH)
 
@@ -56,6 +56,6 @@ stop:
 start:
 	net start winmgmt
 
-gen:
+genproj:
 	genproj Gadget Gadget Widget Connector Buzzer Upcall
 

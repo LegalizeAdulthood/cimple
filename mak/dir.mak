@@ -47,3 +47,8 @@ uninstall:
 
 chksrc:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i chksrc $(NL) )
+	
+register-sfcb:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i register-sfcb $(NL) )
+	
+

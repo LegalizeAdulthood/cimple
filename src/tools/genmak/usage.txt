@@ -7,4 +7,5 @@ OPTIONS:
     -h      -- print this message.
     -f      -- overwrite the Makefile if it already exists.
     -C      -- generate a CMPI provider module (rather than Pegasus C++).
+    -r      -- generate regmod target. (Experimental) 
 

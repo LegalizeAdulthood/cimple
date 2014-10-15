@@ -30,17 +30,40 @@
 #include "config.h"
 
 CIMPLE_NAMESPACE_BEGIN
-
+/**
+ * Class defining Mutex with lock and unlock similar to Posix
+ * Mutex. There is an option for recursive mutex capability.
+ */
 class CIMPLE_CIMPLE_LINKAGE Mutex
 {
 public:
 
+    /** 
+     * Mutex constructor. The input parameter determines whether
+     * themutex will be recursive
+     * @param recursive bool Optional parameter that determines if 
+     * the mutex will be recursive.  If true the mutex will be
+     * recursive. The default is false (non-recursive).
+     */
     Mutex(bool recursive = true);
 
+    /**
+     * Mutex destructor
+     */
     ~Mutex();
 
+    /**
+     * Lock the mutex. If the mutex is recursive this may be applied
+     * repeatedly and the mutex does not become unlocked until an 
+     * unlock() call has been executed for each lock() call. 
+     */
     void lock();
 
+    /**
+     * Unlock the mutex.  If the mutex is recursive the mutex does 
+     * not unlock until the number of unlock() calls matches the 
+     * number of lock() calls. 
+     */
     void unlock();
 
 private:

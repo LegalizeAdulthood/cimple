@@ -1,0 +1,5 @@
+[CIMPLE_Widget]
+  provider: All_Class_Provider
+  location: allclass
+  type: instance method
+  namespace: root/interop

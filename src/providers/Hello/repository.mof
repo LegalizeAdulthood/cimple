@@ -1,5 +1,1 @@
-class Hello
-{
-    [key] string Key;
-    string Message; 
-};
+#pragma include ("HelloClass.mof")

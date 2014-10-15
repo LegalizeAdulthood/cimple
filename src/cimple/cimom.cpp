@@ -107,6 +107,16 @@ int cimom::enum_instances(
     return enumerator._rep ? 0 : -1;
 }
 
+int cimom::enum_instances(
+    const char* name_space, 
+    const Instance* model,
+    Array<Instance>& instances)
+{
+    printf("NOT IMPLEMENTED.\n");
+    assert(false);
+    return 0;
+}
+
 Ref<Instance> cimom::get_instance(
     const char* name_space, 
     const Instance* model)
@@ -155,12 +165,44 @@ int cimom::modify_instance(
     return -1;
 }
 
+int cimom::invoke_method(
+    const char* name_space, 
+    const Instance* instance,
+    Instance* meth)
+{
+    Thread_Context* context = Thread_Context::top();
+
+    if (context)
+        return context->invoke_method(name_space, instance, meth);
+
+    return -1;
+}
+
 void cimom::allow_unload(bool flag)
 {
     Thread_Context* context = Thread_Context::top();
 
     if (context)
         context->allow_unload(flag);
+}
+
+/* call from the cimom to the thread_context to get
+   user information for the operation thread
+   (Experimental)
+*/
+bool cimom::get_username(String& user_name)
+{
+    Thread_Context* context = Thread_Context::top();
+
+    if (context)
+    {
+        if(context->get_username(user_name))
+        {
+            // set string
+            return true;
+        }
+    }
+    return false;
 }
 
 CIMPLE_NAMESPACE_END

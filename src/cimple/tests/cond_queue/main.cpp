@@ -24,6 +24,12 @@
 **==============================================================================
 */
 
+/*
+    Test of the condition queue mechanism that creates a reader and writer
+    thread as detachable threads. The writer writes a defined number of
+    items to a common queue, the reader reads them nfrom the queue. When
+    finished the reader signals finished back to the main thread.
+*/
 #include <cassert>
 #include <cimple/config.h>
 #include <cimple/Thread.h>

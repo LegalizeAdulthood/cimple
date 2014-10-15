@@ -3,7 +3,7 @@
 <title>Using the WMI Adapter for CIMPLE</title>
 <meta http-equiv="Content-Type" content="text/html">
 <meta name="description" content="Using the WMI Adapter for CIMPLE">
-<meta name="generator" content="makeinfo 4.9">
+<meta name="generator" content="makeinfo 4.11">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <meta http-equiv="Content-Style-Type" content="text/css">
@@ -59,12 +59,26 @@ be able to make existing CIMPLE providers work with WMI.
 <!-- ============================================================================= -->
 <h2 class="chapter"><a name="TOC1"></a>2 Installing CIMPLE for WMI</h2>
 
-<p>To build CIMPLE and the WMI adapter, open a Windows terminal session
+<p>The WMI adpater compiles today with a variety of Microsoft compilers
+including
+
+   <p>VC2003 with the service pack
+VC2005 with the service pack
+VC2008
+
+<p class="noindent">It has not been tested with VC 6. Note that the requirement for the
+platform or windows SDK varies by compiler version.  In general the
+goal is to not require the SDK but the current versions of the wmi
+adapter depend on the SDK for a few functions.
+
+<p class="noindent">To build CIMPLE and the WMI adapter, open a Windows terminal session
 (<code>cmd.exe</code>). Run the Visual Studio setup scripts. Verify that the Visual
 Studio C++ compiler is on your path (<code>cl.exe</code>). Obtain GNU make
 (<code>make.exe</code>) and add it to your path. GNU make for Windows is available
 from the "tools" link on the OpenPegasus home page
-(see <a href="http://openpegasus.org">http://openpegasus.org</a>).
+(see <a href="http://openpegasus.org">http://openpegasus.org</a>). Note that the make provided by
+Micrososft is not compatible with the cimple make files. You must use
+GNU make.
 
 <p class="noindent">Unpack the CIMPLE distribution. From the root of the distribution type.
 
@@ -100,7 +114,8 @@ is like building a CIMPLE provider for other servers, but there are a few
 minor differences.
 
 <p class="noindent">We start with the following MOF definition (which we place in
-<code>repository.mof</code>).
+<code>repository.mof</code>).This example is part of the cimple distribution
+in in the directory <code>cimple/src/wmi/person</code>.
 
 <pre class="example">     [dynamic, provider("Person")]
      class Person
@@ -113,14 +128,27 @@ minor differences.
          uint32 foo([in] string arg);
      };
 </pre>
-   <p class="noindent">The <code>dynamic</code>, <code>provider</code>, and <code>implemented</code> qualifiers are
-unique to WMI. The string given by the <code>provider</code> qualifier must match
-the name of the provider DLL (without the extension).
+   <p class="noindent">The <code>dynamic</code> and <code>implemented</code> qualifiers are
+unique to WMI.  They are not part of the currently defined qualifier
+set in the DMTF specifications. Therefore, we may be required to add
+them to the qualifier definitions in qualifiers.mof in the CIM mof
+schema to get the class definition to compile with genclass. They have
+been inserted in the schemas provided. The definitions that must be
+inserted are:
 
-<p class="noindent">Next we use the <code>genprov</code> command to generate the classes, provider,
+<pre class="example">     qualifiers.mof:Qualifier Dynamic : boolean = false,
+     qualifiers.mof:Qualifier Implemented : boolean = false,
+</pre>
+   <p>The <code>provider</code> qualifier is also required for wmi provider
+registration but it should be part of the existing DMTF qualifier
+definitions either  in qualifiers.mof or optionalqualifiers.mof. 
+The value for this provider MUST match the name of the provider DLL
+(without the extension).
+
+<p class="noindent">Next we use the <code>genproj</code> command to generate the classes, provider,
 and module.
 
-<pre class="example">     C:\&gt; genmod Person Person
+<pre class="example">     C:\&gt; genproj Person Person
      Created Person.h
      Created Person.cpp
      created repository.h
@@ -158,7 +186,8 @@ and module.
 </pre>
    <p class="noindent">Then we create the following Makefile.
 
-<pre class="example">     TOP=../../..
+<pre class="example">     ## TOP defines location of the cimple mak directory
+     TOP=../../..
      include $(TOP)/mak/config.mak
      
      LIBRARY = Person
@@ -181,8 +210,9 @@ and module.
 <!-- ============================================================================= -->
 <h2 class="chapter"><a name="TOC3"></a>4 Registering a WMI provider</h2>
 
-<p class="noindent">This chapter shows how to register a WMI provider. First we must copy the
-provider DLL to the WMI providers directory, Usually located here:
+<p class="noindent">This chapter shows how to register a WMI provider using the
+Microsoft tools. First we must copy the provider DLL to the WMI
+providers directory, Usually located here:
 
 <pre class="example">     C:\windows\system32\wbem\
 </pre>
@@ -199,15 +229,37 @@ repository as shown below.
 
 <pre class="example">     regsvr32 /s C:\windows\system32\wbem\Person.dll
 </pre>
-   <!-- ============================================================================= -->
+   <p class="noindent">In the examples provided with cimple, these operations are integrated
+into the Makefile provided as the target reg.
+
+<!-- ============================================================================= -->
 <!-- Chapter: Verifying a WMI provider -->
 <!-- ============================================================================= -->
 <h2 class="chapter"><a name="TOC4"></a>5 Verifying a WMI provider</h2>
 
-<p>We recommend using the WMI <code>wbemtest.exe</code> client program to verify
-providers you write with CIMPLE. You may also use many other WMI client tools. 
-For a full discussion of these, see the book "Developing WMI solutions: A
-Guide to Windows Management Instrumentation" by Craig Tunstall and Gwyn Cole.
+<p>There several tools available help verify the providers once it
+installed including:
+
+     <ul>
+<li><code>cimbrowser.exe</code> - Part of a wmi toolset available from Micrososft under the name CIMTest.  This is a complete graphic wmi cim browser. 
+<li><code>wbemtest.exe</code> - Client program that executes wmi cim operations from a  set of check boxes. 
+</ul>
+
+<p class="noindent">Either of these tools is helpful to  verify the providers you write with CIMPLE. 
+You may also use many other WMI client tools.
+
+<p class="noindent">In any case, to verify this first provider you should confirm that the
+Person class was installed in the property namespace (normally
+Root/cimv2) and that the provider returns two instances of the Person
+class.
+
+<p class="noindent">You can validate the response from the defined method as follows:
+
+   <p>TBD
+
+<p class="noindent">For a full discussion of these tools and more information on wmi, see
+the book "Developing WMI solutions: A Guide to Windows Management
+Instrumentation" by Craig Tunstall and Gwyn Cole.
 
 </body></html>
 

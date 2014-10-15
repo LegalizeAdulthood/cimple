@@ -1,16 +1,4 @@
-class Left
-{
-    [Key] uint32 key;
-};
-
-class Right
-{
-    [Key] uint32 key;
-};
-
-[Association]
-class Cross
-{
-    [Key] Left REF left;
-    [Key] Right REF right;
-};
+#pragma include ("Left.mof")
+#pragma include ("Right.mof")
+#pragma include ("Cross.mof")
+#pragma include ("CrossSubClass.mof")

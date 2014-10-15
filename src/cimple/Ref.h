@@ -31,56 +31,134 @@
 #include "Instance.h"
 
 CIMPLE_NAMESPACE_BEGIN
+/**
+    The Ref class is a smart pointer template that uses
+    reference counting to manage the lifetime of instances.
+    
+    A Ref object is created with:
+   
+        Ref<Class>
+  
+    \verbatim
+    Example:
+       // Create a ref of an an instance, a smart pointer form of the
+       // instance inst that will be destroyed when inst goes out of
+       // scope
+       Ref<Instance> inst;
 
+       ... put data into the inst
+
+       // cast the inst to the CIMPLE CIM_ComputerSystem class
+       CIM_ComputerSystem* ccs  = cast<CIM_ComputerSystem*>(inst.ptr());
+    \endverbatim
+
+    This class contains methods for:
+        \li construction (Ref),
+        \li unreferencing (#reset) that either returns the
+          pointer to the object or sets it to zero,
+        \li #ptr which returns the pointer to the entity,
+        \li #steal returns a pointer to the entity and sets the
+         internal pointer to zero,
+        \li #count that returns the count of the number of
+         references,
+        \li booleans to determine if the pointer is zero or not.
+
+    The methods are implemented as inline code within this header file for
+    efficiency.
+*/
 template<class T>
 class Ref
 {
 public:
 
+    ///
     Ref();
 
+    ///
     Ref(const Ref<T>& x)
     {
         ref(_ptr = x._ptr);
     }
 
+    /** 
+     * Construct a reference for the class and cast the 
+     * pointer to this class 
+     * 
+     * @tparam U
+     * @param ptr
+     */
     template<class U>
     Ref(U* ptr)
     {
         _ptr = cast<T*>(ptr);
     }
 
+    /// destructor
     ~Ref();
 
+    /// Assign a Ref
     Ref& operator=(const Ref& x);
 
+    /** 
+     * unreference instance; set pointer to zero
+     */
     void reset();
 
+    /** 
+     * unreference instance and set pointer to ptr argument
+     * @param ptr
+     */
     void reset(T* ptr);
 
+    ///
     const T *operator->() const;
 
+    ///
     T *operator->();
 
+    /** 
+     * return pointer to the Ref'd entity
+     * @return T*
+     */
     T* ptr();
 
+    /** 
+     * return const pointer to the Ref'd entity
+     * 
+     * 
+     * @return const T*
+     */
     const T* ptr() const;
 
+    ///
     T& operator*();
 
+    ///
     const T& operator*() const;
 
+    /** 
+     * return pointer to instance; set pointer to zero
+     * @return T*
+     */
     T* steal();
 
+    ///
     operator bool() const;
 
+    ///
     bool operator!() const;
 
+    /** 
+     * return current reference count
+     * @return size_t Current reference count
+     */
     size_t count() const;
 
 private:
     T* _ptr;
 };
+
+// inline implementations of the Ref methods
 
 template<class T>
 inline Ref<T>::Ref() : _ptr(0)

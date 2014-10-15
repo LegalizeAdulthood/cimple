@@ -2,6 +2,7 @@ TOP = ../..
 include $(TOP)/mak/config.mak
 
 DIRS = \
+    All \
     Arrays \
     bug31 \
     CIM_ConcreteJob \
@@ -11,19 +12,23 @@ DIRS = \
     DerivedIndication \
     Example \
     Fan \
+    Hello \
     Lamp \
     LinuxComputerSystem \
     Methods \
+    Methods/foo \
+    Methods/foo2 \
     MyIndication \
+    OperationException \
+    OperationException/testclient \
     Person \
     RefArray \
     Super \
     Thing \
     Upcall \
     XYZ_Lamp \
+    All/TestAll \
     Fan/set_speed \
-    Methods/foo \
-    Methods/foo2 \
     bug31/meth \
     RefArray/SendRefArray \
     CIM_ConcreteJob/meth \
@@ -33,6 +38,11 @@ DIRS = \
     Time \
     Time/InvokeTime \
     Widget
+
+### Not included in normal testing because this is a sfcb only test provider
+### right now.
+### Widget/modify
+
 
 ifeq ($(ENABLE_EMBEDDED_INSTANCES_OPT),1)
     DIRS += Embedded Embedded/TestEmbedded All All/TestAll

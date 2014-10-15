@@ -24,9 +24,15 @@
 **==============================================================================
 */
 
+/*
+    Test of condition queue mechanism where a writer operating on the main
+    thread writes to a queue that is read by a reader  operating on
+    a joinable thread
+*/
+
 #include <cassert>
 #include <cimple/config.h>
-#include <cimple/Threads.h>
+#include <cimple/Thread.h>
 #include <cimple/Cond_Queue.h>
 #include <cimple/Time.h>
 
@@ -46,15 +52,18 @@ static void* _writer(void* arg)
 
     return 0;
 }
+static size_t number_read = 0;
 
 static void* _reader(void* arg)
 {
+    // get the condition queue from the arg parameter.
     Cond_Queue* queue = (Cond_Queue*)arg;
 
     for (size_t i = 0; i < NUM_WRITES; i++)
     {
         void* entry = queue->dequeue();
         assert(size_t(entry) == i);
+        number_read++;
         // printf("reader: %zu\n", (size_t)entry);
     }
 
@@ -63,12 +72,24 @@ static void* _reader(void* arg)
 
 int main(int argc, char** argv)
 {
+    // define a condition queue
     Cond_Queue queue(1);
 
+    // Create the _reader thread with the condition queue as the
+    // arg parameter
+    
     Thread thread;
-    Threads::create_joinable(thread, _reader, &queue);
+    Thread::create_joinable(thread, _reader, &queue);
+
+    // call the writer to enqueue things.
 
     _writer(&queue);
+
+    // Wait for the thread to join before terminating.
+    void * value;
+    Thread::join(thread, value);
+
+    assert(number_read == NUM_WRITES);
 
     printf("+++++ passed all tests\n");
 

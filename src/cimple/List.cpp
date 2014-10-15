@@ -39,6 +39,8 @@ void List::prepend(List_Elem* p)
         tail = p;
 
     head = p;
+
+    _size++;
 }
 
 void List::append(List_Elem* p)
@@ -47,11 +49,12 @@ void List::append(List_Elem* p)
     p->next = 0;
 
     if (tail)
-	tail->next = p;
+        tail->next = p;
     else
-	head = p;
+        head = p;
 
     tail = p;
+    _size++;
 }
 
 void List::remove(List_Elem* p)
@@ -67,6 +70,7 @@ void List::remove(List_Elem* p)
 
     if (p == tail)
         tail = p->prev;
+    _size--;
 }
 
 void List::insert_after(List_Elem* pos, List_Elem* p)
@@ -81,6 +85,7 @@ void List::insert_after(List_Elem* pos, List_Elem* p)
 
     if (pos == tail)
         tail = p;
+    _size++;
 }
 
 void List::insert_before(List_Elem* pos, List_Elem* p)
@@ -95,6 +100,11 @@ void List::insert_before(List_Elem* pos, List_Elem* p)
 
     if (pos == head)
         head = p;
+    _size++;
 }
 
+size_t List::size()
+{
+    return _size;
+}
 CIMPLE_NAMESPACE_END

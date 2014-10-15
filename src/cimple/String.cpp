@@ -288,6 +288,26 @@ size_t String::find(char c) const
     return p ? (p - _rep->data) : size_t(-1);
 }
 
+size_t String::find(char c, size_t n) const
+{
+    CIMPLE_ASSERT(n <= _rep->size);
+
+    char* p = strchr((_rep->data + n), c);
+    return p ? (p - _rep->data) : size_t(-1);
+}
+
+size_t String::find(const char* s) const
+{
+    char* p = strstr(_rep->data, s);
+    return p ? (p - _rep->data) : size_t(-1);
+}
+
+size_t String::find(const String& s) const
+{
+    char* p = strstr(_rep->data, s._rep->data);
+    return p ? (p - _rep->data) : size_t(-1);
+}
+
 bool String::equal(const String& s) const
 {
     return _rep->size == s._rep->size &&

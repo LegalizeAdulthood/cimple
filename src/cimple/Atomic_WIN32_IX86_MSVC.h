@@ -30,7 +30,6 @@
 #define CIMPLE_ATOMIC_INITIALIZER { 0 }
 
 #include "config.h"
-#include <intrin.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -58,20 +57,14 @@ inline void Atomic_set(Atomic* atomic, int x)
     atomic->n = long(x);
 }
 
-static inline void Atomic_inc(Atomic* atomic)
-{
-    _InterlockedIncrement(&atomic->n);
-}
+CIMPLE_CIMPLE_LINKAGE
+void Atomic_inc(Atomic* atomic);
 
-static inline int Atomic_dec_and_test(Atomic* atomic)
-{
-    return _InterlockedDecrement(&atomic->n) == 0;
-}
+CIMPLE_CIMPLE_LINKAGE
+int Atomic_dec_and_test(Atomic* atomic);
 
-static inline void Atomic_dec(Atomic* atomic)
-{
-    _InterlockedDecrement(&atomic->n);
-}
+CIMPLE_CIMPLE_LINKAGE
+extern void Atomic_dec(Atomic* atomic);
 
 CIMPLE_NAMESPACE_END
 

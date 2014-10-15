@@ -44,13 +44,29 @@ struct CIMPLE_CIMPLE_LINKAGE Time
 {
 public:
 
+    /// Static constant to define one micosecond as uint64 variable
     static const uint64 USEC;
+    /// static constant to define one millisecond as uint64 variable
     static const uint64 MSEC;
+
+    /// static constant to define one second as uint64 variable
     static const uint64 SEC;
     
-    // Returns microseconds elapsed since POSIX epoch (1970).
+    /** Returns microseconds elapsed since POSIX epoch (1970).
+     * @return uint64 microseconds elapsed sinc POXIX epoch
+     */
     static uint64 now();
 
+    /**
+     * Sleep the current process/thread for the time defined by the 
+     * input variable. 
+     * timeout_usec uint64 microseconds to sleep. 
+     *  
+     * EXAMPLE: 
+     * \code 
+     *     time::sleep(time::SEC * number_of_Seconds);
+     * \endcode
+     */
     static void sleep(uint64 timeout_usec);
 };
 

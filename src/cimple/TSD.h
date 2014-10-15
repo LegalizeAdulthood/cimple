@@ -42,8 +42,19 @@ public:
 
     ~TSD();
 
+    /** 
+     * Set thread specific data
+     * 
+     * @param data
+     */
     void set(void* data);
 
+    /** 
+     * get thread specific data.
+     * 
+     * 
+     * @return void*
+     */
     void* get();
 
 private:

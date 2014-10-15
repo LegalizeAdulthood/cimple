@@ -32,8 +32,46 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** Cond implements a conditional variable, similar to the POSIX-threads 
-    conditional variable.
+/** The Cond class implements a conditional variable, similar to
+*   the POSIX-threads conditional variable concept.  A condition
+*   variable is used with appropriate functions for waiting and
+*   thread continuation. It allows a thread to give up execution
+*   until a defined condition is true. Note that a condition
+*   variable must always be used in conjunction with a mutex to
+*   avoid race conditions. Signals are not remembered, which
+*   means that threads must already be waiting for a signal to
+*   receive it.
+*   Example:
+*   \code
+*   Cond cond1;
+    Mutex mutex1;
+    int count = Some Initial value;
+    // The take_action is executed when the counter() is called enough times
+    // so that count decrements to zero.
+    
+    action()
+    { ...
+        mutex1.lock();
+*       // action gives up control until condition variable == 0
+        while (count <> 0)
+            cond1.wait(mutex1);
+        
+        mutex1.unlock();
+        take_action();
+    }
+ 
+    counter()
+    {
+        ...
+*       // lock the mutex decrement and test counter 
+*       // the lock is used to avoid race conditions
+        mutex1.lock();
+        count--;
+        if (count==0)
+            cond1.signal();
+        mutex1.unlock();
+*   }
+*   \endcode
 */
 class CIMPLE_CIMPLE_LINKAGE Cond
 {
@@ -52,7 +90,9 @@ public:
     void signal();
 
     /** Blocks until a thread calls signal(). The mutex is unlocked while
-        the thread is waiting and relocked upon wakeup.
+    *   the thread is waiting and relocked upon wakeup.
+    *   @param lock Mutex that is unlocked while the thread is
+    *   waiting and relocked upon wakeup.
     */
     void wait(Mutex& lock);
 

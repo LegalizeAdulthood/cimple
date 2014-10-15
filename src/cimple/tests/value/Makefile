@@ -12,7 +12,12 @@ include $(TOP)/mak/rules.mak
 run:
 	$(TARGET)
 
-VALGRIND=/opt/valgrind/bin/valgrind
+## This will be moved to live after we define DIFF through all possible 
+## platforms.
+runtest:
+	$(TARGET) >result
+	$(DIFF) result result.master
+	$(RM) result
 
 vg:
 	$(VALGRIND) --tool=memcheck --leak-check=full  $(TARGET)

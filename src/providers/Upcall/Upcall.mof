@@ -1,0 +1,36 @@
+/*
+   Class to demonstrate and test the upcall mechanisms of CIMPLE. This 
+   includes a set of methods to control a repetitive upcall test that is
+   built into the provider.
+*/
+
+class Upcall
+{
+    [Key] uint32 key;
+
+    /* Parameter to be acquired from the class we are upcalling, 
+       CIM_ComputerSystem
+    */
+    String ComputerSystemName;
+
+    /* method to execute a repeating upcall test.The count parameter defines 
+    the number of upcalls to make. The delay parameter defines the number
+    of milliseconds to delay between calls. Only one one
+    test can be conducted at a time.
+    Both parameters are optional and the default is zero.   If the count
+    is zero, the test is repeated until stopped.  If the delay is zero, the
+    provider defualts it to 1000 milliseconds (1 second).
+
+    returns 0 if successful.  1 if test already started.	
+    */    	
+    [Static] uint32 StartTest ([in] uint32 count,
+		 [in] uint32 delay);
+
+    // stop the test if it is started
+    // returns 0 if test was started.
+
+    [Static] uint32 StopTest ();
+
+};
+
+

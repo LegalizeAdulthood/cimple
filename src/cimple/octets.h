@@ -34,7 +34,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 /*  The functions in this file are used to translate between
     OctetStrings as received defined in the CIM Infrastructure
-    specification witht the OctetString Qualifier and an internal form
+    specification with the OctetString Qualifier and an internal form
     useful for direct access to the data in the OctetString.  Today
     these functions are used only to convert between the array of
     strings form for Octet strings, not the alternate form (array of

@@ -379,7 +379,7 @@ static Instance* _to_cimple_instance(
     return inst;
 }
 
-static int _to_cimple_value(
+int cmpi_to_cimple_value(
     const Meta_Repository* mr,
     const CMPIBroker* cb,
     const char* ns,
@@ -1250,9 +1250,9 @@ int CMPIInstance_Container::get_value(
     CMPIString* name;
     CMPIData data = CMGetPropertyAt(_rep, pos, &name, NULL);
 
-    if (_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
+    if (cmpi_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
     {
-        CIMPLE_WARN(("_to_cimple_value() failed"));
+        CIMPLE_WARN(("cmpi_to_cimple_value() failed"));
         return -1;
     }
 
@@ -1345,9 +1345,9 @@ int CMPIObjectPath_Container::get_value(
     CMPIString* name;
     CMPIData data = CMGetKeyAt(_rep, pos, &name, NULL);
 
-    if (_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
+    if (cmpi_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
     {
-        CIMPLE_WARN(("_to_cimple_value() failed"));
+        CIMPLE_WARN(("cmpi_to_cimple_value() failed"));
         return -1;
     }
 
@@ -1502,9 +1502,9 @@ int CMPIArgs_Container::get_value(size_t pos, Value::Type type, Value& value)
     CMPIString* name;
     CMPIData data = CMGetArgAt(_rep, pos, &name, NULL);
 
-    if (_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
+    if (cmpi_to_cimple_value(_mr, _cb, _ns, data, value) != 0)
     {
-        CIMPLE_WARN(("_to_cimple_value() failed"));
+        CIMPLE_WARN(("cmpi_to_cimple_value() failed"));
         return -1;
     }
 

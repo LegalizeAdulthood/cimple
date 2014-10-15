@@ -1,0 +1,48 @@
+Value
+{
+    type=UINT32
+    null=false
+    value=10
+}
+Value
+{
+    type=STRING
+    null=false
+    value="one"
+}
+Value
+{
+    type=UINT32_ARRAY
+    null=false
+    value={ 1, 2, 3 }
+}
+Value
+{
+    type=STRING_ARRAY
+    null=false
+    value={ "one", "two", "three" }
+}
+Value
+{
+    type=INSTANCE_ARRAY
+    null=false
+    value=
+    {
+        MyClass
+        {
+            string key = "Hello World";
+        }
+        MyClass
+        {
+            string key = "Hello World";
+        }
+    }
+}
+MyClass
+{
+    string key = "Hello World";
+}
+MyClass
+{
+    string key = "Hello World";
+}

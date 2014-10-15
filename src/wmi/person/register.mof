@@ -1,7 +1,7 @@
 Instance of __Win32Provider as $P
 {
     Name = "Person";
-    ClsId = "{dbd80136-5fac-16c2-945a-b51028179379}";
+    ClsId = "{b08c9e98-0da7-12ae-9034-0af32927fa0b}";
 };
 
 instance of __InstanceProviderRegistration

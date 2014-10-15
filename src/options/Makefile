@@ -5,7 +5,7 @@ OPTIONS_H=$(TOP)/src/cimple/options.h
 
 all: $(OPTIONS_H)
 
-$(OPTIONS_H):
+$(OPTIONS_H): ../../config.options
 ifeq ($(PLATFORM),WIN32_IX86_MSVC)
 	echo #define CIMPLE_PLATFORM_$(PLATFORM)> $(OPTIONS_H)
   ifeq ($(ENABLE_STATIC_OPT),1)
@@ -29,5 +29,8 @@ else
 	echo "#define CIMPLE_ENABLE_EMBEDDED_INSTANCES" >> $(OPTIONS_H)
   endif
 endif
+
+clean:
+	$(call rm,$(OPTIONS_H))
 
 include $(TOP)/mak/rules.mak

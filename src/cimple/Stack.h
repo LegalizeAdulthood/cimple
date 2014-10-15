@@ -32,29 +32,44 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+/** 
+ * Stack Class implemented as a template.  The implementation 
+ * for this class is inline.
+ * 
+ */
 template<class T>
 class Stack
 {
 public:
 
+    ///
     Stack();
 
+    ///
     Stack(const Stack& x);
 
+    ///
     ~Stack();
 
+    ///
     Stack& operator=(const Stack& x);
 
+    ///
     size_t size() const;
 
+    ///
     bool empty() const;
 
+    ///
     void push(const T& x);
 
+    ///
     void pop();
 
+    ///
     const T& top() const;
 
+    ///
     T& top();
 
 private:

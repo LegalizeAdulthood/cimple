@@ -2,18 +2,29 @@ TOP = ../../..
 include $(TOP)/mak/config.mak
 
 DIRS = \
-    mutex \
     array \
-    string \
-    property \
-    sizes \
-    time \
-    model_path \
     cast \
     class \
     clone \
-    print \
+    cond_queue \
+    cond_queue2 \
     datetime \
-    cond_queue
+    find_token \
+    join \
+    mutex \
+    model_path \
+    print \
+    property \
+    string \
+    sizes \
+    time \
+    type \
+    value
+
+ifdef ENABLE_SCHEDULER_OPT
+    DIRS += lists scheduler
+endif
+
+
 
 include $(TOP)/mak/rules.mak

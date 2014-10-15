@@ -47,6 +47,10 @@ ifdef WIN_ENABLE_EMBEDDED_INSTANCES_OPT
   ENABLE_EMBEDDED_INSTANCES_OPT=1
 endif
 
+ifdef WIN_ENABLE_SCHEDULER_OPT
+  ENABLE_SCHEDULER_OPT=1
+endif
+
 ##==============================================================================
 ##
 ## Include platform file.
@@ -104,6 +108,44 @@ ifneq ($(WITH_PEGASUS_OPT),)
 
 endif
 
+##==============================================================================
+##
+## Set common name for Makefile SLEEP command
+##
+##==============================================================================
+
+ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
+  SLEEP = ./bin/csleep
+else
+  SLEEP = sleep
+endif
+
+##==============================================================================
+##
+## Define Valgrind Location for some test commands that use Valgrind
+## This is primarily developer test
+## Define several make variables to allow the Makefiles to be platform
+## independent.
+##
+##==============================================================================
+
+VALGRIND=valgrind
+
+ifndef DIFF
+  DIFF = diff
+endif
+
+ifndef RM
+  RM = rm
+endif
+
+ifndef RMDIRHIER
+  RM = rm -r -f
+endif
+
+ifndef COPY
+  COPY = cp
+endif
 ##==============================================================================
 ##
 ## ENABLE_DEBUG_OPT

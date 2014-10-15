@@ -2,4 +2,3 @@
     (A) Test null parameters (scalars and references).
 
     (A) Test reference features (define an association class).
-

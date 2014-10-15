@@ -51,6 +51,12 @@
 # include "Atomic_VXWORKS_XSCALE_GNU.h"
 #elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_GNU)
 # include "Atomic_SOLARIS_SPARC_GNU.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_IX86_CC) || \
+    defined(CIMPLE_PLATFORM_SOLARIS_X86_64_CC)
+# include "Atomic_SOLARIS_IX86_CC.h"
+#elif defined(CIMPLE_PLATFORM_SOLARIS_SPARC_CC) || \
+    defined(CIMPLE_PLATFORM_SOLARIS_SPARC_64_CC)
+# include "Atomic_SOLARIS_SPARC_CC.h"
 #else
 # error "unsupported platform"
 #endif

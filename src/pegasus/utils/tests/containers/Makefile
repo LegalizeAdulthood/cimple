@@ -19,7 +19,5 @@ genclass:
 
 include ../../../check-pegasus.mak
 
-VALGRIND=/opt/valgrind/bin/valgrind
-
 vg:
 	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)

@@ -40,6 +40,8 @@ public:
         const CIMPLE_Widget* instance);
 
     /*@END@*/
+    
+        CIMPLE_Widget* _instance;
 };
 
 CIMPLE_NAMESPACE_END

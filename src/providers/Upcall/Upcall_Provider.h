@@ -38,8 +38,21 @@ public:
         const Upcall* model,
         const Upcall* instance);
 
-    Thread thread;
-    Atomic_Counter counter;
+    Invoke_Method_Status StartTest(
+        const Property<uint32>& count,
+        const Property<uint32>& delay,
+        Property<uint32>& return_value);
+
+    Invoke_Method_Status StopTest(
+        Property<uint32>& return_value);
+
+    /*@END@*/
+
+    // Variable to control repeated upcall test
+    Thread _thread;
+    Atomic_Counter _counter;
+    uint32 _repetition_count;
+    uint32 _delay;
 };
 
 CIMPLE_NAMESPACE_END
