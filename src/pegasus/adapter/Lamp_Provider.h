@@ -23,21 +23,21 @@ public:
     CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
 
     CIMPLE_HIDE Get_Instance_Status get_instance(
-	const Lamp* model,
-	Lamp*& instance);
+        const Lamp* model,
+        Lamp*& instance);
 
     CIMPLE_HIDE Enum_Instances_Status enum_instances(
-	const Lamp* model,
-	Enum_Instances_Handler<Lamp>* handler);
+        const Lamp* model,
+        Enum_Instances_Handler<Lamp>* handler);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(
-	const Lamp* instance);
+        const Lamp* instance);
 
     CIMPLE_HIDE Delete_Instance_Status delete_instance(
-	const Lamp* instance);
+        const Lamp* instance);
 
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
-	const Lamp* instance);
+        const Lamp* instance);
 
     CIMPLE_HIDE Invoke_Method_Status foo(
         const Lamp* self,
@@ -46,16 +46,16 @@ public:
         Property<uint32>& return_value);
 
     static CIMPLE_HIDE int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
+        void* arg7);
 
 private:
 

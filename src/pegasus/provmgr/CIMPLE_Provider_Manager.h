@@ -77,7 +77,7 @@ private:
     void _create_disp(Message* message);
 
     int _enable_indications(
-	Subscription* sub);
+        Subscription* sub);
 
     cimple::Dispatcher* _disp;
 

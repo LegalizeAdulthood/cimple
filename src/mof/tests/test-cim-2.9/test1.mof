@@ -13,7 +13,7 @@ class X
 
 instance of X
 {
-    w = "Hello \"There\" World";	
+    w = "Hello \"There\" World";        
     x = 99;
     y = False;
     z = 33.33;
@@ -21,7 +21,7 @@ instance of X
 
 instance of X
 {
-    w = "Hello \"There\" World";	
+    w = "Hello \"There\" World";        
     x = 99;
     y = False;
     z = 44.33;

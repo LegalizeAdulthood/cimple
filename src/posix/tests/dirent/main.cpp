@@ -46,12 +46,12 @@ int main(int argc, char** argv)
 
     while ((ent = readdir(dir)) != NULL)
     {
-	string name = ent->d_name;
+        string name = ent->d_name;
 
-	if (name == "." || name == ".." || name == "CVS")
-	    continue;
+        if (name == "." || name == ".." || name == "CVS")
+            continue;
 
-	names.push_back(name);
+        names.push_back(name);
     }
 
     sort(names.begin(), names.end());

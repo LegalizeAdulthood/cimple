@@ -38,7 +38,7 @@ CIMPLE_NAMESPACE_BEGIN
     C strings. For example, the following is safe:
 
         Pegasus::String tmp;
-	printf("tmp: %s\n", CStr(tmp).c_str());
+        printf("tmp: %s\n", CStr(tmp).c_str());
 
     A constructor is also provided for Pegasus::CIMName.
 */

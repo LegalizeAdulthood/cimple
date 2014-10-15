@@ -65,7 +65,7 @@ public:
     // the reference count falls to zero. Returns the new reference count
     // or size_t(-1) if not found.
     size_t dec_and_remove_if_zero(
-	const CIMName& class_name, Subscription*& sub);
+        const CIMName& class_name, Subscription*& sub);
 
 private:
 

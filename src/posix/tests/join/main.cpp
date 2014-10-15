@@ -49,21 +49,21 @@ int main(int argc, char** argv)
         char buffer[64];
         sprintf(buffer, "THREAD-%02d", i);
 
-	int r = pthread_create(
-	    &threads[i], NULL, start_routine, (void*)(long)(j));
+        int r = pthread_create(
+            &threads[i], NULL, start_routine, (void*)(long)(j));
 
-	assert(r == 0);
+        assert(r == 0);
 
-	if (i % 200 == 0)
-	    j++;
+        if (i % 200 == 0)
+            j++;
     }
 
     for (i = 0; i < N; i++)
     {
-	char* value_ptr;
-	int rc = pthread_join(threads[i], (void**)&value_ptr);
-	assert(rc == 0);
-	// printf("rc: %d, sec: %ld\n", rc, (long)value_ptr);
+        char* value_ptr;
+        int rc = pthread_join(threads[i], (void**)&value_ptr);
+        assert(rc == 0);
+        // printf("rc: %d, sec: %ld\n", rc, (long)value_ptr);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

@@ -31,12 +31,12 @@ Output form is:
 
     where: InterfaceType    Defines CMPI, C++Default, JMPI, etc. 
            InterfaceVersion Defines the version for this interface
-	       Location         Defines the module name
-	       status           Current status for this provider
-	       Class Name       Name of class registered for this provider
-	       Namespaces       Namespaces for which this class registered
-	       Provider Types   Provider type (ex. Instance, Method, Assocation,
-	                        Indication)
+           Location         Defines the module name
+           status           Current status for this provider
+           Class Name       Name of class registered for this provider
+           Namespaces       Namespaces for which this class registered
+           Provider Types   Provider type (ex. Instance, Method, Assocation,
+                            Indication)
 Example:
 %%<regview CMPL_Time_Module returns:
     CMPL_Time_Module[#1}: C++Default Ver[2.5.0] Vendor[Pegasus] Loc[cimpletime]

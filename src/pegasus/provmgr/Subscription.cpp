@@ -56,10 +56,10 @@ Subscription* Subscription_List::find(const CIMName& class_name)
 {
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-	Subscription* s = (Subscription*)p;
+        Subscription* s = (Subscription*)p;
 
-	if (s->class_name == class_name)
-	    return s;
+        if (s->class_name == class_name)
+            return s;
     }
 
     return 0;
@@ -79,19 +79,19 @@ size_t Subscription_List::dec_and_remove_if_zero(
 
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-	Subscription* s = (Subscription*)p;
+        Subscription* s = (Subscription*)p;
 
-	if (s->class_name == class_name)
-	{
-	    if (--s->subscription_count == 0)
-	    {
-		_list.remove(s);
-		sub = s;
-		return 0;
-	    }
+        if (s->class_name == class_name)
+        {
+            if (--s->subscription_count == 0)
+            {
+                _list.remove(s);
+                sub = s;
+                return 0;
+            }
 
-	    return s->subscription_count;
-	}
+            return s->subscription_count;
+        }
     }
 
     // Not found!

@@ -37,7 +37,7 @@ PEGASUS_NAMESPACE_BEGIN
     C strings. For example, the following is safe:
 
         String tmp;
-	printf("tmp: %s\n", CStr(tmp).c_str());
+        printf("tmp: %s\n", CStr(tmp).c_str());
 
     A constructor is also provided for CIMName.
 */

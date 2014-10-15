@@ -1,5 +1,5 @@
 
-    A	Testing.
+    A   Testing.
 
     B   Use status codes in Pegasus/Common/CIMStatusCode.h
 

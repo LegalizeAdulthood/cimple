@@ -114,7 +114,7 @@ static void _check(int cimple_error)
             code = Pegasus::CIM_ERR_ACCESS_DENIED;
             break;
 
-		// define FAILED enums to separate user defined FAILED calls
+        // define FAILED enums to separate user defined FAILED calls
         // from the default if the return code is not in the status enums.
         case GET_INSTANCE_FAILED:
         case ENUM_INSTANCES_FAILED:

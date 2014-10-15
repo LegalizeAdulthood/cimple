@@ -42,12 +42,12 @@ static void* start_routine(void* arg)
 {
     for (;;)
     {
-    	// printf("wait %s\n", (char*)arg);
-    	pthread_cond_wait(&cond, &mutex);
+        // printf("wait %s\n", (char*)arg);
+        pthread_cond_wait(&cond, &mutex);
     
-    	pthread_mutex_lock(&count_mutex);
-    	count++;
-    	pthread_mutex_unlock(&count_mutex);
+        pthread_mutex_lock(&count_mutex);
+        count++;
+        pthread_mutex_unlock(&count_mutex);
     }
 
     return 0;
@@ -70,11 +70,11 @@ int main(int argc, char** argv)
 
     for (int i = 0; i < N; i++)
     {
-    	pthread_t thread;
-    	char buffer[32];
-    	sprintf(buffer, "thread-%d", i);
-    	int r = pthread_create(&thread, &attr, start_routine, strdup(buffer));
-    	assert(r == 0);
+        pthread_t thread;
+        char buffer[32];
+        sprintf(buffer, "thread-%d", i);
+        int r = pthread_create(&thread, &attr, start_routine, strdup(buffer));
+        assert(r == 0);
     }
 
     sleep(1);
@@ -84,17 +84,17 @@ int main(int argc, char** argv)
     printf("Test Signal\n");
     for (;;)
     {
-    	pthread_mutex_lock(&count_mutex);
+        pthread_mutex_lock(&count_mutex);
     
-    	if (count >= MAX)
-    	{
-    	    pthread_mutex_unlock(&count_mutex);
-    	    break;
-    	}
+        if (count >= MAX)
+        {
+            pthread_mutex_unlock(&count_mutex);
+            break;
+        }
     
-    	pthread_mutex_unlock(&count_mutex);
+        pthread_mutex_unlock(&count_mutex);
     
-    	pthread_cond_signal(&cond);
+        pthread_cond_signal(&cond);
     }
     assert(count == MAX);
 
@@ -103,17 +103,17 @@ int main(int argc, char** argv)
     printf("Test Broaadcast\n");
     for (;;)
     {
-    	pthread_mutex_lock(&count_mutex);
+        pthread_mutex_lock(&count_mutex);
     
-    	if (count >= MAX)
-    	{
-    	    pthread_mutex_unlock(&count_mutex);
-    	    break;
-    	}
+        if (count >= MAX)
+        {
+            pthread_mutex_unlock(&count_mutex);
+            break;
+        }
     
-    	pthread_mutex_unlock(&count_mutex);
+        pthread_mutex_unlock(&count_mutex);
     
-    	pthread_cond_broadcast(&cond);
+        pthread_cond_broadcast(&cond);
     }
     //assert(count == MAX);
     printf("+++++ passed all tests (%s)\n", argv[0]);

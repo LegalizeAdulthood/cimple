@@ -142,7 +142,7 @@ Message* CIMPLE_Provider_Manager::processMessage(Message* message)
     // Create dispatcher if null.
 
     if (!_disp)
-	_create_disp(message);
+        _create_disp(message);
 
     // Dispatch the message to a handler method.
 
@@ -150,91 +150,91 @@ Message* CIMPLE_Provider_Manager::processMessage(Message* message)
 
     try
     {
-	switch (message->getType())
-	{
-	    case CIM_INITIALIZE_PROVIDER_REQUEST_MESSAGE:
-		response = _handleInitializeProviderRequest(message);
-		break;
+        switch (message->getType())
+        {
+            case CIM_INITIALIZE_PROVIDER_REQUEST_MESSAGE:
+                response = _handleInitializeProviderRequest(message);
+                break;
 
-	    case CIM_GET_INSTANCE_REQUEST_MESSAGE:
-		response = _handleGetInstanceRequest(message);
-		break;
+            case CIM_GET_INSTANCE_REQUEST_MESSAGE:
+                response = _handleGetInstanceRequest(message);
+                break;
 
-	    case CIM_ENUMERATE_INSTANCES_REQUEST_MESSAGE:
-		response = _handleEnumerateInstancesRequest(message);
-		break;
+            case CIM_ENUMERATE_INSTANCES_REQUEST_MESSAGE:
+                response = _handleEnumerateInstancesRequest(message);
+                break;
 
-	    case CIM_ENUMERATE_INSTANCE_NAMES_REQUEST_MESSAGE:
-		response = _handleEnumerateInstanceNamesRequest(message);
-		break;
+            case CIM_ENUMERATE_INSTANCE_NAMES_REQUEST_MESSAGE:
+                response = _handleEnumerateInstanceNamesRequest(message);
+                break;
 
-	    case CIM_CREATE_INSTANCE_REQUEST_MESSAGE:
-		response = _handleCreateInstanceRequest(message);
-		break;
+            case CIM_CREATE_INSTANCE_REQUEST_MESSAGE:
+                response = _handleCreateInstanceRequest(message);
+                break;
 
-	    case CIM_MODIFY_INSTANCE_REQUEST_MESSAGE:
-		response = _handleModifyInstanceRequest(message);
-		break;
+            case CIM_MODIFY_INSTANCE_REQUEST_MESSAGE:
+                response = _handleModifyInstanceRequest(message);
+                break;
 
-	    case CIM_DELETE_INSTANCE_REQUEST_MESSAGE:
-		response = _handleDeleteInstanceRequest(message);
-		break;
+            case CIM_DELETE_INSTANCE_REQUEST_MESSAGE:
+                response = _handleDeleteInstanceRequest(message);
+                break;
 
-	    case CIM_EXEC_QUERY_REQUEST_MESSAGE:
-		break;
+            case CIM_EXEC_QUERY_REQUEST_MESSAGE:
+                break;
 
-	    case CIM_ASSOCIATORS_REQUEST_MESSAGE:
-		response = _handleAssociatorsRequest(message);
-		break;
+            case CIM_ASSOCIATORS_REQUEST_MESSAGE:
+                response = _handleAssociatorsRequest(message);
+                break;
 
-	    case CIM_ASSOCIATOR_NAMES_REQUEST_MESSAGE:
-		response = _handleAssociatorNamesRequest(message);
-		break;
+            case CIM_ASSOCIATOR_NAMES_REQUEST_MESSAGE:
+                response = _handleAssociatorNamesRequest(message);
+                break;
 
-	    case CIM_REFERENCES_REQUEST_MESSAGE:
-		response = _handleReferencesRequest(message);
-		break;
+            case CIM_REFERENCES_REQUEST_MESSAGE:
+                response = _handleReferencesRequest(message);
+                break;
 
-	    case CIM_REFERENCE_NAMES_REQUEST_MESSAGE:
-		response = _handleReferenceNamesRequest(message);
-		break;
+            case CIM_REFERENCE_NAMES_REQUEST_MESSAGE:
+                response = _handleReferenceNamesRequest(message);
+                break;
 
-	    case CIM_INVOKE_METHOD_REQUEST_MESSAGE:
-		response = _handleInvokeMethodRequest(message);
-		break;
+            case CIM_INVOKE_METHOD_REQUEST_MESSAGE:
+                response = _handleInvokeMethodRequest(message);
+                break;
 
-	    case CIM_CREATE_SUBSCRIPTION_REQUEST_MESSAGE:
-		response = _handleCreateSubscriptionRequest(message);
-		break;
+            case CIM_CREATE_SUBSCRIPTION_REQUEST_MESSAGE:
+                response = _handleCreateSubscriptionRequest(message);
+                break;
 
-	    case CIM_MODIFY_SUBSCRIPTION_REQUEST_MESSAGE:
-		response = _handleModifySubscriptionRequest(message);
-		break;
+            case CIM_MODIFY_SUBSCRIPTION_REQUEST_MESSAGE:
+                response = _handleModifySubscriptionRequest(message);
+                break;
 
-	    case CIM_DELETE_SUBSCRIPTION_REQUEST_MESSAGE:
-		response = _handleDeleteSubscriptionRequest(message);
-		break;
+            case CIM_DELETE_SUBSCRIPTION_REQUEST_MESSAGE:
+                response = _handleDeleteSubscriptionRequest(message);
+                break;
 
-	    case CIM_SUBSCRIPTION_INIT_COMPLETE_REQUEST_MESSAGE:
-		response = _handleSubscriptionInitCompleteRequest(message);
-		break;
+            case CIM_SUBSCRIPTION_INIT_COMPLETE_REQUEST_MESSAGE:
+                response = _handleSubscriptionInitCompleteRequest(message);
+                break;
 
-	    // ATTN: implement these:
+            // ATTN: implement these:
 
-	    case CIM_GET_PROPERTY_REQUEST_MESSAGE:
-	    case CIM_SET_PROPERTY_REQUEST_MESSAGE:
-	    case CIM_STOP_ALL_PROVIDERS_REQUEST_MESSAGE:
-	    case CIM_EXPORT_INDICATION_REQUEST_MESSAGE:
-	    case CIM_DISABLE_MODULE_REQUEST_MESSAGE:
-	    case CIM_ENABLE_MODULE_REQUEST_MESSAGE:
-	    default:
-		return 0;
-	}
+            case CIM_GET_PROPERTY_REQUEST_MESSAGE:
+            case CIM_SET_PROPERTY_REQUEST_MESSAGE:
+            case CIM_STOP_ALL_PROVIDERS_REQUEST_MESSAGE:
+            case CIM_EXPORT_INDICATION_REQUEST_MESSAGE:
+            case CIM_DISABLE_MODULE_REQUEST_MESSAGE:
+            case CIM_ENABLE_MODULE_REQUEST_MESSAGE:
+            default:
+                return 0;
+        }
     }
     catch (...)
     {
-	// Unexpected!
-	CIMPLE_ASSERT(0);
+        // Unexpected!
+        CIMPLE_ASSERT(0);
     }
 
     return response;
@@ -252,10 +252,10 @@ Message* CIMPLE_Provider_Manager::_handleInitializeProviderRequest(
     FTRACE;
 
     CIMInitializeProviderRequestMessage* request = 
-	dynamic_cast<CIMInitializeProviderRequestMessage*>(message);
+        dynamic_cast<CIMInitializeProviderRequestMessage*>(message);
 
     CIMInitializeProviderResponseMessage* response =
-	(CIMInitializeProviderResponseMessage*)request->buildResponse();
+        (CIMInitializeProviderResponseMessage*)request->buildResponse();
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     OperationResponseHandler handler(request, response, _responseChunkCallback);
@@ -283,13 +283,13 @@ Message* CIMPLE_Provider_Manager::_handleGetInstanceRequest(
         dynamic_cast<CIMGetInstanceRequestMessage*>(message);
 
     CIMGetInstanceResponseMessage* response =
-	(CIMGetInstanceResponseMessage*)request->buildResponse();
+        (CIMGetInstanceResponseMessage*)request->buildResponse();
 
     // Create handler.
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     GetInstanceResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     GetInstanceResponseHandlerhandler(request, response);
 #endif
@@ -301,8 +301,8 @@ Message* CIMPLE_Provider_Manager::_handleGetInstanceRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     // Create CIMPLE instance (initialize key properties).
@@ -310,10 +310,10 @@ Message* CIMPLE_Provider_Manager::_handleGetInstanceRequest(
     Instance* model = 0;
 
     if (Converter::to_cimple_key(
-	request->instanceName.getKeyBindings(), mc, model) != 0)
+        request->instanceName.getKeyBindings(), mc, model) != 0)
     {
-	_set_status(handler, "malformed object name: %s", Error::get());
-	return response;
+        _set_status(handler, "malformed object name: %s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> model_d(model);
@@ -322,8 +322,8 @@ Message* CIMPLE_Provider_Manager::_handleGetInstanceRequest(
 
     if (Converter::de_nullify_properties(request->propertyList, model) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     // Invoke provider:
@@ -334,8 +334,8 @@ Message* CIMPLE_Provider_Manager::_handleGetInstanceRequest(
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     // Convert CIMPLE instance to Pegasus instance.
@@ -343,10 +343,10 @@ Message* CIMPLE_Provider_Manager::_handleGetInstanceRequest(
     CIMInstance pi;
 
     if (Converter::to_pegasus_instance(
-	System::getHostName(), request->nameSpace, inst, pi) != 0)
+        System::getHostName(), request->nameSpace, inst, pi) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     // Deliver the instance to client.
@@ -378,7 +378,7 @@ static bool _enum_instances_proc(
     // Ignore the final call.
 
     if (!instance)
-	return false;
+        return false;
 
     Destroyer<Instance> instance_d(instance);
 
@@ -387,10 +387,10 @@ static bool _enum_instances_proc(
     CIMInstance pi;
 
     if (Converter::to_pegasus_instance(
-	System::getHostName(), data->name_space, instance, pi) != 0)
+        System::getHostName(), data->name_space, instance, pi) != 0)
     {
-	_set_status(*data->handler, "%s", Error::get());
-	return false;
+        _set_status(*data->handler, "%s", Error::get());
+        return false;
     }
 
 
@@ -414,13 +414,13 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstancesRequest(
         dynamic_cast<CIMEnumerateInstancesRequestMessage*>(message);
 
     CIMEnumerateInstancesResponseMessage* response =
-	(CIMEnumerateInstancesResponseMessage*)request->buildResponse();
+        (CIMEnumerateInstancesResponseMessage*)request->buildResponse();
 
     // Create handler.
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     EnumerateInstancesResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     EnumerateInstancesResponseHandler handler(request, response);
 #endif
@@ -432,8 +432,8 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstancesRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     // Create the model.
@@ -446,8 +446,8 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstancesRequest(
 
     if (Converter::de_nullify_properties(request->propertyList, model) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     // Invoke the provider:
@@ -461,8 +461,8 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstancesRequest(
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     handler.complete();
@@ -489,14 +489,14 @@ static bool _enum_instance_names_proc(
     FTRACE;
 
     Handle_Enumerate_Instance_Names_Data* data = 
-	(Handle_Enumerate_Instance_Names_Data*)client_data;
+        (Handle_Enumerate_Instance_Names_Data*)client_data;
 
     EnumerateInstanceNamesResponseHandler& handler = *data->handler;
 
     // Ignore the final call.
 
     if (!instance || data->error)
-	return false;
+        return false;
 
     Destroyer<Instance> instance_d(instance);
 
@@ -505,11 +505,11 @@ static bool _enum_instance_names_proc(
     Pegasus::CIMObjectPath op;
 
     if (Converter::to_pegasus_object_path(
-	System::getHostName(), data->name_space, instance, op) != 0)
+        System::getHostName(), data->name_space, instance, op) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	data->error = true;
-	return false;
+        _set_status(handler, "%s", Error::get());
+        data->error = true;
+        return false;
     }
 
     // Deliver to client:
@@ -531,13 +531,13 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstanceNamesRequest(
         dynamic_cast<CIMEnumerateInstanceNamesRequestMessage*>(message);
 
     CIMEnumerateInstanceNamesResponseMessage* response =
-	(CIMEnumerateInstanceNamesResponseMessage*)request->buildResponse();
+        (CIMEnumerateInstanceNamesResponseMessage*)request->buildResponse();
 
     // Create handler.
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     EnumerateInstanceNamesResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     EnumerateInstanceNamesResponseHandler handler(request, response);
 #endif
@@ -549,8 +549,8 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstanceNamesRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     // Create the model (nullify non-key properties).
@@ -569,15 +569,15 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstanceNamesRequest(
     data.error = false;
 
     Status stat = _disp->enum_instances(
-	model, _enum_instance_names_proc, &data);
+        model, _enum_instance_names_proc, &data);
 
     if (data.error)
-	return response;
+        return response;
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     handler.complete();
@@ -602,13 +602,13 @@ Message* CIMPLE_Provider_Manager::_handleCreateInstanceRequest(
         dynamic_cast<CIMCreateInstanceRequestMessage*>(message);
 
     CIMCreateInstanceResponseMessage* response =
-	(CIMCreateInstanceResponseMessage*)request->buildResponse();
+        (CIMCreateInstanceResponseMessage*)request->buildResponse();
 
     // Create handler.
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     CreateInstanceResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     CreateInstanceResponseHandlerhandler(request, response);
 #endif
@@ -620,8 +620,8 @@ Message* CIMPLE_Provider_Manager::_handleCreateInstanceRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     // Convert the Pegasus instance to a CIMPLE instance.
@@ -629,10 +629,10 @@ Message* CIMPLE_Provider_Manager::_handleCreateInstanceRequest(
     Instance* ci = 0;
 
     if (Converter::to_cimple_instance(
-	request->newInstance, mc, ci) != 0)
+        request->newInstance, mc, ci) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ci_d(ci);
@@ -641,8 +641,8 @@ Message* CIMPLE_Provider_Manager::_handleCreateInstanceRequest(
 
     if (!keys_non_null(ci))
     {
-	_set_status(handler, "some key fields are null");
-	return response;
+        _set_status(handler, "some key fields are null");
+        return response;
     }
 
     // Invoke provider.
@@ -651,8 +651,8 @@ Message* CIMPLE_Provider_Manager::_handleCreateInstanceRequest(
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     // Build and deliver the instance name.
@@ -660,10 +660,10 @@ Message* CIMPLE_Provider_Manager::_handleCreateInstanceRequest(
     CIMObjectPath op;
 
     if (Converter::to_pegasus_object_path(
-	System::getHostName(), request->nameSpace, ci, op) != 0)
+        System::getHostName(), request->nameSpace, ci, op) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     handler.processing();
@@ -690,13 +690,13 @@ Message* CIMPLE_Provider_Manager::_handleModifyInstanceRequest(
         dynamic_cast<CIMModifyInstanceRequestMessage*>(message);
 
     CIMModifyInstanceResponseMessage* response =
-	(CIMModifyInstanceResponseMessage*)request->buildResponse();
+        (CIMModifyInstanceResponseMessage*)request->buildResponse();
 
     // Create handler.
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     ModifyInstanceResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     ModifyInstanceResponseHandler handler(request, response);
 #endif
@@ -708,8 +708,8 @@ Message* CIMPLE_Provider_Manager::_handleModifyInstanceRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     // Convert the Pegasus instance to a CIMPLE instance.
@@ -718,8 +718,8 @@ Message* CIMPLE_Provider_Manager::_handleModifyInstanceRequest(
 
     if (Converter::to_cimple_instance(request->modifiedInstance, mc, ci) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ci_d(ci);
@@ -728,8 +728,8 @@ Message* CIMPLE_Provider_Manager::_handleModifyInstanceRequest(
 
     if (Converter::de_nullify_properties(request->propertyList, ci) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     // Invoke provider:
@@ -738,8 +738,8 @@ Message* CIMPLE_Provider_Manager::_handleModifyInstanceRequest(
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     // Done:
@@ -767,13 +767,13 @@ Message* CIMPLE_Provider_Manager::_handleDeleteInstanceRequest(
         dynamic_cast<CIMDeleteInstanceRequestMessage*>(message);
 
     CIMDeleteInstanceResponseMessage* response =
-	(CIMDeleteInstanceResponseMessage*)request->buildResponse();
+        (CIMDeleteInstanceResponseMessage*)request->buildResponse();
 
     // Create handler.
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     DeleteInstanceResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     DeleteInstanceResponseHandler handler(request, response);
 #endif
@@ -785,8 +785,8 @@ Message* CIMPLE_Provider_Manager::_handleDeleteInstanceRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     // Create CIMPLE instance (initialize key properties).
@@ -794,10 +794,10 @@ Message* CIMPLE_Provider_Manager::_handleDeleteInstanceRequest(
     Instance* ci = 0;
 
     if (Converter::to_cimple_key(
-	request->instanceName.getKeyBindings(), mc, ci) != 0)
+        request->instanceName.getKeyBindings(), mc, ci) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ci_d(ci);
@@ -808,8 +808,8 @@ Message* CIMPLE_Provider_Manager::_handleDeleteInstanceRequest(
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     // Done:
@@ -842,14 +842,14 @@ static bool _enum_associator_proc(
     FTRACE;
 
     Handle_Associators_Request_Data* data = 
-	(Handle_Associators_Request_Data*)client_data;
+        (Handle_Associators_Request_Data*)client_data;
 
     AssociatorsResponseHandler& handler = *data->handler;
 
     // Ignore last call or if already in an error state:
 
     if (!assoc_name || data->error)
-	return false;
+        return false;
 
     // Create a model for the get_instance() call below.
 
@@ -858,19 +858,19 @@ static bool _enum_associator_proc(
 
     if (!model)
     {
-	_set_status(handler, "key_to_instance() failed");
-	data->error = true;
-	return false;
+        _set_status(handler, "key_to_instance() failed");
+        data->error = true;
+        return false;
     }
 
     // Validate selected properties.
 
     if (Converter::de_nullify_properties(
-	data->request->propertyList, model) != 0)
+        data->request->propertyList, model) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	data->error = true;
-	return false;
+        _set_status(handler, "%s", Error::get());
+        data->error = true;
+        return false;
     }
 
     // Now get the instance from the provdier.
@@ -881,9 +881,9 @@ static bool _enum_associator_proc(
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	data->error = true;
-	return false;
+        _set_status(handler, "%s", Status_to_string(stat));
+        data->error = true;
+        return false;
     }
 
     Destroyer<Instance> inst_d(inst);
@@ -893,11 +893,11 @@ static bool _enum_associator_proc(
     CIMInstance pi;
 
     if (Converter::to_pegasus_instance(
-	System::getHostName(), data->request->nameSpace, inst, pi) != 0)
+        System::getHostName(), data->request->nameSpace, inst, pi) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	data->error = true;
-	return false;
+        _set_status(handler, "%s", Error::get());
+        data->error = true;
+        return false;
     }
 
     handler.deliver(pi);
@@ -922,13 +922,13 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorsRequest(
     // Create and initialize response.
 
     CIMAssociatorsResponseMessage* response =
-	(CIMAssociatorsResponseMessage*)request->buildResponse();
+        (CIMAssociatorsResponseMessage*)request->buildResponse();
 
     // Create handler.
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     AssociatorsResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     AssociatorsResponseHandler handler(request, response);
 #endif
@@ -940,8 +940,8 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorsRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     const Meta_Class* rmc = mc;
@@ -954,8 +954,8 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorsRequest(
 
     if (Converter::to_cimple_key(op.getKeyBindings(), rmc, ck) != 0 || !ck)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ck_d(ck);
@@ -971,15 +971,15 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorsRequest(
     data.error = false;
 
     Status stat = _disp->enum_associator_names(ck, assoc_class, result_class, 
-	role, result_role, _enum_associator_proc, &data);
+        role, result_role, _enum_associator_proc, &data);
 
     if (data.error)
-	return response;
+        return response;
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     handler.complete();
@@ -1009,25 +1009,25 @@ static bool _enum_associator_names_proc(
     FTRACE;
 
     Handle_Associator_Names_Request_Data* data = 
-	(Handle_Associator_Names_Request_Data*)client_data;
+        (Handle_Associator_Names_Request_Data*)client_data;
 
     AssociatorNamesResponseHandler& handler = *data->handler;
 
     // Ignore last call or if already in an error state:
 
     if (!assoc_name || data->error)
-	return false;
+        return false;
 
     // Convert assoc_name to an Pegasus object path:
 
     CIMObjectPath op;
 
     if (Converter::to_pegasus_object_path(
-	System::getHostName(), data->request->nameSpace, assoc_name, op) != 0)
+        System::getHostName(), data->request->nameSpace, assoc_name, op) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	data->error = true;
-	return false;
+        _set_status(handler, "%s", Error::get());
+        data->error = true;
+        return false;
     }
 
     // Deliver the object path:
@@ -1049,7 +1049,7 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
         dynamic_cast<CIMAssociatorNamesRequestMessage*>(message);
 
     CIMAssociatorNamesResponseMessage* response =
-	(CIMAssociatorNamesResponseMessage*)request->buildResponse();
+        (CIMAssociatorNamesResponseMessage*)request->buildResponse();
 
     // Extract some of the request fields:
 
@@ -1062,7 +1062,7 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     AssociatorNamesResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     AssociatorNamesResponseHandler handler(request, response);
 #endif
@@ -1074,8 +1074,8 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     const Meta_Class* rmc = mc;
@@ -1088,8 +1088,8 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
 
     if (Converter::to_cimple_key(op.getKeyBindings(), rmc, ck) != 0 || !ck)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ck_d(ck);
@@ -1103,15 +1103,15 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
     data.error = false;
 
     Status stat = _disp->enum_associator_names(ck, assoc_class, result_class, 
-	role, result_role, _enum_associator_names_proc, &data);
+        role, result_role, _enum_associator_names_proc, &data);
 
     if (data.error)
-	return response;
+        return response;
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     handler.complete();
@@ -1141,13 +1141,13 @@ static bool _enumerate_references_proc(
     FTRACE;
 
     Handle_References_Request_Data* data = 
-	(Handle_References_Request_Data*)client_data;
+        (Handle_References_Request_Data*)client_data;
     ReferencesResponseHandler& handler = *data->handler;
 
     // Ignore last call and return if already got an error.
 
     if (!reference || data->error)
-	return false;
+        return false;
 
     Destroyer<Instance> reference_d(reference);
 
@@ -1156,11 +1156,11 @@ static bool _enumerate_references_proc(
     CIMInstance pi;
 
     if (Converter::to_pegasus_instance(
-	System::getHostName(), data->request->nameSpace, reference, pi) != 0)
+        System::getHostName(), data->request->nameSpace, reference, pi) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	data->error = true;
-	return false;
+        _set_status(handler, "%s", Error::get());
+        data->error = true;
+        return false;
     }
 
     handler.deliver(pi);
@@ -1180,7 +1180,7 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
         dynamic_cast<CIMReferencesRequestMessage*>(message);
 
     CIMReferencesResponseMessage* response =
-	(CIMReferencesResponseMessage*)request->buildResponse();
+        (CIMReferencesResponseMessage*)request->buildResponse();
 
     // Extract some request fields:
 
@@ -1191,7 +1191,7 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     ReferencesResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     ReferencesResponseHandler handler(request, response);
 #endif
@@ -1203,8 +1203,8 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     const Meta_Class* rmc = mc;
@@ -1217,8 +1217,8 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
 
     if (Converter::to_cimple_key(op.getKeyBindings(), rmc, ck) != 0 || !ck)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ck_d(ck);
@@ -1241,17 +1241,17 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
 
     State state;
     Status stat = _disp->enum_references(
-	ck, model, result_class, role, _enumerate_references_proc, &data);
+        ck, model, result_class, role, _enumerate_references_proc, &data);
 
     destroy(model);
 
     if (data.error)
-	return response;
+        return response;
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     handler.complete();
@@ -1281,13 +1281,13 @@ static bool _enumerate_reference_names_proc(
     FTRACE;
 
     Handle_Reference_Names_Request_Data* data = 
-	(Handle_Reference_Names_Request_Data*)client_data;
+        (Handle_Reference_Names_Request_Data*)client_data;
     ReferenceNamesResponseHandler& handler = *data->handler;
 
     // Ignore last call and return if already got an error.
 
     if (!reference || data->error)
-	return false;
+        return false;
 
     Destroyer<Instance> reference_d(reference);
 
@@ -1296,11 +1296,11 @@ static bool _enumerate_reference_names_proc(
     CIMObjectPath op;
 
     if (Converter::to_pegasus_object_path(
-	System::getHostName(), data->request->nameSpace, reference, op) != 0)
+        System::getHostName(), data->request->nameSpace, reference, op) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	data->error = true;
-	return false;
+        _set_status(handler, "%s", Error::get());
+        data->error = true;
+        return false;
     }
 
     handler.deliver(op);
@@ -1320,7 +1320,7 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
         dynamic_cast<CIMReferenceNamesRequestMessage*>(message);
 
     CIMReferenceNamesResponseMessage* response =
-	(CIMReferenceNamesResponseMessage*)request->buildResponse();
+        (CIMReferenceNamesResponseMessage*)request->buildResponse();
 
     // Extract some request fields:
 
@@ -1331,7 +1331,7 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     ReferenceNamesResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     ReferenceNamesResponseHandler handler(request, response);
 #endif
@@ -1343,8 +1343,8 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     const Meta_Class* rmc = mc;
@@ -1357,8 +1357,8 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
 
     if (Converter::to_cimple_key(op.getKeyBindings(), rmc, ck) != 0 || !ck)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ck_d(ck);
@@ -1381,17 +1381,17 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
 
     State state;
     Status stat = _disp->enum_references(ck, model, result_class, role,
-	_enumerate_reference_names_proc, &data);
+        _enumerate_reference_names_proc, &data);
 
     destroy(model);
 
     if (data.error)
-	return response;
+        return response;
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     handler.complete();
@@ -1422,7 +1422,7 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     InvokeMethodResponseHandler handler(
-	request, response, _responseChunkCallback);
+        request, response, _responseChunkCallback);
 #else
     InvokeMethodResponseHandler handler(request, response);
 #endif
@@ -1434,8 +1434,8 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
 
     if (!mc)
     {
-	_set_status(handler, "unknown class: %s", class_name.c_str());
-	return response;
+        _set_status(handler, "unknown class: %s", class_name.c_str());
+        return response;
     }
 
     // Convert instance name to CIMPLE reference.
@@ -1443,10 +1443,10 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
     Instance* ref = 0;
 
     if (Converter::to_cimple_key(
-	request->instanceName.getKeyBindings(), mc, ref) != 0)
+        request->instanceName.getKeyBindings(), mc, ref) != 0)
     {
-	_set_status(handler, "malformed object name: %s", Error::get());
-	return response;
+        _set_status(handler, "malformed object name: %s", Error::get());
+        return response;
     }
 
     Destroyer<Instance> ref_d(ref);
@@ -1457,10 +1457,10 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
     Instance* meth;
 
     if (Converter::to_cimple_method(
-	meth_name, request->inParameters, mc, meth) != 0)
+        meth_name, request->inParameters, mc, meth) != 0)
     {
-	_set_status(handler, "error: %s", Error::get());
-	return response;
+        _set_status(handler, "error: %s", Error::get());
+        return response;
     }
 
     // Invoke the method:
@@ -1469,8 +1469,8 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
 
     if (stat != STATUS_OK)
     {
-	_set_status(handler, "%s", Status_to_string(stat));
-	return response;
+        _set_status(handler, "%s", Status_to_string(stat));
+        return response;
     }
 
     // Convert CIMPLE method to Pegasus types:
@@ -1479,10 +1479,10 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
     CIMValue return_value;
 
     if (Converter::to_pegasus_method(System::getHostName(), 
-	request->nameSpace, meth, out_params, return_value) != 0)
+        request->nameSpace, meth, out_params, return_value) != 0)
     {
-	_set_status(handler, "%s", Error::get());
-	return response;
+        _set_status(handler, "%s", Error::get());
+        return response;
     }
 
     // Deliver the responses:
@@ -1491,15 +1491,15 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
 
     if (return_value.isNull())
     {
-	_set_status(handler, 
-	    "method \"%s\" returned null value\n", meth_name.c_str());
-	return response;
+        _set_status(handler, 
+            "method \"%s\" returned null value\n", meth_name.c_str());
+        return response;
     }
 
     handler.deliver(return_value); 
 
     for (size_t i = 0; i < out_params.size(); i++)
-	handler.deliverParamValue(out_params[i]);
+        handler.deliverParamValue(out_params[i]);
 
     handler.complete();
 
@@ -1542,42 +1542,42 @@ Message* CIMPLE_Provider_Manager::_handleCreateSubscriptionRequest(
     // already, just increment its reference count.
 
     {
-	ProviderIdContainer pidc = request->operationContext.get(
-	    ProviderIdContainer::NAME);
+        ProviderIdContainer pidc = request->operationContext.get(
+            ProviderIdContainer::NAME);
 
-	CIMInstance provider = pidc.getProvider();
+        CIMInstance provider = pidc.getProvider();
 
-	for (size_t i = 0, n = request->classNames.size(); i < n; i++)
-	{
-	    const CIMName& class_name = request->classNames[i];
+        for (size_t i = 0, n = request->classNames.size(); i < n; i++)
+        {
+            const CIMName& class_name = request->classNames[i];
 
-	    Subscription* sub = _subscription_list.find(class_name);
+            Subscription* sub = _subscription_list.find(class_name);
 
-	    if (sub)
-	    {
-		// We have seen a subscription on this class already and
-		// the provider has already been enabled.
-		sub->subscription_count++;
-	    }
-	    else
-	    {
-		// This is the first subscription on this class. We must
-		// enabled the provider (it the CIM server is not in the
-		// process of starting up).
+            if (sub)
+            {
+                // We have seen a subscription on this class already and
+                // the provider has already been enabled.
+                sub->subscription_count++;
+            }
+            else
+            {
+                // This is the first subscription on this class. We must
+                // enabled the provider (it the CIM server is not in the
+                // process of starting up).
 
-		sub = new Subscription(provider, class_name);
-		_subscription_list.append(sub);
+                sub = new Subscription(provider, class_name);
+                _subscription_list.append(sub);
 
-		if (_subscriptionInitComplete)
-		{
-		    if (_enable_indications(sub) != 0)
-		    {
-			_set_status(handler, "failed to enable indications");
-			return response;
-		    }
-		}
-	    }
-	}
+                if (_subscriptionInitComplete)
+                {
+                    if (_enable_indications(sub) != 0)
+                    {
+                        _set_status(handler, "failed to enable indications");
+                        return response;
+                    }
+                }
+            }
+        }
     }
 
     return response;
@@ -1640,22 +1640,22 @@ Message* CIMPLE_Provider_Manager::_handleDeleteSubscriptionRequest(
 
     for (size_t i = 0, n = request->classNames.size(); i < n; i++)
     {
-	const CIMName& class_name = request->classNames[i];
+        const CIMName& class_name = request->classNames[i];
 
-	Subscription* sub;
+        Subscription* sub;
 
-	if (_subscription_list.dec_and_remove_if_zero(class_name, sub) == 0)
-	{
-	    CStr class_name(sub->class_name);
-	    Status status = _disp->disable_indications(class_name);
-	    delete sub;
+        if (_subscription_list.dec_and_remove_if_zero(class_name, sub) == 0)
+        {
+            CStr class_name(sub->class_name);
+            Status status = _disp->disable_indications(class_name);
+            delete sub;
 
-	    if (status != STATUS_OK)
-	    {
-		fprintf(stderr, "failed to disable provider for: %s\n",
-		    (const char*)class_name);
-	    }
-	}
+            if (status != STATUS_OK)
+            {
+                fprintf(stderr, "failed to disable provider for: %s\n",
+                    (const char*)class_name);
+            }
+        }
     }
 
     return response;
@@ -1701,7 +1701,7 @@ Message* CIMPLE_Provider_Manager::_handleSubscriptionInitCompleteRequest(
     // Enable each indication providers for which there is a subscription:
 
     for (List_Elem* p = _subscription_list.head(); p; p = p->next)
-	_enable_indications((Subscription*)p);
+        _enable_indications((Subscription*)p);
 
     return response;
 }
@@ -1726,8 +1726,8 @@ static bool _indication_proc(Instance* indication, void* client_data)
 
     if (indication == 0)
     {
-	delete data;
-	return false;
+        delete data;
+        return false;
     }
 
     // Convert CIMPLE indication to Pegasus indication.
@@ -1735,30 +1735,30 @@ static bool _indication_proc(Instance* indication, void* client_data)
     CIMInstance pegasus_indication;
 
     if (Converter::to_pegasus_instance(System::getHostName(), 
-	data->name_space, indication, pegasus_indication) != 0)
+        data->name_space, indication, pegasus_indication) != 0)
     {
-	return false;
+        return false;
     }
 
     // Build an object path for this indication.
 
     try
     {
-	CIMObjectPath objectPath;
-	objectPath.setHost(System::getHostName());
-	objectPath.setNameSpace(INDICATION_NAMESPACE);
-	objectPath.setClassName(indication->meta_class->name);
-	pegasus_indication.setPath(objectPath);
-	data->handler->deliver(pegasus_indication);
+        CIMObjectPath objectPath;
+        objectPath.setHost(System::getHostName());
+        objectPath.setNameSpace(INDICATION_NAMESPACE);
+        objectPath.setClassName(indication->meta_class->name);
+        pegasus_indication.setPath(objectPath);
+        data->handler->deliver(pegasus_indication);
     }
     catch (Exception& e)
     {
-	cerr << __FILE__ << "(" << __LINE__ << "): ";
-	cerr << e.getMessage() << endl;
+        cerr << __FILE__ << "(" << __LINE__ << "): ";
+        cerr << e.getMessage() << endl;
     }
     catch (...)
     {
-	fprintf(stderr, "ERROR: %s(%d): unexpected\n", __FILE__, __LINE__);
+        fprintf(stderr, "ERROR: %s(%d): unexpected\n", __FILE__, __LINE__);
     }
 
     // Keep them coming!
@@ -1782,10 +1782,10 @@ int CIMPLE_Provider_Manager::_enable_indications(
 
 #ifdef NEED_EXTRA_HANDLER_ARGS
     IndicationResponseHandler* handler = new EnableIndicationsResponseHandler(
-	0, 0, sub->provider, _indicationCallback, _responseChunkCallback);
+        0, 0, sub->provider, _indicationCallback, _responseChunkCallback);
 #else
     IndicationResponseHandler* handler = new EnableIndicationsResponseHandler(
-	0, 0, sub->provider, _indicationCallback);
+        0, 0, sub->provider, _indicationCallback);
 #endif
 
     // Use the dispatcher to enable indications on the given provider.
@@ -1798,10 +1798,10 @@ int CIMPLE_Provider_Manager::_enable_indications(
     data->name_space = String(INDICATION_NAMESPACE);
 
     Status status = _disp->enable_indications(
-	class_name, _indication_proc, data);
+        class_name, _indication_proc, data);
 
     if (status != STATUS_OK)
-	return -1;
+        return -1;
 
     // Succsess!
     return 0;
@@ -1816,35 +1816,35 @@ int CIMPLE_Provider_Manager::_enable_indications(
 void CIMPLE_Provider_Manager::_create_disp(Message* message)
 {
     if (_disp)
-	return;
+        return;
 
     CIMRequestMessage* request = dynamic_cast<CIMRequestMessage*>(message);
 
     if (!request)
-	return;
+        return;
 
     try
     {
-	const ProviderIdContainer& pic = 
-	    request->operationContext.get(ProviderIdContainer::NAME);
+        const ProviderIdContainer& pic = 
+            request->operationContext.get(ProviderIdContainer::NAME);
 
-	CIMInstance module = pic.getModule();
-	String path;
-	module.getProperty(
-	    module.findProperty("Location")).getValue().get(path);
-	path = ProviderManager::_resolvePhysicalName(path);
+        CIMInstance module = pic.getModule();
+        String path;
+        module.getProperty(
+            module.findProperty("Location")).getValue().get(path);
+        path = ProviderManager::_resolvePhysicalName(path);
 
-	CStr tmp(path);
+        CStr tmp(path);
 
-	char* dn = strdup(tmp.c_str());
+        char* dn = strdup(tmp.c_str());
 
-	_disp = Dispatcher::create(dirname(dn), "cmpl");
+        _disp = Dispatcher::create(dirname(dn), "cmpl");
 
-	free(dn);
+        free(dn);
     }
     catch (...)
     {
-	fprintf(stderr, "%s(%d): ignored\n", __FILE__, __LINE__);
+        fprintf(stderr, "%s(%d): ignored\n", __FILE__, __LINE__);
     }
 }
 
