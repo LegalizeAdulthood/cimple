@@ -165,4 +165,3 @@ void cimom::allow_unload(bool flag)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/cimom.cpp,v 1.20 2007/03/07 18:41:15 mbrasher-public Exp $");

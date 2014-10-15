@@ -15,7 +15,6 @@ static int _enum_CIM_ComputerSystem()
     for (; ie; ie++)
     {
         Ref<Instance> inst = ie();
-        print(inst.ptr());
     }
 
     return 0;
@@ -115,4 +114,3 @@ Modify_Instance_Status Upcall_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Upcall/Upcall_Provider.cpp,v 1.9 2007/05/31 16:45:10 mbrasher-public Exp $");

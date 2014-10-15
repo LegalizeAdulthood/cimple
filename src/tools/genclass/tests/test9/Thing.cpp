@@ -541,4 +541,3 @@ const Meta_Class Thing::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test9/Thing.cpp,v 1.8 2007/03/07 20:25:30 mbrasher-public Exp $");

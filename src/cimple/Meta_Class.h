@@ -113,6 +113,13 @@ const Meta_Class* find_meta_class(
     const Meta_Class* source_meta_class,
     const char* class_name);
 
+/** Creates a new meta class. Flags is ignored if super_meta_class is non-null.
+    Else, flags must be one of the following:
+
+        CIMPLE_FLAG_ASSOCIATION
+        CIMPLE_FLAG_INDICATION
+        CIMPLE_FLAG_CLASS
+*/
 CIMPLE_CIMPLE_LINKAGE
 Meta_Class* create_meta_class(
     const char* name, 
@@ -126,7 +133,7 @@ CIMPLE_CIMPLE_LINKAGE
 void destroy(Meta_Class* mc);
 
 CIMPLE_CIMPLE_LINKAGE
-void print(const Meta_Class* mc, bool print_qualifiers);
+void print(const Meta_Class* mc, bool print_qualifiers, bool local_only = true);
 
 CIMPLE_CIMPLE_LINKAGE
 bool identical(const Meta_Class* mc1, const Meta_Class* mc2);

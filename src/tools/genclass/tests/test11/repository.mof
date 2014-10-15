@@ -1,0 +1,27 @@
+class A
+{
+    [Key] uint32 key;
+};
+
+class B
+{
+    [Key] uint32 key;
+};
+
+class C
+{
+    [Key] uint32 key;
+};
+
+class X
+{
+    [EmbeddedInstance("A")]
+    string a;
+
+    [EmbeddedInstance("B")]
+    string foo1();
+
+    string foo2(
+        [EmbeddedInstance("C"), In(true), Out(true)]
+        string c);
+};

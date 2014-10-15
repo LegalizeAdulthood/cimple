@@ -106,7 +106,7 @@ Enum_Instances_Status UnixUser_Provider::enum_instances(
 }
 
 Create_Instance_Status UnixUser_Provider::create_instance(
-    const UnixUser* instance)
+    UnixUser* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -126,4 +126,3 @@ Modify_Instance_Status UnixUser_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/UnixUser/UnixUser_Provider.cpp,v 1.19 2007/04/18 03:51:30 mbrasher-public Exp $");

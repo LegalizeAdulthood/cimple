@@ -134,5 +134,3 @@ void MOF_Key_Value_Pair::validate(MOF_Class_Decl* class_decl)
         }
     }
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Key_Value_Pair.cpp,v 1.7 2007/03/07 18:57:14 mbrasher-public Exp $");

@@ -53,7 +53,8 @@ Modify_Instance_Status ComputerSystemDiskDrive_Provider::modify_instance(
     return MODIFY_INSTANCE_UNSUPPORTED;
 }
 
-Enum_Associator_Names_Status ComputerSystemDiskDrive_Provider::enum_associator_names(
+Enum_Associator_Names_Status 
+ComputerSystemDiskDrive_Provider::enum_associator_names(
     const Instance* instance,
     const String& result_class,
     const String& role,

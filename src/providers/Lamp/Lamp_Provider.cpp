@@ -113,4 +113,3 @@ Invoke_Method_Status Lamp_Provider::foo(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/Lamp_Provider.cpp,v 1.25 2007/05/31 16:45:08 mbrasher-public Exp $");

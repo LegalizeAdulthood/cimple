@@ -116,4 +116,3 @@ const Meta_Class Erp::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test3/Erp.cpp,v 1.27 2007/06/19 15:25:03 mbrasher-public Exp $");

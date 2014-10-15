@@ -31,7 +31,6 @@ static void _send_indication(
         indic->message.null = false;
 
         LampIndic* tmp = cast<LampIndic*>(indic);
-        // print(tmp);
 
         handler->handle(cast<LampIndic*>(indic));
     }
@@ -171,4 +170,3 @@ void LampIndic_Provider::_stop_thread()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampIndic_Provider.cpp,v 1.24 2007/04/18 03:51:27 mbrasher-public Exp $");

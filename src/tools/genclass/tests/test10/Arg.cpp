@@ -61,4 +61,3 @@ const Meta_Class Arg::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test10/Arg.cpp,v 1.1 2007/06/19 15:27:23 mbrasher-public Exp $");

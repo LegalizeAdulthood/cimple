@@ -98,4 +98,3 @@ Enum_Associators_Status ThingLink_Provider::enum_associators(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Thing/ThingLink_Provider.cpp,v 1.9 2007/05/31 16:45:10 mbrasher-public Exp $");

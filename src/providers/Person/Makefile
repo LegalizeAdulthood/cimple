@@ -24,7 +24,7 @@ include ../common.mak
 include $(TOP)/mak/rules.mak
 
 regmod:
-	$(BINDIR)/regmod -c $(TARGET)
+	$(BINDIR)/regmod -v -c $(TARGET)
 
 genclass:
 	$(BINDIR)/genclass -r Person PersonLink Salesman SalesmanLink

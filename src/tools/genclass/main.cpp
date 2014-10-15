@@ -41,6 +41,7 @@
 #include <tools/gencommon/gencommon.h>
 #include "usage.h"
 #include <mof/MOF_Parser.h>
+#include <mof/MOF_Options.h>
 
 using namespace std;
 
@@ -54,7 +55,6 @@ static bool qualifier_opt = false;
 static bool descriptions_opt = false;
 static bool boolean_qualifiers_opt = false;
 static string class_list_file;
-static bool gen_handles = false;
 
 string meta_repository_name;
 
@@ -271,6 +271,7 @@ void gen_value_scalar_def(
 
     // Generate code:
 
+    out("/*[%u]*/\n", __LINE__);
     out("static const Meta_Value_Scalar<%s>\n%s_MV =\n",
         _literal_type_name(mof_data_type), var.c_str());
 
@@ -368,6 +369,7 @@ void gen_qual_scalar_def(
 
     // Definition:
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Qualifier\n%s_MQ =\n", var.c_str());
     out("{\n");
     out("    { 0 }, /* refs */\n");
@@ -448,6 +450,7 @@ void gen_value_array_def(
 
     // Elements:
 
+    out("/*[%u]*/\n", __LINE__);
     out("static %s\n%s_elements[] =\n", 
         _literal_type_name(data_type), var.c_str());
 
@@ -465,6 +468,7 @@ void gen_value_array_def(
 
     // Definition:
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Value_Array<%s>\n%s_MV =\n", 
         _literal_type_name(data_type), var.c_str());
     out("{\n");
@@ -507,6 +511,7 @@ void gen_qual_array_def(
 
     // Definition:
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Qualifier\n%s_MQ =\n", var.c_str());
     out("{\n");
     out("    { 0 }, /* refs */\n");
@@ -572,6 +577,7 @@ void gen_qual_defs(
 
     // Generate qualifiers array:
 
+    out("/*[%u]*/\n", __LINE__);
     out("static const Meta_Qualifier*\n%s_MQA[] =\n", var.c_str());
 
     out("{\n");
@@ -603,6 +609,35 @@ void gen_qual_defs(
 
     out("};\n");
     nl();
+}
+
+const char* get_embedded_class_name(
+    const MOF_Qualified_Element* mqe)
+{
+    for (const MOF_Qualifier_Info* p = mqe->all_qualifiers; 
+        p; 
+        p = (const MOF_Qualifier_Info*)p->next)
+    {
+        const MOF_Qualifier* mq = p->qualifier;
+
+        if (strcasecmp(mq->name, "EmbeddedInstance") == 0)
+        {
+            MOF_Literal* ml = mq->params;
+
+            if (ml && ml->value_type == TOK_STRING_VALUE && ml->string_value)
+            {
+                const char* ecn = ml->string_value;
+
+                if (!MOF_Class_Decl::find((char*)ecn))
+                    err("error: unknown embedded class: \"%s\"", ecn);
+
+                return ecn;
+            }
+        }
+    }
+
+    // Not found!
+    return 0;
 }
 
 void gen_property_decl(
@@ -766,9 +801,26 @@ void gen_feature_decls(
         if (prop)
         {
             if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-                out("    Instance* %s;\n", prop->name);
+            {
+                if (prop->array_index == 0)
+                    out("    Instance* %s;\n", prop->name);
+                else
+                    out("    Array<Instance*> %s;\n", prop->name);
+            }
             else
-                gen_property_decl(class_decl, prop);
+            {
+                const char* ecn = get_embedded_class_name(prop);
+
+                if (ecn)
+                {
+                    if (prop->array_index == 0)
+                        out("    %s* %s;\n", ecn, prop->name);
+                    else
+                        out("    Array<%s*> %s;\n", ecn, prop->name);
+                }
+                else
+                    gen_property_decl(class_decl, prop);
+            }
 
             continue;
         }
@@ -873,6 +925,7 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
         out("\n");
     }
 
+    out("/*[%u]*/\n", __LINE__);
     out("class %s%s : public Instance\n", linkage, class_name);
 
     out("{\n");
@@ -882,292 +935,6 @@ void gen_class_decl(const MOF_Class_Decl* class_decl)
     out("};\n");
 
     nl();
-}
-
-void gen_handle_decl(const MOF_Class_Decl* cd, bool ref)
-{
-    const char* ext = ref ? "_Ref" : "_Hnd";
-
-    // Class name:
-
-    string cn = string(cd->name) + ext;
-
-    // Super class name:
-
-    string scn;
-    
-    if (cd->super_class)
-        scn = string(cd->super_class->name) + ext;
-    else
-        scn = "Hnd";
-
-    // Class header:
-
-    if (linkage_opt)
-        out("class CIMPLE_LINKAGE %s : public %s\n", cn.c_str(), scn.c_str());
-    else
-        out("class %s : public %s\n", cn.c_str(), scn.c_str());
-
-    // Class body:
-
-    out("{\n");
-    out("public:\n");
-    nl();
-
-    out("    %s();\n", cn.c_str());
-    out("    %s(const %s& x);\n", cn.c_str(), cn.c_str());
-    out("    %s(%s* inst);\n", cn.c_str(), cd->name);
-    out("    ~%s();\n", cn.c_str());
-    out("    %s& operator=(const %s& x);\n", cn.c_str(), cn.c_str());
-
-    const MOF_Feature* p = cd->features;
-
-    for (; p; p = (const MOF_Feature*)p->next)
-    {
-        const char* fn = p->name;
-
-        // Skip non-keys?
-
-        if (ref && !(p->qual_mask & MOF_QT_KEY))
-            continue;
-
-        // Property.
-
-        const MOF_Property_Decl* prop = 
-            dynamic_cast<const MOF_Property_Decl*>(p);
-
-        if (prop)
-        {
-            nl();
-            out("    // %s:\n", fn);
-
-            if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-            {
-                out("    Hnd %s() const;\n", fn);
-                out("    void %s(const Hnd& x);\n", fn);
-            }
-            else
-            {
-                const char* pt = _to_string(prop->data_type);
-
-                string t;
-
-                if (prop->array_index == 0)
-                    t = pt;
-                else
-                    t = "Array<" + string(pt) + ">";
-
-                out("    const %s& %s() const;\n", t.c_str(), fn);
-                out("    void %s(const %s& x);\n", fn, t.c_str());
-                out("    bool %s_null() const;\n", fn);
-                out("    void %s_null(bool x);\n", fn);
-            }
-
-            continue;
-        }
-
-        // Reference?
-
-        const MOF_Reference_Decl* ref = 
-            dynamic_cast<const MOF_Reference_Decl*>(p);
-
-        if (ref)
-        {
-            nl();
-            out("    // %s:\n", fn);
-            out("    %s_Ref %s() const;\n", ref->class_name, fn);
-            out("    void %s(const %s_Ref& x);\n", fn, ref->class_name);
-            continue;
-        }
-    }
-
-    out("};\n");
-
-    nl();
-}
-
-void gen_handle_def(const MOF_Class_Decl* cd, bool ref)
-{
-    const char* ext = ref ? "_Ref" : "_Hnd";
-
-    // Class name:
-
-    string cn = string(cd->name) + ext;
-
-    // Super class name:
-
-    string scn;
-    
-    if (cd->super_class)
-        scn = string(cd->super_class->name) + ext;
-    else
-        scn = "Hnd";
-
-    // T::T()
-
-    out("%s::%s()\n", cn.c_str(), cn.c_str());
-    out("{\n");
-    out("    _inst = %s::create(true);\n", cd->name);
-
-    if (cd->qual_mask & MOF_QT_ASSOCIATION)
-        out("    __create_refs(_inst);\n");
-
-    out("    _ref = %s;\n", ref ? "true" : "false");
-    out("}\n");
-    nl();
-
-    // T::T(const T& x)
-
-    out("%s::%s(const %s& x) : %s(x)\n", 
-        cn.c_str(), cn.c_str(), cn.c_str(), scn.c_str());
-    out("{\n");
-    out("}\n");
-    nl();
-
-    // T::T(const I* inst)
-
-    out("%s::%s(%s* inst)\n", cn.c_str(), cn.c_str(), cd->name);
-    out("{\n");
-    out("    _inst = inst;\n");
-
-    if (cd->qual_mask & MOF_QT_ASSOCIATION)
-        out("    __create_refs(_inst);\n");
-
-    out("    _ref = %s;\n", ref ? "true" : "false");
-    out("}\n");
-    nl();
-
-    // T::~T()
-
-    out("%s::~%s()\n", cn.c_str(), cn.c_str());
-    out("{\n");
-    out("}\n");
-    nl();
-
-    // T& operator=(const T& x)
-
-    out("%s& %s::operator=(const %s& x)\n", 
-        cn.c_str(), cn.c_str(), cn.c_str());
-    out("{\n");
-    out("    Hnd::operator=(x);\n");
-    out("    return *this;\n");
-    out("}\n");
-    nl();
-
-    // Features.
-
-    const MOF_Feature* p = cd->features;
-
-    for (; p; p = (const MOF_Feature*)p->next)
-    {
-        const char* fn = p->name;
-
-        // Skip non-keys?
-
-        if (ref && !(p->qual_mask & MOF_QT_KEY))
-            continue;
-
-        // Property.
-
-        const MOF_Property_Decl* prop = 
-            dynamic_cast<const MOF_Property_Decl*>(p);
-
-        if (prop)
-        {
-            if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
-            {
-                out("Hnd %s::%s() const\n", cn.c_str(), fn);
-                out("{\n");
-                out("    ref(((%s*)_inst)->%s);\n", cd->name, fn);
-                out("    return Hnd(((%s*)_inst)->%s);\n", cd->name, fn);
-                out("}\n");
-                nl();
-
-                out("void %s::%s(const Hnd& x)\n", cn.c_str(), fn);
-                out("{\n");
-                out("    _cow();\n");
-                out("    unref(((%s*)_inst)->%s);\n", 
-                    cd->name, fn);
-                out("    ref(((%s*)_inst)->%s = (Instance*)x.instance());\n",
-                    cd->name, fn);
-                out("}\n");
-                nl();
-
-                continue;
-            }
-            else
-            {
-                const char* pt = _to_string(prop->data_type);
-
-                string t;
-
-                if (prop->array_index == 0)
-                    t = pt;
-                else
-                    t = "Array<" + string(pt) + ">";
-
-                out("const %s& %s::%s() const\n", 
-                    t.c_str(), cn.c_str(), fn);
-                out("{\n");
-                out("    return ((%s*)_inst)->%s.value;\n", cd->name, fn);
-                out("}\n");
-                nl();
-
-                out("void %s::%s(const %s& x)\n", cn.c_str(), fn, t.c_str());
-                out("{\n");
-                out("    _cow();\n");
-                out("    ((%s*)_inst)->%s.null = false;\n", cd->name, fn);
-                out("    ((%s*)_inst)->%s.value = x;\n", cd->name, fn);
-                out("}\n");
-                nl();
-
-                out("bool %s::%s_null() const\n", cn.c_str(), fn);
-                out("{\n");
-                out("    return ((%s*)_inst)->%s.null;\n", cd->name, fn);
-                out("}\n");
-                nl();
-
-                out("void %s::%s_null(bool x)\n", cn.c_str(), fn);
-                out("{\n");
-                out("    _cow();\n");
-                out("    ((%s*)_inst)->%s.null = x;\n", cd->name, fn);
-                out("    __clear(((%s*)_inst)->%s.value);\n", cd->name, fn);
-                out("}\n");
-                nl();
-            }
-
-            continue;
-        }
-
-        // Reference?
-
-        const MOF_Reference_Decl* ref = 
-            dynamic_cast<const MOF_Reference_Decl*>(p);
-
-        if (ref)
-        {
-            out("%s_Ref %s::%s() const\n", ref->class_name, cn.c_str(), fn);
-            out("{\n");
-            out("    ref(((%s*)_inst)->%s);\n", cd->name, fn);
-            out("    return %s_Ref(((%s*)_inst)->%s);\n", 
-                ref->class_name, cd->name, fn);
-            out("}\n");
-            nl();
-
-            out("void %s::%s(const %s_Ref& x)\n", 
-                cn.c_str(), fn, ref->class_name);
-            out("{\n");
-            out("    _cow();\n");
-            out("    unref(((%s*)_inst)->%s);\n", 
-                cd->name, fn);
-            out("    ref(((%s*)_inst)->%s = (%s*)x.instance());\n",
-                cd->name, fn, ref->class_name);
-            out("}\n");
-            nl();
-
-            continue;
-        }
-    }
 }
 
 void gen_param_ref_decl(const MOF_Parameter* param)
@@ -1187,12 +954,28 @@ void gen_param_prop_decl(
     if (i == 0)
     {
         /* Scalar */
-        out("    Property<%s> %s;\n", tmp, param->name);
+
+        const char* ecn = get_embedded_class_name(param);
+
+        if (ecn)
+            out("    %s* %s;\n", ecn, param->name);
+        else if (param->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            out("    Instance* %s;\n", param->name);
+        else
+            out("    Property<%s> %s;\n", tmp, param->name);
     }
     else
     {
         /* VLA */
-        out("    Property<Array_%s> %s;\n", tmp, param->name);
+
+        const char* ecn = get_embedded_class_name(param);
+
+        if (ecn)
+            out("    Array<%s*> %s;\n", ecn, param->name);
+        else if (param->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            out("    Array<Instance*> %s;\n", param->name);
+        else
+            out("    Property<Array_%s> %s;\n", tmp, param->name);
     }
 }
 
@@ -1228,13 +1011,32 @@ void gen_meth_decl(
 
     const char* linkage = linkage_opt ? "CIMPLE_LINKAGE " : "";
 
+    out("/*[%u]*/\n", __LINE__);
     out("class %s%s_%s_method : public Instance\n", 
         linkage, class_name, meth_name);
 
     out("{\n");
     out("public:\n");
     gen_param_decls(class_name, meth_decl);
-    out("    Property<%s> return_value;\n", _to_string(meth_decl->data_type));
+
+    {
+        const char* ecn = get_embedded_class_name(meth_decl);
+
+        if (ecn)
+        {
+            out ("    %s* return_value;\n", ecn);
+        }
+        else if (meth_decl->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+        {
+            out ("    Instance* return_value;\n");
+        }
+        else
+        {
+            out("    Property<%s> return_value;\n", 
+                _to_string(meth_decl->data_type));
+        }
+    }
+
     out("    CIMPLE_METHOD(%s_%s_method)\n", class_name, meth_name);
     out("};\n");
     nl();
@@ -1311,6 +1113,61 @@ void generate_param_ref_includes(const MOF_Class_Decl* class_decl)
     }
 }
 
+void generate_embedded_includes(const MOF_Class_Decl* mcd)
+{
+    // Handle EmbeddedInstance on properties.
+    {
+        for (MOF_Feature* p = mcd->features; p; p = (MOF_Feature*)p->next)
+        {
+            MOF_Property_Decl* mpd = dynamic_cast<MOF_Property_Decl*>(p);
+
+            if (mpd)
+            {
+                const char* ecn = get_embedded_class_name(mpd);
+
+                if (ecn)
+                    out("#include \"%s.h\"\n", ecn);
+            }
+        }
+    }
+
+    // Handle EmbeddedInstance on methods.
+    {
+        for (MOF_Feature* p = mcd->features; p; p = (MOF_Feature*)p->next)
+        {
+            MOF_Method_Decl* mmd = dynamic_cast<MOF_Method_Decl*>(p);
+
+            if (mmd)
+            {
+                const char* ecn = get_embedded_class_name(mmd);
+
+                if (ecn)
+                    out("#include \"%s.h\"\n", ecn);
+            }
+        }
+    }
+
+    // Handle EmbeddedInstance on parameters.
+    {
+        for (MOF_Feature* p = mcd->features; p; p = (MOF_Feature*)p->next)
+        {
+            MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(p);
+
+            if (!meth)
+                continue;
+
+            for (MOF_Parameter* q = meth->parameters; q; 
+                q = (MOF_Parameter*)q->next)
+            {
+                const char* ecn = get_embedded_class_name(q);
+
+                if (ecn)
+                    out("#include \"%s.h\"\n", ecn);
+            }
+        }
+    }
+}
+
 void generate_version_check()
 {
     {
@@ -1358,6 +1215,7 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
 
     generate_ref_includes(class_decl);
     generate_param_ref_includes(class_decl);
+    generate_embedded_includes(class_decl);
     nl();
 
 #if 0
@@ -1369,13 +1227,6 @@ void gen_header_file(const MOF_Class_Decl* class_decl)
     nl();
 
     gen_class_decl(class_decl);
-
-    if (gen_handles)
-    {
-        gen_handle_decl(class_decl, true);
-        gen_handle_decl(class_decl, false);
-    }
-
     gen_meth_decls(class_decl);
 
     out("CIMPLE_NAMESPACE_END\n");
@@ -1413,7 +1264,7 @@ void gen_bool_qual_list(MOF_mask mask, bool param)
     if (mask & MOF_QT_DN)
         out("|CIMPLE_FLAG_DN");
     if (mask & MOF_QT_EMBEDDEDOBJECT)
-        out("|CIMPLE_FLAG_EMBEDDEDOBJECT");
+        out("|CIMPLE_FLAG_EMBEDDED_OBJECT");
     if (mask & MOF_QT_EXPENSIVE)
         out("|CIMPLE_FLAG_EXPENSIVE");
     if (mask & MOF_QT_EXPERIMENTAL)
@@ -1448,6 +1299,7 @@ void gen_property_def(
 {
     // Write external definition (whether propagated or not).
 
+    out("/*[%u]*/\n", __LINE__);
     out("extern const Meta_Property\n_%s_%s;\n", mp->owning_class, mp->name);
     nl();
 
@@ -1470,6 +1322,7 @@ void gen_property_def(
 
     // Generate property definition.
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Property\n_%s_%s =\n", class_name, mp->name);
     out("{\n");
 
@@ -1531,6 +1384,7 @@ void gen_reference_def(
     const MOF_Reference_Decl* mr)
 {
     // Write external definition (whether propagated or not).
+    out("/*[%u]*/\n", __LINE__);
     out("extern const Meta_Reference\n_%s_%s;\n", mr->owning_class, mr->name);
     nl();
 
@@ -1541,6 +1395,7 @@ void gen_reference_def(
 
     // Write the reference declaration.
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Reference\n_%s_%s =\n", class_name, mr->name);
     out("{\n");
 
@@ -1597,6 +1452,7 @@ void gen_param_ref_def(
 {
     // Preamble:
     {
+        out("/*[%u]*/\n", __LINE__);
         out("static const Meta_Reference\n");
         out("_%s_%s_%s =\n", class_name, meth_name, param->name);
         out("{\n");
@@ -1657,6 +1513,7 @@ void gen_param_prop_def(
 {
     /// Preamble:
 
+    out("/*[%u]*/\n", __LINE__);
     out("static const Meta_Property\n_%s_%s_%s =\n",
         class_name, meth_name, param->name);
     out("{\n");
@@ -1712,10 +1569,80 @@ void gen_param_prop_def(
     out("};\n\n");
 }
 
+void gen_embedded_param_def(
+    const char* class_name,
+    const char* meth_name,
+    const MOF_Parameter* param,
+    const char* embedded_class_name)
+{
+    // Preamble:
+    {
+        out("/*[%u]*/\n", __LINE__);
+        out("static const Meta_Reference\n");
+        out("_%s_%s_%s =\n", class_name, meth_name, param->name);
+        out("{\n");
+    }
+
+    // Refs:
+    out("    { 0 }, /* refs */\n");
+
+    // Flags:
+    {
+        if (embedded_class_name)
+            out("    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_INSTANCE");
+        else
+            out("    CIMPLE_FLAG_REFERENCE");
+
+        gen_bool_qual_list(param->qual_mask, true);
+        out(",\n");
+    }
+
+    // Name:
+    {
+        out("    \"%s\",\n", param->name);
+    }
+
+    // Qualifiers:
+
+    if (qualifier_opt && param->all_qualifiers)
+    {
+        out("    _%s_%s_%s_MQA,\n", class_name, meth_name, param->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_%s_MQA),\n",
+            class_name, meth_name, param->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qaulifiers */\n");
+    }
+
+    // Subscript:
+
+    out("    %d, /* subscript */\n", param->array_index);
+
+    // Meta class:
+    {
+        if (embedded_class_name)
+            out("    &%s::static_meta_class,\n" , embedded_class_name);
+        else
+            out("    &Instance::static_meta_class,\n");
+    }
+
+    /// Offset:
+
+    out("    CIMPLE_OFF(%s_%s_method,%s)\n", 
+        class_name, meth_name, param->name);
+
+    /// Postamble:
+
+    out("};\n\n");
+}
+
 void gen_param_array(
     const char* class_name,
     const MOF_Method_Decl* meth)
 {
+    out("/*[%u]*/\n", __LINE__);
     out("static Meta_Feature* _%s_%s_MFA[] =\n", 
         class_name, meth->name);
     out("{\n");
@@ -1739,6 +1666,7 @@ void gen_meth_return_def(
 {
     // Preamble:
 
+    out("/*[%u]*/\n", __LINE__);
     out("static const Meta_Property\n_%s_%s_return_value =\n",
         class_name, meth->name);
     out("{\n");
@@ -1791,6 +1719,73 @@ void gen_meth_return_def(
     out("};\n\n");
 }
 
+void gen_meth_embedded_return_def(
+    const char* class_name,
+    const MOF_Method_Decl* mmd,
+    const char* embedded_class_name)
+{
+    // Preamble:
+
+    out("/*[%u]*/\n", __LINE__);
+    out("static const Meta_Reference\n_%s_%s_return_value =\n",
+        class_name, mmd->name);
+    out("{\n");
+
+    // Meta_Reference.refs:
+
+    out("    { 0 }, /* refs */\n");
+
+    // Meta_Reference.flags:
+
+    if (embedded_class_name)
+    {
+        out("    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_INSTANCE|"
+            "CIMPLE_FLAG_OUT");
+    }
+    else
+    {
+        out("    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_OUT");
+    }
+
+    gen_bool_qual_list(mmd->qual_mask, true);
+    out(",\n");
+
+    // Field name:
+    out("    \"return_value\",\n");
+
+    // Meta_Reference.meta_qualifiers:
+
+    if (qualifier_opt && mmd->all_qualifiers)
+    {
+        out("    _%s_%s_MQA,\n", mmd->owning_class, mmd->name);
+        out("    CIMPLE_ARRAY_SIZE(_%s_%s_MQA),\n", 
+            mmd->owning_class, mmd->name);
+    }
+    else
+    {
+        out("    0, /* meta_qualifiers */\n");
+        out("    0, /* num_meta_qualifiers */\n");
+    }
+
+    // Meta_Reference.subscript:
+    out("    0, /* subscript */\n");
+
+    // Meta_Reference.super_meta_class:
+
+    if (embedded_class_name)
+        out("    &%s::static_meta_class,\n", embedded_class_name);
+    else
+        out("    &Instance::static_meta_class,\n");
+
+    // Meta_Reference.offset:
+
+    out("    CIMPLE_OFF(%s_%s_method, return_value),\n", class_name, mmd->name);
+
+    // Postamble:
+
+    out("};\n\n");
+}
+
 void gen_method_def(
     const MOF_Class_Decl* mcd,
     const MOF_Method_Decl* meth, 
@@ -1813,14 +1808,35 @@ void gen_method_def(
         // Generate param:
 
         if (p->data_type == TOK_REF)
+        {
             gen_param_ref_def(class_name, meth->name, p);
+        }
+        else if (p->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+        {
+            gen_embedded_param_def(class_name, meth->name, p, 0);
+        }
         else
-            gen_param_prop_def(class_name, meth->name, p);
+        {
+            const char* ecn = get_embedded_class_name(p);
+
+            if (ecn)
+                gen_embedded_param_def(class_name, meth->name, p, ecn);
+            else
+                gen_param_prop_def(class_name, meth->name, p);
+        }
     }
 
     // Generate the return value.
+    {
+        const char* ecn = get_embedded_class_name(meth);
 
-    gen_meth_return_def(class_name, meth);
+        if (meth->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            gen_meth_embedded_return_def(class_name, meth, 0);
+        else if (ecn)
+            gen_meth_embedded_return_def(class_name, meth, ecn);
+        else
+            gen_meth_return_def(class_name, meth);
+    }
 
     // Parameter array
 
@@ -1828,6 +1844,7 @@ void gen_method_def(
 
     // Preamble:
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Method\n%s_%s_method::static_meta_class =\n", 
         class_name, meth->name);
 
@@ -1881,9 +1898,10 @@ void gen_method_def(
     out("};\n\n");
 }
 
-void gen_embedded_object_def(
+void gen_embedded_def(
     const char* class_name, 
-    const MOF_Property_Decl* mpd)
+    const MOF_Property_Decl* mpd,
+    const char* embedded_class_name)
 {
     // Meta_Reference (declaration):
     out("extern const Meta_Reference\n_%s_%s;\n\n", 
@@ -1893,6 +1911,7 @@ void gen_embedded_object_def(
         return;
 
     // Meta_Reference (definition):
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Reference _%s_%s =\n", class_name, mpd->name);
     out("{\n");
 
@@ -1901,7 +1920,11 @@ void gen_embedded_object_def(
 
     // Meta_Reference.flags:
     // ATTN: can boolean qualifiers appear here?
-    out("    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,\n");
+
+    if (embedded_class_name)
+        out("    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_INSTANCE,\n");
+    else
+        out("    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_EMBEDDED_OBJECT,\n");
 
     // Meta_Reference.name:
     out("    \"%s\",\n", mpd->name);
@@ -1921,10 +1944,18 @@ void gen_embedded_object_def(
     }
 
     // Meta_Reference.subscript:
-    out("    0, /* subscript */\n");
+
+    if (mpd->array_index == 0)
+        out("    0, /* subscript */\n");
+    else
+        out("    -1, /* subscript */\n");
 
     // Meta_Reference.super_meta_class:
-    out("    &Instance::static_meta_class,\n");
+
+    if (embedded_class_name)
+        out("    &%s::static_meta_class,\n", embedded_class_name);
+    else
+        out("    &Instance::static_meta_class,\n");
 
     // Meta_Reference.offset:
     out("    CIMPLE_OFF(%s,%s)\n", class_name, mpd->name);
@@ -1958,11 +1989,16 @@ void gen_feature_defs(const MOF_Class_Decl* cd)
         {
             if (prop->qual_mask & MOF_QT_EMBEDDEDOBJECT)
             {
-                gen_embedded_object_def(class_name, prop);
+                gen_embedded_def(class_name, prop, 0);
             }
             else
             {
-                gen_property_def(class_name, prop);
+                const char* ecn = get_embedded_class_name(prop);
+
+                if (ecn)
+                    gen_embedded_def(class_name, prop, ecn);
+                else
+                    gen_property_def(class_name, prop);
             }
         }
 
@@ -1986,6 +2022,7 @@ void gen_feature_array(const MOF_Class_Decl* class_decl)
 {
     MOF_Feature_Info* p = class_decl->all_features;
 
+    out("/*[%u]*/\n", __LINE__);
     out("static Meta_Feature* _%s_MFA[] =\n", class_decl->name);
     out("{\n");
 
@@ -2032,6 +2069,7 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
 
     if (class_decl->all_features)
     {
+        out("/*[%u]*/\n", __LINE__);
         out("static const Meta_Feature_Local _locals[] =\n");
         out("{\n");
 
@@ -2051,6 +2089,7 @@ void gen_class_def(const MOF_Class_Decl* class_decl)
 
     // static_meta_class:
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Class %s::static_meta_class =\n", 
         class_decl->name);
     out("{\n");
@@ -2175,20 +2214,14 @@ void gen_source_file(const MOF_Class_Decl* class_decl)
 
     gen_class_def(class_decl);
 
-    if (gen_handles)
-    {
-        gen_handle_def(class_decl, true);
-        gen_handle_def(class_decl, false);
-    }
-
     out("CIMPLE_NAMESPACE_END\n");
     nl();
-    out("CIMPLE_ID(\"%cHeader%c\");\n", '$', '$');
 }
 
 void generate_ancestor_classes(const char* class_name);
 void generate_ref_clases(const char* class_name);
 void generate_param_ref_clases(const char* class_name);
+void generate_embedded_clases(const char* class_name);
 
 typedef set<string> Duplicate_Classes;
 Duplicate_Classes duplicate_classes;
@@ -2215,6 +2248,10 @@ void generate_class(const char* class_name)
     // Now generate any param ref classes.
 
     generate_param_ref_clases(class_name);
+
+    // Now generate any embedded classes.
+
+    generate_embedded_clases(class_name);
 
     // Find the class.
 
@@ -2334,6 +2371,83 @@ void generate_ref_clases(const char* class_name)
     return;
 }
 
+void generate_embedded_clases(const char* class_name)
+{
+    // Find the class.
+
+    const MOF_Class_Decl* mcd = 
+        MOF_Class_Decl::find((char*)class_name);
+
+    if (!mcd)
+    {
+        err("error: no such class: \"%s\"", class_name);
+        exit(1);
+    }
+
+    // Handle EmbeddedInstance() on properties.
+    {
+        // For each reference, generate the association class.
+
+        MOF_Feature* p = mcd->features;
+
+        for (; p; p = (MOF_Feature*)p->next)
+        {
+            MOF_Property_Decl* mpd = dynamic_cast<MOF_Property_Decl*>(p);
+
+            if (mpd)
+            {
+                const char* ecn = get_embedded_class_name(mpd);
+
+                if (ecn)
+                    generate_class(ecn);
+            }
+        }
+    }
+
+    // Handle EmbeddedInstance() on methods.
+    {
+        // For each reference, generate the association class.
+
+        MOF_Feature* p = mcd->features;
+
+        for (; p; p = (MOF_Feature*)p->next)
+        {
+            MOF_Method_Decl* mmd = dynamic_cast<MOF_Method_Decl*>(p);
+
+            if (mmd)
+            {
+                const char* ecn = get_embedded_class_name(mmd);
+
+                if (ecn)
+                    generate_class(ecn);
+            }
+        }
+    }
+
+    // Handle EmbeddedInstance() on parameters.
+    {
+        MOF_Feature* p = mcd->features;
+
+        for (; p; p = (MOF_Feature*)p->next)
+        {
+            MOF_Method_Decl* mmd = dynamic_cast<MOF_Method_Decl*>(p);
+
+            if (!mmd)
+                continue;
+
+            for (MOF_Parameter* q=mmd->parameters; q; q=(MOF_Parameter*)q->next)
+            {
+                const char* ecn = get_embedded_class_name(q);
+
+                if (ecn)
+                    generate_class(ecn);
+            }
+        }
+    }
+
+    return;
+}
+
 void generate_param_ref_clases(const char* class_name)
 {
     // Find the class.
@@ -2411,6 +2525,7 @@ void gen_repository_source_file(const vector<string>& classes)
     out("CIMPLE_NAMESPACE_BEGIN\n");
     nl();
 
+    out("/*[%u]*/\n", __LINE__);
     out("static const Meta_Class* _meta_classes[] =\n");
     out("{\n");
 
@@ -2437,6 +2552,7 @@ void gen_repository_source_file(const vector<string>& classes)
     out("extern const Meta_Repository %s;\n", meta_repository_name.c_str());
     nl();
 
+    out("/*[%u]*/\n", __LINE__);
     out("const Meta_Repository %s =\n", meta_repository_name.c_str());
     out("{\n");
     out("    _meta_classes,\n");
@@ -2575,6 +2691,8 @@ int main(int argc, char** argv)
     vector<string> mof_files;
     vector<string> extra_mof_files;
 
+    MOF_Options::warn = true;
+
 
     // Add the current directory to the search path:
 
@@ -2619,11 +2737,6 @@ int main(int argc, char** argv)
             case 'h':
                 printf((char*)USAGE);
                 exit(0);
-                break;
-
-            case 'H':
-                gen_handles = true;
-                qualifier_opt = true;
                 break;
 
             case 'V':
@@ -2731,4 +2844,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/main.cpp,v 1.147 2007/06/19 15:25:02 mbrasher-public Exp $");

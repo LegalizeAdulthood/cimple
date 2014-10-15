@@ -279,4 +279,3 @@ const Meta_Class CIM_EnabledLogicalElement::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/LinuxComputerSystem/CIM_EnabledLogicalElement.cpp,v 1.15 2007/06/19 15:25:00 mbrasher-public Exp $");

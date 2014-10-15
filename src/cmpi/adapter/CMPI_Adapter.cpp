@@ -31,7 +31,6 @@
 #include <cimple/config.h>
 #include <cimple/Mutex.h>
 #include <cimple/Auto_Mutex.h>
-#include <cimple/Tracer.h>
 #include "Converter.h"
 #include "CMPI_Thread_Context.h"
 
@@ -47,6 +46,65 @@
 #endif
 
 CIMPLE_NAMESPACE_BEGIN
+
+static const char* _rc_to_str(CMPIrc rc)
+{
+    switch (rc)
+    {
+        case CMPI_RC_OK:
+            return "CMPI_RC_OK";
+        case CMPI_RC_ERR_FAILED:
+            return "CMPI_RC_ERR_FAILED";
+        case CMPI_RC_ERR_ACCESS_DENIED:
+            return "CMPI_RC_ERR_ACCESS_DENIED";
+        case CMPI_RC_ERR_INVALID_NAMESPACE:
+            return "CMPI_RC_ERR_INVALID_NAMESPACE";
+        case CMPI_RC_ERR_INVALID_PARAMETER:
+            return "CMPI_RC_ERR_INVALID_PARAMETER";
+        case CMPI_RC_ERR_INVALID_CLASS:
+            return "CMPI_RC_ERR_INVALID_CLASS";
+        case CMPI_RC_ERR_NOT_FOUND:
+            return "CMPI_RC_ERR_NOT_FOUND";
+        case CMPI_RC_ERR_NOT_SUPPORTED:
+            return "CMPI_RC_ERR_NOT_SUPPORTED";
+        case CMPI_RC_ERR_CLASS_HAS_CHILDREN:
+            return "CMPI_RC_ERR_CLASS_HAS_CHILDREN";
+        case CMPI_RC_ERR_CLASS_HAS_INSTANCES:
+            return "CMPI_RC_ERR_CLASS_HAS_INSTANCES";
+        case CMPI_RC_ERR_INVALID_SUPERCLASS:
+            return "CMPI_RC_ERR_INVALID_SUPERCLASS";
+        case CMPI_RC_ERR_ALREADY_EXISTS:
+            return "CMPI_RC_ERR_ALREADY_EXISTS";
+        case CMPI_RC_ERR_NO_SUCH_PROPERTY:
+            return "CMPI_RC_ERR_NO_SUCH_PROPERTY";
+        case CMPI_RC_ERR_TYPE_MISMATCH:
+            return "CMPI_RC_ERR_TYPE_MISMATCH";
+        case CMPI_RC_ERR_QUERY_LANGUAGE_NOT_SUPPORTED:
+            return "CMPI_RC_ERR_QUERY_LANGUAGE_NOT_SUPPORTED";
+        case CMPI_RC_ERR_INVALID_QUERY:
+            return "CMPI_RC_ERR_INVALID_QUERY";
+        case CMPI_RC_ERR_METHOD_NOT_AVAILABLE:
+            return "CMPI_RC_ERR_METHOD_NOT_AVAILABLE";
+        case CMPI_RC_ERR_METHOD_NOT_FOUND:
+            return "CMPI_RC_ERR_METHOD_NOT_FOUND";
+        case CMPI_RC_DO_NOT_UNLOAD:
+            return "CMPI_RC_DO_NOT_UNLOAD";
+        case CMPI_RC_NEVER_UNLOAD:
+            return "CMPI_RC_NEVER_UNLOAD";
+        case CMPI_RC_ERR_INVALID_HANDLE:
+            return "CMPI_RC_ERR_INVALID_HANDLE";
+        case CMPI_RC_ERR_INVALID_DATA_TYPE:
+            return "CMPI_RC_ERR_INVALID_DATA_TYPE";
+        case CMPI_RC_ERROR_SYSTEM:
+            return "CMPI_RC_ERROR_SYSTEM";
+        case CMPI_RC_ERROR:
+            return "CMPI_RC_ERROR";
+        default:
+            return "CMPI_RC_ERR_FAILED";
+    }
+
+    return NULL;
+}
 
 //------------------------------------------------------------------------------
 //
@@ -66,10 +124,6 @@ CMPI_Adapter::CMPI_Adapter(
     allow_unload(true),
     indications_enabled(false)
 {
-#ifdef CIMPLE_DEBUG
-    tracer = new Tracer(TRC_DEBUG, prov_name);
-#endif
-
     ent(FL, "CMPI_Adapter");
 
     CMPI_Thread_Context_Pusher pusher(broker_, context, this);
@@ -191,10 +245,6 @@ CMPI_Adapter::~CMPI_Adapter()
     sd->adapter = 0;
 
     ret(FL, "~CMPI_Adapter");
-
-#ifdef CIMPLE_DEBUG
-    delete tracer;
-#endif
 }
 
 //------------------------------------------------------------------------------
@@ -307,7 +357,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
 
     if (rc != CMPI_RC_OK)
     {
@@ -433,7 +483,7 @@ CMPIStatus CMPI_Adapter::enumInstances(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -504,7 +554,7 @@ CMPIStatus CMPI_Adapter::getInstance(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -594,7 +644,7 @@ CMPIStatus CMPI_Adapter::createInstance(
     }
 
     Instance* cimple_inst = 0;
-    CMPIrc rc = make_cimple_instance(mc, cmpi_inst, cimple_inst);
+    CMPIrc rc = make_cimple_instance(0, mc, cmpi_inst, cimple_inst);
 
     if (rc != CMPI_RC_OK)
     {
@@ -674,7 +724,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
     }
 
     Instance* cimple_inst = 0;
-    CMPIrc rc = make_cimple_instance(mc, cmpi_inst, cimple_inst);
+    CMPIrc rc = make_cimple_instance(0, mc, cmpi_inst, cimple_inst);
 
     if (rc != CMPI_RC_OK)
     {
@@ -745,7 +795,7 @@ CMPIStatus CMPI_Adapter::deleteInstance(
     }
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
 
     Ref<Instance> cimple_ref_d(cimple_ref);
 
@@ -876,7 +926,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
 
     if (rc != CMPI_RC_OK)
     {
@@ -889,7 +939,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     // Create the method:
 
     Instance* cimple_meth = 0;
-    rc = make_method(mm, in, find_meta_class_callback, adapter, cimple_meth);
+    rc = make_cimple_method(0, mc, mm, in, adapter, cimple_meth);
 
     if (rc != CMPI_RC_OK)
     {
@@ -924,7 +974,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
     CMPIType return_type;
     const char* ns = name_space(cmpi_op);
 
-    rc = make_method_out(
+    rc = make_cmpi_method(
         adapter->broker, ns, cimple_meth, out, return_value, return_type);
 
     if (rc != CMPI_RC_OK)
@@ -1398,7 +1448,7 @@ CMPIStatus CMPI_Adapter::associators(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -1554,7 +1604,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -1687,7 +1737,7 @@ CMPIStatus CMPI_Adapter::references(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -1823,7 +1873,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
     // Convert to CIMPLE reference:
 
     Instance* cimple_ref = 0;
-    CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
+    CMPIrc rc = make_cimple_reference(0, mc, cmpi_op, cimple_ref);
     Ref<Instance> cimple_ref_d(cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -2024,40 +2074,26 @@ const Meta_Class* CMPI_Adapter::find_model_meta_class(const char* class_name)
 
 void CMPI_Adapter::ent(const char* file, int line, const char* func)
 {
-#ifdef CIMPLE_DEBUG
-    tracer->trace(TRC_DEBUG, "%s(%d): %s(): ENTER", file, line, func);
-#endif
+    log(LL_DBG, file, line, "enter: %s()", func);
 }
 
 void CMPI_Adapter::ret(const char* file, int line, const char* func)
 {
-#ifdef CIMPLE_DEBUG
-    tracer->trace(TRC_DEBUG, "%s(%d): %s(): RETURN", file, line, func);
-#endif
+    log(LL_DBG, file, line, "return: %s()", func);
 }
 
 void CMPI_Adapter::ret(
     const char* file, int line, const char* func, CMPIrc rc)
 {
-#ifdef CIMPLE_DEBUG
-    tracer->trace(TRC_DEBUG, "%s(%d): %s(): RETURN %s",
-        file, line, func, rc_to_str(rc));
-#endif
+    log(LL_DBG, file, line, "return: %s(): %s", func, _rc_to_str(rc));
 }
 
 void CMPI_Adapter::trc(
     const char* file, int line, const char* func, const char* fmt, ...)
 {
-#ifdef CIMPLE_DEBUG
-    char buffer[1024];
     va_list ap;
     va_start(ap, fmt);
-    vsprintf(buffer, fmt, ap);
+    vlog(LL_DBG, file, line, fmt, ap);
     va_end(ap);
-
-    tracer->trace(TRC_DEBUG, "%s(%d): %s(): %s",
-        file, line, func, buffer);
-#endif
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/CMPI_Adapter.cpp,v 1.64 2007/07/19 21:30:38 mbrasher-public Exp $");

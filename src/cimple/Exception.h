@@ -40,6 +40,17 @@ public:
     enum Code
     {
         BAD_CAST = 1,
+        BAD_NAME = 2,
+        ALREADY_EXISTS = 3,
+        INCOMPATIBLE_OVERRIDE = 4,
+        BAD_SUBSCRIPT = 5,
+        NO_SUCH_FEATURE = 6,
+        NO_SUCH_PROPERTY = 7,
+        NO_SUCH_REFERENCE = 8,
+        NO_SUCH_METHOD = 9,
+        TYPE_MISMATCH = 10,
+        NULL_ACCESS = 11,
+        BOUNDS= 12,
     };
 
     CIMPLE_PRINTF_ATTR(3, 4)

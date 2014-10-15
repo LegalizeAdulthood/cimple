@@ -68,7 +68,6 @@ Invoke_Method_Status MyIndication_Provider::DeliverIndications(
     if (_indication_handler)
     {
         MyIndication* indic = MyIndication_create("777", "seven");
-        // print(indic);
         _indication_handler->handle(indic);
     }
 
@@ -77,4 +76,3 @@ Invoke_Method_Status MyIndication_Provider::DeliverIndications(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MyIndication/MyIndication_Provider.cpp,v 1.23 2007/04/18 03:51:28 mbrasher-public Exp $");

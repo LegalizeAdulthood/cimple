@@ -102,4 +102,3 @@ void print(const Meta_Method* mm, bool print_qualifiers, size_t level)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Method.cpp,v 1.16 2007/03/07 18:41:15 mbrasher-public Exp $");

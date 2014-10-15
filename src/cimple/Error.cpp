@@ -123,4 +123,3 @@ void Error::clear()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Error.cpp,v 1.18 2007/03/24 18:54:10 mbrasher-public Exp $");

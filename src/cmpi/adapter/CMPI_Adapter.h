@@ -34,7 +34,6 @@
 #include <cimple/Mutex.h>
 #include <cimple/Magic.h>
 #include <cimple/Thread.h>
-#include <cimple/Tracer.h>
 #include "CMPI_Thread_Context.h"
 
 //==============================================================================
@@ -332,10 +331,6 @@ public:
         const char* file, int line, const char* func, const char* fmt, ...);
 
 public:
-
-#ifdef CIMPLE_DEBUG
-    Tracer* tracer;
-#endif
 
     // Magic number.
     Magic<0x2301490A> magic;

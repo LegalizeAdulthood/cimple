@@ -121,4 +121,3 @@ MEB
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Thread_Context.cpp,v 1.11 2007/04/24 20:51:56 mbrasher-public Exp $");

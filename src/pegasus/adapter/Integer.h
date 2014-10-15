@@ -28,7 +28,7 @@
 #define _pegadapter_Integer_h
 
 #include <cimple/config.h>
-#include <Pegasus/Common/CIMType.h>
+#include <pegasus/utils/pegasus.h>
 #include "typedefs.h"
 
 CIMPLE_NAMESPACE_BEGIN

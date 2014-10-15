@@ -94,6 +94,10 @@ do
       with_namespace=$optarg 
       ;;
 
+    --enable-embedded-instances)
+      enable_embedded_instances=1
+      ;;
+
     *)
       echo "$0: unknown option:  $opt"
       exit 1
@@ -425,6 +429,7 @@ echo "WITH_OPENWBEM_OPT=$with_openwbem" >> $fn
 echo "WITH_SCHEMA_OPT=$with_schema" >> $fn
 echo "ENABLE_DEBUG_OPT=$enable_debug" >> $fn
 echo "ENABLE_STATIC_OPT=$enable_static" >> $fn
+echo "ENABLE_EMBEDDED_INSTANCES_OPT=$enable_embedded_instances" >> $fn
 echo "PLATFORM=$platform" >> $fn
 echo "LIBBASE_OPT=$libbase" >> $fn
 echo "WITH_PEGASUS_LIBDIR_OPT=$with_pegasus_libdir" >> $fn

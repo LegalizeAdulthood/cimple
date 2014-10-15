@@ -90,4 +90,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/cond_queue/main.cpp,v 1.8 2007/03/07 20:17:51 mbrasher-public Exp $");

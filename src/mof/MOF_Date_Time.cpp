@@ -92,4 +92,3 @@ bool MOF_Date_Time::valid(const char* datetime)
     return true;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Date_Time.cpp,v 1.3 2007/03/07 18:57:14 mbrasher-public Exp $");

@@ -37,8 +37,6 @@ Enum_Instances_Status CIM_ConcreteJob_Provider::enum_instances(
 Create_Instance_Status CIM_ConcreteJob_Provider::create_instance(
     CIM_ConcreteJob* instance)
 {
-    // print(instance, true);
-
     instance->InstanceID.value = "2222";
     instance->InstanceID.null = false;
 

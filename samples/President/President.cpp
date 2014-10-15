@@ -100,4 +100,3 @@ const Meta_Class President::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/samples/President/President.cpp,v 1.1 2007/03/26 00:43:44 mbrasher-public Exp $");

@@ -193,4 +193,3 @@ string shlib_basename(const string& path)
     return base;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/util/util.cpp,v 1.18 2007/03/07 19:06:39 mbrasher-public Exp $");

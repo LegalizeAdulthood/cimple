@@ -1496,237 +1496,235 @@ int instance_to_model_path(const Instance* inst, String& model_path)
     return 0;
 }
 
-namespace IO
+void __print_scalar(uint32 type, const void* ptr)
 {
-    static void _print_scalar(uint32 type, const void* ptr)
+    switch (Type(type))
     {
-        switch (Type(type))
+        case BOOLEAN:
         {
-            case BOOLEAN:
-            {
-                printf(*((boolean*)ptr) ?  "true" : "false");
-                break;
-            }
-
-            case UINT8:
-            {
-                printf("%u", *((uint8*)ptr));
-                break;
-            }
-
-            case SINT8:
-            {
-                printf("%d", *((sint8*)ptr));
-                break;
-            }
-
-            case UINT16:
-            {
-                printf("%u", *((uint16*)ptr));
-                break;
-            }
-
-            case SINT16:
-            {
-                printf("%d", *((sint16*)ptr));
-                break;
-            }
-
-            case UINT32:
-            {
-                printf("%u", *((uint32*)ptr));
-                break;
-            }
-
-            case SINT32:
-            {
-                printf("%d", *((sint32*)ptr));
-                break;
-            }
-
-            case UINT64:
-            {
-                printf(CIMPLE_LLU, *((uint64*)ptr));
-                break;
-            }
-
-            case SINT64:
-            {
-                printf(CIMPLE_LLD, *((sint64*)ptr));
-                break;
-            }
-
-            case REAL32:
-            {
-                printf("%f", *((real32*)ptr));
-                break;
-            }
-
-            case REAL64:
-            {
-                printf("%f", *((real64*)ptr));
-                break;
-            }
-
-            case CHAR16:
-            {
-                uint16 c = *((uint16*)ptr);
-
-                if (c >= ' ' && c <= '~')
-                    printf("'%c'", c);
-                else
-                    printf("0x%04X", c);
-                break;
-            }
-
-            case DATETIME:
-            {
-                char buffer[32];
-                ((Datetime*)ptr)->ascii(buffer);
-                printf("\"%s\"", buffer);
-                break;
-            }
-
-            case STRING:
-            {
-                print_string(((String*)ptr)->c_str());
-                break;
-            }
-        }
-    }
-
-    static void _print_array(uint32 type, const void* ptr, size_t depth)
-    {
-        printf("{ ");
-
-        __Array_Base* base = (__Array_Base*)ptr;
-        const char* data = base->rep->data;
-        size_t size = base->rep->size;
-
-        for (size_t i = 0; i < size; i++)
-        {
-            _print_scalar(type, data);
-
-            if (i + 1 != size)
-                putchar(',');
-
-            putchar(' ');
-            data += type_size[type];
+            printf(*((boolean*)ptr) ?  "true" : "false");
+            break;
         }
 
-        printf("}");
-    }
-
-    static void _print_property(
-        const Meta_Property* mp, const void* prop, size_t level)
-    {
-        iprintf(level, "%s %s", type_name[mp->type], mp->name);
-
-        if (mp->subscript)
-            printf("[]");
-
-        printf(" = ");
-
-        if (null_of(mp, prop))
-            printf("NULL");
-        else if (mp->subscript == 0)
-            _print_scalar(mp->type, prop);
-        else
-            _print_array(mp->type, prop, 0);
-
-        printf(";\n");
-    }
-
-    static void _print_aux(
-        const Instance* inst, const char* name, size_t level, bool keys_only)
-    {
-        CIMPLE_ASSERT(inst != 0);
-        CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
-
-        const Meta_Class* mc = inst->meta_class;
-
-        if (name)
-            iprintf(level, "%s %s =\n", inst->meta_class->name, name);
-        else
-            iprintf(level, "%s\n", inst->meta_class->name);
-
-        iprintf(level, "{\n");
-
-        iprintf(level, 
-            "    string __name_space = \"%s\";\n", inst->__name_space.c_str());
-
-        for (size_t i = 0; i < mc->num_meta_features; i++)
+        case UINT8:
         {
-            uint32 flags = mc->meta_features[i]->flags;
+            printf("%u", *((uint8*)ptr));
+            break;
+        }
 
-            if (keys_only && !(flags & CIMPLE_FLAG_KEY))
-                continue;
+        case SINT8:
+        {
+            printf("%d", *((sint8*)ptr));
+            break;
+        }
 
-            // Skip non-keys if we are not at the top level.
+        case UINT16:
+        {
+            printf("%u", *((uint16*)ptr));
+            break;
+        }
 
-            if (!(level == 0 || 
-                (flags & CIMPLE_FLAG_KEY) || 
-                (flags & CIMPLE_FLAG_EMBEDDED_OBJECT)))
+        case SINT16:
+        {
+            printf("%d", *((sint16*)ptr));
+            break;
+        }
+
+        case UINT32:
+        {
+            printf("%u", *((uint32*)ptr));
+            break;
+        }
+
+        case SINT32:
+        {
+            printf("%d", *((sint32*)ptr));
+            break;
+        }
+
+        case UINT64:
+        {
+            printf(CIMPLE_LLU, *((uint64*)ptr));
+            break;
+        }
+
+        case SINT64:
+        {
+            printf(CIMPLE_LLD, *((sint64*)ptr));
+            break;
+        }
+
+        case REAL32:
+        {
+            printf("%f", *((real32*)ptr));
+            break;
+        }
+
+        case REAL64:
+        {
+            printf("%f", *((real64*)ptr));
+            break;
+        }
+
+        case CHAR16:
+        {
+            uint16 c = *((uint16*)ptr);
+
+            if (c >= ' ' && c <= '~')
+                printf("'%c'", c);
+            else
+                printf("0x%04X", c);
+            break;
+        }
+
+        case DATETIME:
+        {
+            char buffer[32];
+            ((Datetime*)ptr)->ascii(buffer);
+            printf("\"%s\"", buffer);
+            break;
+        }
+
+        case STRING:
+        {
+            print_string(((String*)ptr)->c_str());
+            break;
+        }
+    }
+}
+
+void __print_array(uint32 type, const void* ptr, size_t depth)
+{
+    printf("{ ");
+
+    __Array_Base* base = (__Array_Base*)ptr;
+    const char* data = base->rep->data;
+    size_t size = base->rep->size;
+
+    for (size_t i = 0; i < size; i++)
+    {
+        __print_scalar(type, data);
+
+        if (i + 1 != size)
+            putchar(',');
+
+        putchar(' ');
+        data += type_size[type];
+    }
+
+    printf("}");
+}
+
+static void _print_property(
+    const Meta_Property* mp, const void* prop, size_t level)
+{
+    iprintf(level, "%s %s", type_name[mp->type], mp->name);
+
+    if (mp->subscript)
+        printf("[]");
+
+    printf(" = ");
+
+    if (null_of(mp, prop))
+        printf("NULL");
+    else if (mp->subscript == 0)
+        __print_scalar(mp->type, prop);
+    else
+        __print_array(mp->type, prop, 0);
+
+    printf(";\n");
+}
+
+void __print_aux(
+    const Instance* inst, const char* name, size_t level, bool keys_only)
+{
+    CIMPLE_ASSERT(inst != 0);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    const Meta_Class* mc = inst->meta_class;
+
+    if (name)
+        iprintf(level, "%s %s =\n", inst->meta_class->name, name);
+    else
+        iprintf(level, "%s\n", inst->meta_class->name);
+
+    iprintf(level, "{\n");
+
+    iprintf(level, 
+        "    string __name_space = \"%s\";\n", inst->__name_space.c_str());
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+        uint32 flags = mc->meta_features[i]->flags;
+
+        if (keys_only && !(flags & CIMPLE_FLAG_KEY))
+            continue;
+
+        // Skip non-keys if we are not at the top level.
+
+        if (!(level == 0 || 
+            (flags & CIMPLE_FLAG_KEY) || 
+            (flags & CIMPLE_FLAG_EMBEDDED_OBJECT) ||
+            (flags & CIMPLE_FLAG_EMBEDDED_INSTANCE)))
+        {
+            continue;
+        }
+
+        level++;
+
+        if (flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
+            const void* prop = __property_of(inst, mp);
+            _print_property(mp, prop, level);
+        }
+        else if (flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = 
+                (Meta_Reference*)mc->meta_features[i];
+
+            if (mr->subscript)
             {
-                continue;
-            }
+                const Array_Ref& r = __array_ref_of(inst, mr);
 
-            level++;
+                iprintf(level, "%s %s[] =\n", mr->meta_class->name, mr->name);
+                iprintf(level, "{\n");
+                level++;
 
-            if (flags & CIMPLE_FLAG_PROPERTY)
-            {
-                const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
-                const void* prop = __property_of(inst, mp);
-                _print_property(mp, prop, level);
-            }
-            else if (flags & CIMPLE_FLAG_REFERENCE)
-            {
-                const Meta_Reference* mr = 
-                    (Meta_Reference*)mc->meta_features[i];
-
-                if (mr->subscript)
+                for (size_t i = 0; i < r.size(); i++)
                 {
-                    const Array_Ref& r = __array_ref_of(inst, mr);
-
-                    iprintf(level, "%s %s =\n", mr->meta_class->name, mr->name);
-                    iprintf(level, "{\n");
-                    level++;
-
-                    for (size_t i = 0; i < r.size(); i++)
-                    {
-                        const Instance* tmp = r[i];
-
-                        if (tmp)
-                            _print_aux(tmp, 0, level, false);
-                        else
-                            iprintf(level, "NULL\n");
-                    }
-
-                    level--;
-                    iprintf(level, "};\n");
-                }
-                else
-                {
-                    const Instance*& tmp = __ref_of(inst, mr);
+                    const Instance* tmp = r[i];
 
                     if (tmp)
-                        _print_aux(tmp, mr->name, level, keys_only);
+                        __print_aux(tmp, 0, level, false);
                     else
-                        iprintf(level, "%s %s = NULL;\n", 
-                            mr->meta_class->name, mr->name);
+                        iprintf(level, "NULL\n");
                 }
-            }
 
-            level--;
+                level--;
+                iprintf(level, "};\n");
+            }
+            else
+            {
+                const Instance*& tmp = __ref_of(inst, mr);
+
+                if (tmp)
+                    __print_aux(tmp, mr->name, level, keys_only);
+                else
+                    iprintf(level, "%s %s = NULL;\n", 
+                        mr->meta_class->name, mr->name);
+            }
         }
 
-        iprintf(level, "}\n");
+        level--;
     }
+
+    iprintf(level, "}\n");
 }
 
 void print(const Instance* inst, bool keys_only)
 {
-    IO::_print_aux(inst, 0, 0, keys_only);
+    __print_aux(inst, 0, 0, keys_only);
 }
 
 void __create_refs(Instance* inst)
@@ -1756,6 +1754,41 @@ void __create_refs(Instance* inst)
     }
 }
 
+void visit(Instance* inst, void (*func)(Instance*, void*), void* data)
+{
+    CIMPLE_ASSERT(inst != 0);
+    CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
+
+    (*func)(inst, data);
+
+    const Meta_Class* mc = inst->meta_class;
+
+    for (size_t i = 0; i < mc->num_meta_features; i++)
+    {
+        const Meta_Feature* mf = mc->meta_features[i];
+
+        if (mf->flags & CIMPLE_FLAG_REFERENCE)
+        {
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
+            void* field = (char*)inst + mr->offset;
+
+            if (mr->subscript)
+            {
+                Array<Instance*>& a = *((Array<Instance*>*)field);
+
+                for (size_t i = 0; i < a.size(); i++)
+                    visit(a[i], func, data);
+            }
+            else
+            {
+                Instance* tmp = *((Instance**)field);
+
+                if (tmp)
+                    visit(tmp, func, data);
+            }
+        }
+    }
+}
+
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Instance.cpp,v 1.124 2007/04/26 22:40:57 mbrasher-public Exp $");

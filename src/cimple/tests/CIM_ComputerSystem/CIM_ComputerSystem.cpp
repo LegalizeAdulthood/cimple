@@ -333,4 +333,3 @@ const Meta_Class CIM_ComputerSystem::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/CIM_ComputerSystem/CIM_ComputerSystem.cpp,v 1.7 2007/03/23 17:06:09 mbrasher-public Exp $");

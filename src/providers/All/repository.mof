@@ -1,0 +1,112 @@
+class All_Part
+{
+    [Key] uint32 Key;
+};
+
+class All_Class
+{
+    [Key] uint32 Key;
+
+    // Scalar properties:
+    boolean booleanScalar;
+    uint8 uint8Scalar;
+    sint8 sint8Scalar;
+    uint16 uint16Scalar;
+    sint16 sint16Scalar;
+    uint32 uint32Scalar;
+    sint32 sint32Scalar;
+    uint64 uint64Scalar;
+    sint64 sint64Scalar;
+    real32 real32Scalar;
+    real64 real64Scalar;
+    char16 char16Scalar;
+    string stringScalar;
+    datetime datetimeScalar;
+    [EmbeddedInstance("All_Part")] string instanceScalar;
+    [EmbeddedObject] string objectScalar;
+
+    // Array properties:
+    boolean booleanArray[];
+    uint8 uint8Array[];
+    sint8 sint8Array[];
+    uint16 uint16Array[];
+    sint16 sint16Array[];
+    uint32 uint32Array[];
+    sint32 sint32Array[];
+    uint64 uint64Array[];
+    sint64 sint64Array[];
+    real32 real32Array[];
+    real64 real64Array[];
+    char16 char16Array[];
+    string stringArray[];
+    datetime datetimeArray[];
+    [EmbeddedInstance("All_Part")] string instanceArray[];
+    [EmbeddedObject] string objectArray[];
+
+    // Return types:
+    boolean booleanReturn();
+    uint8 uint8Return();
+    sint8 sint8Return();
+    uint16 uint16Return();
+    sint16 sint16Return();
+    uint32 uint32Return();
+    sint32 sint32Return();
+    uint64 uint64Return();
+    sint64 sint64Return();
+    real32 real32Return();
+    real64 real64Return();
+    char16 char16Return();
+    string stringReturn();
+    datetime datetimeReturn();
+    [EmbeddedInstance("All_Part")] string instanceReturn();
+    [EmbeddedObject] string objectReturn();
+
+    // Scalar methods:
+    uint32 booleanScalarParams([In] boolean p1, [In(false), Out] boolean p2);
+    uint32 uint8ScalarParams([In] uint8 p1, [In(false), Out] uint8 p2);
+    uint32 sint8ScalarParams([In] sint8 p1, [In(false), Out] sint8 p2);
+    uint32 uint16ScalarParams([In] uint16 p1, [In(false), Out] uint16 p2);
+    uint32 sint16ScalarParams([In] sint16 p1, [In(false), Out] sint16 p2);
+    uint32 uint32ScalarParams([In] uint32 p1, [In(false), Out] uint32 p2);
+    uint32 sint32ScalarParams([In] sint32 p1, [In(false), Out] sint32 p2);
+    uint32 uint64ScalarParams([In] uint64 p1, [In(false), Out] uint64 p2);
+    uint32 sint64ScalarParams([In] sint64 p1, [In(false), Out] sint64 p2);
+    uint32 real32ScalarParams([In] real32 p1, [In(false), Out] real32 p2);
+    uint32 real64ScalarParams([In] real64 p1, [In(false), Out] real64 p2);
+    uint32 char16ScalarParams([In] char16 p1, [In(false), Out] char16 p2);
+    uint32 stringScalarParams([In] string p1, [In(false), Out] string p2);
+    uint32 datetimeScalarParams([In] datetime p1, [In(false), Out] datetime p2);
+    uint32 objectScalarParams(
+        [In, EmbeddedObject] string p1,
+        [In(false), Out, EmbeddedObject] string p2);
+    uint32 instanceScalarParams(
+        [In, EmbeddedInstance("All_Part")] string p1,
+        [In(false), Out, EmbeddedInstance("All_Part")] string p2);
+    uint32 referenceScalarParams(
+        [In] All_Part REF p1, [In(false), Out] All_Part REF p2);
+
+    // Array methods:
+    uint32 booleanArrayParams([In] boolean p1[], [In(false), Out] boolean p2[]);
+    uint32 uint8ArrayParams([In] uint8 p1[], [In(false), Out] uint8 p2[]);
+    uint32 sint8ArrayParams([In] sint8 p1[], [In(false), Out] sint8 p2[]);
+    uint32 uint16ArrayParams([In] uint16 p1[], [In(false), Out] uint16 p2[]);
+    uint32 sint16ArrayParams([In] sint16 p1[], [In(false), Out] sint16 p2[]);
+    uint32 uint32ArrayParams([In] uint32 p1[], [In(false), Out] uint32 p2[]);
+    uint32 sint32ArrayParams([In] sint32 p1[], [In(false), Out] sint32 p2[]);
+    uint32 uint64ArrayParams([In] uint64 p1[], [In(false), Out] uint64 p2[]);
+    uint32 sint64ArrayParams([In] sint64 p1[], [In(false), Out] sint64 p2[]);
+    uint32 real32ArrayParams([In] real32 p1[], [In(false), Out] real32 p2[]);
+    uint32 real64ArrayParams([In] real64 p1[], [In(false), Out] real64 p2[]);
+    uint32 char16ArrayParams([In] char16 p1[], [In(false), Out] char16 p2[]);
+    uint32 stringArrayParams([In] string p1[], [In(false), Out] string p2[]);
+    uint32 datetimeArrayParams(
+        [In] datetime p1[], [In(false), Out] datetime p2[]);
+    uint32 objectArrayParams(
+        [In, EmbeddedObject] string p1[],
+        [In(false), Out, EmbeddedObject] string p2[]);
+    uint32 instanceArrayParams(
+        [In, EmbeddedInstance("All_Part")] string p1[],
+        [In(false), Out, EmbeddedInstance("All_Part")] string p2[]);
+    uint32 referenceArrayParams(
+        [In] All_Part REF p1[], [In(false), Out] All_Part REF p2[]);
+};

@@ -330,4 +330,3 @@ const Meta_Class CIM_DiskDrive::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/ComputerSystemDiskDrive/CIM_DiskDrive.cpp,v 1.10 2007/06/19 15:24:57 mbrasher-public Exp $");

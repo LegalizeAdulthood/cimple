@@ -99,4 +99,3 @@ Enum_Associators_Status SalesmanLink_Provider::enum_associators(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/SalesmanLink_Provider.cpp,v 1.7 2007/05/31 16:45:09 mbrasher-public Exp $");

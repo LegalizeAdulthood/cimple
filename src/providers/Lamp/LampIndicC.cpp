@@ -93,4 +93,3 @@ const Meta_Class LampIndicC::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampIndicC.cpp,v 1.10 2007/06/19 15:24:59 mbrasher-public Exp $");

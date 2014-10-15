@@ -58,4 +58,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/catmod/main.cpp,v 1.19 2007/03/07 19:05:04 mbrasher-public Exp $");

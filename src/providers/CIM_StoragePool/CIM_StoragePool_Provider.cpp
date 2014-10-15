@@ -113,4 +113,3 @@ Invoke_Method_Status CIM_StoragePool_Provider::GetAvailableExtents(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_StoragePool/CIM_StoragePool_Provider.cpp,v 1.5 2007/04/18 03:51:24 mbrasher-public Exp $");

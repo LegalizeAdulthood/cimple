@@ -77,4 +77,3 @@ const Meta_Class Link::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/classes/Link.cpp,v 1.3 2007/04/17 19:45:10 mbrasher-public Exp $");

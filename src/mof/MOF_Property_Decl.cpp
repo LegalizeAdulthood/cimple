@@ -86,4 +86,3 @@ MOF_Element* MOF_Property_Decl::clone() const
 }
 
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Property_Decl.cpp,v 1.6 2007/03/07 18:57:15 mbrasher-public Exp $");

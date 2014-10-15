@@ -76,4 +76,3 @@ const Meta_Class Assoc::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genhnd/tests/genhnd1/Assoc.cpp,v 1.4 2007/06/26 20:46:53 mbrasher-public Exp $");

@@ -335,4 +335,3 @@ bool String::equali(const char* s, size_t n) const
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/String.cpp,v 1.21 2007/03/25 01:12:04 mbrasher-public Exp $");

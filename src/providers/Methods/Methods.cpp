@@ -494,4 +494,3 @@ const Meta_Class Methods::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Methods/Methods.cpp,v 1.17 2007/06/19 15:25:00 mbrasher-public Exp $");

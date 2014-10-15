@@ -74,4 +74,3 @@ int is_subclass(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Repository.cpp,v 1.7 2007/07/04 17:54:43 mbrasher-public Exp $");

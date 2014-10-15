@@ -172,4 +172,3 @@ int main(int arc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/datetime/main.cpp,v 1.21 2007/07/11 17:17:17 mbrasher-public Exp $");

@@ -6,16 +6,17 @@ MODULE=1
 SHARED_LIBRARY = cimpleCross
 
 SOURCES = \
-    CMPL_Cross.cpp \
-    CMPL_Cross_Provider.cpp \
-    CMPL_Left.cpp \
-    CMPL_Left_Provider.cpp \
-    CMPL_Right.cpp \
-    CMPL_Right_Provider.cpp \
+    Cross.cpp \
+    Cross_Provider.cpp \
+    Left.cpp \
+    Left_Provider.cpp \
+    Right.cpp \
+    Right_Provider.cpp \
     module.cpp \
     repository.cpp
 
-CIMPLE_PEGASUS_MODULE=1
+#CIMPLE_PEGASUS_MODULE=1
+CIMPLE_CMPI_MODULE=1
 include ../common.mak
 
 include $(TOP)/mak/rules.mak
@@ -24,13 +25,22 @@ regmod:
 	$(BINDIR)/regmod -n root/PG_InterOp -n root/cimv2 -c -s $(TARGET)
 
 genclass:
-	$(BINDIR)/genclass -r CMPL_Cross
+	$(BINDIR)/genclass -r Cross
 
 genprov:
-	$(BINDIR)/genprov CMPL_Cross
-	$(BINDIR)/genprov CMPL_Left
-	$(BINDIR)/genprov CMPL_Right
+	$(BINDIR)/genprov Cross
+	$(BINDIR)/genprov Left
+	$(BINDIR)/genprov Right
 
 genmod:
-	$(BINDIR)/genmod CMPL_Cross CMPL_Cross CMPL_Left CMPL_Right
+	$(BINDIR)/genmod Cross Cross Left Right
+
+regLeft:
+	$(BINDIR)/regmod -n Left -c $(TARGET) Left
+
+regRight:
+	$(BINDIR)/regmod -n Right -c $(TARGET) Right
+
+regCross:
+	$(BINDIR)/regmod -n Left -n Right -c $(TARGET) Cross
 

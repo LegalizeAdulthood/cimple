@@ -84,4 +84,3 @@ Invoke_Method_Status LinuxComputerSystem_Provider::SetPowerState(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/LinuxComputerSystem/LinuxComputerSystem_Provider.cpp,v 1.22 2007/05/31 16:45:09 mbrasher-public Exp $");

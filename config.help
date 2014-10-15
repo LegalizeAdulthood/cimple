@@ -82,6 +82,8 @@ Options:
                                 defaults to $datadir/cimple/schema/cim214.
     --enable-debug              Build for debug.
     --enable-static             Build static libraries.
+    --enable-embedded-instances Enable use of embedded instances (must be
+                                supported by CIMOM).
     --with-namespace=NAMESPACE  Change the name of the CIMPLE namespace (the 
                                 default is "cimple").
 

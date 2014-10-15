@@ -79,6 +79,36 @@ inline void char16::code(uint16 code)
     _code = code; 
 }
 
+inline bool operator==(const char16& x, const char16& y)
+{
+    return x.code() == y.code();
+}
+
+inline bool operator!=(const char16& x, const char16& y)
+{
+    return !operator==(x, y);
+}
+
+inline bool operator<(const char16& x, const char16& y)
+{
+    return x.code() < y.code();
+}
+
+inline bool operator<=(const char16& x, const char16& y)
+{
+    return x.code() <= y.code();
+}
+
+inline bool operator>(const char16& x, const char16& y)
+{
+    return x.code() > y.code();
+}
+
+inline bool operator>=(const char16& x, const char16& y)
+{
+    return x.code() >= y.code();
+}
+
 inline void __clear(char16& x)
 {
     x = 0;

@@ -1,0 +1,6 @@
+
+    (A) Handle namespaces.
+
+    (A) Reject non-related instances when setting instance types.
+
+    (A) Test null CIMInstance type.

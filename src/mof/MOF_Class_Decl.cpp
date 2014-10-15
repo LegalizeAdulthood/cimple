@@ -399,8 +399,10 @@ MOF_Class_Decl* MOF_Class_Decl::find(
         {
             if (fix_case && strcmp(p->name, class_name) != 0)
             {
+#if 0
                 MOF_warning_printf("changing case of \"%s\" to \"%s\"",
                     class_name, p->name);
+#endif
                 strcpy(class_name, p->name);
             }
             return p;
@@ -425,8 +427,10 @@ MOF_Class_Decl* MOF_Class_Decl::find_by_alias(
         {
             if (fix_case && strcmp(p->alias, alias) != 0)
             {
+#if 0
                 MOF_warning_printf("changing case of \"%s\" to \"%s\"",
                     alias, p->alias);
+#endif
                 strcpy(alias, p->alias);
             }
             return p;
@@ -434,6 +438,27 @@ MOF_Class_Decl* MOF_Class_Decl::find_by_alias(
     }
 
     return 0;
+}
+
+static void _check_EmbeddedInstance_value(const MOF_Qualifier* mq)
+{
+    MOF_Literal* ml = mq->params;
+
+    if (!ml || !ml->string_value)
+    {
+        MOF_error_printf("EmbeddedInstance qualifier has null value");
+    }
+
+    if (ml->value_type != TOK_STRING_VALUE)
+    {
+        MOF_error_printf("EmbeddedInstance applied to non-string");
+    }
+
+    if (!MOF_Class_Decl::find(ml->string_value))
+    {
+        MOF_warning_printf("EmbeddedInstance qualifier refers "
+            "to an unknown class: \"%s\"", ml->string_value);
+    }
 }
 
 void MOF_Class_Decl::validate()
@@ -561,24 +586,112 @@ void MOF_Class_Decl::validate()
     {
         if (p->qual_mask & MOF_QT_EMBEDDEDOBJECT)
         {
+#if 0
             if (!(qual_mask & MOF_QT_INDICATION))
             {
                 MOF_error_printf("EmbeddedObject qualifier allowed only on "
                     "the properties of indications");
             }
+#endif
+            if (p->type == MOF_FEATURE_METHOD)
+            {
+                MOF_Method_Decl* meth = (MOF_Method_Decl*)p;
 
-            if (p->type != MOF_FEATURE_PROP)
+                if (meth->data_type != TOK_STRING)
+                {
+                    MOF_error_printf("EmbeddedObject qualifier allowed "
+                        "only for string return values: %s.%s", name, p->name);
+                }
+            }
+            else if (p->type == MOF_FEATURE_PROP)
+            {
+                MOF_Property_Decl* prop = (MOF_Property_Decl*)p;
+
+                if (prop->data_type != TOK_STRING)
+                {
+                    MOF_error_printf("EmbeddedObject qualifier allowed "
+                        "only on string properties: %s.%s", name, p->name);
+                }
+            }
+            else
             {
                 MOF_error_printf(
-                    "EmbeddedObject qualifier applied to non-property");
+                    "EmbeddedObject qualifier only allowed on properties, "
+                    "methods, and parameters: %s.%s", name, p->name);
             }
+        }
+    }
 
-            MOF_Property_Decl* prop = (MOF_Property_Decl*)p;
+    /*
+     * Check EmbeddedInstance qualifier (on properties and methods).
+     */
 
-            if (prop->data_type != TOK_STRING)
+    for (MOF_Feature* p = features; p; p = (MOF_Feature*)p->next)
+    {
+        for (MOF_Qualifier_Info* q = p->all_qualifiers; 
+            q; 
+            q = (MOF_Qualifier_Info*)q->next)
+        {
+            if (strcasecmp(q->qualifier->name, "EmbeddedInstance") != 0)
+                continue;
+
+            _check_EmbeddedInstance_value(q->qualifier);
+
+            if (p->type == MOF_FEATURE_PROP)
             {
-                MOF_error_printf("EmbeddedObject qualifier allowed "
-                    "only on string properties");
+                MOF_Property_Decl* prop = (MOF_Property_Decl*)p;
+
+                if (prop->data_type != TOK_STRING)
+                {
+                    MOF_warning_printf("EmbeddedInstance qualifier allowed "
+                        "only on string properties: %s.%s", name, prop->name);
+                }
+            }
+            else if (p->type == MOF_FEATURE_METHOD)
+            {
+                MOF_Method_Decl* meth = (MOF_Method_Decl*)p;
+
+                if (meth->data_type != TOK_STRING)
+                {
+                    MOF_warning_printf("EmbeddedInstance qualifier allowed "
+                        "only on string properties: %s.%s", name, meth->name);
+                }
+            }
+        }
+    }
+
+    /*
+     * Check EmbeddedInstance qualifier (on parameters)
+     */
+
+    for (MOF_Feature* p = features; p; p = (MOF_Feature*)p->next)
+    {
+        if (p->type != MOF_FEATURE_METHOD)
+            continue;
+
+        MOF_Method_Decl* meth = (MOF_Method_Decl*)p;
+
+        for (MOF_Parameter* q = meth->parameters; q; q =(MOF_Parameter*)q->next)
+        {
+            // Lookup EmbeddedInstance qualifier.
+
+            for (MOF_Qualifier_Info* r = q->all_qualifiers; r;
+                r = (MOF_Qualifier_Info*)r->next)
+            {
+                if (strcasecmp(r->qualifier->name, "EmbeddedInstance") != 0)
+                    continue;
+
+                _check_EmbeddedInstance_value(r->qualifier);
+
+                // Check EmbeddedInstance qualifier on this parameter.
+
+                if (q->data_type != TOK_STRING)
+                {
+                    MOF_error_printf(
+                        "EmbeddedInstance qualifier allowed only "
+                        "on string parameters: %s.%s().%s", name, meth->name,
+                        q->name);
+                }
             }
         }
     }
@@ -864,5 +977,3 @@ void MOF_Class_Decl::set_owning_class(const char* owning_class_)
     for (MOF_Feature* p = features; p; p = (MOF_Feature*)p->next)
         p->set_owning_class(owning_class_);
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Class_Decl.cpp,v 1.12 2007/03/07 18:57:14 mbrasher-public Exp $");

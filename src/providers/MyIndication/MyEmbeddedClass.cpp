@@ -61,4 +61,3 @@ const Meta_Class MyEmbeddedClass::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MyIndication/MyEmbeddedClass.cpp,v 1.11 2007/06/19 15:25:00 mbrasher-public Exp $");

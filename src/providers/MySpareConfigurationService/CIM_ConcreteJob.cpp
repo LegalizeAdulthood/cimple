@@ -356,4 +356,3 @@ const Meta_Class CIM_ConcreteJob::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_ConcreteJob.cpp,v 1.5 2007/04/18 03:29:38 mbrasher-public Exp $");

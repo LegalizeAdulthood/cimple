@@ -8,6 +8,7 @@ BINARY = cimlisten
 SOURCES = main.cpp
 
 LIBRARIES = \
+    cimplepegutils \
     cimpleutil \
     cimple \
     pegclient \

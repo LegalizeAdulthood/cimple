@@ -195,4 +195,3 @@ size_t strlcat(char* dest, const char* src, size_t size)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Strings.cpp,v 1.24 2007/03/07 18:41:15 mbrasher-public Exp $");

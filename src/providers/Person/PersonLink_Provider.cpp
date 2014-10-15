@@ -144,4 +144,3 @@ Enum_Associators_Status PersonLink_Provider::enum_associators(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/PersonLink_Provider.cpp,v 1.9 2007/05/31 16:45:09 mbrasher-public Exp $");

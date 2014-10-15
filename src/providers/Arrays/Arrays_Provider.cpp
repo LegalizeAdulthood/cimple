@@ -70,4 +70,3 @@ Modify_Instance_Status Arrays_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Arrays/Arrays_Provider.cpp,v 1.7 2007/05/31 16:45:06 mbrasher-public Exp $");

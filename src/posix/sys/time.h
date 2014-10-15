@@ -27,7 +27,7 @@
 #ifndef _cimple_posix_sys_time_h
 #define _cimple_posix_sys_time_h
 
-#include <winsock2.h>
+#include <windows.h>
 #include "../linkage.h"
 
 POSIX_NAMESPACE_BEGIN

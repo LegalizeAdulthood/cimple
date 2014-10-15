@@ -61,4 +61,3 @@ const Meta_Class RefArrayParam::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/RefArrayParam.cpp,v 1.12 2007/06/19 15:25:01 mbrasher-public Exp $");

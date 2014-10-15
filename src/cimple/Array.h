@@ -477,6 +477,7 @@ typedef Array<cimple::real64> Array_real64;
 typedef Array<cimple::char16> Array_char16;
 typedef Array<cimple::String> Array_String;
 typedef Array<cimple::Datetime> Array_Datetime;
+typedef Array<cimple::Instance*> Array_Instance;
 typedef Array<cimple::Instance*> Array_Ref;
 
 CIMPLE_NAMESPACE_END

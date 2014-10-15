@@ -28,6 +28,7 @@
 #define _cimple_Buffer_h
 
 #include "config.h"
+#include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -37,7 +38,7 @@ CIMPLE_NAMESPACE_BEGIN
 // fundamentals: insertion of a single element at the rear and removal of
 // a single element form the middle.
 //
-class CIMPLE_LIBCIMPLE_LINKAGE Buffer
+class CIMPLE_CIMPLE_LINKAGE Buffer
 {
 public:
 
@@ -85,7 +86,10 @@ public:
 
     void appends(const char* str);
 
-    size_t appendf(const char* format, ...);
+    CIMPLE_PRINTF_ATTR(2, 3)
+    size_t format(const char* format, ...);
+
+    size_t format(const char* format, va_list ap);
 
     void append_uint16(uint16 x);
 
@@ -113,12 +117,14 @@ inline size_t Buffer::capacity() const
 }
 
 inline const char* Buffer::data() const 
-{ 
+{
+    _data[_size] = '\0';
     return _data; 
 }
 
 inline char* Buffer::data() 
 {
+    _data[_size] = '\0';
     return _data; 
 }
 

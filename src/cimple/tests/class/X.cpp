@@ -59,4 +59,3 @@ const Meta_Class X::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/class/X.cpp,v 1.21 2007/06/19 15:24:54 mbrasher-public Exp $");

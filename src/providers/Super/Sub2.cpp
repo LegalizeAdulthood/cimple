@@ -66,4 +66,3 @@ const Meta_Class Sub2::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Super/Sub2.cpp,v 1.22 2007/06/19 15:25:01 mbrasher-public Exp $");

@@ -1092,4 +1092,3 @@ const Meta_Class CIM_PhysicalPackage::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test8/CIM_PhysicalPackage.cpp,v 1.1 2007/03/07 20:16:51 mbrasher-public Exp $");

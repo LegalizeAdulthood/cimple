@@ -286,4 +286,3 @@ char* MOF_escape(const char* asc7)
     return buf.steal_data();
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_String.cpp,v 1.6 2007/03/07 18:57:15 mbrasher-public Exp $");

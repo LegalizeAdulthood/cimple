@@ -57,5 +57,3 @@ void MOF_error(const char* message)
 {
     MOF_error_printf("%s\n", message);
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Error.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

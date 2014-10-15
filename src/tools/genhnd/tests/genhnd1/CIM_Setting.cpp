@@ -856,4 +856,3 @@ const Meta_Class CIM_Setting::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genhnd/tests/genhnd1/CIM_Setting.cpp,v 1.5 2007/06/26 20:46:55 mbrasher-public Exp $");

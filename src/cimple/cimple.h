@@ -52,5 +52,6 @@
 #include "Thread.h"
 #include "Mutex.h"
 #include "Auto_Mutex.h"
+#include "log.h"
 
 #endif /* _cimple_h */

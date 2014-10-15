@@ -179,4 +179,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/mofc/main.cpp,v 1.12 2007/03/07 20:25:23 mbrasher-public Exp $");

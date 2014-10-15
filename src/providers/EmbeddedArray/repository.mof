@@ -1,0 +1,31 @@
+class EA_Class1
+{
+    [Key] uint32 key;
+};
+
+class EA_Class2
+{
+    [EmbeddedInstance("EA_Class1")]
+    string inst1;
+
+    [EmbeddedInstance("EA_Class1")]
+    string inst2[];
+
+    [EmbeddedObject]
+    string obj1;
+
+    [EmbeddedObject]
+    string obj2[];
+
+    [EmbeddedInstance("EA_Class1")] string foo1();
+
+    [EmbeddedObject] string foo2();
+
+    uint32 foo3(
+        [In, EmbeddedInstance("EA_Class1")] string arg1,
+        [In(false), Out, EmbeddedInstance("EA_Class1")] string arg2);
+
+    uint32 foo4(
+        [In, EmbeddedObject] string arg1,
+        [In(false), Out, EmbeddedObject] string arg2);
+};

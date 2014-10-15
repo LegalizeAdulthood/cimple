@@ -43,6 +43,10 @@ ifdef WIN_ENABLE_STATIC_OPT
   ENABLE_STATIC_OPT=1
 endif
 
+ifdef WIN_ENABLE_EMBEDDED_INSTANCES_OPT
+  ENABLE_EMBEDDED_INSTANCES_OPT=1
+endif
+
 ##==============================================================================
 ##
 ## Include platform file.

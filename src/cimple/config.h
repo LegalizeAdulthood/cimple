@@ -353,7 +353,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 1
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 18
+#define CIMPLE_REVISION 22
 
 //==============================================================================
 //
@@ -405,24 +405,6 @@ extern int __CIMPLE_VERSION_SYMBOL(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION);
 
 static CIMPLE_UNUSED const char __cimple_version_tag[] = \
     "@(#)CIMPLE_VERSION="CIMPLE_VERSION_STRING;
-
-//==============================================================================
-//
-// CIMPLE_ID
-//
-//==============================================================================
-
-#ifdef __GNUC__
-# define CIMPLE_ID(STR) \
-    static CIMPLE_UNUSED const char __cimple_id[] = "@(#)" STR
-#else
-# define CIMPLE_ID(STR) \
-    static CIMPLE_UNUSED const char __cimple_id[] = "@(#)" STR; \
-    static const char* __cimple_id_func() { return __cimple_id; }
-#endif
-
-#undef CIMPLE_ID
-#define CIMPLE_ID(X) /* */
 
 //==============================================================================
 //

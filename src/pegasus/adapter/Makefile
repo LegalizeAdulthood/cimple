@@ -13,6 +13,7 @@ SOURCES = \
     pegasus_unsupported.cpp
 
 LIBRARIES = \
+    cimplepegutils \
     cimple \
     pegprm \
     pegprovidermanager \

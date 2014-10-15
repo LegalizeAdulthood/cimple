@@ -109,4 +109,3 @@ int MOF_parse_file(const char* mof_file)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parser.cpp,v 1.9 2007/06/19 18:28:43 mbrasher-public Exp $");

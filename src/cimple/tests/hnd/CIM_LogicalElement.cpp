@@ -288,4 +288,3 @@ CIM_LogicalElement_Hnd& CIM_LogicalElement_Hnd::operator=(const CIM_LogicalEleme
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_LogicalElement.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

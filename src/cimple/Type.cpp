@@ -230,4 +230,3 @@ void print_array(Type type, const void* elements_, size_t num_elements)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Type.cpp,v 1.17 2007/04/12 14:48:44 mbrasher-public Exp $");

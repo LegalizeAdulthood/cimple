@@ -97,5 +97,3 @@ void MOF_Method_Decl::set_owning_class(const char* owning_class)
     for (MOF_Parameter* p = parameters; p; p = (MOF_Parameter*)p->next)
         p->set_owning_class(owning_class);
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Method_Decl.cpp,v 1.8 2007/03/07 18:57:14 mbrasher-public Exp $");

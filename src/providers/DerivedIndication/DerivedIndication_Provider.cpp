@@ -62,8 +62,6 @@ Invoke_Method_Status DerivedIndication_Provider::DeliverIndications(
         indic->IndicationTime.value = Datetime::now();
         indic->IndicationTime.null = false;
 
-        // print(indic);
-
         _indication_handler->handle(indic);
     }
 
@@ -72,4 +70,3 @@ Invoke_Method_Status DerivedIndication_Provider::DeliverIndications(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/DerivedIndication/DerivedIndication_Provider.cpp,v 1.13 2007/04/18 03:51:26 mbrasher-public Exp $");

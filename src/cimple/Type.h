@@ -92,6 +92,10 @@ inline Type type_of(const char16& x) { return CHAR16; }
 inline Type type_of(const String& x) { return STRING; }
 inline Type type_of(const Datetime& x) { return DATETIME; }
 
+inline bool is_integer(Type type) { return type >= UINT8 && type <= SINT64; }
+
+inline bool is_real(Type type) { return type == REAL32 || type == REAL64; }
+
 CIMPLE_CIMPLE_LINKAGE
 void print_scalar(Type type, const void* value);
 

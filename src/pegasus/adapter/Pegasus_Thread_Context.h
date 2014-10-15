@@ -28,8 +28,7 @@
 #define _Pegasus_Thread_Context_h
 
 #include <cimple/Thread_Context.h>
-#include <Pegasus/Common/OperationContext.h>
-#include <Pegasus/Provider/CIMOMHandle.h>
+#include <pegasus/utils/pegasus.h>
 #include "typedefs.h"
 
 CIMPLE_NAMESPACE_BEGIN

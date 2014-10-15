@@ -70,4 +70,3 @@ void REF_error(
     ref_error_code = -1;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/REF_Parser.cpp,v 1.4 2007/03/07 18:57:15 mbrasher-public Exp $");

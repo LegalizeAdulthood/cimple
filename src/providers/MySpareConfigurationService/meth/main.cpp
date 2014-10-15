@@ -120,4 +120,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/meth/main.cpp,v 1.3 2007/03/16 21:21:38 mbrasher-public Exp $");

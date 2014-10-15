@@ -354,4 +354,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genmod/main.cpp,v 1.9 2007/06/26 20:48:17 mbrasher-public Exp $");

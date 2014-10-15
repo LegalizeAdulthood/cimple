@@ -95,5 +95,3 @@ int MOF_read_string(
 
     return 0;
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Lex_Utils.cpp,v 1.5 2007/03/29 22:02:01 mbrasher-public Exp $");

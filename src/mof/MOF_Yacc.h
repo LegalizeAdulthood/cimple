@@ -1,4 +1,3 @@
-/*NOCHKSRC*/
 /* A Bison parser, made by GNU Bison 2.0.  */
 
 /* Skeleton parser for Yacc-like parsing with Bison,

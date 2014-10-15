@@ -6,3 +6,12 @@
     (B) Determine whether skipping of null properties is really desirable
         in converters.
 
+    (A) Add more detailed error reporting in Pegasus adapter.
+
+    (A) Is it sufficient to have empty arrays but not null arrays? For
+        example:
+
+            class SomeCIMPLEGeneratedClass
+            {
+                Array<Instance*> arr;
+            };

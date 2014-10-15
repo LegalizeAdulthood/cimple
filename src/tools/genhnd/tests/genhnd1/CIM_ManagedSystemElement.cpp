@@ -169,4 +169,3 @@ const Meta_Class CIM_ManagedSystemElement::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genhnd/tests/genhnd1/CIM_ManagedSystemElement.cpp,v 1.7 2007/06/26 20:46:55 mbrasher-public Exp $");

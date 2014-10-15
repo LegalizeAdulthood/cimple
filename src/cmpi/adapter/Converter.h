@@ -39,10 +39,6 @@ inline const char* char_ptr(const CMPIString* str)
     return s ? s : "";
 }
 
-void set_cmpi_error(const CMPIStatus &status);
-
-void set_cmpi_error(const CMPIrc &rc, const char* msg);
-
 inline const char* name_space(const CMPIObjectPath* op)
 {
     return char_ptr(CMGetNameSpace(op, NULL));
@@ -53,58 +49,61 @@ inline const char* class_name(const CMPIObjectPath* op)
     return char_ptr(CMGetClassName(op, NULL));
 }
 
+inline const char* class_name(const CMPIInstance* instance)
+{
+    CMPIObjectPath* cop = CMGetObjectPath(instance, NULL);
+
+    if (!cop)
+        return 0;
+
+    return class_name(cop);
+}
+
 inline const char* host_name(const CMPIObjectPath* op)
 {
     return char_ptr(CMGetHostname(op, NULL));
 }
 
 CMPIrc make_cimple_reference(
+    const CMPIBroker* cb,
     const Meta_Class* mc,
     const CMPIObjectPath* op,
     Instance*& inst);
 
 CMPIrc make_cimple_instance(
+    const CMPIBroker* cb,
     const Meta_Class* mc,
-    const CMPIInstance* cmpi_inst,
-    Instance*& cimple_inst);
+    const CMPIInstance* ci,
+    Instance*& inst);
 
-CMPIrc make_cmpi_object_path(
-    const CMPIBroker* broker,
-    const Instance* cimple_inst, 
-    const char* name_space,
-    CMPIObjectPath*& cmpi_op);
-
-CMPIrc make_cmpi_instance(
-    const CMPIBroker* broker,
-    const Instance* cimple_inst, 
-    const char* name_space,
-    const CMPIObjectPath* cmpi_op,
-    CMPIInstance*& cmpi_inst);
-
-CMPIrc make_method(
+CMPIrc make_cimple_method(
+    const CMPIBroker* cb,
+    const Meta_Class* mc,
     const Meta_Method* mm,
     const CMPIArgs* in,
-    const Meta_Class* find_meta_class(const char*, void*),
     void* client_data,
-    Instance*& cimple_meth);
+    Instance*& meth);
 
-CMPIrc make_method_out(
-    const CMPIBroker* broker,
-    const char* name_space,
-    const Instance* cimple_meth,
-    const CMPIArgs* out,
+CMPIrc make_cmpi_object_path(
+    const CMPIBroker* cb,
+    const Instance* inst, 
+    const char* ns,
+    CMPIObjectPath*& cop);
+
+CMPIrc make_cmpi_instance(
+    const CMPIBroker* cb,
+    const Instance* inst, 
+    const char* ns,
+    const CMPIObjectPath* cop,
+    CMPIInstance*& ci);
+
+CMPIrc make_cmpi_method(
+    const CMPIBroker* cb,
+    const char* ns,
+    const Instance* meth,
+    CMPIArgs* out,
     CMPIValue& return_value,
     CMPIType& return_type);
-
-const char* rc_to_str(CMPIrc rc);
-
-void print_scalar(const CMPIData& data);
-
-void print(const CMPIData& data);
-
-void print(const CMPIObjectPath* op);
-
-void print(const CMPIInstance* inst);
 
 CIMPLE_NAMESPACE_END
 

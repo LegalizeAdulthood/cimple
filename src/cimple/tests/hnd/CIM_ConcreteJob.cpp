@@ -1208,4 +1208,3 @@ void CIM_ConcreteJob_Hnd::TimeBeforeRemoval_null(bool x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/CIM_ConcreteJob.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

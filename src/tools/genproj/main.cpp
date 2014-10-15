@@ -180,4 +180,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genproj/main.cpp,v 1.4 2007/05/07 21:51:06 mbrasher-public Exp $");

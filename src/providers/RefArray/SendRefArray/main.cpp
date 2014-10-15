@@ -139,4 +139,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/SendRefArray/main.cpp,v 1.6 2007/07/04 22:02:33 mbrasher-public Exp $");

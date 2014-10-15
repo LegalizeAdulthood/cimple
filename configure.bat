@@ -174,6 +174,11 @@ set prev=
     set found=1
   )
 
+  if "%1" == "--enable-embedded-instances" (
+    set enable_embedded_instances=1
+    set found=1
+  )
+
   if "%1" == "" (
     set found=1
   )
@@ -280,6 +285,7 @@ echo with_schema=%with_schema%
 echo with_namespace=%with_namespace%
 echo enable_debug=%enable_debug%
 echo enable_static=%enable_static%
+echo enable_embedded_instances=%enable_embedded_instances%
 :skip
 
 ::==============================================================================
@@ -310,6 +316,10 @@ if not "%enable_static%" == "" (
     echo WIN_ENABLE_STATIC_OPT=TRUE>> config.options
 )
 
+if not "%enable_embedded_instances%" == "" (
+    echo WIN_ENABLE_EMBEDDED_INSTANCES_OPT=TRUE>> config.options
+)
+
 if not "%with_namespace%" == "" (
     echo WITH_NAMESPACE_OPT=%with_namespace%>> config.options
 )
@@ -338,6 +348,7 @@ set with_openwbem=
 set with_schema=
 set enable_debug=
 set enable_static=
+set enable_embedded_instances=
 
 set arg0=
 set prev=

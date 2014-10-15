@@ -183,4 +183,3 @@ uint64 get_mac_addr()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/util/MAC.cpp,v 1.4 2007/03/07 19:06:39 mbrasher-public Exp $");

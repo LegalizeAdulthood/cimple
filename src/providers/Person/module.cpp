@@ -141,5 +141,6 @@ CIMPLE_ASSOCIATION_PROVIDER(SalesmanLink_Provider);
 #endif
 
 #ifndef __CIMPLE_FOUND_ENTRY_POINT
-# error "No provider entry point found. Please define one of the following: CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, CIMPLE_OPENWBEM_MODULE"
+# error "No provider entry point found. Please define one of the following: " \
+    "CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, CIMPLE_OPENWBEM_MODULE"
 #endif

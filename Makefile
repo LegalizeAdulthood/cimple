@@ -28,7 +28,11 @@ distclean: clean
 
 CIMSERVER = $(WITH_PEGASUS_OPT)/bin/cimserver
 
-SLEEP = ./bin/csleep
+ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
+  SLEEP = ./bin/csleep
+else
+  SLEEP = sleep
+endif
 
 stop_cimserver:
 ifeq ($(PEGASUS_PLATFORM),WIN32_IX86_MSVC)
@@ -75,7 +79,7 @@ world: clean all regress
 
 MAJOR=1
 MINOR=0
-REVISION=18
+REVISION=22
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 
@@ -117,3 +121,5 @@ publish:
 	cp /tmp/$(ZIPDIST) $(HOME)/websites/www.cimple.org
 	rm -rf /tmp/$(TARDIST)
 	rm -rf /tmp/$(ZIPDIST)
+
+

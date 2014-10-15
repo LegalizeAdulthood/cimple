@@ -87,5 +87,3 @@ void MOF_Element::delete_list()
         p = next;
     }
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Element.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

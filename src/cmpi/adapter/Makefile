@@ -8,6 +8,7 @@ LIBRARY = cimplecmpiadap
 LIBRARIES = cimple
 
 SOURCES = \
+    CMPI_Containers.cpp \
     CMPI_Thread_Context.cpp \
     Converter.cpp \
     CMPI_Adapter.cpp

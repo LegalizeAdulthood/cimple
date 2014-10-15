@@ -2,22 +2,17 @@
 #define _cimple_Pegasus_Adapter_h
 
 #include <cimple/cimple.h>
-#include <cimple/Atomic_Counter.h>
-#include <Pegasus/Common/Config.h>
-#include <Pegasus/Provider/CIMMethodProvider.h>
-#include <Pegasus/Provider/CIMInstanceProvider.h>
-#include <Pegasus/Provider/CIMAssociationProvider.h>
-#include <Pegasus/Provider/CIMIndicationProvider.h>
-#include <cimple/Provider_Handle.h>
-#include "typedefs.h"
+#include <pegasus/utils/pegasus.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
+class Provider_Handle;
+
 class CIMPLE_HIDE Pegasus_Adapter : 
-    public P_CIMMethodProvider, 
-    public P_CIMInstanceProvider,
-    public P_CIMAssociationProvider,
-    public P_CIMIndicationProvider
+    public Pegasus::CIMMethodProvider, 
+    public Pegasus::CIMInstanceProvider,
+    public Pegasus::CIMAssociationProvider,
+    public Pegasus::CIMIndicationProvider
 {
 public:
 
@@ -25,133 +20,133 @@ public:
 
     virtual ~Pegasus_Adapter();
 
-    virtual void initialize(P_CIMOMHandle& cimom);
+    virtual void initialize(Pegasus::CIMOMHandle& cimom);
 
     virtual void terminate(void);
 
     virtual void getInstance(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectPath,
-        const P_Boolean includeQualifiers,
-        const P_Boolean includeClassOrigin,
-        const P_CIMPropertyList& propertyList,
-        P_InstanceResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectPath,
+        const Pegasus::Boolean includeQualifiers,
+        const Pegasus::Boolean includeClassOrigin,
+        const Pegasus::CIMPropertyList& propertyList,
+        Pegasus::InstanceResponseHandler& handler);
 
     virtual void enumerateInstances(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectPath,
-        const P_Boolean includeQualifiers,
-        const P_Boolean includeClassOrigin,
-        const P_CIMPropertyList& propertyList,
-        P_InstanceResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectPath,
+        const Pegasus::Boolean includeQualifiers,
+        const Pegasus::Boolean includeClassOrigin,
+        const Pegasus::CIMPropertyList& propertyList,
+        Pegasus::InstanceResponseHandler& handler);
 
     virtual void enumerateInstanceNames(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectPath,
-        P_ObjectPathResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectPath,
+        Pegasus::ObjectPathResponseHandler& handler);
 
     virtual void modifyInstance(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectPath,
-        const P_CIMInstance& instance,
-        const P_Boolean includeQualifiers,
-        const P_CIMPropertyList& propertyList,
-        P_ResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectPath,
+        const Pegasus::CIMInstance& instance,
+        const Pegasus::Boolean includeQualifiers,
+        const Pegasus::CIMPropertyList& propertyList,
+        Pegasus::ResponseHandler& handler);
 
     virtual void createInstance(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectPath,
-        const P_CIMInstance& instance,
-        P_ObjectPathResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectPath,
+        const Pegasus::CIMInstance& instance,
+        Pegasus::ObjectPathResponseHandler& handler);
 
     virtual void deleteInstance(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectPath,
-        P_ResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectPath,
+        Pegasus::ResponseHandler& handler);
 
     virtual void invokeMethod(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectPath,
-        const P_CIMName& methodName,
-        const Pegasus::Array<P_CIMParamValue>& inParameters,
-        P_MethodResultResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectPath,
+        const Pegasus::CIMName& methodName,
+        const Pegasus::Array<Pegasus::CIMParamValue>& inParameters,
+        Pegasus::MethodResultResponseHandler& handler);
 
     virtual void associators(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectName,
-        const P_CIMName& associationClass,
-        const P_CIMName& resultClass,
-        const P_String& role,
-        const P_String& resultRole,
-        const P_Boolean includeQualifiers,
-        const P_Boolean includeClassOrigin,
-        const P_CIMPropertyList& propertyList,
-        P_ObjectResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectName,
+        const Pegasus::CIMName& associationClass,
+        const Pegasus::CIMName& resultClass,
+        const Pegasus::String& role,
+        const Pegasus::String& resultRole,
+        const Pegasus::Boolean includeQualifiers,
+        const Pegasus::Boolean includeClassOrigin,
+        const Pegasus::CIMPropertyList& propertyList,
+        Pegasus::ObjectResponseHandler& handler);
 
     virtual void associatorNames(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectName,
-        const P_CIMName& associationClass,
-        const P_CIMName& resultClass,
-        const P_String& role,
-        const P_String& resultRole,
-        P_ObjectPathResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectName,
+        const Pegasus::CIMName& associationClass,
+        const Pegasus::CIMName& resultClass,
+        const Pegasus::String& role,
+        const Pegasus::String& resultRole,
+        Pegasus::ObjectPathResponseHandler& handler);
 
     virtual void references(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectName,
-        const P_CIMName& resultClass,
-        const P_String& role,
-        const P_Boolean includeQualifiers,
-        const P_Boolean includeClassOrigin,
-        const P_CIMPropertyList& propertyList,
-        P_ObjectResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectName,
+        const Pegasus::CIMName& resultClass,
+        const Pegasus::String& role,
+        const Pegasus::Boolean includeQualifiers,
+        const Pegasus::Boolean includeClassOrigin,
+        const Pegasus::CIMPropertyList& propertyList,
+        Pegasus::ObjectResponseHandler& handler);
 
     virtual void referenceNames(
-        const P_OperationContext& context,
-        const P_CIMObjectPath& objectName,
-        const P_CIMName& resultClass,
-        const P_String& role,
-        P_ObjectPathResponseHandler& handler);
+        const Pegasus::OperationContext& context,
+        const Pegasus::CIMObjectPath& objectName,
+        const Pegasus::CIMName& resultClass,
+        const Pegasus::String& role,
+        Pegasus::ObjectPathResponseHandler& handler);
 
     virtual void enableIndications(
-        P_IndicationResponseHandler & handler);
+        Pegasus::IndicationResponseHandler & handler);
 
     virtual void disableIndications();
 
     virtual void createSubscription(
-        const P_OperationContext & context,
-        const P_CIMObjectPath & subscriptionName,
-        const Pegasus::Array<P_CIMObjectPath> & classNames,
-        const P_CIMPropertyList & propertyList,
-        const P_Uint16 repeatNotificationPolicy);
+        const Pegasus::OperationContext & context,
+        const Pegasus::CIMObjectPath & subscriptionName,
+        const Pegasus::Array<Pegasus::CIMObjectPath> & classNames,
+        const Pegasus::CIMPropertyList & propertyList,
+        const Pegasus::Uint16 repeatNotificationPolicy);
 
     virtual void modifySubscription(
-        const P_OperationContext & context,
-        const P_CIMObjectPath & subscriptionName,
-        const Pegasus::Array<P_CIMObjectPath> & classNames,
-        const P_CIMPropertyList & propertyList,
-        const P_Uint16 repeatNotificationPolicy);
+        const Pegasus::OperationContext & context,
+        const Pegasus::CIMObjectPath & subscriptionName,
+        const Pegasus::Array<Pegasus::CIMObjectPath> & classNames,
+        const Pegasus::CIMPropertyList & propertyList,
+        const Pegasus::Uint16 repeatNotificationPolicy);
 
     virtual void deleteSubscription(
-        const P_OperationContext & context,
-        const P_CIMObjectPath & subscriptionName,
-        const Pegasus::Array<P_CIMObjectPath> & classNames);
+        const Pegasus::OperationContext & context,
+        const Pegasus::CIMObjectPath & subscriptionName,
+        const Pegasus::Array<Pegasus::CIMObjectPath> & classNames);
 
     const Meta_Class* find_meta_class(
-        const P_CIMObjectPath& objectPath) const;
+        const Pegasus::CIMObjectPath& objectPath) const;
 
     const Meta_Class* find_model_meta_class(
-        const P_CIMObjectPath& objectPath) const;
+        const Pegasus::CIMObjectPath& objectPath) const;
 
 private:
 
-    P_CIMOMHandle* _handle;
+    Pegasus::CIMOMHandle* _handle;
     Provider_Handle* _provider;
-    P_IndicationResponseHandler* _handler;
+    Pegasus::IndicationResponseHandler* _handler;
     Atomic_Counter _handler_refs;
     const Meta_Class* _mc;
-    P_CIMOMHandle* _cimom_handle;
+    Pegasus::CIMOMHandle* _cimom_handle;
 };
 
 CIMPLE_NAMESPACE_END

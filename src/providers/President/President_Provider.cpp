@@ -100,4 +100,3 @@ Modify_Instance_Status President_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/President/President_Provider.cpp,v 1.7 2007/05/01 23:07:20 mbrasher-public Exp $");

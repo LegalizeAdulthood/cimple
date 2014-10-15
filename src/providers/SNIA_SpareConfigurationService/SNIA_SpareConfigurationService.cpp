@@ -511,4 +511,3 @@ const Meta_Class SNIA_SpareConfigurationService::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/SNIA_SpareConfigurationService/SNIA_SpareConfigurationService.cpp,v 1.9 2007/04/18 03:29:41 mbrasher-public Exp $");

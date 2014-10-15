@@ -135,4 +135,3 @@ void E_Hnd::e(const Hnd& x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/E.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

@@ -80,4 +80,3 @@ const Meta_Class Delegate::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Delegate/Delegate.cpp,v 1.7 2007/06/19 15:24:58 mbrasher-public Exp $");

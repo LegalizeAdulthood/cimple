@@ -58,7 +58,7 @@ Invoke_Method_Status CMPL_Time_Provider::SetTime(
     const Property<Datetime>& Time,
     Property<uint32>& return_value)
 {
-    Time.value.print();
+    // Time.value.print();
     _Time = Time;
 
     // Datetime dt = Time.value;

@@ -93,4 +93,3 @@ void* TSD::get()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/ref/TSD.cpp,v 1.1 2007/03/24 18:59:06 mbrasher-public Exp $");

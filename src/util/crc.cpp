@@ -79,4 +79,3 @@ unsigned int crc_compute(unsigned char *buf, int len)
     return crc_update(0L, buf, len);
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/util/crc.cpp,v 1.4 2007/03/07 19:06:39 mbrasher-public Exp $");

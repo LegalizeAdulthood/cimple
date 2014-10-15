@@ -86,7 +86,7 @@ Invoke_Method_Status Methods_Provider::foo(
     Property<String>& return_value)
 {
     TRACE;
-#if 1
+#if 0
     printf("===== Methods_Provider::foo()\n");
     printf("[in] arg1: %u\n", arg1.value);
     printf("[in] arg2: %s\n", arg2.value.c_str());

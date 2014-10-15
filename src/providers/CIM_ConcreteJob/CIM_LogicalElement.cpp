@@ -87,4 +87,3 @@ const Meta_Class CIM_LogicalElement::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_ConcreteJob/CIM_LogicalElement.cpp,v 1.10 2007/06/19 15:24:56 mbrasher-public Exp $");

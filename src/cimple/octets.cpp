@@ -119,4 +119,3 @@ CIMPLE_CIMPLE_LINKAGE int string_to_octets(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/octets.cpp,v 1.2 2007/06/27 00:12:33 mbrasher-public Exp $");

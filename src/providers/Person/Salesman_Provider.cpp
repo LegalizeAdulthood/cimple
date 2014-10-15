@@ -71,4 +71,3 @@ Modify_Instance_Status Salesman_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Salesman_Provider.cpp,v 1.5 2007/05/31 16:45:09 mbrasher-public Exp $");

@@ -119,5 +119,3 @@ MOF_mask MOF_Flavor::fixup(
 
     return tmp;
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Flavor.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

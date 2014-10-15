@@ -124,4 +124,3 @@ const Meta_Class BUG31_C::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_C.cpp,v 1.21 2007/06/19 15:25:02 mbrasher-public Exp $");

@@ -8,9 +8,9 @@
 #define _repository_h
 
 #include <cimple/cimple.h>
-#include "CMPL_Left.h"
-#include "CMPL_Right.h"
-#include "CMPL_Cross.h"
+#include "Left.h"
+#include "Right.h"
+#include "Cross.h"
 
 CIMPLE_NAMESPACE_BEGIN
 

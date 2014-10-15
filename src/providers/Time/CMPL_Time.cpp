@@ -142,4 +142,3 @@ const Meta_Class CMPL_Time::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Time/CMPL_Time.cpp,v 1.1 2007/07/11 16:59:24 mbrasher-public Exp $");

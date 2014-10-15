@@ -1,4 +1,5 @@
 #include <cimple/config.h>
+#include <cimple/Buffer.h>
 #include <cassert>
 #include <getopt.h>
 #include <cctype>
@@ -64,84 +65,138 @@ void write_file(
         r += n;
 }
 
-void write_method(
-    FILE* os,
-    const char* class_name, 
-    const MOF_Method_Decl* meth,
-    bool do_definition)
+const char* get_embedded_class_name(
+    const MOF_Qualified_Element* mqe)
 {
-    // Set up indentation level:
-
-    char indent_chars[64];
-    memset(indent_chars, ' ', sizeof(indent_chars));
-
-    if (do_definition)
-        indent_chars[0] = '\0';
-    else
-        indent_chars[4] = '\0';
-
-    // Print method declaration/definition:
-
-    if (do_definition)
+    for (const MOF_Qualifier_Info* p = mqe->all_qualifiers; 
+        p; 
+        p = (const MOF_Qualifier_Info*)p->next)
     {
-        fprintf(os, "%sInvoke_Method_Status %s_Provider::%s(\n", indent_chars,
-            class_name, meth->name);
+        const MOF_Qualifier* mq = p->qualifier;
+
+        if (strcasecmp(mq->name, "EmbeddedInstance") == 0)
+        {
+            MOF_Literal* ml = mq->params;
+
+            if (ml && ml->value_type == TOK_STRING_VALUE && ml->string_value)
+            {
+                const char* ecn = ml->string_value;
+
+                if (!MOF_Class_Decl::find((char*)ecn))
+                    err("error: unknown embedded class: \"%s\"", ecn);
+
+                return ecn;
+            }
+        }
     }
+
+    // Not found!
+    return 0;
+}
+
+void format_method_signature(
+    cimple::Buffer& out,
+    const MOF_Class_Decl* cd, 
+    const MOF_Method_Decl* md, 
+    bool def)
+{
+    const char* cn = cd->name;
+    const char* mn = md->name;
+    const char* in = def ? "" : "    ";
+
+    // header
+
+    if (def)
+        out.format("Invoke_Method_Status %s_Provider::%s(\n", cn, mn);
     else
-    {
-        fprintf(os, "%sInvoke_Method_Status %s(\n", indent_chars,
-            meth->name);
-    }
+        out.format("Invoke_Method_Status %s(\n", mn);
 
     // This:
 
-    if (!(meth->qual_mask & MOF_QT_STATIC))
-        fprintf(os, "%s    const %s* self,\n", indent_chars, class_name);
+    if (!(md->qual_mask & MOF_QT_STATIC))
+        out.format("%s    const %s* self,\n", in, cn);
 
     // Parameters:
 
-    for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
+    for (MOF_Parameter* p = md->parameters; p; p = (MOF_Parameter*)p->next)
     {
-        fprintf(os, "%s    ", indent_chars);
+        out.format("%s    ", in);
 
         if (!(p->qual_mask & MOF_QT_OUT))
-            fprintf(os, "const ");
+            out.format("const ");
+
+        const char* cn = 0;
 
         if (p->data_type == TOK_REF)
+            cn = p->ref_name;
+        else if (p->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            cn = "Instance";
+        else 
+            cn = get_embedded_class_name(p);
+
+        if (cn)
         {
             if (p->array_index)
-            {
-                fprintf(os, "Array<%s*>& %s", p->ref_name, p->name);
-            }
+                out.format("Array<%s*>& %s", cn, p->name);
             else
             {
                 if (p->qual_mask & MOF_QT_OUT)
-                    fprintf(os, "%s*& %s", p->ref_name, p->name);
+                    out.format("%s*& %s", cn, p->name);
                 else
-                    fprintf(os, "%s* %s", p->ref_name, p->name);
+                    out.format("%s* %s", cn, p->name);
             }
         }
         else
         {
-            fprintf(os, "Property<");
+            const char* dt = _to_string(p->data_type);
 
             if (p->array_index)
-            {
-                fprintf(os, "Array_");
-            }
-
-            fprintf(os, "%s>& %s", _to_string(p->data_type), p->name);
+                out.format("Property<Array_%s>& %s", dt, p->name);
+            else
+                out.format("Property<%s>& %s", dt, p->name);
         }
 
-        fprintf(os, ",\n");
+        out.format(",\n");
     }
 
     // Return value:
 
-    fprintf(os, "%s    Property<%s>& return_value)",
-        indent_chars, _to_string(meth->data_type));
+    {
+        const char* cn = 0;
+        
+        if (md->qual_mask & MOF_QT_EMBEDDEDOBJECT)
+            cn = "Instance";
+        else
+            cn = get_embedded_class_name(md);
 
-    if (do_definition)
+        if (cn)
+            out.format("%s    %s*& return_value)", in, cn);
+        else
+        {
+            const char* dt = _to_string(md->data_type);
+            out.format("%s    Property<%s>& return_value)", in, dt);
+        }
+    }
+}
+
+void write_method(
+    FILE* os,
+    const MOF_Class_Decl* cd,
+    const MOF_Method_Decl* md,
+    bool def)
+{
+    if (!def)
+        fprintf(os, "    ");
+
+    // Format method signature.
+
+    cimple::Buffer out;
+    format_method_signature(out, cd, md, def);
+    fprintf(os, "%s", out.data());
+
+    // Write method body.
+
+    if (def)
     {
         fprintf(os, "\n");
         fprintf(os, "{\n");
@@ -169,7 +224,7 @@ void write_methods(
         MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(feature);
 
         if (meth)
-            write_method(os, class_name, meth, do_definition);
+            write_method(os, class_decl, meth, do_definition);
     }
 
     if (do_definition)
@@ -220,36 +275,6 @@ void write_indication_provider_header(
     printf("Created %s\n", path.c_str());
 
     fclose(os);
-}
-
-void write_skeleton(
-    FILE* os,
-    const char* class_name, 
-    const MOF_Method_Decl* meth)
-{
-    fprintf(os, "    if (strcasecmp(meth_name, \"%s\") == 0)\n", 
-        meth->name);
-    fprintf(os, "    {\n");
-
-    fprintf(os, "        typedef %s_%s_method Method;\n", 
-        class_name, meth->name);
-
-    fprintf(os, "        Method* method = (Method*)arg2;\n");
-
-    fprintf(os, "        return provider->%s(\n", meth->name);
-
-    if (!(meth->qual_mask & MOF_QT_STATIC))
-        fprintf(os, "            self,\n");
-
-    for (MOF_Parameter* p = meth->parameters; p; p = (MOF_Parameter*)p->next)
-    {
-        fprintf(os, "            method->%s", p->name);
-        fprintf(os, ",\n");
-    }
-
-    fprintf(os, "            method->return_value);\n");
-
-    fprintf(os, "    }\n");
 }
 
 void write_provider_source(
@@ -632,7 +657,6 @@ void patch_method(
     string rt;
     string sn;
     string fn;
-    string text;
 
     // returns
 
@@ -647,90 +671,12 @@ void patch_method(
 
     fn = mn;
 
-    // header
+    // Format the method.
 
-    char buf[1024];
-
-    if (def)
-    {
-        sprintf(buf, "Invoke_Method_Status %s_Provider::%s(\n", cn, mn);
-        text += buf;
-    }
-    else
-    {
-        sprintf(buf, "Invoke_Method_Status %s(\n", mn);
-        text += buf;
-    }
-
-    // This:
-
-    if (!(md->qual_mask & MOF_QT_STATIC))
-    {
-        sprintf(buf, "%s    const %s* self,\n", in, cn);
-        text += buf;
-    }
-
-    // Parameters:
-
-    for (MOF_Parameter* p = md->parameters; p; p = (MOF_Parameter*)p->next)
-    {
-        sprintf(buf, "%s    ", in);
-        text += buf;
-
-        if (!(p->qual_mask & MOF_QT_OUT))
-        {
-            sprintf(buf, "const ");
-            text += buf;
-        }
-
-        if (p->data_type == TOK_REF)
-        {
-            if (p->array_index)
-            {
-                sprintf(buf, "Array<%s*>& %s", p->ref_name, p->name);
-                text += buf;
-            }
-            else
-            {
-                if (p->qual_mask & MOF_QT_OUT)
-                {
-                    sprintf(buf, "%s*& %s", p->ref_name, p->name);
-                    text += buf;
-                }
-                else
-                {
-                    sprintf(buf, "%s* %s", p->ref_name, p->name);
-                    text += buf;
-                }
-            }
-        }
-        else
-        {
-            sprintf(buf, "Property<");
-            text += buf;
-
-            if (p->array_index)
-            {
-                sprintf(buf, "Array_");
-                text += buf;
-            }
-
-            sprintf(buf, "%s>& %s", _to_string(p->data_type), p->name);
-            text += buf;
-        }
-
-        sprintf(buf, ",\n");
-        text += buf;
-    }
-
-    // Return value:
-
-    sprintf(buf, "%s    Property<%s>& return_value)",
-        in, _to_string(md->data_type));
-    text += buf;
+    cimple::Buffer out;
+    format_method_signature(out, cd, md, def);
 
     // Patch it:
-
     {
         Patch pt;
         pt.returns = rt.c_str();
@@ -741,7 +687,7 @@ void patch_method(
             pt.scope = NULL;
 
         pt.func = mn;
-        pt.text = text.c_str();
+        pt.text = out.data();
 
         if (def)
         {
@@ -955,4 +901,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/main.cpp,v 1.48 2007/06/12 22:31:18 mbrasher-public Exp $");

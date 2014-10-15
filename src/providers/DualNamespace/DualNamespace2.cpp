@@ -61,4 +61,3 @@ const Meta_Class DualNamespace2::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/DualNamespace/DualNamespace2.cpp,v 1.1 2007/07/04 17:54:22 mbrasher-public Exp $");

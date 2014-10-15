@@ -152,6 +152,4 @@ Invoke_Method_Status SNIA_SpareConfigurationService_Provider::RepairParity(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/SNIA_SpareConfigurationService_Provider.cpp,v 1.3 2007/04/18 03:51:28 mbrasher-public Exp $");
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/SNIA_SpareConfigurationService_Provider.cpp,v 1.3 2007/04/18 03:51:28 mbrasher-public Exp $");

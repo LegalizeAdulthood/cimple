@@ -202,4 +202,3 @@ void A_Hnd::Right(const Y_Ref& x)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/hnd/A.cpp,v 1.3 2007/03/30 19:16:42 mbrasher-public Exp $");

@@ -854,4 +854,3 @@ extern "C" CIMPLE_EXPORT int cimple_openwbem_adapter(
 }
 
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/openwbem/adapter/OpenWBEM_Adapter.cpp,v 1.4 2007/03/20 19:01:33 mbrasher-public Exp $");

@@ -76,4 +76,3 @@ int Test1_Provider::proc(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genprov/tests/Test1/Test1_Provider.cpp,v 1.4 2007/04/18 03:29:44 mbrasher-public Exp $");

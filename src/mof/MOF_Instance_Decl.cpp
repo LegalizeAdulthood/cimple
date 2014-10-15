@@ -246,8 +246,10 @@ MOF_Instance_Decl* MOF_Instance_Decl::find_by_alias(
         {
             if (fix_case && strcmp(p->alias, alias) != 0)
             {
+#if 0
                 MOF_warning_printf("changing case of \"%s\" to \"%s\"",
                     alias, p->alias);
+#endif
                 strcpy(alias, p->alias);
             }
             return p;
@@ -713,5 +715,3 @@ void MOF_Instance_Decl::print_static_list()
     for (; p; p = (MOF_Instance_Decl*)p->next)
         p->print();
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Instance_Decl.cpp,v 1.8 2007/03/07 18:57:14 mbrasher-public Exp $");

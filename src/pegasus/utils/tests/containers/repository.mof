@@ -1,0 +1,47 @@
+class Class1
+{
+    [Key] uint32 p1;
+    [Key] string p2;
+    [Key] boolean p3;
+    datetime p4;
+    string p5[];
+    string p6;
+};
+
+
+[Association]
+class Assoc1
+{
+    [Key] Class1 REF left;
+    [Key] Class1 REF right;
+};
+
+class Class2
+{
+    [Key] uint32 key;
+};
+
+[Association]
+class Assoc2
+{
+    [Key] Class2 REF left;
+    [Key] Class2 REF right;
+};
+
+class Class3
+{
+    [Key] uint32 key;
+    [EmbeddedObject] string embedded;
+};
+
+class Class4
+{
+    [Key] uint32 key;
+    [EmbeddedInstance("Class2")] string embedded;
+};
+
+class Class5
+{
+    [Key] uint32 key;
+    [EmbeddedInstance("Class2")] string embedded[];
+};

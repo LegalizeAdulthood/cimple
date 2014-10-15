@@ -140,14 +140,16 @@ void destroy(Meta_Property* mp)
     free(mp);
 }
 
-Meta_Property* clone(const Meta_Property* x)
+Meta_Property* clone(const Meta_Property* x, bool clone_value)
 {
     // ATTN: impement reference counting on this and other types.
     // ATTN: avoid copy when x.refs == 0.
     Meta_Property* mp = (Meta_Property*)calloc(1, sizeof(Meta_Property));
     memcpy(mp, x, sizeof(Meta_Property));
     mp->name = strdup(x->name);
-    mp->value = clone(x->value, Type(x->type), x->subscript != 0);
+
+    if (clone_value)
+        mp->value = clone(x->value, Type(x->type), x->subscript != 0);
 
     return mp;
 }
@@ -174,6 +176,43 @@ void print(const Meta_Property* mp, bool is_parameter)
     }
 }
 
+Meta_Property* create_meta_property(
+    const char* name, 
+    Type type, 
+    sint32 subscript, 
+    uint32 offset,
+    bool key)
+{
+    // Meta_Property.refs
+    // Meta_Property.flags
+    // Meta_Property.name
+    // Meta_Property.meta_qualifiers*
+    // Meta_Property.num_meta_qualifiers*
+    // Meta_Property.type
+    // Meta_Property.subscript
+    // Meta_Property.offset
+    // Meta_Property.value*
+    //
+    // *no initialized here.
+
+    Meta_Property* mp = CIMPLE_CALLOC(Meta_Property);
+
+    // ATTN: implement reference counting.
+    // Atomic_create(&mp->refs, 1);
+
+    mp->flags = CIMPLE_FLAG_PROPERTY | CIMPLE_FLAG_READ;
+
+    if (key)
+        mp->flags |= CIMPLE_FLAG_KEY;
+
+    *((char**)&mp->name) = strdup(name);
+
+    mp->type = type;
+    mp->subscript = subscript;
+    mp->offset = offset;
+
+    return mp;
+}
+
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Property.cpp,v 1.28 2007/03/07 18:41:15 mbrasher-public Exp $");

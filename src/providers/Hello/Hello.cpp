@@ -80,4 +80,3 @@ const Meta_Class Hello::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Hello/Hello.cpp,v 1.2 2007/05/07 22:27:50 mbrasher-public Exp $");

@@ -25,5 +25,3 @@
 */
 
 #include "MOF_Feature.h"
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Feature.cpp,v 1.3 2007/03/07 18:57:14 mbrasher-public Exp $");

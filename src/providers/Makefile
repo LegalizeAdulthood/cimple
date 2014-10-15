@@ -30,7 +30,11 @@ DIRS = \
     Delegate \
     Employee \
     Time \
-    Time/InvokeTime
+    Time/InvokeTime \
+
+ifeq ($(ENABLE_EMBEDDED_INSTANCES_OPT),1)
+    DIRS += Embedded Embedded/TestEmbedded All All/TestAll
+endif
 
 ifdef CIMPLE_UNIX
   DIRS += UnixUser

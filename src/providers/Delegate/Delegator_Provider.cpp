@@ -38,7 +38,6 @@ Enum_Instances_Status Delegator_Provider::enum_instances(
     
     if (cimom::enum_instances( "root/cimv2", delegate, e) != 0)
     {
-printf("OOPS...\n");
         return ENUM_INSTANCES_FAILED;
     }
 

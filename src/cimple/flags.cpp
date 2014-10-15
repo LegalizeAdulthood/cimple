@@ -54,4 +54,3 @@ size_t flag_name_to_index(const char* flag_name)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/flags.cpp,v 1.8 2007/03/07 18:41:15 mbrasher-public Exp $");

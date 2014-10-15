@@ -371,4 +371,3 @@ void Pegasus_Thread_Context::allow_unload(bool flag)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Thread_Context.cpp,v 1.15 2007/03/16 15:10:01 mbrasher-public Exp $");

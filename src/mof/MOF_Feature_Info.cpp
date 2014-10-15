@@ -59,5 +59,3 @@ void MOF_Feature_Info::print_list() const
 
     printf("\n");
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Feature_Info.cpp,v 1.5 2007/03/07 18:57:14 mbrasher-public Exp $");

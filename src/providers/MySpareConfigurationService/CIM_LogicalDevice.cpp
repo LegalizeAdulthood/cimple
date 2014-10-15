@@ -758,4 +758,3 @@ const Meta_Class CIM_LogicalDevice::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_LogicalDevice.cpp,v 1.5 2007/04/18 03:29:38 mbrasher-public Exp $");

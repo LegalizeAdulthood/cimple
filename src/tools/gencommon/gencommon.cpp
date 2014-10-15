@@ -192,4 +192,3 @@ void load_repository(const vector<string>& extra_mof_files)
         MOF_parse_file(mof_files[i].c_str());
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/gencommon/gencommon.cpp,v 1.19 2007/06/19 18:28:43 mbrasher-public Exp $");

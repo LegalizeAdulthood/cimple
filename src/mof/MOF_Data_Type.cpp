@@ -83,5 +83,3 @@ const char* MOF_Data_Type::to_string(int data_type)
     /* Unreachable */
     return 0;
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Data_Type.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

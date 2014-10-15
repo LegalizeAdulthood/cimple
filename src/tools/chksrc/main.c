@@ -50,11 +50,6 @@ void chksrc(const char* path)
 
     for (; fgets(buf, sizeof(buf), is) != NULL; line++)
     {
-        /* Ignore CIMPLE_ID() lines */
-
-        if (strstr(buf, "CIMPLE_ID"))
-            continue;
-
         /* Look for NOCHKSRC tag */
 
         if (strstr(buf, "NOCHKSRC"))

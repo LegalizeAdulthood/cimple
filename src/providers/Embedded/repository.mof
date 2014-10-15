@@ -1,0 +1,37 @@
+class CMPL_Embedded1
+{
+    [Key] uint32 key;
+};
+
+class CMPL_Embedded2
+{
+    [Key] uint32 key;
+};
+
+class CMPL_Embedded3
+{
+    [Key] uint32 key;
+};
+
+class CMPL_Embedded
+{
+    [Key]
+    uint32 Key;
+
+    [EmbeddedInstance("CMPL_Embedded1")]
+    string embedded1;
+
+    [EmbeddedObject]
+    string embedded2;
+
+    [EmbeddedInstance("CMPL_Embedded1")]
+    string foo1();
+
+    string foo2(
+        [EmbeddedInstance("CMPL_Embedded1"), In(true), Out(false)]
+        string arg1,
+        [EmbeddedInstance("CMPL_Embedded2"), In(true), Out(true)]
+        string arg2,
+        [EmbeddedInstance("CMPL_Embedded3"), In(false), Out(true)]
+        string arg3);
+};

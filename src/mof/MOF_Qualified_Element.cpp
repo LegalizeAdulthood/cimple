@@ -46,4 +46,3 @@ void MOF_Qualified_Element::set_owning_class(const char* owning_class_)
 }
 
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualified_Element.cpp,v 1.4 2007/03/07 18:57:15 mbrasher-public Exp $");

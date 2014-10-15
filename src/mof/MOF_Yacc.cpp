@@ -1447,7 +1447,7 @@ yyreduce:
 #line 243 "MOF.y"
     {
 	MOF_trace("MOF_production:1");
-	MOF_warning_printf("pragma ignored");
+	// MOF_warning_printf("pragma ignored");
     ;}
     break;
 

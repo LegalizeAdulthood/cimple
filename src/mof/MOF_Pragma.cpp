@@ -42,4 +42,3 @@ void MOF_Pragma::handle(
         MOF_generate_classes[MOF_num_generate_classes++] = strdup(pragma_arg);
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Pragma.cpp,v 1.5 2007/03/07 18:57:15 mbrasher-public Exp $");

@@ -34,6 +34,7 @@ Get_Instance_Status Thing_Provider::get_instance(
     const Thing* model,
     Thing*& instance)
 {
+print(model);
     return GET_INSTANCE_UNSUPPORTED;
 }
 
@@ -68,4 +69,3 @@ Modify_Instance_Status Thing_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Thing/Thing_Provider.cpp,v 1.11 2007/05/31 16:45:10 mbrasher-public Exp $");

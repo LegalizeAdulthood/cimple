@@ -55,4 +55,3 @@ const Meta_Class CIM_UserEntity::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_UserEntity.cpp,v 1.23 2007/06/19 15:25:03 mbrasher-public Exp $");

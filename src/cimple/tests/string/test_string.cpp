@@ -494,4 +494,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/string/test_string.cpp,v 1.17 2007/06/27 00:12:33 mbrasher-public Exp $");

@@ -188,4 +188,3 @@ Enum_References_Status LampLink_Provider::enum_references(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampLink_Provider.cpp,v 1.13 2007/06/01 16:49:59 mbrasher-public Exp $");

@@ -62,4 +62,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/print/main.cpp,v 1.4 2007/03/30 19:16:43 mbrasher-public Exp $");

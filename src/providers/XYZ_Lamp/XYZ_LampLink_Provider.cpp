@@ -86,4 +86,3 @@ Enum_Associators_Status XYZ_LampLink_Provider::enum_associators(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampLink_Provider.cpp,v 1.7 2007/05/31 16:45:10 mbrasher-public Exp $");

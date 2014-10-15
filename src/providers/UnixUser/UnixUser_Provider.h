@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<UnixUser>* handler);
 
     Create_Instance_Status create_instance(
-	const UnixUser* instance);
+        UnixUser* instance);
 
     Delete_Instance_Status delete_instance(
 	const UnixUser* instance);

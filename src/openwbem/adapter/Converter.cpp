@@ -951,4 +951,3 @@ int to_cimple_method(const OpenWBEM::String& methodName,
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/openwbem/adapter/Converter.cpp,v 1.4 2007/03/20 19:01:33 mbrasher-public Exp $");

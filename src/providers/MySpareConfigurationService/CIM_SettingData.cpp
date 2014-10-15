@@ -91,4 +91,3 @@ const Meta_Class CIM_SettingData::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/MySpareConfigurationService/CIM_SettingData.cpp,v 1.5 2007/04/18 03:29:39 mbrasher-public Exp $");

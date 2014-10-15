@@ -80,4 +80,3 @@ void __cimple_trace(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/config.cpp,v 1.34 2007/03/07 18:41:03 mbrasher-public Exp $");

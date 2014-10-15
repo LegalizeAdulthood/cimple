@@ -137,4 +137,3 @@ const Meta_Class CIM_Indication::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/CIM_Indication.cpp,v 1.12 2007/06/19 15:25:02 mbrasher-public Exp $");

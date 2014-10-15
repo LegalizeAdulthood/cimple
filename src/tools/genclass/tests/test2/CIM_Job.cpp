@@ -540,4 +540,3 @@ const Meta_Class CIM_Job::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test2/CIM_Job.cpp,v 1.26 2007/06/19 15:25:03 mbrasher-public Exp $");

@@ -188,4 +188,3 @@ bool Thread::equal(const Thread& t1, const Thread& t2)
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Thread.cpp,v 1.22 2007/03/07 18:41:15 mbrasher-public Exp $");

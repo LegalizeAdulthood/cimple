@@ -700,4 +700,3 @@ const Meta_Class CIM_MediaAccessDevice::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_DiskDrive/CIM_MediaAccessDevice.cpp,v 1.9 2007/06/19 15:24:57 mbrasher-public Exp $");

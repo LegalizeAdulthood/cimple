@@ -174,4 +174,3 @@ void uuid_to_string(const UUID& uuid, char str[CIMPLE_UUID_STRING_SIZE])
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/util/UUID.cpp,v 1.3 2007/03/07 19:06:39 mbrasher-public Exp $");

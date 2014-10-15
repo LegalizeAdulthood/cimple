@@ -58,7 +58,7 @@
 
 #define CIMPLE_OS_DARWIN
 
-#define CIMPLE_UINT64_LITERAL(X) ((Uint64)(X##ULL))
-#define CIMPLE_SINT64_LITERAL(X) ((Sint64)(X##LL))
+#define CIMPLE_UINT64_LITERAL(X) ((uint64)(X##ULL))
+#define CIMPLE_SINT64_LITERAL(X) ((sint64)(X##LL))
 
 #endif /* _cimple_platform_DARWIN_h */

@@ -242,7 +242,7 @@ MOF_production
     : compiler_directive
     {
 	MOF_trace("MOF_production:1");
-	MOF_warning_printf("pragma ignored");
+	// MOF_warning_printf("pragma ignored");
     }
     | class_decl
     {

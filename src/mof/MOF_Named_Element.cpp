@@ -36,6 +36,3 @@ MOF_Named_Element::~MOF_Named_Element()
     if (name)
         free(name);
 }
-
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Named_Element.cpp,v 1.4 2007/03/07 18:57:14 mbrasher-public Exp $");

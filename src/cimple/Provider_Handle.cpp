@@ -347,4 +347,3 @@ Get_Instance_Status Provider_Handle::get_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Provider_Handle.cpp,v 1.12 2007/03/07 18:41:15 mbrasher-public Exp $");

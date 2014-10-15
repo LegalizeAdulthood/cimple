@@ -52,7 +52,6 @@
 #define CIMPLE_IMPORT __declspec(dllimport)
 #define CIMPLE_EXPORT __declspec(dllexport)
 #define for if (0) ; else for
-#define CMPI_PLATFORM_WIN32_IX86_MSVC
 
 inline int strcasecmp(const char* s1, const char* s2)
 {
@@ -75,7 +74,7 @@ typedef __int32 ssize_t;
 
 #define CIMPLE_PLATFORM_ID "WIN32_IX86_MSVC"
 
-#define CIMPLE_UINT64_LITERAL(X) ((Uint64)(X))
-#define CIMPLE_SINT64_LITERAL(X) ((Sint64)(X))
+#define CIMPLE_UINT64_LITERAL(X) ((uint64)(X))
+#define CIMPLE_SINT64_LITERAL(X) ((sint64)(X))
 
 #endif /* _cimple_WIN32_IX86_MSVC_h */

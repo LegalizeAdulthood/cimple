@@ -47,4 +47,3 @@ Invoke_Method_Status XYZ_LampIndic_Provider::DeliverIndications(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampIndic_Provider.cpp,v 1.5 2007/04/18 03:51:31 mbrasher-public Exp $");

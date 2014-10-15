@@ -501,4 +501,3 @@ void Datetime::_cow()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Datetime.cpp,v 1.29 2007/07/11 17:17:17 mbrasher-public Exp $");

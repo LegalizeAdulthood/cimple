@@ -1,9 +1,12 @@
 #include <cimple/config.h>
+#include <pegasus/utils/pegasus.h>
 #include <cimple/Registration.h>
 #include <cimple/Error.h>
+#include <cimple/Provider_Handle.h>
+#include <cimple/Buffer.h>
 #include "Pegasus_Adapter.h"
 #include "Converter.h"
-#include "Str.h"
+#include <pegasus/utils/Str.h>
 #include "Pegasus_Thread_Context.h"
 
 #if 0
@@ -78,6 +81,47 @@ static void _check(int cimple_error)
     _throw(code);
 }
 
+static int _de_nullify_properties(const P_CIMPropertyList& pl, Instance* ci)
+{
+    // If the property list is null, define all the properties (the requestor
+    // wants them all).
+
+    if (pl.isNull())
+    {
+        cimple::de_nullify_properties(ci);
+        return 0;
+    }
+
+    // Nullify all properties.
+
+    nullify_non_keys(ci);
+
+    // Denullify requested properties:
+
+    const Meta_Class* mc = ci->meta_class;
+
+    for (size_t i = 0; i < pl.size(); i++)
+    {
+        Str name(pl[P_Uint32(i)]);
+
+        const Meta_Property* mp = (Meta_Property*)find_feature(mc, *name);
+
+        if (!mp)
+        {
+            // CIMPLE does not have this property but Pegasus does.
+            continue;
+        }
+
+        if (mp->flags & CIMPLE_FLAG_KEY)
+            continue;
+
+        if (mp->flags & CIMPLE_FLAG_PROPERTY)
+            null_of(mp, (char*)ci + mp->offset) = 0;
+    }
+
+    return 0;
+}
+
 Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
     _provider(provider), 
     _handler(0),
@@ -137,14 +181,14 @@ void Pegasus_Adapter::getInstance(
 
     Instance* model = 0;
 
-    if (Converter::to_cimple_key(objectPath.getKeyBindings(), mc, model) != 0)
+    if (Converter::to_cimple_key(objectPath, mc, model) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> model_d(model);
 
     // Mark properties mentioned in property list as non-null.
 
-    if (Converter::de_nullify_properties(propertyList, model) != 0)
+    if (_de_nullify_properties(propertyList, model) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     // Invoke provider:
@@ -229,7 +273,7 @@ void Pegasus_Adapter::enumerateInstances(
 
     // Validate properties that appear in the property list.
 
-    if (Converter::de_nullify_properties(propertyList, model) != 0)
+    if (_de_nullify_properties(propertyList, model) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     // Invoke the provider:
@@ -412,7 +456,7 @@ void Pegasus_Adapter::modifyInstance(
 
     // Marks properties mentioned in property list as non-null.
 
-    if (Converter::de_nullify_properties(propertyList, model) != 0)
+    if (_de_nullify_properties(propertyList, model) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     // Invoke provider:
@@ -444,7 +488,7 @@ void Pegasus_Adapter::deleteInstance(
 
     Instance* ci = 0;
 
-    if (Converter::to_cimple_key(objectPath.getKeyBindings(), mc, ci) != 0)
+    if (Converter::to_cimple_key(objectPath, mc, ci) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ci_d(ci);
@@ -480,7 +524,7 @@ void Pegasus_Adapter::invokeMethod(
 
     Instance* ref = 0;
 
-    if (Converter::to_cimple_key(objectPath.getKeyBindings(), mc, ref) != 0)
+    if (Converter::to_cimple_key(objectPath, mc, ref) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> ref_d(ref);
@@ -490,7 +534,7 @@ void Pegasus_Adapter::invokeMethod(
     Str meth_name(methodName);
     Instance* meth = 0;
 
-    if (Converter::to_cimple_method(meth_name, inParameters, mc, meth) != 0)
+    if (Converter::to_cimple_method(inParameters, *meth_name, mc, meth) != 0)
         _throw(Pegasus::CIM_ERR_FAILED);
 
     Ref<Instance> meth_d(meth);
@@ -498,6 +542,13 @@ void Pegasus_Adapter::invokeMethod(
     // Invoke the method:
 
     Invoke_Method_Status status = _provider->invoke_method(ref, meth);
+
+    if (status == INVOKE_METHOD_UNSUPPORTED)
+    {
+        Buffer buffer;
+        buffer.format("unsupported method: %s.%s()", mc->name, *meth_name);
+        _throw(Pegasus::CIM_ERR_NOT_SUPPORTED, P_String(buffer.data()));
+    }
 
     _check(status);
 
@@ -708,8 +759,7 @@ void Pegasus_Adapter::associators(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(
-        objectPath.getKeyBindings(), source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -847,8 +897,7 @@ void Pegasus_Adapter::associatorNames(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(
-        objectPath.getKeyBindings(), source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -959,8 +1008,7 @@ void Pegasus_Adapter::references(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(
-        objectPath.getKeyBindings(), source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
     }
@@ -1071,8 +1119,7 @@ void Pegasus_Adapter::referenceNames(
 
     Instance* ck = 0;
 
-    if (Converter::to_cimple_key(
-        objectPath.getKeyBindings(), source_mc, ck) != 0 || !ck)
+    if (Converter::to_cimple_key(objectPath, source_mc, ck) != 0 || !ck)
     {
         _throw(Pegasus::CIM_ERR_FAILED);
     }
@@ -1304,5 +1351,3 @@ extern "C" CIMPLE_ADAPTER_LINKAGE int cimple_pegasus_adapter(
     // Not found!
     return -1;
 }
-
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Adapter.cpp,v 1.57 2007/07/19 21:30:38 mbrasher-public Exp $");

@@ -11,9 +11,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 static const Meta_Class* _meta_classes[] =
 {
-    &CMPL_Left::static_meta_class,
-    &CMPL_Right::static_meta_class,
-    &CMPL_Cross::static_meta_class,
+    &Left::static_meta_class,
+    &Right::static_meta_class,
+    &Cross::static_meta_class,
 };
 
 static const size_t _num_meta_classes = CIMPLE_ARRAY_SIZE(_meta_classes);

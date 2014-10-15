@@ -45,9 +45,10 @@ int MOF_Parameter::compatible(
 
     if (strcmp(p1->name, p2->name) != 0)
     {
+#if 0
         MOF_warning_printf("changing case of \"%s\" to \"%s\"",
                 p1->name, p2->name);
-
+#endif
         strcpy(p1->name, p2->name);
     }
 
@@ -70,9 +71,10 @@ int MOF_Parameter::compatible(
 
         if (strcmp(p1->ref_name, p2->ref_name) != 0)
         {
+#if 0
             MOF_warning_printf("changing case of \"%s\" to \"%s\"",
                     p1->ref_name, p2->ref_name);
-
+#endif
             strcpy(p1->ref_name, p2->ref_name);
         }
     }
@@ -99,4 +101,3 @@ void MOF_Parameter::check_duplicates() const
     }
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parameter.cpp,v 1.5 2007/03/07 18:57:14 mbrasher-public Exp $");

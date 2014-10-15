@@ -98,4 +98,3 @@ Invoke_Method_Status BUG31_C_Provider::meth(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_C_Provider.cpp,v 1.7 2007/05/31 16:45:11 mbrasher-public Exp $");

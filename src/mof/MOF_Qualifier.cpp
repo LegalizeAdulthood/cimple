@@ -230,4 +230,3 @@ void MOF_Qualifier::validate_list(int expected_scope)
     }
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier.cpp,v 1.8 2007/03/07 18:57:15 mbrasher-public Exp $");

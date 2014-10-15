@@ -54,4 +54,3 @@ namespace pegasus
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/pegasus_unsupported.cpp,v 1.4 2007/03/16 15:10:01 mbrasher-public Exp $");

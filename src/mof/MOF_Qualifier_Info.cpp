@@ -313,4 +313,3 @@ void MOF_Qualifier_Info::print_list(size_t nesting) const
         p->print(nesting);
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier_Info.cpp,v 1.8 2007/06/15 14:03:15 mbrasher-public Exp $");

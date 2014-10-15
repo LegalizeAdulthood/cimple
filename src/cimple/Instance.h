@@ -374,6 +374,23 @@ int instance_to_model_path(
 CIMPLE_CIMPLE_LINKAGE
 void __create_refs(Instance* inst);
 
+CIMPLE_CIMPLE_LINKAGE
+void __print_scalar(uint32 type, const void* ptr);
+
+CIMPLE_CIMPLE_LINKAGE
+void __print_array(uint32 type, const void* ptr, size_t depth);
+
+CIMPLE_CIMPLE_LINKAGE
+void __print_aux(
+    const Instance* inst, 
+    const char* name, 
+    size_t level, 
+    bool keys_only);
+
+// Call func() on every instances reachable from inst (including inst).
+CIMPLE_CIMPLE_LINKAGE
+void visit(Instance* inst, void (*func)(Instance*, void*), void* data);
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Instance_h */

@@ -64,9 +64,10 @@ MOF_Qualifier_Decl* MOF_Qualifier_Decl::find(char* name)
         {
             if (strcmp(name, p->name) != 0)
             {
+#if 0
                 MOF_warning_printf("changing case of \"%s\" to \"%s\"",
                     name, p->name);
-
+#endif
                 strcpy(name, p->name);
             }
             return p;
@@ -119,4 +120,3 @@ void MOF_Qualifier_Decl::print_static_list()
         p->print();
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier_Decl.cpp,v 1.5 2007/03/07 18:57:15 mbrasher-public Exp $");

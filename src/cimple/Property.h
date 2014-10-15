@@ -60,6 +60,18 @@ inline void Property<T>::clear()
     null = true;
 }
 
+template<class T>
+inline bool operator==(const Property<T>& x, const Property<T>& y)
+{
+    return x.null == y.null && x.value == y.value;
+}
+
+template<class T>
+inline bool operator!=(const Property<T>& x, const Property<T>& y)
+{
+    return !operator==(x, y);
+}
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Property_h */

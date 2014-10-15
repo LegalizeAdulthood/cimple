@@ -32,7 +32,18 @@ CIMPLE_NAMESPACE_BEGIN
 
 static const char* _messages[] =
 {
-    "bad cast",
+    "BAD_CAST",
+    "BAD_NAME",
+    "ALREADY_EXISTS",
+    "INCOMPATIBLE_OVERRIDE",
+    "BAD_SUBSCRIPT",
+    "NO_SUCH_FEATURE",
+    "NO_SUCH_PROPERTY",
+    "NO_SUCH_REFERENCE",
+    "NO_SUCH_METHOD",
+    "TYPE_MISMATCH",
+    "NULL_ACCESS",
+    "BOUNDS",
 };
 
 static size_t _num_messages = sizeof(_messages) / sizeof(_messages[0]);
@@ -73,4 +84,3 @@ const String& Exception::message() const
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Exception.cpp,v 1.1 2007/05/29 17:57:35 mbrasher-public Exp $");

@@ -5,13 +5,13 @@
 //==============================================================================
 
 #include <cimple/cimple.h>
-#include "CMPL_Cross_Provider.h"
-#include "CMPL_Left_Provider.h"
-#include "CMPL_Right_Provider.h"
+#include "Cross_Provider.h"
+#include "Left_Provider.h"
+#include "Right_Provider.h"
 
 using namespace cimple;
 
-static int __cimple_CMPL_Cross_Provider_proc(
+static int __cimple_Cross_Provider_proc(
     const Registration* registration,
     int operation,
     void* arg0,
@@ -23,8 +23,8 @@ static int __cimple_CMPL_Cross_Provider_proc(
     void* arg6,
     void* arg7)
 {
-    typedef CMPL_Cross Class;
-    typedef CMPL_Cross_Provider Provider;
+    typedef Cross Class;
+    typedef Cross_Provider Provider;
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Association_Provider_Proc_T<Provider>::proc(registration,
@@ -37,7 +37,7 @@ static int __cimple_CMPL_Cross_Provider_proc(
     return -1;
 }
 
-static int __cimple_CMPL_Left_Provider_proc(
+static int __cimple_Left_Provider_proc(
     const Registration* registration,
     int operation,
     void* arg0,
@@ -49,8 +49,8 @@ static int __cimple_CMPL_Left_Provider_proc(
     void* arg6,
     void* arg7)
 {
-    typedef CMPL_Left Class;
-    typedef CMPL_Left_Provider Provider;
+    typedef Left Class;
+    typedef Left_Provider Provider;
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Instance_Provider_Proc_T<Provider>::proc(registration,
@@ -63,7 +63,7 @@ static int __cimple_CMPL_Left_Provider_proc(
     return -1;
 }
 
-static int __cimple_CMPL_Right_Provider_proc(
+static int __cimple_Right_Provider_proc(
     const Registration* registration,
     int operation,
     void* arg0,
@@ -75,8 +75,8 @@ static int __cimple_CMPL_Right_Provider_proc(
     void* arg6,
     void* arg7)
 {
-    typedef CMPL_Right Class;
-    typedef CMPL_Right_Provider Provider;
+    typedef Right Class;
+    typedef Right_Provider Provider;
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Instance_Provider_Proc_T<Provider>::proc(registration,
@@ -89,21 +89,21 @@ static int __cimple_CMPL_Right_Provider_proc(
     return -1;
 }
 
-CIMPLE_MODULE(CMPL_Cross_Module);
-CIMPLE_ASSOCIATION_PROVIDER(CMPL_Cross_Provider);
-CIMPLE_INSTANCE_PROVIDER(CMPL_Left_Provider);
-CIMPLE_INSTANCE_PROVIDER(CMPL_Right_Provider);
+CIMPLE_MODULE(Cross_Module);
+CIMPLE_ASSOCIATION_PROVIDER(Cross_Provider);
+CIMPLE_INSTANCE_PROVIDER(Left_Provider);
+CIMPLE_INSTANCE_PROVIDER(Right_Provider);
 
 #ifdef CIMPLE_PEGASUS_MODULE
   CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;
 #endif
 
 #ifdef CIMPLE_CMPI_MODULE
-  CIMPLE_CMPI_ASSOCIATION_PROVIDER(CMPL_Cross_Provider);
-  CIMPLE_CMPI_INSTANCE_PROVIDER(CMPL_Left_Provider);
-  CIMPLE_CMPI_INSTANCE_PROVIDER(CMPL_Right_Provider);
+  CIMPLE_CMPI_ASSOCIATION_PROVIDER(Cross_Provider);
+  CIMPLE_CMPI_INSTANCE_PROVIDER(Left_Provider);
+  CIMPLE_CMPI_INSTANCE_PROVIDER(Right_Provider);
 #endif
 
 #ifdef CIMPLE_OPENWBEM_MODULE
-  CIMPLE_OPENWBEM_PROVIDER(CMPL_Cross_Module);
+  CIMPLE_OPENWBEM_PROVIDER(Cross_Module);
 #endif

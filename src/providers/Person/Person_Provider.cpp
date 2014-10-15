@@ -127,4 +127,3 @@ Modify_Instance_Status Person_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person_Provider.cpp,v 1.39 2007/05/31 16:45:09 mbrasher-public Exp $");

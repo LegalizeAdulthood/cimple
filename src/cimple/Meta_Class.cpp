@@ -167,7 +167,7 @@ const Meta_Class* find_meta_class(
 //
 //==============================================================================
 
-void print(const Meta_Class* mc, bool print_qualifiers)
+void print(const Meta_Class* mc, bool print_qualifiers, bool local_only)
 {
     // Qualifiers:
 
@@ -190,6 +190,9 @@ void print(const Meta_Class* mc, bool print_qualifiers)
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
+        if (local_only && !mc->locals[i].local)
+            continue;
+
         print(mc->meta_features[i], print_qualifiers, 1);
         printf(";\n");
     }
@@ -395,10 +398,6 @@ Meta_Class* create_meta_class(
         free((char*)mc->name);
         *((char**)&mc->name) = strdup(name);
 
-        // Meta_Class.flags:
-
-        mc->flags |= flags;
-
         // Meta_Class.locals:
 
         for (size_t i = 0; i < mc->num_meta_features; i++)
@@ -557,4 +556,3 @@ void filter_qualifiers(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Class.cpp,v 1.65 2007/04/26 22:40:57 mbrasher-public Exp $");

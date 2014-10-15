@@ -148,4 +148,3 @@ const Meta_Class CCC::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genclass/tests/test6/CCC.cpp,v 1.25 2007/06/19 15:25:04 mbrasher-public Exp $");

@@ -353,4 +353,3 @@ const Meta_Class CIM_ConcreteJob::static_meta_class =
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genhnd/tests/genhnd1/CIM_ConcreteJob.cpp,v 1.7 2007/06/26 20:46:54 mbrasher-public Exp $");

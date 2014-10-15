@@ -1,5 +1,5 @@
 #include <cimple/config.h>
-#include <Pegasus/Common/Config.h>
+#include <pegasus/utils/pegasus.h>
 #include <Pegasus/Client/CIMClient.h>
 #include <string>
 #include <sys/types.h>
@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <cimple/cimple.h>
 #include <cimple/Provider_Handle.h>
+#include <pegasus/utils/Str.h>
 #include <util/util.h>
 #include "usage.h"
 
@@ -24,6 +25,10 @@
 
 using namespace std;
 using namespace Pegasus;
+
+const char NO_EMBEDDED_INSTANCES[] =
+    "Encountered usage of embedded instances "
+    "but CIMPLE not configured with --enable-embedded-instances";
 
 enum UserContext
 {
@@ -160,6 +165,166 @@ void print(CIMInstance& inst)
     cout << "};\n" << endl;
 }
 
+int delete_instance(
+    CIMClient& client, 
+    const char* name_space,
+    const char* object_path)
+{
+    try
+    {
+        if (verbose_opt)
+            printf("delete_instance(%s, %s)\n", name_space, object_path);
+
+        client.deleteInstance(name_space, CIMObjectPath(object_path));
+
+        if (verbose_opt)
+            printf("delete_instance(%s, %s): okay\n", name_space, object_path);
+
+        return 0;
+    }
+    catch (CIMException& e)
+    {
+        if (verbose_opt)
+        {
+            printf("delete_instance(%s, %s): error: %s\n", 
+                name_space, object_path, *cimple::Str(e));
+        }
+
+        return -1;
+    }
+    catch (Exception& e)
+    {
+        if (verbose_opt)
+        {
+            printf("delete_instance(%s, %s): error: %s\n", 
+                name_space, object_path, *cimple::Str(e));
+        }
+
+        return -1;
+    }
+    catch (...)
+    {
+        if (verbose_opt)
+        {
+            printf("delete_instance(%s, %s): error: unknown exception\n", 
+                name_space, object_path);
+        }
+
+        return -1;
+    }
+
+    // Unreachable!
+    return -1;
+}
+
+int get_instance(
+    CIMClient& client, 
+    const char* name_space,
+    const char* object_path,
+    CIMInstance& ci)
+{
+    try
+    {
+        if (verbose_opt)
+            printf("get_instance(%s, %s)\n", name_space, object_path);
+
+        ci = client.getInstance(name_space, CIMObjectPath(object_path));
+
+        if (verbose_opt)
+            printf("get_instance(%s, %s): okay\n", name_space, object_path);
+
+        return 0;
+    }
+    catch (CIMException& e)
+    {
+        if (verbose_opt)
+        {
+            printf("get_instance(%s, %s): error: %s\n", 
+                name_space, object_path, *cimple::Str(e));
+        }
+
+        return -1;
+    }
+    catch (Exception& e)
+    {
+        if (verbose_opt)
+        {
+            printf("get_instance(%s, %s): error: %s\n", 
+                name_space, object_path, *cimple::Str(e));
+        }
+
+        return -1;
+    }
+    catch (...)
+    {
+        if (verbose_opt)
+        {
+            printf("get_instance(%s, %s): error: unknown exception\n", 
+                name_space, object_path);
+        }
+
+        return -1;
+    }
+
+    // Unreachable!
+    return -1;
+}
+
+int create_instance(
+    CIMClient& client, 
+    const char* name_space,
+    CIMInstance& ci)
+{
+    CString cstr = ci.getPath().toString().getCString();
+    const char* object_path = cstr;
+
+    try
+    {
+        if (verbose_opt)
+            printf("create_instance(%s, %s)\n", name_space, object_path);
+
+        client.createInstance(name_space, ci);
+
+        if (verbose_opt)
+            printf("create_instance(%s, %s): okay\n", name_space, object_path);
+
+        return 0;
+    }
+    catch (CIMException& e)
+    {
+        if (verbose_opt)
+        {
+            printf("create_instance(%s, %s): error: %s\n", 
+                name_space, object_path, *cimple::Str(e));
+        }
+
+        return -1;
+    }
+    catch (Exception& e)
+    {
+        if (verbose_opt)
+        {
+            printf("create_instance(%s, %s): error: %s\n", 
+                name_space, object_path, *cimple::Str(e));
+        }
+
+        return -1;
+    }
+    catch (...)
+    {
+        if (verbose_opt)
+        {
+            printf("create_instance(%s, %s): error: unknown exception\n", 
+                name_space, object_path);
+        }
+
+        return -1;
+    }
+
+    // Unreachable!
+    return -1;
+}
+
 //------------------------------------------------------------------------------
 //
 // load_file()
@@ -282,11 +447,10 @@ void delete_capabilities(
         module_name.c_str(),
         class_name.c_str());
 
-    if (verbose_opt)
-        printf("Deleting %s\n", buf);
-
     if (!dump_opt)
-        client.deleteInstance(REGISTRATION_NAMESPACE, CIMObjectPath(buf));
+    {
+        delete_instance(client, REGISTRATION_NAMESPACE, buf);
+    }
 }
 
 void unregister_provider(
@@ -312,11 +476,10 @@ void unregister_provider(
             provider_name.c_str(),
             module_name.c_str());
 
-        if (verbose_opt)
-            printf("Deleting %s\n", buf);
-
         if (!dump_opt)
-            client.deleteInstance(REGISTRATION_NAMESPACE, CIMObjectPath(buf));
+        {
+            delete_instance(client, REGISTRATION_NAMESPACE, buf);
+        }
     }
     catch (...)
     {
@@ -380,11 +543,11 @@ void unregister_module(
         char buf[1024];
         sprintf(buf, "PG_ProviderModule.Name=\"%s\"", module_name.c_str());
 
-        if (verbose_opt)
-            printf("Deleting %s\n", buf);
 
         if (!dump_opt)
-            client.deleteInstance(REGISTRATION_NAMESPACE, CIMObjectPath(buf));
+        {
+            delete_instance(client, REGISTRATION_NAMESPACE, buf);
+        }
     }
     catch (...)
     {
@@ -405,18 +568,10 @@ int get_PG_ProviderModule(
     const string& module_name,
     CIMInstance& ci)
 {
-    try
-    {
-        char buf[1024];
-        sprintf(buf, "PG_ProviderModule.Name=\"%s\"", module_name.c_str());
+    char buf[1024];
+    sprintf(buf, "PG_ProviderModule.Name=\"%s\"", module_name.c_str());
 
-        ci = client.getInstance(REGISTRATION_NAMESPACE, CIMObjectPath(buf));
-        return 0;
-    }
-    catch (...)
-    {
-        return -1;
-    }
+    return get_instance(client, REGISTRATION_NAMESPACE, buf, ci);
 }
 
 //------------------------------------------------------------------------------
@@ -661,22 +816,33 @@ void register_module(
             }
             else
             {
-                if (verbose_opt)
-                    printf("=== Updating provider module instance\n");
-
                 unregister_module(client, module_name);
-                client.createInstance(REGISTRATION_NAMESPACE, pmi);
+
+                {
+                    if (verbose_opt)
+                        printf("=== Creating PG_ProviderModule instance\n");
+
+                    client.createInstance(REGISTRATION_NAMESPACE, pmi);
+
+                    if (verbose_opt)
+                        printf("=== Created PG_ProviderModule instance\n");
+                }
             }
         }
         else
         {
-            if (verbose_opt)
-                printf("=== Creating provider module instance\n");
-
             if (dump_opt)
                 print(pmi);
             else
+            {
+                if (verbose_opt)
+                    printf("=== Creating provider module instance\n");
+
                 client.createInstance(REGISTRATION_NAMESPACE, pmi);
+
+                if (verbose_opt)
+                    printf("=== Created provider module instance\n");
+            }
         }
     }
     catch (CIMException& e)
@@ -867,9 +1033,6 @@ static void create_capabilities(
 
     CIMInstance i("PG_ProviderCapabilities");
 
-    if (verbose_opt)
-        printf("Creating PG_ProviderCapabilities instance\n");
-
     i.addProperty(CIMProperty("CapabilityID", cn));
     i.addProperty(CIMProperty("ProviderModuleName", mn));
     i.addProperty(CIMProperty("ProviderName", pn));
@@ -956,7 +1119,15 @@ static void create_capabilities(
         print(i);
 
     if (!dump_opt)
+    {
+        if (verbose_opt)
+            printf("Creating PG_ProviderCapabilities instance\n");
+
         client.createInstance(REGISTRATION_NAMESPACE, i);
+
+        if (verbose_opt)
+            printf("Created PG_ProviderCapabilities instance\n");
+    }
 }
 
 void register_provider(
@@ -1020,9 +1191,6 @@ void register_provider(
         {
             CIMInstance i("PG_Provider");
 
-            if (verbose_opt)
-                printf("Creating PG_Provider instance\n");
-
             i.addProperty(CIMProperty("Name", pn));
             i.addProperty(CIMProperty("ProviderModuleName", mn));
 
@@ -1030,7 +1198,15 @@ void register_provider(
                 print(i);
 
             if (!dump_opt)
+            {
+                if (verbose_opt)
+                    printf("Creating PG_Provider instance\n");
+
                 client.createInstance(REGISTRATION_NAMESPACE, i);
+
+                if (verbose_opt)
+                    printf("Created PG_Provider instance\n");
+            }
         }
 
         // Create PG_ProviderCapabilities instance.
@@ -1166,29 +1342,90 @@ void check_method_compatibility(
             continue;
         }
 
-        CIMParameter param = m.getParameter(pos);
+        CIMParameter p = m.getParameter(pos);
 
-        if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
+        {
+            const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
+
+            if (p.getType() != CIMTYPE_STRING && p.getType() != CIMTYPE_OBJECT)
+            {
+                err(INCOMPATIBLE "Parameters have different types: %s().%s",
+                    mc->name, mm->name, mr->name);
+            }
+
+            Uint32 pos = p.findQualifier("EmbeddedObject");
+
+            if (pos == (Uint32)-1)
+            {
+                err(INCOMPATIBLE "Parameters have different types: %s",
+                    mc->name, mf->name);
+            }
+        }
+        else if (mf->flags & CIMPLE_FLAG_EMBEDDED_INSTANCE)
+        {
+#ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
+
+            const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
+
+            if (p.getType() != CIMTYPE_STRING && p.getType() !=CIMTYPE_INSTANCE)
+            {
+                err(INCOMPATIBLE "Parameters have different types: %s",
+                    mc->name, mr->name);
+            }
+
+            Uint32 pos = p.findQualifier("EmbeddedInstance");
+
+            if (pos == (Uint32)-1)
+            {
+                err(INCOMPATIBLE "Missing EmbeddedInstance qualifier: %s",
+                    mc->name, mf->name);
+            }
+
+            try
+            {
+                String t;
+                p.getQualifier(pos).getValue().get(t);
+
+                if (!cimple::eqi(*cimple::Str(t), mr->meta_class->name))
+                {
+                    err(INCOMPATIBLE "Embedded class name mismatch on %s",
+                        mc->name, mf->name);
+                }
+            }
+            catch (...)
+            {
+                err(INCOMPATIBLE "Unexpected error: %s",
+                    mc->name, mf->name);
+            }
+
+#else /* !CIMPLE_ENABLE_EMBEDDED_INSTANCES */
+
+            err(NO_EMBEDDED_INSTANCES);
+
+#endif /* !CIMPLE_ENABLE_EMBEDDED_INSTANCES */
+        }
+        else if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
             const cimple::Meta_Property* mp = (const cimple::Meta_Property*)mf;
 
-            if (param.getType() != mp->type)
-                err(INCOMPATIBLE "On this method: %s", mc->name, mm->name);
+            if (p.getType() != mp->type)
+                err(INCOMPATIBLE "1On this method: %s", mc->name, mm->name);
 
-            if (param.isArray() && mp->subscript == 0)
-                err(INCOMPATIBLE "On this method: %s", mc->name, mm->name);
+            if (p.isArray() && mp->subscript == 0)
+                err(INCOMPATIBLE "2On this method: %s", mc->name, mm->name);
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
             const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
 
-            if (param.getType() != CIMTYPE_REFERENCE)
-                err(INCOMPATIBLE "On this method: %s", mc->name, mm->name);
+            if (p.getType() != CIMTYPE_REFERENCE)
+                err(INCOMPATIBLE "3On this method: %s", mc->name, mm->name);
 
-            String tmp = param.getReferenceClassName().getString();
+            String tmp = p.getReferenceClassName().getString();
 
             if (tmp != mr->meta_class->name)
-                err(INCOMPATIBLE "On this method: %s", mc->name, mm->name);
+                err(INCOMPATIBLE "4On this method: %s", mc->name, mm->name);
 
             // Check compatibility of these reference classes:
 
@@ -1308,6 +1545,52 @@ void check_class_compatibility(
                     mc->name, mf->name);
             }
         }
+        else if (mf->flags & CIMPLE_FLAG_EMBEDDED_INSTANCE)
+        {
+#ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
+
+            const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
+
+            // Check type.
+
+            if (p.getType() != CIMTYPE_STRING && p.getType() !=CIMTYPE_INSTANCE)
+            {
+                err(INCOMPATIBLE "Properties have different types: %s",
+                    mc->name, mr->name);
+            }
+
+            // Check EmbeddedInstance qualifier:
+
+            Uint32 pos = p.findQualifier("EmbeddedInstance");
+
+            if (pos == (Uint32)-1)
+            {
+                err(INCOMPATIBLE "Properties have different types: %s",
+                    mc->name, mf->name);
+            }
+
+            try
+            {
+                String t;
+                p.getQualifier(pos).getValue().get(t);
+
+                if (!cimple::eqi(*cimple::Str(t), mr->meta_class->name))
+                {
+                    err(INCOMPATIBLE "Properties have different types: %s",
+                        mc->name, mf->name);
+                }
+            }
+            catch (...)
+            {
+                err(INCOMPATIBLE "Properties have different types: %s",
+                    mc->name, mf->name);
+            }
+#else /* !CIMPLE_ENABLE_EMBEDDED_INSTANCES */
+
+            err(NO_EMBEDDED_INSTANCES);
+
+#endif /* !CIMPLE_ENABLE_EMBEDDED_INSTANCES */
+        }
         else if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
             const cimple::Meta_Property* mp = (const cimple::Meta_Property*)mf;
@@ -1401,54 +1684,90 @@ void add_method(
     CIMClass& cc, 
     const cimple::Meta_Method* mm)
 {
+    // Create method.
+
     CIMMethod cm(mm->name, CIMType(mm->return_type));
 
     for (size_t i = 0; i < mm->num_meta_features; i++)
     {
         const cimple::Meta_Feature* mf = mm->meta_features[i];
 
+        // Handle return value up front:
+
         if (strcmp(mf->name, "return_value") == 0)
-            continue;
-
-        if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
-            const cimple::Meta_Property* mp = (const cimple::Meta_Property*)mf;
-            Uint32 array_size = mp->subscript > 0 ? mp->subscript : 0;
-            bool is_array = mp->subscript != 0;
-            CIMParameter param(
-                mp->name, CIMType(mp->type), is_array, array_size);
+            if (mf->flags & CIMPLE_FLAG_EMBEDDED_INSTANCE)
+            {
+                assert(mf->flags & CIMPLE_FLAG_REFERENCE);
+                const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
 
-            if (mp->flags & CIMPLE_FLAG_IN)
-                param.addQualifier(CIMQualifier("in", Boolean(true)));
-            else
-                param.addQualifier(CIMQualifier("in", Boolean(false)));
+                create_class(client, ns, mr->meta_class);
+                CIMQualifier q("EmbeddedInstance",String(mr->meta_class->name));
+                cm.addQualifier(q);
+            }
+            else if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
+            {
+                assert(mf->flags & CIMPLE_FLAG_REFERENCE);
+                CIMQualifier q("EmbeddedObject", Boolean(true));
+                cm.addQualifier(q);
+            }
+            continue;
+        }
 
-            if (mp->flags & CIMPLE_FLAG_OUT)
-                param.addQualifier(CIMQualifier("out", Boolean(true)));
+        // Now add current parameter:
 
-            cm.addParameter(param);
+        CIMParameter cp;
+
+        if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
+        {
+            assert(mf->flags & CIMPLE_FLAG_REFERENCE);
+
+            const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
+            cp = CIMParameter(mf->name, CIMTYPE_STRING);
+            cp.addQualifier(CIMQualifier("EmbeddedObject", Boolean(true)));
+        }
+        else if (mf->flags & CIMPLE_FLAG_EMBEDDED_INSTANCE)
+        {
+            assert(mf->flags & CIMPLE_FLAG_REFERENCE);
+
+            const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
+            cp = CIMParameter(mf->name, CIMTYPE_STRING);
+            create_class(client, ns, mr->meta_class);
+            cp.addQualifier(CIMQualifier(
+                "EmbeddedInstance", String(mr->meta_class->name)));
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
             const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
-
             create_class(client, ns, mr->meta_class);
 
             bool is_array = mr->subscript != 0;
 
-            CIMParameter param(
+            cp = CIMParameter(
                 mr->name, CIMTYPE_REFERENCE, is_array, 0, mr->meta_class->name);
-
-            if (mr->flags & CIMPLE_FLAG_IN)
-                param.addQualifier(CIMQualifier("in", Boolean(true)));
-            else
-                param.addQualifier(CIMQualifier("in", Boolean(false)));
-
-            if (mr->flags & CIMPLE_FLAG_OUT)
-                param.addQualifier(CIMQualifier("out", Boolean(true)));
-
-            cm.addParameter(param);
         }
+        else if (mf->flags & CIMPLE_FLAG_PROPERTY)
+        {
+            const cimple::Meta_Property* mp = (const cimple::Meta_Property*)mf;
+            Uint32 array_size = mp->subscript > 0 ? mp->subscript : 0;
+            bool is_array = mp->subscript != 0;
+            cp = CIMParameter(
+                mp->name, CIMType(mp->type), is_array, array_size);
+        }
+
+        // Fixup in/out qualifiers on new parameter.
+
+        if (mf->flags & CIMPLE_FLAG_IN)
+            cp.addQualifier(CIMQualifier("in", Boolean(true)));
+        else
+            cp.addQualifier(CIMQualifier("in", Boolean(false)));
+
+        if (mf->flags & CIMPLE_FLAG_OUT)
+            cp.addQualifier(CIMQualifier("out", Boolean(true)));
+
+        // Add parameter to list:
+
+        cm.addParameter(cp);
     }
 
     cc.addMethod(cm);
@@ -1514,6 +1833,9 @@ void create_class(
         {
             const cimple::Meta_Feature* mf = mc->meta_features[i];
 
+            if (mf->flags & CIMPLE_FLAG_METHOD)
+                continue;
+
             if (mf->flags & CIMPLE_FLAG_KEY)
                 num_keys++;
 
@@ -1524,16 +1846,38 @@ void create_class(
 
             if (mf->flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
             {
-                // Translate CIMPLE embedded properties back to strings.
+                assert(mf->flags & CIMPLE_FLAG_REFERENCE);
+                assert(!(mf->flags & CIMPLE_FLAG_KEY));
+
+                CIMValue v(CIMTYPE_STRING, false, 0);
+                CIMProperty p(mf->name, v, 0);
+
+                p.addQualifier(CIMQualifier("EmbeddedObject", Boolean(true)));
+
+                c.addProperty(p);
+            }
+            else if (mf->flags & CIMPLE_FLAG_EMBEDDED_INSTANCE)
+            {
+#ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
+
+                const cimple::Meta_Reference* mr = (cimple::Meta_Reference*)mf;
 
                 assert(mf->flags & CIMPLE_FLAG_REFERENCE);
                 assert(!(mf->flags & CIMPLE_FLAG_KEY));
 
                 CIMValue v(CIMTYPE_STRING, false, 0);
                 CIMProperty p(mf->name, v, 0);
-                p.addQualifier(CIMQualifier("EmbeddedObject", Boolean(true)));
 
+                create_class(client, ns, mr->meta_class);
+                p.addQualifier(CIMQualifier(
+                    "EmbeddedInstance", String(mr->meta_class->name)));
                 c.addProperty(p);
+
+#else /* !CIMPLE_ENABLE_EMBEDDED_INSTANCES */
+
+                err(NO_EMBEDDED_INSTANCES);
+
+#endif /* !CIMPLE_ENABLE_EMBEDDED_INSTANCES */
             }
             else if (mf->flags & CIMPLE_FLAG_PROPERTY)
             {
@@ -1573,7 +1917,6 @@ void create_class(
             if (mf->flags & CIMPLE_FLAG_METHOD)
                 add_method(client, ns, c, (const cimple::Meta_Method*)mf);
         }
-
 
         if (!dump_opt)
             client.createClass(ns, c);
@@ -1964,4 +2307,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/regmod/main.cpp,v 1.108 2007/07/09 23:02:28 mbrasher-public Exp $");

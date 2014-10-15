@@ -28,7 +28,7 @@
 #define _converter_pegasus_unsupported_h
 
 #include <cimple/cimple.h>
-#include <Pegasus/Provider/CIMOMHandle.h>
+#include <pegasus/utils/pegasus.h>
 #include "typedefs.h"
 
 #ifndef CIMPLE_PEGASUS_UNSUPPORTED
