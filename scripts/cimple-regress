@@ -44,22 +44,22 @@ function detect_platform()
 
     case "$TOKEN" in
 
-	Linux-i686)
-	    export PLATFORM=LINUX_IX86_GNU
-	    ;;
+        Linux-i686)
+            export PLATFORM=LINUX_IX86_GNU
+            ;;
 
-	Linux-x86_64)
-	    export PLATFORM=LINUX_X86_64_GNU
-	    ;;
+        Linux-x86_64)
+            export PLATFORM=LINUX_X86_64_GNU
+            ;;
 
-	Linux-ppc)
-	    export PLATFORM=LINUX_PPC_GNU
-	    ;;
+        Linux-ppc)
+            export PLATFORM=LINUX_PPC_GNU
+            ;;
 
-	*)
-	    echo "Failed to automatically detect platform"
-	    exit 1
-	    ;;
+        *)
+            echo "Failed to automatically detect platform"
+            exit 1
+            ;;
 
     esac
 }
@@ -107,8 +107,8 @@ function checkout_pegasus()
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: cvs co cimple failed"
-	exit 1
+        echo "$0: cvs co cimple failed"
+        exit 1
     fi
 }
 
@@ -126,8 +126,8 @@ function checkout_cimple()
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: cvs co cimple failed"
-	exit 1
+        echo "$0: cvs co cimple failed"
+        exit 1
     fi
 }
 
@@ -144,16 +144,16 @@ function build_pegasus()
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: failed to build Pegasus"
-	exit 1
+        echo "$0: failed to build Pegasus"
+        exit 1
     fi
 
     make repository
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: failed to build Pegasus repository"
-	exit 1
+        echo "$0: failed to build Pegasus repository"
+        exit 1
     fi
 }
 
@@ -176,8 +176,8 @@ function build_cimple()
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: failed to build CIMPLE"
-	exit 1
+        echo "$0: failed to build CIMPLE"
+        exit 1
     fi
 }
 
@@ -208,8 +208,8 @@ function test_cimple()
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: CIMPLE tests failed"
-	exit 1
+        echo "$0: CIMPLE tests failed"
+        exit 1
     fi
 }
 
@@ -226,8 +226,8 @@ function register_providers()
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: CIMPLE provider registration failed"
-	exit 1
+        echo "$0: CIMPLE provider registration failed"
+        exit 1
     fi
 }
 
@@ -255,8 +255,8 @@ function run_live_tests()
 
     if [ ! "$?"  == "0" ]
     then
-	echo "$0: CIMPLE live tests failed"
-	exit 1
+        echo "$0: CIMPLE live tests failed"
+        exit 1
     fi
 
     cimserver -s

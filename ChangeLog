@@ -1,79 +1,79 @@
 This change log was started effective with version 2.00
 
-2.00, November 2008 (Public Release)
-	* Add wmi support. See wmi.pdf for information.
+2.00  November 2008 (Public Release)
+    * Add wmi support. See wmi.pdf for information.
 2.01  December 2008 (Beta Private release)
-        * Add support for upcall method definitions with concrete objects.
-		  Not yet documented. See provider src/providers/methodUpcall
-		  for working example of the change
-	* Correction to WMI_Thread_Context.cpp and .h
-	* Changed. Atomic.cpp, cimple/Thread_Context, cimple/cimom.*
-	  cimple/log.cpp, cmpi/adapter/CMPIContainers.cpp, etc.
-	  Tags are: cimple_2_0_0 to cimple_2_0_1-start
+    * Add support for upcall method definitions with concrete objects.
+      Not yet documented. See provider src/providers/methodUpcall
+      for working example of the change
+    * Correction to WMI_Thread_Context.cpp and .h
+    * Changed. Atomic.cpp, cimple/Thread_Context, cimple/cimom.*
+      cimple/log.cpp, cmpi/adapter/CMPIContainers.cpp, etc.
+      Tags are: cimple_2_0_0 to cimple_2_0_1-start
 
 2.02  Never generated.
-	NOTE: Odd number releases are considered private (ex. beta) releases
-	for selected users, test, etc.  Even number releases are offical 
-	updates for public distribution.
+    NOTE: Odd number releases are considered private (ex. beta) releases
+    for selected users, test, etc.  Even number releases are offical 
+    updates for public distribution.
 
 2.03  24 January 2009 (beta private release)
-	* Fix several problems including:
-		1. Memory loss from CMPIAdapter.cpp for associator
-		   operations. Not consistently destroying instances.
-		2. Invalid Class exception from CMPIAdapter.cpp on
-		   association requests. Changed to OK.
-		3. Test wmi adapter against multiple windows OS and
-		   correct issues with compiler errors resulting
-		   from differences between the windows compilers
-		   and SDKs. In particular corrected compile errors
-		   in Atomic_WIN32_IX86_MSVC.h with Interlock functions
-		   and WMI_Adapter.h use of Rpcsal.h
-		4. Modify wmi repository.mof to eliminate issue of
-		   special wmi qualifiers and restore original DMTF
-		   qualifiers.mof.  In the future, providers requiring
-		   these qualifiers will include the qualifiers in as
-		   specific extensions for wmi. For now, they are attached
-		   to the repository.mof for each provider.
-	* Extend tests and test providers including All Provider,
-	  Widget Provider. Added more tests to autmated tests
-	  including All and All/TestAll.
-	* Continue development of Doxygen documentation of header
-	  files.
-	* Correct wmi.pdf documentation.
-	* Add platform definitions for SOLARIS_IX86_CC,
-	  SOLARIS_IX86_CC  SOLARIS_SPARC_CC and SOLARIS_SPARC_64_CC
-	* Added code to regmod.cpp to output NOCHKSRC line in 
-	  module.cpp files.  Would not pass pegasus chksrc without
-	  this.
+    * Fix several problems including:
+        1. Memory loss from CMPIAdapter.cpp for associator
+           operations. Not consistently destroying instances.
+        2. Invalid Class exception from CMPIAdapter.cpp on
+           association requests. Changed to OK.
+        3. Test wmi adapter against multiple windows OS and
+           correct issues with compiler errors resulting
+           from differences between the windows compilers
+           and SDKs. In particular corrected compile errors
+           in Atomic_WIN32_IX86_MSVC.h with Interlock functions
+           and WMI_Adapter.h use of Rpcsal.h
+        4. Modify wmi repository.mof to eliminate issue of
+           special wmi qualifiers and restore original DMTF
+           qualifiers.mof.  In the future, providers requiring
+           these qualifiers will include the qualifiers in as
+           specific extensions for wmi. For now, they are attached
+           to the repository.mof for each provider.
+    * Extend tests and test providers including All Provider,
+      Widget Provider. Added more tests to autmated tests
+      including All and All/TestAll.
+    * Continue development of Doxygen documentation of header
+      files.
+    * Correct wmi.pdf documentation.
+    * Add platform definitions for SOLARIS_IX86_CC,
+      SOLARIS_IX86_CC  SOLARIS_SPARC_CC and SOLARIS_SPARC_64_CC
+    * Added code to regmod.cpp to output NOCHKSRC line in 
+      module.cpp files.  Would not pass pegasus chksrc without
+      this.
 
-	NOTE: Work started with tag cimple_2_0_1-start (equal to 
-	final_mbrasher_tag). It ended with cimple-2_0_3-end tag.
+    NOTE: Work started with tag cimple_2_0_1-start (equal to 
+    final_mbrasher_tag). It ended with cimple-2_0_3-end tag.
 2.04 Not Generated
 
 2.05 8 February 2009
-	* Add new CIMPLE_Status return codes to match the DMTF Specification.
-	  Added statuscodes for ACCESS_DENIED, INVALID_PARAMETER to bring
-	  the available status codes in line with DMTF DSP0200.
-        * Corrected Error in CMPI and Pegasus adapters that did not allow
-	  cross namespace associations. They were returning the request
-	  namespace rather than the namespace defined in the association.
-	  NOTE: This error was apparently introduced in V 2.0.
-	* Integrated automated test for cross namespace associations with
-	  testclient under Cross provider.
-	* Added provider (OperationContext) to test correctness of CIMPLE
-	  status return codes.
-	* Extended All_Class test provider.
-	* Added comments to Makefiles generated by genmak and also ability
-	  to generate selected targets (regmod).
-       	Release tag cimple_2_0_5
-	* Add get_username() function as an experimental function to get
-	  the username from the CIMServer.  This works with CMPI and Pegasus
-	  for this release.  Note that the interface may change.
-	* Rebuild the Hello provider. It had not been build for a long time
-	  and the module.cpp was not compatible with the current common 
-	  functions. Added calls for allow_unload and get_username() to this
-	  provider although they only demo the action, not test the result.
-       	Release tag cimple_2_0_5
+    * Add new CIMPLE_Status return codes to match the DMTF Specification.
+      Added statuscodes for ACCESS_DENIED, INVALID_PARAMETER to bring
+      the available status codes in line with DMTF DSP0200.
+    * Corrected Error in CMPI and Pegasus adapters that did not allow
+      cross namespace associations. They were returning the request
+      namespace rather than the namespace defined in the association.
+      NOTE: This error was apparently introduced in V 2.0.
+    * Integrated automated test for cross namespace associations with
+      testclient under Cross provider.
+    * Added provider (OperationContext) to test correctness of CIMPLE
+      status return codes.
+    * Extended All_Class test provider.
+    * Added comments to Makefiles generated by genmak and also ability
+      to generate selected targets (regmod).
+        Release tag cimple_2_0_5
+    * Add get_username() function as an experimental function to get
+      the username from the CIMServer.  This works with CMPI and Pegasus
+      for this release.  Note that the interface may change.
+    * Rebuild the Hello provider. It had not been build for a long time
+      and the module.cpp was not compatible with the current common 
+      functions. Added calls for allow_unload and get_username() to this
+      provider although they only demo the action, not test the result.
+        Release tag cimple_2_0_5
 2.06 10 March 2009 (Public Release)
     * Clean up comments on cimple header files and integrate into doxygen
     * add size function to cimple/Lists.h
@@ -88,9 +88,9 @@ This change log was started effective with version 2.00
     * Added more tests to cimple/tests Makefile
     * Added readme to more providers
     * Fixed issue where a configure command did not update the options.h file.
-        Only if the user did a make disclean removing the options.h file would
-        the options.h file be update.  Now, this file will be updated each time
-        configure is run.
+      Only if the user did a make disclean removing the options.h file would
+      the options.h file be update.  Now, this file will be updated each time
+      configure is run.
     * Updated Using_CIMPLE.pdf file to version 2 document
     * Added Release Notes for 2.0.0 to distribution
 
@@ -201,11 +201,11 @@ This change log was started effective with version 2.00
       includes changes to a)Cond.h and .cpp b)cimple/tests/Cond/main and
       c)src/posix to account for platforms that do not include pthreads.
     * Add CIMPLE_EBUSY return code specifically to mutex.  This should
-	  be used with trylock to determine busy returns rather than
-	  simply the non-zero return
+      be used with trylock to determine busy returns rather than
+      simply the non-zero return
     * Added valgrind test to number of src/cimple/tests unit tests
     * Add classes test as unit test. Code was there but test dropped
-	  several versions ago.
+      several versions ago.
     * Clean up some api documentation in src/CIMPLE.
     * Implemented some standard tests as part of the WMI providers.  Note that
       these tests are contained in bat files and only exercise the provider
@@ -213,16 +213,16 @@ This change log was started effective with version 2.00
 
 2.0.14 6 October 2009(cvs cimple_2_0_12-branch)
     * Update to User Guide (version 2.1)
-	* Correct problem with model->__namespce variable missing on some
-	  request types for C++ adapter.  Added test to Hello provider to
-	  test the existence of this variable on requests.
-	* Correct indexing error in regview and include build in standard
-	  make.
+    * Correct problem with model->__namespce variable missing on some
+      request types for C++ adapter.  Added test to Hello provider to
+      test the existence of this variable on requests.
+    * Correct indexing error in regview and include build in standard
+      make.
 
 2.0.15 29 March 2009(cvs cimple_2_0_12-branch)
     * Modified Buffer.h and Buffer.cpp to improve capacity management
-      algorithm.  Added unit test of Buffer class (cimple/tests/buffer. Note that
-	  modifies the Buffer.h header file. 
+      algorithm.  Added unit test of Buffer class (cimple/tests/buffer.
+      Note that modifies the Buffer.h header file. 
     * Modify several files (ex. Instance.cpp) to reduce the number of warning
       messages produced by the Windows Development Kit prefast tool.
     * Correct deadlock error between indication generation and subscription
@@ -232,10 +232,11 @@ This change log was started effective with version 2.00
       functions that return char* formatted strings but require the user
       to free the memory except that they return CIMPLE Strings and manage
       memory.
-    * Implement WIN64 Microsoft Compiler platform, WIN64_X86_64-MSVC.  Note that this
-      should really be callse WIN32_X86_64_MSVC (i.e. the Microcoft api set is Win32
-      for both the 32 bit and 64 bit platforms but we kept the WIN64 to be 
-      consistent with Pegasus that uses this platform name.
+    * Implement WIN64 Microsoft Compiler platform, WIN64_X86_64-MSVC.
+      Note that this should really be callse WIN32_X86_64_MSVC (i.e. the
+      Microcoft api set is Win32 for both the 32 bit and 64 bit platforms
+      but we kept the WIN64 to be consistent with Pegasus that uses this
+      platform name.
     * Add help option to configure.bat
     * Add more unit tests including (io, ref). Expanded some other
       unit tests and add valgrind target to a number of unit tests.
@@ -264,20 +265,21 @@ This change log was started effective with version 2.00
       adapter to supplement the error code.
     * Add more invoke method tests
     * Add LargeInstance provider and tests.
-    * Corrections to cmpi adapter to release memory after sending enums and indications.
+    * Corrections to cmpi adapter to release memory after sending enums
+      and indications.
     * integer test in cimple/tests
     * Expand make to handle windows manifest files more effectively
-    * Update compile make files to handle different windows compile options for different
-      versions of the MSVC compiler.
-    * Change ROOT env variable to TEST_ROOT. This was causing confusion in some compiles
-      with Pegasus.
+    * Update compile make files to handle different windows compile options
+      for different versions of the MSVC compiler.
+    * Change ROOT env variable to TEST_ROOT. This was causing confusion in
+      some compiles with Pegasus.
     * Add quick return to logs in case logs not enabled.
     * Complete tests/enable of Windows 64 bit compiler.
     * Modify Person Provider to use Map CIM Operation calls as demo of the
       complete use of the Map cache. Update Fan provider to use Map CIM
       Operations.
-    * Add CMPIUtils to cmpi adapter to display cmpi objects. NOTE This is experimetal
-      used only for debug and disabled by default.
+    * Add CMPIUtils to cmpi adapter to display cmpi objects.
+      NOTE This is experimetal used only for debug and disabled by default.
     * Updates to some utilities (ex. regview).
     * Add a number of manual tests to providers and expand live tests.
       NOTE: many of the new tests use Pegasus cimcli and depend on at least
@@ -303,10 +305,10 @@ This change log was started effective with version 2.00
       Pegasus adapter use this today. These trace tools are for the adapters,
       not the user code. Adpater trace compiled with configuration option 
       --enable-adapter-trace. Note that this is used only for Pegasus
-      adapter at the moment since for the other adapters trace was hard defined and
-      not considered an option. We are trying to keep default behavior the same for
-      this version. Thus the default is no trace for Pegasus adapter but trace for
-      cmpi adapter.
+      adapter at the moment since for the other adapters trace was hard
+      defined and not considered an option. We are trying to keep default
+      behavior the same for this version. Thus the default is no trace for
+      Pegasus adapter but trace for cmpi adapter.
     * Implemented log file size and backup of log file functionality controlled
       by .cimplrc parameters MAX_LOG_FILE_SIZE and MAX_LOG_BACKUP FILES
       name=value parameters. These may be set in the cimple config file
@@ -314,13 +316,14 @@ This change log was started effective with version 2.00
       This limits the maximum size of the log file to 100, bytes
       and will close and rename the log file each time that limit is reached.
       The backup files are numbered in sequence from 1 (the 
-      most recent to n (where n = MAX_LOG_BACKUP_FILES) is the oldest. Older files
-      will be deleted.  The maximum number of backup files allowed is 9
-      and the default is 0 which means that we simply delete the log file and restart
-      when the MAX_LOG_FILE_SIZE limit is reached.  If MAX_LOG_FILE_SIZE=0 no
-      limit is set on the log file size. This is the default which means that the
-      default retains the behavior of previous CIMPLE releases.
-     * Added  compile configuration parameter to allow disabling log macros
+      most recent to n (where n = MAX_LOG_BACKUP_FILES) is the oldest.
+      Older files will be deleted.  The maximum number of backup files
+      allowed is 9 and the default is 0 which means that we simply delete
+      the log file and restart when the MAX_LOG_FILE_SIZE limit is reached.
+      If MAX_LOG_FILE_SIZE=0 no limit is set on the log file size. This is
+      the default which means that the default retains the behavior of
+      previous CIMPLE releases.
+    * Added  compile configuration parameter to allow disabling log macros
       (--disable_log_macros).
       When set by configure this renders the compile of the macros in log.h 
       (CIMPLE_FATAL, etc.) to generate log entires null. The macro calls
@@ -457,7 +460,8 @@ This change log was started effective with version 2.00
 
     TODO- Open work list for post Current Release
 
-    * Add capability to display current thread id in logs. (Move to future version)
+    * Add capability to display current thread id in logs.
+      (Move to future version)
     * Test with gcc option -Weffc++
     * Look into CIMPLE_ASSERT and release build. Extend this so we have a
       way to turn off all asserts except those that are really fatal in

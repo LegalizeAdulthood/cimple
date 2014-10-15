@@ -38,9 +38,9 @@ for i
 do
     if [ -f $i ]
     then
-	mv $i $i.bak
-	sed -f /tmp/sub.sed $i.bak > $i
+        mv $i $i.bak
+        sed -f /tmp/sub.sed $i.bak > $i
     else
-	echo "$0: warning: $i not found"
+        echo "$0: warning: $i not found"
     fi
 done

@@ -35,20 +35,20 @@
 
 #define __CIMPLE_CMPI_PROVIDER(TYPE,PROVIDER) \
     extern "C" CMPI##TYPE##MI* PROVIDER##_Create_##TYPE##MI( \
-	const CMPIBroker* broker, \
-	const CMPIContext* context, \
-	CMPIStatus*) \
+        const CMPIBroker* broker, \
+        const CMPIContext* context, \
+        CMPIStatus*) \
     { \
-	static CMPI##TYPE##MI mi; \
-	__init_mi( \
-	    &__adapter##PROVIDER, \
-	    &_cimple_registration_##PROVIDER, \
-	    broker, \
-	    context, \
-	    #PROVIDER, \
-	    MI_TYPE_##TYPE, \
-	    &mi); \
-	return &mi; \
+        static CMPI##TYPE##MI mi; \
+        __init_mi( \
+            &__adapter##PROVIDER, \
+            &_cimple_registration_##PROVIDER, \
+            broker, \
+            context, \
+            #PROVIDER, \
+            MI_TYPE_##TYPE, \
+            &mi); \
+        return &mi; \
     }
 
 #define CIMPLE_CMPI_INSTANCE_PROVIDER(PROVIDER)  \

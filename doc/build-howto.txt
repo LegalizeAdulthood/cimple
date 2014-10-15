@@ -1,5 +1,5 @@
-		    HOW TO BUILD AND CONFIGURE CIMPLE
-		    =================================
+                    HOW TO BUILD AND CONFIGURE CIMPLE
+                    =================================
 
 INTRODUCTION:
 =============

@@ -53,15 +53,15 @@ do
 
     for file in $FILES
     do
-	echo "File: $file"
+        echo "File: $file"
 
-	if [ -f $file ]
-	then
-	    mv $file .rsub/$file
-	    sed -f /tmp/sub.sed .rsub/$file > $file
-	else
-	    echo "$0: warning: $file not found"
-	fi
+        if [ -f $file ]
+        then
+            mv $file .rsub/$file
+            sed -f /tmp/sub.sed .rsub/$file > $file
+        else
+            echo "$0: warning: $file not found"
+        fi
     done
 
     echo "Leaving directory: $dir"

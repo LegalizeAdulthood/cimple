@@ -1,7 +1,7 @@
 To do:
 
-    A	Track down uses of %llu and %lld and replace with CIMPLE_LLU and
-	CIMPLE_LLD (%I64d and %I64u on Windows).
+    A   Track down uses of %llu and %lld and replace with CIMPLE_LLU and
+        CIMPLE_LLD (%I64d and %I64u on Windows).
 
-    B	Test CMPI
+    B   Test CMPI
 

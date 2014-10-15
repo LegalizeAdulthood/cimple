@@ -1,14 +1,14 @@
 
 Object sizes collected on 32-bit Linux system (CIMPLE 0.99).
 
-    Component					        Object Size
+    Component                                           Object Size
     ================================================================
-    CIMPLE runtime (shared library): 			42 kilobytes
-    CMPI adapter (shared library):			25 kilobytes
-    Pegasus adapter (shared library):			57 kilobytes
-    Fan module (contains 1 provider):	 	 	 6 kilobytes
-    UnixUser module (contains real provider):	 	 6 kilobytes
-    Person module (contains 2 providers):		10 kilobytes
-    Lamp module (contains 3 providers):			11 kilobytes
-    Lamp module (static engine/runtime):   		52 kilobytes
-    Lamp module (static engine/runtime/repository):   	75 kilobytes
+    CIMPLE runtime (shared library):                    42 kilobytes
+    CMPI adapter (shared library):                      25 kilobytes
+    Pegasus adapter (shared library):                   57 kilobytes
+    Fan module (contains 1 provider):                    6 kilobytes
+    UnixUser module (contains real provider):            6 kilobytes
+    Person module (contains 2 providers):               10 kilobytes
+    Lamp module (contains 3 providers):                 11 kilobytes
+    Lamp module (static engine/runtime):                52 kilobytes
+    Lamp module (static engine/runtime/repository):     75 kilobytes

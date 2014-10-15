@@ -90,11 +90,11 @@ Options:
     --enable-static             Build static libraries.
     --with-namespace=NAMESPACE  Change the name of the CIMPLE namespace (the 
                                 default is "cimple").
-    --cimplehome-envvar	        Set the name of the environment variable that
+    --cimplehome-envvar         Set the name of the environment variable that
                                 is used to define the home directory
-				                for CIMPLE runtime files such as the .configrc
-				                file and log files.  The default is
-				                CIMPLE_HOME if this is not specified.
+                                for CIMPLE runtime files such as the .configrc
+                                file and log files.  The default is
+                                CIMPLE_HOME if this is not specified.
     --enable-adapter-trace      Enable the trace code in the adapters.  This
                                 enables compile of trace code in the various
                                 adapters (cmpi, C++, etc.). Note that this
@@ -111,7 +111,7 @@ Options that Limit CIMPLE Compiled Features:
     --enable-embedded-instances Enable use of embedded instances (must be
                                 supported by CIMOM). Default is that this
                                 feature is not compiled into the common library
-    --enable-scheduler	        Enable compilation of the scheduler functions.
+    --enable-scheduler          Enable compilation of the scheduler functions.
                                 Defaults is that this feature is not enabled
-				                making the common library smaller
+                                making the common library smaller
 

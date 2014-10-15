@@ -12,10 +12,10 @@ for ($i = 0; $i < @tags1; $i++)
 
     while (<IS>)
     {
-	s/Ttt/@tags1[$i]/g;
-	s/ttt/@tags2[$i]/g;
-	s/TTT/@tags3[$i]/g;
-	print $_;
+        s/Ttt/@tags1[$i]/g;
+        s/ttt/@tags2[$i]/g;
+        s/TTT/@tags3[$i]/g;
+        print $_;
     }
 
     close(IS);

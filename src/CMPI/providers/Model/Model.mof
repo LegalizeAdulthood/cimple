@@ -16,17 +16,17 @@ class Model
     string prop5;
 
     string stub(
-	[in] string w,
-	[in] uint32 x,
-	[out] boolean y,
-	[out] real32 z);
+        [in] string w,
+        [in] uint32 x,
+        [out] boolean y,
+        [out] real32 z);
 
     [Static]
     string stub2(
-	[in] string w,
-	[in] uint32 x,
-	[out] boolean y,
-	[out] real32 z);
+        [in] string w,
+        [in] uint32 x,
+        [out] boolean y,
+        [out] real32 z);
 
 /*
     [key] Part ref left;

@@ -23,21 +23,21 @@ public:
     CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
 
     CIMPLE_HIDE Get_Instance_Status get_instance(
-	const Model* model,
-	Model*& instance);
+        const Model* model,
+        Model*& instance);
 
     CIMPLE_HIDE Enum_Instances_Status enum_instances(
-	const Model* model,
-	Enum_Instances_Handler<Model>* handler);
+        const Model* model,
+        Enum_Instances_Handler<Model>* handler);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(
-	const Model* instance);
+        const Model* instance);
 
     CIMPLE_HIDE Delete_Instance_Status delete_instance(
-	const Model* instance);
+        const Model* instance);
 
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
-	const Model* instance);
+        const Model* instance);
 
     CIMPLE_HIDE Invoke_Method_Status stub(
         const Model* self,
@@ -55,7 +55,7 @@ public:
         Property<String>& return_value);
 
     static CIMPLE_HIDE int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+        int operation, void* arg0, void* arg1, void* arg2, void* arg3);
 };
 
 CIMPLE_NAMESPACE_END

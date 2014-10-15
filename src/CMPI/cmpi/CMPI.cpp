@@ -42,36 +42,36 @@ void __init_mi(
         adapter->load_count++;
     else
         adapter = new Adapter(
-	    broker, context, provider_name, (const Registration*)registration);
+            broker, context, provider_name, (const Registration*)registration);
 
     switch (mi_type)
     {
-	case MI_TYPE_Instance:
-	{
-	    CMPIInstanceMI mi= {((void*)adapter), &adapter->instance_ft};
-	    memcpy(mi_, &mi, sizeof(mi));
-	    break;
-	}
+        case MI_TYPE_Instance:
+        {
+            CMPIInstanceMI mi= {((void*)adapter), &adapter->instance_ft};
+            memcpy(mi_, &mi, sizeof(mi));
+            break;
+        }
 
-	case MI_TYPE_Method:
-	{
-	    CMPIMethodMI mi= {((void*)adapter), &adapter->method_ft};
-	    memcpy(mi_, &mi, sizeof(mi));
-	    break;
-	}
+        case MI_TYPE_Method:
+        {
+            CMPIMethodMI mi= {((void*)adapter), &adapter->method_ft};
+            memcpy(mi_, &mi, sizeof(mi));
+            break;
+        }
 
-	case MI_TYPE_Association:
-	{
-	    CMPIAssociationMI mi = {((void*)adapter), &adapter->association_ft};
-	    memcpy(mi_, &mi, sizeof(mi));
-	    break;
-	}
+        case MI_TYPE_Association:
+        {
+            CMPIAssociationMI mi = {((void*)adapter), &adapter->association_ft};
+            memcpy(mi_, &mi, sizeof(mi));
+            break;
+        }
 
-	case MI_TYPE_Indication:
-	{
-	    CMPIIndicationMI mi = {((void*)adapter), &adapter->indication_ft};
-	    memcpy(mi_, &mi, sizeof(mi));
-	    break;
-	}
+        case MI_TYPE_Indication:
+        {
+            CMPIIndicationMI mi = {((void*)adapter), &adapter->indication_ft};
+            memcpy(mi_, &mi, sizeof(mi));
+            break;
+        }
     }
 }

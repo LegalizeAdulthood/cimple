@@ -33,19 +33,19 @@ Get_Instance_Status Model_Provider::get_instance(
     instance = model->clone();
 
     if (!instance->prop1.null)
-	instance->prop1.value = "property 1";
+        instance->prop1.value = "property 1";
 
     if (!instance->prop2.null)
-	instance->prop2.value = "property 2";
+        instance->prop2.value = "property 2";
 
     if (!instance->prop3.null)
-	instance->prop3.value = "property 3";
+        instance->prop3.value = "property 3";
 
     if (!instance->prop4.null)
-	instance->prop4.value = "property 4";
+        instance->prop4.value = "property 4";
 
     if (!instance->prop5.null)
-	instance->prop5.value = "property 5";
+        instance->prop5.value = "property 5";
 
     return GET_INSTANCE_OK;
 }
@@ -138,7 +138,7 @@ int Model_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(
-	    operation, arg0, arg1, arg2, arg3);
+            operation, arg0, arg1, arg2, arg3);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;
