@@ -1,0 +1,7 @@
+                        Version 0.99.34 Release Notes
+                        =============================
+
+    1.  Fixed bug introduced in 0.99.32 that caused malformed association
+        instances when using the Pegasus adapter. Ref properties had the
+        wrong class name and property labels.
+

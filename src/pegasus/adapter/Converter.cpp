@@ -275,7 +275,6 @@ static int _to_pegasus_value(
     const Pegasus::CIMNamespaceName& ns,
     const Instance* ci, 
     const Meta_Feature* mf, 
-    const Extended_Meta_Class* emc, 
     Pegasus::CIMValue& value)
 {
     CIMPLE_ASSERT(ci != 0);
@@ -294,7 +293,7 @@ static int _to_pegasus_value(
 
 	Pegasus::CIMInstance pi;
 
-	if (Converter::to_pegasus_instance(hn, ns, ref, emc, pi) != 0)
+	if (Converter::to_pegasus_instance(hn, ns, ref, pi) != 0)
 	    return -1;
 
 	Pegasus::CIMObject po(pi);
@@ -361,7 +360,7 @@ static int _to_pegasus_value(
 
 	Pegasus::CIMObjectPath op;
 
-	if (Converter::to_pegasus_object_path(hn, ns, ref, emc, op) != 0)
+	if (Converter::to_pegasus_object_path(hn, ns, ref, op) != 0)
 	    return -1;
 
 	value.set(op);
@@ -390,7 +389,6 @@ int Converter::to_pegasus_instance(
     const Pegasus::String& hn,
     const Pegasus::CIMNamespaceName& ns,
     const Instance* ci, 
-    const cimple::Extended_Meta_Class* emc,
     Pegasus::CIMInstance& pi)
 {
     CIMPLE_ASSERT(ci != 0);
@@ -400,10 +398,7 @@ int Converter::to_pegasus_instance(
 
     // Create Pegasus instance of the given class.
 
-    if (emc)
-        pi = Pegasus::CIMInstance(emc->name);
-    else
-        pi = Pegasus::CIMInstance(mc->name);
+    pi = Pegasus::CIMInstance(mc->name);
 
     // Copy properties from CIMPLE to Pegasus instance and to object path.
 
@@ -420,33 +415,22 @@ int Converter::to_pegasus_instance(
 
 	Pegasus::CIMValue cv;
 
-	if (_to_pegasus_value(hn, ns, ci, mf, emc, cv) != 0)
+	if (_to_pegasus_value(hn, ns, ci, mf, cv) != 0)
 	    return -1;
 
         // Add key binding.
 
 	if (mf->flags & CIMPLE_FLAG_KEY)
-        {
-            if (emc)
-                bindings.append(Pegasus::CIMKeyBinding(emc->names[i], cv));
-            else
-                bindings.append(Pegasus::CIMKeyBinding(mf->name, cv));
-        }
+            bindings.append(Pegasus::CIMKeyBinding(mf->name, cv));
 
         // Add property to instance.
 
 	try
 	{
 #ifdef CIMPLE_USE_PEGASUS_INTERNALS
-            if (emc)
-                AddProperty::func(pi, Pegasus::CIMProperty(emc->names[i], cv));
-            else
-                AddProperty::func(pi, Pegasus::CIMProperty(mf->name, cv));
+            AddProperty::func(pi, Pegasus::CIMProperty(mf->name, cv));
 #else
-            if (emc)
-                pi.addProperty(Pegasus::CIMProperty(emc->names[i], cv));
-            else
-                pi.addProperty(Pegasus::CIMProperty(mf->name, cv));
+            pi.addProperty(Pegasus::CIMProperty(mf->name, cv));
 #endif
 	}
 	catch(...)
@@ -458,10 +442,7 @@ int Converter::to_pegasus_instance(
 
     // Set the object path.
 
-    if (emc)
-        pi.setPath(Pegasus::CIMObjectPath(hn, ns, emc->name, bindings));
-    else
-        pi.setPath(Pegasus::CIMObjectPath(hn, ns, mc->name, bindings));
+    pi.setPath(Pegasus::CIMObjectPath(hn, ns, mc->name, bindings));
 
     return 0;
 }
@@ -1031,7 +1012,6 @@ int Converter::to_pegasus_object_path(
     const Pegasus::String& hn,
     const Pegasus::CIMNamespaceName& ns,
     const Instance* ci,
-    const cimple::Extended_Meta_Class* emc,
     Pegasus::CIMObjectPath& object_path)
 {
     CIMPLE_ASSERT(ci->magic == CIMPLE_INSTANCE_MAGIC);
@@ -1060,21 +1040,15 @@ int Converter::to_pegasus_object_path(
 
 	Pegasus::CIMValue value;
 
-	if (_to_pegasus_value(hn, ns, ci, mf, emc, value) != 0)
+	if (_to_pegasus_value(hn, ns, ci, mf, value) != 0)
 	    return -1;
 
-        if (emc)
-            bindings.append(Pegasus::CIMKeyBinding(emc->names[i], value));
-        else
-            bindings.append(Pegasus::CIMKeyBinding(mf->name, value));
+        bindings.append(Pegasus::CIMKeyBinding(mf->name, value));
     }
 
     // Initialize the object path:
 
-    if (emc)
-        object_path.set(hn, ns, emc->name, bindings);
-    else
-        object_path.set(hn, ns, mc->name, bindings);
+    object_path.set(hn, ns, mc->name, bindings);
 
     return 0;
 }
@@ -1231,7 +1205,6 @@ int Converter::to_pegasus_method(
     const Pegasus::String& hn,
     const Pegasus::CIMNamespaceName& ns,
     const Instance* meth,
-    const cimple::Extended_Meta_Class* emc,
     Pegasus::Array<Pegasus::CIMParamValue>& out_params,
     Pegasus::CIMValue& return_value)
 {
@@ -1257,12 +1230,12 @@ int Converter::to_pegasus_method(
 	    if (strcasecmp(mf->name, "return_value") == 0)
 	    {
 		found_return_value = true;
-		_to_pegasus_value(hn, ns, meth, mf, emc, return_value);
+		_to_pegasus_value(hn, ns, meth, mf, return_value);
 	    }
 	    else
 	    {
 		Pegasus::CIMValue value;
-		_to_pegasus_value(hn, ns, meth, mf, emc, value);
+		_to_pegasus_value(hn, ns, meth, mf, value);
 		out_params.append(Pegasus::CIMParamValue(mf->name, value));
 	    }
 	}
