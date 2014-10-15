@@ -113,7 +113,7 @@ world: clean all regress
 # NOTE: Developers. src/cimple/config.h version definition MUST match this one
 MAJOR=2
 MINOR=0
-REVISION=6
+REVISION=8
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 
@@ -134,7 +134,8 @@ stabletag:
 ##==============================================================================
 ##
 ## distclean: Clean the source tree for a distribution
-##            Invoked by the dist target
+##            Invoked by the dist target. 
+##            Cleans out number of things that are not part of distribution
 ##
 ##==============================================================================
 
@@ -145,11 +146,13 @@ distclean: clean
 	$(call rmdirhier,./lib64)
 	$(call rmdirhier,$(BINDIR))
 	$(call rmdirhier,*~)
+	$(call rmdirhier,src/wmi/Sample)
 	
 ##==============================================================================
 ##
 ## dist: create tar and zip distribution in a tmp directory
 ## Developer functions. Designed for us with *nix OS
+## 
 ##
 ##==============================================================================
 

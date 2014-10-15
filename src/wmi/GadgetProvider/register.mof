@@ -23,10 +23,3 @@ class Gadget
     uint32 MyValue;
 };
 
-[dynamic, provider("GadgetProvider")]
-class Widget
-{
-    [key]
-    string Key;
-    uint32 Size;
-};

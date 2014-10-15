@@ -38,23 +38,25 @@ genproj:
 register:
 SOURCEPATH=$(subst /,\,$(TARGET))
 DESTPATH=c:\WINDOWS\system32\wbem\$(LIBRARY).dll
+NAMESPACE=root\default
 
 register: install
-	mofcomp -N:root/cimv2 providerclasses.mof
-	mofcomp -N:root/cimv2 register.mof
+	mofcomp -N:$(NAMESPACE) providerclasses.mof
+	mofcomp -N:$(NAMESPACE) register.mof
 	regsvr32 /s $(DESTPATH)
 
 ## Removes the service registration
 ## Does not remove the repository or registration
 ## mof.
-unregwmi:
+unregister:
 	regsvr32 /u /s $(DESTPATH)
+	del /f $(DESTPATH)
 
 install:
-	copy $(SOURCEPATH) c:\WINDOWS\system32\wbem
+	copy $(SOURCEPATH) $(DESTPATH)
 
 
-restartwmi: stop start
+restart: stop start
 
 stop:
 	net stop winmgmt
@@ -62,6 +64,9 @@ stop:
 start:
 	net start winmgmt
 
-## testing
-## This provider tested with wbemtest
+## NOTE: There is an issue with running wmic in a Makefile environment
+## It does not terminate for some reason.  For the moment
+## run test.bat from the command line
+run:
+	test.bat
 

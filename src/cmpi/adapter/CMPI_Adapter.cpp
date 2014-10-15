@@ -1522,10 +1522,10 @@ CMPIStatus CMPI_Adapter::associators(
 
     const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
-    // Note that if the requestecd class is not one of the known
+    // If the requestecd class is not one of the known
     // classes in the hiearchy of classes for this provider we return
-    // immediatly without attempting to create any references.  Note
-    // that this is a CMPI_RC_OK response since there is no definition
+    // immediatly without attempting to create any references.
+    // This is a CMPI_RC_OK response since there is no definition
     // for an INVALID_CLASS response in the specification. An association
     // provider should not return INVALID_CLASS
     if (!mc)
@@ -1716,10 +1716,16 @@ CMPIStatus CMPI_Adapter::associatorNames(
 
     const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
+    // If the requestecd class is not one of the known
+    // classes in the hiearchy of classes for this provider we return
+    // immediatly without attempting to create any references.
+    // This is a CMPI_RC_OK response since there is no definition
+    // for an INVALID_CLASS response in the specification. An association
+    // provider should not return INVALID_CLASS
     if (!mc)
     {
         adapter->ret(FL, "associatorNames", CMPI_RC_ERR_INVALID_CLASS);
-        CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+        CMReturn(CMPI_RC_OK);
     }
 
     // Convert to CIMPLE reference:
@@ -1851,10 +1857,16 @@ CMPIStatus CMPI_Adapter::references(
 
     const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
+    // If the requestecd class is not one of the known
+    // classes in the hiearchy of classes for this provider we return
+    // immediatly without attempting to create any references.
+    // This is a CMPI_RC_OK response since there is no definition
+    // for an INVALID_CLASS response in the specification. An association
+    // provider should not return INVALID_CLASS
     if (!mc)
     {
         adapter->ret(FL, "references", CMPI_RC_ERR_INVALID_CLASS);
-        CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+        CMReturn(CMPI_RC_OK);
     }
 
     CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);
@@ -1991,10 +2003,16 @@ CMPIStatus CMPI_Adapter::referenceNames(
 
     const Meta_Class* mc = adapter->find_meta_class(class_name(cop));
 
+    // If the requestecd class is not one of the known
+    // classes in the hiearchy of classes for this provider we return
+    // immediatly without attempting to create any references.
+    // This is a CMPI_RC_OK response since there is no definition
+    // for an INVALID_CLASS response in the specification. An association
+    // provider should not return INVALID_CLASS
     if (!mc)
     {
         adapter->ret(FL, "referenceNames", CMPI_RC_ERR_INVALID_CLASS);
-        CMReturn(CMPI_RC_ERR_INVALID_CLASS);
+        CMReturn(CMPI_RC_OK);
     }
 
     CIMPLE_ASSERT(strcasecmp(result_class, adapter->mc->name) == 0);

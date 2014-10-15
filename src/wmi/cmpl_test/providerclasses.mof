@@ -1,0 +1,12 @@
+// cmpl_test class defined compatible with creation and registration
+// of WMI provider
+
+[dynamic, provider("cmpl_test")]
+class cmpl_test
+{
+    [Key] uint32 id;
+    string info;
+
+    [implemented, static]
+    uint32 foo([in] string arg);
+};

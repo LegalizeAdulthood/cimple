@@ -1,0 +1,19 @@
+Instance of __Win32Provider as $P
+{
+    Name = "cmpl_test";
+    ClsId = "{fe2d0a81-c28f-1ea9-af61-8d3277faae46}";
+};
+
+instance of __InstanceProviderRegistration
+{
+    Provider = $P;
+    SupportsPut = TRUE;
+    SupportsGet = TRUE;
+    SupportsDelete = TRUE;
+    SupportsEnumeration = TRUE;
+    QuerySupportLevels = { "WQL:UnarySelect" };
+};
+instance of __MethodProviderRegistration
+{
+    Provider = $P;
+};

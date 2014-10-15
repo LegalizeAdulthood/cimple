@@ -143,10 +143,16 @@
 //==============================================================================
 //
 // CIMPLE_FUNCTION
+// 
+// Name of current function 
 //
 //==============================================================================
 
+// NOTE: This only applies to selected windows compilers. We must clasify compilers
+// here by version for windows.
 #ifdef __USE_GNU
+# define CIMPLE_FUNCTION __FUNCTION__
+#elif defined (CIMPLE_WINDOWS)
 # define CIMPLE_FUNCTION __FUNCTION__
 #elif defined (__SUNPRO_C) || (__SUNPRO_CC)
 # define CIMPLE_FUNCTION __func__
@@ -157,10 +163,14 @@
 //==============================================================================
 //
 // CIMPLE_TRACE
+// 
+// Simple trace function to present file name, location and a char * string
+// 
 //
 //==============================================================================
 
 #define CIMPLE_TRACE cimple::__cimple_trace(__FILE__, __LINE__, CIMPLE_FUNCTION)
+
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -202,6 +212,13 @@ CIMPLE_NAMESPACE_END
 //==============================================================================
 //
 // CIMPLE_PRINTF_ATTR
+// 
+// Macro to define special characteristics to CIMPLE function declarations
+// Used by GNU compiler to assign printf like characteristics to the
+// declared function. A1 is the number of the "format string" parameter and
+// A2 is the number of the first varadic parameter.
+// 
+// Ignored for other compilers
 //
 //==============================================================================
 
@@ -368,7 +385,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 2
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 6
+#define CIMPLE_REVISION 8
 
 //==============================================================================
 //

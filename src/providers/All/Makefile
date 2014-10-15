@@ -15,10 +15,16 @@ SOURCES = \
 TEST_NAMESPACE=root/cimv2
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
+## Changing Provider interfaces requires reregistering the provider.
 ifdef CIMPLE_PROVIDER_BUILD_CMPI
-   CIMPLE_CMPI_MODULE=1
+    CIMPLE_CMPI_MODULE=1
+    DEFINES += -DCIMPLE_CMPI_MODULE
+    LIBRARIES += cimplecmpiadap
+
 else
-   CIMPLE_PEGASUS_MODULE=1
+    CIMPLE_PEGASUS_MODULE=1
+    DEFINES += -DCIMPLE_PEGASUS_MODULE
+    LIBRARIES += cimplepegadap
 endif
 
 include ../common.mak

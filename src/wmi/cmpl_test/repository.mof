@@ -1,0 +1,5 @@
+// Includes both the wmi qualifiers and the 
+// classes required for this provider
+#pragma include ("wmiqualifiers.mof")
+#pragma include ("ProviderClasses.mof")
+

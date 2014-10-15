@@ -1,0 +1,217 @@
+<html lang="en">
+<head>
+<title>CIMPLE 2.0.0 Release Notes</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="CIMPLE 2.0.0 Release Notes">
+<meta name="generator" content="makeinfo 4.11">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">CIMPLE 2.0.0 Release Notes</h1>
+   <div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_TOC0" href="#TOC0">1 Introduction</a>
+<li><a name="toc_TOC1" href="#TOC1">2 What's New?</a>
+<ul>
+<li><a href="#TOC2">2.1 WMI Providers</a>
+<li><a href="#TOC3">2.2 New Support for IBM Small Footprint CIM Broker (SFCB)</a>
+<li><a href="#TOC4">2.3 Platform Support</a>
+<li><a href="#TOC5">2.4 New <code>Scheduler Class</code> Experimental (2.0.6)</a>
+<li><a href="#TOC6">2.5 New <code>List Class</code> Experimental (2.0.6)</a>
+<li><a href="#TOC7">2.6 New <code>Method Upcalls</code></a>
+<li><a href="#TOC8">2.7 New Function <code>get_username</code> Access Operation User Name (2.0.6)</a>
+<li><a href="#TOC9">2.8 Update using CIMPLE manual (2.0.6)</a>
+</li></ul>
+<li><a name="toc_TOC10" href="#TOC10">3 Bug Fixes</a>
+<ul>
+<li><a href="#TOC11">3.1 DMTF Operation Error codes (2.0.6)</a>
+<li><a href="#TOC12">3.2 Memory Leaks</a>
+</li></ul>
+<li><a name="toc_TOC13" href="#TOC13">4 Migration Notes</a>
+</li></ul>
+</div>
+
+
+
+<!-- ============================================================================= -->
+<!-- Chapter: Introduction -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC0"></a>1 Introduction</h2>
+
+<p>This document introduces CIMPLE 2.0.0 and explains what has changed since
+the last public release (CIMPLE 1.2.0). If you are unfamiliar with the
+major changes introduced by CIMPLE 1.2.0, you might want to review them
+by clicking here: <a href="http://www.cimple.org/downloads.html">http://www.cimple.org/downloads.html</a>.
+
+   <p>NOTE: This release note covers all of the version 2.0x releases. Any difference
+between these releases are documented.
+
+   <p>To date there have been two public releases:
+     <ul>
+<li>2.0.0 - 4 November 2008
+<li>2.0.6 - 10 March 2009
+</ul>
+
+<p class="noindent">Chapter 2 describes what is new in this release. Chapter 3 discusses bugs fixed
+by this release. Chapter 4 explains how to migrate providers developed with
+earlier versions.
+
+<!-- ============================================================================= -->
+<!-- Chapter: What's New? -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC1"></a>2 What's New?</h2>
+
+<p>This chapter covers new capabilities introduced by CIMPLE 2.0.0. Note that
+the release notes were not originally attached to the 2.0.0 release but were
+available with the 2.0.6 update to this release.
+
+<!--  -->
+<h3 class="section"><a name="TOC2"></a>2.1 WMI Providers</h3>
+
+<p>CIMPLE now provides support for Microsoft WMI providers that attach to the
+Microsoft cim server in Windows XP, Windows Server 2003, Windows Vista platforms.
+
+   <p>Except for a few minor details, provider developement for WMI is similar to
+developing providers for other servers.
+
+   <p>The development and installation process for WMI providers is documented in:
+
+     <ul>
+<li>A special document "Using the WMI Adapter for CIMPLE" which is
+available with the distribution and on the web site at
+<a href="http://simplewbem.org/wmi.pdf">http://simplewbem.org/wmi.pdf</a>.  <li>The updated Using CIMPLE
+manual (version 2.0) available as pdf with the distribution and on the web
+site. 
+</ul>
+
+   <p>There are working examples of WMI providers in the distribution at
+<code>cimpl/src/wmi</code>.
+
+<!--  -->
+<h3 class="section"><a name="TOC3"></a>2.2 New Support for IBM Small Footprint CIM Broker (SFCB)</h3>
+
+<p>CIMPLE providers have been tested with SFCB (CMPI interface) and
+registered against this CIM Server.  While this support was actually
+available late in the 1.x.x releases, it was not formally announced. 
+There are sample providers that include the registration setup for SFCB
+and the registration and installation process is documented in the Using
+CIMPLE documentation.
+
+<!--  -->
+<h3 class="section"><a name="TOC4"></a>2.3 Platform Support</h3>
+
+<p>CIMPLE 2.0.0 now supports the following platforms.
+
+     <ul>
+<li>Linux-X86 32-bit, GNU C++
+<li>Linux-X86 64-bit, GNU C++
+<li>Linux-IA64 64-bit, GNU C++
+<li>Linux-S390 32-bit, GNU C++
+<li>Linux-S390 64-bit, GNU C++
+<li>Linux-PPC 32-bit, GNU C++
+<li>Linux-PPC 64-bit, GNU C++
+<li>Darwin-X86-32-bit, GNU C++
+<li>Solaris-SPARC-64-bit, GNU C++
+<li>Solaris-X86 32-bit and 64-bit, CC Compiler
+<li>VxWorks-XScale-32-bit, GNU C++
+<li>Windows-X86-32-bit, MSVC
+<li>Windows-X86-64-bit, MSVC
+</ul>
+
+<p class="noindent">The following were added in this release:
+     <ul>
+<li>Solaris-X86-32bit and 64 bit CC compiler
+<li>Solaris-SPARC 64-bit CC compiler
+<li>Windows-x86-32-bit WMI provider MSVC
+</ul>
+
+<!--  -->
+<h3 class="section"><a name="TOC5"></a>2.4 New <code>Scheduler Class</code> Experimental (2.0.6)</h3>
+
+<p>The multi-programming capability has been expanded by adding a scheduler
+class that allows the provider to schedule periodic time-based functions. 
+See the UsingCIMPLE manual and the file <code>cimple/src/cimple/Scheduler.h</code> for
+more information on this class.
+
+   <p>NOTE: New functions like this are listed as experimental in at least the first
+release pending user comment that might demand changes to the API.
+
+<!--  -->
+<h3 class="section"><a name="TOC6"></a>2.5 New <code>List Class</code> Experimental (2.0.6)</h3>
+
+<p>The multi-programming capability has been expanded by adding a thread-safe
+List class. See the UsingCIMPLE manual and the file
+<code>cimple/src/cimple/List.h</code> for more information on this class.
+
+<!--  -->
+<h3 class="section"><a name="TOC7"></a>2.6 New <code>Method Upcalls</code></h3>
+
+<p>The upcall generation has been extended to allow generation of extrinsic
+methods for upcall to other providers in addition to the enumerateInstance,
+getInstance, modifyInstance, etc. that already existed.  There is a working
+example of this in the provider <code>cimple/src/providers/upcall</code> provider.
+
+<!--  -->
+<h3 class="section"><a name="TOC8"></a>2.7 New Function <code>get_username</code> Access Operation User Name (2.0.6)</h3>
+
+<p>A new upcall was added to allow the user access to the username for an operation
+if that information is available from the CIM Server.  See the header file
+<code>cimple/src/cimple/cimom.h</code> for details of this call.
+
+<!--  -->
+<h3 class="section"><a name="TOC9"></a>2.8 Update using CIMPLE manual (2.0.6)</h3>
+
+<p>The "Using CIMPLE" documentation has been updated to reflect all of the functions
+available.  It is available with the distribution and will be available
+directly on the web siteat <a href="http://simplewbem.org/Using_CIMPLE.pdf">http://simplewbem.org/Using_CIMPLE.pdf</a>.
+
+<!-- ============================================================================= -->
+<!-- Chapter: Bug Fixes -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC10"></a>3 Bug Fixes</h2>
+
+<p>This release fixes the bugs described below (all critical bugs were addressed
+by earlier maintenance releases).
+
+<!--  -->
+<h3 class="section"><a name="TOC11"></a>3.1 DMTF Operation Error codes (2.0.6)</h3>
+
+<p>Added new Error codes to the CIMPLE error code set for
+ACCESS_DENIED and INVALID_PARAMETER bringing these codes into alignment with
+the DMTF specification
+
+<h3 class="section"><a name="TOC12"></a>3.2 Memory Leaks</h3>
+
+<p>Corrected some memory leaks in the adapters.  Note that at least some of these
+in the CMPI adapter were actually introduced in 2.0.0 and fixed in 2.0.6
+
+<!-- ============================================================================= -->
+<!-- Chapter: Migration Notes -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC13"></a>4 Migration Notes</h2>
+
+<p>Always regenerate classes, providers, and modules when using a new version
+of CIMPLE. This is a trivial matter of running <code>genrpoj</code> as follows:
+
+<pre class="example">     $ genproj MODULE-NAME CLASS-1 CLASS-2 ... CLASS-N
+</pre>
+   <p class="noindent">This regenerates the classes and module and will patch your providers
+if necessary. This operation will not require any rework on your part. Just
+regnerate, clean, and remake.
+
+</body></html>
+

@@ -1,12 +1,16 @@
 This provider is a simple example of an extension defined starting
-with CIMPLE 2.01, the CIMPLE defined upcall.  
+with CIMPLE 1 and extended in CIMPLE 2.01, the CIMPLE defined upcall. 
 
-The goal of the CIMPLE upcall is to allow instance calls back to the
-cimserver that will return CIMPLE instances for use in a provider. It
-is primarily used to acquire instances from elsewhere in the cim
-server either to use selected properties in instances of the provider
-target class or to create associations based on the instances from
-other providers.
+CIMPLE version 1 include the upcall instance operations (getInstance,
+enumerateInstance, etc.) and CIMPLE 2.01 extended this to include
+invokeMethod. 
+
+The goal of the CIMPLE upcall instance operation is to allow instance 
+calls back to the cimserver which will return CIMPLE instances for use in 
+a provider.  It is primarily used to acquire instances from elsewhere in 
+the cim server either to use selected properties in instances of the 
+provider target class or to create associations based on the instances 
+from other providers.  
 
 Creating an upcall involves the following steps:
 
@@ -18,10 +22,11 @@ Creating an upcall involves the following steps:
 
 	genclass -r Upcall CIM_ComputerSystem
 	
-   This causes class meta data to be generated for both the target provider
-   (Upcall) and for the other class.  In this case since CIM_ComputerSystem
-   is part of a class hiearchy in the CIM model, metadata is generated for all
-   of the elements of the Class hiearchy/accesabilty chain including:
+This causes class meta data to be generated for both the target provider 
+(Upcall) and for the other classes referenced by the target class.  In 
+this case since CIM_ComputerSystem is part of a class hiearchy in the CIM 
+model, metadata is generated for all of the elements of the Class 
+hiearchy/accesabilty chain including: 
 	CIM_ComputerSystem
 	CIM_ConcreteJob
 	CIM_EnabledLogicalElement

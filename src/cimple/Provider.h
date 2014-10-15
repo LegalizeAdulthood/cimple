@@ -125,6 +125,15 @@ enum Modify_Instance_Status
     MODIFY_INSTANCE_FAILED = 104,
 };
 
+
+enum Enum_Associators_Status
+{
+    ENUM_ASSOCIATORS_OK = 0,
+    ENUM_ASSOCIATORS_FAILED = 170,
+    ENUM_ASSOCIATORS_UNSUPPORTED = 171,
+    ENUM_ASSOCIATORS_ACCESS_DENIED = 172,
+};
+
 enum Enum_Associator_Names_Status
 {
     ENUM_ASSOCIATOR_NAMES_OK = 0,
@@ -166,13 +175,6 @@ enum Get_Repository_Status
     GET_REPOSITORY_OK = 0,
 };
 
-enum Enum_Associators_Status
-{
-    ENUM_ASSOCIATORS_OK = 0,
-    ENUM_ASSOCIATORS_FAILED = 170,
-    ENUM_ASSOCIATORS_UNSUPPORTED = 171,
-    ENUM_ASSOCIATORS_ACCESS_DENIED = 172,
-};
 
 enum Provider_Operation
 {

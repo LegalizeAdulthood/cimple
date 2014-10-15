@@ -1,0 +1,8 @@
+LIBRARY "cmpl_test.dll"
+
+EXPORTS
+        DllMain PRIVATE
+        DllCanUnloadNow PRIVATE
+        DllGetClassObject PRIVATE
+        DllRegisterServer PRIVATE
+        DllUnregisterServer PRIVATE

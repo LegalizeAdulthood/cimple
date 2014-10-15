@@ -50,5 +50,8 @@ chksrc:
 	
 register-sfcb:
 	@ $(foreach i, $(DIRS), $(MAKE) -C $i register-sfcb $(NL) )
+
+vg:
+	@ $(foreach i, $(DIRS), $(MAKE) -C $i vg $(NL) )
 	
 

@@ -64,5 +64,3 @@ void Atomic_dec(Atomic* atomic)
 }
 CIMPLE_NAMESPACE_END
 
-CIMPLE_NAMESPACE_END
-

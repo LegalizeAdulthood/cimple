@@ -113,6 +113,15 @@ String _toString(Boolean x)
     return (x? "true" : "false");
 }
 
+/*
+    Test one operation.   Provide this function with the CIMPLE and
+    Pegasus exceptions codes.  It sets the provider to provide
+    the defined response and then calls it with the operation defined
+    by opEnum.  The return error is compared to the expected
+    Pegasus Exception code.
+
+    If the return does not match, we assert.
+*/
 void test_op(CIMClient& client,
     opEnum op,
     Uint32 PegExceptionCode,
@@ -133,6 +142,7 @@ void test_op(CIMClient& client,
            (const char *)_toString(associatorsDefault).getCString()
         );
     }
+
 
     // create a dummy instance and objectPath for tests
 
@@ -180,22 +190,26 @@ void test_op(CIMClient& client,
             }
             case ASSOCNAMES:
             {
-                assert(false);
+                Array<CIMObjectPath> paths = client.associatorNames(NAMESPACE,
+                                                              cop);
                 break;
             }
             case ASSOCS:
             {
-                assert(false);
+                Array<CIMObject> objects = client.associators(NAMESPACE,
+                                                              cop);
                 break;
             }
             case REFNAMES:
             {
-                assert(false);
+                Array<CIMObjectPath> paths = client.referenceNames(NAMESPACE,
+                                                              cop);
                 break;
             }
             case REFS:
             {
-                assert(false);
+                Array<CIMObject> objects = client.references(NAMESPACE,
+                                                              cop);
                 break;
             }
         }
@@ -224,6 +238,106 @@ void test_op(CIMClient& client,
     }
 }
 
+//temp support for the CIMPLE internal error codes.
+//Copied here in lieu of include simple because of issue with C++ namespaces
+// for the moment.  Copied from cimple/Provider.h
+// 
+enum Get_Instance_Status
+{
+    GET_INSTANCE_OK = 0,
+    GET_INSTANCE_NOT_FOUND = 60,
+    GET_INSTANCE_UNSUPPORTED = 61,
+    GET_INSTANCE_INVALID_PARAMETER = 62,
+    GET_INSTANCE_ACCESS_DENIED = 63,
+    GET_INSTANCE_FAILED = 64,
+};
+
+enum Enum_Instances_Status
+{
+    ENUM_INSTANCES_OK = 0,
+    ENUM_INSTANCES_FAILED = 70,
+    ENUM_INSTANCES_ACCESS_DENIED = 71,
+};
+
+enum Create_Instance_Status
+{
+    CREATE_INSTANCE_OK = 0,
+    CREATE_INSTANCE_DUPLICATE = 80,
+    CREATE_INSTANCE_UNSUPPORTED = 81,
+    CREATE_INSTANCE_INVALID_PARAMETER = 82,
+    CREATE_INSTANCE_ACCESS_DENIED = 83,
+    CREATE_INSTANCE_FAILED = 84,
+};
+
+enum Delete_Instance_Status
+{
+    DELETE_INSTANCE_OK = 0,
+    DELETE_INSTANCE_NOT_FOUND = 90,
+    DELETE_INSTANCE_UNSUPPORTED = 91,
+    DELETE_INSTANCE_ACCESS_DENIED = 92,
+    DELETE_INSTANCE_FAILED = 93,
+};
+
+enum Modify_Instance_Status
+{
+    MODIFY_INSTANCE_OK = 0,
+    MODIFY_INSTANCE_NOT_FOUND = 100,
+    MODIFY_INSTANCE_UNSUPPORTED = 101,
+    MODIFY_INSTANCE_INVALID_PARAMETER = 102,
+    MODIFY_INSTANCE_ACCESS_DENIED = 103,
+    MODIFY_INSTANCE_FAILED = 104,
+};
+
+enum Enum_Associator_Names_Status
+{
+    ENUM_ASSOCIATOR_NAMES_OK = 0,
+    ENUM_ASSOCIATOR_NAMES_FAILED = 110,
+    ENUM_ASSOCIATOR_NAMES_UNSUPPORTED = 111,
+    ENUM_ASSOCIATOR_NAMES_ACCESS_DENIED = 112,
+};
+
+enum Enum_Associators_Status
+{
+    ENUM_ASSOCIATORS_OK = 0,
+    ENUM_ASSOCIATORS_FAILED = 170,
+    ENUM_ASSOCIATORS_UNSUPPORTED = 171,
+    ENUM_ASSOCIATORS_ACCESS_DENIED = 172,
+};
+
+enum Enum_References_Status
+{
+    ENUM_REFERENCES_OK = 0,
+    ENUM_REFERENCES_FAILED = 120,
+    ENUM_REFERENCES_UNSUPPORTED = 121,
+    ENUM_REFERENCES_ACCESS_DENIED = 122,
+};
+
+enum Invoke_Method_Status
+{
+    INVOKE_METHOD_OK = 0,
+    INVOKE_METHOD_FAILED = 130,
+    INVOKE_METHOD_UNSUPPORTED = 131,
+    INVOKE_METHOD_ACCESS_DENIED = 132,
+};
+
+enum Enable_Indications_Status
+{
+    ENABLE_INDICATIONS_OK = 0,
+    ENABLE_INDICATIONS_FAILED = 140,
+};
+
+enum Disable_Indications_Status
+{
+    DISABLE_INDICATIONS_OK = 0,
+    DISABLE_INDICATIONS_FAILED = 150,
+};
+
+enum Get_Repository_Status
+{
+    GET_REPOSITORY_OK = 0,
+};
+
+
 int main(int argc, char** argv)
 {
     verbose = (getenv ("PEGASUS_TEST_VERBOSE")) ? true : false;
@@ -246,13 +360,13 @@ int main(int argc, char** argv)
         //
 
         /* NOCHKSRC*/
-        test_op(client,GETINST, Pegasus::CIM_ERR_NOT_FOUND, 60, false, false);
+        test_op(client,GETINST, Pegasus::CIM_ERR_NOT_FOUND, GET_INSTANCE_NOT_FOUND, false, false);
         // Not valid code if provider is trying support get_instance. This is
         // the code provider uses to use the default and enumerate_instances.
         //test_GETINST(client, Pegasus::CIM_ERR_NOT_SUPPORTED, 61);
-        test_op(client,GETINST, Pegasus::CIM_ERR_INVALID_PARAMETER, 62, false, false);
-        test_op(client,GETINST, Pegasus::CIM_ERR_ACCESS_DENIED, 63, false, false);
-        test_op(client,GETINST, Pegasus::CIM_ERR_FAILED, 64, false, false);
+        test_op(client,GETINST, Pegasus::CIM_ERR_INVALID_PARAMETER, GET_INSTANCE_INVALID_PARAMETER, false, false);
+        test_op(client,GETINST, Pegasus::CIM_ERR_ACCESS_DENIED, GET_INSTANCE_ACCESS_DENIED, false, false);
+        test_op(client,GETINST, Pegasus::CIM_ERR_FAILED, GET_INSTANCE_FAILED, false, false);
 
         test_op(client,ENUMINST, Pegasus::CIM_ERR_FAILED, 70, false, false);
         test_op(client,ENUMINST, Pegasus::CIM_ERR_ACCESS_DENIED, 71, false, false);
@@ -315,8 +429,56 @@ int main(int argc, char** argv)
         // 
 
         //TODO: Finish these tests
-        //test_op(client,REFS, Pegasus::CIM_ERR_NOT_FOUND, 60, false, false);
-        /*CHKSRC*/
+        //test_op(client,REFS, Pegasus::CIM_ERR_FAILED, ENUM_REFERENCES_FAILED, false, false);
+        //test_op(client,REFS, Pegasus::CIM_ERR_NOT_SUPPORTED, ENUM_REFERENCES_UNSUPPORTED, false, false);
+        //test_op(client,REFS, Pegasus::CIM_ERR_ACCESS_DENIED, ENUM_REFERENCES_ACCESS_DENIED, false, false);
+
+        //test_op(client,ASSOCS, Pegasus::CIM_ERR_FAILED, ENUM_ASSOCIATORS_FAILED, false, false);
+        //test_op(client,ASSOCS, Pegasus::CIM_ERR_NOT_SUPPORTED, ENUM_ASSOCIATORS_UNSUPPORTED, false, false);
+        //test_op(client,ASSOCS, Pegasus::CIM_ERR_ACCESS_DENIED, ENUM_ASSOCIATORS_ACCESS_DENIED, false, false);
+        /*NOCHKSRC*/
+
+        // Tests for exceptions to association requests that do not make
+        // it to the provider.  Specifically, returning if there is an
+        // error in the associator or reference classnames.  Should return OK.
+        // 
+        /*
+        CIMObjectPath cop("CIMPLE_Exception.Key=9999");
+        CIMName assocClass = "CIMPLE_ExceptionLink";
+        assert(setReturnCode(client, ENUM_INSTANCES_OK,
+                     true, true, cop));
+        Array<CIMObject> objects;
+
+        try
+        {
+            objects = client.associators(NAMESPACE,
+                                          cop,
+                                          assocClass);
+    
+            objects = client.references(NAMESPACE,
+                                          cop,
+                                          assocClass);
+        }
+
+        catch(CIMException& e)
+        {
+            if (verbose)
+            {
+                PEGASUS_STD(cerr) << "Failed Association Class Error Test " 
+                    << e.getMessage()
+                    << " for Code " << e.getCode()
+                    << PEGASUS_STD(endl);
+            }
+            assert(false);
+        }
+    
+        catch(Exception& e)
+        {
+            PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+            assert(false);
+        }
+        */
+
     }
     catch(Exception& e)
     {

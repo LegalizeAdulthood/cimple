@@ -133,7 +133,7 @@ static void write_proc(FILE* os, const MOF_Class_Decl* cd)
 
     // Write suffix:
 
-    fprintf(os, suffix);
+    fprintf(os, "%s", suffix);
 }
 
 #if defined(CIMPLE_WINDOWS)

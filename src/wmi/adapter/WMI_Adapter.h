@@ -35,7 +35,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-// For now, disable the rpcsal annotation headers until
+// Disable the rpcsal annotation headers until
 // we figure out if we need them
 #ifdef USE_RPCSAL
 #include <Rpcsal.h>
@@ -83,12 +83,14 @@ public:
         IWbemServices __RPC_FAR* __RPC_FAR* services,
         IWbemCallResult __RPC_FAR* __RPC_FAR* result) 
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
         
     HRESULT STDMETHODCALLTYPE CancelAsyncCall( 
         IWbemObjectSink __RPC_FAR* objectSink)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
         
@@ -96,6 +98,7 @@ public:
         long flags,
         IWbemObjectSink __RPC_FAR* __RPC_FAR* objectSink)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
         
@@ -106,6 +109,7 @@ public:
         IWbemClassObject __RPC_FAR* __RPC_FAR* classObject,
         IWbemCallResult __RPC_FAR* __RPC_FAR* callResult)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
         
@@ -121,6 +125,7 @@ public:
         IWbemContext __RPC_FAR* context,
         IWbemCallResult __RPC_FAR* __RPC_FAR* callResult) 
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
         
@@ -130,6 +135,7 @@ public:
         IWbemContext __RPC_FAR* context,
         IWbemObjectSink __RPC_FAR* objectSink)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
         
@@ -205,14 +211,23 @@ public:
         IWbemContext __RPC_FAR* context,
         IEnumWbemClassObject __RPC_FAR* __RPC_FAR* enumObject)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
     
+#if 0
     HRESULT STDMETHODCALLTYPE CreateInstanceEnumAsync(
         const BSTR className,
         long flags,
         IWbemContext __RPC_FAR* context,
         IWbemObjectSink __RPC_FAR* objectSink);
+#else
+    HRESULT STDMETHODCALLTYPE CreateInstanceEnumAsync(
+        const BSTR className,
+        LONG flags,
+        IWbemContext* context,
+        IWbemObjectSink* objectSink);
+#endif
     
     HRESULT STDMETHODCALLTYPE ExecQuery(
         const BSTR queryLanguage,
@@ -221,6 +236,7 @@ public:
         IWbemContext __RPC_FAR* context,
         IEnumWbemClassObject __RPC_FAR* __RPC_FAR* enumObject)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
     
@@ -238,6 +254,7 @@ public:
         IWbemContext __RPC_FAR* context,
         IEnumWbemClassObject __RPC_FAR* __RPC_FAR* enumObject)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
     
@@ -248,6 +265,7 @@ public:
         IWbemContext __RPC_FAR* context,
         IWbemObjectSink __RPC_FAR* objectSink)
     {
+        LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
     

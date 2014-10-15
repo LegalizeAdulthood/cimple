@@ -55,7 +55,8 @@ int main(int argc, char** argv)
     Thread myThread;
 
     {
-        int r = Thread::create_joinable(myThread, _proc, (void*)"abc");
+        const char STR[] = "abc";
+        int r = Thread::create_joinable(myThread, _proc, (void*)strdup(STR));
         assert(r == 0);
     }
 
@@ -65,6 +66,8 @@ int main(int argc, char** argv)
 
         assert(r == 0);
         assert(strcmp((char*)value,"abc") == 0);
+
+        free(value);
     }
     //return 0;  // enable this to just do one thread for memory leak testing
 
@@ -94,6 +97,7 @@ int main(int argc, char** argv)
 
         // test that we have returned the proper arg value
         assert(strcmp(buffer, (char*)value) == 0);
+        free(value);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

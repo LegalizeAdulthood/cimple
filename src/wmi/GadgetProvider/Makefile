@@ -25,12 +25,12 @@ SOURCEPATH=$(subst /,\,$(TARGET))
 
 DESTPATH=c:\WINDOWS\system32\wbem\$(LIBRARY).dll
 
-reg:
+register:
 	copy $(SOURCEPATH) $(DESTPATH)
 	mofcomp register.mof
 	regsvr32 /s $(DESTPATH)
 
-unreg:
+unregister:
 	regsvr32 /u /s $(DESTPATH)
 	del /f $(DESTPATH)
 

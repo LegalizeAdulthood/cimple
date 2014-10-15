@@ -1,0 +1,14 @@
+// Place class defined compatible with creation and registration
+// of WMI provider
+
+[dynamic, provider("Place")]
+class Place
+{
+    [Key] string SSN;
+    string FirstName;
+    string LastName;
+
+
+    [implemented, static]
+    uint32 foo([in] string arg);
+};

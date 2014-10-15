@@ -43,6 +43,16 @@ public:
         const Property<String>& arg,
         Property<uint32>& return_value);
 
+    Invoke_Method_Status foo1(
+        const Person* self,
+        const Property<uint32>& arg1,
+        const Property<String>& arg2,
+        const Property<boolean>& arg3,
+        Property<uint32>& arg4,
+        Property<String>& arg5,
+        Property<boolean>& arg6,
+        Property<String>& return_value);
+
     /*@END@*/
 };
 

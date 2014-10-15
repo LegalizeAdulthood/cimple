@@ -3,7 +3,7 @@ This change log was started effective with version 2.00
 2.00, November 2008 (Public Release)
 	* Add wmi support. See wmi.pdf for information.
 2.01  December 2008 (Beta Private release)
-        * Add support for upcall defintions with concrete objects.
+        * Add support for upcall method definitions with concrete objects.
 		  Not yet documented. See provider src/providers/methodUpcall
 		  for working example of the change
 	* Correction to WMI_Thread_Context.cpp and .h
@@ -18,7 +18,7 @@ This change log was started effective with version 2.00
 
 2.03  24 January 2009 (beta private release)
 	* Fix several problems including:
-	    1. Memory loss from CMPIAdapter.cpp for associator
+		1. Memory loss from CMPIAdapter.cpp for associator
 		   operations. Not consistently destroying instances.
 		2. Invalid Class exception from CMPIAdapter.cpp on
 		   association requests. Changed to OK.
@@ -74,25 +74,52 @@ This change log was started effective with version 2.00
 	  functions. Added calls for allow_unload and get_username() to this
 	  provider although they only demo the action, not test the result.
        	Release tag cimple_2_0_5
-2.06 10 March 2009
+2.06 10 March 2009 (Public Release)
     * Clean up comments on cimple header files and integrate into doxygen
-	* add size function to cimple/Lists.h
-	* Restore List and Scheduler functions to src/cimple along with tests.
-	  These functions are conditionally compiled since they are experimental
-	  so we modified configure to add a --enable-scheduler option.
-	  We may leave this since compiling without this is a bit smaller.
-	* Extended Upcall provider for more complete testing
-	* extended cimple/tests/value test
+    * add size function to cimple/Lists.h
+    * Restore List and Scheduler functions to src/cimple along with tests.
+      These functions are conditionally compiled since they are experimental
+      so we modified configure to add a --enable-scheduler option.
+      We may leave this since c ompiling without this is a bit smaller.
+    * Extended Upcall provider for more complete testing
+    * extended cimple/tests/value test
     * moved some command aliases to config.mak
-	* Extended tests for Cond_Queue function in cimple/tests
-	* Added more tests to cimple/tests Makefile
-	* Added readme to more providers
+    * Extended tests for Cond_Queue function in cimple/tests
+    * Added more tests to cimple/tests Makefile
+    * Added readme to more providers
     * Fixed issue where a configure command did not update the options.h file.
         Only if the user did a make disclean removing the options.h file would
         the options.h file be update.  Now, this file will be updated each time
         configure is run.
-    * Updated Using_CIMPLE.pdf file to version 2
-    
+    * Updated Using_CIMPLE.pdf file to version 2 document
+    * Added Release Notes for 2.0.0 to distribution
+
+2.07  Goals, minor cleanups to wmi
+    * Remove duplicate CIMPLE_NAMESPACE_END in Atomic_WIN32_IX86_MSVC.cpp
+    * Extend tag vg to dir.mak to automate valgrind testing.
+    * Minor clean up to several readme files
+    * Correct error in CMPI_Adapter.cpp where it was returning error
+      when class not valid for some associator/reference operations.
+      Now returns OK.
+    * Set CIMPLE_FUNCION to include windows platforms so we get dynamic
+      function name in logs from windows systems.
+    * Corrected error causing wmi provider registration and execution
+      error 080041024 (Provider is not capable of the attempted operation).
+      The error is in the provider registration for WMI.  If the namespace
+      on mofcomp calls to insert registration using forward slash "/" instead
+      of back slash (ex. root/default instead of root\default) the cimom
+      will generate this error for every call.
+    * Added trace code to wmi adapter.  Note that this is only enabled
+      by flag in WMI_Adapter.h at this point and goes to a special log
+      file rather than the cimple log.
+    * Added new wmi providers and commonized wmi Makefiles
+    * Added methods test for Person wmi provider.
+    * 2.07 Not released.  Went straight to 2.0.8 release
+2.08 - 26 March 2008
+    * Add readme.txt files to some of the providers
+    * Added beginning of automated tests using wmic for wmi providers but
+      very incomplete.
+
 
 	
 

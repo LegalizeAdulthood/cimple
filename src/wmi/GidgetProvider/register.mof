@@ -1,0 +1,24 @@
+Instance of __Win32Provider as $P
+{
+    Name = "GidgetProvider";   
+    ClsId = "{23CB8761-914A-11cf-B705-00AA0062CBBB}";
+};
+
+instance of __InstanceProviderRegistration
+{
+    Provider = $P;
+    SupportsPut = FALSE;
+    SupportsGet = TRUE;
+    SupportsDelete = FALSE;
+    SupportsEnumeration = TRUE;
+};
+
+[dynamic, provider("GidgetProvider"), ClassContext("whatever!")]
+class Gidget
+{
+    [key]
+    string MyKey = "Junk";
+
+    [PropertyContext("Name")] 
+    uint32 MyValue;
+};

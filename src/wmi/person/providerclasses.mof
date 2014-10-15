@@ -11,4 +11,13 @@ class Person
 
     [implemented, static]
     uint32 foo([in] string arg);
+
+    [implemented, static]
+    string foo1(
+	[in] uint32 arg1, 
+	[in] string arg2, 
+	[in] boolean arg3,
+	[in(false), out] uint32 arg4, 
+	[in(false), out] string arg5, 
+	[in(false), out] boolean arg6);
 };
