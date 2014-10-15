@@ -70,6 +70,11 @@ bool CimpleConfig::setHomeEnv(const char* env_var)
     return true;
 }
 
+const char* CimpleConfig::getHomeEnv()
+{
+    return get_cimple_home_envvar();
+}
+
 uint32 CimpleConfig::getLogFileMaxSize()
 {
     return log_get_maxFileSize();

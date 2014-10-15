@@ -827,6 +827,12 @@ int set_cimple_home_envvar(const char* env_var)
     cimple_home_envvar = env_var;
     return 0;
 }
+
+const char* get_cimple_home_envvar()
+{
+    return cimple_home_envvar.c_str();
+}
+
 CIMPLE_CIMPLE_LINKAGE
 void log_reinitialize()
 {

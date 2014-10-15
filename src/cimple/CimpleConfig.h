@@ -72,14 +72,21 @@ public:
     */
 
     static const char * getLogLevelString();
+
     /**
        Set the HOME environment variable that defines the location of the 
-       various files used by CIMPLE. There is no corresponding get method.
+       various files used by CIMPLE.
        @param env_var 
        @return bool true if accepted
      */
-
     static bool setHomeEnv(const char* env_var);
+
+    /**
+     * Get the HOME current value of the HOME environment variable 
+     * that defines location of various files used by CIMPLE 
+     */
+    static const char* getHomeEnv();
+
     /**
        Set the maximum size in bytes of the log file before it is pruned and 
        a new file started. 
@@ -90,12 +97,14 @@ public:
        @return bool Returns true if the input is accepted. 
      */
     static bool setLogFileMaxSize(uint32 newSize);
+
     /**
        Get the value of the variable that defines the maximum size of the 
        log file. 
        @return uint32 
      */
     static uint32 getLogFileMaxSize();
+
     /**
        Set the internal variable that controls the maximum number of log files 
        that CIMPLE will maintain.  If the logFileMaxSize is set to a non-zero 
@@ -114,12 +123,14 @@ public:
        keeping many files because of the renaming process. 
      */
     static bool setLogMaxBackupFiles(uint32 number);
+
     /**
      * Get the current value for the variable that controls the maximum 
      * number of log files maintained 
      * @return uint32 
      */
     static uint32 getLogMaxBackupFiles();
+
     /**
      * Set the logging enabled state to either true or false. When the logging 
      * state is true, logging is enabled. Otherwise it is completely disabled. 
@@ -129,11 +140,13 @@ public:
      * @return bool 
      */
     static bool setLogEnabledState(bool netState);
+
     /**
      * Get current logEnabledState
      * @return bool Returns the current state 
      */
     static bool getLogEnabledState();
+
     /**
      * Forces a reread of the CIMPLE configuration file.  Normally this is 
      * for testing only.

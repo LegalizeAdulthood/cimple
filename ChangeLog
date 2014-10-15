@@ -381,6 +381,25 @@ This change log was started effective with version 2.00
     * Add comments to generated config.options and options.h files explaining
       things that are not obvious. Modifies configure and configure.bat
 
+2.0.18 - 18 May 2011 (cimple_2_0_12-branch)
+    * Clean up code in log.cpp dealing with log restart and extend
+      tests/log.cpp
+
+2.0.19 - None produced
+
+2.0.20 - 20 May 2011 (cimple_2_0_12-branch, tag cimple cimple_2_0_20)
+    * Correct compile error in src/cimple/options.h after using configure.bat
+      to configure. We declared 2.0.18 as removed from release.
+    * Add new function to CimpleConfig to getHomeEnv() so user can test
+      current settinf of the CIMPLE_HOME environment variable.
+    * Minor cleanup to config.mak for windows for definition of standard
+      functions that imitate linux.  NOTE: for the moment the make world
+      test option of CIMPLE in windows is dependent on the mu function in
+      Pegasus for a couple of command line functions (diff and.  This only affects
+      test and will be removed.
+
+====================================================================
+
     TODO- Open work list for post 2.0 18
 
     * Add capability to display current thread id in logs. (Move to future version)

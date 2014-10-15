@@ -512,8 +512,11 @@ int main(int argc, char** argv)
 
     // tests are executed with location determined by variable from
     // Makefile.  Normally this is the directory in which the test pgm
-    // exists.
-    set_cimple_home_envvar("CIMPLE_HOME_TEST");
+    // exists. This sets that location and is also a test of the
+    // functions to set and get that value.
+    assert(getenv("CIMPLE_HOME_TEST")? true : false);
+    assert(CimpleConfig::setHomeEnv("CIMPLE_HOME_TEST"));
+    assert(strcmp(CimpleConfig::getHomeEnv(), "CIMPLE_HOME_TEST") == 0);
 
     // test setting the env var from an API and basic log output
     test01();

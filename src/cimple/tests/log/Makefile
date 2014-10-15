@@ -11,7 +11,8 @@ include $(TOP)/mak/rules.mak
 
 ## set local definition of CIMPLE_HOME env var for this test to
 ## the current directory. This env variable is used in the
-## test program
+## test program with the api set_cimple_home_envvar to test that
+## function.
 export CIMPLE_HOME_TEST=$(CURDIR)
 
 ## set as runtests because we do not have common DIFF and CUT
@@ -36,8 +37,9 @@ ifdef DISABLE_LOG_MACROS_OPT
 	$(ECHO) should be no log
 endif
 	@ $(RM) .cimple -rf
-	@ $(RM) -rf .cimplerc
-	@ $(RM) -rf result
+	@ $(RM) .cimplerc -rf
+	@ $(RM) result -rf
+
 
 ##
 vg:

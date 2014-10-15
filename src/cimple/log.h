@@ -373,6 +373,9 @@ CIMPLE_CIMPLE_LINKAGE
 int set_cimple_home_envvar(const char *);
 
 CIMPLE_CIMPLE_LINKAGE
+const char* get_cimple_home_envvar();
+
+CIMPLE_CIMPLE_LINKAGE
 void log_reinitialize();
 
 CIMPLE_CIMPLE_LINKAGE
