@@ -36,6 +36,10 @@ else
       DIRS += openwbem
   endif
 
+  ifeq ($(ENABLE_WMI_OPT),TRUE)
+    DIRS += wmi
+  endif
+
   ifneq ($(WITH_PEGASUS_OPT),)
     ifneq ($(WITH_CMPI_OPT),)
       DIRS += providers

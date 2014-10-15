@@ -116,8 +116,15 @@ int pthread_mutex_unlock(
 {
     pthread_mutex_rep_t* rep = (pthread_mutex_rep_t*)mutex;
 
+    if (rep->count == 0)
+    {
+        return -1;
+    }
+
+#if 0
     // ATTN: FIX: MEB: this asserts on Windows on shutdown of cimserver.
     assert(rep->count > 0);
+#endif
 
     rep->count--;
 

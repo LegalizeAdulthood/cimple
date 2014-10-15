@@ -1,0 +1,33 @@
+Instance of __Win32Provider as $P
+{
+    Name = "GadgetProvider";   
+    ClsId = "{23CB8761-914A-11cf-B705-00AA0062CBBB}";
+};
+
+instance of __InstanceProviderRegistration
+{
+    Provider = $P;
+    SupportsPut = FALSE;
+    SupportsGet = TRUE;
+    SupportsDelete = FALSE;
+    SupportsEnumeration = TRUE;
+    QuerySupportLevels[] = { "WQL:Associators", "WQL:References" };
+};
+
+[dynamic, provider("GadgetProvider")]
+class Gadget
+{
+    [key]
+    string MyKey;
+
+    [PropertyContext("Name")] 
+    uint32 MyValue;
+};
+
+[dynamic, provider("GadgetProvider")]
+class Widget
+{
+    [key]
+    string Key;
+    uint32 Size;
+};

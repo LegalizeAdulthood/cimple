@@ -30,14 +30,7 @@
 #define CIMPLE_ATOMIC_INITIALIZER { 0 }
 
 #include "config.h"
-
-// The following definitions are necessary to avoid the inclusion of 
-// windows.h, which causes symbol conflicts with CIMPLE.
-
-extern "C" long __stdcall _InterlockedIncrement(long*);
-extern "C" long __stdcall _InterlockedDecrement(long*);
-#pragma intrinsic(_InterlockedIncrement)
-#pragma intrinsic(_InterlockedDecrement)
+#include <intrin.h>
 
 CIMPLE_NAMESPACE_BEGIN
 

@@ -5,7 +5,7 @@ BINARY = brevity_client15
 
 SOURCES = main.cpp CIM_ManagedElement.cpp repository.cpp
 
-LIBRARIES = brevity
+include ../libraries.mak
 
 INCLUDES += -I../../..
 

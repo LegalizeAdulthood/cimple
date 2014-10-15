@@ -82,9 +82,9 @@ world: clean all regress
 ##
 ##==============================================================================
 
-MAJOR=1
-MINOR=2
-REVISION=4
+MAJOR=2
+MINOR=0
+REVISION=0
 VERSION=$(MAJOR).$(MINOR).$(REVISION)
 TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 

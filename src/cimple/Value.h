@@ -159,6 +159,8 @@ public:
     void set_value(const Array_Datetime& x);
     void set_value(const Array_Instance& x);
 
+    void fprint(FILE* os) const;
+
     void print() const;
 
 private:

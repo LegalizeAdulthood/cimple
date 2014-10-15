@@ -141,6 +141,40 @@ static const char* _meta_type_name(const MOF_Class_Decl* cd)
         return "class";
 }
 
+static void put_string(FILE* os, const char* str)
+{
+    for (const char* p = str; *p; p++)
+    {
+        switch (*p)
+        {
+            case '&':
+                fprintf(os, "&amp;");
+                break;
+            case '<':
+                fprintf(os, "&lt;");
+                break;
+            case '>':
+                fprintf(os, "&gt;");
+                break;
+            case '"':
+                fprintf(os, "&quot;");
+                break;
+            case '\'':
+                fprintf(os, "&#39;");
+                break;
+            default:
+                fprintf(os, "%c", *p);
+        }
+    }
+}
+
+static void put_quoted_string(FILE* os, const char* str)
+{
+    fprintf(os, "&quot;");
+    put_string(os, str);
+    fprintf(os, "&quot;");
+}
+
 static void print_description(FILE* os, const MOF_Qualifier* q)
 {
     for (; q; q = (MOF_Qualifier*)q->next)
@@ -151,9 +185,113 @@ static void print_description(FILE* os, const MOF_Qualifier* q)
             assert(lit->next == 0);
             assert(lit->value_type == TOK_STRING_VALUE);
 
-            fprintf(os, "%s\n", lit->string_value);
+            put_string(os, lit->string_value);
+            printf("\n");
         }
     }
+}
+
+static const char* lookup_value_map_element(
+    const MOF_Qualifier_Info* info,
+    size_t index)
+{
+    for (; info; info = (MOF_Qualifier_Info*)info->next)
+    {
+        const MOF_Qualifier* q = info->qualifier;
+
+        if (strcasecmp(q->name, "ValueMap") != 0)
+            continue;
+
+        size_t i = 0;
+
+        for (const MOF_Literal* p = q->params; p; p = (MOF_Literal*)p->next)
+        {
+            if (i == index && p->value_type == TOK_STRING_VALUE)
+            {
+                return p->string_value;
+            }
+
+            i++;
+        }
+    }
+
+    // Not found!
+    return 0;
+}
+
+static void print_qualifiers(FILE* os, const MOF_Qualifier_Info* info)
+{
+    fprintf(os, "<table border=0 width=100%%>\n");
+
+    const MOF_Qualifier_Info* r = info;
+
+    for (; r; r = (MOF_Qualifier_Info*)r->next)
+    {
+        const MOF_Qualifier* q = r->qualifier;
+        fprintf(os, "<tr valign=top>\n");
+
+        // Name:
+        fprintf(os, "<td width=25%%>\n");
+        fprintf(os, "%s\n", q->name);
+        fprintf(os, "</td>\n");
+
+        // Value:
+        fprintf(os, "<td width=75%%>\n");
+
+        const MOF_Literal* lit = q->params;
+
+        size_t index = 0;
+
+        for (const MOF_Literal* p = q->params; p; p = (MOF_Literal*)p->next)
+        {
+            if (p->value_type == TOK_STRING_VALUE)
+            {
+                if (strcasecmp(q->name, "Values") == 0)
+                {
+                    put_quoted_string(os, p->string_value);
+
+                    const char* vme = lookup_value_map_element(info, index);
+
+                    if (vme)
+                    {
+                        fprintf(os, " <b>[");
+                        put_string(os, vme);
+                        fprintf(os, "]</b>");
+                    }
+                }
+                else
+                    put_string(os, p->string_value);
+            }
+            else if (p->value_type == TOK_INT_VALUE)
+            {
+                fprintf(os, "%lld", p->int_value);
+            }
+            else if (p->value_type == TOK_BOOL_VALUE)
+            {
+                if (p->bool_value)
+                    fprintf(os, "TRUE");
+                else
+                    fprintf(os, "FALSE");
+            }
+
+            if (p->next)
+            {
+                if (strcasecmp(q->name, "Values") == 0)
+                    fprintf(os, "<br>");
+                else
+                    fprintf(os, ", ");
+            }
+
+            index++;
+        }
+
+        fprintf(os, "</td>\n");
+
+        // Row end!
+        fprintf(os, "</tr>\n");
+    }
+
+    fprintf(os, "</table>\n");
 }
 
 static void print_class_description(FILE* os, const MOF_Qualifier* q)
@@ -250,7 +388,10 @@ void gen_class_html(const MOF_Class_Decl* p)
     fprintf(os, "        <th>Property</ht>\n");
 #endif
     fprintf(os, "        <th>Class Origin</ht>\n");
+#if 0
     fprintf(os, "        <th>Description</ht>\n");
+#endif
+    fprintf(os, "        <th>Qualifiers</ht>\n");
     fprintf(os, "      </tr>\n");
     fprintf(os, "    </thead>\n");
     fprintf(os, "    <tbody>\n");
@@ -334,8 +475,18 @@ void gen_class_html(const MOF_Class_Decl* p)
         // Description
         //
 
+#if 0
         fprintf(os, "<td>\n");
         print_description(os, f->feature->qualifiers);
+        fprintf(os, "</td>\n");
+#endif
+
+        // 
+        // Qualifiers
+        //
+
+        fprintf(os, "<td>\n");
+        print_qualifiers(os, f->feature->all_qualifiers);
         fprintf(os, "</td>\n");
 
         fprintf(os, "      </tr>\n");

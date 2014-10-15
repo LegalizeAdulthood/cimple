@@ -5,7 +5,7 @@ BINARY = cimxml
 
 SOURCES = main.cpp
 
-LIBRARIES = brevity
+include ../libraries.mak
 
 INCLUDES += -I../../.. -I../rep
 

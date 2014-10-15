@@ -5,7 +5,7 @@ BINARY = brevity_http
 
 SOURCES = main.cpp
 
-LIBRARIES = brevityrep brevity
+include ../libraries.mak
 
 INCLUDES += -I../../.. -I../rep
 

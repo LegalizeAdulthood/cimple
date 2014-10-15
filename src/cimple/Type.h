@@ -96,14 +96,23 @@ inline bool is_integer(Type type) { return type >= UINT8 && type <= SINT64; }
 
 inline bool is_real(Type type) { return type == REAL32 || type == REAL64; }
 
+CIMPLE_CIMPLE_LINKAGE 
+int type_name_to_type(const char* name, Type& type);
+
+CIMPLE_CIMPLE_LINKAGE
+void fprint_scalar(FILE* os, Type type, const void* value);
+
 CIMPLE_CIMPLE_LINKAGE
 void print_scalar(Type type, const void* value);
 
 CIMPLE_CIMPLE_LINKAGE
+void fprint_array(
+    FILE* os, Type type, const void* elements, size_t num_elements);
+
+CIMPLE_CIMPLE_LINKAGE
 void print_array(Type type, const void* elements, size_t num_elements);
 
-CIMPLE_CIMPLE_LINKAGE 
-int type_name_to_type(const char* name, Type& type);
+extern void fprint_string(FILE* os, const char* str);
 
 extern void print_string(const char* str);
 

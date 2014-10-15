@@ -122,6 +122,34 @@ static int _de_nullify_properties(const P_CIMPropertyList& pl, Instance* ci)
     return 0;
 }
 
+static bool _contains(const P_CIMPropertyList& pl, const P_CIMName& name)
+{
+    P_Uint32 n = pl.size();
+
+    for (Pegasus::Uint32 i = 0; i < n; i++)
+    {
+        if (!pl[i].isNull() && pl[i] == name)
+            return true;
+    }
+
+    // Not found!
+    return false;
+}
+
+static void _discard_properties(P_CIMInstance& pi, const P_CIMPropertyList& pl)
+{
+    if (pl.isNull())
+        return;
+
+    for (P_Uint32 i = 0; i < pi.getPropertyCount(); )
+    {
+        if (_contains(pl, pi.getProperty(i).getName()))
+            i++;
+        else
+            pi.removeProperty(i);
+    }
+}
+
 Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
     _provider(provider), 
     _handler(0),
@@ -211,6 +239,9 @@ void Pegasus_Adapter::getInstance(
         _throw(Pegasus::CIM_ERR_FAILED);
     }
 
+    // Discard properties not in property list.
+    _discard_properties(pi, propertyList);
+
     // Deliver the instance to client.
 
     handler.processing();
@@ -222,6 +253,7 @@ struct Enum_Instance_Data
 {
     P_InstanceResponseHandler* handler;
     P_CIMNamespaceName name_space;
+    P_CIMPropertyList propertyList;
 };
 
 static bool _enum_instances_proc(
@@ -244,6 +276,9 @@ static bool _enum_instances_proc(
         // ATTN: what do we do here?
         return false;
     }
+
+    // Discard properties:
+    _discard_properties(pi, data->propertyList);
 
     data->handler->deliver(pi);
 
@@ -284,6 +319,7 @@ void Pegasus_Adapter::enumerateInstances(
     Enum_Instance_Data data;
     data.handler = &handler;
     data.name_space = objectPath.getNameSpace();
+    data.propertyList = propertyList;
 
     Enum_Instances_Status status = _provider->enum_instances(
         model, _enum_instances_proc, &data);
@@ -653,6 +689,9 @@ static bool _enum_associator_proc_1(
         return false;
     }
 
+    // Discard properties:
+    _discard_properties(ci, data->propertyList);
+
     data->handler.deliver(ci);
 
     // Keep them coming!
@@ -946,15 +985,18 @@ void Pegasus_Adapter::associatorNames(
 struct Handle_References_Request_Data
 {
     P_ObjectResponseHandler& handler;
-    const P_CIMObjectPath& objectPath;
+    const P_CIMObjectPath objectPath;
+    P_CIMPropertyList propertyList;
     bool error;
 
     Handle_References_Request_Data(
         P_ObjectResponseHandler& handler_,
-        const P_CIMObjectPath& objectPath_)
+        const P_CIMObjectPath& objectPath_,
+        const P_CIMPropertyList& propertyList_)
         :
         handler(handler_),
         objectPath(objectPath_),
+        propertyList(propertyList_),
         error(false)
     {
     }
@@ -985,6 +1027,9 @@ static bool _enumerate_references_proc(
         data->error = true;
         return false;
     }
+
+    // Discard properties:
+    _discard_properties(pi, data->propertyList);
 
     data->handler.deliver(pi);
 
@@ -1040,7 +1085,7 @@ void Pegasus_Adapter::references(
 
     handler.processing();
 
-    Handle_References_Request_Data data(handler, objectPath);
+    Handle_References_Request_Data data(handler, objectPath, propertyList);
 
     Enum_References_Status status = _provider->enum_references(
         ck, 

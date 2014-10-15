@@ -5,7 +5,7 @@ BINARY = brevity_client13
 
 SOURCES = $(wildcard *.cpp)
 
-LIBRARIES = brevity
+include ../libraries.mak
 
 INCLUDES += -I../../..
 

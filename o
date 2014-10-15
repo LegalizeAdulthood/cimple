@@ -1,744 +1,1791 @@
-
+Index: Makefile
+===================================================================
 RCS file: /home/cvs/cimple/Makefile,v
-Working file: Makefile
-head: 1.154
-branch:
-locks: strict
-access list:
-symbolic names:
-	cimple_1_2_4: 1.154
-	cimple_1_2_3: 1.152
-	cimple_1_2_1: 1.151
-	cimple_1_2_0: 1.150
-	fujitsu-beta2: 1.146
-	cimple_1_1_2: 1.145
-	cimple_1_1_1: 1.143
-	cimple_1_1_0: 1.142
-	reference_properties: 1.141
-	cimple_1_0_22: 1.141
-	cimple_1_0_18: 1.133.2.1
-	cimple_1_0_17_branch: 1.133.0.2
-	cimple_1_0_21: 1.136
-	cimple_1_0_19: 1.134
-	cimple_1_0_17: 1.133
-	cimple_1_0_15: 1.132
-	cimple_embedded_instance_branch: 1.131.0.2
-	cimple_embedded_instance_root: 1.131
-	cimple_1_0_13: 1.131
-	cimple_1_0_11: 1.130
-	cimple_1_0_9: 1.129
-	cimple_1_0_7: 1.127
-	cimple_1_0_5: 1.126
-	cimple_1_0_3: 1.125
-	cimple_1_0_1: 1.123
-	cimple_1_0_0: 1.121
-	cimple_0_99_57: 1.120
-	stable: 1.116
-	cimple_0_99_56_branch: 1.87.0.2
-	cimple_0_99_56: 1.87
-	cimple_0_99_55: 1.86
-	cimple_0_99_53: 1.85
-	cimple_0_99_51: 1.83
-	cimple_0_99_49: 1.82
-	cimple_0_99_47: 1.81
-	openwbem_adapter_post: 1.80
-	openwbem_adapter_pre: 1.80
-	cimple_0_99_45: 1.80
-	cimple_0_99_43: 1.79
-	cimple_0_99_41: 1.78
-	BUG31: 1.74
-	cimple_0_99_40: 1.72
-	cimple_0_99_39_beta: 1.60
-	cimple_0_99_37_beta: 1.59.2.3
-	cimple_0_99_35_beta: 1.59.2.2
-	cimple_0_99_34_beta_adaptec: 1.59.0.2
-	cimple_0_99_34_beta: 1.59.2.1
-	cimple_0_99_32_beta: 1.58
-	cimple_0_99_31_beta: 1.55
-	cimple_0_99_29_beta: 1.54
-	cimple_0_99_27_beta: 1.53
-	cimple_0_99_25_beta: 1.50
-	cimple_0_99_22_beta: 1.47
-	cimple_0_99_20_beta: 1.42
-	cimple_0_99_19_beta: 1.39
-	cimple_0_99_18_beta: 1.39
-	cimple_0_99_16_beta: 1.37
-	cimple_0_99_15_beta: 1.37
-	cimple_0_99_14_beta: 1.37
-	cimple_0_99_13_beta: 1.33
-	cimple_0_99_12_beta: 1.30
-	cimple_0_99_11_beta: 1.30
-	cimple_0_99_1_beta: 1.30
-	cimple_0_99_0_beta: 1.27
-	cimple_0_98_2_beta: 1.26
-	cimple_0_98_1_beta: 1.26
-	cimple_0_98_beta: 1.26
-	cimple_0_97_beta: 1.26
-	cimple_0_96: 1.14
-	cmpi_phase1_complete: 1.14
-	after_flat_classes: 1.14
-	flat_classes: 1.14
-	version_0_95_4: 1.14
-	version_0_95_3: 1.14
-	ppc_standalone_port: 1.14
-	version_0_95_2: 1.14
-	version_0_95_1: 1.14
-	version_0_95: 1.14
-	version_0_94: 1.14
-	version_0_93: 1.14
-	version_0_92: 1.14
-	version_0_91: 1.14
-	version_0_90: 1.14
-	version_0_80: 1.14
-	version_0_79: 1.14
-	version_0_78: 1.14
-	version_0_77: 1.14
-	version_0_76: 1.14
-	remove-defined-tag: 1.9
-	pre_cxx_inheritance_rework: 1.9
-	CIMPLE_ALPHA_01_Shipment: 1.9
-	release: 1.1.1.1
-	vendor: 1.1.1
-keyword substitution: kv
-total revisions: 159;	selected revisions: 159
-description:
-----------------------------
-revision 1.154
-date: 2008-06-13 10:25:21 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;  commitid: 5d13485291604567;
-ongoing
-----------------------------
-revision 1.153
-date: 2008-02-22 12:30:30 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -0;  commitid: 36a847bf14c64567;
-ongoing
-----------------------------
-revision 1.152
-date: 2008-02-05 10:44:54 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;  commitid: 48a47a892864567;
-ongoing
-----------------------------
-revision 1.151
-date: 2008-01-30 15:23:10 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;  commitid: 2e2347a0eabe4567;
-ongoing
-----------------------------
-revision 1.150
-date: 2008-01-15 17:59:06 -0600;  author: mbrasher-public;  state: Exp;  lines: +2 -2;  commitid: 7fd1478d48ca4567;
-ongoing
-----------------------------
-revision 1.149
-date: 2008-01-03 17:10:58 -0600;  author: mbrasher-public;  state: Exp;  lines: +11 -0;  commitid: 35a0477d6b824567;
-ongoing
-----------------------------
-revision 1.148
-date: 2008-01-03 16:45:12 -0600;  author: mbrasher-public;  state: Exp;  lines: +2 -1;  commitid: e60477d65784567;
-ongoing
-----------------------------
-revision 1.147
-date: 2007-12-02 18:19:14 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;  commitid: 65e247534b824567;
-ongoing
-----------------------------
-revision 1.146
-date: 2007-11-29 12:47:10 -0600;  author: mbrasher-public;  state: Exp;  lines: +6 -1;  commitid: 209c474f092e4567;
-ongoing
-----------------------------
-revision 1.145
-date: 2007-11-14 12:25:49 -0600;  author: mbrasher-public;  state: Exp;  lines: +0 -10;  commitid: 41e6473b3dab4567;
-New
-----------------------------
-revision 1.144
-date: 2007-11-14 12:04:37 -0600;  author: mbrasher-public;  state: Exp;  lines: +9 -1;  commitid: 3fa6473b38a34567;
-Binary distribution target.
-----------------------------
-revision 1.143
-date: 2007-10-03 17:57:19 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.142
-date: 2007-09-07 19:12:59 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -2;
-ongoing
-----------------------------
-revision 1.141
-date: 2007-08-24 12:59:03 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.140
-date: 2007-08-22 15:04:22 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -0;
-ongoing
-----------------------------
-revision 1.139
-date: 2007-08-22 15:03:07 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -0;
-ongoing
-----------------------------
-revision 1.138
-date: 2007-08-22 15:01:13 -0500;  author: mbrasher-public;  state: Exp;  lines: +0 -1;
-ongoing
-----------------------------
-revision 1.137
-date: 2007-08-22 15:00:55 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -0;
-ongoing
-----------------------------
-revision 1.136
-date: 2007-08-08 16:28:53 -0500;  author: mbrasher-public;  state: Exp;  lines: +5 -1;
-ongoing
-----------------------------
-revision 1.135
-date: 2007-08-08 16:03:57 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.134
-date: 2007-07-26 14:37:00 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.133
-date: 2007-07-19 16:30:38 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-branches:  1.133.2;
-ongoing
-----------------------------
-revision 1.132
-date: 2007-07-18 12:51:04 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -3;
-ongoing
-----------------------------
-revision 1.131
-date: 2007-07-11 12:50:25 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.130
-date: 2007-07-10 09:50:19 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.129
-date: 2007-07-09 09:35:25 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.128
-date: 2007-07-04 12:54:49 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -1;
-ongoing
-----------------------------
-revision 1.127
-date: 2007-06-19 14:04:45 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.126
-date: 2007-06-19 10:48:31 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.125
-date: 2007-06-07 18:02:21 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.124
-date: 2007-06-07 11:05:50 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.123
-date: 2007-05-31 19:49:24 -0500;  author: mbrasher-public;  state: Exp;  lines: +0 -3;
-Windows porting
-----------------------------
-revision 1.122
-date: 2007-05-31 15:56:19 -0500;  author: mbrasher-public;  state: Exp;  lines: +5 -2;
-Windows fix
-----------------------------
-revision 1.121
-date: 2007-05-04 14:00:01 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -3;
-ongoing
-----------------------------
-revision 1.120
-date: 2007-03-30 14:16:41 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-----------------------------
-revision 1.119
-date: 2007-03-28 13:06:53 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -2;
-ongoing
-----------------------------
-revision 1.118
-date: 2007-03-27 18:04:41 -0500;  author: mbrasher-public;  state: Exp;  lines: +6 -4;
-new
-----------------------------
-revision 1.117
-date: 2007-03-27 17:39:08 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -0;
-ongoing
-----------------------------
-revision 1.116
-date: 2007-03-25 17:00:43 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-Added schemas directory to DIRS path.
-----------------------------
-revision 1.115
-date: 2007-03-25 16:55:01 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -0;
-New
-----------------------------
-revision 1.114
-date: 2007-03-25 16:20:45 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -0;
-Ongoing
-----------------------------
-revision 1.113
-date: 2007-03-25 15:52:21 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -2;
-update
-----------------------------
-revision 1.112
-date: 2007-03-24 20:55:51 -0500;  author: mbrasher-public;  state: Exp;  lines: +6 -6;
-update
-----------------------------
-revision 1.111
-date: 2007-03-24 20:42:40 -0500;  author: mbrasher-public;  state: Exp;  lines: +9 -4;
-Windows check.
-----------------------------
-revision 1.110
-date: 2007-03-24 14:27:30 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -1;
-Added TSD back.
-----------------------------
-revision 1.109
-date: 2007-03-24 13:59:06 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -1;
-Clean up.
-----------------------------
-revision 1.108
-date: 2007-03-23 22:06:32 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -7;
-Fixed Ref<> bug and moved to insmod rule.
-----------------------------
-revision 1.107
-date: 2007-03-22 19:25:37 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-Changed live-tests to live
-----------------------------
-revision 1.106
-date: 2007-03-22 19:14:12 -0500;  author: mbrasher-public;  state: Exp;  lines: +17 -6;
-New
-----------------------------
-revision 1.105
-date: 2007-03-22 19:10:50 -0500;  author: mbrasher-public;  state: Exp;  lines: +9 -34;
-Removed need for mut.
-----------------------------
-revision 1.104
-date: 2007-03-22 18:59:32 -0500;  author: mbrasher-public;  state: Exp;  lines: +9 -13;
-Improved build system on windows.
-----------------------------
-revision 1.103
-date: 2007-03-22 17:46:52 -0500;  author: mbrasher-public;  state: Exp;  lines: +0 -2;
-Windows porting
-----------------------------
-revision 1.102
-date: 2007-03-22 17:44:56 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -0;
-Windows poriting
-----------------------------
-revision 1.101
-date: 2007-03-21 17:27:15 -0500;  author: mbrasher-public;  state: Exp;  lines: +2 -0;
-update
-----------------------------
-revision 1.100
-date: 2007-03-21 14:39:12 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.99
-date: 2007-03-19 18:59:51 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -2;
-update
-----------------------------
-revision 1.98
-date: 2007-03-19 15:02:11 -0500;  author: mbrasher-public;  state: Exp;  lines: +6 -1;
-update
-----------------------------
-revision 1.97
-date: 2007-03-19 12:02:27 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -2;
-update
-----------------------------
-revision 1.96
-date: 2007-03-19 11:29:47 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.95
-date: 2007-03-19 11:27:24 -0500;  author: mbrasher-public;  state: Exp;  lines: +4 -4;
-update
-----------------------------
-revision 1.94
-date: 2007-03-18 17:10:43 -0500;  author: mbrasher-public;  state: Exp;  lines: +5 -2;
-update
-----------------------------
-revision 1.93
-date: 2007-03-18 17:05:03 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -0;
-update
-----------------------------
-revision 1.92
-date: 2007-03-18 16:22:30 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -0;
-update
-----------------------------
-revision 1.91
-date: 2007-03-16 17:56:04 -0500;  author: mbrasher-public;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.90
-date: 2007-03-16 17:26:03 -0500;  author: mbrasher-public;  state: Exp;  lines: +7 -18;
-update
-----------------------------
-revision 1.89
-date: 2007-03-16 13:07:44 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -5;
-update
-----------------------------
-revision 1.88
-date: 2007-03-14 20:58:39 -0500;  author: mbrasher-public;  state: Exp;  lines: +12 -6;
-update
-----------------------------
-revision 1.87
-date: 2007-03-13 17:53:12 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.86
-date: 2007-03-09 15:51:53 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.85
-date: 2007-03-07 14:51:41 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.84
-date: 2007-03-07 11:49:43 -0600;  author: mbrasher-public;  state: Exp;  lines: +3 -0;
-update
-----------------------------
-revision 1.83
-date: 2007-03-06 18:19:50 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.82
-date: 2007-03-01 14:22:16 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.81
-date: 2007-02-21 13:25:47 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.80
-date: 2007-02-09 13:47:54 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-Update to version 0.99.45
-----------------------------
-revision 1.79
-date: 2007-02-08 18:27:39 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.78
-date: 2007-02-07 18:53:32 -0600;  author: mbrasher-public;  state: Exp;  lines: +2 -0;
-update
-----------------------------
-revision 1.77
-date: 2007-02-07 17:15:05 -0600;  author: mbrasher-public;  state: Exp;  lines: +13 -8;
-update
-----------------------------
-revision 1.76
-date: 2007-02-07 17:03:21 -0600;  author: mbrasher-public;  state: Exp;  lines: +14 -10;
-update
-----------------------------
-revision 1.75
-date: 2007-02-07 16:33:48 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -0;
-Fixed cimpleinfo to run from top.
-----------------------------
-revision 1.74
-date: 2007-01-31 13:37:31 -0600;  author: mbrasher;  state: Exp;  lines: +4 -0;
-Fixed compiler error on Windows.
-----------------------------
-revision 1.73
-date: 2006-12-12 08:54:12 -0600;  author: mbrasher;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.72
-date: 2006-11-30 16:32:07 -0600;  author: mbrasher-public;  state: Exp;  lines: +3 -2;
-update
-----------------------------
-revision 1.71
-date: 2006-11-30 11:17:10 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.70
-date: 2006-11-01 12:54:41 -0600;  author: mbrasher-public;  state: Exp;  lines: +0 -2;
-update
-----------------------------
-revision 1.69
-date: 2006-11-01 12:53:02 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.68
-date: 2006-11-01 12:51:01 -0600;  author: mbrasher-public;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.67
-date: 2006-11-01 12:50:47 -0600;  author: mbrasher-public;  state: Exp;  lines: +0 -3;
-update
-----------------------------
-revision 1.66
-date: 2006-11-01 12:49:44 -0600;  author: mbrasher-public;  state: Exp;  lines: +2 -0;
-New
-----------------------------
-revision 1.65
-date: 2006-10-31 15:44:12 -0600;  author: mbrasher-cimple;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.64
-date: 2006-10-31 15:40:58 -0600;  author: mbrasher;  state: Exp;  lines: +0 -4;
-update
-----------------------------
-revision 1.63
-date: 2006-10-31 15:37:51 -0600;  author: mbrasher;  state: Exp;  lines: +3 -0;
-update
-----------------------------
-revision 1.62
-date: 2006-10-31 15:31:18 -0600;  author: mbrasher;  state: Exp;  lines: +1 -0;
-New
-----------------------------
-revision 1.61
-date: 2006-10-31 15:28:51 -0600;  author: mbrasher;  state: Exp;  lines: +0 -1;
-New
-----------------------------
-revision 1.60
-date: 2006-10-17 15:23:48 -0500;  author: mbrasher;  state: Exp;  lines: +2 -7;
-update
-----------------------------
-revision 1.59
-date: 2006-09-22 19:23:08 -0500;  author: mbrasher;  state: Exp;  lines: +3 -3;
-branches:  1.59.2;
-update
-----------------------------
-revision 1.58
-date: 2006-09-19 16:34:39 -0500;  author: mbrasher;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.57
-date: 2006-09-19 08:01:13 -0500;  author: mbrasher;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.56
-date: 2006-09-19 08:00:35 -0500;  author: mbrasher;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.55
-date: 2006-09-15 14:03:58 -0500;  author: mbrasher;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.54
-date: 2006-09-12 15:30:13 -0500;  author: mbrasher;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.53
-date: 2006-09-12 13:08:33 -0500;  author: mbrasher;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.52
-date: 2006-09-12 13:08:14 -0500;  author: mbrasher;  state: Exp;  lines: +0 -3;
-update
-----------------------------
-revision 1.51
-date: 2006-09-12 13:02:59 -0500;  author: mbrasher;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.50
-date: 2006-09-11 15:19:13 -0500;  author: mbrasher;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.49
-date: 2006-09-05 13:15:44 -0500;  author: mbrasher;  state: Exp;  lines: +5 -3;
-update
-----------------------------
-revision 1.48
-date: 2006-08-24 19:35:09 -0500;  author: mbrasher;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.47
-date: 2006-08-24 09:45:05 -0500;  author: mbrasher;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.46
-date: 2006-08-24 09:42:31 -0500;  author: mbrasher;  state: Exp;  lines: +4 -2;
-update
-----------------------------
-revision 1.45
-date: 2006-08-24 09:37:42 -0500;  author: mbrasher;  state: Exp;  lines: +11 -8;
-update
-----------------------------
-revision 1.44
-date: 2006-08-24 09:20:30 -0500;  author: mbrasher;  state: Exp;  lines: +2 -2;
-update
-----------------------------
-revision 1.43
-date: 2006-08-24 09:16:54 -0500;  author: mbrasher;  state: Exp;  lines: +9 -4;
-update
-----------------------------
-revision 1.42
-date: 2006-08-02 11:28:10 -0500;  author: mbrasher;  state: Exp;  lines: +11 -4;
-update
-----------------------------
-revision 1.41
-date: 2006-08-02 11:05:32 -0500;  author: mbrasher;  state: Exp;  lines: +3 -2;
-update
-----------------------------
-revision 1.40
-date: 2006-08-02 11:03:26 -0500;  author: mbrasher;  state: Exp;  lines: +8 -0;
-update
-----------------------------
-revision 1.39
-date: 2006-07-05 13:47:57 -0500;  author: mbrasher;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.38
-date: 2006-07-05 11:17:41 -0500;  author: mbrasher;  state: Exp;  lines: +25 -9;
-Fixed regress rule for Windows
-----------------------------
-revision 1.37
-date: 2006-06-19 12:24:50 -0500;  author: mbrasher;  state: Exp;  lines: +0 -6;
-update
-----------------------------
-revision 1.36
-date: 2006-06-18 15:22:12 -0500;  author: mbrasher;  state: Exp;  lines: +6 -0;
-update
-----------------------------
-revision 1.35
-date: 2006-06-10 13:25:59 -0500;  author: mbrasher;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.34
-date: 2006-06-07 19:19:12 -0500;  author: mbrasher;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.33
-date: 2006-05-31 17:10:10 -0500;  author: mbrasher;  state: Exp;  lines: +5 -0;
-update
-----------------------------
-revision 1.32
-date: 2006-05-31 16:59:25 -0500;  author: mbrasher;  state: Exp;  lines: +0 -1;
-update
-----------------------------
-revision 1.31
-date: 2006-05-31 14:00:24 -0500;  author: mbrasher;  state: Exp;  lines: +2 -1;
-update
-----------------------------
-revision 1.30
-date: 2006-03-31 16:21:12 -0600;  author: mbrasher;  state: Exp;  lines: +0 -3;
-update
-----------------------------
-revision 1.29
-date: 2006-03-31 16:18:02 -0600;  author: mbrasher;  state: Exp;  lines: +3 -0;
-update
-----------------------------
-revision 1.28
-date: 2006-03-31 16:16:03 -0600;  author: mbrasher;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.27
-date: 2006-03-30 16:34:06 -0600;  author: mbrasher;  state: Exp;  lines: +8 -0;
-update
-----------------------------
-revision 1.26
-date: 2006-02-15 16:12:35 -0600;  author: peglite;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.25
-date: 2006-02-14 09:39:22 -0600;  author: peglite;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.24
-date: 2006-02-14 09:38:25 -0600;  author: peglite;  state: Exp;  lines: +3 -2;
-update
-----------------------------
-revision 1.23
-date: 2006-02-13 21:37:04 -0600;  author: peglite;  state: Exp;  lines: +2 -2;
-new
-----------------------------
-revision 1.22
-date: 2006-02-13 21:10:29 -0600;  author: peglite;  state: Exp;  lines: +1 -0;
-update
-----------------------------
-revision 1.21
-date: 2006-02-13 20:29:39 -0600;  author: peglite;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.20
-date: 2006-02-13 20:28:25 -0600;  author: peglite;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.19
-date: 2006-02-13 20:26:13 -0600;  author: peglite;  state: Exp;  lines: +8 -1;
-update
-----------------------------
-revision 1.18
-date: 2006-02-12 15:12:15 -0600;  author: peglite;  state: Exp;  lines: +1 -4;
-update
-----------------------------
-revision 1.17
-date: 2006-02-10 19:58:25 -0600;  author: peglite;  state: Exp;  lines: +7 -0;
-new
-----------------------------
-revision 1.16
-date: 2006-02-10 19:53:38 -0600;  author: peglite;  state: Exp;  lines: +27 -15;
-new
-----------------------------
-revision 1.15
-date: 2006-02-10 11:49:02 -0600;  author: peglite;  state: Exp;  lines: +2 -2;
-Windows port ongoing
-----------------------------
-revision 1.14
-date: 2005-12-01 11:41:38 -0600;  author: peglite;  state: Exp;  lines: +1 -8;
-update
-----------------------------
-revision 1.13
-date: 2005-11-30 13:53:38 -0600;  author: peglite;  state: Exp;  lines: +3 -3;
-update
-----------------------------
-revision 1.12
-date: 2005-11-30 13:52:14 -0600;  author: peglite;  state: Exp;  lines: +9 -3;
-update
-----------------------------
-revision 1.11
-date: 2005-11-30 13:46:06 -0600;  author: peglite;  state: Exp;  lines: +4 -4;
-update
-----------------------------
-revision 1.10
-date: 2005-11-30 13:22:27 -0600;  author: peglite;  state: Exp;  lines: +13 -0;
-update
-----------------------------
-revision 1.9
-date: 2005-09-05 09:11:38 -0500;  author: peglite;  state: Exp;  lines: +0 -3;
-update
-----------------------------
-revision 1.8
-date: 2005-09-05 07:44:16 -0500;  author: peglite;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.7
-date: 2005-09-05 07:04:22 -0500;  author: peglite;  state: Exp;  lines: +3 -0;
-update
-----------------------------
-revision 1.6
-date: 2005-07-13 23:27:38 -0500;  author: peglite;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.5
-date: 2005-07-13 23:18:49 -0500;  author: peglite;  state: Exp;  lines: +0 -3;
-update
-----------------------------
-revision 1.4
-date: 2005-07-11 16:33:48 -0500;  author: peglite;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.3
-date: 2005-06-19 20:40:05 -0500;  author: peglite;  state: Exp;  lines: +0 -1;
-update
-----------------------------
-revision 1.2
-date: 2005-06-18 12:34:42 -0500;  author: peglite;  state: Exp;  lines: +4 -0;
-update
-----------------------------
-revision 1.1
-date: 2005-03-16 06:55:59 -0600;  author: peglite;  state: Exp;
-branches:  1.1.1;
-Initial revision
-----------------------------
-revision 1.1.1.1
-date: 2005-03-16 06:55:59 -0600;  author: peglite;  state: Exp;  lines: +0 -0;
-new
-----------------------------
-revision 1.59.2.3
-date: 2006-10-17 11:23:45 -0500;  author: mbrasher;  state: Exp;  lines: +2 -5;
-update
-----------------------------
-revision 1.59.2.2
-date: 2006-10-08 18:57:04 -0500;  author: mbrasher;  state: Exp;  lines: +2 -2;
-update
-----------------------------
-revision 1.59.2.1
-date: 2006-10-05 18:47:14 -0500;  author: mbrasher;  state: Exp;  lines: +1 -1;
-update
-----------------------------
-revision 1.133.2.1
-date: 2007-08-23 11:33:51 -0500;  author: mbrasher-public;  state: Exp;  lines: +1 -1;
-ongoing
-=============================================================================
+retrieving revision 1.154
+retrieving revision 1.156
+diff -r1.154 -r1.156
+85,87c85,87
+< MAJOR=1
+< MINOR=2
+< REVISION=4
+---
+> MAJOR=2
+> MINOR=0
+> REVISION=0
+Index: configure
+===================================================================
+RCS file: /home/cvs/cimple/configure,v
+retrieving revision 1.74
+retrieving revision 1.75
+diff -r1.74 -r1.75
+201c201,204
+<   with_cmpi=$PEGASUS_ROOT/src/Pegasus/Provider/CMPI
+---
+> 
+>   if [ -z "$with_cmpi" ]; then
+>     with_cmpi=$PEGASUS_ROOT/src/Pegasus/Provider/CMPI
+>   fi
+Index: configure.bat
+===================================================================
+RCS file: /home/cvs/cimple/configure.bat,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -r1.19 -r1.20
+171a172,176
+>   if "%1" == "--enable-wmi" (
+>     set enable_wmi=1
+>     set found=1
+>   )
+> 
+286a292
+> echo enable_wmi=%enable_wmi%
+314a321,324
+> if not "%enable_wmi%" == "" (
+>     echo ENABLE_WMI_OPT=TRUE>> config.options
+> )
+> 
+349a360
+> set enable_wmi=
+Index: mak/platform_WIN32_IX86_MSVC.mak
+===================================================================
+RCS file: /home/cvs/cimple/mak/platform_WIN32_IX86_MSVC.mak,v
+retrieving revision 1.34
+retrieving revision 1.35
+diff -r1.34 -r1.35
+95c95,97
+< FLAGS = -EHsc -GR -W3 -MD
+---
+> FLAGS = -EHsc -GR -W3
+> 
+> ## Removed -MD to get WMI DLLs built (/MD link with MSVCRT.LIB)
+199c201
+< _SYS_LIBS = ws2_32.lib advapi32.lib netapi32.lib 
+---
+> _SYS_LIBS = ws2_32.lib advapi32.lib netapi32.lib
+201c203
+< make_shlib = link $(LINK_FLAGS) \
+---
+> make_shlib = link $(LINK_FLAGS) $(EXTRA_LINK_FLAGS) \
+Index: mak/shlib.mak
+===================================================================
+RCS file: /home/cvs/cimple/mak/shlib.mak,v
+retrieving revision 1.27
+retrieving revision 1.28
+diff -r1.27 -r1.28
+45a46
+> 	$(call mkdirhier,$(DESTDIR)$(BINDIR_OPT))
+Index: schema/cim214/qualifiers.mof
+===================================================================
+RCS file: /home/cvs/cimple/schema/cim214/qualifiers.mof,v
+retrieving revision 1.1
+retrieving revision 1.3
+diff -r1.1 -r1.3
+242a243,259
+> 
+> // Added for Windows.
+> Qualifier Dynamic : boolean = false, 
+>     Scope(class, association, indication);
+> 
+> // Added for Windows.
+> Qualifier PropertyContext : string = Null, 
+>     Scope(property);
+> 
+> // Added for Windows.
+> Qualifier Implemented : boolean = false, 
+>     Scope(method);
+> 
+> [indication]
+> class __ExtrinsicEvent
+> {
+> };
+Index: src/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/Makefile,v
+retrieving revision 1.56
+retrieving revision 1.57
+diff -r1.56 -r1.57
+38a39,42
+>   ifeq ($(ENABLE_WMI_OPT),TRUE)
+>     DIRS += wmi
+>   endif
+> 
+Index: src/brevity/tests/cimxml/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/cimxml/Makefile,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -r1.1 -r1.2
+8c8
+< LIBRARIES = brevity
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client1/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client1/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client10/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client10/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client11/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client11/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client12/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client12/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client13/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client13/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client14/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client14/Makefile,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -r1.1 -r1.2
+8c8
+< LIBRARIES = brevity
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client15/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client15/Makefile,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -r1.1 -r1.2
+8c8
+< LIBRARIES = brevity
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client2/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client2/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client3/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client3/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client4/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client4/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client5/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client5/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client6/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client6/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client7/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client7/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client8/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client8/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/client9/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/client9/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+8c8
+< LIBRARIES = brevityrep brevity cimple
+---
+> include ../libraries.mak
+Index: src/brevity/tests/http/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/http/Makefile,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -r1.1 -r1.2
+8c8
+< LIBRARIES = brevityrep brevity
+---
+> include ../libraries.mak
+Index: src/brevity/tests/putxml/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/putxml/Makefile,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -r1.1 -r1.2
+8c8
+< LIBRARIES = brevity cimple expat
+---
+> include ../libraries.mak
+Index: src/brevity/tests/rep/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/brevity/tests/rep/Makefile,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+28c28
+< LIBRARIES = brevity cimple
+---
+> include ../libraries.mak
+Index: src/cimple/Atomic_WIN32_IX86_MSVC.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Atomic_WIN32_IX86_MSVC.h,v
+retrieving revision 1.5
+retrieving revision 1.6
+diff -r1.5 -r1.6
+33,40c33
+< 
+< // The following definitions are necessary to avoid the inclusion of 
+< // windows.h, which causes symbol conflicts with CIMPLE.
+< 
+< extern "C" long __stdcall _InterlockedIncrement(long*);
+< extern "C" long __stdcall _InterlockedDecrement(long*);
+< #pragma intrinsic(_InterlockedIncrement)
+< #pragma intrinsic(_InterlockedDecrement)
+---
+> #include <intrin.h>
+Index: src/cimple/Instance.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Instance.cpp,v
+retrieving revision 1.138
+retrieving revision 1.144
+diff -r1.138 -r1.144
+1540c1540
+< void __print_scalar(uint32 type, const void* ptr)
+---
+> void __print_scalar(FILE* os, uint32 type, const void* ptr)
+1546c1546
+<             printf(*((boolean*)ptr) ?  "true" : "false");
+---
+>             fprintf(os, *((boolean*)ptr) ?  "true" : "false");
+1552c1552
+<             printf("%u", *((uint8*)ptr));
+---
+>             fprintf(os, "%u", *((uint8*)ptr));
+1558c1558
+<             printf("%d", *((sint8*)ptr));
+---
+>             fprintf(os, "%d", *((sint8*)ptr));
+1564c1564
+<             printf("%u", *((uint16*)ptr));
+---
+>             fprintf(os, "%u", *((uint16*)ptr));
+1570c1570
+<             printf("%d", *((sint16*)ptr));
+---
+>             fprintf(os, "%d", *((sint16*)ptr));
+1576c1576
+<             printf("%u", *((uint32*)ptr));
+---
+>             fprintf(os, "%u", *((uint32*)ptr));
+1582c1582
+<             printf("%d", *((sint32*)ptr));
+---
+>             fprintf(os, "%d", *((sint32*)ptr));
+1588c1588
+<             printf(CIMPLE_LLU, *((uint64*)ptr));
+---
+>             fprintf(os, CIMPLE_LLU, *((uint64*)ptr));
+1594c1594
+<             printf(CIMPLE_LLD, *((sint64*)ptr));
+---
+>             fprintf(os, CIMPLE_LLD, *((sint64*)ptr));
+1600c1600
+<             printf("%f", *((real32*)ptr));
+---
+>             fprintf(os, "%f", *((real32*)ptr));
+1606c1606
+<             printf("%f", *((real64*)ptr));
+---
+>             fprintf(os, "%f", *((real64*)ptr));
+1615c1615
+<                 printf("'%c'", c);
+---
+>                 fprintf(os, "'%c'", c);
+1617c1617
+<                 printf("0x%04X", c);
+---
+>                 fprintf(os, "0x%04X", c);
+1625c1625
+<             printf("\"%s\"", buffer);
+---
+>             fprintf(os, "\"%s\"", buffer);
+1631c1631
+<             print_string(((String*)ptr)->c_str());
+---
+>             fprint_string(os, ((String*)ptr)->c_str());
+1637c1637
+< void __print_array(uint32 type, const void* ptr, size_t depth)
+---
+> void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth)
+1639c1639
+<     printf("{ ");
+---
+>     fprintf(os, "{ ");
+1647c1647
+<         __print_scalar(type, data);
+---
+>         __print_scalar(os, type, data);
+1650c1650
+<             putchar(',');
+---
+>             fputc(',', os);
+1652c1652
+<         putchar(' ');
+---
+>         fputc(' ', os);
+1656c1656
+<     printf("}");
+---
+>     fprintf(os, "}");
+1660c1660,1663
+<     const Meta_Property* mp, const void* prop, size_t level)
+---
+>     FILE* os,
+>     const Meta_Property* mp, 
+>     const void* prop, 
+>     size_t level)
+1662c1665
+<     iprintf(level, "%s %s", type_name[mp->type], mp->name);
+---
+>     ifprintf(os, level, "%s %s", type_name[mp->type], mp->name);
+1665c1668
+<         printf("[]");
+---
+>         fprintf(os, "[]");
+1667c1670
+<     printf(" = ");
+---
+>     fprintf(os, " = ");
+1670c1673
+<         printf("NULL");
+---
+>         fprintf(os, "NULL");
+1672c1675
+<         __print_scalar(mp->type, prop);
+---
+>         __print_scalar(os, mp->type, prop);
+1674c1677
+<         __print_array(mp->type, prop, 0);
+---
+>         __print_array(os, mp->type, prop, 0);
+1676c1679
+<     printf(";\n");
+---
+>     fprintf(os, ";\n");
+1680c1683,1687
+<     const Instance* inst, const char* name, size_t level, bool keys_only)
+---
+>     FILE* os,
+>     const Instance* inst, 
+>     const char* name, 
+>     size_t level, 
+>     bool keys_only)
+1688c1695
+<         iprintf(level, "%s %s =\n", inst->meta_class->name, name);
+---
+>         ifprintf(os, level, "%s %s =\n", inst->meta_class->name, name);
+1690c1697
+<         iprintf(level, "%s\n", inst->meta_class->name);
+---
+>         ifprintf(os, level, "%s\n", inst->meta_class->name);
+1692c1699
+<     iprintf(level, "{\n");
+---
+>     ifprintf(os, level, "{\n");
+1696c1703
+<         iprintf(level, 
+---
+>         ifprintf(os, level, 
+1723c1730
+<             _print_property(mp, prop, level);
+---
+>             _print_property(os, mp, prop, level);
+1734c1741,1742
+<                 iprintf(level, "%s %s[] =", mr->meta_class->name, mr->name);
+---
+>                 ifprintf(
+>                     os, level, "%s %s[] =", mr->meta_class->name, mr->name);
+1738c1746
+<                     iprintf(level, " NULL;\n");
+---
+>                     ifprintf(os, level, " NULL;\n");
+1742,1743c1750,1751
+<                     printf("\n");
+<                     iprintf(level, "{\n");
+---
+>                     fprintf(os, "\n");
+>                     ifprintf(os, level, "{\n");
+1751c1759
+<                             __print_aux(tmp, 0, level, false);
+---
+>                             __print_aux(os, tmp, 0, level, false);
+1753c1761
+<                             iprintf(level, "NULL\n");
+---
+>                             ifprintf(os, level, "NULL\n");
+1757c1765
+<                     iprintf(level, "};\n");
+---
+>                     ifprintf(os, level, "};\n");
+1765c1773
+<                     __print_aux(tmp, mr->name, level, keys_only);
+---
+>                     __print_aux(os, tmp, mr->name, level, keys_only);
+1767c1775
+<                     iprintf(level, "%s %s = NULL;\n", 
+---
+>                     ifprintf(os, level, "%s %s = NULL;\n", 
+1775c1783,1788
+<     iprintf(level, "}\n");
+---
+>     ifprintf(os, level, "}\n");
+> }
+> 
+> void fprint(FILE* os, const Instance* inst, bool keys_only)
+> {
+>     __print_aux(os, inst, 0, 0, keys_only);
+1780c1793
+<     __print_aux(inst, 0, 0, keys_only);
+---
+>     fprint(stdout, inst, keys_only);
+2257d2269
+< 
+Index: src/cimple/Instance.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Instance.h,v
+retrieving revision 1.97
+retrieving revision 1.100
+diff -r1.97 -r1.100
+135a136,138
+> void fprint(FILE* os, const Instance* instance, bool keys_only = false);
+> 
+> CIMPLE_CIMPLE_LINKAGE
+378c381
+< void __print_scalar(uint32 type, const void* ptr);
+---
+> void __print_scalar(FILE* os, uint32 type, const void* ptr);
+381c384
+< void __print_array(uint32 type, const void* ptr, size_t depth);
+---
+> void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth);
+384a388
+>     FILE* os,
+Index: src/cimple/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Makefile,v
+retrieving revision 1.210
+retrieving revision 1.211
+diff -r1.210 -r1.211
+56a57
+> 
+Index: src/cimple/Provider_Handle.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Provider_Handle.h,v
+retrieving revision 1.18
+retrieving revision 1.20
+diff -r1.18 -r1.20
+104a105,106
+>     const Registration* registration() const { return _registration; }
+> 
+Index: src/cimple/Registration.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Registration.h,v
+retrieving revision 1.44
+retrieving revision 1.46
+diff -r1.44 -r1.46
+31a32,93
+> #if defined(CIMPLE_WMI_MODULE)
+> # include <objbase.h>
+> # include <initguid.h>
+> #endif
+> 
+> //==============================================================================
+> //
+> // CIMPLE adapter entry point (all CIMPLE adapters implement this interface).
+> // The only pre-defined operation is 'T', which returns the provider type
+> // which (so far) is one of the following:
+> //
+> //     'P' - Pegasus C++ Provider
+> //     'C' - CMPI Provider
+> //     'W' - WMI Provider
+> //
+> //==============================================================================
+> 
+> CIMPLE_NAMESPACE_BEGIN
+> 
+> struct CIMPLE_CIMPLE_LINKAGE Registration
+> {
+>     const char* module_name;
+>     const char* provider_name;
+>     Provider_Proc provider_proc;
+>     const Meta_Class* meta_class;
+>     Registration* next;
+> 
+>     Registration(
+>         const char* module_name_,
+>         const char* provider_name_, 
+>         Provider_Proc provider_proc_,
+>         const Meta_Class* meta_class_,
+>         Registration*& next_);
+> };
+> 
+> inline Registration::Registration(
+>     const char* module_name_,
+>     const char* provider_name_, 
+>     Provider_Proc provider_proc_,
+>     const Meta_Class* meta_class_,
+>     Registration*& next_)
+> {
+>     provider_name = provider_name_;
+>     module_name = module_name_;
+>     provider_proc = provider_proc_;
+>     meta_class = meta_class_;
+>     next = next_;
+> 
+>     // Prepend to registration list:
+>     next_ = this;
+> }
+> 
+> typedef Registration* (*Module_Proc)();
+> 
+> CIMPLE_NAMESPACE_END
+> 
+> //==============================================================================
+> //
+> // CIMPLE registation macros
+> //
+> //==============================================================================
+> 
+196c258
+< // CIMPLE_CLASS_DEPENDENCY()
+---
+> // WMI provider entry point macros
+200,201c262
+< #define CIMPLE_CLASS_DEPENDENCY(CLASS) \
+<     const char* __class_##CLASS = "@(#)CLASS_DEPENDENCY=" #CLASS;
+---
+> #if defined(CIMPLE_WMI_MODULE)
+203,212c264,274
+< //==============================================================================
+< //
+< // CIMPLE adapter entry point (all CIMPLE adapters implement this interface).
+< // The only pre-defined operation is 'T', which returns the provider type
+< // which (so far) is one of the following:
+< //
+< //     'P' - Pegasus C++ Provider
+< //     'C' - CMPI Provider
+< //
+< //==============================================================================
+---
+> struct WMI_DllMain_Args
+> {
+>     cimple::Registration* reg;
+>     const char* module_name;
+>     const GUID* guid;
+>     HMODULE* module;
+>     HINSTANCE instance;
+>     ULONG reason;
+>     LPVOID reserved;
+>     BOOL result;
+> };
+214c276,286
+< CIMPLE_NAMESPACE_BEGIN
+---
+> struct WMI_DllGetClassObject_Args
+> {
+>     cimple::Registration* reg;
+>     const char* module_name;
+>     const GUID* guid;
+>     HMODULE* module;
+>     const CLSID* clsid;
+>     const IID* iid;
+>     LPVOID* ptr;
+>     HRESULT result;
+> };
+216c288
+< struct CIMPLE_CIMPLE_LINKAGE Registration
+---
+> struct WMI_DllCanUnloadNow_Args
+217a290
+>     cimple::Registration* reg;
+219,222c292,295
+<     const char* provider_name;
+<     Provider_Proc provider_proc;
+<     const Meta_Class* meta_class;
+<     Registration* next;
+---
+>     const GUID* guid;
+>     HMODULE* module;
+>     HRESULT result;
+> };
+224,229c297,303
+<     Registration(
+<         const char* module_name_,
+<         const char* provider_name_, 
+<         Provider_Proc provider_proc_,
+<         const Meta_Class* meta_class_,
+<         Registration*& next_);
+---
+> struct WMI_DllRegisterServer_Args
+> {
+>     cimple::Registration* reg;
+>     const char* module_name;
+>     const GUID* guid;
+>     HMODULE* module;
+>     HRESULT result;
+232,237c306
+< inline Registration::Registration(
+<     const char* module_name_,
+<     const char* provider_name_, 
+<     Provider_Proc provider_proc_,
+<     const Meta_Class* meta_class_,
+<     Registration*& next_)
+---
+> struct WMI_DllUnregisterServer_Args
+239,243c308,313
+<     provider_name = provider_name_;
+<     module_name = module_name_;
+<     provider_proc = provider_proc_;
+<     meta_class = meta_class_;
+<     next = next_;
+---
+>     cimple::Registration* reg;
+>     const char* module_name;
+>     const GUID* guid;
+>     HMODULE* module;
+>     HRESULT result;
+> };
+245,247c315,375
+<     // Prepend to registration list:
+<     next_ = this;
+< }
+---
+> # define CIMPLE_WMI_PROVIDER_ENTRY_POINTS(GUID) \
+>     extern "C" int cimple_wmi_adapter( \
+>         void* arg0, void* arg1, void* arg2, void* arg3, \
+>         void* arg4, void* arg5, void* arg6, void* arg7); \
+>     static HMODULE _module; \
+>     BOOL WINAPI DllMain(HINSTANCE instance, ULONG reason, LPVOID reserved) \
+>     { \
+>         WMI_DllMain_Args args; \
+>         args.reg = _cimple_registration_head; \
+>         args.module_name = _cimple_module_name; \
+>         args.guid = &GUID; \
+>         args.module = &_module; \
+>         args.instance = instance; \
+>         args.reason = reason; \
+>         args.reserved = reserved; \
+>         cimple_wmi_adapter((void*)'W', (void*)'M', &args, 0, 0, 0, 0, 0); \
+>         return args.result; \
+>     } \
+>     STDAPI DllGetClassObject(REFCLSID clsid, REFIID iid, LPVOID* ptr) \
+>     { \
+>         WMI_DllGetClassObject_Args args; \
+>         args.reg = _cimple_registration_head; \
+>         args.module_name = _cimple_module_name; \
+>         args.guid = &GUID; \
+>         args.module = &_module; \
+>         args.clsid = &clsid; \
+>         args.iid = &iid; \
+>         args.ptr = ptr; \
+>         cimple_wmi_adapter((void*)'W', (void*)'G', &args, 0, 0, 0, 0, 0); \
+>         return args.result; \
+>     } \
+>     STDAPI DllCanUnloadNow() \
+>     { \
+>         WMI_DllCanUnloadNow_Args args; \
+>         args.reg = _cimple_registration_head; \
+>         args.module_name = _cimple_module_name; \
+>         args.guid = &GUID; \
+>         args.module = &_module; \
+>         cimple_wmi_adapter((void*)'W', (void*)'C', &args, 0, 0, 0, 0, 0); \
+>         return args.result; \
+>     } \
+>     STDAPI DllRegisterServer() \
+>     { \
+>         WMI_DllRegisterServer_Args args; \
+>         args.reg = _cimple_registration_head; \
+>         args.module_name = _cimple_module_name; \
+>         args.guid = &GUID; \
+>         args.module = &_module; \
+>         cimple_wmi_adapter((void*)'W', (void*)'R', &args, 0, 0, 0, 0, 0); \
+>         return args.result; \
+>     } \
+>     STDAPI DllUnregisterServer() \
+>     { \
+>         WMI_DllUnregisterServer_Args args; \
+>         args.reg = _cimple_registration_head; \
+>         args.module_name = _cimple_module_name; \
+>         args.guid = &GUID; \
+>         args.module = &_module; \
+>         cimple_wmi_adapter((void*)'W', (void*)'U', &args, 0, 0, 0, 0, 0); \
+>         return args.result; \
+>     }
+249c377
+< typedef Registration* (*Module_Proc)();
+---
+> #else /* defined(CIMPLE_WMI_MODULE) */
+251c379,390
+< CIMPLE_NAMESPACE_END
+---
+> # define CIMPLE_WMI_PROVIDER_ENTRY_POINTS /* empty */
+> 
+> #endif /* defined(CIMPLE_WMI_MODULE) */
+> 
+> //==============================================================================
+> //
+> // CIMPLE_CLASS_DEPENDENCY()
+> //
+> //==============================================================================
+> 
+> #define CIMPLE_CLASS_DEPENDENCY(CLASS) \
+>     const char* __class_##CLASS = "@(#)CLASS_DEPENDENCY=" #CLASS;
+Index: src/cimple/Type.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Type.cpp,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -r1.19 -r1.20
+87c87
+< void print_string(const char* str)
+---
+> void fprint_string(FILE* os, const char* str)
+89c89
+<     printf("\"");
+---
+>     fprintf(os, "\"");
+98c98
+<                 printf("\\n");
+---
+>                 fprintf(os, "\\n");
+102c102
+<                 printf("\\r");
+---
+>                 fprintf(os, "\\r");
+106c106
+<                 printf("\\t");
+---
+>                 fprintf(os, "\\t");
+110c110
+<                 printf("\\f");
+---
+>                 fprintf(os, "\\f");
+114c114
+<                 printf("\\\"");
+---
+>                 fprintf(os, "\\\"");
+118c118
+<                 printf("%c", c);
+---
+>                 fprintf(os, "%c", c);
+122c122
+<     printf("\"");
+---
+>     fprintf(os, "\"");
+125c125,130
+< void print_scalar(Type type, const void* value)
+---
+> void print_string(const char* str)
+> {
+>     fprint_string(stdout, str);
+> }
+> 
+> void fprint_scalar(FILE* os, Type type, const void* value)
+131c136
+<             printf("%s", *((boolean*)value) ? "true" : "false");
+---
+>             fprintf(os, "%s", *((boolean*)value) ? "true" : "false");
+137c142
+<             printf("%u", *((uint8*)value));
+---
+>             fprintf(os, "%u", *((uint8*)value));
+143c148
+<             printf("%d", *((sint8*)value));
+---
+>             fprintf(os, "%d", *((sint8*)value));
+149c154
+<             printf("%u", *((uint16*)value));
+---
+>             fprintf(os, "%u", *((uint16*)value));
+155c160
+<             printf("%d", *((sint16*)value));
+---
+>             fprintf(os, "%d", *((sint16*)value));
+161c166
+<             printf("%u", *((uint32*)value));
+---
+>             fprintf(os, "%u", *((uint32*)value));
+167c172
+<             printf("%d", *((sint32*)value));
+---
+>             fprintf(os, "%d", *((sint32*)value));
+173c178
+<             printf(CIMPLE_LLU, *((uint64*)value));
+---
+>             fprintf(os, CIMPLE_LLU, *((uint64*)value));
+179c184
+<             printf(CIMPLE_LLD, *((sint64*)value));
+---
+>             fprintf(os, CIMPLE_LLD, *((sint64*)value));
+185c190
+<             printf("%f", *((real32*)value));
+---
+>             fprintf(os, "%f", *((real32*)value));
+191c196
+<             printf("%f", *((real64*)value));
+---
+>             fprintf(os, "%f", *((real64*)value));
+197c202
+<             printf("%u", ((char16*)value)->code());
+---
+>             fprintf(os, "%u", ((char16*)value)->code());
+203c208
+<             print_string(*((const char* const*)value));
+---
+>             fprint_string(os, *((const char* const*)value));
+209c214
+<             printf("%s", *((const char* const*)value));
+---
+>             fprintf(os, "%s", *((const char* const*)value));
+215c220,229
+< void print_array(Type type, const void* elements_, size_t num_elements)
+---
+> void print_scalar(Type type, const void* value)
+> {
+>     fprint_scalar(stdout, type, value);
+> }
+> 
+> void fprint_array(
+>     FILE* os, 
+>     Type type, 
+>     const void* elements_, 
+>     size_t num_elements)
+225c239
+<             printf(", ");
+---
+>             fprintf(os, ", ");
+227c241
+<         print_scalar(type, elements);
+---
+>         fprint_scalar(os, type, elements);
+231a246,250
+> void print_array(Type type, const void* elements_, size_t num_elements)
+> {
+>     fprint_array(stdout, type, elements_, num_elements);
+> }
+> 
+Index: src/cimple/Type.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Type.h,v
+retrieving revision 1.24
+retrieving revision 1.25
+diff -r1.24 -r1.25
+98a99,104
+> CIMPLE_CIMPLE_LINKAGE 
+> int type_name_to_type(const char* name, Type& type);
+> 
+> CIMPLE_CIMPLE_LINKAGE
+> void fprint_scalar(FILE* os, Type type, const void* value);
+> 
+102a109,112
+> void fprint_array(
+>     FILE* os, Type type, const void* elements, size_t num_elements);
+> 
+> CIMPLE_CIMPLE_LINKAGE
+105,106c115
+< CIMPLE_CIMPLE_LINKAGE 
+< int type_name_to_type(const char* name, Type& type);
+---
+> extern void fprint_string(FILE* os, const char* str);
+Index: src/cimple/Value.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Value.cpp,v
+retrieving revision 1.10
+retrieving revision 1.11
+diff -r1.10 -r1.11
+749c749
+< void Value::print() const
+---
+> void Value::fprint(FILE* os) const
+751,752c751,752
+<     printf("Value\n");
+<     printf("{\n");
+---
+>     fprintf(os, "Value\n");
+>     fprintf(os, "{\n");
+754,756c754,756
+<     printf("    type=%s\n", _type_name(_type));
+<     printf("    null=%s\n", _null ? "true" : "false");
+<     printf("    value=");
+---
+>     fprintf(os, "    type=%s\n", _type_name(_type));
+>     fprintf(os, "    null=%s\n", _null ? "true" : "false");
+>     fprintf(os, "    value=");
+761c761
+<             putchar('\n');
+---
+>             fputc('\n', os);
+765,766c765,766
+<             __print_scalar(_type, &_boolean);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_boolean);
+>             fputc('\n', os);
+770,771c770,771
+<             __print_scalar(_type, &_uint8);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint8);
+>             fputc('\n', os);
+775,776c775,776
+<             __print_scalar(_type, &_sint8);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint8);
+>             fputc('\n', os);
+780,781c780,781
+<             __print_scalar(_type, &_uint16);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint16);
+>             fputc('\n', os);
+785,786c785,786
+<             __print_scalar(_type, &_sint16);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint16);
+>             fputc('\n', os);
+790,791c790,791
+<             __print_scalar(_type, &_uint32);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint32);
+>             fputc('\n', os);
+795,796c795,796
+<             __print_scalar(_type, &_sint32);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint32);
+>             fputc('\n', os);
+800,801c800,801
+<             __print_scalar(_type, &_uint64);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint64);
+>             fputc('\n', os);
+805,806c805,806
+<             __print_scalar(_type, &_sint64);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint64);
+>             fputc('\n', os);
+810,811c810,811
+<             __print_scalar(_type, &_real32);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_real32);
+>             fputc('\n', os);
+815,816c815,816
+<             __print_scalar(_type, &_real64);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_real64);
+>             fputc('\n', os);
+820,821c820,821
+<             __print_scalar(_type, &_char16);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_char16);
+>             fputc('\n', os);
+825,826c825,826
+<             __print_scalar(_type, &_string);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_string);
+>             fputc('\n', os);
+830,831c830,831
+<             __print_scalar(_type, &_datetime);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_datetime);
+>             fputc('\n', os);
+839,840c839,840
+<             __print_array(_type & 0x7F, &_boolean, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_boolean, 1);
+>             fputc('\n', os);
+844,845c844,845
+<             __print_array(_type & 0x7F, &_uint8, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint8, 1);
+>             fputc('\n', os);
+849,850c849,850
+<             __print_array(_type & 0x7F, &_sint8, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint8, 1);
+>             fputc('\n', os);
+854,855c854,855
+<             __print_array(_type & 0x7F, &_uint16, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint16, 1);
+>             fputc('\n', os);
+859,860c859,860
+<             __print_array(_type & 0x7F, &_sint16, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint16, 1);
+>             fputc('\n', os);
+864,865c864,865
+<             __print_array(_type & 0x7F, &_uint32, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint32, 1);
+>             fputc('\n', os);
+869,870c869,870
+<             __print_array(_type & 0x7F, &_sint32, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint32, 1);
+>             fputc('\n', os);
+874,875c874,875
+<             __print_array(_type & 0x7F, &_uint64, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint64, 1);
+>             fputc('\n', os);
+879,880c879,880
+<             __print_array(_type & 0x7F, &_sint64, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint64, 1);
+>             fputc('\n', os);
+884,885c884,885
+<             __print_array(_type & 0x7F, &_real32, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_real32, 1);
+>             fputc('\n', os);
+889,890c889,890
+<             __print_array(_type & 0x7F, &_real64, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_real64, 1);
+>             fputc('\n', os);
+894,895c894,895
+<             __print_array(_type & 0x7F, &_char16, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_char16, 1);
+>             fputc('\n', os);
+899,900c899,900
+<             __print_array(_type & 0x7F, &_string, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_string, 1);
+>             fputc('\n', os);
+904,905c904,905
+<             __print_array(_type & 0x7F, &_datetime, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_datetime, 1);
+>             fputc('\n', os);
+910c910
+<             printf("\n    {\n");
+---
+>             fprintf(os, "\n    {\n");
+915c915
+<                 __print_aux(arr[i], 0, 2, false);
+---
+>                 __print_aux(os, arr[i], 0, 2, false);
+917c917
+<             printf("    }\n");
+---
+>             fprintf(os, "    }\n");
+925c925,930
+<     printf("}\n");
+---
+>     fprintf(os, "}\n");
+> }
+> 
+> void Value::print() const
+> {
+>     fprint(stdout);
+Index: src/cimple/Value.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Value.h,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -r1.11 -r1.12
+161a162,163
+>     void fprint(FILE* os) const;
+> 
+Index: src/cimple/config.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/config.h,v
+retrieving revision 1.106
+retrieving revision 1.108
+diff -r1.106 -r1.108
+358,360c358,360
+< #define CIMPLE_MAJOR 1
+< #define CIMPLE_MINOR 2
+< #define CIMPLE_REVISION 4
+---
+> #define CIMPLE_MAJOR 2
+> #define CIMPLE_MINOR 0
+> #define CIMPLE_REVISION 0
+Index: src/cimple/io.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/io.cpp,v
+retrieving revision 1.8
+retrieving revision 1.9
+diff -r1.8 -r1.9
+91a92,103
+> int ifprintf(FILE* os, size_t level, const char* format, ...)
+> {
+>     fprintf(os, "%*s", int(level * 4), "");
+> 
+>     va_list ap;
+>     va_start(ap, format);
+>     int r = vfprintf(os, format, ap);
+>     va_end(ap);
+> 
+>     return r;
+> }
+> 
+Index: src/cimple/io.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/io.h,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+45a46,48
+> CIMPLE_CIMPLE_LINKAGE
+> int ifprintf(FILE* os, size_t level, const char* format, ...);
+> 
+Index: src/cimple/platform_WIN32_IX86_MSVC.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/platform_WIN32_IX86_MSVC.h,v
+retrieving revision 1.18
+retrieving revision 1.19
+diff -r1.18 -r1.19
+44a45,47
+> // 'sprintf' name was marked as #pragma deprecated
+> #pragma warning ( disable : 4995 )
+> 
+Index: src/cimple/tests/print/main.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/tests/print/main.cpp,v
+retrieving revision 1.5
+retrieving revision 1.7
+diff -r1.5 -r1.7
+57c57
+<     print(inst);
+---
+>     fprint(stderr, inst);
+64d63
+< 
+Index: src/cmpi/adapter/CMPI_Adapter.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cmpi/adapter/CMPI_Adapter.cpp,v
+retrieving revision 1.76
+retrieving revision 1.77
+diff -r1.76 -r1.77
+742c742
+<     Ref<Instance> model_d(inst);
+---
+>     Ref<Instance> model_d(model);
+Index: src/mof/mof2html/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/mof/mof2html/Makefile,v
+retrieving revision 1.8
+retrieving revision 1.10
+diff -r1.8 -r1.10
+15c15
+< 	mof2html -I ~/cimple/cim ~/cimple/cim/CIM_Schema.mof
+---
+> 	$(MAKE) -C cim218
+Index: src/mof/mof2html/main.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/mof/mof2html/main.cpp,v
+retrieving revision 1.13
+retrieving revision 1.15
+diff -r1.13 -r1.15
+143a144,177
+> static void put_string(FILE* os, const char* str)
+> {
+>     for (const char* p = str; *p; p++)
+>     {
+>         switch (*p)
+>         {
+>             case '&':
+>                 fprintf(os, "&amp;");
+>                 break;
+>             case '<':
+>                 fprintf(os, "&lt;");
+>                 break;
+>             case '>':
+>                 fprintf(os, "&gt;");
+>                 break;
+>             case '"':
+>                 fprintf(os, "&quot;");
+>                 break;
+>             case '\'':
+>                 fprintf(os, "&#39;");
+>                 break;
+>             default:
+>                 fprintf(os, "%c", *p);
+>         }
+>     }
+> }
+> 
+> static void put_quoted_string(FILE* os, const char* str)
+> {
+>     fprintf(os, "&quot;");
+>     put_string(os, str);
+>     fprintf(os, "&quot;");
+> }
+> 
+154c188,285
+<             fprintf(os, "%s\n", lit->string_value);
+---
+>             put_string(os, lit->string_value);
+>             printf("\n");
+>         }
+>     }
+> }
+> 
+> static const char* lookup_value_map_element(
+>     const MOF_Qualifier_Info* info,
+>     size_t index)
+> {
+>     for (; info; info = (MOF_Qualifier_Info*)info->next)
+>     {
+>         const MOF_Qualifier* q = info->qualifier;
+> 
+>         if (strcasecmp(q->name, "ValueMap") != 0)
+>             continue;
+> 
+>         size_t i = 0;
+> 
+>         for (const MOF_Literal* p = q->params; p; p = (MOF_Literal*)p->next)
+>         {
+>             if (i == index && p->value_type == TOK_STRING_VALUE)
+>             {
+>                 return p->string_value;
+>             }
+> 
+>             i++;
+>         }
+>     }
+> 
+>     // Not found!
+>     return 0;
+> }
+> 
+> static void print_qualifiers(FILE* os, const MOF_Qualifier_Info* info)
+> {
+>     fprintf(os, "<table border=0 width=100%%>\n");
+> 
+>     const MOF_Qualifier_Info* r = info;
+> 
+>     for (; r; r = (MOF_Qualifier_Info*)r->next)
+>     {
+>         const MOF_Qualifier* q = r->qualifier;
+>         fprintf(os, "<tr valign=top>\n");
+> 
+>         // Name:
+>         fprintf(os, "<td width=25%%>\n");
+>         fprintf(os, "%s\n", q->name);
+>         fprintf(os, "</td>\n");
+> 
+>         // Value:
+>         fprintf(os, "<td width=75%%>\n");
+> 
+>         const MOF_Literal* lit = q->params;
+> 
+>         size_t index = 0;
+> 
+>         for (const MOF_Literal* p = q->params; p; p = (MOF_Literal*)p->next)
+>         {
+>             if (p->value_type == TOK_STRING_VALUE)
+>             {
+>                 if (strcasecmp(q->name, "Values") == 0)
+>                 {
+>                     put_quoted_string(os, p->string_value);
+> 
+>                     const char* vme = lookup_value_map_element(info, index);
+> 
+>                     if (vme)
+>                     {
+>                         fprintf(os, " <b>[");
+>                         put_string(os, vme);
+>                         fprintf(os, "]</b>");
+>                     }
+>                 }
+>                 else
+>                     put_string(os, p->string_value);
+>             }
+>             else if (p->value_type == TOK_INT_VALUE)
+>             {
+>                 fprintf(os, "%lld", p->int_value);
+>             }
+>             else if (p->value_type == TOK_BOOL_VALUE)
+>             {
+>                 if (p->bool_value)
+>                     fprintf(os, "TRUE");
+>                 else
+>                     fprintf(os, "FALSE");
+>             }
+> 
+>             if (p->next)
+>             {
+>                 if (strcasecmp(q->name, "Values") == 0)
+>                     fprintf(os, "<br>");
+>                 else
+>                     fprintf(os, ", ");
+>             }
+> 
+>             index++;
+155a287,291
+> 
+>         fprintf(os, "</td>\n");
+> 
+>         // Row end!
+>         fprintf(os, "</tr>\n");
+156a293,294
+> 
+>     fprintf(os, "</table>\n");
+252a391
+> #if 0
+253a393,394
+> #endif
+>     fprintf(os, "        <th>Qualifiers</ht>\n");
+336a478
+> #if 0
+339a482,490
+> #endif
+> 
+>         // 
+>         // Qualifiers
+>         //
+> 
+>         fprintf(os, "<td>\n");
+>         print_qualifiers(os, f->feature->all_qualifiers);
+>         fprintf(os, "</td>\n");
+Index: src/pegasus/adapter/Pegasus_Adapter.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Adapter.cpp,v
+retrieving revision 1.66
+retrieving revision 1.67
+diff -r1.66 -r1.67
+124a125,152
+> static bool _contains(const P_CIMPropertyList& pl, const P_CIMName& name)
+> {
+>     P_Uint32 n = pl.size();
+> 
+>     for (Pegasus::Uint32 i = 0; i < n; i++)
+>     {
+>         if (!pl[i].isNull() && pl[i] == name)
+>             return true;
+>     }
+> 
+>     // Not found!
+>     return false;
+> }
+> 
+> static void _discard_properties(P_CIMInstance& pi, const P_CIMPropertyList& pl)
+> {
+>     if (pl.isNull())
+>         return;
+> 
+>     for (P_Uint32 i = 0; i < pi.getPropertyCount(); )
+>     {
+>         if (_contains(pl, pi.getProperty(i).getName()))
+>             i++;
+>         else
+>             pi.removeProperty(i);
+>     }
+> }
+> 
+213a242,244
+>     // Discard properties not in property list.
+>     _discard_properties(pi, propertyList);
+> 
+224a256
+>     P_CIMPropertyList propertyList;
+247a280,282
+>     // Discard properties:
+>     _discard_properties(pi, data->propertyList);
+> 
+286a322
+>     data.propertyList = propertyList;
+655a692,694
+>     // Discard properties:
+>     _discard_properties(ci, data->propertyList);
+> 
+949c988,989
+<     const P_CIMObjectPath& objectPath;
+---
+>     const P_CIMObjectPath objectPath;
+>     P_CIMPropertyList propertyList;
+954c994,995
+<         const P_CIMObjectPath& objectPath_)
+---
+>         const P_CIMObjectPath& objectPath_,
+>         const P_CIMPropertyList& propertyList_)
+957a999
+>         propertyList(propertyList_),
+988a1031,1033
+>     // Discard properties:
+>     _discard_properties(pi, data->propertyList);
+> 
+1043c1088
+<     Handle_References_Request_Data data(handler, objectPath);
+---
+>     Handle_References_Request_Data data(handler, objectPath, propertyList);
+Index: src/pegasus/cimlisten/main.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/pegasus/cimlisten/main.cpp,v
+retrieving revision 1.9
+retrieving revision 1.10
+diff -r1.9 -r1.10
+19a20,23
+> unsigned short port_opt = 5988;
+> String host_opt;
+> String user_opt;
+> String password_opt;
+21c25
+< const String DESTINATION = "http://localhost:9999";
+---
+> String dest_opt = "http://localhost:9999";
+80c84
+<     inst.addProperty(CIMProperty("Destination", DESTINATION));
+---
+>     inst.addProperty(CIMProperty("Destination", dest_opt));
+211a216,221
+>     -H HOST         Connect to this HOST.\n\
+>     -P PORT         Connect on this PORT.\n\
+>     -u USER         Connect as this USER.\n\
+>     -p PASSWORD     Connect with this PASSWORD.\n\
+>     -d DESTINATION  Deliver indication to this listener (default is\n\
+>                     http://localhost:9999\n\
+222c232
+<     while ((opt = getopt(argc, argv, "n:hVs:N:Q:S:")) != -1)
+---
+>     while ((opt = getopt(argc, argv, "n:hVs:N:Q:S:H:P:u:p:d:")) != -1)
+268a279,308
+>             case 'H':
+>             {
+>                 host_opt = optarg;
+>                 break;
+>             }
+> 
+>             case 'P':
+>             {
+>                 port_opt = atoi(optarg);
+>                 break;
+>             }
+> 
+>             case 'u':
+>             {
+>                 user_opt = optarg;
+>                 break;
+>             }
+> 
+>             case 'p':
+>             {
+>                 password_opt = optarg;
+>                 break;
+>             }
+> 
+>             case 'd':
+>             {
+>                 dest_opt = optarg;
+>                 break;
+>             }
+> 
+295c335,338
+<         client.connectLocal();
+---
+>         if (host_opt.size() || port_opt != 5988)
+>             client.connect(host_opt, port_opt, user_opt, password_opt);
+>         else
+>             client.connectLocal();
+Index: src/posix/pthread.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/posix/pthread.cpp,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -r1.19 -r1.20
+118a119,124
+>     if (rep->count == 0)
+>     {
+>         return -1;
+>     }
+> 
+> #if 0
+120a127
+> #endif
+Index: src/providers/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/providers/Makefile,v
+retrieving revision 1.65
+retrieving revision 1.66
+diff -r1.65 -r1.66
+34a35
+>     Widget
+Index: src/providers/common.mak
+===================================================================
+RCS file: /home/cvs/cimple/src/providers/common.mak,v
+retrieving revision 1.3
+retrieving revision 1.4
+diff -r1.3 -r1.4
+8c8
+<   LIBRARIES += cimplepegadap cimple
+---
+>   LIBRARIES += cimplepegadap cimplepegutils pegprovider pegclient pegcommon cimple
+Index: src/providers/Upcall/Upcall_Provider.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/providers/Upcall/Upcall_Provider.cpp,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -r1.11 -r1.12
+17a18,20
+> 
+>         CIM_ComputerSystem* ccs = cast<CIM_ComputerSystem*>(inst.ptr());
+>         print(ccs);
+Index: src/tools/genmod/main.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/tools/genmod/main.cpp,v
+retrieving revision 1.12
+retrieving revision 1.17
+diff -r1.12 -r1.17
+14a15
+> #include <util/UUID.h>
+137a139,234
+> #if defined(CIMPLE_WINDOWS)
+> 
+> static void gen_guid(const char* module_name, const cimple::UUID& uuid)
+> {
+>     const char* fn = "guid.h";
+> 
+>     if (exists(fn))
+>     {
+>         printf("Skipped %s (already exists)\n", fn);
+>         return;
+>     }
+> 
+>     FILE* os = fopen(fn, "w");
+> 
+>     if (!os)
+>         err("failed to create \"%s\"", fn);
+> 
+>     const unsigned char *p = uuid.data;
+>     fprintf(os, "// {%02x%02x%02x%02x-"
+>         "%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x}\n",
+>         p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+>         p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+> 
+>     fprintf(os, "DEFINE_GUID(\n");
+>     fprintf(os, "  CLSID_%s_Module,\n", module_name);
+>     fprintf(os, "  0x%02x%02x%02x%02x,\n", p[0], p[1], p[2], p[3]);
+>     fprintf(os, "  0x%02x%02x,\n", p[4], p[5]);
+>     fprintf(os, "  0x%02x%02x,\n", p[6], p[7]);
+>     fprintf(os, "  0x%02x,\n", p[8]);
+>     fprintf(os, "  0x%02x,\n", p[9]);
+>     fprintf(os, "  0x%02x,\n", p[10]);
+>     fprintf(os, "  0x%02x,\n", p[11]);
+>     fprintf(os, "  0x%02x,\n", p[12]);
+>     fprintf(os, "  0x%02x,\n", p[13]);
+>     fprintf(os, "  0x%02x,\n", p[14]);
+>     fprintf(os, "  0x%02x);\n", p[15]);
+> 
+>     printf("Created %s\n", fn);
+> }
+> 
+> static void gen_register(const char* module_name, const cimple::UUID& uuid)
+> {
+>     // Open file:
+> 
+>     const char* fn = "register.mof";
+> 
+>     if (exists(fn))
+>     {
+>         printf("Skipped %s (already exists)\n", fn);
+>         return;
+>     }
+> 
+>     FILE* os = fopen(fn, "w");
+> 
+>     if (!os)
+>         err("failed to create \"%s\"", fn);
+> 
+>     // Format guid:
+> 
+>     const unsigned char *p = uuid.data;
+>     char buf[1024];
+>     sprintf(buf, "%02x%02x%02x%02x-"
+>         "%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+>         p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+>         p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+> 
+>     // Create register.mof:
+> 
+>     static const char REGISTER_FMT[] =
+>         "Instance of __Win32Provider as $P\n"
+>         "{\n"
+>         "    Name = \"%s\";\n"
+>         "    ClsId = \"{%s}\";\n"
+>         "};\n"
+>         "\n"
+>         "instance of __InstanceProviderRegistration\n"
+>         "{\n"
+>         "    Provider = $P;\n"
+>         "    SupportsPut = TRUE;\n"
+>         "    SupportsGet = TRUE;\n"
+>         "    SupportsDelete = TRUE;\n"
+>         "    SupportsEnumeration = TRUE;\n"
+>         "    QuerySupportLevels = { \"WQL:UnarySelect\" };\n"
+>         "};\n"
+>         "instance of __MethodProviderRegistration\n"
+>         "{\n"
+>         "    Provider = $P;\n"
+>         "};\n";
+> 
+>     fprintf(os, REGISTER_FMT, module_name, buf);
+> 
+>     printf("Created %s\n", fn);
+> }
+> 
+> #endif /* defined(CIMPLE_WINDOWS) */
+> 
+266c363,388
+<     fprintf(os, "#endif\n");
+---
+>     fprintf(os, "#endif\n\n");
+> 
+>     // Generate WMI entry point.
+> 
+>     /*
+>         #ifdef CIMPLE_WMI_MODULE
+>           // {23CB8761-914A-11cf-B705-00AA0062CBBB}
+>           DEFINE_GUID(CLSID_Gadget_Module,
+>             0x23cb8761, 0x914a,
+>             0x11cf, 0xb7, 0x5,
+>             0x0, 0xaa, 0x0, 0x62,
+>             0xcb, 0xbb);
+>           CIMPLE_WMI_PROVIDER_ENTRY_POINTS(CLSID_Gadget_Module)
+>         # define __CIMPLE_FOUND_ENTRY_POINT
+>         #endif
+>     */
+>     {
+>         fprintf(os, "#ifdef CIMPLE_WMI_MODULE\n");
+>         fprintf(os, "# include \"guid.h\"\n");
+>         fprintf(os, "  CIMPLE_WMI_PROVIDER_ENTRY_POINTS(CLSID_%s_Module)\n",
+>             module_name);
+>         fprintf(os, "# define __CIMPLE_FOUND_ENTRY_POINT\n");
+>         fprintf(os, "#endif\n\n");
+>     }
+> 
+>     // Generate check for entry point.
+270c392,393
+<         "CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, CIMPLE_OPENWBEM_MODULE";
+---
+>         "CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, CIMPLE_OPENWBEM_MODULE, "
+>         "CIMPLE_WMI_MODULE";
+272d394
+<     fprintf(os, "\n");
+362a485,498
+>     // Generate guid.h file.
+> 
+> #if defined(CIMPLE_WINDOWS)
+>     {
+>         cimple::UUID uuid;
+>         cimple::create_uuid(uuid);
+> 
+>         gen_guid(argv[0], uuid);
+>         gen_register(argv[0], uuid);
+>     }
+> #endif /* defined(CIMPLE_WINDOWS) */
+> 
+>     // Generate register.mof.
+> 
+365d500
+< 

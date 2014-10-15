@@ -1537,73 +1537,73 @@ int instance_to_model_path(const Instance* inst, String& model_path)
     return 0;
 }
 
-void __print_scalar(uint32 type, const void* ptr)
+void __print_scalar(FILE* os, uint32 type, const void* ptr)
 {
     switch (Type(type))
     {
         case BOOLEAN:
         {
-            printf(*((boolean*)ptr) ?  "true" : "false");
+            fprintf(os, *((boolean*)ptr) ?  "true" : "false");
             break;
         }
 
         case UINT8:
         {
-            printf("%u", *((uint8*)ptr));
+            fprintf(os, "%u", *((uint8*)ptr));
             break;
         }
 
         case SINT8:
         {
-            printf("%d", *((sint8*)ptr));
+            fprintf(os, "%d", *((sint8*)ptr));
             break;
         }
 
         case UINT16:
         {
-            printf("%u", *((uint16*)ptr));
+            fprintf(os, "%u", *((uint16*)ptr));
             break;
         }
 
         case SINT16:
         {
-            printf("%d", *((sint16*)ptr));
+            fprintf(os, "%d", *((sint16*)ptr));
             break;
         }
 
         case UINT32:
         {
-            printf("%u", *((uint32*)ptr));
+            fprintf(os, "%u", *((uint32*)ptr));
             break;
         }
 
         case SINT32:
         {
-            printf("%d", *((sint32*)ptr));
+            fprintf(os, "%d", *((sint32*)ptr));
             break;
         }
 
         case UINT64:
         {
-            printf(CIMPLE_LLU, *((uint64*)ptr));
+            fprintf(os, CIMPLE_LLU, *((uint64*)ptr));
             break;
         }
 
         case SINT64:
         {
-            printf(CIMPLE_LLD, *((sint64*)ptr));
+            fprintf(os, CIMPLE_LLD, *((sint64*)ptr));
             break;
         }
 
         case REAL32:
         {
-            printf("%f", *((real32*)ptr));
+            fprintf(os, "%f", *((real32*)ptr));
             break;
         }
 
         case REAL64:
         {
-            printf("%f", *((real64*)ptr));
+            fprintf(os, "%f", *((real64*)ptr));
             break;
         }
 
@@ -1612,9 +1612,9 @@ void __print_scalar(uint32 type, const void* ptr)
             uint16 c = *((uint16*)ptr);
 
             if (c >= ' ' && c <= '~')
-                printf("'%c'", c);
+                fprintf(os, "'%c'", c);
             else
-                printf("0x%04X", c);
+                fprintf(os, "0x%04X", c);
             break;
         }
 
@@ -1622,21 +1622,21 @@ void __print_scalar(uint32 type, const void* ptr)
         {
             char buffer[32];
             ((Datetime*)ptr)->ascii(buffer);
-            printf("\"%s\"", buffer);
+            fprintf(os, "\"%s\"", buffer);
             break;
         }
 
         case STRING:
         {
-            print_string(((String*)ptr)->c_str());
+            fprint_string(os, ((String*)ptr)->c_str());
             break;
         }
     }
 }
 
-void __print_array(uint32 type, const void* ptr, size_t depth)
+void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth)
 {
-    printf("{ ");
+    fprintf(os, "{ ");
 
     __Array_Base* base = (__Array_Base*)ptr;
     const char* data = base->rep->data;
@@ -1644,40 +1644,47 @@ void __print_array(uint32 type, const void* ptr, size_t depth)
 
     for (size_t i = 0; i < size; i++)
     {
-        __print_scalar(type, data);
+        __print_scalar(os, type, data);
 
         if (i + 1 != size)
-            putchar(',');
+            fputc(',', os);
 
-        putchar(' ');
+        fputc(' ', os);
         data += type_size[type];
     }
 
-    printf("}");
+    fprintf(os, "}");
 }
 
 static void _print_property(
-    const Meta_Property* mp, const void* prop, size_t level)
+    FILE* os,
+    const Meta_Property* mp, 
+    const void* prop, 
+    size_t level)
 {
-    iprintf(level, "%s %s", type_name[mp->type], mp->name);
+    ifprintf(os, level, "%s %s", type_name[mp->type], mp->name);
 
     if (mp->subscript)
-        printf("[]");
+        fprintf(os, "[]");
 
-    printf(" = ");
+    fprintf(os, " = ");
 
     if (null_of(mp, prop))
-        printf("NULL");
+        fprintf(os, "NULL");
     else if (mp->subscript == 0)
-        __print_scalar(mp->type, prop);
+        __print_scalar(os, mp->type, prop);
     else
-        __print_array(mp->type, prop, 0);
+        __print_array(os, mp->type, prop, 0);
 
-    printf(";\n");
+    fprintf(os, ";\n");
 }
 
 void __print_aux(
-    const Instance* inst, const char* name, size_t level, bool keys_only)
+    FILE* os,
+    const Instance* inst, 
+    const char* name, 
+    size_t level, 
+    bool keys_only)
 {
     CIMPLE_ASSERT(inst != 0);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
@@ -1685,15 +1692,15 @@ void __print_aux(
     const Meta_Class* mc = inst->meta_class;
 
     if (name)
-        iprintf(level, "%s %s =\n", inst->meta_class->name, name);
+        ifprintf(os, level, "%s %s =\n", inst->meta_class->name, name);
     else
-        iprintf(level, "%s\n", inst->meta_class->name);
+        ifprintf(os, level, "%s\n", inst->meta_class->name);
 
-    iprintf(level, "{\n");
+    ifprintf(os, level, "{\n");
 
     if (inst->__name_space.size())
     {
-        iprintf(level, 
+        ifprintf(os, level, 
             "    string __name_space = \"%s\";\n", inst->__name_space.c_str());
     }
 
@@ -1720,7 +1727,7 @@ void __print_aux(
         {
             const Meta_Property* mp = (Meta_Property*)mc->meta_features[i];
             const void* prop = __property_of(inst, mp);
-            _print_property(mp, prop, level);
+            _print_property(os, mp, prop, level);
         }
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
@@ -1731,16 +1738,17 @@ void __print_aux(
             {
                 const Array_Ref& r = __array_ref_of(inst, mr);
 
-                iprintf(level, "%s %s[] =", mr->meta_class->name, mr->name);
+                ifprintf(
+                    os, level, "%s %s[] =", mr->meta_class->name, mr->name);
 
                 if (*((uint8*)(&r + 1)))
                 {
-                    iprintf(level, " NULL;\n");
+                    ifprintf(os, level, " NULL;\n");
                 }
                 else
                 {
-                    printf("\n");
-                    iprintf(level, "{\n");
+                    fprintf(os, "\n");
+                    ifprintf(os, level, "{\n");
                     level++;
 
                     for (size_t i = 0; i < r.size(); i++)
@@ -1748,13 +1756,13 @@ void __print_aux(
                         const Instance* tmp = r[i];
 
                         if (tmp)
-                            __print_aux(tmp, 0, level, false);
+                            __print_aux(os, tmp, 0, level, false);
                         else
-                            iprintf(level, "NULL\n");
+                            ifprintf(os, level, "NULL\n");
                     }
 
                     level--;
-                    iprintf(level, "};\n");
+                    ifprintf(os, level, "};\n");
                 }
             }
             else
@@ -1762,9 +1770,9 @@ void __print_aux(
                 const Instance*& tmp = __ref_of(inst, mr);
 
                 if (tmp)
-                    __print_aux(tmp, mr->name, level, keys_only);
+                    __print_aux(os, tmp, mr->name, level, keys_only);
                 else
-                    iprintf(level, "%s %s = NULL;\n", 
+                    ifprintf(os, level, "%s %s = NULL;\n", 
                         mr->meta_class->name, mr->name);
             }
         }
@@ -1772,12 +1780,17 @@ void __print_aux(
         level--;
     }
 
-    iprintf(level, "}\n");
+    ifprintf(os, level, "}\n");
+}
+
+void fprint(FILE* os, const Instance* inst, bool keys_only)
+{
+    __print_aux(os, inst, 0, 0, keys_only);
 }
 
 void print(const Instance* inst, bool keys_only)
 {
-    __print_aux(inst, 0, 0, keys_only);
+    fprint(stdout, inst, keys_only);
 }
 
 void __create_refs(Instance* inst)
@@ -2254,4 +2267,3 @@ int __put_property_from_str(
 }
 
 CIMPLE_NAMESPACE_END
-

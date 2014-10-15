@@ -43,6 +43,7 @@ install: uninstall
 	$(foreach i, $(INSTALL_HEADERS), \
             $(call cp,$i $(DESTDIR)$(_INCDIR)/$(i)) $(NL))
 	$(call mkdirhier,$(DESTDIR)$(LIBDIR_OPT))
+	$(call mkdirhier,$(DESTDIR)$(BINDIR_OPT))
 	$(call install_shlib,$(SHARED_LIBRARY))
 	$(ECHONL)
 

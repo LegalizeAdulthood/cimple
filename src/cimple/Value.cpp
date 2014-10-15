@@ -746,89 +746,89 @@ const char* _type_name(Value::Type type)
     return 0;
 }
 
-void Value::print() const
+void Value::fprint(FILE* os) const
 {
-    printf("Value\n");
-    printf("{\n");
+    fprintf(os, "Value\n");
+    fprintf(os, "{\n");
 
-    printf("    type=%s\n", _type_name(_type));
-    printf("    null=%s\n", _null ? "true" : "false");
-    printf("    value=");
+    fprintf(os, "    type=%s\n", _type_name(_type));
+    fprintf(os, "    null=%s\n", _null ? "true" : "false");
+    fprintf(os, "    value=");
 
     switch (_type)
     {
         case NONE:
-            putchar('\n');
+            fputc('\n', os);
             break;
 
         case BOOLEAN:
-            __print_scalar(_type, &_boolean);
-            putchar('\n');
+            __print_scalar(os, _type, &_boolean);
+            fputc('\n', os);
             break;
 
         case UINT8:
-            __print_scalar(_type, &_uint8);
-            putchar('\n');
+            __print_scalar(os, _type, &_uint8);
+            fputc('\n', os);
             break;
 
         case SINT8:
-            __print_scalar(_type, &_sint8);
-            putchar('\n');
+            __print_scalar(os, _type, &_sint8);
+            fputc('\n', os);
             break;
 
         case UINT16:
-            __print_scalar(_type, &_uint16);
-            putchar('\n');
+            __print_scalar(os, _type, &_uint16);
+            fputc('\n', os);
             break;
 
         case SINT16:
-            __print_scalar(_type, &_sint16);
-            putchar('\n');
+            __print_scalar(os, _type, &_sint16);
+            fputc('\n', os);
             break;
 
         case UINT32:
-            __print_scalar(_type, &_uint32);
-            putchar('\n');
+            __print_scalar(os, _type, &_uint32);
+            fputc('\n', os);
             break;
 
         case SINT32:
-            __print_scalar(_type, &_sint32);
-            putchar('\n');
+            __print_scalar(os, _type, &_sint32);
+            fputc('\n', os);
             break;
 
         case UINT64:
-            __print_scalar(_type, &_uint64);
-            putchar('\n');
+            __print_scalar(os, _type, &_uint64);
+            fputc('\n', os);
             break;
 
         case SINT64:
-            __print_scalar(_type, &_sint64);
-            putchar('\n');
+            __print_scalar(os, _type, &_sint64);
+            fputc('\n', os);
             break;
 
         case REAL32:
-            __print_scalar(_type, &_real32);
-            putchar('\n');
+            __print_scalar(os, _type, &_real32);
+            fputc('\n', os);
             break;
 
         case REAL64:
-            __print_scalar(_type, &_real64);
-            putchar('\n');
+            __print_scalar(os, _type, &_real64);
+            fputc('\n', os);
             break;
 
         case CHAR16:
-            __print_scalar(_type, &_char16);
-            putchar('\n');
+            __print_scalar(os, _type, &_char16);
+            fputc('\n', os);
             break;
 
         case STRING:
-            __print_scalar(_type, &_string);
-            putchar('\n');
+            __print_scalar(os, _type, &_string);
+            fputc('\n', os);
             break;
 
         case DATETIME:
-            __print_scalar(_type, &_datetime);
-            putchar('\n');
+            __print_scalar(os, _type, &_datetime);
+            fputc('\n', os);
             break;
 
         case INSTANCE:
@@ -836,85 +836,85 @@ void Value::print() const
             break;
 
         case BOOLEAN_ARRAY:
-            __print_array(_type & 0x7F, &_boolean, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_boolean, 1);
+            fputc('\n', os);
             break;
 
         case UINT8_ARRAY:
-            __print_array(_type & 0x7F, &_uint8, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_uint8, 1);
+            fputc('\n', os);
             break;
 
         case SINT8_ARRAY:
-            __print_array(_type & 0x7F, &_sint8, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_sint8, 1);
+            fputc('\n', os);
             break;
 
         case UINT16_ARRAY:
-            __print_array(_type & 0x7F, &_uint16, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_uint16, 1);
+            fputc('\n', os);
             break;
 
         case SINT16_ARRAY:
-            __print_array(_type & 0x7F, &_sint16, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_sint16, 1);
+            fputc('\n', os);
             break;
 
         case UINT32_ARRAY:
-            __print_array(_type & 0x7F, &_uint32, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_uint32, 1);
+            fputc('\n', os);
             break;
 
         case SINT32_ARRAY:
-            __print_array(_type & 0x7F, &_sint32, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_sint32, 1);
+            fputc('\n', os);
             break;
 
         case UINT64_ARRAY:
-            __print_array(_type & 0x7F, &_uint64, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_uint64, 1);
+            fputc('\n', os);
             break;
 
         case SINT64_ARRAY:
-            __print_array(_type & 0x7F, &_sint64, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_sint64, 1);
+            fputc('\n', os);
             break;
 
         case REAL32_ARRAY:
-            __print_array(_type & 0x7F, &_real32, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_real32, 1);
+            fputc('\n', os);
             break;
 
         case REAL64_ARRAY:
-            __print_array(_type & 0x7F, &_real64, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_real64, 1);
+            fputc('\n', os);
             break;
 
         case CHAR16_ARRAY:
-            __print_array(_type & 0x7F, &_char16, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_char16, 1);
+            fputc('\n', os);
             break;
 
         case STRING_ARRAY:
-            __print_array(_type & 0x7F, &_string, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_string, 1);
+            fputc('\n', os);
             break;
 
         case DATETIME_ARRAY:
-            __print_array(_type & 0x7F, &_datetime, 1);
-            putchar('\n');
+            __print_array(os, _type & 0x7F, &_datetime, 1);
+            fputc('\n', os);
             break;
 
         case INSTANCE_ARRAY:
         {
-            printf("\n    {\n");
+            fprintf(os, "\n    {\n");
 
             const Array_Instance& arr = *((Array_Instance*)_array);
 
             for (size_t i = 0; i < arr.size(); i++)
-                __print_aux(arr[i], 0, 2, false);
+                __print_aux(os, arr[i], 0, 2, false);
 
-            printf("    }\n");
+            fprintf(os, "    }\n");
             break;
         }
 
@@ -922,7 +922,12 @@ void Value::print() const
             break;
     }
 
-    printf("}\n");
+    fprintf(os, "}\n");
+}
+
+void Value::print() const
+{
+    fprint(stdout);
 }
 
 Value::Type type_of(const Meta_Feature* mf)

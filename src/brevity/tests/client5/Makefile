@@ -5,7 +5,7 @@ BINARY = brevity_client5
 
 SOURCES = main.cpp
 
-LIBRARIES = brevityrep brevity cimple
+include ../libraries.mak
 
 INCLUDES += -I../../.. -I../rep
 

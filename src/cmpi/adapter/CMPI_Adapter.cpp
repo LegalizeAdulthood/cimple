@@ -739,7 +739,7 @@ CMPIStatus CMPI_Adapter::modifyInstance(
     // Create model.
 
     Instance* model = clone(inst);
-    Ref<Instance> model_d(inst);
+    Ref<Instance> model_d(model);
     filter_properties(model, properties);
 
     // Invoke the provider:

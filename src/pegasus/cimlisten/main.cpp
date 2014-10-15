@@ -17,8 +17,12 @@ String source_name_space_opt = "root/cimv2";
 int seconds_opt = 1000000;
 String name_opt = "56C0D70B233E46668EC64BD2671D07A2";
 String query_opt = "select * from CIM_Indication";
+unsigned short port_opt = 5988;
+String host_opt;
+String user_opt;
+String password_opt;
 
-const String DESTINATION = "http://localhost:9999";
+String dest_opt = "http://localhost:9999";
 
 //==============================================================================
 //
@@ -77,7 +81,7 @@ static CIMObjectPath create_handler(CIMClient& client, const String& name)
 
     CIMInstance inst("CIM_IndicationHandlerCIMXML");
     inst.addProperty(CIMProperty("Name", name));
-    inst.addProperty(CIMProperty("Destination", DESTINATION));
+    inst.addProperty(CIMProperty("Destination", dest_opt));
 
     return client.createInstance(name_space_opt, inst);
 }
@@ -209,6 +213,12 @@ OPTIONS:\n\
     -N NAME         Name of filter and handler (Name property).\n\
     -Q QUERY        query (default: \"select * from CIM_Indication\").\n\
     -s SECONDS      Seconds to listen for (default: 1000000).\n\
+    -H HOST         Connect to this HOST.\n\
+    -P PORT         Connect on this PORT.\n\
+    -u USER         Connect as this USER.\n\
+    -p PASSWORD     Connect with this PASSWORD.\n\
+    -d DESTINATION  Deliver indication to this listener (default is\n\
+                    http://localhost:9999\n\
 \n";
 
 int main(int argc, char ** argv)
@@ -219,7 +229,7 @@ int main(int argc, char ** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "n:hVs:N:Q:S:")) != -1)
+    while ((opt = getopt(argc, argv, "n:hVs:N:Q:S:H:P:u:p:d:")) != -1)
     {
         switch (opt)
         {
@@ -266,6 +276,36 @@ int main(int argc, char ** argv)
                 break;
             }
 
+            case 'H':
+            {
+                host_opt = optarg;
+                break;
+            }
+
+            case 'P':
+            {
+                port_opt = atoi(optarg);
+                break;
+            }
+
+            case 'u':
+            {
+                user_opt = optarg;
+                break;
+            }
+
+            case 'p':
+            {
+                password_opt = optarg;
+                break;
+            }
+
+            case 'd':
+            {
+                dest_opt = optarg;
+                break;
+            }
+
             default:
                 cerr << "unknown option: -" << char(opt) << endl;
                 break;
@@ -292,7 +332,10 @@ int main(int argc, char ** argv)
     {
         // Connect to CIM server:
 
-        client.connectLocal();
+        if (host_opt.size() || port_opt != 5988)
+            client.connect(host_opt, port_opt, user_opt, password_opt);
+        else
+            client.connectLocal();
 
         // Create listener (and consumer).
 

@@ -84,9 +84,9 @@ const char* const type_name[] =
     "datetime",
 };
 
-void print_string(const char* str)
+void fprint_string(FILE* os, const char* str)
 {
-    printf("\"");
+    fprintf(os, "\"");
 
     while (*str)
     {
@@ -95,124 +95,138 @@ void print_string(const char* str)
         switch (c)
         {
             case '\n':
-                printf("\\n");
+                fprintf(os, "\\n");
                 break;
 
             case '\r':
-                printf("\\r");
+                fprintf(os, "\\r");
                 break;
 
             case '\t':
-                printf("\\t");
+                fprintf(os, "\\t");
                 break;
 
             case '\f':
-                printf("\\f");
+                fprintf(os, "\\f");
                 break;
 
             case '"':
-                printf("\\\"");
+                fprintf(os, "\\\"");
                 break;
 
             default:
-                printf("%c", c);
+                fprintf(os, "%c", c);
         }
     }
 
-    printf("\"");
+    fprintf(os, "\"");
 }
 
-void print_scalar(Type type, const void* value)
+void print_string(const char* str)
+{
+    fprint_string(stdout, str);
+}
+
+void fprint_scalar(FILE* os, Type type, const void* value)
 {
     switch (type)
     {
         case BOOLEAN:
         {
-            printf("%s", *((boolean*)value) ? "true" : "false");
+            fprintf(os, "%s", *((boolean*)value) ? "true" : "false");
             break;
         }
 
         case UINT8:
         {
-            printf("%u", *((uint8*)value));
+            fprintf(os, "%u", *((uint8*)value));
             break;
         }
 
         case SINT8:
         {
-            printf("%d", *((sint8*)value));
+            fprintf(os, "%d", *((sint8*)value));
             break;
         }
 
         case UINT16:
         {
-            printf("%u", *((uint16*)value));
+            fprintf(os, "%u", *((uint16*)value));
             break;
         }
 
         case SINT16:
         {
-            printf("%d", *((sint16*)value));
+            fprintf(os, "%d", *((sint16*)value));
             break;
         }
 
         case UINT32:
         {
-            printf("%u", *((uint32*)value));
+            fprintf(os, "%u", *((uint32*)value));
             break;
         }
 
         case SINT32:
         {
-            printf("%d", *((sint32*)value));
+            fprintf(os, "%d", *((sint32*)value));
             break;
         }
 
         case UINT64:
         {
-            printf(CIMPLE_LLU, *((uint64*)value));
+            fprintf(os, CIMPLE_LLU, *((uint64*)value));
             break;
         }
 
         case SINT64:
         {
-            printf(CIMPLE_LLD, *((sint64*)value));
+            fprintf(os, CIMPLE_LLD, *((sint64*)value));
             break;
         }
 
         case REAL32:
         {
-            printf("%f", *((real32*)value));
+            fprintf(os, "%f", *((real32*)value));
             break;
         }
 
         case REAL64:
         {
-            printf("%f", *((real64*)value));
+            fprintf(os, "%f", *((real64*)value));
             break;
         }
 
         case CHAR16:
         {
-            printf("%u", ((char16*)value)->code());
+            fprintf(os, "%u", ((char16*)value)->code());
             break;
         }
 
         case STRING:
         {
-            print_string(*((const char* const*)value));
+            fprint_string(os, *((const char* const*)value));
             break;
         }
 
         case DATETIME:
         {
-            printf("%s", *((const char* const*)value));
+            fprintf(os, "%s", *((const char* const*)value));
             break;
         }
     }
 }
 
-void print_array(Type type, const void* elements_, size_t num_elements)
+void print_scalar(Type type, const void* value)
+{
+    fprint_scalar(stdout, type, value);
+}
+
+void fprint_array(
+    FILE* os, 
+    Type type, 
+    const void* elements_, 
+    size_t num_elements)
 {
     const char* elements = (const char*)elements_;
     bool first = true;
@@ -222,11 +236,16 @@ void print_array(Type type, const void* elements_, size_t num_elements)
         if (first)
             first = false;
         else
-            printf(", ");
+            fprintf(os, ", ");
 
-        print_scalar(type, elements);
+        fprint_scalar(os, type, elements);
         elements += literal_type_size[type];
     }
+}
+
+void print_array(Type type, const void* elements_, size_t num_elements)
+{
+    fprint_array(stdout, type, elements_, num_elements);
 }
 
 int type_name_to_type(const char* name, Type& type)

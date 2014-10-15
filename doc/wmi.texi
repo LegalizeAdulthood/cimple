@@ -1,0 +1,221 @@
+\input texinfo @c -*-texinfo-*-
+@setfilename release-notes.info
+@settitle CIMPLE 1.2.0 Release Notes
+
+@setchapternewpage off
+
+@c =============================================================================
+@c
+@c Title Page:
+@c
+@c =============================================================================
+
+@titlepage
+@title CIMPLE 1.2.0 Release Notes
+@author Michael E. Brasher
+@author Jan 30, 2008
+Copyright @copyright{} 2008 by Michael Brasher
+@end titlepage
+
+@c =============================================================================
+@c
+@c Contents:
+@c
+@c =============================================================================
+
+@contents
+
+@c =============================================================================
+@c
+@c Chapter: Introduction
+@c
+@c =============================================================================
+
+@chapter Introduction
+
+This document introduces CIMPLE 1.2.0 and explains what has changed since 
+the last public release (CIMPLE 1.1.0). If you are unfamiliar with the
+major changes introduced by CIMPLE 1.1.0, you might want to review them
+by clicking here: @uref{http://www.cimple.org/downloads.html}.
+
+@noindent
+Chapter 1 describes what is new in this release. Chapter 2 discusses bugs fixed 
+by this release. Chapter 3 explains how to migrate providers developed with 
+earlier versions.
+
+@c =============================================================================
+@c
+@c Chapter: What's New?
+@c
+@c =============================================================================
+
+@chapter What's New?
+
+This chapter covers new capabilities introduced by CIMPLE 1.2.0.
+
+@c -----------------------------------------------------------------------------
+@section BREVITY
+
+BREVITY is a new client interface that employs concrete CIM elements (classes
+and methods). BREVITY is described in a presentation presented at the 2007
+Management Developers Conference. For more information, please see 
+@uref{http://www.cimple.org/CIMPLE-2007-MDC.pdf}.
+
+@c -----------------------------------------------------------------------------
+@section Platform Support
+
+CIMPLE 1.2.0 now supports the following platforms.
+
+@itemize @bullet
+@item Linux-X86 32-bit, GNU C++
+@item Linux-X86 64-bit, GNU C++
+@item Linux-IA64 64-bit, GNU C++
+@item Linux-S390 32-bit, GNU C++
+@item Linux-S390 64-bit, GNU C++
+@item Linux-PPC 32-bit, GNU C++
+@item Linux-PPC 64-bit, GNU C++
+@item Darwin-X86-32-bit, GNU C++
+@item Solaris-SPARC-64-bit, GNU C++
+@item VxWorks-XScale-32-bit, GNU C++
+@item Windows-X86-32-bit, MSVC
+@item Windows-X86-64-bit, MSVC
+@end itemize
+
+@noindent
+The following were added in this realease.
+
+@itemize
+@item Darwin-X86-32-bit, GNU C++
+@item Solaris-SPARC-64-bit, GNU C++
+@item VxWorks-XScale-32-bit, GNU C++
+@end itemize
+
+@c -----------------------------------------------------------------------------
+
+@section New @code{genmak} Tool
+
+The new @code{genmak} tool generates provider makefiles automatically (the
+CIMPLE build system is now installed by the install target). The following
+generates a makefile that builds a library named "xyz" from a set of sources.
+
+@example
+$ genmak xyz *.cpp
+@end example
+
+@noindent
+The @code{genproj} command (which runs genclass, genprov, and genmod) also
+runs genmak, when passed the @code{-m} option.
+
+@noindent
+Developers may continue to write their own makefiles if they prefer. This tool
+is simply a convenience that simplifies provider development.
+
+@section Logging Facility
+
+This version introduces a logging facility that may be used in the provider.
+Logging is only enabled when CIMPLE is configured with debug. For example:
+
+@example
+$ ./configure --enable-debug ...
+@end example
+
+@noindent
+To enable logging, you must create the following file.
+
+@example
+$HOME/.cimplerc
+@end example
+
+@noindent
+This file must contain a line that sets the logging level. For exmaple:
+
+@example
+LOG_LEVEL=DBG
+@end example
+
+@noindent
+@code{LOG_LEVEL} must be set to one of the following.
+
+@itemize @bullet
+@item @code{FATAL}
+@item @code{ERR}
+@item @code{WARN}
+@item @code{INFO}
+@item @code{DBG}
+@end itemize
+
+@noindent
+All log entries are written to:
+
+@example
+$HOME/.cimple/messages
+@end example
+
+@noindent
+Providers use the logging by calling the @code{log} function. For example:
+
+@example
+log(LL_DBG, __FILE__, __LINE__, "my name is %s; my age is %d", "John", 12);
+@end example
+
+@noindent
+There are five log levels:
+
+@itemize @bullet
+@item @code{LL_FATAL}
+@item @code{LL_ERR}
+@item @code{LL_WARN}
+@item @code{LL_INFO}
+@item @code{LL_DBG}
+@end itemize
+
+@noindent
+Shortcut macros are provided for each log level to simplify the invocation
+of @code{log}. For example:
+
+@example
+CIMPLE_DBG(("my name is %s; my age is %d", "John", 12));
+@end example
+
+@noindent
+In addition to provider generated log entries, the CIMPLE adapters themselves
+make log entries for warnings and errors during the normal operation of 
+CIMPLE. We recommend configuring with debug and watching for log messages
+during provider development.
+
+@c =============================================================================
+@c
+@c Chapter: Bug Fixes
+@c
+@c ============================================================================= 
+@chapter Bug Fixes
+
+This release fixes the bugs described below (all critical bugs were addressed 
+by earlier maintenance releases).
+
+@c -----------------------------------------------------------------------------
+@section CMPI Header Compliation Errors
+
+This release works around errors in the the CMPI headers released last year on 
+the OpenGroup site. CIMPLE now compiles with all known CMPI headers.
+
+@c =============================================================================
+@c
+@c Chapter: Migration Notes
+@c
+@c =============================================================================
+@chapter Migration Notes
+
+Always regenerate classes, providers, and modules when using a new version
+of CIMPLE. This is a trivial matter of running @code{genrpoj} as follows:
+
+@example
+$ genproj MODULE-NAME CLASS-1 CLASS-2 ... CLASS-N
+@end example
+
+@noindent
+This regenerates the classes and module and will patch your providers
+if necessary. This operation will not require any rework on your part. Just
+regnerate, clean, and remake.
+
+@bye

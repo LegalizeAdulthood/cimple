@@ -32,6 +32,7 @@ DIRS = \
     Employee/ci \
     Time \
     Time/InvokeTime \
+    Widget
 
 ifeq ($(ENABLE_EMBEDDED_INSTANCES_OPT),1)
     DIRS += Embedded Embedded/TestEmbedded All All/TestAll

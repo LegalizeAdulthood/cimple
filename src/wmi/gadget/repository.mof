@@ -1,0 +1,82 @@
+[dynamic, provider("GadgetProvider")]
+class Gadget
+{
+    [key]
+    string key;
+
+    boolean b;
+    uint8 u8;
+    sint8 s8;
+    uint8 u16;
+    sint8 s16;
+    uint8 u32;
+    sint8 s32;
+    uint8 u64;
+    sint8 s64;
+    real32 r32;
+    real64 r64;
+    datetime dt;
+
+    boolean ba[];
+    uint8 u8a[];
+    sint8 s8a[];
+    uint16 u16a[];
+    sint16 s16a[];
+    uint32 u32a[];
+    sint32 s32a[];
+    uint64 u64a[];
+    sint64 s64a[];
+    real32 r32a[];
+    real64 r64a[];
+    string sa[];
+    datetime dta[];
+};
+
+[dynamic, provider("GadgetProvider")]
+class Widget
+{
+    [Key] uint32 key;
+
+    [implemented, static]
+    boolean foo(
+        [in] uint32 arg1, 
+        [in] string arg2, 
+        [in(false), out] uint32 arg3,
+        [in(false), out] string arg4);
+
+    [implemented]
+    uint32 goo(
+        [in] Gadget REF gin,
+        [in(false), out] Gadget REF gout);
+
+    [implemented, static]
+    uint32 hoo(
+        [in] Gadget REF gin[],
+        [in(false), out] Gadget REF gout[]);
+};
+
+[dynamic, association, provider("GadgetProvider")]
+class Connector
+{
+    [Key] Gadget REF Left;
+    [Key] Widget REF Right;
+};
+
+[dynamic, indication, provider("GadgetProvider")]
+class Buzzer : __ExtrinsicEvent
+{
+    [Key] string key;
+    string message;
+
+    [implemented, static]
+    uint32 trigger();
+};
+
+[dynamic, provider("GadgetProvider")]
+class Upcall
+{
+    [Key] uint32 key;
+
+    [implemented]
+    uint32 upcalls();
+};

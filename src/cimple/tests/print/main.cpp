@@ -54,11 +54,10 @@ int main(int argc, char** argv)
     inst->other1 = OtherClass::create();
 
 #if 0
-    print(inst);
+    fprint(stderr, inst);
 #endif
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }
-

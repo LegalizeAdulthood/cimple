@@ -43,6 +43,9 @@ char* str_vprintf(const char* format, va_list ap);
 CIMPLE_CIMPLE_LINKAGE
 int iprintf(size_t level, const char* format, ...);
 
+CIMPLE_CIMPLE_LINKAGE
+int ifprintf(FILE* os, size_t level, const char* format, ...);
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_io_h */

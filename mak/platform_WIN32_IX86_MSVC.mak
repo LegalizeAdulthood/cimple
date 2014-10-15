@@ -92,7 +92,9 @@ AR = link
 ##
 ##==============================================================================
 
-FLAGS = -EHsc -GR -W3 -MD
+FLAGS = -EHsc -GR -W3
+
+## Removed -MD to get WMI DLLs built (/MD link with MSVCRT.LIB)
 
 ifdef ENABLE_DEBUG_OPT
   FLAGS += -Od -Zi
@@ -196,9 +198,9 @@ _full_libs = $(addsuffix .lib,$(1))
 ##
 ##==============================================================================
 
-_SYS_LIBS = ws2_32.lib advapi32.lib netapi32.lib 
+_SYS_LIBS = ws2_32.lib advapi32.lib netapi32.lib
 
-make_shlib = link $(LINK_FLAGS) \
+make_shlib = link $(LINK_FLAGS) $(EXTRA_LINK_FLAGS) \
     $(LDPATH) \
     -out:$(call shlib_target,$(1)) \
     -implib:$(call lib_target,$(1)) \

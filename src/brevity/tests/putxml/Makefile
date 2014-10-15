@@ -5,7 +5,7 @@ BINARY = putxml
 
 SOURCES = main.cpp
 
-LIBRARIES = brevity cimple expat
+include ../libraries.mak
 
 INCLUDES += -I../../.. -I../rep
 

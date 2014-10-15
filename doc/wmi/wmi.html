@@ -1,0 +1,213 @@
+<html lang="en">
+<head>
+<title>Using the WMI Adapter for CIMPLE</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="Using the WMI Adapter for CIMPLE">
+<meta name="generator" content="makeinfo 4.9">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">Using the WMI Adapter for CIMPLE</h1>
+   <div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_TOC0" href="#TOC0">1 Introduction</a>
+<li><a name="toc_TOC1" href="#TOC1">2 Installing CIMPLE for WMI</a>
+<li><a name="toc_TOC2" href="#TOC2">3 Building a trivial provider</a>
+<li><a name="toc_TOC3" href="#TOC3">4 Registering a WMI provider</a>
+<li><a name="toc_TOC4" href="#TOC4">5 Verifying a WMI provider</a>
+</li></ul>
+</div>
+
+
+
+<!-- ============================================================================= -->
+<!-- Chapter: Introduction -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC0"></a>1 Introduction</h2>
+
+<p>This document explains how to use the WMI adapter for CIMPLE. The WMI Adapter
+enables CIMPLE providers to work with the Windows Management Instrumentation
+(WMI) server. The following chapters explain how to:
+
+     <ul>
+<li>install CIMPLE for WMI
+<li>develop a trivial provider
+<li>register the WMI provider
+<li>verify the provider
+</ul>
+
+<p class="noindent">Except for a few minor details, provider developement for WMI is similar to
+developing providers for other servers. After reading this guide, you will
+be able to make existing CIMPLE providers work with WMI.
+
+<!-- ============================================================================= -->
+<!-- Chapter: What's New? -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC1"></a>2 Installing CIMPLE for WMI</h2>
+
+<p>To build CIMPLE and the WMI adapter, open a Windows terminal session
+(<code>cmd.exe</code>). Run the Visual Studio setup scripts. Verify that the Visual
+Studio C++ compiler is on your path (<code>cl.exe</code>). Obtain GNU make
+(<code>make.exe</code>) and add it to your path. GNU make for Windows is available
+from the "tools" link on the OpenPegasus home page
+(see <a href="http://openpegasus.org">http://openpegasus.org</a>).
+
+<p class="noindent">Unpack the CIMPLE distribution. From the root of the distribution type.
+
+<pre class="example">     C:\&gt; configure.bat --bindir=c:/windows/system32 --enable-wmi
+</pre>
+   <p class="noindent">Next build CIMPLE by typing:
+
+<pre class="example">     C:\&gt; make
+</pre>
+   <p class="noindent">Finally, install CIMPLE as follows:
+
+<pre class="example">     C:\&gt; make install
+</pre>
+   <p class="noindent">This installs the programs and DLLs under:
+
+<pre class="example">     C:\windows\system32
+</pre>
+   <p class="noindent">All other CIMPLE files are installed under:
+
+<pre class="example">     C:\cimple
+</pre>
+   <p class="noindent">You may uninstall CIMPLE later by typing:
+
+<pre class="example">     C:\&gt; make uninstall
+</pre>
+   <!-- ============================================================================= -->
+<!-- Chapter: Building a trivial provider -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC2"></a>3 Building a trivial provider</h2>
+
+<p>This chapter explains how to build a trivial provider. For the most part, it
+is like building a CIMPLE provider for other servers, but there are a few
+minor differences.
+
+<p class="noindent">We start with the following MOF definition (which we place in
+<code>repository.mof</code>).
+
+<pre class="example">     [dynamic, provider("Person")]
+     class Person
+     {
+         [Key] string SSN;
+         [Key] string FirstName;
+         [Key] string LastName;
+     
+         [implemented]
+         uint32 foo([in] string arg);
+     };
+</pre>
+   <p class="noindent">The <code>dynamic</code>, <code>provider</code>, and <code>implemented</code> qualifiers are
+unique to WMI. The string given by the <code>provider</code> qualifier must match
+the name of the provider DLL (without the extension).
+
+<p class="noindent">Next we use the <code>genprov</code> command to generate the classes, provider,
+and module.
+
+<pre class="example">     C:\&gt; genmod Person Person
+     Created Person.h
+     Created Person.cpp
+     created repository.h
+     Created repository.cpp
+     Created Person_Provider.h
+     Created Person_Provider.cpp
+     Created module.cpp
+     Created guid.h
+     Created register.mof
+</pre>
+   <p class="noindent">This generates the following files:
+
+     <ul>
+<li><code>Person.h</code> - the Person class declaration
+<li><code>Person.cpp</code> - the Person class definition
+<li><code>repository.h</code> - the class repository declarations
+<li><code>repository.cpp</code> - the class repository definitions
+<li><code>Person_Provider.h</code> - the Person provider declaration
+<li><code>Person_Provider.cpp</code> - the Person provider methods
+<li><code>module.cpp</code> - the WMI entry points. 
+<li><code>guid.h</code> - the GUID that uniquely identifies the provider COM server. 
+<li><code>register.mof</code> - the WMI registration instances. 
+</ul>
+
+<p class="noindent">Next we must create a <code>link.def</code> file shown below.
+
+<pre class="example">     LIBRARY "Person.dll"
+     
+     EXPORTS
+             DllMain PRIVATE
+             DllCanUnloadNow PRIVATE
+             DllGetClassObject PRIVATE
+             DllRegisterServer PRIVATE
+             DllUnregisterServer PRIVATE
+</pre>
+   <p class="noindent">Then we create the following Makefile.
+
+<pre class="example">     TOP=../../..
+     include $(TOP)/mak/config.mak
+     
+     LIBRARY = Person
+     SOURCES = Person.cpp Person_Provider.cpp module.cpp repository.cpp
+     LIBRARIES = cimplewmiadap cimple
+     EXTRA_LINK_FLAGS = /def:link.def
+     EXTRA_SYS_LIBS = ole32.lib oleaut32.lib
+     DEFINES += -DCIMPLE_WMI_MODULE
+     
+     include $(TOP)/mak/rules.mak
+</pre>
+   <p class="noindent">Finally, we build the provider as shown below.
+
+<pre class="example">     C:\&gt; make
+</pre>
+   <p class="noindent">This creates a DLL called <code>Person.dll</code>.
+
+<!-- ============================================================================= -->
+<!-- Chapter: Registering a WMI provider -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC3"></a>4 Registering a WMI provider</h2>
+
+<p class="noindent">This chapter shows how to register a WMI provider. First we must copy the
+provider DLL to the WMI providers directory, Usually located here:
+
+<pre class="example">     C:\windows\system32\wbem\
+</pre>
+   <p class="noindent">Second we use the WMI MOF compiler to add our classes to the CIM
+repository as shown below.
+
+<pre class="example">     mofcomp repository.mof
+</pre>
+   <p class="noindent">Third we register our provider as follows.
+
+<pre class="example">     mofcomp register.mof
+</pre>
+   <p class="noindent">Finally, we register our WMI provider as a COM server:
+
+<pre class="example">     regsvr32 /s C:\windows\system32\wbem\Person.dll
+</pre>
+   <!-- ============================================================================= -->
+<!-- Chapter: Verifying a WMI provider -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC4"></a>5 Verifying a WMI provider</h2>
+
+<p>We recommend using the WMI <code>wbemtest.exe</code> client program to verify
+providers you write with CIMPLE. You may also use many other WMI client tools. 
+For a full discussion of these, see the book "Developing WMI solutions: A
+Guide to Windows Management Instrumentation" by Craig Tunstall and Gwyn Cole.
+
+</body></html>
+

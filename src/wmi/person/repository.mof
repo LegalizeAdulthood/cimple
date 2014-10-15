@@ -1,0 +1,11 @@
+[dynamic, provider("Person")]
+class Person
+{
+    [Key] string SSN;
+    string FirstName;
+    string LastName;
+
+
+    [implemented, static]
+    uint32 foo([in] string arg);
+};

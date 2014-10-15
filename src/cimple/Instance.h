@@ -133,6 +133,9 @@ CIMPLE_CIMPLE_LINKAGE
 void print(const Instance* instance, bool keys_only = false);
 
 CIMPLE_CIMPLE_LINKAGE
+void fprint(FILE* os, const Instance* instance, bool keys_only = false);
+
+CIMPLE_CIMPLE_LINKAGE
 void __set_null_flags(
     const Instance* inst, bool include_keys, bool include_non_keys, uint8 flag);
 
@@ -375,13 +378,14 @@ CIMPLE_CIMPLE_LINKAGE
 void __create_refs(Instance* inst);
 
 CIMPLE_CIMPLE_LINKAGE
-void __print_scalar(uint32 type, const void* ptr);
+void __print_scalar(FILE* os, uint32 type, const void* ptr);
 
 CIMPLE_CIMPLE_LINKAGE
-void __print_array(uint32 type, const void* ptr, size_t depth);
+void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth);
 
 CIMPLE_CIMPLE_LINKAGE
 void __print_aux(
+    FILE* os,
     const Instance* inst, 
     const char* name, 
     size_t level, 

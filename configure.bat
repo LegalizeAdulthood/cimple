@@ -169,6 +169,11 @@ set prev=
     set found=1
   )
 
+  if "%1" == "--enable-wmi" (
+    set enable_wmi=1
+    set found=1
+  )
+
   if "%1" == "--enable-static" (
     set enable_static=1
     set found=1
@@ -284,6 +289,7 @@ echo with_openwbem=%with_openwbem%
 echo with_schema=%with_schema%
 echo with_namespace=%with_namespace%
 echo enable_debug=%enable_debug%
+echo enable_wmi=%enable_wmi%
 echo enable_static=%enable_static%
 echo enable_embedded_instances=%enable_embedded_instances%
 :skip
@@ -310,6 +316,10 @@ echo LIBBASE_OPT=lib>> config.options
 
 if not "%enable_debug%" == "" (
     echo WIN_ENABLE_DEBUG_OPT=TRUE>> config.options
+)
+
+if not "%enable_wmi%" == "" (
+    echo ENABLE_WMI_OPT=TRUE>> config.options
 )
 
 if not "%enable_static%" == "" (
@@ -347,6 +357,7 @@ set with_cmpi=
 set with_openwbem=
 set with_schema=
 set enable_debug=
+set enable_wmi=
 set enable_static=
 set enable_embedded_instances=
 

@@ -1,0 +1,5 @@
+[CIMPLE_Widget]
+  provider: CIMPLE_Widget_Provider
+  location: cimplewidget
+  type: instance method
+  namespace: root/cimv2

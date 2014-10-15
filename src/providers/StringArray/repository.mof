@@ -1,0 +1,5 @@
+class StringArrayClass
+{
+    [Key] uint32 Key;
+    string Colors[];
+};

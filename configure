@@ -198,7 +198,10 @@ if [ "$with_pegasus_env" = "1" ]; then
   with_pegasus=$PEGASUS_HOME
   with_pegasus_libdir=$PEGASUS_HOME/lib
   with_pegasus_includes=$PEGASUS_ROOT/src
-  with_cmpi=$PEGASUS_ROOT/src/Pegasus/Provider/CMPI
+
+  if [ -z "$with_cmpi" ]; then
+    with_cmpi=$PEGASUS_ROOT/src/Pegasus/Provider/CMPI
+  fi
 
 fi
 

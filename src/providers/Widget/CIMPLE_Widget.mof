@@ -1,0 +1,6 @@
+class CIMPLE_Widget
+{
+    [Key] uint32 Key;
+    string Color;
+    boolean Flag;
+};

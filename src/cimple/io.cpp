@@ -89,6 +89,18 @@ char* str_vprintf(const char* format, va_list ap)
     return 0;
 }
 
+int ifprintf(FILE* os, size_t level, const char* format, ...)
+{
+    fprintf(os, "%*s", int(level * 4), "");
+
+    va_list ap;
+    va_start(ap, format);
+    int r = vfprintf(os, format, ap);
+    va_end(ap);
+
+    return r;
+}
+
 int iprintf(size_t level, const char* format, ...)
 {
     printf("%*s", int(level * 4), "");

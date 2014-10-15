@@ -1,0 +1,19 @@
+Instance of __Win32Provider as $P
+{
+    Name = "Person";
+    ClsId = "{dbd80136-5fac-16c2-945a-b51028179379}";
+};
+
+instance of __InstanceProviderRegistration
+{
+    Provider = $P;
+    SupportsPut = TRUE;
+    SupportsGet = TRUE;
+    SupportsDelete = TRUE;
+    SupportsEnumeration = TRUE;
+    QuerySupportLevels = { "WQL:UnarySelect" };
+};
+instance of __MethodProviderRegistration
+{
+    Provider = $P;
+};

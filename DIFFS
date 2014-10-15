@@ -1,0 +1,4936 @@
+? bin
+? config.options
+? lib64
+? o
+? src/cimple/options.h
+Index: Makefile
+===================================================================
+RCS file: /home/cvs/cimple/Makefile,v
+retrieving revision 1.155
+retrieving revision 1.156
+diff -r1.155 -r1.156
+85,87c85,87
+< MAJOR=1
+< MINOR=2
+< REVISION=5
+---
+> MAJOR=2
+> MINOR=0
+> REVISION=0
+Index: schema/cim214/qualifiers.mof
+===================================================================
+RCS file: /home/cvs/cimple/schema/cim214/qualifiers.mof,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+243a244
+> // Added for Windows.
+246a248
+> // Added for Windows.
+248a251,259
+> 
+> // Added for Windows.
+> Qualifier Implemented : boolean = false, 
+>     Scope(method);
+> 
+> [indication]
+> class __ExtrinsicEvent
+> {
+> };
+Index: src/cimple/Instance.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Instance.cpp,v
+retrieving revision 1.138
+retrieving revision 1.144
+diff -r1.138 -r1.144
+1540c1540
+< void __print_scalar(uint32 type, const void* ptr)
+---
+> void __print_scalar(FILE* os, uint32 type, const void* ptr)
+1546c1546
+<             printf(*((boolean*)ptr) ?  "true" : "false");
+---
+>             fprintf(os, *((boolean*)ptr) ?  "true" : "false");
+1552c1552
+<             printf("%u", *((uint8*)ptr));
+---
+>             fprintf(os, "%u", *((uint8*)ptr));
+1558c1558
+<             printf("%d", *((sint8*)ptr));
+---
+>             fprintf(os, "%d", *((sint8*)ptr));
+1564c1564
+<             printf("%u", *((uint16*)ptr));
+---
+>             fprintf(os, "%u", *((uint16*)ptr));
+1570c1570
+<             printf("%d", *((sint16*)ptr));
+---
+>             fprintf(os, "%d", *((sint16*)ptr));
+1576c1576
+<             printf("%u", *((uint32*)ptr));
+---
+>             fprintf(os, "%u", *((uint32*)ptr));
+1582c1582
+<             printf("%d", *((sint32*)ptr));
+---
+>             fprintf(os, "%d", *((sint32*)ptr));
+1588c1588
+<             printf(CIMPLE_LLU, *((uint64*)ptr));
+---
+>             fprintf(os, CIMPLE_LLU, *((uint64*)ptr));
+1594c1594
+<             printf(CIMPLE_LLD, *((sint64*)ptr));
+---
+>             fprintf(os, CIMPLE_LLD, *((sint64*)ptr));
+1600c1600
+<             printf("%f", *((real32*)ptr));
+---
+>             fprintf(os, "%f", *((real32*)ptr));
+1606c1606
+<             printf("%f", *((real64*)ptr));
+---
+>             fprintf(os, "%f", *((real64*)ptr));
+1615c1615
+<                 printf("'%c'", c);
+---
+>                 fprintf(os, "'%c'", c);
+1617c1617
+<                 printf("0x%04X", c);
+---
+>                 fprintf(os, "0x%04X", c);
+1625c1625
+<             printf("\"%s\"", buffer);
+---
+>             fprintf(os, "\"%s\"", buffer);
+1631c1631
+<             print_string(((String*)ptr)->c_str());
+---
+>             fprint_string(os, ((String*)ptr)->c_str());
+1637c1637
+< void __print_array(uint32 type, const void* ptr, size_t depth)
+---
+> void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth)
+1639c1639
+<     printf("{ ");
+---
+>     fprintf(os, "{ ");
+1647c1647
+<         __print_scalar(type, data);
+---
+>         __print_scalar(os, type, data);
+1650c1650
+<             putchar(',');
+---
+>             fputc(',', os);
+1652c1652
+<         putchar(' ');
+---
+>         fputc(' ', os);
+1656c1656
+<     printf("}");
+---
+>     fprintf(os, "}");
+1660c1660,1663
+<     const Meta_Property* mp, const void* prop, size_t level)
+---
+>     FILE* os,
+>     const Meta_Property* mp, 
+>     const void* prop, 
+>     size_t level)
+1662c1665
+<     iprintf(level, "%s %s", type_name[mp->type], mp->name);
+---
+>     ifprintf(os, level, "%s %s", type_name[mp->type], mp->name);
+1665c1668
+<         printf("[]");
+---
+>         fprintf(os, "[]");
+1667c1670
+<     printf(" = ");
+---
+>     fprintf(os, " = ");
+1670c1673
+<         printf("NULL");
+---
+>         fprintf(os, "NULL");
+1672c1675
+<         __print_scalar(mp->type, prop);
+---
+>         __print_scalar(os, mp->type, prop);
+1674c1677
+<         __print_array(mp->type, prop, 0);
+---
+>         __print_array(os, mp->type, prop, 0);
+1676c1679
+<     printf(";\n");
+---
+>     fprintf(os, ";\n");
+1680c1683,1687
+<     const Instance* inst, const char* name, size_t level, bool keys_only)
+---
+>     FILE* os,
+>     const Instance* inst, 
+>     const char* name, 
+>     size_t level, 
+>     bool keys_only)
+1688c1695
+<         iprintf(level, "%s %s =\n", inst->meta_class->name, name);
+---
+>         ifprintf(os, level, "%s %s =\n", inst->meta_class->name, name);
+1690c1697
+<         iprintf(level, "%s\n", inst->meta_class->name);
+---
+>         ifprintf(os, level, "%s\n", inst->meta_class->name);
+1692c1699
+<     iprintf(level, "{\n");
+---
+>     ifprintf(os, level, "{\n");
+1696c1703
+<         iprintf(level, 
+---
+>         ifprintf(os, level, 
+1723c1730
+<             _print_property(mp, prop, level);
+---
+>             _print_property(os, mp, prop, level);
+1734c1741,1742
+<                 iprintf(level, "%s %s[] =", mr->meta_class->name, mr->name);
+---
+>                 ifprintf(
+>                     os, level, "%s %s[] =", mr->meta_class->name, mr->name);
+1738c1746
+<                     iprintf(level, " NULL;\n");
+---
+>                     ifprintf(os, level, " NULL;\n");
+1742,1743c1750,1751
+<                     printf("\n");
+<                     iprintf(level, "{\n");
+---
+>                     fprintf(os, "\n");
+>                     ifprintf(os, level, "{\n");
+1751c1759
+<                             __print_aux(tmp, 0, level, false);
+---
+>                             __print_aux(os, tmp, 0, level, false);
+1753c1761
+<                             iprintf(level, "NULL\n");
+---
+>                             ifprintf(os, level, "NULL\n");
+1757c1765
+<                     iprintf(level, "};\n");
+---
+>                     ifprintf(os, level, "};\n");
+1765c1773
+<                     __print_aux(tmp, mr->name, level, keys_only);
+---
+>                     __print_aux(os, tmp, mr->name, level, keys_only);
+1767c1775
+<                     iprintf(level, "%s %s = NULL;\n", 
+---
+>                     ifprintf(os, level, "%s %s = NULL;\n", 
+1775c1783,1788
+<     iprintf(level, "}\n");
+---
+>     ifprintf(os, level, "}\n");
+> }
+> 
+> void fprint(FILE* os, const Instance* inst, bool keys_only)
+> {
+>     __print_aux(os, inst, 0, 0, keys_only);
+1780c1793
+<     __print_aux(inst, 0, 0, keys_only);
+---
+>     fprint(stdout, inst, keys_only);
+2257d2269
+< 
+Index: src/cimple/Instance.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Instance.h,v
+retrieving revision 1.97
+retrieving revision 1.100
+diff -r1.97 -r1.100
+135a136,138
+> void fprint(FILE* os, const Instance* instance, bool keys_only = false);
+> 
+> CIMPLE_CIMPLE_LINKAGE
+378c381
+< void __print_scalar(uint32 type, const void* ptr);
+---
+> void __print_scalar(FILE* os, uint32 type, const void* ptr);
+381c384
+< void __print_array(uint32 type, const void* ptr, size_t depth);
+---
+> void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth);
+384a388
+>     FILE* os,
+Index: src/cimple/Type.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Type.cpp,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -r1.19 -r1.20
+87c87
+< void print_string(const char* str)
+---
+> void fprint_string(FILE* os, const char* str)
+89c89
+<     printf("\"");
+---
+>     fprintf(os, "\"");
+98c98
+<                 printf("\\n");
+---
+>                 fprintf(os, "\\n");
+102c102
+<                 printf("\\r");
+---
+>                 fprintf(os, "\\r");
+106c106
+<                 printf("\\t");
+---
+>                 fprintf(os, "\\t");
+110c110
+<                 printf("\\f");
+---
+>                 fprintf(os, "\\f");
+114c114
+<                 printf("\\\"");
+---
+>                 fprintf(os, "\\\"");
+118c118
+<                 printf("%c", c);
+---
+>                 fprintf(os, "%c", c);
+122c122
+<     printf("\"");
+---
+>     fprintf(os, "\"");
+125c125,130
+< void print_scalar(Type type, const void* value)
+---
+> void print_string(const char* str)
+> {
+>     fprint_string(stdout, str);
+> }
+> 
+> void fprint_scalar(FILE* os, Type type, const void* value)
+131c136
+<             printf("%s", *((boolean*)value) ? "true" : "false");
+---
+>             fprintf(os, "%s", *((boolean*)value) ? "true" : "false");
+137c142
+<             printf("%u", *((uint8*)value));
+---
+>             fprintf(os, "%u", *((uint8*)value));
+143c148
+<             printf("%d", *((sint8*)value));
+---
+>             fprintf(os, "%d", *((sint8*)value));
+149c154
+<             printf("%u", *((uint16*)value));
+---
+>             fprintf(os, "%u", *((uint16*)value));
+155c160
+<             printf("%d", *((sint16*)value));
+---
+>             fprintf(os, "%d", *((sint16*)value));
+161c166
+<             printf("%u", *((uint32*)value));
+---
+>             fprintf(os, "%u", *((uint32*)value));
+167c172
+<             printf("%d", *((sint32*)value));
+---
+>             fprintf(os, "%d", *((sint32*)value));
+173c178
+<             printf(CIMPLE_LLU, *((uint64*)value));
+---
+>             fprintf(os, CIMPLE_LLU, *((uint64*)value));
+179c184
+<             printf(CIMPLE_LLD, *((sint64*)value));
+---
+>             fprintf(os, CIMPLE_LLD, *((sint64*)value));
+185c190
+<             printf("%f", *((real32*)value));
+---
+>             fprintf(os, "%f", *((real32*)value));
+191c196
+<             printf("%f", *((real64*)value));
+---
+>             fprintf(os, "%f", *((real64*)value));
+197c202
+<             printf("%u", ((char16*)value)->code());
+---
+>             fprintf(os, "%u", ((char16*)value)->code());
+203c208
+<             print_string(*((const char* const*)value));
+---
+>             fprint_string(os, *((const char* const*)value));
+209c214
+<             printf("%s", *((const char* const*)value));
+---
+>             fprintf(os, "%s", *((const char* const*)value));
+215c220,229
+< void print_array(Type type, const void* elements_, size_t num_elements)
+---
+> void print_scalar(Type type, const void* value)
+> {
+>     fprint_scalar(stdout, type, value);
+> }
+> 
+> void fprint_array(
+>     FILE* os, 
+>     Type type, 
+>     const void* elements_, 
+>     size_t num_elements)
+225c239
+<             printf(", ");
+---
+>             fprintf(os, ", ");
+227c241
+<         print_scalar(type, elements);
+---
+>         fprint_scalar(os, type, elements);
+231a246,250
+> void print_array(Type type, const void* elements_, size_t num_elements)
+> {
+>     fprint_array(stdout, type, elements_, num_elements);
+> }
+> 
+Index: src/cimple/Type.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Type.h,v
+retrieving revision 1.24
+retrieving revision 1.25
+diff -r1.24 -r1.25
+98a99,104
+> CIMPLE_CIMPLE_LINKAGE 
+> int type_name_to_type(const char* name, Type& type);
+> 
+> CIMPLE_CIMPLE_LINKAGE
+> void fprint_scalar(FILE* os, Type type, const void* value);
+> 
+102a109,112
+> void fprint_array(
+>     FILE* os, Type type, const void* elements, size_t num_elements);
+> 
+> CIMPLE_CIMPLE_LINKAGE
+105,106c115
+< CIMPLE_CIMPLE_LINKAGE 
+< int type_name_to_type(const char* name, Type& type);
+---
+> extern void fprint_string(FILE* os, const char* str);
+Index: src/cimple/Value.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Value.cpp,v
+retrieving revision 1.10
+retrieving revision 1.11
+diff -r1.10 -r1.11
+749c749
+< void Value::print() const
+---
+> void Value::fprint(FILE* os) const
+751,752c751,752
+<     printf("Value\n");
+<     printf("{\n");
+---
+>     fprintf(os, "Value\n");
+>     fprintf(os, "{\n");
+754,756c754,756
+<     printf("    type=%s\n", _type_name(_type));
+<     printf("    null=%s\n", _null ? "true" : "false");
+<     printf("    value=");
+---
+>     fprintf(os, "    type=%s\n", _type_name(_type));
+>     fprintf(os, "    null=%s\n", _null ? "true" : "false");
+>     fprintf(os, "    value=");
+761c761
+<             putchar('\n');
+---
+>             fputc('\n', os);
+765,766c765,766
+<             __print_scalar(_type, &_boolean);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_boolean);
+>             fputc('\n', os);
+770,771c770,771
+<             __print_scalar(_type, &_uint8);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint8);
+>             fputc('\n', os);
+775,776c775,776
+<             __print_scalar(_type, &_sint8);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint8);
+>             fputc('\n', os);
+780,781c780,781
+<             __print_scalar(_type, &_uint16);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint16);
+>             fputc('\n', os);
+785,786c785,786
+<             __print_scalar(_type, &_sint16);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint16);
+>             fputc('\n', os);
+790,791c790,791
+<             __print_scalar(_type, &_uint32);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint32);
+>             fputc('\n', os);
+795,796c795,796
+<             __print_scalar(_type, &_sint32);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint32);
+>             fputc('\n', os);
+800,801c800,801
+<             __print_scalar(_type, &_uint64);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_uint64);
+>             fputc('\n', os);
+805,806c805,806
+<             __print_scalar(_type, &_sint64);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_sint64);
+>             fputc('\n', os);
+810,811c810,811
+<             __print_scalar(_type, &_real32);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_real32);
+>             fputc('\n', os);
+815,816c815,816
+<             __print_scalar(_type, &_real64);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_real64);
+>             fputc('\n', os);
+820,821c820,821
+<             __print_scalar(_type, &_char16);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_char16);
+>             fputc('\n', os);
+825,826c825,826
+<             __print_scalar(_type, &_string);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_string);
+>             fputc('\n', os);
+830,831c830,831
+<             __print_scalar(_type, &_datetime);
+<             putchar('\n');
+---
+>             __print_scalar(os, _type, &_datetime);
+>             fputc('\n', os);
+839,840c839,840
+<             __print_array(_type & 0x7F, &_boolean, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_boolean, 1);
+>             fputc('\n', os);
+844,845c844,845
+<             __print_array(_type & 0x7F, &_uint8, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint8, 1);
+>             fputc('\n', os);
+849,850c849,850
+<             __print_array(_type & 0x7F, &_sint8, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint8, 1);
+>             fputc('\n', os);
+854,855c854,855
+<             __print_array(_type & 0x7F, &_uint16, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint16, 1);
+>             fputc('\n', os);
+859,860c859,860
+<             __print_array(_type & 0x7F, &_sint16, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint16, 1);
+>             fputc('\n', os);
+864,865c864,865
+<             __print_array(_type & 0x7F, &_uint32, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint32, 1);
+>             fputc('\n', os);
+869,870c869,870
+<             __print_array(_type & 0x7F, &_sint32, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint32, 1);
+>             fputc('\n', os);
+874,875c874,875
+<             __print_array(_type & 0x7F, &_uint64, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_uint64, 1);
+>             fputc('\n', os);
+879,880c879,880
+<             __print_array(_type & 0x7F, &_sint64, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_sint64, 1);
+>             fputc('\n', os);
+884,885c884,885
+<             __print_array(_type & 0x7F, &_real32, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_real32, 1);
+>             fputc('\n', os);
+889,890c889,890
+<             __print_array(_type & 0x7F, &_real64, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_real64, 1);
+>             fputc('\n', os);
+894,895c894,895
+<             __print_array(_type & 0x7F, &_char16, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_char16, 1);
+>             fputc('\n', os);
+899,900c899,900
+<             __print_array(_type & 0x7F, &_string, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_string, 1);
+>             fputc('\n', os);
+904,905c904,905
+<             __print_array(_type & 0x7F, &_datetime, 1);
+<             putchar('\n');
+---
+>             __print_array(os, _type & 0x7F, &_datetime, 1);
+>             fputc('\n', os);
+910c910
+<             printf("\n    {\n");
+---
+>             fprintf(os, "\n    {\n");
+915c915
+<                 __print_aux(arr[i], 0, 2, false);
+---
+>                 __print_aux(os, arr[i], 0, 2, false);
+917c917
+<             printf("    }\n");
+---
+>             fprintf(os, "    }\n");
+925c925,930
+<     printf("}\n");
+---
+>     fprintf(os, "}\n");
+> }
+> 
+> void Value::print() const
+> {
+>     fprint(stdout);
+Index: src/cimple/Value.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/Value.h,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -r1.11 -r1.12
+161a162,163
+>     void fprint(FILE* os) const;
+> 
+Index: src/cimple/config.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/config.h,v
+retrieving revision 1.107
+retrieving revision 1.108
+diff -r1.107 -r1.108
+358,360c358,360
+< #define CIMPLE_MAJOR 1
+< #define CIMPLE_MINOR 2
+< #define CIMPLE_REVISION 5
+---
+> #define CIMPLE_MAJOR 2
+> #define CIMPLE_MINOR 0
+> #define CIMPLE_REVISION 0
+Index: src/cimple/io.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/io.cpp,v
+retrieving revision 1.8
+retrieving revision 1.9
+diff -r1.8 -r1.9
+91a92,103
+> int ifprintf(FILE* os, size_t level, const char* format, ...)
+> {
+>     fprintf(os, "%*s", int(level * 4), "");
+> 
+>     va_list ap;
+>     va_start(ap, format);
+>     int r = vfprintf(os, format, ap);
+>     va_end(ap);
+> 
+>     return r;
+> }
+> 
+Index: src/cimple/io.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/io.h,v
+retrieving revision 1.2
+retrieving revision 1.3
+diff -r1.2 -r1.3
+45a46,48
+> CIMPLE_CIMPLE_LINKAGE
+> int ifprintf(FILE* os, size_t level, const char* format, ...);
+> 
+Index: src/cimple/platform_WIN32_IX86_MSVC.h
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/platform_WIN32_IX86_MSVC.h,v
+retrieving revision 1.18
+retrieving revision 1.19
+diff -r1.18 -r1.19
+44a45,47
+> // 'sprintf' name was marked as #pragma deprecated
+> #pragma warning ( disable : 4995 )
+> 
+Index: src/cimple/tests/print/main.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/cimple/tests/print/main.cpp,v
+retrieving revision 1.5
+retrieving revision 1.7
+diff -r1.5 -r1.7
+57c57
+<     print(inst);
+---
+>     fprint(stderr, inst);
+64d63
+< 
+Index: src/posix/pthread.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/posix/pthread.cpp,v
+retrieving revision 1.19
+retrieving revision 1.20
+diff -r1.19 -r1.20
+118a119,124
+>     if (rep->count == 0)
+>     {
+>         return -1;
+>     }
+> 
+> #if 0
+120a127
+> #endif
+Index: src/providers/Upcall/Upcall_Provider.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/providers/Upcall/Upcall_Provider.cpp,v
+retrieving revision 1.11
+retrieving revision 1.12
+diff -r1.11 -r1.12
+17a18,20
+> 
+>         CIM_ComputerSystem* ccs = cast<CIM_ComputerSystem*>(inst.ptr());
+>         print(ccs);
+Index: src/tools/genmod/main.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/tools/genmod/main.cpp,v
+retrieving revision 1.14
+retrieving revision 1.17
+diff -r1.14 -r1.17
+138a139,234
+> #if defined(CIMPLE_WINDOWS)
+> 
+> static void gen_guid(const char* module_name, const cimple::UUID& uuid)
+> {
+>     const char* fn = "guid.h";
+> 
+>     if (exists(fn))
+>     {
+>         printf("Skipped %s (already exists)\n", fn);
+>         return;
+>     }
+> 
+>     FILE* os = fopen(fn, "w");
+> 
+>     if (!os)
+>         err("failed to create \"%s\"", fn);
+> 
+>     const unsigned char *p = uuid.data;
+>     fprintf(os, "// {%02x%02x%02x%02x-"
+>         "%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x}\n",
+>         p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+>         p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+> 
+>     fprintf(os, "DEFINE_GUID(\n");
+>     fprintf(os, "  CLSID_%s_Module,\n", module_name);
+>     fprintf(os, "  0x%02x%02x%02x%02x,\n", p[0], p[1], p[2], p[3]);
+>     fprintf(os, "  0x%02x%02x,\n", p[4], p[5]);
+>     fprintf(os, "  0x%02x%02x,\n", p[6], p[7]);
+>     fprintf(os, "  0x%02x,\n", p[8]);
+>     fprintf(os, "  0x%02x,\n", p[9]);
+>     fprintf(os, "  0x%02x,\n", p[10]);
+>     fprintf(os, "  0x%02x,\n", p[11]);
+>     fprintf(os, "  0x%02x,\n", p[12]);
+>     fprintf(os, "  0x%02x,\n", p[13]);
+>     fprintf(os, "  0x%02x,\n", p[14]);
+>     fprintf(os, "  0x%02x);\n", p[15]);
+> 
+>     printf("Created %s\n", fn);
+> }
+> 
+> static void gen_register(const char* module_name, const cimple::UUID& uuid)
+> {
+>     // Open file:
+> 
+>     const char* fn = "register.mof";
+> 
+>     if (exists(fn))
+>     {
+>         printf("Skipped %s (already exists)\n", fn);
+>         return;
+>     }
+> 
+>     FILE* os = fopen(fn, "w");
+> 
+>     if (!os)
+>         err("failed to create \"%s\"", fn);
+> 
+>     // Format guid:
+> 
+>     const unsigned char *p = uuid.data;
+>     char buf[1024];
+>     sprintf(buf, "%02x%02x%02x%02x-"
+>         "%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+>         p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+>         p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+> 
+>     // Create register.mof:
+> 
+>     static const char REGISTER_FMT[] =
+>         "Instance of __Win32Provider as $P\n"
+>         "{\n"
+>         "    Name = \"%s\";\n"
+>         "    ClsId = \"{%s}\";\n"
+>         "};\n"
+>         "\n"
+>         "instance of __InstanceProviderRegistration\n"
+>         "{\n"
+>         "    Provider = $P;\n"
+>         "    SupportsPut = TRUE;\n"
+>         "    SupportsGet = TRUE;\n"
+>         "    SupportsDelete = TRUE;\n"
+>         "    SupportsEnumeration = TRUE;\n"
+>         "    QuerySupportLevels = { \"WQL:UnarySelect\" };\n"
+>         "};\n"
+>         "instance of __MethodProviderRegistration\n"
+>         "{\n"
+>         "    Provider = $P;\n"
+>         "};\n";
+> 
+>     fprintf(os, REGISTER_FMT, module_name, buf);
+> 
+>     printf("Created %s\n", fn);
+> }
+> 
+> #endif /* defined(CIMPLE_WINDOWS) */
+> 
+285,309d380
+< 
+< #if 0
+<         cimple::UUID uuid;
+<         cimple::create_uuid(uuid);
+<         const unsigned char *p = uuid.data;
+<         fprintf(os, "  // {%02x%02x%02x%02x-"
+<             "%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x}\n",
+<             p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+<             p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+< 
+<         fprintf(os, "  DEFINE_GUID(\n");
+<         fprintf(os, "    CLSID_%s_Module,\n", module_name);
+<         fprintf(os, "    0x%02x%02x%02x%02x,\n", p[0], p[1], p[2], p[3]);
+<         fprintf(os, "    0x%02x%02x,\n", p[4], p[5]);
+<         fprintf(os, "    0x%02x%02x,\n", p[6], p[7]);
+<         fprintf(os, "    0x%02x,\n", p[8]);
+<         fprintf(os, "    0x%02x,\n", p[9]);
+<         fprintf(os, "    0x%02x,\n", p[10]);
+<         fprintf(os, "    0x%02x,\n", p[11]);
+<         fprintf(os, "    0x%02x,\n", p[12]);
+<         fprintf(os, "    0x%02x,\n", p[13]);
+<         fprintf(os, "    0x%02x,\n", p[14]);
+<         fprintf(os, "    0x%02x);\n", p[15]);
+< #endif
+< 
+311d381
+< 
+414a485,498
+>     // Generate guid.h file.
+> 
+> #if defined(CIMPLE_WINDOWS)
+>     {
+>         cimple::UUID uuid;
+>         cimple::create_uuid(uuid);
+> 
+>         gen_guid(argv[0], uuid);
+>         gen_register(argv[0], uuid);
+>     }
+> #endif /* defined(CIMPLE_WINDOWS) */
+> 
+>     // Generate register.mof.
+> 
+417d500
+< 
+Index: src/wmi/adapter/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/Makefile,v
+retrieving revision 1.8
+retrieving revision 1.12
+diff -r1.8 -r1.12
+10a11
+>     WMI_Ref.cpp \
+13a15,16
+>     WMI_Thread_Context.cpp \
+>     WMI_Converter.cpp
+31a35,40
+> 
+> inst:
+> 	$(MAKE) stop
+> 	$(MAKE) install
+> 	$(MAKE) start
+> 	- del c:\WMI_Adapter.log
+Index: src/wmi/adapter/SafeArr.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/SafeArr.h,v
+retrieving revision 1.2
+retrieving revision 1.5
+diff -r1.2 -r1.5
+32a33
+> #include "log.h"
+40c41
+<     SafeArr(VARTYPE type, long size) : _size(0)
+---
+>     SafeArr(VARTYPE type, long size)
+47a49,52
+>     SafeArr(SAFEARRAY* rep) : _rep(rep)
+>     {
+>     }
+> 
+54,58d58
+<     long size() const 
+<     { 
+<         return _size; 
+<     }
+< 
+65a66,76
+>     bool size(long& x)
+>     {
+>         long tmp;
+> 
+>         if (SafeArrayGetUBound(_rep, 1, &tmp) != S_OK)
+>             return false;
+> 
+>         x = tmp + 1;
+>         return true;
+>     }
+> 
+70a82,86
+>     bool get(long index, void* data)
+>     {
+>         return SafeArrayGetElement(_rep, &index, data) == S_OK;
+>     }
+> 
+73d88
+<     long _size;
+78d92
+< 
+Index: src/wmi/adapter/WMI_Adapter.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/WMI_Adapter.cpp,v
+retrieving revision 1.9
+retrieving revision 1.31
+diff -r1.9 -r1.31
+30a31
+> #include <cctype>
+36a38,39
+> #include "WMI_Converter.h"
+> #include "WMI_Thread_Context.h"
+37a41
+> #include "Variant.h"
+38a43,44
+> #include "WMI_Ref.h"
+> #include "BString.h"
+44,45c50,51
+<         (HANDLER)->SetStatus(0, __hr__, NULL, NULL); \
+<         return hr; \
+---
+>         (HANDLER)->SetStatus(WBEM_STATUS_COMPLETE, __hr__, NULL, NULL); \
+>         return __hr__; \
+56a63,76
+> class Impersonator
+> {
+> public:
+> 
+>     Impersonator()
+>     {
+>         CoImpersonateClient();
+>     }
+> 
+>     ~Impersonator()
+>     {
+>         CoRevertToSelf();
+>     }
+> };
+123c143
+<     r = RegSetValueEx(key2, NULL, 0, REG_SZ, (BYTE *)module, strlen(module)+1);
+---
+>     r = RegSetValueEx(key2, NULL, 0, REG_SZ, (BYTE*)module, strlen(module)+1);
+189,198c209
+< typedef struct 
+< {
+<    WCHAR*  key;
+<    long value;
+< }
+< InstDef;
+< 
+< #if 0
+< 
+< static char* _StrClone(const BSTR bstr)
+---
+> static int _get_classname(IWbemClassObject* co, String& classname)
+200,239c211
+<     UINT blen = SysStringLen(bstr);
+<     UINT alen = SysStringByteLen(bstr);
+<     char* astr = new char[alen + 1];
+< 
+<     if (!astr)
+<         return 0;
+< 
+<     memset(astr, 0, alen + 1);
+<     WideCharToMultiByte(CP_ACP, 0, bstr, blen, astr, alen, NULL, NULL);
+< 
+<     return astr;
+< }
+< 
+< 
+< static bool _equal(BSTR bstr, const char* str)
+< {
+<     char* tmp = _StrClone(bstr);
+< 
+<     if (!tmp)
+<         return false;
+< 
+<     int r = strcmp(tmp, str);
+<     delete [] tmp;
+<     return r == 0;
+< }
+< 
+< #endif
+< 
+< inline bool _equal(BSTR s1, BSTR s2)
+< {
+<     return CompareStringW(LOCALE_USER_DEFAULT, NORM_IGNORECASE,
+<         s1, wcslen(s1), s2, wcslen(s2)) == CSTR_EQUAL;
+< }
+< 
+< static DWORD _impersonateLevel()
+< {
+<     DWORD result = RPC_C_IMP_LEVEL_ANONYMOUS;
+<     HANDLE thr = NULL;
+< 
+<     BOOL status = OpenThreadToken(GetCurrentThread(), TOKEN_QUERY, TRUE, &thr);
+---
+>     classname.clear();
+241,247c213,215
+<     if (status)
+<     {
+<         SECURITY_IMPERSONATION_LEVEL level = SecurityAnonymous;
+<         DWORD ret = 0;
+< 
+<         status = GetTokenInformation(thr, TokenImpersonationLevel,
+<             &level, sizeof(SECURITY_IMPERSONATION_LEVEL), &ret);
+---
+>     BString nm(L"__CLASS", WSTR_TAG);
+>     VARIANT v;
+>     HRESULT hr = co->Get(nm.rep(), 0, &v, 0, 0);
+249,277c217
+<         CloseHandle(thr);
+< 
+<         if (status == FALSE)
+<         {
+<             result = RPC_C_IMP_LEVEL_ANONYMOUS;
+<         }
+<         else
+<         {
+<             switch (level)
+<             {
+<                 case SecurityAnonymous:
+<                     result = RPC_C_IMP_LEVEL_ANONYMOUS;
+<                     break;
+<                 case SecurityIdentification:
+<                     result = RPC_C_IMP_LEVEL_IDENTIFY;
+<                     break;
+<                 case SecurityImpersonation:
+<                     result = RPC_C_IMP_LEVEL_IMPERSONATE;
+<                     break;
+<                 case SecurityDelegation:
+<                     result = RPC_C_IMP_LEVEL_DELEGATE;
+<                     break;
+<                 default:
+<                     result = RPC_C_IMP_LEVEL_ANONYMOUS;
+<                     break;
+<             }
+<         }
+<     }
+<     else
+---
+>     if (!SUCCEEDED(hr) || V_VT(&v) != VT_BSTR)
+279,286c219,220
+<         ULONG error = GetLastError();
+< 
+<         if (error == ERROR_NO_IMPERSONATION_TOKEN || error == ERROR_NO_TOKEN)
+<             result = RPC_C_IMP_LEVEL_DELEGATE;
+<         else if (error == ERROR_CANT_OPEN_ANONYMOUS)
+<             result = RPC_C_IMP_LEVEL_ANONYMOUS;
+<         else
+<             result = RPC_C_IMP_LEVEL_ANONYMOUS;
+---
+>         VariantClear(&v);
+>         return -1;
+289c223,225
+<     return result;
+---
+>     classname = bstr2str(V_BSTR(&v));
+>     VariantClear(&v);
+>     return 0;
+306c242
+<     IWbemContext* context) : _refs(0), _reg(reg), _name_space(0)
+---
+>     IWbemContext* context) : _refs(0), _reg(reg), _services(0)
+307a244,245
+>     WMI_Thread_Context_Pusher pusher;
+> 
+319a258,259
+>     WMI_Thread_Context_Pusher pusher;
+> 
+326,327c266,267
+<     if (_name_space)
+<         _name_space->Release();
+---
+>     if (_services)
+>         _services->Release();
+339a280,291
+>     else if (riid == IID_IWbemEventProviderQuerySink)
+>     {
+>        *ptr = (IWbemEventProviderQuerySink*)this;
+>        AddRef();
+>        return NOERROR;
+>     }
+>     else if (riid == IID_IWbemEventProvider)
+>     {
+>        *ptr = (IWbemEventProvider*)this;
+>        AddRef();
+>        return NOERROR;
+>     }
+351d302
+< 
+370c321
+<     LPWSTR name_spaceName, 
+---
+>     LPWSTR nameSpace,
+372c323
+<     IWbemServices* name_space, 
+---
+>     IWbemServices* services, 
+376c327
+<     if (!name_space)
+---
+>     if (!services)
+382,383c333,334
+<         _name_space = name_space;
+<         _name_space->AddRef();
+---
+>         _services = services;
+>         _services->AddRef();
+394c345
+<     IWbemServices* name_space;
+---
+>     IWbemServices* services;
+409c360,363
+<     // Get class object from namespace:
+---
+>     IWbemClassObject* wi = 0;
+>     WMI_Ref<IWbemClassObject> wi_(wi);
+>     
+>     wi = WMI_Converter::to_wmi_instance(data->services, data->context, inst);
+411c365,368
+<     IWbemClassObject* classObject = 0;
+---
+>     if (wi)
+>     {
+>         data->handler->Indicate(1, &wi);
+>     }
+413,417c370,371
+<     SCODE sc = data->name_space->GetObject(
+<         data->class_name, 0, 
+<         data->context, 
+<         &classObject, 
+<         0);
+---
+>     return true;
+> }
+419,420c373,379
+<     if (sc != S_OK)
+<         return false;
+---
+> HRESULT WMI_Adapter::_create_instance(
+>     IWbemClassObject __RPC_FAR* instance,
+>     long flags,
+>     IWbemContext __RPC_FAR* context,
+>     IWbemObjectSink __RPC_FAR* handler)
+> {
+>     Impersonator impersonator;
+422c381
+<     // Create new instance:
+---
+>     // Get the classname.
+424,425c383
+<     IWbemClassObject* newInstance = 0;
+<     sc = classObject->SpawnInstance(0, &newInstance);
+---
+>     String cn;
+427c385,388
+<     classObject->Release();
+---
+>     if (_get_classname(instance, cn) != 0)
+>     {
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+>     }
+429,430c390
+<     if (FAILED(sc))
+<         return sc;
+---
+>     // Lookup provider.
+432c392
+<     // Convert CIMPLE instance to WMI instance:
+---
+>     Provider_Handle* handle = _find_handle(cn);
+434c394,397
+<     WMI_Instance_Container cont(data->mr, newInstance);
+---
+>     if (!handle)
+>     {
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+>     }
+436,437c399
+<     if (cont.convert(inst, 0) != 0)
+<         return false;
+---
+>     // Get meta-repository from provider registration.
+439c401,402
+<     // Deliver new instance:
+---
+>     const Meta_Repository* mr = 
+>         handle->registration()->meta_class->meta_repository;
+441,442c404,407
+<     data->handler->Indicate(1, &newInstance);
+<     newInstance->Release();
+---
+>     if (!mr)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+444c409,457
+<     return true;
+---
+>     // Get meta-class:
+> 
+>     const Meta_Class* mc = handle->registration()->meta_class;
+> 
+>     if (!mc)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Convert to CIMPLE instance.
+> 
+>     Instance* ci = WMI_Converter::to_cimple_instance(mc, instance);
+> 
+>     if (!ci)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     Ref<Instance> ci_(ci);
+> 
+>     // Invoke provider.
+> 
+>     Create_Instance_Status st = handle->create_instance(ci);
+> 
+>     switch (st)
+>     {
+>         case CREATE_INSTANCE_OK:
+>         {
+>             RETURN_CODE(handler, WBEM_S_NO_ERROR);
+>         }
+> 
+>         case CREATE_INSTANCE_DUPLICATE:
+>         {
+>             RETURN_CODE(handler, WBEM_S_ALREADY_EXISTS);
+>         }
+> 
+>         case CREATE_INSTANCE_UNSUPPORTED:
+>         {
+>             RETURN_CODE(handler, WBEM_E_NOT_SUPPORTED);
+>         }
+> 
+>         default:
+>         {
+>             RETURN_CODE(handler, WBEM_E_FAILED);
+>         }
+>     }
+> 
+>     // Unreachable!
+>     RETURN_CODE(handler, WBEM_E_FAILED);
+447,448c460,461
+< SCODE WMI_Adapter::CreateInstanceEnumAsync(
+<     const BSTR class_name,
+---
+> HRESULT WMI_Adapter::_modify_instance(
+>     IWbemClassObject __RPC_FAR* instance,
+450,451c463,464
+<     IWbemContext* context,
+<     IWbemObjectSink FAR* handler)
+---
+>     IWbemContext __RPC_FAR* context,
+>     IWbemObjectSink __RPC_FAR* handler)
+453c466
+<     // Check credentials:
+---
+>     Impersonator impersonator;
+455c468
+<     HRESULT hr = CoImpersonateClient();
+---
+>     // Get the classname.
+457c470,472
+<     if (FAILED(hr))
+---
+>     String cn;
+> 
+>     if (_get_classname(instance, cn) != 0)
+459,460c474
+<         handler->SetStatus(0, hr, NULL, NULL);
+<         return hr;
+---
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+463c477,481
+<     if (_impersonateLevel() < RPC_C_IMP_LEVEL_IMPERSONATE)
+---
+>     // Lookup provider.
+> 
+>     Provider_Handle* handle = _find_handle(cn);
+> 
+>     if (!handle)
+465,468c483,540
+<         CoRevertToSelf();
+<         hr = WBEM_E_ACCESS_DENIED;
+<         handler->SetStatus(0, hr, NULL, NULL);
+<         return hr;
+---
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+>     }
+> 
+>     // Get meta-repository from provider registration.
+> 
+>     const Meta_Repository* mr = 
+>         handle->registration()->meta_class->meta_repository;
+> 
+>     if (!mr)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Get meta-class:
+> 
+>     const Meta_Class* mc = handle->registration()->meta_class;
+> 
+>     if (!mc)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Convert to CIMPLE instance.
+> 
+>     Instance* ci = WMI_Converter::to_cimple_instance(mc, instance);
+> 
+>     if (!ci)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     Ref<Instance> ci_(ci);
+> 
+>     // Invoke provider.
+> 
+>     Modify_Instance_Status st = handle->modify_instance(ci, ci);
+> 
+>     switch (st)
+>     {
+>         case MODIFY_INSTANCE_OK:
+>         {
+>             RETURN_CODE(handler, WBEM_S_NO_ERROR);
+>         }
+> 
+>         case MODIFY_INSTANCE_NOT_FOUND:
+>         {
+>             RETURN_CODE(handler, WBEM_E_NOT_FOUND);
+>         }
+> 
+>         case MODIFY_INSTANCE_UNSUPPORTED:
+>         {
+>             RETURN_CODE(handler, WBEM_E_NOT_SUPPORTED);
+>         }
+> 
+>         default:
+>         {
+>             RETURN_CODE(handler, WBEM_E_FAILED);
+>         }
+470c542,587
+<   
+---
+> 
+>     // Unreachable!
+>     RETURN_CODE(handler, WBEM_E_FAILED);
+> }
+> 
+> HRESULT STDMETHODCALLTYPE WMI_Adapter::PutInstanceAsync( 
+>     IWbemClassObject __RPC_FAR* instance,
+>     long flags,
+>     IWbemContext __RPC_FAR* context,
+>     IWbemObjectSink __RPC_FAR* handler)
+> {
+>     WMI_Thread_Context_Pusher pusher;
+> 
+>     // Dispatch to _create_instance() or _modify_instance().
+> 
+>     if (flags & WBEM_FLAG_CREATE_ONLY)
+>     {
+>         return _create_instance(instance, flags, context, handler);
+>     }
+>     else if (flags & WBEM_FLAG_UPDATE_ONLY)
+>     {
+>         return _modify_instance(instance, flags, context, handler);
+>     }
+>     else if (flags & WBEM_FLAG_CREATE_OR_UPDATE)
+>     {
+>         RETURN_CODE(handler, WBEM_E_PROVIDER_NOT_CAPABLE);
+>     }
+>     else
+>     {
+>         RETURN_CODE(handler, WBEM_E_INVALID_PARAMETER);
+>     }
+> 
+>     // Unrechable!
+>     return WBEM_E_FAILED;
+> }
+> 
+> SCODE WMI_Adapter::CreateInstanceEnumAsync(
+>     const BSTR class_name,
+>     long flags,
+>     IWbemContext* context,
+>     IWbemObjectSink FAR* handler)
+> {
+>     WMI_Thread_Context_Pusher pusher;
+> 
+>     Impersonator impersonator;
+> 
+473c590
+<     if (!handler || !_name_space)
+---
+>     if (!handler || !_services)
+481,482d597
+<     __log("cn[%s]\n", cn.c_str());
+< 
+487,489c602
+<         hr = WBEM_E_INVALID_CLASS;
+<         handler->SetStatus(0, hr, NULL, NULL);
+<         return hr;
+---
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+494,496d606
+<     // ATTN: check class here!
+<     // ATTN: create object path.
+< 
+500c610
+<     data.name_space = _name_space;
+---
+>     data.services = _services;
+511,512c621
+<             handler->SetStatus(0, S_OK, NULL, NULL);
+<             return S_OK;
+---
+>             RETURN_CODE(handler, S_OK);
+518,519c627
+<             handler->SetStatus(0, WBEM_E_FAILED, NULL, NULL);
+<             return WBEM_E_FAILED;
+---
+>             RETURN_CODE(handler, WBEM_E_FAILED);
+533c641,642
+<     SCODE sc;
+---
+>     WMI_Thread_Context_Pusher pusher;
+>     Impersonator impersonator;
+535c644
+<     // Check credentials:
+---
+>     // Check parameters:
+537c646,649
+<     HRESULT hr = CoImpersonateClient();
+---
+>     if(!objectPath || !handler || !_services)
+>     {
+>         RETURN_CODE(handler, WBEM_E_INVALID_PARAMETER);
+>     }
+539c651,657
+<     if (FAILED(hr))
+---
+>     // Lookup provider:
+> 
+>     String op = bstr2str(objectPath);
+>     String cn = op.substr(0, op.find('.'));
+>     Provider_Handle* handle = _find_handle(cn);
+> 
+>     if (!handle)
+541,542c659,665
+<         RETURN_CODE(handler, hr);
+<     }   
+---
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+>     }
+> 
+>     // Convert object path to model:
+> 
+>     Instance* model = model_path_to_instance(
+>         handle->registration()->meta_class, op.c_str());
+544c667
+<     if (_impersonateLevel() == RPC_C_IMP_LEVEL_IDENTIFY)
+---
+>     if (!model)
+546c669
+<         RETURN_CODE(handler, WBEM_E_ACCESS_DENIED);
+---
+>         RETURN_CODE(handler, WBEM_E_INVALID_OBJECT_PATH);
+548a672,723
+>     // Invoke provider:
+> 
+>     Instance* inst = 0;
+>     Get_Instance_Status status = handle->get_instance(model, inst);
+>     Ref<Instance> inst_(inst);
+> 
+>     switch (status)
+>     {
+>         case GET_INSTANCE_OK:
+>         {
+>             IWbemClassObject* wi = 0;
+>             WMI_Ref<IWbemClassObject> wi_(wi);
+> 
+>             wi = WMI_Converter::to_wmi_instance(_services, context, inst);
+> 
+>             if (wi)
+>             {
+>                 handler->Indicate(1, &wi);
+>             }
+> 
+>             break;
+>         }
+> 
+>         case GET_INSTANCE_NOT_FOUND:
+>         {
+>             RETURN_CODE(handler, WBEM_E_NOT_FOUND);
+>         }
+> 
+>         case GET_INSTANCE_UNSUPPORTED:
+>         {
+>             RETURN_CODE(handler, WBEM_E_NOT_SUPPORTED);
+>         }
+> 
+>         default:
+>         {
+>             RETURN_CODE(handler, WBEM_E_FAILED);
+>         }
+>     }
+> 
+>     // Unreachable!
+>     RETURN_CODE(handler, S_OK);
+> }
+> 
+> HRESULT WMI_Adapter::DeleteInstanceAsync( 
+>     const BSTR objectPath,
+>     long flags,
+>     IWbemContext __RPC_FAR* context,
+>     IWbemObjectSink __RPC_FAR* handler)
+> {
+>     WMI_Thread_Context_Pusher pusher;
+>     Impersonator impersonator;
+> 
+551c726
+<     if(!objectPath || !handler || !_name_space)
+---
+>     if(!objectPath || !handler || !_services)
+564d738
+< __log("INVALID_CLASS[%s]\n", cn.c_str());
+567d740
+< __log("AFTER\n");
+583,584c756,757
+<     Get_Instance_Status status = handle->get_instance(model, inst);
+<     Ref<Instance> inst_d(inst);
+---
+>     Delete_Instance_Status status = handle->delete_instance(model);
+>     Ref<Instance> inst_(inst);
+588c761
+<         case GET_INSTANCE_OK:
+---
+>         case DELETE_INSTANCE_OK:
+591c764
+<         case GET_INSTANCE_NOT_FOUND:
+---
+>         case DELETE_INSTANCE_NOT_FOUND:
+594c767
+<         case GET_INSTANCE_UNSUPPORTED:
+---
+>         case DELETE_INSTANCE_UNSUPPORTED:
+598c771,802
+<     // Get class object from namespace:
+---
+>     RETURN_CODE(handler, S_OK);
+> }
+> 
+> //==============================================================================
+> //
+> // Parse WQL query of the form:
+> //
+> //     SELECT TOK1[,TOK2][,TOK3] FROM CLASSNAME WHERE ...
+> //
+> // For example:
+> //
+> //     select * from MyClass where ...
+> //
+> //==============================================================================
+> 
+> static int _parse_wql(const String& query, String& classname)
+> {
+>     const char* p = query.c_str();
+> 
+>     // Skip whitespace:
+> 
+>     while (isspace(*p))
+>         p++;
+> 
+>     // Expect "select":
+> 
+>     if (strnicmp(p, "select", 6) != 0 || !isspace(p[6]))
+>     {
+>         return -1;
+>     }
+> 
+>     p += 7;
+600c804,806
+<     IWbemClassObject* classObject = 0;
+---
+>     // Expect field list (or "*")
+> 
+>     for (;;)
+602c808,816
+<         BSTR class_name = str2bstr(cn);
+---
+>         // Skip whitespace:
+> 
+>         while (isspace(*p))
+>             p++;
+> 
+>         // Skip over field name:
+> 
+>         while (*p && !isspace(*p) && *p != ',')
+>             p++;
+604,608c818
+<         sc = _name_space->GetObject(
+<             class_name, 0,
+<             context, 
+<             &classObject, 
+<             0);
+---
+>         // Skip whitespace:
+610c820,821
+<         SysFreeString(class_name);
+---
+>         while (isspace(*p))
+>             p++;
+612,613c823,833
+<         if (sc != S_OK)
+<             return false;
+---
+>         if (*p != ',')
+>             break;
+> 
+>         p++;
+>     }
+> 
+>     // Expect "from":
+> 
+>     if (strnicmp(p, "from", 4) != 0 || !isspace(p[4]))
+>     {
+>         return -1;
+616c836,841
+<     // Create new instance:
+---
+>     p += 5;
+> 
+>     // Skip whitespace:
+> 
+>     while (isspace(*p))
+>         p++;
+618,619c843
+<     IWbemClassObject* newInstance = 0;
+<     sc = classObject->SpawnInstance(0, &newInstance);
+---
+>     // Expect classname:
+621c845
+<     classObject->Release();
+---
+>     const char* start = p;
+623,624c847,848
+<     if (FAILED(sc))
+<         return sc;
+---
+>     while (*p && !isspace(*p))
+>         p++;
+626c850,953
+<     // Convert CIMPLE instance to WMI instance:
+---
+>     classname.assign(start, p - start);
+> 
+>     return 0;
+> }
+> 
+> HRESULT WMI_Adapter::ExecQueryAsync(
+>     const BSTR queryLanguage,
+>     const BSTR queryExpression,
+>     long flags,
+>     IWbemContext __RPC_FAR* context,
+>     IWbemObjectSink __RPC_FAR* handler)
+> {
+>     WMI_Thread_Context_Pusher pusher;
+> 
+>     // Reject non-wql queries.
+> 
+>     String lang = bstr2str(queryLanguage);
+> 
+>     if (lang != "WQL")
+>     {
+>         RETURN_CODE(handler, WBEM_E_NOT_SUPPORTED);
+>     }
+> 
+>     // Extract the class name from the query expression.
+> 
+>     String query = bstr2str(queryExpression);
+>     String cn;
+> 
+>     if (_parse_wql(query, cn) != 0)
+>     {
+>         RETURN_CODE(handler, WBEM_E_NOT_SUPPORTED);
+>     }
+> 
+>     // Find provider for this class:
+> 
+>     Provider_Handle* handle = _find_handle(cn);
+> 
+>     if (!handle)
+>     {
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+>     }
+> 
+>     // Dispatch to provider:
+> 
+>     Enum_Instances_Proc_Data data;
+>     data.mr = _reg->meta_class->meta_repository;
+>     data.context = context;
+>     data.services = _services;
+>     data.handler = handler;
+>     BString tcn(cn);
+>     data.class_name = tcn.rep();
+> 
+>     Enum_Instances_Status st = handle->enum_instances(
+>         0, _enum_instances_proc, &data);
+> 
+>     switch (st)
+>     {
+>         case ENUM_INSTANCES_OK:
+>         {
+>             RETURN_CODE(handler, S_OK);
+>         }
+> 
+>         case ENUM_INSTANCES_FAILED:
+>         default:
+>         {
+>             RETURN_CODE(handler, WBEM_E_FAILED);
+>         }
+>     }
+> 
+>     // Unreachable!
+>     return S_OK;
+> }
+> 
+> HRESULT WMI_Adapter::ExecMethodAsync( 
+>     const BSTR objectPath,
+>     const BSTR methodName,
+>     long flags, 
+>     IWbemContext* context,
+>     IWbemClassObject* inParams,
+>     IWbemObjectSink* handler)
+> {
+>     WMI_Thread_Context_Pusher pusher;
+>     Impersonator impersonator;
+>     HRESULT hr;
+> 
+>     // Check parameters:
+> 
+>     if (!objectPath || !methodName || !context || !handler)
+>     {
+>         RETURN_CODE(handler, WBEM_E_INVALID_PARAMETER);
+>     }
+> 
+>     // Lookup provider:
+> 
+>     String op = bstr2str(objectPath);
+>     String cn = op.substr(0, op.find('.'));
+>     Provider_Handle* handle = _find_handle(cn);
+> 
+>     if (!handle)
+>     {
+>         RETURN_CODE(handler, WBEM_E_INVALID_CLASS);
+>     }
+> 
+>     // Get meta-repository from handle:
+631c958,961
+<     WMI_Instance_Container cont(mr, newInstance);
+---
+>     if (!mr)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+633c963,967
+<     if (cont.convert(inst, 0) != 0)
+---
+>     // Find meta-class:
+> 
+>     const Meta_Class* mc = find_meta_class(mr, cn.c_str());
+> 
+>     if (!mc)
+638c972
+<     // Deliver new instance:
+---
+>     // Get meta-method from meta-class:
+640,642c974,1082
+< __log("get_instance(): INDICATING\n");
+<     handler->Indicate(1, &newInstance);
+<     newInstance->Release();
+---
+>     String mn = bstr2str(methodName);
+>     const Meta_Method* mm = find_method(mc, mn.c_str());
+> 
+>     if (!mm)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Convert to CIMPLE method instance:
+> 
+>     Instance* meth = 0;
+> 
+>     if (inParams)
+>     {
+>         WMI_Args_Container cont1(mr, inParams);
+> 
+>         int rc = cont1.convert((const Meta_Class*)mm, CIMPLE_FLAG_IN, meth);
+> 
+>         if (rc != 0 || !meth)
+>         {
+>             RETURN_CODE(handler, WBEM_E_FAILED);
+>         }
+>     }
+>     else
+>     {
+>         meth = create((const Meta_Class*)mm);
+>     }
+> 
+>     // Create model (if non-static method):
+> 
+>     Instance* model = 0;
+>     Ref<Instance> model_(model);
+> 
+>     if (op != cn)
+>     {
+>         if (!(model = model_path_to_instance(
+>             handle->registration()->meta_class, op.c_str())))
+>         {
+>             RETURN_CODE(handler, WBEM_E_INVALID_OBJECT_PATH);
+>         }
+>     }
+> 
+>     // Invoke the method:
+> 
+>     Invoke_Method_Status st = handle->invoke_method(model, meth);
+> 
+>     if (st != INVOKE_METHOD_OK)
+>     {
+>         switch (st)
+>         {
+>             case INVOKE_METHOD_UNSUPPORTED:
+>                 RETURN_CODE(handler, WBEM_E_NOT_SUPPORTED);
+> 
+>             case INVOKE_METHOD_FAILED:
+>                 RETURN_CODE(handler, WBEM_E_FAILED);
+> 
+>             default:
+>                 RETURN_CODE(handler, WBEM_E_FAILED);
+>         }
+>     }
+> 
+>     // Get WMI class object from namespace:
+> 
+>     IWbemClassObject* co = 0;
+>     WMI_Ref<IWbemClassObject> co_(co);
+> 
+>     hr = _services->GetObject(BString(cn).rep(), 0, context, &co, 0);
+> 
+>     if (hr != S_OK)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Get WMI method object from class object:
+> 
+>     IWbemClassObject* mo = 0;
+>     WMI_Ref<IWbemClassObject> mo_(mo);
+> 
+>     hr = co->GetMethod(methodName, 0, 0, &mo);
+> 
+>     if (hr != S_OK)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Create WMI out parameters object.
+> 
+>     IWbemClassObject* outParams = 0;
+>     WMI_Ref<IWbemClassObject> outParams_(outParams);
+> 
+>     hr = mo->SpawnInstance(0, &outParams);
+> 
+>     if (hr != S_OK)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Convert output parameters:
+> 
+>     WMI_Args_Container cont2(mr, outParams);
+> 
+>     if (cont2.convert(meth, CIMPLE_FLAG_OUT) != 0)
+>     {
+>         RETURN_CODE(handler, WBEM_E_FAILED);
+>     }
+> 
+>     // Send instance back to client!
+> 
+>     handler->Indicate(1, &outParams);
+644d1083
+<     // Unreachable!
+647a1087,1196
+> HRESULT STDMETHODCALLTYPE WMI_Adapter::NewQuery(
+>     unsigned long id,
+>     __RPC__in WBEM_WSTR queryLanguage,
+>     __RPC__in WBEM_WSTR queryExpression)
+> {
+>     _numQueries++;
+> 
+>     return S_OK;
+> }
+> 
+> HRESULT STDMETHODCALLTYPE WMI_Adapter::CancelQuery(
+>     unsigned long id)
+> {
+>     WMI_Thread_Context_Pusher pusher;
+> 
+>     // If no more queries left, then disable indications on all indication
+>     // providers.
+> 
+>     _numQueries--;
+> 
+>     if (_numQueries == 0)
+>     {
+>         for (size_t i = 0; i < _handles.size(); i++)
+>         {
+>             Provider_Handle* h = _handles[i];
+>             const Meta_Class* mc = h->registration()->meta_class;
+> 
+>             if (mc->flags & CIMPLE_FLAG_INDICATION)
+>             {
+>                 h->disable_indications();
+>             }
+>         }
+>     }
+> 
+>     return S_OK;
+> }
+> 
+> struct Indication_Proc_Data
+> {
+>     IWbemServices* services;
+>     IWbemObjectSink* sink;
+>     const Meta_Class* meta_class;
+>     Mutex mutex;
+> };
+> 
+> static bool _indication_proc(Instance* indication, void* client_data)
+> {
+>     Indication_Proc_Data* data = (Indication_Proc_Data*)client_data;
+>     Auto_Mutex am(data->mutex);
+> 
+>     // Delete client data on last call.
+> 
+>     if (indication == 0)
+>     {
+>         data->services->Release();
+>         data->sink->Release();
+>         delete data;
+>         return false;
+>     }
+> 
+>     // Prepare for indication to be destructed.
+> 
+>     Ref<Instance> indication_(indication);
+> 
+>     // Convert CIMPLE instance to WMI event instance:
+> 
+>     IWbemClassObject* wi = 0;
+>     WMI_Ref<IWbemClassObject> wi_(wi);
+> 
+>     wi = WMI_Converter::to_wmi_instance(data->services, 0, indication);
+> 
+>     if (wi)
+>     {
+>         data->sink->Indicate(1, &wi);
+>     }
+> 
+>     // Keep them coming!
+>     return true;
+> }
+> 
+> HRESULT WMI_Adapter::ProvideEvents(
+>     IWbemObjectSink* sink,
+>     long lFlags)
+> {
+>     WMI_Thread_Context_Pusher pusher;
+> 
+>     // Enable indications on all indication provider:
+> 
+>     for (size_t i = 0; i < _handles.size(); i++)
+>     {
+>         Provider_Handle* h = _handles[i];
+>         const Meta_Class* mc = h->registration()->meta_class;
+> 
+>         if (mc->flags & CIMPLE_FLAG_INDICATION)
+>         {
+>             sink->AddRef();
+>             _services->AddRef();
+> 
+>             Indication_Proc_Data* data = new Indication_Proc_Data;
+>             data->services = _services;
+>             data->sink = sink;
+>             data->meta_class = mc;
+> 
+>             h->enable_indications(_indication_proc, data);
+>         }
+>     }
+> 
+>     return WBEM_S_NO_ERROR;
+> }
+> 
+683d1231
+< 
+Index: src/wmi/adapter/WMI_Adapter.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/WMI_Adapter.h,v
+retrieving revision 1.7
+retrieving revision 1.20
+diff -r1.7 -r1.20
+32a33
+> #include "log.h"
+38c39,42
+<     public IWbemServices, public IWbemProviderInit
+---
+>     public IWbemServices,
+>     public IWbemProviderInit,
+>     public IWbemEventProvider,
+>     public IWbemEventProviderQuerySink
+60c64
+<         LPWSTR name_spaceName,
+---
+>         LPWSTR nameSpace,
+172,175c176
+<         IWbemObjectSink __RPC_FAR* objectSink)
+<     {
+<         return WBEM_E_NOT_SUPPORTED;
+<     }
+---
+>         IWbemObjectSink __RPC_FAR* objectSink);
+190,193c191
+<         IWbemObjectSink __RPC_FAR* objectSink)
+<     {
+<         return WBEM_E_NOT_SUPPORTED;
+<     }
+---
+>         IWbemObjectSink __RPC_FAR* objectSink);
+225,228c223
+<         IWbemObjectSink __RPC_FAR* objectSink)
+<     {
+<         return WBEM_E_NOT_SUPPORTED;
+<     }
+---
+>         IWbemObjectSink __RPC_FAR* objectSink);
+268,271c263,275
+<         IWbemObjectSink*)
+<     {
+<         return WBEM_E_NOT_SUPPORTED;
+<     }
+---
+>         IWbemObjectSink*);
+> 
+>     HRESULT STDMETHODCALLTYPE NewQuery(
+>         unsigned long id,
+>         __RPC__in WBEM_WSTR queryLanguage,
+>         __RPC__in WBEM_WSTR query);
+> 
+>     HRESULT STDMETHODCALLTYPE CancelQuery(
+>         unsigned long id);
+> 
+>     HRESULT STDMETHODCALLTYPE ProvideEvents(
+>         IWbemObjectSink *handler,
+>         long lFlags);
+282c286
+<     IWbemServices* _name_space;
+---
+>     IWbemServices* _services;
+284a289,290
+>     size_t _numQueries;
+> 
+285a292,303
+> 
+>     HRESULT _create_instance(
+>         IWbemClassObject __RPC_FAR* instance,
+>         long flags,
+>         IWbemContext __RPC_FAR* context,
+>         IWbemObjectSink __RPC_FAR* objectSink);
+> 
+>     HRESULT _modify_instance(
+>         IWbemClassObject __RPC_FAR* instance,
+>         long flags,
+>         IWbemContext __RPC_FAR* context,
+>         IWbemObjectSink __RPC_FAR* objectSink);
+Index: src/wmi/adapter/WMI_Containers.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/WMI_Containers.cpp,v
+retrieving revision 1.10
+retrieving revision 1.25
+diff -r1.10 -r1.25
+26a27
+> #include "Variant.h"
+30a32
+> #include "BString.h"
+31a34
+> #include "utils.h"
+41c44
+< static BSTR _make_bstr(const char* astr)
+---
+> static size_t _get_size(IWbemClassObject* _instance)
+43,255c46,47
+<     size_t n = lstrlenA(astr);
+<     BSTR bstr = SysAllocStringLen(NULL, n);
+<     MultiByteToWideChar(CP_ACP, 0, astr, n, bstr, n);
+<     return bstr;
+< }
+< 
+< static int _value_to_variant(
+<     const Meta_Repository* mr, 
+<     const Value& v, 
+<     uint32 flags,
+<     VARIANT& var)
+< {
+<     memset(&var, 0, sizeof(var));
+< 
+<     switch (v.type())
+<     {
+<         case Value::NONE:
+<         {
+<             return -1;
+<         }
+< 
+<         case Value::BOOLEAN:
+<         {
+<             boolean x;
+<             v.get_value(x);
+<             var.vt = VT_BOOL;
+<             var.boolVal = (unsigned int)(x);
+<             return 0;
+<         }
+< 
+<         case Value::UINT8:
+<         {
+<             uint8 x;
+<             v.get_value(x);
+<             var.vt = VT_I4;
+<             var.lVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::SINT8:
+<         {
+<             sint8 x;
+<             v.get_value(x);
+<             var.vt = VT_I4;
+<             var.lVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::UINT16:
+<         {
+<             uint16 x;
+<             v.get_value(x);
+<             var.vt = VT_I4;
+<             var.lVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::SINT16:
+<         {
+<             sint16 x;
+<             v.get_value(x);
+<             var.vt = VT_I4;
+<             var.lVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::UINT32:
+<         {
+<             uint32 x;
+<             v.get_value(x);
+< 
+<             var.vt = VT_I4;
+<             var.lVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::SINT32:
+<         {
+<             sint32 x;
+<             v.get_value(x);
+<             var.vt = VT_I4;
+<             var.lVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::UINT64:
+<         {
+<             uint64 x;
+<             v.get_value(x);
+<             var.vt = VT_I8;
+<             var.llVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::SINT64:
+<         {
+<             sint64 x;
+<             v.get_value(x);
+<             var.vt = VT_I8;
+<             var.llVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::REAL32:
+<         {
+<             real32 x;
+<             v.get_value(x);
+<             var.vt = VT_R4;
+<             var.llVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::REAL64:
+<         {
+<             real64 x;
+<             v.get_value(x);
+<             var.vt = VT_R8;
+<             var.llVal = x;
+<             return 0;
+<         }
+< 
+<         case Value::CHAR16:
+<         {
+<             char16 x;
+<             v.get_value(x);
+<             return -1;
+<         }
+< 
+<         case Value::STRING:
+<         {
+<             String x;
+<             v.get_value(x);
+< 
+<             var.vt = VT_BSTR;
+<             var.bstrVal = _make_bstr(x.c_str());
+< 
+<             return var.bstrVal ? 0 : -1;
+<         }
+< 
+<         case Value::DATETIME:
+<         {
+<             Datetime x;
+<             v.get_value(x);
+<             char buf[Datetime::BUFFER_SIZE];
+<             x.ascii(buf);
+<             var.vt = VT_BSTR;
+<             var.bstrVal = _make_bstr(buf);
+< 
+<             return 0;
+<         }
+< 
+<         case Value::INSTANCE:
+<         {
+<             Instance* inst;
+<             v.get_value(inst);
+< 
+<             String x;
+< 
+<             if (inst && instance_to_model_path(inst, x) == 0)
+<             {
+<                 var.vt = VT_BSTR;
+<                 var.bstrVal = _make_bstr(x.c_str());
+< 
+<                 return var.bstrVal ? 0 : -1;
+<             }
+<         }
+< 
+<         case Value::BOOLEAN_ARRAY:
+<         {
+<             Array<boolean> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_BOOL, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 VARIANT v;
+<                 v.boolVal = (unsigned int)x[i];
+<                 tmp.put(i, &v.boolVal);
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_BOOL;
+<             return 0;
+<         }
+< 
+<         case Value::UINT8_ARRAY:
+<         {
+<             Array<uint8> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I4, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I4;
+<             return 0;
+<         }
+< 
+<         case Value::SINT8_ARRAY:
+<         {
+<             Array<sint8> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I4, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+---
+>     if (!_instance)
+>         return 0;
+257,260c49
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I4;
+<             return 0;
+<         }
+---
+>     _instance->BeginEnumeration(WBEM_FLAG_NONSYSTEM_ONLY);
+262,272c51
+<         case Value::UINT16_ARRAY:
+<         {
+<             Array<uint16> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I4, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+---
+>     size_t size = 0;
+274,277d52
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I4;
+<             return 0;
+<         }
+279,289c54,55
+<         case Value::SINT16_ARRAY:
+<         {
+<             Array<sint16> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I4, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+---
+>     while(_instance->Next(0, NULL, NULL, NULL, NULL) == WBEM_S_NO_ERROR) 
+>         size++;
+291,294c57
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I4;
+<             return 0;
+<         }
+---
+>     _instance->EndEnumeration();
+296,379c59,60
+<         case Value::UINT32_ARRAY:
+<         {
+<             Array<uint32> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I4, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I4;
+<             return 0;
+<         }
+< 
+<         case Value::SINT32_ARRAY:
+<         {
+<             Array<sint32> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I4, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I4;
+<             return 0;
+<         }
+< 
+<         case Value::UINT64_ARRAY:
+<         {
+<             Array<uint64> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I8, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONGLONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I8;
+<             return 0;
+<         }
+< 
+<         case Value::SINT64_ARRAY:
+<         {
+<             Array<sint64> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_I8, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 LONGLONG t = x[i];
+<                 tmp.put(i, &t);
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_I8;
+<             return 0;
+<         }
+< 
+<         case Value::REAL32_ARRAY:
+<         {
+<             Array<real32> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_R4, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 float t = x[i];
+<                 tmp.put(i, &t);
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_R4;
+<             return 0;
+<         }
+---
+>     return size;
+> }
+381,391c62,67
+<         case Value::REAL64_ARRAY:
+<         {
+<             Array<real64> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_R8, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 double t = x[i];
+<                 tmp.put(i, &t);
+<             }
+---
+> static int _get_name(
+>     IWbemClassObject* _instance, 
+>     size_t pos, 
+>     String& name_out)
+> {
+>     BSTR name = 0;
+393,396c69,70
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_R8;
+<             return 0;
+<         }
+---
+>     if (!_instance)
+>         return -1;
+398,403c72
+<         case Value::CHAR16_ARRAY:
+<         {
+<             Array<char16> x;
+<             v.get_value(x);
+<             return -1;
+<         }
+---
+>     _instance->BeginEnumeration(WBEM_FLAG_NONSYSTEM_ONLY);
+405,414c74
+<         case Value::STRING_ARRAY:
+<         {
+<             Array<String> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_BSTR, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 tmp.put(i, _make_bstr(x[i].c_str()));
+<             }
+---
+>     size_t index = 0;
+416,419c76,78
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_BSTR;
+<             return 0;
+<         }
+---
+>     while(_instance->Next(0, &name, NULL, NULL, NULL) == WBEM_S_NO_ERROR) 
+>     {
+>         BString name_(name, BSTR_TAG);
+421c80
+<         case Value::DATETIME_ARRAY:
+---
+>         if (index == pos)
+423,435c82,83
+<             Array<Datetime> x;
+<             v.get_value(x);
+<             SafeArr tmp(VT_BSTR, x.size());
+< 
+<             for (size_t i = 0; i < x.size(); i++)
+<             {
+<                 char buf[Datetime::BUFFER_SIZE];
+<                 x[i].ascii(buf);
+<                 tmp.put(i, _make_bstr(buf));
+<             }
+< 
+<             var.parray = tmp.steal();
+<             var.vt = VT_ARRAY|VT_BSTR;
+---
+>             name_out.assign(bstr2str(name));
+>             _instance->EndEnumeration();
+439,442c87
+<         case Value::INSTANCE_ARRAY:
+<         {
+<             return -1;
+<         }
+---
+>         index++;
+445c90,93
+<     return 0;
+---
+>     _instance->EndEnumeration();
+> 
+>     // Not found!
+>     return -1;
+448,455c96,101
+< #if 0
+< static int _to_cmpi_data(
+<     const Meta_Repository* mr, 
+<     const CMPIBroker* cb, 
+<     const char* ns,
+<     const Value& v, 
+<     uint32 flags,
+<     CMPIData& data)
+---
+> static int _get_value(
+>     const Meta_Repository* _mr,
+>     IWbemClassObject* _instance,
+>     size_t pos, 
+>     Value::Type type, 
+>     Value& value)
+457,489c103,104
+<     memset(&data, 0, sizeof(data));
+< 
+<     switch (v.type())
+<     {
+<         case Value::NONE:
+<         {
+<             CIMPLE_WARN(("missing type"));
+<             return -1;
+<         }
+< 
+<         case Value::BOOLEAN:
+<         {
+<             boolean x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<boolean>::func(
+<                 mr, cb, ns, x, CMPI_boolean, data);
+<         }
+< 
+<         case Value::UINT8:
+<         {
+<             uint8 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<uint8>::func(
+<                 mr, cb, ns, x, CMPI_uint8, data);
+<         }
+< 
+<         case Value::SINT8:
+<         {
+<             sint8 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<sint8>::func(
+<                 mr, cb, ns, x, CMPI_sint8, data);
+<         }
+---
+>     VARIANT var;
+>     CIMTYPE ct;
+491,619c106,107
+<         case Value::UINT16:
+<         {
+<             uint16 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<uint16>::func(
+<                 mr, cb, ns, x, CMPI_uint16, data);
+<         }
+< 
+<         case Value::SINT16:
+<         {
+<             sint16 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<sint16>::func(
+<                 mr, cb, ns, x, CMPI_sint16, data);
+<         }
+< 
+<         case Value::UINT32:
+<         {
+<             uint32 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<uint32>::func(
+<                 mr, cb, ns, x, CMPI_uint32, data);
+<         }
+< 
+<         case Value::SINT32:
+<         {
+<             sint32 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<sint32>::func(
+<                 mr, cb, ns, x, CMPI_sint32, data);
+<         }
+< 
+<         case Value::UINT64:
+<         {
+<             uint64 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<uint64>::func(
+<                 mr, cb, ns, x, CMPI_uint64, data);
+<         }
+< 
+<         case Value::SINT64:
+<         {
+<             sint64 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<sint64>::func(
+<                 mr, cb, ns, x, CMPI_sint64, data);
+<         }
+< 
+<         case Value::REAL32:
+<         {
+<             real32 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<real32>::func(
+<                 mr, cb, ns, x, CMPI_real32, data);
+<         }
+< 
+<         case Value::REAL64:
+<         {
+<             real64 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<real64>::func(
+<                 mr, cb, ns, x, CMPI_real64, data);
+<         }
+< 
+<         case Value::CHAR16:
+<         {
+<             char16 x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<char16>::func(
+<                 mr, cb, ns, x, CMPI_char16, data);
+<         }
+< 
+<         case Value::STRING:
+<         {
+<             String x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<String>::func(
+<                 mr, cb, ns, x, CMPI_string, data);
+<         }
+< 
+<         case Value::DATETIME:
+<         {
+<             Datetime x;
+<             v.get_value(x);
+<             return to_cmpi_scalar<Datetime>::func(
+<                 mr, cb, ns, x, CMPI_dateTime, data);
+<         }
+< 
+<         case Value::INSTANCE:
+<         {
+<             Instance* x;
+<             v.get_value(x);
+< 
+<             if (flags & CIMPLE_FLAG_EMBEDDED_INSTANCE ||
+<                 flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
+<             {
+<                 return to_cmpi_scalar<Instance*>::func(
+<                     mr, cb, ns, x, CMPI_instance, data);
+<             }
+<             else
+<             {
+<                 return to_cmpi_scalar<Instance*>::func(
+<                     mr, cb, ns, x, CMPI_ref, data);
+<             }
+<         }
+< 
+<         case Value::BOOLEAN_ARRAY:
+<         {
+<             Array<boolean> x;
+<             v.get_value(x);
+<             return to_cmpi_array<boolean>::func(
+<                 mr, cb, ns, x, CMPI_boolean, data);
+<         }
+< 
+<         case Value::UINT8_ARRAY:
+<         {
+<             Array<uint8> x;
+<             v.get_value(x);
+<             return to_cmpi_array<uint8>::func(
+<                 mr, cb, ns, x, CMPI_uint8, data);
+<         }
+< 
+<         case Value::SINT8_ARRAY:
+<         {
+<             Array<sint8> x;
+<             v.get_value(x);
+<             return to_cmpi_array<sint8>::func(
+<                 mr, cb, ns, x, CMPI_sint8, data);
+<         }
+---
+>     if (!_instance)
+>         return -1;
+621,627c109
+<         case Value::UINT16_ARRAY:
+<         {
+<             Array<uint16> x;
+<             v.get_value(x);
+<             return to_cmpi_array<uint16>::func(
+<                 mr, cb, ns, x, CMPI_uint16, data);
+<         }
+---
+>     VariantInit(&var);
+629,635c111
+<         case Value::SINT16_ARRAY:
+<         {
+<             Array<sint16> x;
+<             v.get_value(x);
+<             return to_cmpi_array<sint16>::func(
+<                 mr, cb, ns, x, CMPI_sint16, data);
+<         }
+---
+>     _instance->BeginEnumeration(WBEM_FLAG_NONSYSTEM_ONLY);
+637,643c113
+<         case Value::UINT32_ARRAY:
+<         {
+<             Array<uint32> x;
+<             v.get_value(x);
+<             return to_cmpi_array<uint32>::func(
+<                 mr, cb, ns, x, CMPI_uint32, data);
+<         }
+---
+>     size_t index = 0;
+645c115,117
+<         case Value::SINT32_ARRAY:
+---
+>     while(_instance->Next(0, NULL, &var, &ct, NULL) == WBEM_S_NO_ERROR) 
+>     {
+>         if (index == pos)
+647,651c119
+<             Array<sint32> x;
+<             v.get_value(x);
+<             return to_cmpi_array<sint32>::func(
+<                 mr, cb, ns, x, CMPI_sint32, data);
+<         }
+---
+>             Variant tvar(var);
+653,659c121,122
+<         case Value::UINT64_ARRAY:
+<         {
+<             Array<uint64> x;
+<             v.get_value(x);
+<             return to_cmpi_array<uint64>::func(
+<                 mr, cb, ns, x, CMPI_uint64, data);
+<         }
+---
+>             VariantClear(&var);
+>             _instance->EndEnumeration();
+661,666c124
+<         case Value::SINT64_ARRAY:
+<         {
+<             Array<sint64> x;
+<             v.get_value(x);
+<             return to_cmpi_array<sint64>::func(
+<                 mr, cb, ns, x, CMPI_sint64, data);
+---
+>             return tvar.to_value(ct, value, _mr);
+669,675c127,129
+<         case Value::REAL32_ARRAY:
+<         {
+<             Array<real32> x;
+<             v.get_value(x);
+<             return to_cmpi_array<real32>::func(
+<                 mr, cb, ns, x, CMPI_real32, data);
+<         }
+---
+>         VariantClear(&var);
+>         index++;
+>     }
+677,683c131
+<         case Value::REAL64_ARRAY:
+<         {
+<             Array<real64> x;
+<             v.get_value(x);
+<             return to_cmpi_array<real64>::func(
+<                 mr, cb, ns, x, CMPI_real64, data);
+<         }
+---
+>     _instance->EndEnumeration();
+685,691c133,135
+<         case Value::CHAR16_ARRAY:
+<         {
+<             Array<char16> x;
+<             v.get_value(x);
+<             return to_cmpi_array<char16>::func(
+<                 mr, cb, ns, x, CMPI_char16, data);
+<         }
+---
+>     // Not found!
+>     return -1;
+> }
+693,699c137,144
+<         case Value::STRING_ARRAY:
+<         {
+<             Array<String> x;
+<             v.get_value(x);
+<             return to_cmpi_array<String>::func(
+<                 mr, cb, ns, x, CMPI_string, data);
+<         }
+---
+> static int _set_value(
+>     const Meta_Repository* _mr,
+>     IWbemClassObject* _instance,
+>     const char* name, 
+>     const Value& value, 
+>     uint32 flags)
+> {
+>     Variant v;
+701,707c146,147
+<         case Value::DATETIME_ARRAY:
+<         {
+<             Array<Datetime> x;
+<             v.get_value(x);
+<             return to_cmpi_array<Datetime>::func(
+<                 mr, cb, ns, x, CMPI_dateTime, data);
+<         }
+---
+>     if (v.set_value(value) != 0)
+>         return -1;
+709,712c149
+<         case Value::INSTANCE_ARRAY:
+<         {
+<             Array<Instance*> x;
+<             v.get_value(x);
+---
+>     BString nm;
+714,725c151,157
+<             if (flags & CIMPLE_FLAG_EMBEDDED_INSTANCE ||
+<                 flags & CIMPLE_FLAG_EMBEDDED_OBJECT)
+<             {
+<                 return to_cmpi_array<Instance*>::func(
+<                     mr, cb, ns, x, CMPI_instance, data);
+<             }
+<             else
+<             {
+<                 return to_cmpi_array<Instance*>::func(
+<                     mr, cb, ns, x, CMPI_ref, data);
+<             }
+<         }
+---
+>     if ((flags & CIMPLE_FLAG_OUT) && strcmp(name, "return_value") == 0)
+>     {
+>         nm.set("ReturnValue");
+>     }
+>     else
+>     {
+>         nm.set(name);
+728,729c160,163
+<     if (v.null())
+<         data.state |= CMPI_nullValue;
+---
+>     SCODE sc = _instance->Put(nm.rep(), 0, (VARIANT*)&v.rep(), 0);
+> 
+>     if (FAILED(sc))
+>         return -1;
+733d166
+< #endif
+753c186
+<     return 0;
+---
+>     return _get_size(_instance);
+758c191
+<     String& name)
+---
+>     String& name_out)
+760c193
+<     return 0;
+---
+>     return _get_name(_instance, pos, name_out);
+768c201
+<     return 0;
+---
+>     return _get_value(_mr, _instance, pos, type, value);
+776,788c209
+<     VARIANT v;
+< 
+< __log("set_value(): name[%s]\n", name);
+<     if (_value_to_variant(_mr, value, flags, v) != 0)
+<         return -1;
+< 
+<     SCODE sc = _instance->Put(_make_bstr(name), 0, &v, 0);
+<     VariantClear(&v);
+< 
+<     if (FAILED(sc))
+<         return sc;
+< 
+<     return 0;
+---
+>     return _set_value(_mr, _instance, name, value, flags);
+804a226,234
+> WMI_Args_Container::WMI_Args_Container(
+>     const Meta_Repository* mr, 
+>     IWbemClassObject* instance) : Container(mr), _instance(instance)
+> {
+> }
+> 
+> WMI_Args_Container::~WMI_Args_Container()
+> {
+> }
+805a236,262
+> size_t WMI_Args_Container::get_size()
+> {
+>     return _get_size(_instance);
+> }
+> 
+> int WMI_Args_Container::get_name(
+>     size_t pos, 
+>     String& name_out)
+> {
+>     return _get_name(_instance, pos, name_out);
+> }
+> 
+> int WMI_Args_Container::get_value(
+>     size_t pos, 
+>     Value::Type type, 
+>     Value& value)
+> {
+>     return _get_value(_mr, _instance, pos, type, value);
+> }
+> 
+> int WMI_Args_Container::set_value(
+>     const char* name, 
+>     const Value& value, 
+>     uint32 flags)
+> {
+>     return _set_value(_mr, _instance, name, value, flags);
+> }
+Index: src/wmi/adapter/WMI_Containers.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/WMI_Containers.h,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -r1.1 -r1.2
+88d87
+< #if 0
+95,96c94
+<         IWbemServices* name_space, 
+<         void* args);
+---
+>         IWbemClassObject* _instance);
+108a107,109
+> 
+>     IWbemClassObject* _instance;
+> 
+112d112
+< #endif
+Index: src/wmi/adapter/log.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/log.h,v
+retrieving revision 1.4
+retrieving revision 1.6
+diff -r1.4 -r1.6
+47a48,49
+>     fprintf(os, "\n");
+>     fflush(os);
+52c54
+< #define LOG_TRACE __log("LOG_TRACE: %s(%d)\n", __FILE__, __LINE__)
+---
+> #define LOG_TRACE __log("LOG_TRACE: %s(%d)", __FILE__, __LINE__)
+Index: src/wmi/adapter/register.mof
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/register.mof,v
+retrieving revision 1.1
+retrieving revision 1.2
+diff -r1.1 -r1.2
+13a14
+>     QuerySupportLevels[] = { "WQL:Associators", "WQL:References" };
+Index: src/wmi/adapter/utils.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/utils.cpp,v
+retrieving revision 1.2
+retrieving revision 1.4
+diff -r1.2 -r1.4
+61a62,110
+> String wstr2str(LPWSTR str)
+> {
+>     char buf[1024];
+>     char* astr;
+> 
+>     // Get length of required buffer (including null terminator).
+> 
+>     int alen = WideCharToMultiByte(CP_ACP, 0, str, -1, NULL, 0, NULL, NULL);
+> 
+>     if (alen <= sizeof(buf))
+>         astr = buf;
+>     else
+>         astr = (char*)::operator new(alen);
+> 
+>     // Convert string:
+> 
+>     WideCharToMultiByte(CP_ACP, 0, str, -1, astr, alen, NULL, NULL);
+> 
+>     String result(astr);
+> 
+>     if (astr != buf)
+>         operator delete(astr);
+> 
+>     return result;
+> }
+> 
+> BSTR cstr2bstr(const char* cstr)
+> {
+>     size_t n = lstrlenA(cstr);
+>     BSTR bstr = SysAllocStringLen(NULL, n);
+>     MultiByteToWideChar(CP_ACP, 0, cstr, n, bstr, n);
+>     return bstr;
+> }
+> 
+> char* bstr2cstr(const BSTR bstr)
+> {
+>     UINT blen = SysStringLen(bstr);
+>     UINT clen = SysStringByteLen(bstr);
+>     char* cstr = new char[clen + 1];
+> 
+>     if (!cstr)
+>         return 0;
+> 
+>     memset(cstr, 0, clen + 1);
+>     WideCharToMultiByte(CP_ACP, 0, bstr, blen, cstr, clen, NULL, NULL);
+> 
+>     return cstr;
+> }
+> 
+Index: src/wmi/adapter/utils.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/adapter/utils.h,v
+retrieving revision 1.2
+retrieving revision 1.9
+diff -r1.2 -r1.9
+31a32
+> #include <wbemprov.h>
+38a40,45
+> String wstr2str(LPWSTR str);
+> 
+> BSTR cstr2bstr(const char* cstr);
+> 
+> char* bstr2cstr(const BSTR bstr);
+> 
+Index: src/wmi/gadget/Gadget.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Gadget.cpp,v
+retrieving revision 1.7
+retrieving revision 1.21
+diff -r1.7 -r1.21
+4c4
+< // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.4
+---
+> // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.5
+17c17
+< extern const Meta_Repository __meta_repository_FA2AAE9362AC194F8C5D0A1A97482D47;
+---
+> extern const Meta_Repository __meta_repository_1D5858A9C3AF1CDE82C2389F433E4440;
+21c21
+< _Gadget_MyKey;
+---
+> _Gadget_key;
+25c25
+< _Gadget_MyKey =
+---
+> _Gadget_key =
+29c29
+<     "MyKey",
+---
+>     "key",
+34c34
+<     CIMPLE_OFF(Gadget,MyKey),
+---
+>     CIMPLE_OFF(Gadget,key),
+40c40
+< _Gadget_MyValue;
+---
+> _Gadget_b;
+44c44
+< _Gadget_MyValue =
+---
+> _Gadget_b =
+48c48
+<     "MyValue",
+---
+>     "b",
+51c51
+<     UINT32,
+---
+>     BOOLEAN,
+53c53
+<     CIMPLE_OFF(Gadget,MyValue),
+---
+>     CIMPLE_OFF(Gadget,b),
+59c59
+< _Gadget_Number;
+---
+> _Gadget_u8;
+63c63
+< _Gadget_Number =
+---
+> _Gadget_u8 =
+67c67
+<     "Number",
+---
+>     "u8",
+70c70
+<     UINT32,
+---
+>     UINT8,
+72c72
+<     CIMPLE_OFF(Gadget,Number),
+---
+>     CIMPLE_OFF(Gadget,u8),
+78c78
+< _Gadget_Array;
+---
+> _Gadget_s8;
+82c82
+< _Gadget_Array =
+---
+> _Gadget_s8 =
+86c86
+<     "Array",
+---
+>     "s8",
+89,91c89,91
+<     UINT32,
+<     -1, /* subscript */
+<     CIMPLE_OFF(Gadget,Array),
+---
+>     SINT8,
+>     0, /* subscript */
+>     CIMPLE_OFF(Gadget,s8),
+97c97
+< _Gadget_Messages;
+---
+> _Gadget_u16;
+101c101
+< _Gadget_Messages =
+---
+> _Gadget_u16 =
+105c105
+<     "Messages",
+---
+>     "u16",
+108,110c108,110
+<     STRING,
+<     -1, /* subscript */
+<     CIMPLE_OFF(Gadget,Messages),
+---
+>     UINT8,
+>     0, /* subscript */
+>     CIMPLE_OFF(Gadget,u16),
+116c116
+< _Gadget_Flag;
+---
+> _Gadget_s16;
+120c120
+< _Gadget_Flag =
+---
+> _Gadget_s16 =
+124c124
+<     "Flag",
+---
+>     "s16",
+127c127
+<     BOOLEAN,
+---
+>     SINT8,
+129c129
+<     CIMPLE_OFF(Gadget,Flag),
+---
+>     CIMPLE_OFF(Gadget,s16),
+135c135
+< _Gadget_U8;
+---
+> _Gadget_u32;
+139c139
+< _Gadget_U8 =
+---
+> _Gadget_u32 =
+143c143
+<     "U8",
+---
+>     "u32",
+148c148
+<     CIMPLE_OFF(Gadget,U8),
+---
+>     CIMPLE_OFF(Gadget,u32),
+154c154
+< _Gadget_S8;
+---
+> _Gadget_s32;
+158c158
+< _Gadget_S8 =
+---
+> _Gadget_s32 =
+162c162
+<     "S8",
+---
+>     "s32",
+167c167
+<     CIMPLE_OFF(Gadget,S8),
+---
+>     CIMPLE_OFF(Gadget,s32),
+173c173
+< _Gadget_U16;
+---
+> _Gadget_u64;
+177c177
+< _Gadget_U16 =
+---
+> _Gadget_u64 =
+181c181
+<     "U16",
+---
+>     "u64",
+186c186
+<     CIMPLE_OFF(Gadget,U16),
+---
+>     CIMPLE_OFF(Gadget,u64),
+192c192
+< _Gadget_S16;
+---
+> _Gadget_s64;
+196c196
+< _Gadget_S16 =
+---
+> _Gadget_s64 =
+200c200
+<     "S16",
+---
+>     "s64",
+205c205
+<     CIMPLE_OFF(Gadget,S16),
+---
+>     CIMPLE_OFF(Gadget,s64),
+211c211
+< _Gadget_U32;
+---
+> _Gadget_r32;
+215c215
+< _Gadget_U32 =
+---
+> _Gadget_r32 =
+219c219
+<     "U32",
+---
+>     "r32",
+222c222
+<     UINT8,
+---
+>     REAL32,
+224c224
+<     CIMPLE_OFF(Gadget,U32),
+---
+>     CIMPLE_OFF(Gadget,r32),
+230c230
+< _Gadget_S32;
+---
+> _Gadget_r64;
+234c234
+< _Gadget_S32 =
+---
+> _Gadget_r64 =
+238c238
+<     "S32",
+---
+>     "r64",
+241c241
+<     SINT8,
+---
+>     REAL64,
+243c243
+<     CIMPLE_OFF(Gadget,S32),
+---
+>     CIMPLE_OFF(Gadget,r64),
+249c249
+< _Gadget_U64;
+---
+> _Gadget_dt;
+253c253
+< _Gadget_U64 =
+---
+> _Gadget_dt =
+257c257
+<     "U64",
+---
+>     "dt",
+260c260
+<     UINT8,
+---
+>     DATETIME,
+262c262
+<     CIMPLE_OFF(Gadget,U64),
+---
+>     CIMPLE_OFF(Gadget,dt),
+268c268
+< _Gadget_S64;
+---
+> _Gadget_ba;
+272c272
+< _Gadget_S64 =
+---
+> _Gadget_ba =
+276c276
+<     "S64",
+---
+>     "ba",
+279,281c279,281
+<     SINT8,
+<     0, /* subscript */
+<     CIMPLE_OFF(Gadget,S64),
+---
+>     BOOLEAN,
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,ba),
+287c287
+< _Gadget_U8A;
+---
+> _Gadget_u8a;
+291c291
+< _Gadget_U8A =
+---
+> _Gadget_u8a =
+295c295
+<     "U8A",
+---
+>     "u8a",
+300c300
+<     CIMPLE_OFF(Gadget,U8A),
+---
+>     CIMPLE_OFF(Gadget,u8a),
+306c306
+< _Gadget_S8A;
+---
+> _Gadget_s8a;
+310c310
+< _Gadget_S8A =
+---
+> _Gadget_s8a =
+314c314
+<     "S8A",
+---
+>     "s8a",
+319c319
+<     CIMPLE_OFF(Gadget,S8A),
+---
+>     CIMPLE_OFF(Gadget,s8a),
+325c325
+< _Gadget_R4;
+---
+> _Gadget_u16a;
+329c329
+< _Gadget_R4 =
+---
+> _Gadget_u16a =
+333c333
+<     "R4",
+---
+>     "u16a",
+336,338c336,338
+<     REAL32,
+<     0, /* subscript */
+<     CIMPLE_OFF(Gadget,R4),
+---
+>     UINT16,
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,u16a),
+344c344
+< _Gadget_R4A;
+---
+> _Gadget_s16a;
+348c348
+< _Gadget_R4A =
+---
+> _Gadget_s16a =
+352c352
+<     "R4A",
+---
+>     "s16a",
+355c355
+<     REAL32,
+---
+>     SINT16,
+357c357
+<     CIMPLE_OFF(Gadget,R4A),
+---
+>     CIMPLE_OFF(Gadget,s16a),
+363c363
+< _Gadget_R8;
+---
+> _Gadget_u32a;
+367c367
+< _Gadget_R8 =
+---
+> _Gadget_u32a =
+371c371
+<     "R8",
+---
+>     "u32a",
+374,376c374,376
+<     REAL64,
+<     0, /* subscript */
+<     CIMPLE_OFF(Gadget,R8),
+---
+>     UINT32,
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,u32a),
+382c382
+< _Gadget_R8A;
+---
+> _Gadget_s32a;
+386c386
+< _Gadget_R8A =
+---
+> _Gadget_s32a =
+390c390
+<     "R8A",
+---
+>     "s32a",
+393c393
+<     REAL64,
+---
+>     SINT32,
+395c395
+<     CIMPLE_OFF(Gadget,R8A),
+---
+>     CIMPLE_OFF(Gadget,s32a),
+401c401
+< _Gadget_B;
+---
+> _Gadget_u64a;
+405c405
+< _Gadget_B =
+---
+> _Gadget_u64a =
+409c409
+<     "B",
+---
+>     "u64a",
+412,414c412,414
+<     BOOLEAN,
+<     0, /* subscript */
+<     CIMPLE_OFF(Gadget,B),
+---
+>     UINT64,
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,u64a),
+420c420
+< _Gadget_BA;
+---
+> _Gadget_s64a;
+424c424
+< _Gadget_BA =
+---
+> _Gadget_s64a =
+428c428
+<     "BA",
+---
+>     "s64a",
+431c431
+<     BOOLEAN,
+---
+>     SINT64,
+433c433
+<     CIMPLE_OFF(Gadget,BA),
+---
+>     CIMPLE_OFF(Gadget,s64a),
+439c439
+< _Gadget_DT;
+---
+> _Gadget_r32a;
+443c443
+< _Gadget_DT =
+---
+> _Gadget_r32a =
+447c447,504
+<     "DT",
+---
+>     "r32a",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     REAL32,
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,r32a),
+>     0, /* value */
+> };
+> 
+> /*[1304]*/
+> extern const Meta_Property
+> _Gadget_r64a;
+> 
+> /*[1327]*/
+> const Meta_Property
+> _Gadget_r64a =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
+>     "r64a",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     REAL64,
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,r64a),
+>     0, /* value */
+> };
+> 
+> /*[1304]*/
+> extern const Meta_Property
+> _Gadget_sa;
+> 
+> /*[1327]*/
+> const Meta_Property
+> _Gadget_sa =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
+>     "sa",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     STRING,
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,sa),
+>     0, /* value */
+> };
+> 
+> /*[1304]*/
+> extern const Meta_Property
+> _Gadget_dta;
+> 
+> /*[1327]*/
+> const Meta_Property
+> _Gadget_dta =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_READ,
+>     "dta",
+451,452c508,509
+<     0, /* subscript */
+<     CIMPLE_OFF(Gadget,DT),
+---
+>     -1, /* subscript */
+>     CIMPLE_OFF(Gadget,dta),
+459,481c516,541
+<     (Meta_Feature*)(void*)&_Gadget_MyKey,
+<     (Meta_Feature*)(void*)&_Gadget_MyValue,
+<     (Meta_Feature*)(void*)&_Gadget_Number,
+<     (Meta_Feature*)(void*)&_Gadget_Array,
+<     (Meta_Feature*)(void*)&_Gadget_Messages,
+<     (Meta_Feature*)(void*)&_Gadget_Flag,
+<     (Meta_Feature*)(void*)&_Gadget_U8,
+<     (Meta_Feature*)(void*)&_Gadget_S8,
+<     (Meta_Feature*)(void*)&_Gadget_U16,
+<     (Meta_Feature*)(void*)&_Gadget_S16,
+<     (Meta_Feature*)(void*)&_Gadget_U32,
+<     (Meta_Feature*)(void*)&_Gadget_S32,
+<     (Meta_Feature*)(void*)&_Gadget_U64,
+<     (Meta_Feature*)(void*)&_Gadget_S64,
+<     (Meta_Feature*)(void*)&_Gadget_U8A,
+<     (Meta_Feature*)(void*)&_Gadget_S8A,
+<     (Meta_Feature*)(void*)&_Gadget_R4,
+<     (Meta_Feature*)(void*)&_Gadget_R4A,
+<     (Meta_Feature*)(void*)&_Gadget_R8,
+<     (Meta_Feature*)(void*)&_Gadget_R8A,
+<     (Meta_Feature*)(void*)&_Gadget_B,
+<     (Meta_Feature*)(void*)&_Gadget_BA,
+<     (Meta_Feature*)(void*)&_Gadget_DT,
+---
+>     (Meta_Feature*)(void*)&_Gadget_key,
+>     (Meta_Feature*)(void*)&_Gadget_b,
+>     (Meta_Feature*)(void*)&_Gadget_u8,
+>     (Meta_Feature*)(void*)&_Gadget_s8,
+>     (Meta_Feature*)(void*)&_Gadget_u16,
+>     (Meta_Feature*)(void*)&_Gadget_s16,
+>     (Meta_Feature*)(void*)&_Gadget_u32,
+>     (Meta_Feature*)(void*)&_Gadget_s32,
+>     (Meta_Feature*)(void*)&_Gadget_u64,
+>     (Meta_Feature*)(void*)&_Gadget_s64,
+>     (Meta_Feature*)(void*)&_Gadget_r32,
+>     (Meta_Feature*)(void*)&_Gadget_r64,
+>     (Meta_Feature*)(void*)&_Gadget_dt,
+>     (Meta_Feature*)(void*)&_Gadget_ba,
+>     (Meta_Feature*)(void*)&_Gadget_u8a,
+>     (Meta_Feature*)(void*)&_Gadget_s8a,
+>     (Meta_Feature*)(void*)&_Gadget_u16a,
+>     (Meta_Feature*)(void*)&_Gadget_s16a,
+>     (Meta_Feature*)(void*)&_Gadget_u32a,
+>     (Meta_Feature*)(void*)&_Gadget_s32a,
+>     (Meta_Feature*)(void*)&_Gadget_u64a,
+>     (Meta_Feature*)(void*)&_Gadget_s64a,
+>     (Meta_Feature*)(void*)&_Gadget_r32a,
+>     (Meta_Feature*)(void*)&_Gadget_r64a,
+>     (Meta_Feature*)(void*)&_Gadget_sa,
+>     (Meta_Feature*)(void*)&_Gadget_dta,
+509a570,572
+>     {1},
+>     {1},
+>     {1},
+526c589
+<     &__meta_repository_FA2AAE9362AC194F8C5D0A1A97482D47,
+---
+>     &__meta_repository_1D5858A9C3AF1CDE82C2389F433E4440,
+Index: src/wmi/gadget/Gadget.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Gadget.h,v
+retrieving revision 1.6
+retrieving revision 1.8
+diff -r1.6 -r1.8
+4c4
+< // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.4
+---
+> // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.5
+16c16
+< //     MyKey
+---
+> //     key
+23,45c23,48
+<     Property<String> MyKey;
+<     Property<uint32> MyValue;
+<     Property<uint32> Number;
+<     Property<Array_uint32> Array;
+<     Property<Array_String> Messages;
+<     Property<boolean> Flag;
+<     Property<uint8> U8;
+<     Property<sint8> S8;
+<     Property<uint8> U16;
+<     Property<sint8> S16;
+<     Property<uint8> U32;
+<     Property<sint8> S32;
+<     Property<uint8> U64;
+<     Property<sint8> S64;
+<     Property<Array_uint8> U8A;
+<     Property<Array_sint8> S8A;
+<     Property<real32> R4;
+<     Property<Array_real32> R4A;
+<     Property<real64> R8;
+<     Property<Array_real64> R8A;
+<     Property<boolean> B;
+<     Property<Array_boolean> BA;
+<     Property<Datetime> DT;
+---
+>     Property<String> key;
+>     Property<boolean> b;
+>     Property<uint8> u8;
+>     Property<sint8> s8;
+>     Property<uint8> u16;
+>     Property<sint8> s16;
+>     Property<uint8> u32;
+>     Property<sint8> s32;
+>     Property<uint8> u64;
+>     Property<sint8> s64;
+>     Property<real32> r32;
+>     Property<real64> r64;
+>     Property<Datetime> dt;
+>     Property<Array_boolean> ba;
+>     Property<Array_uint8> u8a;
+>     Property<Array_sint8> s8a;
+>     Property<Array_uint16> u16a;
+>     Property<Array_sint16> s16a;
+>     Property<Array_uint32> u32a;
+>     Property<Array_sint32> s32a;
+>     Property<Array_uint64> u64a;
+>     Property<Array_sint64> s64a;
+>     Property<Array_real32> r32a;
+>     Property<Array_real64> r64a;
+>     Property<Array_String> sa;
+>     Property<Array_Datetime> dta;
+Index: src/wmi/gadget/Gadget_Provider.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Gadget_Provider.cpp,v
+retrieving revision 1.8
+retrieving revision 1.19
+diff -r1.8 -r1.19
+6c6
+< ** Permission is hereby granted, free of charge, to any person obtaining a
+---
+> ** Permission is hereby granted, free of charge, to any person obtaining u32a
+29a30
+> #include "Widget.h"
+43d43
+< __log("Gadget_Provider::load()\n");
+49d48
+< __log("Gadget_Provider::unload()\n");
+59a59,95
+> static Gadget* _make_instance(const String& key)
+> {
+>     Gadget* g = Gadget::create();
+> 
+>     Datetime dt("20050710170840.899256+300");
+> 
+>     g->key.set(key);
+>     g->b.set(true);
+>     g->u8.set(1);
+>     g->s8.set(-1);
+>     g->u16.set(1);
+>     g->s16.set(-1);
+>     g->u32.set(1);
+>     g->s32.set(-1);
+>     g->u64.set(1);
+>     g->s64.set(-1);
+>     g->r32.set(32.5);
+>     g->r64.set(64.5);
+>     g->dt.set(dt);
+> 
+>     g->ba.set(Array<bool>::make(true, false, true));
+>     g->u8a.set(Array<uint8>::make(1, 2, 3));
+>     g->s8a.set(Array<sint8>::make(-1, -2, -3));
+>     g->u16a.set(Array<uint16>::make(1, 2, 3));
+>     g->s16a.set(Array<sint16>::make(-1, -2, -3));
+>     g->u32a.set(Array<uint32>::make(1, 2, 3));
+>     g->s32a.set(Array<sint32>::make(-1, -2, -3));
+>     g->u64a.set(Array<uint64>::make(1, 2, 3));
+>     g->s64a.set(Array<sint64>::make(-1, -2, -3));
+>     g->r32a.set(Array<real32>::make(1.0, 2.0, 3.0));
+>     g->r64a.set(Array<real64>::make(1.0, 2.0, 3.0));
+>     g->sa.set(Array<String>::make("One", "Two", "Three"));
+>     g->dta.set(Array<Datetime>::make(dt, dt, dt));
+> 
+>     return g;
+> }
+> 
+64,160c100,102
+< __log("Gadget_Provider::enum_instances()\n");
+<     Gadget* g;
+< 
+<     Array<uint32> a;
+<     a.append(1);
+<     a.append(2);
+<     a.append(3);
+< 
+<     Array<String> b;
+<     b.append("Red");
+<     b.append("Green");
+<     b.append("Blue");
+< 
+<     Array<uint8> u8a;
+<     u8a.append(11);
+<     u8a.append(22);
+<     u8a.append(33);
+< 
+<     Array<real32> r4a;
+<     r4a.append(1.5);
+<     r4a.append(2.5);
+<     r4a.append(3.5);
+< 
+<     Array<real64> r8a;
+<     r8a.append(1.5);
+<     r8a.append(2.5);
+<     r8a.append(3.5);
+< 
+<     Array<boolean> ba;
+<     ba.append(true);
+<     ba.append(false);
+< 
+<     g = Gadget::create();
+<     g->MyKey.set("Cyan");
+<     g->MyValue.set(1111);
+<     g->Number.set(100);
+<     g->Array.set(a);
+<     g->Messages.set(b);
+<     g->Flag.set(true);
+<     g->U8.set(1);
+<     g->S8.set(-1);
+<     g->U16.set(1);
+<     g->S16.set(-1);
+<     g->U32.set(1);
+<     g->S32.set(-1);
+<     g->U64.set(1);
+<     g->S64.set(-1);
+<     g->U8A.set(u8a);
+<     g->R4A.set(r4a);
+<     g->R8A.set(r8a);
+<     g->BA.set(ba);
+<     g->DT.set(Datetime("20050710170840.899256+300"));
+<     handler->handle(g);
+< 
+<     g = Gadget::create();
+<     g->MyKey.set("Yellow");
+<     g->MyValue.set(2222);
+<     g->Number.set(200);
+<     g->Array.set(a);
+<     g->Messages.set(b);
+<     g->U8.set(2);
+<     g->S8.set(-2);
+<     g->U16.set(2);
+<     g->S16.set(-2);
+<     g->U32.set(2);
+<     g->S32.set(-2);
+<     g->U64.set(2);
+<     g->S64.set(-2);
+<     g->Flag.set(false);
+<     g->U8A.set(u8a);
+<     g->R4A.set(r4a);
+<     g->R8A.set(r8a);
+<     g->BA.set(ba);
+<     g->DT.set(Datetime("20050710170840.899256+300"));
+<     handler->handle(g);
+< 
+<     g = Gadget::create();
+<     g->MyKey.set("Pink");
+<     g->MyValue.set(3333);
+<     g->Number.set(300);
+<     g->Array.set(a);
+<     g->Messages.set(b);
+<     g->Flag.set(true);
+<     g->U8.set(3);
+<     g->S8.set(-3);
+<     g->U16.set(3);
+<     g->S16.set(-3);
+<     g->U32.set(3);
+<     g->S32.set(-3);
+<     g->U64.set(3);
+<     g->S64.set(-3);
+<     g->U8A.set(u8a);
+<     g->R4A.set(r4a);
+<     g->R8A.set(r8a);
+<     g->BA.set(ba);
+<     g->DT.set(Datetime("20050710170840.899256+300"));
+<     handler->handle(g);
+---
+>     handler->handle(_make_instance("RED"));
+>     handler->handle(_make_instance("GREEN"));
+>     handler->handle(_make_instance("BLUE"));
+168c110
+<     return CREATE_INSTANCE_UNSUPPORTED;
+---
+>     return CREATE_INSTANCE_OK;
+174c116,119
+<     return DELETE_INSTANCE_UNSUPPORTED;
+---
+>     __log("Gadget_Provider::delete_instance(): key[%s]", 
+>         instance->key.value.c_str());
+> 
+>     return DELETE_INSTANCE_OK;
+181c126,131
+<     return MODIFY_INSTANCE_UNSUPPORTED;
+---
+>     if (instance)
+>     {
+>         __log("key[%s]\n", instance->key.value.c_str());
+>     }
+> 
+>     return MODIFY_INSTANCE_OK;
+Index: src/wmi/gadget/Makefile
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Makefile,v
+retrieving revision 1.4
+retrieving revision 1.7
+diff -r1.4 -r1.7
+10a11,12
+>     Connector.cpp \
+>     Connector_Provider.cpp \
+12c14,19
+<     module.cpp
+---
+>     module.cpp \
+>     __ExtrinsicEvent.cpp \
+>     Buzzer.cpp \
+>     Buzzer_Provider.cpp \
+>     Upcall.cpp \
+>     Upcall_Provider.cpp
+53c60,61
+< 	genproj Gadget Gadget Widget
+---
+> 	genproj Gadget Gadget Widget Connector Buzzer Upcall
+> 
+Index: src/wmi/gadget/Widget.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Widget.cpp,v
+retrieving revision 1.2
+retrieving revision 1.16
+diff -r1.2 -r1.16
+4c4
+< // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.4
+---
+> // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.5
+17c17
+< extern const Meta_Repository __meta_repository_FA2AAE9362AC194F8C5D0A1A97482D47;
+---
+> extern const Meta_Repository __meta_repository_1D5858A9C3AF1CDE82C2389F433E4440;
+19,21c19,96
+< /*[1389]*/
+< extern const Meta_Reference
+< _Widget_Left;
+---
+> /*[1304]*/
+> extern const Meta_Property
+> _Widget_key;
+> 
+> /*[1327]*/
+> const Meta_Property
+> _Widget_key =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_KEY|CIMPLE_FLAG_READ,
+>     "key",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     UINT32,
+>     0, /* subscript */
+>     CIMPLE_OFF(Widget,key),
+>     0, /* value */
+> };
+> 
+> /*[1518]*/
+> static const Meta_Property
+> _Widget_foo_arg1 =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
+>     "arg1",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     UINT32,
+>     0,
+>     CIMPLE_OFF(Widget_foo_method,arg1),
+>     0, /* value */
+> };
+> 
+> /*[1518]*/
+> static const Meta_Property
+> _Widget_foo_arg2 =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_IN,
+>     "arg2",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     STRING,
+>     0,
+>     CIMPLE_OFF(Widget_foo_method,arg2),
+>     0, /* value */
+> };
+> 
+> /*[1518]*/
+> static const Meta_Property
+> _Widget_foo_arg3 =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
+>     "arg3",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     UINT32,
+>     0,
+>     CIMPLE_OFF(Widget_foo_method,arg3),
+>     0, /* value */
+> };
+> 
+> /*[1518]*/
+> static const Meta_Property
+> _Widget_foo_arg4 =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
+>     "arg4",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     STRING,
+>     0,
+>     CIMPLE_OFF(Widget_foo_method,arg4),
+>     0, /* value */
+> };
+23,25c98,100
+< /*[1400]*/
+< const Meta_Reference
+< _Widget_Left =
+---
+> /*[1671]*/
+> static const Meta_Property
+> _Widget_foo_return_value =
+28,29c103,144
+<     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
+<     "Left",
+---
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
+>     "return_value",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     BOOLEAN,
+>     0,
+>     CIMPLE_OFF(Widget_foo_method,return_value),
+>     0, /* value */
+> };
+> 
+> /*[1647]*/
+> static Meta_Feature* _Widget_foo_MFA[] =
+> {
+>     (Meta_Feature*)(void*)&_Widget_foo_arg1,
+>     (Meta_Feature*)(void*)&_Widget_foo_arg2,
+>     (Meta_Feature*)(void*)&_Widget_foo_arg3,
+>     (Meta_Feature*)(void*)&_Widget_foo_arg4,
+>     (Meta_Feature*)(void*)&_Widget_foo_return_value
+> };
+> 
+> /*[1849]*/
+> const Meta_Method
+> Widget_foo_method::static_meta_class =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_METHOD|CIMPLE_FLAG_STATIC,
+>     "foo",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     _Widget_foo_MFA,
+>     CIMPLE_ARRAY_SIZE(_Widget_foo_MFA),
+>     sizeof(Widget_foo_method),
+>     BOOLEAN,
+> };
+> 
+> /*[1457]*/
+> static const Meta_Reference
+> _Widget_goo_gin =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_IN,
+>     "gin",
+34c149
+<     CIMPLE_OFF(Widget,Left)
+---
+>     CIMPLE_OFF(Widget_goo_method,gin)
+37,43c152,154
+< /*[1389]*/
+< extern const Meta_Reference
+< _Widget_Right;
+< 
+< /*[1400]*/
+< const Meta_Reference
+< _Widget_Right =
+---
+> /*[1457]*/
+> static const Meta_Reference
+> _Widget_goo_gout =
+46,47c157,158
+<     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
+<     "Right",
+---
+>     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_OUT,
+>     "gout",
+52c163,267
+<     CIMPLE_OFF(Widget,Right)
+---
+>     CIMPLE_OFF(Widget_goo_method,gout)
+> };
+> 
+> /*[1671]*/
+> static const Meta_Property
+> _Widget_goo_return_value =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
+>     "return_value",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     UINT32,
+>     0,
+>     CIMPLE_OFF(Widget_goo_method,return_value),
+>     0, /* value */
+> };
+> 
+> /*[1647]*/
+> static Meta_Feature* _Widget_goo_MFA[] =
+> {
+>     (Meta_Feature*)(void*)&_Widget_goo_gin,
+>     (Meta_Feature*)(void*)&_Widget_goo_gout,
+>     (Meta_Feature*)(void*)&_Widget_goo_return_value
+> };
+> 
+> /*[1849]*/
+> const Meta_Method
+> Widget_goo_method::static_meta_class =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_METHOD,
+>     "goo",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     _Widget_goo_MFA,
+>     CIMPLE_ARRAY_SIZE(_Widget_goo_MFA),
+>     sizeof(Widget_goo_method),
+>     UINT32,
+> };
+> 
+> /*[1457]*/
+> static const Meta_Reference
+> _Widget_hoo_gin =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_IN,
+>     "gin",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     -1, /* subscript */
+>     &Gadget::static_meta_class,
+>     CIMPLE_OFF(Widget_hoo_method,gin)
+> };
+> 
+> /*[1457]*/
+> static const Meta_Reference
+> _Widget_hoo_gout =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_OUT,
+>     "gout",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     -1, /* subscript */
+>     &Gadget::static_meta_class,
+>     CIMPLE_OFF(Widget_hoo_method,gout)
+> };
+> 
+> /*[1671]*/
+> static const Meta_Property
+> _Widget_hoo_return_value =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_PROPERTY|CIMPLE_FLAG_OUT,
+>     "return_value",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     UINT32,
+>     0,
+>     CIMPLE_OFF(Widget_hoo_method,return_value),
+>     0, /* value */
+> };
+> 
+> /*[1647]*/
+> static Meta_Feature* _Widget_hoo_MFA[] =
+> {
+>     (Meta_Feature*)(void*)&_Widget_hoo_gin,
+>     (Meta_Feature*)(void*)&_Widget_hoo_gout,
+>     (Meta_Feature*)(void*)&_Widget_hoo_return_value
+> };
+> 
+> /*[1849]*/
+> const Meta_Method
+> Widget_hoo_method::static_meta_class =
+> {
+>     CIMPLE_ATOMIC_INITIALIZER, /* refs */
+>     CIMPLE_FLAG_METHOD|CIMPLE_FLAG_STATIC,
+>     "hoo",
+>     0, /* meta_qualifiers */
+>     0, /* num_meta_qaulifiers */
+>     _Widget_hoo_MFA,
+>     CIMPLE_ARRAY_SIZE(_Widget_hoo_MFA),
+>     sizeof(Widget_hoo_method),
+>     UINT32,
+58,59c273,276
+<     (Meta_Feature*)(void*)&_Widget_Left,
+<     (Meta_Feature*)(void*)&_Widget_Right,
+---
+>     (Meta_Feature*)(void*)&_Widget_key,
+>     (Meta_Feature*)(void*)&Widget_foo_method::static_meta_class,
+>     (Meta_Feature*)(void*)&Widget_goo_method::static_meta_class,
+>     (Meta_Feature*)(void*)&Widget_hoo_method::static_meta_class,
+66a284,285
+>     {1},
+>     {1},
+73c292
+<     CIMPLE_FLAG_ASSOCIATION,
+---
+>     CIMPLE_FLAG_CLASS,
+82,83c301,302
+<     2, /* num_keys */
+<     &__meta_repository_FA2AAE9362AC194F8C5D0A1A97482D47,
+---
+>     1, /* num_keys */
+>     &__meta_repository_1D5858A9C3AF1CDE82C2389F433E4440,
+Index: src/wmi/gadget/Widget.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Widget.h,v
+retrieving revision 1.1
+retrieving revision 1.5
+diff -r1.1 -r1.5
+4c4
+< // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.4
+---
+> // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.5
+13a14,15
+> #include "Gadget.h"
+> #include "Gadget.h"
+17a20
+> //     key
+24,25c27
+<     Gadget* Left;
+<     Gadget* Right;
+---
+>     Property<uint32> key;
+29a32,63
+> /*[1016]*/
+> class Widget_foo_method : public Instance
+> {
+> public:
+>     Property<uint32> arg1;
+>     Property<String> arg2;
+>     Property<uint32> arg3;
+>     Property<String> arg4;
+>     Property<boolean> return_value;
+>     CIMPLE_METHOD(Widget_foo_method)
+> };
+> 
+> /*[1016]*/
+> class Widget_goo_method : public Instance
+> {
+> public:
+>     Gadget* gin;
+>     Gadget* gout;
+>     Property<uint32> return_value;
+>     CIMPLE_METHOD(Widget_goo_method)
+> };
+> 
+> /*[1016]*/
+> class Widget_hoo_method : public Instance
+> {
+> public:
+>     Property< Array<Gadget*> > gin;
+>     Property< Array<Gadget*> > gout;
+>     Property<uint32> return_value;
+>     CIMPLE_METHOD(Widget_hoo_method)
+> };
+> 
+Index: src/wmi/gadget/Widget_Provider.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Widget_Provider.cpp,v
+retrieving revision 1.3
+retrieving revision 1.13
+diff -r1.3 -r1.13
+1,27c1
+< /*
+< **==============================================================================
+< **
+< ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+< ** 
+< ** Permission is hereby granted, free of charge, to any person obtaining a
+< ** copy of this software and associated documentation files (the "Software"),
+< ** to deal in the Software without restriction, including without limitation
+< ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
+< ** and/or sell copies of the Software, and to permit persons to whom the
+< ** Software is furnished to do so, subject to the following conditions:
+< ** 
+< ** The above copyright notice and this permission notice shall be included in
+< ** all copies or substantial portions of the Software.
+< ** 
+< ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+< ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+< ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+< ** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+< ** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+< ** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+< ** SOFTWARE.
+< **
+< **==============================================================================
+< */
+< 
+< // Generated by genprov 1.2.4
+---
+> // Generated by genprov 1.2.5
+62,72c36,58
+<     Gadget* left = Gadget::create();
+<     left->MyKey.set("Cyan");
+< 
+<     Gadget* right = Gadget::create();
+<     right->MyKey.set("Yellow");
+< 
+<     Widget* widget = Widget::create();
+<     widget->Left = left;
+<     widget->Right = right;
+< 
+<     handler->handle(widget);
+---
+>     // Widget.key=100
+>     {
+>         Widget* inst;
+>         inst = Widget::create();
+>         inst->key.set(100);
+>         handler->handle(inst);
+>     }
+> 
+>     // Widget.key=200
+>     {
+>         Widget* inst;
+>         inst = Widget::create();
+>         inst->key.set(200);
+>         handler->handle(inst);
+>     }
+> 
+>     // Widget.key=300
+>     {
+>         Widget* inst;
+>         inst = Widget::create();
+>         inst->key.set(300);
+>         handler->handle(inst);
+>     }
+79a66,71
+>     if (instance->key.value == 100)
+>     {
+>         __log("Widget_Provider::create_instance(): okay");
+>         return CREATE_INSTANCE_OK;
+>     }
+> 
+85a78,83
+>     if (instance->key.value == 100)
+>     {
+>         __log("Widget_Provider::delete_instance(): okay");
+>         return DELETE_INSTANCE_OK;
+>     }
+> 
+92a91,96
+>     if (instance->key.value == 100)
+>     {
+>         __log("Widget_Provider::modify_instance(): okay");
+>         return MODIFY_INSTANCE_OK;
+>     }
+> 
+96,101c100,105
+< Enum_Associator_Names_Status Widget_Provider::enum_associator_names(
+<     const Instance* instance,
+<     const String& result_class,
+<     const String& role,
+<     const String& result_role,
+<     Enum_Associator_Names_Handler<Instance>* handler)
+---
+> Invoke_Method_Status Widget_Provider::foo(
+>     const Property<uint32>& arg1,
+>     const Property<String>& arg2,
+>     Property<uint32>& arg3,
+>     Property<String>& arg4,
+>     Property<boolean>& return_value)
+103c107,119
+<     return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
+---
+>     __log("Widget_Provider::foo()\n");
+>     __log("arg1[%u]\n", arg1.value);
+>     __log("arg2[%s]\n", arg2.value.c_str());
+> 
+>     arg3.set(12345);
+>     arg4.set("Arg4");
+>     return_value.set(true);
+> 
+>     __log("arg3[%u]\n", arg3.value);
+>     __log("arg4[%s]\n", arg4.value.c_str());
+>     __log("return_value[%u]\n", (unsigned int)return_value.value);
+> 
+>     return INVOKE_METHOD_OK;
+106,111c122,127
+< Enum_Associators_Status Widget_Provider::enum_associators(
+<     const Instance* instance,
+<     const String& result_class,
+<     const String& role,
+<     const String& result_role,
+<     Enum_Associators_Handler<Instance>* handler)
+---
+> Invoke_Method_Status Widget_Provider::goo(
+>     const Widget* self,
+>     const Gadget* gin,
+>     Gadget*& gout,
+>     Property<uint32>& return_value)
+> 
+113c129,145
+<     return ENUM_ASSOCIATORS_UNSUPPORTED;
+---
+>     __log("Widget_Provider::goo()");
+> 
+>     if (self)
+>     {
+>         __log("Widget_Provider::goo(): self->key[%u]", self->key.value);
+>     }
+> 
+>     if (self)
+>     {
+>         __log("Widget_Provider::goo(): gin->key[%s]", gin->key.value.c_str());
+>     }
+> 
+>     gout = Gadget::create();
+>     gout->key.set("ORANGE");
+> 
+>     return_value.set(0);
+>     return INVOKE_METHOD_OK;
+116,120c148,152
+< Enum_References_Status Widget_Provider::enum_references(
+<     const Instance* instance,
+<     const Widget* model,
+<     const String& role,
+<     Enum_References_Handler<Widget>* handler)
+---
+> Invoke_Method_Status Widget_Provider::hoo(
+>     const Property< Array<Gadget*> >& gin,
+>     Property< Array<Gadget*> >& gout,
+>     Property<uint32>& return_value)
+> 
+122c154,181
+<     return ENUM_REFERENCES_UNSUPPORTED;
+---
+>     if (gin.value.size() == 0)
+>     {
+>         return_value.set(1);
+>         return INVOKE_METHOD_OK;
+>     }
+> 
+>     for (size_t i = 0; i < gin.value.size(); i++)
+>     {
+>         const Gadget* g = gin.value[i];
+> 
+>         __log("Widget_Provider::hoo(): g->key[%s]", g->key.value.c_str());
+>     }
+> 
+>     {
+>         Gadget* g = Gadget::create();
+>         g->key.set("YELLOW");
+>         gout.value.append(g);
+>     }
+> 
+>     {
+>         Gadget* g = Gadget::create();
+>         g->key.set("ORANGE");
+>         gout.value.append(g);
+>     }
+> 
+> 
+>     return_value.set(0);
+>     return INVOKE_METHOD_OK;
+Index: src/wmi/gadget/Widget_Provider.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/Widget_Provider.h,v
+retrieving revision 1.1
+retrieving revision 1.5
+diff -r1.1 -r1.5
+1c1
+< // Generated by genprov 1.2.4
+---
+> // Generated by genprov 1.2.5
+42,60c42,58
+<     Enum_Associator_Names_Status enum_associator_names(
+<         const Instance* instance,
+<         const String& result_class,
+<         const String& role,
+<         const String& result_role,
+<         Enum_Associator_Names_Handler<Instance>* handler);
+< 
+<     Enum_Associators_Status enum_associators(
+<         const Instance* instance,
+<         const String& result_class,
+<         const String& role,
+<         const String& result_role,
+<         Enum_Associators_Handler<Instance>* handler);
+< 
+<     Enum_References_Status enum_references(
+<         const Instance* instance,
+<         const Widget* model,
+<         const String& role,
+<         Enum_References_Handler<Widget>* handler);
+---
+>     Invoke_Method_Status foo(
+>         const Property<uint32>& arg1,
+>         const Property<String>& arg2,
+>         Property<uint32>& arg3,
+>         Property<String>& arg4,
+>         Property<boolean>& return_value);
+> 
+>     Invoke_Method_Status goo(
+>         const Widget* self,
+>         const Gadget* gin,
+>         Gadget*& gout,
+>         Property<uint32>& return_value);
+> 
+>     Invoke_Method_Status hoo(
+>         const Property< Array<Gadget*> >& gin,
+>         Property< Array<Gadget*> >& gout,
+>         Property<uint32>& return_value);
+Index: src/wmi/gadget/log.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/log.h,v
+retrieving revision 1.2
+retrieving revision 1.6
+diff -r1.2 -r1.6
+29a30
+> #include <cimple/cimple.h>
+47a49,50
+>     fprintf(os, "\n");
+> 
+50a54
+> #define LOG_TRACE __log("LOG_TRACE: %s(%d)", __FILE__, __LINE__)
+Index: src/wmi/gadget/module.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/module.cpp,v
+retrieving revision 1.4
+retrieving revision 1.11
+diff -r1.4 -r1.11
+3c3
+< // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENMOD 1.2.4
+---
+> // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENMOD 1.2.5
+9a10,12
+> #include "Connector_Provider.h"
+> #include "Buzzer_Provider.h"
+> #include "Upcall_Provider.h"
+54a58,116
+>         return Instance_Provider_Proc_T<Provider>::proc(registration,
+>             operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+> 
+>     Provider* provider = (Provider*)arg0;
+>     const Class* self = (const Class*)arg1;
+>     const char* meth_name = ((Instance*)arg2)->meta_class->name;
+> 
+>     if (strcasecmp(meth_name, "foo") == 0)
+>     {
+>         typedef Widget_foo_method Method;
+>         Method* method = (Method*)arg2;
+>         return provider->foo(
+>             method->arg1,
+>             method->arg2,
+>             method->arg3,
+>             method->arg4,
+>             method->return_value);
+>     }
+> 
+>     if (strcasecmp(meth_name, "goo") == 0)
+>     {
+>         typedef Widget_goo_method Method;
+>         Method* method = (Method*)arg2;
+>         return provider->goo(
+>             self,
+>             method->gin,
+>             method->gout,
+>             method->return_value);
+>     }
+> 
+>     if (strcasecmp(meth_name, "hoo") == 0)
+>     {
+>         typedef Widget_hoo_method Method;
+>         Method* method = (Method*)arg2;
+>         return provider->hoo(
+>             method->gin,
+>             method->gout,
+>             method->return_value);
+>     }
+> 
+>     return -1;
+> }
+> 
+> static int __cimple_Connector_Provider_proc(
+>     const Registration* registration,
+>     int operation,
+>     void* arg0,
+>     void* arg1,
+>     void* arg2,
+>     void* arg3,
+>     void* arg4,
+>     void* arg5,
+>     void* arg6,
+>     void* arg7)
+> {
+>     typedef Connector Class;
+>     typedef Connector_Provider Provider;
+> 
+>     if (operation != OPERATION_INVOKE_METHOD)
+64a127,195
+> static int __cimple_Buzzer_Provider_proc(
+>     const Registration* registration,
+>     int operation,
+>     void* arg0,
+>     void* arg1,
+>     void* arg2,
+>     void* arg3,
+>     void* arg4,
+>     void* arg5,
+>     void* arg6,
+>     void* arg7)
+> {
+>     typedef Buzzer Class;
+>     typedef Buzzer_Provider Provider;
+> 
+>     if (operation != OPERATION_INVOKE_METHOD)
+>         return Indication_Provider_Proc_T<Provider>::proc(registration,
+>             operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+> 
+>     Provider* provider = (Provider*)arg0;
+>     const Class* self = (const Class*)arg1;
+>     const char* meth_name = ((Instance*)arg2)->meta_class->name;
+> 
+>     if (strcasecmp(meth_name, "trigger") == 0)
+>     {
+>         typedef Buzzer_trigger_method Method;
+>         Method* method = (Method*)arg2;
+>         return provider->trigger(
+>             method->return_value);
+>     }
+> 
+>     return -1;
+> }
+> 
+> static int __cimple_Upcall_Provider_proc(
+>     const Registration* registration,
+>     int operation,
+>     void* arg0,
+>     void* arg1,
+>     void* arg2,
+>     void* arg3,
+>     void* arg4,
+>     void* arg5,
+>     void* arg6,
+>     void* arg7)
+> {
+>     typedef Upcall Class;
+>     typedef Upcall_Provider Provider;
+> 
+>     if (operation != OPERATION_INVOKE_METHOD)
+>         return Instance_Provider_Proc_T<Provider>::proc(registration,
+>             operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+> 
+>     Provider* provider = (Provider*)arg0;
+>     const Class* self = (const Class*)arg1;
+>     const char* meth_name = ((Instance*)arg2)->meta_class->name;
+> 
+>     if (strcasecmp(meth_name, "upcalls") == 0)
+>     {
+>         typedef Upcall_upcalls_method Method;
+>         Method* method = (Method*)arg2;
+>         return provider->upcalls(
+>             self,
+>             method->return_value);
+>     }
+> 
+>     return -1;
+> }
+> 
+67c198,201
+< CIMPLE_ASSOCIATION_PROVIDER(Widget_Provider);
+---
+> CIMPLE_INSTANCE_PROVIDER(Widget_Provider);
+> CIMPLE_ASSOCIATION_PROVIDER(Connector_Provider);
+> CIMPLE_INDICATION_PROVIDER(Buzzer_Provider);
+> CIMPLE_INSTANCE_PROVIDER(Upcall_Provider);
+77,78c211,218
+<   CIMPLE_CMPI_ASSOCIATION_PROVIDER(Widget_Provider);
+<   CIMPLE_CMPI_ASSOCIATION_PROVIDER2(Widget_Provider, Widget);
+---
+>   CIMPLE_CMPI_INSTANCE_PROVIDER(Widget_Provider);
+>   CIMPLE_CMPI_INSTANCE_PROVIDER2(Widget_Provider, Widget);
+>   CIMPLE_CMPI_ASSOCIATION_PROVIDER(Connector_Provider);
+>   CIMPLE_CMPI_ASSOCIATION_PROVIDER2(Connector_Provider, Connector);
+>   CIMPLE_CMPI_INDICATION_PROVIDER(Buzzer_Provider);
+>   CIMPLE_CMPI_INDICATION_PROVIDER2(Buzzer_Provider, Buzzer);
+>   CIMPLE_CMPI_INSTANCE_PROVIDER(Upcall_Provider);
+>   CIMPLE_CMPI_INSTANCE_PROVIDER2(Upcall_Provider, Upcall);
+Index: src/wmi/gadget/register.mof
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/register.mof,v
+retrieving revision 1.3
+retrieving revision 1.9
+diff -r1.3 -r1.9
+10c10
+<     SupportsPut = FALSE;
+---
+>     SupportsPut = TRUE;
+12c12
+<     SupportsDelete = FALSE;
+---
+>     SupportsDelete = TRUE;
+13a14,28
+>     QuerySupportLevels = { "WQL:UnarySelect" };
+> };
+> 
+> instance of __MethodProviderRegistration
+> {
+>     Provider = $P;
+> };
+> 
+> instance of __EventProviderRegistration
+> {
+>     Provider = $P;
+>     EventQueryList =
+>     {
+>         "SELECT * FROM Buzzer"
+>     };
+Index: src/wmi/gadget/repository.cpp
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/repository.cpp,v
+retrieving revision 1.2
+retrieving revision 1.16
+diff -r1.2 -r1.16
+3c3
+< // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.4
+---
+> // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.5
+16a17,20
+>     &Connector::static_meta_class,
+>     &__ExtrinsicEvent::static_meta_class,
+>     &Buzzer::static_meta_class,
+>     &Upcall::static_meta_class,
+21c25
+< extern const Meta_Repository __meta_repository_FA2AAE9362AC194F8C5D0A1A97482D47;
+---
+> extern const Meta_Repository __meta_repository_1D5858A9C3AF1CDE82C2389F433E4440;
+24c28
+< const Meta_Repository __meta_repository_FA2AAE9362AC194F8C5D0A1A97482D47 =
+---
+> const Meta_Repository __meta_repository_1D5858A9C3AF1CDE82C2389F433E4440 =
+Index: src/wmi/gadget/repository.h
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/repository.h,v
+retrieving revision 1.1
+retrieving revision 1.4
+diff -r1.1 -r1.4
+3c3
+< // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.4
+---
+> // PLEASE DO NOT EDIT; THIS FILE WAS AUTOMATICALLY GENERATED BY GENCLASS 1.2.5
+12a13,16
+> #include "Connector.h"
+> #include "__ExtrinsicEvent.h"
+> #include "Buzzer.h"
+> #include "Upcall.h"
+Index: src/wmi/gadget/repository.mof
+===================================================================
+RCS file: /home/cvs/cimple/src/wmi/gadget/repository.mof,v
+retrieving revision 1.7
+retrieving revision 1.16
+diff -r1.7 -r1.16
+5c5
+<     string MyKey;
+---
+>     string key;
+7,25c7,33
+<     [PropertyContext("Name")] 
+<     uint32 MyValue;
+< 
+<     uint32 Number;
+< 
+<     uint32 Array[];
+< 
+<     string Messages[];
+< 
+<     boolean Flag;
+< 
+<     uint8 U8;
+<     sint8 S8;
+<     uint8 U16;
+<     sint8 S16;
+<     uint8 U32;
+<     sint8 S32;
+<     uint8 U64;
+<     sint8 S64;
+---
+>     boolean b;
+>     uint8 u8;
+>     sint8 s8;
+>     uint8 u16;
+>     sint8 s16;
+>     uint8 u32;
+>     sint8 s32;
+>     uint8 u64;
+>     sint8 s64;
+>     real32 r32;
+>     real64 r64;
+>     datetime dt;
+> 
+>     boolean ba[];
+>     uint8 u8a[];
+>     sint8 s8a[];
+>     uint16 u16a[];
+>     sint16 s16a[];
+>     uint32 u32a[];
+>     sint32 s32a[];
+>     uint64 u64a[];
+>     sint64 s64a[];
+>     real32 r32a[];
+>     real64 r64a[];
+>     string sa[];
+>     datetime dta[];
+> };
+27,28c35,38
+<     uint8 U8A[];
+<     sint8 S8A[];
+---
+> [dynamic, provider("GadgetProvider")]
+> class Widget
+> {
+>     [Key] uint32 key;
+30,32c40,56
+<     /* Real32 */
+<     real32 R4;
+<     real32 R4A[];
+---
+>     [implemented, static]
+>     boolean foo(
+>         [in] uint32 arg1, 
+>         [in] string arg2, 
+>         [in(false), out] uint32 arg3,
+>         [in(false), out] string arg4);
+> 
+>     [implemented]
+>     uint32 goo(
+>         [in] Gadget REF gin,
+>         [in(false), out] Gadget REF gout);
+> 
+>     [implemented, static]
+>     uint32 hoo(
+>         [in] Gadget REF gin[],
+>         [in(false), out] Gadget REF gout[]);
+> };
+34,36c58,63
+<     /* Real64 */
+<     real64 R8;
+<     real64 R8A[];
+---
+> [dynamic, association, provider("GadgetProvider")]
+> class Connector
+> {
+>     [Key] Gadget REF Left;
+>     [Key] Widget REF Right;
+> };
+38,40c65,69
+<     /* Boolean */
+<     boolean B;
+<     boolean BA[];
+---
+> [dynamic, indication, provider("GadgetProvider")]
+> class Buzzer : __ExtrinsicEvent
+> {
+>     [Key] string key;
+>     string message;
+42c71,72
+<     datetime DT;
+---
+>     [implemented, static]
+>     uint32 trigger();
+45,46c75,76
+< [dynamic, association, provider("GadgetProvider")]
+< class Widget
+---
+> [dynamic, provider("GadgetProvider")]
+> class Upcall
+48,49c78,81
+<     [Key] Gadget REF Left;
+<     [Key] Gadget REF Right;
+---
+>     [Key] uint32 key;
+> 
+>     [implemented]
+>     uint32 upcalls();

@@ -1,0 +1,19 @@
+CIM             TYPE            FIELD           COMMENTS
+================================================================================
+boolean         VT_BOOL         boolVal
+sint8           VT_I2           iVal
+uint8           VT_UI1          bVal
+sint16          VT_I2           iVal
+uint16          VT_I4           lVal
+sint32          VT_I4           lVal
+uint32          VT_I4           lVal
+sint64          VT_BSTR         bstrVal
+uint64          VT_BSTR         bstrVal
+real32          VT_R4           fltVal
+real64          VT_R8           dblVal
+char16          VT_I2           iVal
+datetime        VT_BSTR         bstrVal
+object          VT_UNKNOWN      -
+reference       VT_BSTR         bstrVal          Object Path String
+string          VT_BSTR         bstrVal
+array           VT_ARRAY|TYPE   -

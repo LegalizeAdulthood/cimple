@@ -25,7 +25,7 @@ SOURCES = \
     OutOfOfficeNotice.cpp \
     repository.cpp
 
-LIBRARIES = brevity cimple
+include ../libraries.mak
 
 INCLUDES += -I../../..
 

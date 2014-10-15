@@ -15,6 +15,9 @@ static int _enum_CIM_ComputerSystem()
     for (; ie; ie++)
     {
         Ref<Instance> inst = ie();
+
+        CIM_ComputerSystem* ccs = cast<CIM_ComputerSystem*>(inst.ptr());
+        print(ccs);
     }
 
     return 0;

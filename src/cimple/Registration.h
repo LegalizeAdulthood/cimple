@@ -29,6 +29,68 @@
 
 #include "Provider.h"
 
+#if defined(CIMPLE_WMI_MODULE)
+# include <objbase.h>
+# include <initguid.h>
+#endif
+
+//==============================================================================
+//
+// CIMPLE adapter entry point (all CIMPLE adapters implement this interface).
+// The only pre-defined operation is 'T', which returns the provider type
+// which (so far) is one of the following:
+//
+//     'P' - Pegasus C++ Provider
+//     'C' - CMPI Provider
+//     'W' - WMI Provider
+//
+//==============================================================================
+
+CIMPLE_NAMESPACE_BEGIN
+
+struct CIMPLE_CIMPLE_LINKAGE Registration
+{
+    const char* module_name;
+    const char* provider_name;
+    Provider_Proc provider_proc;
+    const Meta_Class* meta_class;
+    Registration* next;
+
+    Registration(
+        const char* module_name_,
+        const char* provider_name_, 
+        Provider_Proc provider_proc_,
+        const Meta_Class* meta_class_,
+        Registration*& next_);
+};
+
+inline Registration::Registration(
+    const char* module_name_,
+    const char* provider_name_, 
+    Provider_Proc provider_proc_,
+    const Meta_Class* meta_class_,
+    Registration*& next_)
+{
+    provider_name = provider_name_;
+    module_name = module_name_;
+    provider_proc = provider_proc_;
+    meta_class = meta_class_;
+    next = next_;
+
+    // Prepend to registration list:
+    next_ = this;
+}
+
+typedef Registration* (*Module_Proc)();
+
+CIMPLE_NAMESPACE_END
+
+//==============================================================================
+//
+// CIMPLE registation macros
+//
+//==============================================================================
+
 #define CIMPLE_MODULE(MODULE) \
     static cimple::Registration* _cimple_registration_head = 0; \
     static const char* _cimple_module_name = #MODULE; \
@@ -193,61 +255,138 @@ struct __CMPI_Static_Data
 
 //==============================================================================
 //
+// WMI provider entry point macros
+//
+//==============================================================================
+
+#if defined(CIMPLE_WMI_MODULE)
+
+struct WMI_DllMain_Args
+{
+    cimple::Registration* reg;
+    const char* module_name;
+    const GUID* guid;
+    HMODULE* module;
+    HINSTANCE instance;
+    ULONG reason;
+    LPVOID reserved;
+    BOOL result;
+};
+
+struct WMI_DllGetClassObject_Args
+{
+    cimple::Registration* reg;
+    const char* module_name;
+    const GUID* guid;
+    HMODULE* module;
+    const CLSID* clsid;
+    const IID* iid;
+    LPVOID* ptr;
+    HRESULT result;
+};
+
+struct WMI_DllCanUnloadNow_Args
+{
+    cimple::Registration* reg;
+    const char* module_name;
+    const GUID* guid;
+    HMODULE* module;
+    HRESULT result;
+};
+
+struct WMI_DllRegisterServer_Args
+{
+    cimple::Registration* reg;
+    const char* module_name;
+    const GUID* guid;
+    HMODULE* module;
+    HRESULT result;
+};
+
+struct WMI_DllUnregisterServer_Args
+{
+    cimple::Registration* reg;
+    const char* module_name;
+    const GUID* guid;
+    HMODULE* module;
+    HRESULT result;
+};
+
+# define CIMPLE_WMI_PROVIDER_ENTRY_POINTS(GUID) \
+    extern "C" int cimple_wmi_adapter( \
+        void* arg0, void* arg1, void* arg2, void* arg3, \
+        void* arg4, void* arg5, void* arg6, void* arg7); \
+    static HMODULE _module; \
+    BOOL WINAPI DllMain(HINSTANCE instance, ULONG reason, LPVOID reserved) \
+    { \
+        WMI_DllMain_Args args; \
+        args.reg = _cimple_registration_head; \
+        args.module_name = _cimple_module_name; \
+        args.guid = &GUID; \
+        args.module = &_module; \
+        args.instance = instance; \
+        args.reason = reason; \
+        args.reserved = reserved; \
+        cimple_wmi_adapter((void*)'W', (void*)'M', &args, 0, 0, 0, 0, 0); \
+        return args.result; \
+    } \
+    STDAPI DllGetClassObject(REFCLSID clsid, REFIID iid, LPVOID* ptr) \
+    { \
+        WMI_DllGetClassObject_Args args; \
+        args.reg = _cimple_registration_head; \
+        args.module_name = _cimple_module_name; \
+        args.guid = &GUID; \
+        args.module = &_module; \
+        args.clsid = &clsid; \
+        args.iid = &iid; \
+        args.ptr = ptr; \
+        cimple_wmi_adapter((void*)'W', (void*)'G', &args, 0, 0, 0, 0, 0); \
+        return args.result; \
+    } \
+    STDAPI DllCanUnloadNow() \
+    { \
+        WMI_DllCanUnloadNow_Args args; \
+        args.reg = _cimple_registration_head; \
+        args.module_name = _cimple_module_name; \
+        args.guid = &GUID; \
+        args.module = &_module; \
+        cimple_wmi_adapter((void*)'W', (void*)'C', &args, 0, 0, 0, 0, 0); \
+        return args.result; \
+    } \
+    STDAPI DllRegisterServer() \
+    { \
+        WMI_DllRegisterServer_Args args; \
+        args.reg = _cimple_registration_head; \
+        args.module_name = _cimple_module_name; \
+        args.guid = &GUID; \
+        args.module = &_module; \
+        cimple_wmi_adapter((void*)'W', (void*)'R', &args, 0, 0, 0, 0, 0); \
+        return args.result; \
+    } \
+    STDAPI DllUnregisterServer() \
+    { \
+        WMI_DllUnregisterServer_Args args; \
+        args.reg = _cimple_registration_head; \
+        args.module_name = _cimple_module_name; \
+        args.guid = &GUID; \
+        args.module = &_module; \
+        cimple_wmi_adapter((void*)'W', (void*)'U', &args, 0, 0, 0, 0, 0); \
+        return args.result; \
+    }
+
+#else /* defined(CIMPLE_WMI_MODULE) */
+
+# define CIMPLE_WMI_PROVIDER_ENTRY_POINTS /* empty */
+
+#endif /* defined(CIMPLE_WMI_MODULE) */
+
+//==============================================================================
+//
 // CIMPLE_CLASS_DEPENDENCY()
 //
 //==============================================================================
 
 #define CIMPLE_CLASS_DEPENDENCY(CLASS) \
     const char* __class_##CLASS = "@(#)CLASS_DEPENDENCY=" #CLASS;
-
-//==============================================================================
-//
-// CIMPLE adapter entry point (all CIMPLE adapters implement this interface).
-// The only pre-defined operation is 'T', which returns the provider type
-// which (so far) is one of the following:
-//
-//     'P' - Pegasus C++ Provider
-//     'C' - CMPI Provider
-//
-//==============================================================================
-
-CIMPLE_NAMESPACE_BEGIN
-
-struct CIMPLE_CIMPLE_LINKAGE Registration
-{
-    const char* module_name;
-    const char* provider_name;
-    Provider_Proc provider_proc;
-    const Meta_Class* meta_class;
-    Registration* next;
-
-    Registration(
-        const char* module_name_,
-        const char* provider_name_, 
-        Provider_Proc provider_proc_,
-        const Meta_Class* meta_class_,
-        Registration*& next_);
-};
-
-inline Registration::Registration(
-    const char* module_name_,
-    const char* provider_name_, 
-    Provider_Proc provider_proc_,
-    const Meta_Class* meta_class_,
-    Registration*& next_)
-{
-    provider_name = provider_name_;
-    module_name = module_name_;
-    provider_proc = provider_proc_;
-    meta_class = meta_class_;
-    next = next_;
-
-    // Prepend to registration list:
-    next_ = this;
-}
-
-typedef Registration* (*Module_Proc)();
-
-CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Registration_h */

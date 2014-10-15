@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include "usage.h"
+#include <util/UUID.h>
 
 using namespace std;
 bool cmpi_opt = false;
@@ -134,6 +135,102 @@ static void write_proc(FILE* os, const MOF_Class_Decl* cd)
 
     fprintf(os, suffix);
 }
+
+#if defined(CIMPLE_WINDOWS)
+
+static void gen_guid(const char* module_name, const cimple::UUID& uuid)
+{
+    const char* fn = "guid.h";
+
+    if (exists(fn))
+    {
+        printf("Skipped %s (already exists)\n", fn);
+        return;
+    }
+
+    FILE* os = fopen(fn, "w");
+
+    if (!os)
+        err("failed to create \"%s\"", fn);
+
+    const unsigned char *p = uuid.data;
+    fprintf(os, "// {%02x%02x%02x%02x-"
+        "%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x}\n",
+        p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+        p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+
+    fprintf(os, "DEFINE_GUID(\n");
+    fprintf(os, "  CLSID_%s_Module,\n", module_name);
+    fprintf(os, "  0x%02x%02x%02x%02x,\n", p[0], p[1], p[2], p[3]);
+    fprintf(os, "  0x%02x%02x,\n", p[4], p[5]);
+    fprintf(os, "  0x%02x%02x,\n", p[6], p[7]);
+    fprintf(os, "  0x%02x,\n", p[8]);
+    fprintf(os, "  0x%02x,\n", p[9]);
+    fprintf(os, "  0x%02x,\n", p[10]);
+    fprintf(os, "  0x%02x,\n", p[11]);
+    fprintf(os, "  0x%02x,\n", p[12]);
+    fprintf(os, "  0x%02x,\n", p[13]);
+    fprintf(os, "  0x%02x,\n", p[14]);
+    fprintf(os, "  0x%02x);\n", p[15]);
+
+    printf("Created %s\n", fn);
+}
+
+static void gen_register(const char* module_name, const cimple::UUID& uuid)
+{
+    // Open file:
+
+    const char* fn = "register.mof";
+
+    if (exists(fn))
+    {
+        printf("Skipped %s (already exists)\n", fn);
+        return;
+    }
+
+    FILE* os = fopen(fn, "w");
+
+    if (!os)
+        err("failed to create \"%s\"", fn);
+
+    // Format guid:
+
+    const unsigned char *p = uuid.data;
+    char buf[1024];
+    sprintf(buf, "%02x%02x%02x%02x-"
+        "%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+        p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7],
+        p[8], p[9], p[10], p[11], p[12], p[13], p[14], p[15]);
+
+    // Create register.mof:
+
+    static const char REGISTER_FMT[] =
+        "Instance of __Win32Provider as $P\n"
+        "{\n"
+        "    Name = \"%s\";\n"
+        "    ClsId = \"{%s}\";\n"
+        "};\n"
+        "\n"
+        "instance of __InstanceProviderRegistration\n"
+        "{\n"
+        "    Provider = $P;\n"
+        "    SupportsPut = TRUE;\n"
+        "    SupportsGet = TRUE;\n"
+        "    SupportsDelete = TRUE;\n"
+        "    SupportsEnumeration = TRUE;\n"
+        "    QuerySupportLevels = { \"WQL:UnarySelect\" };\n"
+        "};\n"
+        "instance of __MethodProviderRegistration\n"
+        "{\n"
+        "    Provider = $P;\n"
+        "};\n";
+
+    fprintf(os, REGISTER_FMT, module_name, buf);
+
+    printf("Created %s\n", fn);
+}
+
+#endif /* defined(CIMPLE_WINDOWS) */
 
 static void gen_module(const char* module_name, int argc, char** argv)
 {
@@ -263,13 +360,38 @@ static void gen_module(const char* module_name, int argc, char** argv)
     fprintf(os, "#ifdef CIMPLE_OPENWBEM_MODULE\n");
     fprintf(os, "  CIMPLE_OPENWBEM_PROVIDER(%s_Module);\n", module_name);
     fprintf(os, "# define __CIMPLE_FOUND_ENTRY_POINT\n");
-    fprintf(os, "#endif\n");
+    fprintf(os, "#endif\n\n");
+
+    // Generate WMI entry point.
+
+    /*
+        #ifdef CIMPLE_WMI_MODULE
+          // {23CB8761-914A-11cf-B705-00AA0062CBBB}
+          DEFINE_GUID(CLSID_Gadget_Module,
+            0x23cb8761, 0x914a,
+            0x11cf, 0xb7, 0x5,
+            0x0, 0xaa, 0x0, 0x62,
+            0xcb, 0xbb);
+          CIMPLE_WMI_PROVIDER_ENTRY_POINTS(CLSID_Gadget_Module)
+        # define __CIMPLE_FOUND_ENTRY_POINT
+        #endif
+    */
+    {
+        fprintf(os, "#ifdef CIMPLE_WMI_MODULE\n");
+        fprintf(os, "# include \"guid.h\"\n");
+        fprintf(os, "  CIMPLE_WMI_PROVIDER_ENTRY_POINTS(CLSID_%s_Module)\n",
+            module_name);
+        fprintf(os, "# define __CIMPLE_FOUND_ENTRY_POINT\n");
+        fprintf(os, "#endif\n\n");
+    }
+
+    // Generate check for entry point.
 
     const char MESSAGE[] = 
         "No provider entry point found. Please define one of the following: "
-        "CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, CIMPLE_OPENWBEM_MODULE";
+        "CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, CIMPLE_OPENWBEM_MODULE, "
+        "CIMPLE_WMI_MODULE";
 
-    fprintf(os, "\n");
     fprintf(os, "#ifndef __CIMPLE_FOUND_ENTRY_POINT\n");
     fprintf(os, "# error \"%s\"\n", MESSAGE);
     fprintf(os, "#endif\n");
@@ -360,6 +482,19 @@ int main(int argc, char** argv)
 
     gen_module(argv[0], argc - 1, argv + 1);
 
+    // Generate guid.h file.
+
+#if defined(CIMPLE_WINDOWS)
+    {
+        cimple::UUID uuid;
+        cimple::create_uuid(uuid);
+
+        gen_guid(argv[0], uuid);
+        gen_register(argv[0], uuid);
+    }
+#endif /* defined(CIMPLE_WINDOWS) */
+
+    // Generate register.mof.
+
     return 0;
 }
-

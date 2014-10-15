@@ -102,6 +102,8 @@ public:
     Get_Repository_Status get_repository(
         const Meta_Repository*& meta_repository);
 
+    const Registration* registration() const { return _registration; }
+
 protected:
 
     const Registration* _registration;
