@@ -474,7 +474,7 @@ void gen_method_page(const MOF_Class_Decl* p, const MOF_Feature_Info* f)
     fprintf(os, "</head>\n");
     fprintf(os, "<body bgcolor=lightgrey>\n");
     fprintf(os, "  <br>\n");
-	fprintf(os, "Class %s Method %s\n", p->name, f->feature->name);
+    fprintf(os, "Class %s Method %s\n", p->name, f->feature->name);
     fprintf(os, "  <br>\n");
 
     fprintf(os, "<h2>Description:</h2>\n");
@@ -487,8 +487,8 @@ void gen_method_page(const MOF_Class_Decl* p, const MOF_Feature_Info* f)
     fprintf(os, "  </tr>\n");
     fprintf(os, "  </table>\n");
 
-	// Start table
-	// Table has rows for Parameter, Type, Direction, Qualifiers
+    // Start table
+    // Table has rows for Parameter, Type, Direction, Qualifiers
     fprintf(os, "  <br>\n");
     fprintf(os, "  <h2>Definition:</h2>\n");
     fprintf(os, "  <table summary=\"layout\" border=\"1\" width=\"80%%\"");
@@ -526,18 +526,18 @@ void gen_method_page(const MOF_Class_Decl* p, const MOF_Feature_Info* f)
     fprintf(os, "    </thead>\n");
     fprintf(os, "    <tbody>\n");
 
-	// Output table row for each Parameter
+    // Output table row for each Parameter
 
-	const MOF_Method_Decl* md = f->feature->
-	const MOF_Parameter* parameters = md->parameters;
+    const MOF_Method_Decl* md = f->feature->
+    const MOF_Parameter* parameters = md->parameters;
 
-	for (const MOF_Feature_Info* f = (const MOF_Feature_Info*)p->all_features; 
+    for (const MOF_Feature_Info* f = (const MOF_Feature_Info*)p->all_features; 
         f; 
         f = (const MOF_Feature_Info*)f->next)
-	{
-	}
+    {
+    }
 
-	// end table
+    // end table
     fprintf(os, "    </tbody>\n");
     fprintf(os, "  </table>\n");
     print_typo_conventions(os);
@@ -663,8 +663,8 @@ void gen_class_html(const MOF_Class_Decl* p,
         {
 
             fprintf(os, "        <td><a href=\"%s%s.html\">method</a></td>\n",
-					p->name, f->feature->name);
-			gen_method_page(p,  f);
+                    p->name, f->feature->name);
+            gen_method_page(p,  f);
         }
 
 #if 0
@@ -886,7 +886,7 @@ void gen_class_href(FILE* os,
                       int level,
                       bool show_metatype,
                       bool show_superclass,
-					  const char* treefilename)
+                      const char* treefilename)
 {
     // indent the defined number of spaces for each indent level
     // TODO: I think this indent mechanism is font sensitive.  Need
@@ -907,25 +907,23 @@ void gen_class_href(FILE* os,
         ((show_metatype)? _meta_type_name(cd) : ""),
         cd->name);
 
-		if (treefilename != NULL)
-		{
-			// show link to tree view
-			fprintf(os, "<a href=\"%s#%s\">(tree)</a>\n", treefilename,cd->name);
-		}
-		else
-		{
-			fprintf(os,"\n");
-		}
+    if (treefilename != NULL)
+    {
+        // show link to tree view
+        fprintf(os, "<a href=\"%s#%s\">(tree)</a>\n", treefilename,cd->name);
+    }
+    else
+    {
+        fprintf(os,"\n");
+    }
 
-        // If there is a superclass, append it as another hyperlink
-        // TODO: add the meta_type_name to the superclass
-        if ( show_superclass && cd->super_class_name != 0)
-        {
-            fprintf(os, " : <a href=\"#%s\">%s</a>", 
-                cd->super_class_name, cd->super_class_name);
-
-        }
-	
+    // If there is a superclass, append it as another hyperlink
+    // TODO: add the meta_type_name to the superclass
+    if ( show_superclass && cd->super_class_name != 0)
+    {
+        fprintf(os, " : <a href=\"#%s\">%s</a>", 
+            cd->super_class_name, cd->super_class_name);
+    }
 
     fprintf(os, "  <br>\n");
 }
@@ -1097,7 +1095,7 @@ void gen_class_list_doc(const char* filename, vector<Class_Decl>&  classes,
     for (size_t i = 0; i < classes.size(); i++)
     {
         const MOF_Class_Decl* cd = classes[i].class_decl;
-		
+
         // Output the hyperlink for this class
         gen_class_href(os, cd, 0, true, true, treefilename);
     }

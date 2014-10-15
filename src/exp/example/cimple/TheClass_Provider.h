@@ -21,20 +21,20 @@ public:
     CIMPLE_HIDE Unload_Status unload();
 
     CIMPLE_HIDE Get_Instance_Status get_instance(
-	TheClass* instance);
+        TheClass* instance);
 
     CIMPLE_HIDE Enum_Instance_Status enum_instance(
-	TheClass* instance, 
-	State& state);
+        TheClass* instance, 
+        State& state);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(
-	const TheClass* inst);
+        const TheClass* inst);
 
     CIMPLE_HIDE Delete_Instance_Status delete_instance(
-	const TheClass* inst);
+        const TheClass* inst);
 
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
-	const TheClass* inst);
+        const TheClass* inst);
 
     CIMPLE_HIDE Invoke_Method_Status add(
         const TheClass* self,

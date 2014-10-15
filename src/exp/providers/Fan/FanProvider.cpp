@@ -86,7 +86,7 @@ void FanProvider::getInstance(
             }
             catch(CIMException&)
             {
-		// Ignore exception!
+                // Ignore exception!
             }
 
             break;
@@ -185,77 +185,77 @@ void FanProvider::invokeMethod(
 
     if (methodName.equal("SetSpeed"))
     {
-	// Find the instance:
+        // Find the instance:
 
-	CIMInstance instance;
+        CIMInstance instance;
 
-	for (Uint32 i = 0, n = _instances.size(); i < n; i++)
-	{
-	    if (objectPath == _instances[i].getPath())
-	    {
-		instance = _instances[i];
-		break;
-	    }
-	}
+        for (Uint32 i = 0, n = _instances.size(); i < n; i++)
+        {
+            if (objectPath == _instances[i].getPath())
+            {
+                instance = _instances[i];
+                break;
+            }
+        }
 
-	if (instance.isUninitialized())
+        if (instance.isUninitialized())
             throw CIMOperationFailedException("no such instance");
 
-	// Extract value for DesiredSpeed parameter:
+        // Extract value for DesiredSpeed parameter:
 
-	if (inParams.size() != 1)
+        if (inParams.size() != 1)
             throw CIMOperationFailedException("too many arguments");
 
-	const CIMParamValue& param = inParams[0];
+        const CIMParamValue& param = inParams[0];
 
-	if (!String::equalNoCase(param.getParameterName(), "DesiredSpeed"))
+        if (!String::equalNoCase(param.getParameterName(), "DesiredSpeed"))
             throw CIMOperationFailedException("no such parameter");
 
-	Uint64 desiredSpeed;
+        Uint64 desiredSpeed;
 
-	try
-	{
-	    param.getValue().get(desiredSpeed);
-	}
-	catch(CIMException&)
-	{
+        try
+        {
+            param.getValue().get(desiredSpeed);
+        }
+        catch(CIMException&)
+        {
             throw CIMOperationFailedException("parameter type mismatch");
-	}
+        }
 
-	// Set instance.DesiredSpeed from parameter.
-	
-	Uint32 pos = instance.findProperty("DesiredSpeed");
+        // Set instance.DesiredSpeed from parameter.
+        
+        Uint32 pos = instance.findProperty("DesiredSpeed");
 
-	if (pos == PEG_NOT_FOUND)
+        if (pos == PEG_NOT_FOUND)
             throw CIMOperationFailedException("missing DesiredSpeed property");
 
-	CIMProperty prop = instance.getProperty(pos);
+        CIMProperty prop = instance.getProperty(pos);
 
-	if (prop.getValue().getType() != CIMTYPE_UINT64)
+        if (prop.getValue().getType() != CIMTYPE_UINT64)
             throw CIMOperationFailedException("type mismatch");
 
-	prop.setValue(desiredSpeed);
+        prop.setValue(desiredSpeed);
 
-	// Return Speed
+        // Return Speed
 
-	pos = instance.findProperty("Speed");
+        pos = instance.findProperty("Speed");
 
-	if (pos == PEG_NOT_FOUND)
+        if (pos == PEG_NOT_FOUND)
             throw CIMOperationFailedException("missing DesiredSpeed property");
 
-	prop = instance.getProperty(pos);
-	Uint64 speed;
+        prop = instance.getProperty(pos);
+        Uint64 speed;
 
-	try
-	{
-	    prop.getValue().get(speed);
-	}
-	catch (CIMException&)
-	{
+        try
+        {
+            prop.getValue().get(speed);
+        }
+        catch (CIMException&)
+        {
             throw CIMOperationFailedException("type mismatch");
-	}
+        }
 
-	handler.deliver(CIMValue(speed));
+        handler.deliver(CIMValue(speed));
     }
     else
     {

@@ -24,14 +24,14 @@ Get_Instance_Status TheClass_Provider::get_instance(TheClass* inst)
 {
     if (inst->u.value == "TheClass01")
     {
-	inst->v.value = 99;
-	inst->w.value = true;
-	inst->x.value = 1.5;
-	inst->y.value.append(1);
-	inst->y.value.append(2);
-	inst->y.value.append(3);
+        inst->v.value = 99;
+        inst->w.value = true;
+        inst->x.value = 1.5;
+        inst->y.value.append(1);
+        inst->y.value.append(2);
+        inst->y.value.append(3);
 
-	return GET_INSTANCE_OK;
+        return GET_INSTANCE_OK;
     }
 
     return GET_INSTANCE_NOT_FOUND;
@@ -75,7 +75,7 @@ int TheClass_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Provider_Proc_T<Provider>::proc(
-	    operation, arg0, arg1, arg2);
+            operation, arg0, arg1, arg2);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;

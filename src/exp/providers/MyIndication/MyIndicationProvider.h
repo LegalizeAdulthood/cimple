@@ -24,23 +24,23 @@ public:
     virtual void disableIndications();
 
     virtual void createSubscription(
-	const OperationContext& context,
-	const CIMObjectPath& subscriptionName,
-	const Array <CIMObjectPath>& classNames,
-	const CIMPropertyList& propertyList,
-	const Uint16 repeatNotificationPolicy);
+        const OperationContext& context,
+        const CIMObjectPath& subscriptionName,
+        const Array <CIMObjectPath>& classNames,
+        const CIMPropertyList& propertyList,
+        const Uint16 repeatNotificationPolicy);
 
     virtual void modifySubscription(
-	const OperationContext& context,
-	const CIMObjectPath& subscriptionName,
-	const Array <CIMObjectPath>& classNames,
-	const CIMPropertyList& propertyList,
-	const Uint16 repeatNotificationPolicy);
+        const OperationContext& context,
+        const CIMObjectPath& subscriptionName,
+        const Array <CIMObjectPath>& classNames,
+        const CIMPropertyList& propertyList,
+        const Uint16 repeatNotificationPolicy);
 
     virtual void deleteSubscription (
-	const OperationContext& context,
-	const CIMObjectPath& subscriptionName,
-	const Array <CIMObjectPath>& classNames);
+        const OperationContext& context,
+        const CIMObjectPath& subscriptionName,
+        const Array <CIMObjectPath>& classNames);
 
     virtual void invokeMethod(
         const OperationContext& context,

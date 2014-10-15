@@ -51,12 +51,12 @@ int Client::connect(
 
     try
     {
-	_rep.connect(host, port, Pegasus::String(), Pegasus::String());
+        _rep.connect(host, port, Pegasus::String(), Pegasus::String());
     }
     catch(Pegasus::Exception& e)
     {
-	raise_error(e.getMessage().getCString());
-	return -1;
+        raise_error(e.getMessage().getCString());
+        return -1;
     }
 
     // success
@@ -67,8 +67,8 @@ void Client::put_error(const char* prefix)
 {
     if (_error)
     {
-	fprintf(stderr, "error: %s: %s\n", prefix, _error_message.c_str());
-	exit(1);
+        fprintf(stderr, "error: %s: %s\n", prefix, _error_message.c_str());
+        exit(1);
     }
 }
 

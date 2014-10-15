@@ -109,7 +109,7 @@ IDENT_CHAR [A-Za-z_]
 
 <<EOF>> {
     if (pop_include_file() == -1)
-	yyterminate();
+        yyterminate();
 }
 
 \/\* {
@@ -123,12 +123,12 @@ IDENT_CHAR [A-Za-z_]
 
     while ((ch = yyinput()) != 0)
     {
-	if (ch == '\n')
-	    MOF_line_num++;
-	else if (ch == '/' && prev_ch == '*')
-	    break;
-	
-	prev_ch = ch;
+        if (ch == '\n')
+            MOF_line_num++;
+        else if (ch == '/' && prev_ch == '*')
+            break;
+        
+        prev_ch = ch;
     }
 
     /* 
@@ -148,7 +148,7 @@ IDENT_CHAR [A-Za-z_]
      */
 
     while ((c = yyinput()) !='\n' && c != 0)
-	;
+        ;
 
     MOF_line_num++;
 }
@@ -322,7 +322,7 @@ IDENT_CHAR [A-Za-z_]
     MOF_lval.int_value = strtoll(yytext, &end, 2);
 
     if (end == NULL || (*end != 'b' && *end != 'B'))
-	MOF_error("conversion error (1)");
+        MOF_error("conversion error (1)");
 
     return TOK_INT_VALUE;
 }
@@ -333,7 +333,7 @@ IDENT_CHAR [A-Za-z_]
     MOF_lval.int_value = strtoll(yytext, &end, 8);
 
     if (end == NULL || *end != '\0')
-	MOF_error("conversion error (2)");
+        MOF_error("conversion error (2)");
 
     return TOK_INT_VALUE;
 }
@@ -344,7 +344,7 @@ IDENT_CHAR [A-Za-z_]
     MOF_lval.int_value = strtoll(yytext, &end, 10);
 
     if (end == NULL || *end != '\0')
-	MOF_error("conversion error (3)");
+        MOF_error("conversion error (3)");
 
     return TOK_INT_VALUE;
 }
@@ -360,7 +360,7 @@ IDENT_CHAR [A-Za-z_]
     MOF_lval.int_value = strtoll(yytext, &end, 16);
 
     if (end == NULL || *end != '\0')
-	MOF_error("conversion error (4)");
+        MOF_error("conversion error (4)");
 
     return TOK_INT_VALUE;
 }
@@ -371,7 +371,7 @@ IDENT_CHAR [A-Za-z_]
     MOF_lval.real_value = strtod((char*)yytext, &end);
 
     if (end == NULL || *end != '\0')
-	MOF_error("conversion error (5)");
+        MOF_error("conversion error (5)");
 
     return TOK_REAL_VALUE;
 }
@@ -398,33 +398,33 @@ IDENT_CHAR [A-Za-z_]
 
     switch (yytext[2])
     {
-	case 'b':
-	    ch = '\b';
-	    break;
+        case 'b':
+            ch = '\b';
+            break;
 
-	case 't':
-	    ch = '\t';
-	    break;
+        case 't':
+            ch = '\t';
+            break;
 
-	case 'n':
-	    ch = '\n';
-	    break;
+        case 'n':
+            ch = '\n';
+            break;
 
-	case 'f':
-	    ch = '\f';
-	    break;
+        case 'f':
+            ch = '\f';
+            break;
 
-	case 'r':
-	    ch = '\r';
-	    break;
+        case 'r':
+            ch = '\r';
+            break;
 
-	case '"':
-	case '\'':
-	case '\\':
-	    ch = yytext[2];
+        case '"':
+        case '\'':
+        case '\\':
+            ch = yytext[2];
 
-	default:
-	    MOF_ASSERT(0);
+        default:
+            MOF_ASSERT(0);
     }
 
     MOF_lval.char_value = ch;
@@ -434,7 +434,7 @@ IDENT_CHAR [A-Za-z_]
 \'\\[xX]{HEX_DIGIT}+\' {
 
     if (MOF_asc7_to_char16(&yytext[1], &MOF_lval.char_value) == 0)
-	MOF_error("bad hex character literal");
+        MOF_error("bad hex character literal");
 
     return TOK_CHAR_VALUE;
 }
@@ -442,7 +442,7 @@ IDENT_CHAR [A-Za-z_]
 {IDENT_CHAR}({IDENT_CHAR}|{DECIMAL_DIGIT})* {
 
     if ((MOF_lval.string_value = strdup(yytext)) == NULL)
-	MOF_error("out of memory");
+        MOF_error("out of memory");
 
     return TOK_IDENT;
 }
@@ -450,7 +450,7 @@ IDENT_CHAR [A-Za-z_]
 \${IDENT_CHAR}({IDENT_CHAR}|{DECIMAL_DIGIT})* {
 
     if ((MOF_lval.string_value = strdup(yytext)) == NULL)
-	MOF_error("out of memory");
+        MOF_error("out of memory");
 
     return TOK_ALIAS_IDENT;
 }
@@ -527,12 +527,12 @@ static FILE* _find_and_open_included_file(
         size_t n = strlen(MOF_current_dir) + strlen(file_name) + 2;
 
         if (n > sizeof(path))
-	    MOF_error("path would be too long");
+            MOF_error("path would be too long");
 
         sprintf(path, "%s/%s", MOF_current_dir, file_name);
-	FILE* stream = fopen(path, "rb");
+        FILE* stream = fopen(path, "rb");
 
-	if (stream != NULL)
+        if (stream != NULL)
         {
             char* p = strrchr(path, '/');
             assert(p != NULL);
@@ -542,7 +542,7 @@ static FILE* _find_and_open_included_file(
             strncat(current_dir, path, p - path);
             *current_dir_out = current_dir;
 
-	    return stream;
+            return stream;
         }
     }
 
@@ -555,12 +555,12 @@ static FILE* _find_and_open_included_file(
         size_t n = strlen(MOF_include_paths[i]) + strlen(file_name) + 2;
 
         if (n > sizeof(path))
-	    MOF_error("path would be too long");
+            MOF_error("path would be too long");
 
         sprintf(path, "%s/%s", MOF_include_paths[i], file_name);
-	FILE* stream = fopen(path, "rb");
+        FILE* stream = fopen(path, "rb");
 
-	if (stream != NULL)
+        if (stream != NULL)
         {
             char* p = strrchr(path, '/');
             assert(p != NULL);
@@ -570,7 +570,7 @@ static FILE* _find_and_open_included_file(
             strncat(current_dir, path, p - path);
             *current_dir_out = current_dir;
 
-	    return stream;
+            return stream;
         }
     }
 
@@ -600,12 +600,12 @@ void push_include_file(const char* file_name_)
 
     if (state_stack_size == MAX_STATE_STACK_SIZE)
     {
-	MOF_error_printf("includes nested too deeply (greater than %d)",
-	    MAX_STATE_STACK_SIZE);
+        MOF_error_printf("includes nested too deeply (greater than %d)",
+            MAX_STATE_STACK_SIZE);
     }
 
     MOF_State current_state = 
-	{ MOF_file_name, MOF_line_num, MOF_current_dir, YY_CURRENT_BUFFER };
+        { MOF_file_name, MOF_line_num, MOF_current_dir, YY_CURRENT_BUFFER };
 
     state_stack[state_stack_size++] = current_state;
 
@@ -615,12 +615,12 @@ void push_include_file(const char* file_name_)
     FILE* stream = _find_and_open_included_file(file_name, &current_dir);
 
     if (stream == NULL)
-	MOF_error_printf("failed to open included file: \"%s\"", file_name);
+        MOF_error_printf("failed to open included file: \"%s\"", file_name);
 
     // Create the new state:
 
     yy_switch_to_buffer(yy_create_buffer(stream, YY_BUF_SIZE));
-    MOF_file_name = strdup(file_name);	
+    MOF_file_name = strdup(file_name);  
     MOF_line_num = 1;
     MOF_current_dir = current_dir;
 }
@@ -634,20 +634,20 @@ int pop_include_file()
 
     if (state_stack_size > 0)
     {
-	free(MOF_file_name);
-	free(MOF_current_dir);
-	fclose(YY_CURRENT_BUFFER->yy_input_file);
+        free(MOF_file_name);
+        free(MOF_current_dir);
+        fclose(YY_CURRENT_BUFFER->yy_input_file);
 
-	yy_delete_buffer(YY_CURRENT_BUFFER);
+        yy_delete_buffer(YY_CURRENT_BUFFER);
 
-	state_stack_size--;
+        state_stack_size--;
 
-	MOF_line_num = state_stack[state_stack_size].line_num;
-	MOF_file_name = state_stack[state_stack_size].file_name;
-	MOF_current_dir = state_stack[state_stack_size].current_dir;
+        MOF_line_num = state_stack[state_stack_size].line_num;
+        MOF_file_name = state_stack[state_stack_size].file_name;
+        MOF_current_dir = state_stack[state_stack_size].current_dir;
 
-	yy_switch_to_buffer(state_stack[state_stack_size].buffer_state);
-	return 0;
+        yy_switch_to_buffer(state_stack[state_stack_size].buffer_state);
+        return 0;
     }
 
     /* 

@@ -55,71 +55,71 @@
       [] all_qualifiers
       [] qual_mask
       {} MOF_Feature
-	() print
-	() validate
-	() clone
-	[] type
+        () print
+        () validate
+        () clone
+        [] type
         {} MOF_Property_Decl
-	  () print
-	  () validate
-	  () clone
-	  [] data_type
-	  [] array_index
-	  [] initializer
+          () print
+          () validate
+          () clone
+          [] data_type
+          [] array_index
+          [] initializer
         {} MOF_Method_Decl
-	  () print
-	  () validate
-	  () clone
-	  () check_compatibility
-	  [] data_type
-	  [] parameters
+          () print
+          () validate
+          () clone
+          () check_compatibility
+          [] data_type
+          [] parameters
         {} MOF_Reference_Decl
-	  () print
-	  () validate
-	  () clone
-	  () validate_obj_ref
-	  [] class_name
-	  [] class_decl
-	  [] alias
-	  [] obj_ref
+          () print
+          () validate
+          () clone
+          () validate_obj_ref
+          [] class_name
+          [] class_decl
+          [] alias
+          [] obj_ref
       {} MOF_Parameter
-	() clone
-	() compatible
-	() check_duplicates
-	[] data_type
-	[] array_index
-	[] ref_name
+        () clone
+        () compatible
+        () check_duplicates
+        [] data_type
+        [] array_index
+        [] ref_name
       {} MOF_Property
-	() clone
-	() print
-	() print_list
-	[] initializer
-	[] alias
+        () clone
+        () print
+        () print_list
+        [] initializer
+        [] alias
       {} MOF_Class_Decl
-	() clone
-	() validate
-	() print
-	() is_a
-	() count_keys
-	() find
-	() find_by_alias
-	() handle
-	[] list (static)
-	[] alias
-	[] super_class_name
-	[] super_class
-	[] features
-	[] all_features
+        () clone
+        () validate
+        () print
+        () is_a
+        () count_keys
+        () find
+        () find_by_alias
+        () handle
+        [] list (static)
+        [] alias
+        [] super_class_name
+        [] super_class
+        [] features
+        [] all_features
       {} MOF_Instance_Decl
-	() clone
-	() handle
-	() find_by_alias
-	() find
-	() alias_to_obj_ref
-	[] list (static)
-	[] inst_name
-	[] class_name
-	[] class_decl
-	[] alias
-	[] properties
-	[] all_features
+        () clone
+        () handle
+        () find_by_alias
+        () find
+        () alias_to_obj_ref
+        [] list (static)
+        [] inst_name
+        [] class_name
+        [] class_decl
+        [] alias
+        [] properties
+        [] all_features

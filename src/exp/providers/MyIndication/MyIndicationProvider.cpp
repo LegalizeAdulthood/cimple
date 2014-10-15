@@ -37,11 +37,11 @@ CIMInstance MyIndicationProvider::createIndication(const CIMName& className)
     // Add IndicationIdentifier property:
 
     indic.addProperty(
-	CIMProperty("IndicationIdentifier", getNextIndicationIdentifier()));
+        CIMProperty("IndicationIdentifier", getNextIndicationIdentifier()));
 
     // Add IndicationTime property:
     indic.addProperty(
-	CIMProperty("IndicationTime", CIMDateTime::getCurrentDateTime()));
+        CIMProperty("IndicationTime", CIMDateTime::getCurrentDateTime()));
 
     return indic;
 }
@@ -120,7 +120,7 @@ void MyIndicationProvider::invokeMethod(
     assert(objectReference.getClassName().equal("MyIndication"));
 
     if ((!methodName.equal("DeliverIndications")))
-	throw Exception("no such method");
+        throw Exception("no such method");
 
     // Send return value:
 
@@ -132,10 +132,10 @@ void MyIndicationProvider::invokeMethod(
 
     if (_handler)
     {
-	for (size_t i = 0; i < 1000000; i++)
-	{
-	    _handler->deliver(createIndication("MyIndication"));
-	}
+        for (size_t i = 0; i < 1000000; i++)
+        {
+            _handler->deliver(createIndication("MyIndication"));
+        }
     }
 }
 
@@ -145,7 +145,7 @@ extern "C" PEGASUS_EXPORT CIMProvider* PegasusCreateProvider(
     T( printf("=== PegasusCreateProvider()\n"); );
 
     if (String::equalNoCase(providerName, "MyIndicationProvider"))
-	return new MyIndicationProvider;
+        return new MyIndicationProvider;
 
     return 0;
 }

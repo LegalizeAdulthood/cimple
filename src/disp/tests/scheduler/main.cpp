@@ -39,13 +39,13 @@ static uint64 _timer(void* arg)
     printf("_timer(%s)\n", str);
 
     if (str[0] == '1')
-	return 1 * SECOND;
+        return 1 * SECOND;
 
     if (str[0] == '2')
-	return 2 * SECOND;
+        return 2 * SECOND;
 
     if (str[0] == '3')
-	return 3 * SECOND;
+        return 3 * SECOND;
 
     return 0;
 }
@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 
     for (;;)
     {
-	sched.dispatch();
+        sched.dispatch();
     }
 
     printf("+++++ passed all tests\n");

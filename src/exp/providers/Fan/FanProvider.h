@@ -46,44 +46,44 @@ public:
     virtual void terminate();
 
     virtual void getInstance(
-	const OperationContext& context,
-	const CIMObjectPath& objectPath,
-	const Boolean includeQualifiers,
-	const Boolean includeClassOrigin,
-	const CIMPropertyList& propertyList,
-	InstanceResponseHandler& handler);
+        const OperationContext& context,
+        const CIMObjectPath& objectPath,
+        const Boolean includeQualifiers,
+        const Boolean includeClassOrigin,
+        const CIMPropertyList& propertyList,
+        InstanceResponseHandler& handler);
 
     virtual void enumerateInstances(
-	const OperationContext& context,
-	const CIMObjectPath& objectPath,
-	const Boolean includeQualifiers,
-	const Boolean includeClassOrigin,
-	const CIMPropertyList& propertyList,
-	InstanceResponseHandler& handler);
+        const OperationContext& context,
+        const CIMObjectPath& objectPath,
+        const Boolean includeQualifiers,
+        const Boolean includeClassOrigin,
+        const CIMPropertyList& propertyList,
+        InstanceResponseHandler& handler);
 
     virtual void enumerateInstanceNames(
-	const OperationContext& context,
-	const CIMObjectPath& objectPath,
-	ObjectPathResponseHandler& handler);
+        const OperationContext& context,
+        const CIMObjectPath& objectPath,
+        ObjectPathResponseHandler& handler);
 
     virtual void modifyInstance(
-	const OperationContext& context,
-	const CIMObjectPath& objectPath,
-	const CIMInstance& obj,
-	const Boolean includeQualifiers,
-	const CIMPropertyList& propertyList,
-	ResponseHandler& handler);
+        const OperationContext& context,
+        const CIMObjectPath& objectPath,
+        const CIMInstance& obj,
+        const Boolean includeQualifiers,
+        const CIMPropertyList& propertyList,
+        ResponseHandler& handler);
 
     virtual void createInstance(
-	const OperationContext& context,
-	const CIMObjectPath& objectPath,
-	const CIMInstance& obj,
-	ObjectPathResponseHandler& handler);
+        const OperationContext& context,
+        const CIMObjectPath& objectPath,
+        const CIMInstance& obj,
+        ObjectPathResponseHandler& handler);
 
     virtual void deleteInstance(
-	const OperationContext& context,
-	const CIMObjectPath& objectPath,
-	ResponseHandler& handler);
+        const OperationContext& context,
+        const CIMObjectPath& objectPath,
+        ResponseHandler& handler);
 
     virtual void invokeMethod(
         const OperationContext& context,

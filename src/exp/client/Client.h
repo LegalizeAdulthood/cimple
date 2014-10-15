@@ -44,8 +44,8 @@ public:
     ~Client();
 
     int connect(
-	const char* host,
-	unsigned short port);
+        const char* host,
+        unsigned short port);
 
     void raise_error(const char* message);
 
@@ -77,20 +77,20 @@ int Client::create_instance(const String& name_space, const CLASS* ci)
     Pegasus::CIMInstance pi;
 
     if (Pegasus::Converter::to_pegasus_instance(
-	ci, pi, name_space.c_str()) != 0)
+        ci, pi, name_space.c_str()) != 0)
     {
-	raise_error("conversion to Pegasus instance failed");
-	return 0;
+        raise_error("conversion to Pegasus instance failed");
+        return 0;
     }
 
     try
     {
-	_rep.createInstance(name_space.c_str(), pi);
+        _rep.createInstance(name_space.c_str(), pi);
     }
     catch(Pegasus::Exception& e)
     {
-	raise_error(e.getMessage().getCString());
-	return -1;
+        raise_error(e.getMessage().getCString());
+        return -1;
     }
 
     return 0;
@@ -109,10 +109,10 @@ int Client::get_instance(const String& name_space, CLASS* ci)
     Pegasus::CIMObjectPath op;
 
     if (Pegasus::Converter::to_pegasus_object_path(
-	ci, op, name_space.c_str()) != 0)
+        ci, op, name_space.c_str()) != 0)
     {
-	raise_error("conversion to Pegasus object path failed");
-	return 0;
+        raise_error("conversion to Pegasus object path failed");
+        return 0;
     }
 
     //
@@ -121,23 +121,23 @@ int Client::get_instance(const String& name_space, CLASS* ci)
 
     try
     {
-	Pegasus::CIMInstance pi = _rep.getInstance(name_space.c_str(), op);
+        Pegasus::CIMInstance pi = _rep.getInstance(name_space.c_str(), op);
 
-	Instance* tmp = 0;
+        Instance* tmp = 0;
 
-	if (Pegasus::Converter::to_cimple_instance(
-	    pi, &CLASS::static_meta_class, tmp) != 0)
-	{
-	    raise_error("failed to convert to a cimple instance");
-	    return -1;
-	}
+        if (Pegasus::Converter::to_cimple_instance(
+            pi, &CLASS::static_meta_class, tmp) != 0)
+        {
+            raise_error("failed to convert to a cimple instance");
+            return -1;
+        }
 
-	copy(ci, tmp);
+        copy(ci, tmp);
     }
     catch(Pegasus::Exception& e)
     {
-	raise_error(e.getMessage().getCString());
-	return -1;
+        raise_error(e.getMessage().getCString());
+        return -1;
     }
 
 
