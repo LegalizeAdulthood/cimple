@@ -69,11 +69,11 @@ void unref(const Meta_Class* mc)
 
 //==============================================================================
 //
-// __has_feature()
+// cimple_has_feature()
 //
 //==============================================================================
 
-bool __has_feature(const Meta_Class* mc, uint32 type)
+bool cimple_has_feature(const Meta_Class* mc, uint32 type)
 {
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {

@@ -97,16 +97,16 @@ inline const Meta_Method* find_method(
 }
 
 CIMPLE_CIMPLE_LINKAGE
-bool __has_feature(const Meta_Class* mc, uint32 type);
+bool cimple_has_feature(const Meta_Class* mc, uint32 type);
 
 inline bool has_methods(const Meta_Class* mc)
 {
-    return __has_feature(mc, CIMPLE_FLAG_METHOD);
+    return cimple_has_feature(mc, CIMPLE_FLAG_METHOD);
 }
 
 inline bool has_references(const Meta_Class* mc)
 {
-    return __has_feature(mc, CIMPLE_FLAG_REFERENCE);
+    return cimple_has_feature(mc, CIMPLE_FLAG_REFERENCE);
 }
 
 CIMPLE_CIMPLE_LINKAGE
