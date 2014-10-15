@@ -5,27 +5,32 @@
 TOP = ../..
 include $(TOP)/mak/config.mak
 
+## Define the differences between windows/MSVC and other shells/compilers with
+## respect to quote marks for the define commands
 ifdef CIMPLE_WINDOWS_MSVC
 QT:=
+DBQT:="
 else
 QT:="
+DBQT:=\"
 endif
 
 OPTIONS_H=$(TOP)/src/cimple/options.h
 
 all: $(OPTIONS_H)
 
-### target is cimple/config.options
+### target is cimple/config.options. Build the #define statements that
+### make up this file
 
 $(OPTIONS_H): ../../config.options
 	echo // > $(OPTIONS_H)
-	echo //  This file built by CIMPLE .  See src/options/Makefile >> $(OPTIONS_H)
+	echo //  This file built by CIMPLE using src/options/Makefile >> $(OPTIONS_H)
 	echo //  It provides internal definitions for CIMPLE configure >> $(OPTIONS_H)
 	echo //  options that are used within the CIMPLE code. The file is >> $(OPTIONS_H) 
 	echo //  regenerated each time the configuration options >> $(OPTIONS_H)
-	echo //  are changed. >> $(OPTIONS_H)
+	echo //  file is changed. >> $(OPTIONS_H)
 	echo //  Please do not change this file, Change options with the >> $(OPTIONS_H)
-	echo //  configure script >> $(OPTIONS_H)
+	echo //  configure script or the config.options file >> $(OPTIONS_H)
 	echo // >> $(OPTIONS_H)
 
 ifeq ($(OS_TYPE),windows)
@@ -37,7 +42,19 @@ ifeq ($(OS_TYPE),windows)
 	echo #define CIMPLE_NAMESPACE $(WITH_NAMESPACE_OPT)>> $(OPTIONS_H)
   endif
   ifeq ($(ENABLE_EMBEDDED_INSTANCES_OPT),1)
+	echo "" >> $(OPTIONS_H)
+	echo // The embedded instance functionality is enabled in config.options >> $(OPTIONS_H)
 	echo #define CIMPLE_ENABLE_EMBEDDED_INSTANCES>> $(OPTIONS_H)
+  endif
+  ifeq ($(ENABLE_SCHEDULER_OPT),1)
+	echo "" >> $(OPTIONS_H)
+	echo // The scheduler functionality is enabled in config.options >> $(OPTIONS_H)
+	echo #define CIMPLE_ENABLE_SCHEDULER>> $(OPTIONS_H)
+  endif
+  ifeq ($(DISABLE_LOG_MACROS_OPT),1)
+	echo "" >> $(OPTIONS_H)
+	echo // Disables compile of the macros in log.h >> $(OPTIONS_H)
+	echo #define DISABLE_LOG_MACROS_OPT>> $(OPTIONS_H)
   endif
   ifdef CIMPLEHOME_ENVVAR_OPT
 	echo #define CIMPLEHOME_ENVVAR "$(CIMPLEHOME_ENVVAR_OPT)" >> $(OPTIONS_H)
@@ -54,23 +71,40 @@ else
 	echo $(QT)#define CIMPLE_NAMESPACE $(WITH_NAMESPACE_OPT)$(QT)>> $(OPTIONS_H)
   endif
   ifeq ($(ENABLE_EMBEDDED_INSTANCES_OPT),1)
+	echo "" >> $(OPTIONS_H)
+	echo $(QT)// The embedded instance functionality is enabled in config.options$(QT) >> $(OPTIONS_H)
 	echo $(QT)#define CIMPLE_ENABLE_EMBEDDED_INSTANCES$(QT) >> $(OPTIONS_H)
   endif
-  ifdef CIMPLEHOME_ENVVAR_OPT
-	echo $(QT)#define CIMPLEHOME_ENVVAR \"$(CIMPLEHOME_ENVVAR_OPT)\"$(QT) >> $(OPTIONS_H)
-  else
-	echo $(QT)#define CIMPLEHOME_ENVVAR \"CIMPLE_HOME\"$(QT) >> $(OPTIONS_H)      
+  ifeq ($(ENABLE_SCHEDULER_OPT),1)
+	echo "" >> $(OPTIONS_H)
+	echo $(QT)// The scheduler functionality is enabled in config.options$(QT) >> $(OPTIONS_H)
+	echo $(QT)#define CIMPLE_ENABLE_SCHEDULER$(QT) >> $(OPTIONS_H)
   endif
-
+  ifeq ($(DISABLE_LOG_MACROS_OPT),1)
+	echo "" >> $(OPTIONS_H)
+	echo $(QT)// Disables compile of the macros in log.h$(QT) >> $(OPTIONS_H)
+	echo $(QT)#define DISABLE_LOG_MACROS_OPT$(QT)>> $(OPTIONS_H)
+  endif
+  ifdef CIMPLEHOME_ENVVAR_OPT
+	echo $(QT)#define CIMPLEHOME_ENVVAR $(DBQT)$(CIMPLEHOME_ENVVAR_OPT)$(DBQT)$(QT) >> $(OPTIONS_H)
+  else
+	echo $(QT)#define CIMPLEHOME_ENVVAR $(DBQT)CIMPLE_HOME$(DBQT)$(QT) >> $(OPTIONS_H)      
+  endif
 
 endif
 
-## Temp to confirm that the QT function works across all platforms
+	echo // END_OF_FILE >> $(OPTIONS_H)
+
+##Confirm that the QT function works across all platforms
+## Note that this is not an automatic test.
 test:
-	echo "#define CIMPLEHOME_ENVVAR \"CIMPLE_HOME\"" >> temp.txt
-	echo $(QT)#defined CIMPLEHOME_ENVVAR \"CIMPLE_HOME\"$(QT) >> temp.txt
+	echo "#define CIMPLEHOME_ENVVAR \"CIMPLE_HOME\"" > result.txt
+	echo $(QT)#define CIMPLEHOME_ENVVAR $(DBQT)CIMPLE_HOME$(DBQT)$(QT) >> result.txt
+	$(DIFF) result.txt result.master
+	$(RM) result.txt
 
 clean:
 	$(call rm,$(OPTIONS_H))
+	$(RM) result.txt
 
 include $(TOP)/mak/rules.mak

@@ -38,9 +38,93 @@
 
 using namespace std;
 
+size_t find(vector<string>& array, const string& x)
+{
+    for (size_t i = 0; i < array.size(); i++)
+    {
+        if (array[i] == x)
+            return i;
+    }
+
+    return size_t(-1);
+}
+
+bool legal_class_name(const string& ident)
+{
+    const char* p = ident.c_str();
+
+    if (!isalpha(*p) && *p != '_')
+        return false;
+
+    while (isalnum(*p) || *p == '_')
+        p++;
+
+    return *p == '\0';
+}
+
+void append_unique(vector<string>& array, const string& x)
+{
+    size_t pos = find(array, x);
+
+    if (pos == size_t(-1))
+        array.push_back(x);
+}
+
+void load_class_list_file(vector<string>& classes, const string& path)
+{
+    FILE* is = fopen(path.c_str(), "r");
+
+    if (!is)
+        err("failed to open \"%s\"", path.c_str());
+
+    char buffer[1024];
+
+    for (int line = 1; fgets(buffer, sizeof(buffer), is) != NULL; line++)
+    {
+        if (buffer[0] == '#')
+            continue;
+
+        char* start = buffer;
+
+        /* Remove leading whitespace. */
+
+        while (isspace(*start))
+            start++;
+
+        /* Remove trailing whitespace. */
+
+        char* p = start;
+
+        while (*p)
+            p++;
+
+        while (p != start && isspace(p[-1]))
+            *--p = '\0';
+
+        /* Skip empty lines. */
+
+        if (*start == '\0')
+            continue;
+
+        /* Check whether legal class name. */
+
+        if (!legal_class_name(start))
+        {
+            err("illegal class name on line %d of %s: \"%s\"",
+                line, path.c_str(), start);
+        }
+
+        /* Append class to list. */
+
+        append_unique(classes, start);
+    }
+
+    fclose(is);
+}
+
 static string _schema_mof;
 
-static int _find_schema_mof(const char* path, string& schema_mof)
+static int _find_schema_mof(const char* path, string& schema_mof, bool verbose)
 {
     schema_mof.erase(schema_mof.begin(), schema_mof.end());
 
@@ -57,7 +141,10 @@ static int _find_schema_mof(const char* path, string& schema_mof)
         }
     }
 
-    // Search for a file of the form cimv[0-9]*.mof in this directory.
+    // Next Search for a file of the form cimv[0-9]*.mof in this directory
+    // which covers the DMTF schemas from about 2.15 to 2.25
+    // or cim_schma[0-9.]mof (since about 225 the top level name has been
+    // changed to cim_schema_x.yy.z.mof
 
     DIR* dir = opendir(path);
 
@@ -91,6 +178,27 @@ static int _find_schema_mof(const char* path, string& schema_mof)
                 }
             }
         }
+        else if(strncmp(name,"cim_schema_", 11) == 0)
+        {
+            const char* p = name + 11;
+
+            while (isdigit(*p) || *p == '.')
+                p++;
+
+            if (strcmp(p, "mof") == 0)
+            {
+                struct stat st;
+
+                string tmp = string(path) + string("/") + string(name);
+
+                if (stat(tmp.c_str(), &st) == 0)
+                {
+                    schema_mof = tmp;
+                    closedir(dir);
+                    return 0;
+                }
+            }
+        }
     }
 
     closedir(dir);
@@ -99,7 +207,7 @@ static int _find_schema_mof(const char* path, string& schema_mof)
     return -1;
 }
 
-void setup_mof_path()
+void setup_mof_path(bool verbose)
 {
     const char* mof_path = getenv("CIMPLE_MOF_PATH");
 
@@ -111,6 +219,10 @@ void setup_mof_path()
 #else
     if (!mof_path)
         mof_path = CIMPLE_DEFAULT_SCHEMA;
+    if (verbose)
+    {
+        printf("Using CIMPLE_DEFAULT_SCHEMA = %s\n", mof_path);
+    }
 #endif
 
     char* tmp = strdup(mof_path);
@@ -122,14 +234,20 @@ void setup_mof_path()
     const char SEP[] = ":";
 #endif
 
-
-
     for (char* p = strtok(tmp, SEP); p; p = strtok(NULL, SEP))
     {
         MOF_include_paths[MOF_num_include_paths++] = strdup(p);
 
-        if (_find_schema_mof(p, _schema_mof) == 0)
+        if (verbose)
+            printf("test for mof schema at = %s\n", p);
+
+        if (_find_schema_mof(p, _schema_mof, verbose) == 0)
+        {
+            if (verbose)
+                printf("mof schema %s found.\n", _schema_mof.c_str());
+
             found = true;
+        }
 
         struct stat st;
 
@@ -144,7 +262,8 @@ void setup_mof_path()
     if (!found)
     {
         err("Failed to find master CIM MOF file on CIMPLE_MOF_PATH. The name "
-            "of this file must match \"cimv[0-9]*.mof\" or \"CIM_Schema.mof\". "
+            "of this file must match \"cimv[0-9]*.mof\",\"CIM_Schema.mof\" "
+            "or cim_schema_[0-9.]mof. "
             "CIMPLE_MOF_PATH=%s", mof_path);
     }
 }
@@ -165,7 +284,7 @@ int find_file(const char* path)
     return -1;
 }
 
-void load_repository(const vector<string>& extra_mof_files)
+void load_repository(const vector<string>& extra_mof_files, bool verbose)
 {
     // Add the current directory to the search path:
 

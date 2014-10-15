@@ -211,8 +211,24 @@ set prev=
     set found=1
   )
 
+  if "%1" == "--enable-adapter-trace" (
+    set enable-adapter-trace-opt=1
+    set found=1
+  )
+
   if "%1" == "--enable-embedded-instances" (
     set enable_embedded_instances=1
+    set found=1
+  )
+
+  if "%1" == "--disable-log-macros" (
+    set disable_log_macros=1
+    set found=1
+  )
+
+
+  if "%1" == "--enable-adapter-trace" (
+    set enable_adapter_trace=1
     set found=1
   )
 
@@ -364,7 +380,40 @@ goto done
 
 ::==============================================================================
 ::
-:: Echo options
+:: Test correct compiler: Only allows Microsoft compiler today
+::
+::==============================================================================
+
+:: determine if the compiler exists. i.e. execute cl
+::
+cl
+if ERRORLEVEL 1 GOTO NO_COMPILER
+goto TEST64
+
+:NO_COMPILER
+echo Error: Microsoft compiler (cl) not found
+goto done
+
+:: Test if compiler matches platform definition.  This executes a test compile
+:: to determine if 64 bin predefined macro exists.
+::
+:TEST64
+echo cl-c -D%__host% src\configTests\compilerWordSizeTest\compilerWordSizeTest.cpp
+cl -c -D%__host% src\configTests\compilerWordSizeTest\compilerWordSizeTest.cpp
+if ERRORLEVEL 1 goto WORD_SIZE_ERROR
+goto WORD_SIZE_OK
+
+:WORD_SIZE_ERROR
+echo Error: MicrososftCompiler word size does not match platform definition %__host%%
+erase compilerWordSizeTest.obj
+goto done
+
+:WORD_SIZE_OK
+erase compilerWordSizeTest.obj
+
+::==============================================================================
+::
+:: Echo options to the console
 ::
 ::==============================================================================
 
@@ -386,9 +435,12 @@ echo with_namespace=%with_namespace%
 echo enable_debug=%enable_debug%
 echo enable_wmi=%enable_wmi%
 echo enable_static=%enable_static%
+echo enable-adapter-trace-opt=%enable-adapter-trace-opt%
 echo enable_embedded_instances=%enable_embedded_instances%
 echo enable_scheduler=%enable_scheduler%
 echo cimplehome-envvar=%cimplehome_envvar%
+echo enable-adapter-trace=%enable_adapter_trace%
+echo disable_log_macros=%disable_log_macros%
 :skip
 
 ::==============================================================================
@@ -424,12 +476,25 @@ if not "%enable_static%" == "" (
     echo WIN_ENABLE_STATIC_OPT=TRUE>> config.options
 )
 
+if not "%enable_adapter_trace_opt%" == "" (
+    echo WIN_ENABLE_ADAPTER_TRACE_OPT=TRUE>> config.options
+)
+
 if not "%enable_embedded_instances%" == "" (
     echo WIN_ENABLE_EMBEDDED_INSTANCES_OPT=TRUE>> config.options
 )
 
 if not "%enable_scheduler%" == "" (
     echo WIN_ENABLE_SCHEDULER_OPT=TRUE>> config.options
+)
+
+
+if not "%enable_adapter_trace%" == "" (
+    echo ENABLE_ADAPTER_TRACE_OPT=TRUE>> config.options
+)
+
+if not "%disable_log_macros%" == "" (
+    echo DISABLE_LOG_MACROS_OPT=TRUE>> config.options
 )
 
 if not "%with_namespace%" == "" (
@@ -465,9 +530,12 @@ set enable_wmi=
 set enable_static=
 set enable_embedded_instances=
 set enable_scheduler=
+set enable_adapter_trace=
+set disable_log_macros=
 set help=
 set host=
 set __host=
+set enable_adapter_trace_opt=
 
 set arg0=
 set prev=

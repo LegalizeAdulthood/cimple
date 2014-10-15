@@ -31,6 +31,7 @@
 #include <Pegasus/Client/CIMClient.h>
 #include <Pegasus/Common/CIMValue.h>
 #include <Pegasus/Common/StringConversion.h>
+#include <Pegasus/Common/XmlWriter.h>
 
 // The following flag--when undefined--disables broken CMPI tests.
 //#define FULL_EMBEDDED_TESTING 1
@@ -323,6 +324,34 @@ bool check_prop(CIMInstance& c1, CIMInstance& c2, const String& name)
     CIMProperty p1 = c1.getProperty(pos1);
     CIMProperty p2 = c2.getProperty(pos2);
 
+    if (!p1.identical(p2))
+    {
+        cout << "ERROR: propertyMismatch" << endl
+             << "p1: ";
+        XmlWriter::printPropertyElement(p1, cerr);
+        cout << "p2: ";
+        XmlWriter::printPropertyElement(p2, cerr);
+        cout << endl;
+    }
+
+    CIMType t1 = p1.getType();
+    CIMType t2 = p2.getType();
+    if (!(t1 == t2))
+    {
+        cout << "ERROR: CIMTypes are different" << endl;
+    }
+    CIMValue v1 = p1.getValue();
+    CIMValue v2 = p2.getValue();
+    if (!(v1 == v2))
+    {
+        cout << "ERROR: value elements are different" << endl;
+        cout << "v1: ";
+        XmlWriter::printValueElement(v1, cerr);
+        cout << "v2: ";
+        XmlWriter::printValueElement(v2, cerr);
+        cout << endl;
+    }
+    // return the test identical result
     return(p1.identical(p2));
 }
 
@@ -607,33 +636,45 @@ public:
         return _done;
     }
 
-    // get the next permutation of the list.  Returns true if there is another
-    // permutation.
+    // get the next permutation of the list.  Returns next property list
+    // permutation
     CIMPropertyList& next()
     {
         Array<CIMName> names;
 
         // build the next list of property names
         Uint32 end = _pos + _length;
+        // Create array with all properties between _pos and _end using
+        // _spacing
         for (Uint32 i = _pos ; i < end ; i += _spacing)
         {
-            names.append(_list[i]);
+            Uint32 x = i%_list.size();
+            names.append(_list[x]);
         }
 
-        // advance pointers for next request and test for done
+        // advance length for next test and test if at max.
+        // If length at max for this _pos, get next pos and reset length
         _length++;
         if (_pos + _length > _maxPropertyList)
         {
             _length = 1;
             _pos++;
-            if (_pos == _maxPropertyList)
+
+            // if _pos at max, increase spacing and try again
+            if (_pos >= _maxPropertyList)
+            {
+                _pos = 1;
+                if (++_spacing >= (_maxPropertyList - 1))
             {
                 _done = true;
+                }
             }
         }
         // set the Array into property list and return
         _pl.clear();
         _pl.set(names);
+        //printf("p%u l%u s%u\n", _pos, _length, _spacing);
+        //cout << _toString(_pl) << endl;
         return _pl;
     }
 
@@ -649,9 +690,9 @@ private:
 
     Array<CIMName> _list;         // properties in original list
     Uint32 _maxPropertyList;      // number of properties on list
-    Uint32 _pos;                  // pos to start next group
-    Uint32 _length;               // length of next group
-    Uint32 _spacing;              // number to advance between properties
+    Uint32 _pos;                  // pos in list to start next group
+    Uint32 _length;               // length of propertyList group
+    Uint32 _spacing;              // number to skip between properties
     Boolean _done;                // test done indicator  
     CIMPropertyList _pl;          // last property list generated  
 };
@@ -663,6 +704,24 @@ private:
 // Also executes specific property list tests including:
 //     1. property name not in the instance
 //     2. duplicate property name in the list.
+String _toString(const CIMPropertyList& pl)
+{
+    String rtn;
+    Array<CIMName> pls = pl.getPropertyNameArray();
+    if (pl.isNull())
+        return("NULL");
+
+    if (pl.size() == 0)
+        return("EMPTY");
+
+    for (Uint32 i = 0 ; i < pls.size() ; i++)
+    {
+        if (i != 0)
+            rtn.append(", ");
+        rtn.append(pls[i].getString());
+    }
+    return(rtn);
+}
 
 void test_getInstance_propertyLists(CIMClient& client, CIMObjectPath& cop)
 {
@@ -714,6 +773,7 @@ void test_getInstance_propertyLists(CIMClient& client, CIMObjectPath& cop)
                                          false,false,false, pl);
         assert(ci.getPropertyCount() == 1);
 
+        // test to confirm that this is the property with name "Key"
         CIMProperty p = ci.getProperty(0);
         assert(p.getName() == "Key");
     }

@@ -51,17 +51,21 @@ class CIMPLE_CIMPLE_LINKAGE Error
 {
 public:
 
+    // Set the message. This clears any previous message
+    // in the TSD
     static CIMPLE_PRINTF_ATTR(1, 2)
     void set(const char* format, ...);
 
-    // Prepends debugging information to error message:
+    // Prepend debugging information to error message:
     static void set_prefix(
         const char* function, 
         const char* file, 
         size_t line);
 
+    // get the error message. Returns "" if no message
     static const char* get();
 
+    // clear the message and prefix information
     static void clear();
 };
 

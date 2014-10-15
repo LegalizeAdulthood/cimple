@@ -44,9 +44,21 @@ String string_printf(const char* format, ...)
     return(rtn_string);
 }
 
-// formatting function that returns char point.  While this function
-// allocates memory for the return char* the user is responsible for
-// freeing that memory
+// formatter that appends formatted output to existing string
+void string_append_printf(String& str, const char* format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+    char* rtn;
+    rtn = str_vprintf(format, ap);
+    va_end(ap);
+    str.append(rtn);
+    //String rtn_string(rtn);
+    free(rtn);
+}
+// formatting function that returns char pointer.  This function
+// allocates memory for the return char*. The user is responsible for
+// freeing that memory.
 char* str_printf(const char* format, ...)
 {
     int n;
@@ -137,6 +149,21 @@ int iprintf(size_t level, const char* format, ...)
     va_end(ap);
 
     return r;
+}
+
+void istring_printf(String& str, size_t level, const char* format, ...)
+{
+    string_append_printf(str, "%*s", int(level * 4), "");
+    //printf("%*s", int(level * 4), "");
+
+    va_list ap;
+    va_start(ap, format);
+    String data = string_vprintf(format, ap);
+    va_end(ap);
+
+    str.append(data);
+
+    return;
 }
 
 CIMPLE_NAMESPACE_END

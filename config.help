@@ -95,6 +95,17 @@ Options:
 				                for CIMPLE runtime files such as the .configrc
 				                file and log files.  The default is
 				                CIMPLE_HOME if this is not specified.
+    --enable-adapter-trace      Enable the trace code in the adapters.  This
+                                enables compile of trace code in the various
+                                adapters (cmpi, C++, etc.). Note that this
+                                adds to size and should be used primarily
+                                during testing if issues arise concerning
+                                the adapters.
+   --disable_log_macros         Disables the macros CIMPLE_DBG, etc. in log.h that
+                                the provider writer should be using to define log
+                                calls. This option does not disable generation of
+                                logs but defines these macros to generate no
+                                code.
 
 Options that Limit CIMPLE Compiled Features:
     --enable-embedded-instances Enable use of embedded instances (must be

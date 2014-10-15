@@ -279,14 +279,126 @@ This change log was started effective with version 2.00
     * Add CMPIUtils to cmpi adapter to display cmpi objects. NOTE This is experimetal
       used only for debug and disabled by default.
     * Updates to some utilities (ex. regview).
-    * Add a number of manual tests to providers and expand live tests.  NOTE: many of the
-      new tests use Pegasus cimcli and depend on at least Pegasus version 2.10 for correct
-      version of cimcli.
+    * Add a number of manual tests to providers and expand live tests.
+      NOTE: many of the new tests use Pegasus cimcli and depend on at least
+      Pegasus version 2.10 for correct version of cimcli.
     * Add CMRelease to cmpiAdapter to remove cmpi instances when we pass them 
       to the server.  For Enumerations this reduces memory very temporarily
       since the server removes them at the end of the enumeration.  For
       indications this avoids indication instances being caught in the
       broker until it is shutdown.
+
+2.0.17 10 May 2011 (cvs cimple-2_0_12-branch)
+    * Added capability to dynamically configure log capabilities.Includes
+      new class CimpleConfig that provides methods to dynamically
+      configure some of the characteristics of CIMPLE.  This class is
+      EXPERIMENTAL today. It implements methods to dynamically change log
+      characteristics and to force reread of the configuration file. This class
+      implements a number of methods that allow the provider to dynamically
+      control logging parameters and to force reread of the .cimplerc
+      configuration file. In the future this will be the single class that
+      controls dynamic aspects of the  provider configuration and settings.
+    * Added files Adapter_Tracer.h and .cpp that consolidate macros for tracing
+      the adapters. Note that only some of the common functions and the
+      Pegasus adapter use this today. These trace tools are for the adapters,
+      not the user code. Adpater trace compiled with configuration option 
+      --enable-adapter-trace. Note that this is used only for Pegasus
+      adapter at the moment since for the other adapters trace was hard defined and
+      not considered an option. We are trying to keep default behavior the same for
+      this version. Thus the default is no trace for Pegasus adapter but trace for
+      cmpi adapter.
+    * Implemented log file size and backup of log file functionality controlled
+      by .cimplrc parameters MAX_LOG_FILE_SIZE and MAX_LOG_BACKUP FILES
+      name=value parameters. These may be set in the cimple config file
+      (i.e. MAX_LOG_FILE_SIZE=100000  and MAX_LOG_BACKUP_FILES=5.
+      This limits the maximum size of the log file to 100, bytes
+      and will close and rename the log file each time that limit is reached.
+      The backup files are numbered in sequence from 1 (the 
+      most recent to n (where n = MAX_LOG_BACKUP_FILES) is the oldest. Older files
+      will be deleted.  The maximum number of backup files allowed is 9
+      and the default is 0 which means that we simply delete the log file and restart
+      when the MAX_LOG_FILE_SIZE limit is reached.  If MAX_LOG_FILE_SIZE=0 no
+      limit is set on the log file size. This is the default which means that the
+      default retains the behavior of previous CIMPLE releases.
+     * Added  compile configuration parameter to allow disabling log macros
+      (--disable_log_macros).
+      When set by configure this renders the compile of the macros in log.h 
+      (CIMPLE_FATAL, etc.) to generate log entires null. The macro calls
+      generate no code. This can be used to completely remove these macro
+      calls without removing the source code. 
+      This can also be done on a provider by provider basis by setting 
+      #define DISABLE_LOG_MACROS_OPT in the source code where the macros
+      are to be disabled which overrides the global setting for the file
+      being compiled.
+    * Added runtime parameter ENABLE_LOGGING in .cimplerc to configure
+      runtime so at to completely disable completely logging.  
+      The value is either TRUE or FALSE.
+      The default state of ENABLE_LOGGING is true so that without specifically
+      setting this parameter in .cimplrc logging is enabled as it was in
+      previous versions of CIMPLE.
+      ENABLE_LOGGING=false completely disables logging.  
+      To disable logging completely the user sets this parameter as follows in
+      .cimplerc (ENABLE_LOGGING=FALSE). Note that there is also a function
+      in CimpleConfig that enables and disables logging dynamically.
+    * Include FileSystem.h and FileSystem.cpp in src/cimple to provide
+      common base of file system operations. Used by log today. Consider this
+      experimental since we try NOT to add new functionality like this in
+      minor releases but it was required for the log extension defined below.
+    * Remove accidental dependency on konkret libraries in cmpi provider.
+    * Fix issue where the cmpi associationCleanup ThreadContext did not do
+      a push. The behavior error was not clear but this was a missing push
+      operation.
+    * Clean up All provider.
+    * Added logCMPIInstance and logCMPIObjectPath functions to support the
+      CMPI adapter.  These can be used to display CMPI instances on within
+      the adapter. This can be used to display CMPI information if there are
+      issues within the adapter but it is compiled only in DEBUG mode.
+    * Added logPegasusInstance function to src/Pegasus/utils/Print.cpp so that
+      pegasus instances can be displayed to the log file within the pegasus
+      adapter. There are 3 functions, print to stdout, log, create a String
+      with formattted output. 
+    * Extended genprov and genmod to include option to get the class list
+      from a file. This existed in genclass but was not carried forward to
+      the other utilities.  This is the -F option.  Originally it was the -f
+      option in genclass and that option remains. But where that options is used
+      it is marked (deprecated) in the help since the -f was already used in
+      some of the utilities.  Thus we keep compatibility with the past option
+      definitions but for the future -F defines a classlist file. This was added
+      as result of an issue with big provider modules containing many classes where
+      the command line for these utilities overruns windows shell (cmd.exe).   
+    * Add log error calls to a couple of errors in Pegasus adapter so that the
+      errors are not silent.  In particular this logs error when the CIMPLE
+      default association function trys to do a getInstance and fails. This
+      should not fail since it is using information about the association from
+      the provider but we found issues such as authorization that could cause a
+      failure.
+    * Remove some printf statements that were in CIMPLE adapters/infrastructure.
+      There should be no console output except in unit tests, test providers,
+      and command line utilities.
+    * Add test to windows configure script to test for correct compiler.
+      Generates errors if there is no compiler or not the correct
+      32 bit vs 64 bit definition.
+    * Add comments to generated config.options and options.h files explaining
+      things that are not obvious. Modifies configure and configure.bat
+
+    TODO- Open work list for post 2.0 18
+
+    * Add capability to display current thread id in logs. (Move to future version)
+    * Test with gcc option -Weffc++
+    * Look into CIMPLE_ASSERT and release build. Extend this so we have a
+      way to turn off all asserts except those that are really fatal in
+      release mode.
+    * get rid of asserts in favor of some type of CIMPLE_ASSERT so that the
+      asserts are controlable on build basis.
+    * Add more tests for Thread APIs.
+    * Extend --enable-adapter-trace to other adapters so we have conditional
+      compile trace code in all adapters. Currently only impacts Pegasus C++
+      adapter.
+    
+
+
+
+
 
 
 

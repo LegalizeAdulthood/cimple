@@ -35,8 +35,20 @@ using namespace std;
 
 #define GENCOMMON_LINKAGE /* */
 
-GENCOMMON_LINKAGE void setup_mof_path();
+GENCOMMON_LINKAGE void setup_mof_path(bool verbose = false);
+
 GENCOMMON_LINKAGE int find_file(const char* path);
-GENCOMMON_LINKAGE void load_repository(const vector<string>& extra_mof_files);
+
+GENCOMMON_LINKAGE void load_repository(
+    const vector<string>& extra_mof_files, bool verbose = false);
+
+GENCOMMON_LINKAGE bool legal_class_name(const string& ident);
+
+GENCOMMON_LINKAGE void append_unique(vector<string>& array, const string& x);
+
+GENCOMMON_LINKAGE void load_class_list_file(vector<string>& classes,
+                                            const string& path);
+
+GENCOMMON_LINKAGE size_t find(vector<string>& array, const string& x);
 
 #endif /* _cimple_gencommon_h */

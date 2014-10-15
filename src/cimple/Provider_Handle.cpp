@@ -25,6 +25,7 @@
 */
 
 #include "Provider_Handle.h"
+#include "Adapter_Tracer.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -42,8 +43,8 @@ CIMPLE_NAMESPACE_BEGIN
 
     They use callbacks in this module for the the filtering operation and 
     define each callback function in its own namespace.  The callback functions
-    provide thefiltering and pass the objects that pass the filters back 
-    to the callbackdefined for the adapter.
+    provide the filtering and pass the objects that pass the filters back 
+    to the callback defined for the adapter.
 
     Thus, get_instance reverts to enumerate_instance when get_instance returns
     NOT_SUPPORTED. The enumerate_instance callback filters all of the
@@ -52,8 +53,6 @@ CIMPLE_NAMESPACE_BEGIN
     Associators reverts to enumerate_instance when the Associators function
     returns NOT_SUPPORTED.  The associators callback filters out instances
     that do not match the role, result class and target instance criteria.
-
-
 */
 
 //------------------------------------------------------------------------------
@@ -70,8 +69,8 @@ CIMPLE_NAMESPACE_BEGIN
     proc defined in the Args structure for every valid associator in the
     assoc_instance. An associator is a reference that passes all of the
     role, result_class, etc filters.
-    The client_data is specific for the adapter type and is passed transparently
-    through this function.
+    The client_data is specific for the adapter type and is passed
+    transparently through this function.
 */
 namespace _enum_associator_names
 {
@@ -88,8 +87,10 @@ namespace _enum_associator_names
 
     //
     // This function is called for each instance of the given association 
-    // provider. It gets the associators (associated references) and calls
-    // the proc defined in the Args structure for each associator
+    // provider. It gets the associator names (associated references) and
+    // calls the proc defined in the Args structure for each associator.
+    // That proc is expected to "filter" based on operation parameters
+    // i.e. ReferenceClass, AssociatorClass, and roles.
     // It returns true as long as there are more association names to be
     // processed.
     // 
@@ -98,11 +99,14 @@ namespace _enum_associator_names
         Enum_Instances_Status status, 
         void* client_data)
     {
-        printf("cimple _proc _enum_associator_names\n");
+        PENTRY("_enum_associator_names::_proc");
         Args* args = (Args*)client_data;
 
         if (!assoc_instance)
+        {
+            PEXIT_RTN_VAL(false);
             return false;
+        }
 
         // Get the associator names of args->instance with respect to
         // assoc_instance.
@@ -128,11 +132,14 @@ namespace _enum_associator_names
             // increment ref so proc does not destroy
             ref(associator_names[i]);
 
-            printf("Provider_Handle enum_associator_names call proc name NS "
-                        "= %s\n",
-                    associator_names[i]->__name_space.c_str());
+//          printf("Provider_Handle enum_associator_names call proc name NS "
+//                      "= %s\n",
+//                  associator_names[i]->__name_space.c_str());
+//
+//          print(associator_names[i]);
 
-            print(associator_names[i]);
+            PTRACE(("associator Name NS = %s",  associator_names[i]->__name_space.c_str()));
+            //logInstance(associator_names[i]);
 
             // Call the adapter proc function with the associator name
 
@@ -143,6 +150,7 @@ namespace _enum_associator_names
         destroy(assoc_instance);
 
         // Keep them coming!
+        PEXIT_RTN_VAL(true);
         return true;
     }
 };
@@ -157,19 +165,23 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
     Enum_Associator_Names_Proc proc,
     void* client_data)
 {
-    // Get meta-class.
+    PENTRY("Provider_Handle::enum_associator_names");
 
+    // Get meta-class.
     const Meta_Class* mc;
     get_meta_class(mc);
 
     // Disallow operation on non-association providers.
 
     if (!(mc->flags & CIMPLE_FLAG_ASSOCIATION))
+    {
+        PEXIT();
         return ENUM_ASSOCIATOR_NAMES_FAILED;
+    }
 
     // First see if the provider supports enum_associator_names().
 
-    //printf("cimple enum_associator_names\n");
+    //////printf("cimple enum_associator_names\n");
 
     Enum_Associator_Names_Status enum_associator_names_status = 
         (Enum_Associator_Names_Status)_proc(
@@ -187,13 +199,22 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
     switch (enum_associator_names_status)
     {
         case ENUM_ASSOCIATOR_NAMES_OK:
+        {
+            PEXIT();
             return ENUM_ASSOCIATOR_NAMES_OK;
+        }
 
         case ENUM_ASSOCIATOR_NAMES_FAILED:
+        {
+            PEXIT();
             return ENUM_ASSOCIATOR_NAMES_FAILED;
+        }
 
         case ENUM_ASSOCIATOR_NAMES_ACCESS_DENIED:
+        {
+            PEXIT();
             return ENUM_ASSOCIATOR_NAMES_FAILED;
+        }
 
         case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
             break;
@@ -214,7 +235,8 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
     args.proc = proc;
     args.client_data = client_data;
 
-    // Enumerate the association provider.
+    // Enumerate instances for the association provider. This actually
+    // calls the _enum_associator_names::proc function
 
     //printf("Provider_handle call enum_instances for "
     //    "_enum_associator_names::_proc\n");
@@ -233,16 +255,26 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
     switch (status)
     {
         case ENUM_INSTANCES_FAILED:
+        {
+            PEXIT();
             return ENUM_ASSOCIATOR_NAMES_FAILED;
+        }
 
         case ENUM_INSTANCES_ACCESS_DENIED:
+        {
+            PEXIT();
             return ENUM_ASSOCIATOR_NAMES_ACCESS_DENIED;
+        }
 
         case ENUM_INSTANCES_OK:
+        {
+            PEXIT();
             return ENUM_ASSOCIATOR_NAMES_OK;
+        }
     }
 
     // Unreachable!
+    PEXIT();
     return ENUM_ASSOCIATOR_NAMES_OK;
 }
 
@@ -273,6 +305,7 @@ namespace enum_references
         Enum_Instances_Status status, 
         void* client_data)
     {
+        PENTRY("enum_references::_proc");
         // This function is called for each instance of the given association 
         // provider.
 
@@ -281,7 +314,10 @@ namespace enum_references
         // Ignore the final call.
 
         if (!reference)
+        {
+            PEXITBOOL(false);
             return false;
+        }
 
         // If this association instance is a reference of our original instance,
         // then call the user's callback:
@@ -292,6 +328,7 @@ namespace enum_references
             destroy(reference);
 
         // Keep them coming!
+        PEXITBOOL(false);
         return true;
     }
 }
@@ -303,6 +340,7 @@ Enum_References_Status Provider_Handle::enum_references(
     Enum_References_Proc proc,
     void* client_data)
 {
+    PENTRY("Provider_Handle::enum_references");
     // Get meta class:
 
     const Meta_Class* mc;
@@ -311,7 +349,10 @@ Enum_References_Status Provider_Handle::enum_references(
     // Disallow this operation on non-association providers.
 
     if (!(mc->flags & CIMPLE_FLAG_ASSOCIATION))
+    {
+        PEXIT();
         return ENUM_REFERENCES_FAILED;
+    }
 
     // First see if the provider supports enum_references().
 
@@ -331,13 +372,22 @@ Enum_References_Status Provider_Handle::enum_references(
     switch (enum_references_status)
     {
         case ENUM_REFERENCES_OK:
+        {
+            PEXIT();
             return ENUM_REFERENCES_OK;
+        }
 
         case ENUM_REFERENCES_FAILED:
+        {
+            PEXIT();
             return ENUM_REFERENCES_FAILED;
+        }
 
         case ENUM_REFERENCES_ACCESS_DENIED:
+        {
+            PEXIT();
             return ENUM_REFERENCES_ACCESS_DENIED;
+        }
 
         case ENUM_REFERENCES_UNSUPPORTED:
             break;
@@ -366,15 +416,24 @@ Enum_References_Status Provider_Handle::enum_references(
     switch (status)
     {
         case ENUM_INSTANCES_OK:
+        {
+            PEXIT();
             return ENUM_REFERENCES_OK;
+        }
 
         case ENUM_INSTANCES_ACCESS_DENIED:
+        {
+            PEXIT();
             return ENUM_REFERENCES_ACCESS_DENIED;
+        }
 
         case ENUM_INSTANCES_FAILED:
+        {
+            PEXIT();
             return ENUM_REFERENCES_FAILED;
+        }
     }
-
+    PEXIT();
     return ENUM_REFERENCES_OK;
 }
 
@@ -401,21 +460,27 @@ namespace get_instance
         Enum_Instances_Status status, 
         void* client_data)
     {
+        PENTRY("get_instance::_proc");
         Data* data = (Data*)client_data;
 
         if (!instance)
+        {
+            PEXIT_RTN_VAL(false);
             return false;
+        }
 
         if (key_eq(data->model, instance))
         {
             // ATTN: filter instance by model here!
             data->instance = instance;
+            PEXIT_RTN_VAL(false);
             return false;
         }
         else
             destroy(instance);
 
         // Keep them coming!
+        PEXIT_RTN_VAL(false);
         return true;
     }
 }
@@ -424,6 +489,7 @@ Get_Instance_Status Provider_Handle::get_instance(
     const Instance* model,
     Instance*& instance)
 {
+    PENTRY("Provider_Handle::get_instance");
     // Use OPERATION_GET_INSTANCE:
 
     Get_Instance_Status get_instance_status = (Get_Instance_Status)_proc(
@@ -432,7 +498,10 @@ Get_Instance_Status Provider_Handle::get_instance(
         _provider, (void*)model, &instance, 0, 0, 0, 0, 0);
 
     if (get_instance_status != GET_INSTANCE_UNSUPPORTED)
+    {
+        PEXIT();
         return get_instance_status;
+    }
 
     // Use OPERATION_ENUM_INSTANCES:
 
@@ -446,10 +515,12 @@ Get_Instance_Status Provider_Handle::get_instance(
     if (enum_instance_status == ENUM_INSTANCES_OK && data.instance)
     {
         instance = data.instance;
+        PEXIT();
         return GET_INSTANCE_OK;
     }
 
     // Not found!
+    PEXIT();
     return GET_INSTANCE_NOT_FOUND;
 }
 

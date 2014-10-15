@@ -1,0 +1,59 @@
+    [Version("1.0.0"), Description (" Class for testing "
+        "operation response stress on system with large numbers of possibly "
+        "large instances. Includes methods to set test parameters ")]
+class CMPL_ResponseStressTest
+{
+    [key]
+    Uint64 Id;
+
+    [ Description ("Monotonically increasing sequence number for instances "
+        "in the response. Can be used to confirm ordering correctness "
+        "at the client. ")]
+    Uint64 SequenceNumber;
+
+    [ Description ("Requested count of instances to be delivered from "
+        "the set method input or default. ")]
+    Uint64 ResponseCount = 500;
+
+    [ Description ("Requested size for instances from the set invoke method "
+         "or default. ")]
+    Uint64 RequestedInstanceSize = 200;
+
+    String Pattern;
+
+    [ Description ("Interval from previus instance created by the "
+         "provider. This gives some indication about how delivery "
+         "is backed-up(delayed) in the provider.") ]
+    Uint64 interval;
+
+    // The following strings are used to pad instance size.
+    // Making the strings that are inserted here large
+    // allows the provider to create very large instances
+
+    string S1;
+    string S2;
+    string S3;
+    string S4;
+    string S5;
+
+    [ Description (" total time in microseconds since start of operation.")]
+    uint64 totalTime;
+
+    [ Description ("Method sets the parameters for ResponseCount and "
+         "approximate size of the returned instances. This persists "
+         "until the provider is reloaded."),
+      static] Uint32 set(
+	    [in] uint64 ResponseCount,
+	    [in] uint64 ResponseInstanceSize);
+
+    [ Description ("Method returns the current control parameters. "),
+      static] Uint32 get(
+	    [out] uint64 ResponseCount,
+	    [out] uint64 ResponseInstanceSize);
+
+    [ Description ("Method stops the provider from generating instances. "
+        "Reset by the next operation or method request. This is an  "
+        "attempt to allow the client to stop generation in process."),
+      static] Uint32 stop();
+};
+

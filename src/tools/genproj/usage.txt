@@ -14,5 +14,7 @@ OPTIONS:
     -e      -- Generate enum tags for Values/ValueMap qualifiers (passed to
                genclass).
     -f      -- force overwrite of the Makefile.
+    -F file -- Read class names from this file (one per line)
     -r      -- generate regmod target in Makefile (Experimental)
+    -v      -- verbose display of execution
 

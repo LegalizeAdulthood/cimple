@@ -31,6 +31,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+// Structure defining argument to _thread_proc
 struct Arg
 {
     Thread_Proc proc;
@@ -100,6 +101,7 @@ Thread& Thread::operator=(const Thread& x)
     return *this;
 }
 
+// local function to create a thread. 
 int _create(
     Thread& thread, Thread_Proc user_proc, void* arg_, bool detached)
 {

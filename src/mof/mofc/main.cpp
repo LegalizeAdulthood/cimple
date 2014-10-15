@@ -32,6 +32,19 @@
 #include "MOF_Parser.h"
 
 bool Options_ouput = false;
+
+#define USAGE "\
+\n\
+Usage: %s [-Idw] mof-files\n\
+\n\
+Where:\n\
+        -I path -- include path\n\
+        -d -- enabled debug printing\n\
+        -w -- enable warnings\n\
+        -o -- display the interemediate output tables\n\
+        -h -- display usage message\n\
+\n"
+
 //------------------------------------------------------------------------------
 //
 // _process_command_line_options()
@@ -52,7 +65,7 @@ static int _process_command_line_options(int& argc, char**& argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "I:dwo")) != -1)
+    while ((opt = getopt(argc, argv, "I:dwoh")) != -1)
     {
         switch (opt)
         {
@@ -88,6 +101,11 @@ static int _process_command_line_options(int& argc, char**& argv)
                 Options_ouput = true;
                 break;
             }
+            case 'h':
+            {
+                fprintf(stderr, USAGE, argv[0]);
+                exit(0);
+            }
             case '?':
             {
                 // Option argument missing!
@@ -121,17 +139,6 @@ static void _print_include_paths()
 // main()
 //
 //------------------------------------------------------------------------------
-
-#define USAGE "\
-\n\
-Usage: %s [-Idw] mof-files\n\
-\n\
-Where:\n\
-        -I path -- include path\n\
-        -d -- enabled debug printing\n\
-        -w -- enable warnings\n\
-        -o -- display the interemediate output tables\n\
-\n"
 
 int main(int argc, char** argv)
 {

@@ -18,6 +18,8 @@ static bool genmak_opt = false;
 static bool force_opt = false;
 static bool enum_opt = false;
 static bool regmod_opt = false;
+static bool verbose_opt = false;
+static string class_list_file;
 
 #if defined(CIMPLE_WINDOWS)
 
@@ -96,13 +98,24 @@ static void gen_project(const char* module_name, int argc, char** argv)
 
     // Run genclass:
     {
+        // force the option that generates the .genclass file and
+        // generates the repository.
         string cmd = genclass + string(" -r -S");
 
         if (enum_opt)
             cmd += " -e";
 
+        if (class_list_file.size() != 0)
+        {
+            cmd += " -f ";
+            cmd += class_list_file.c_str();
+        }
+
         for (int i = 0; i < argc; i++)
             cmd += string(" ") + string(argv[i]);
+
+        if (verbose_opt)
+            printf("Run genclass: %s\n", cmd.c_str());
 
         int status = system(cmd.c_str());
 
@@ -110,7 +123,10 @@ static void gen_project(const char* module_name, int argc, char** argv)
             err("failed to execute %s", genclass.c_str());
 
         if (status != 0)
+        {
+            printf("Execution error for genclass\n");
             exit(1);
+        }
 
         // Read source file names from .genclass:
         {
@@ -141,8 +157,18 @@ static void gen_project(const char* module_name, int argc, char** argv)
     {
         string cmd = genprov;
 
+        if (class_list_file.size() != 0)
+        {
+            cmd += " -F ";
+            cmd += class_list_file.c_str();
+        }
+
         for (int i = 0; i < argc; i++)
             cmd += string(" ") + string(argv[i]);
+
+
+        if (verbose_opt)
+            printf("Run genprov: %s\n", cmd.c_str());
 
         int status = system(cmd.c_str());
 
@@ -150,7 +176,10 @@ static void gen_project(const char* module_name, int argc, char** argv)
             err("failed to execute %s", genprov.c_str());
 
         if (status != 0)
+        {
+            printf("genprov execution failed\n");
             exit(1);
+        }
 
         for (int i = 0; i < argc; i++)
         {
@@ -164,8 +193,17 @@ static void gen_project(const char* module_name, int argc, char** argv)
     {
         string cmd = genmod + string(" ") + string(module_name);
 
+        if (class_list_file.size() != 0)
+        {
+            cmd += " -F ";
+            cmd += class_list_file.c_str();
+        }
+
         for (int i = 0; i < argc; i++)
             cmd += string(" ") + string(argv[i]);
+
+        if (verbose_opt)
+            printf("Run genmod: %s\n", cmd.c_str());
 
         int status = system(cmd.c_str());
 
@@ -173,8 +211,10 @@ static void gen_project(const char* module_name, int argc, char** argv)
             err("failed to execute %s", genmod.c_str());
 
         if (status != 0)
+        {
+            printf("genmod execution failed\n");
             exit(1);
-
+        }
         sources.push_back("module.cpp");
     }
 
@@ -195,13 +235,19 @@ static void gen_project(const char* module_name, int argc, char** argv)
         for (size_t i = 0; i < sources.size(); i++)
             cmd += string(" ") + sources[i];
 
+        if (verbose_opt)
+            printf("Run gemak: %s\n", cmd.c_str());
+
         int status = system(cmd.c_str());
 
         if (status == -1)
             err("failed to execute %s", genmak.c_str());
 
         if (status != 0)
+        {
+            printf("Return status indicates failed %s\n", genmak.c_str());
             exit(1);
+        }
     }
 }
 
@@ -215,7 +261,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "hVmfer")) != -1)
+    while ((opt = getopt(argc, argv, "hVvmF:fer")) != -1)
     {
         switch (opt)
         {
@@ -230,13 +276,28 @@ int main(int argc, char** argv)
                 printf("%s\n", CIMPLE_VERSION_STRING);
                 exit(0);
             }
-
+            case 'v':
+            {
+                verbose_opt = true;
+                printf("Verbose trace of execution\n");
+                break;
+            }
             case 'm':
             {
                 genmak_opt = true;
                 break;
             }
+			case 'F':
+			 {
+                if (!optarg)
+                {
+                    err("missing argument on -F option");
+                    exit(1);
+                }
 
+                class_list_file = optarg;
+                break;
+			}
             case 'f':
             {
                 force_opt = true;
@@ -266,13 +327,21 @@ int main(int argc, char** argv)
     argc -= optind;
     argv += optind;
 
-    if (argc < 2)
+//  if (argc < 2)
+//  {
+//      fprintf(stderr, (char*)USAGE, arg0);
+//      exit(1);
+//  }
+
+    //if no arguments and no classlist file, error
+
+    if (optind == argc && class_list_file.size() == 0)
     {
-        fprintf(stderr, (char*)USAGE, arg0);
+        fprintf(stderr,"%s %s\n",(char*)USAGE, arg0);
         exit(1);
     }
 
-    // Generate module file.
+    // execute each of the commands.
 
     gen_project(argv[0], argc - 1, argv + 1);
 

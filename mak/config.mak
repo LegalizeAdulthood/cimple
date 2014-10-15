@@ -52,6 +52,10 @@ ifdef WIN_ENABLE_SCHEDULER_OPT
   ENABLE_SCHEDULER_OPT=1
 endif
 
+ifdef WIN_ENABLE_ADAPTER_TRACE_OPT
+  ENABLE_ADAPTER_TRACE_OPT
+endif
+
 ##==============================================================================
 ##
 ## Include platform file.
@@ -125,14 +129,20 @@ endif
 ##
 ## Define Valgrind Location for some test commands that use Valgrind
 ## This is primarily developer test
-## Define several make variables to allow the Makefiles to be platform
-## independent.
 ##
 ##==============================================================================
 
 ifndef VALGRIND
   VALGRIND=valgrind
 endif
+
+##==============================================================================
+##
+## Define several make variables to allow the Makefiles to be platform
+## independent.  Any of these may be overridden in platform make files
+## However, in general, the platform files alais the right hand side (ex rm)
+##
+##==============================================================================
 
 ifndef DIFF
   DIFF = diff

@@ -38,22 +38,32 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-CIMPLE_PRINTF_ATTR(1, 2)
-
 /**
  * Return a CIMPLE String formatted string in allocated memory 
  * based on the input format definition string and the variable 
- * number of arguments that follow the format string. This 
- * function allocates the memory to include the formatted 
- * output. The user must free this memory. 
+ * number of arguments that follow the format string.
  * @param format containing the printf format definition. 
  * @param ... variable number of input parameters dependent on 
  *        the format definition input parameter
  * @return String with formatted string.
  */
 
+CIMPLE_PRINTF_ATTR(1, 2)
 CIMPLE_CIMPLE_LINKAGE 
 String string_printf(const char* format, ...);
+
+/**
+ * Append a CIMPLE String formatted string to str variable 
+ * based on the input format definition string and the variable 
+ * number of arguments that follow the format string.
+ * @param format containing the printf format definition. 
+ * @param ... variable number of input parameters dependent on 
+ *        the format definition input parameter
+ * @return String with formatted string.
+ */
+CIMPLE_PRINTF_ATTR(2, 3)
+CIMPLE_CIMPLE_LINKAGE 
+void string_append_printf(String& str, const char* format, ...);
 
 /**
  * Return a char* formatted string in allocated memory based on 
@@ -68,7 +78,7 @@ String string_printf(const char* format, ...);
  *         responsibility to free the memory allocated for the
  *         return.
  */
-
+CIMPLE_PRINTF_ATTR(1, 2)
 CIMPLE_CIMPLE_LINKAGE 
 char* str_printf(const char* format, ...);
 
@@ -136,8 +146,21 @@ int iprintf(size_t level, const char* format, ...);
  * 
  * @return CIMPLE_CIMPLE_LINKAGE int 
  */
+CIMPLE_PRINTF_ATTR(3, 4)
 CIMPLE_CIMPLE_LINKAGE
 int ifprintf(FILE* os, size_t level, const char* format, ...);
+
+/**
+ * printf to String returned with indent defined by the level 
+ * parameter, format definition string defined by format and 
+ * following variables to be formatted for the file. This is the parallel 
+ * to ifprintf but with output to a string. 
+ * @param str String to which formatted data is appended
+ * @param level 
+ * @param format 
+ */
+CIMPLE_CIMPLE_LINKAGE
+void istring_printf(String& str, size_t level, const char* format, ...);
 
 CIMPLE_NAMESPACE_END
 

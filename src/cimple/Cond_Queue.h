@@ -44,7 +44,7 @@ public:
 
     /**
      * Construct a conditon queue with a maximum size defined 
-     * by the varaible. The enqueue method() blocks untill there are
+     * by the varaible. The enqueue method() blocks until there are
      * less than #max_size# elements in the queue. 
      *  
      * @param max_size size_t defining the number of elements in the 

@@ -487,7 +487,6 @@ CIMPLE_CIMPLE_LINKAGE
 int filter_properties(Instance* instance, const char* const* properties,
                       boolean keepKeys = true);
 
-
 // This function parses a CIM model path of the following form to an instance.
 //
 //     MyClass.key1=value1,key2=value2

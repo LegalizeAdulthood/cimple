@@ -33,9 +33,20 @@
 #include <cimple/Auto_Mutex.h>
 #include "Converter.h"
 #include "CMPI_Thread_Context.h"
+#ifdef CMPI_ADAPTER_DEBUG
 #include "CMPIUtils.h"
+#endif
 
 #define STATIC_DATA_MAGIC 0x5DE2B131
+
+// If the following comment is removed, all CMPI objects input and output
+// are fully logged at DEBUG level.  This is a special function that 
+// should be used sparingly and to debug any CMPI issues. Can only be activated
+// if CMPI_ADAPTER_DEBUG is set (see Makefile) because that is what enables
+// CMPIUtils.
+#ifdef CMPI_ADAPTER_DEBUG
+// #define CIMPLE_LOG_CMPI_OBJECTS
+#endif
 
 #define FL __FILE__, __LINE__
 
@@ -146,6 +157,7 @@ CMPI_Adapter::CMPI_Adapter(
     strlcat(sd->inst_mi_name, prov_name, sizeof(sd->inst_mi_name));
     sd->instance_ft.miName = sd->inst_mi_name;
 
+    trc(FL,"CMPI_Adapter", "CMPI_Adapter provider %s", prov_name);
     sd->instance_ft.cleanup = CMPI_Adapter::instanceCleanup;
     sd->instance_ft.enumerateInstanceNames = CMPI_Adapter::enumInstanceNames;
     sd->instance_ft.enumerateInstances = CMPI_Adapter::enumInstances;
@@ -258,6 +270,7 @@ CMPI_Adapter::~CMPI_Adapter()
 template<class MI>
 static CMPI_Adapter* _adapter(MI* mi)
 {
+    log(LL_DBG, __FILE__, __LINE__, "enter: %s()", "_Adapter Template");
     CIMPLE_ASSERT(mi != 0);
     CMPI_Static_Data* sd = (CMPI_Static_Data*)mi->hdl;
     CIMPLE_ASSERT(sd != 0);
@@ -265,6 +278,8 @@ static CMPI_Adapter* _adapter(MI* mi)
     CIMPLE_ASSERT(sd->adapter);
     CIMPLE_ASSERT(sd->adapter->magic);
 
+    //log(LL_DBG, file, line, "return: %s()", "_Adapter Template");
+    //ret(FL, "_Adapter Template");
     return sd->adapter;
 }
 
@@ -280,8 +295,11 @@ CMPIStatus CMPI_Adapter::instanceCleanup(
     CMPIBoolean terminating)
 {
     CMPI_Adapter* adapter = _adapter(mi);
+    adapter->ent(FL, "instanceCleanup");
 
     CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
+
+    adapter->ret(FL, "instanceCleanup");
     return cleanup(adapter, context, terminating);
 }
 
@@ -338,6 +356,12 @@ namespace enum_instance_names
             inst,
             data->name_space,
             cop);
+        String str;
+
+        // log of created objectPath
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+        logCMPIObjectPath(FL,cop);
+#endif
 
         if (data->rc != CMPI_RC_OK)
             return false;
@@ -513,12 +537,16 @@ namespace enum_instances
             instCop,
             data->properties,
             ci); 
-
+        
+        // Diagnostic display to log of created instance.
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+        //logCMPIInstance(FL,ci);
+#endif
         if (data->rc != CMPI_RC_OK)
             return false;
 
         CMReturnInstance(data->result, ci);
-        // Release CMPI instanceimmediatly. Reduces memory usage.
+        // Release CMPI instance immediatly. Reduces memory usage.
         CMRelease( ci );
 
         return true;
@@ -706,10 +734,16 @@ CMPIStatus CMPI_Adapter::getInstance(
         properties,
         ci); 
 
+    // log of instance returned from getInstance
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+    logCMPIInstance(FL,ci);
+#endif
+
     if (rc == CMPI_RC_OK)
     {
         CMReturnInstance(result, ci);
-        // Release with CMRelease not required.  object released at end of operation
+        // Release with CMRelease not required.  
+        // object released at end of operation
         //CMRelease(ci);
         CMReturnDone(result);
         adapter->ret(FL, "getInstance", CMPI_RC_OK);
@@ -748,6 +782,11 @@ CMPIStatus CMPI_Adapter::createInstance(
         adapter->ret(FL, "createInstance", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
     }
+
+    // Commented out log of instance returned from getInstance
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+    logCMPIInstance(FL,ci);
+#endif
 
     Instance* inst = 0;
 
@@ -840,6 +879,11 @@ CMPIStatus CMPI_Adapter::modifyInstance(
         adapter->ret(FL, "modifyInstance", CMPI_RC_ERR_FAILED);
         CMReturn(CMPI_RC_ERR_FAILED);
     }
+
+    // log of instance returned from getInstance
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+    logCMPIInstance(FL,ci);
+#endif
 
     Instance* inst = 0;
     CMPIrc rc = make_cimple_instance(adapter->broker, mc, cop, ci, inst);
@@ -1002,8 +1046,11 @@ CMPIStatus CMPI_Adapter::methodCleanup(
     CMPIBoolean terminating)
 {
     CMPI_Adapter* adapter = _adapter(mi);
+
+    adapter->ent(FL, "methodCleanup");
     CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
 
+    adapter->ret(FL, "methodCleanup");
     return cleanup(adapter, context, terminating);
 }
 
@@ -1483,6 +1530,8 @@ CMPIStatus CMPI_Adapter::associationCleanup(
     CMPI_Adapter* adapter = _adapter(mi);
 
     adapter->ent(FL, "associationCleanup");
+    // added 2.0.17 KS
+    CMPI_Thread_Context_Pusher pusher(adapter->broker, context, adapter);
 
     return cleanup(adapter, context, terminating);
 }
@@ -1546,6 +1595,11 @@ namespace associators1
             data->rc = CMPI_RC_ERR_FAILED;
             return false;
         }
+
+        // log instance returned from getInstance
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+        logCMPIInstance(FL,ci);
+#endif
 
         // Deliver instance to requestor:
 
@@ -1812,6 +1866,10 @@ namespace associator_names
             result_namespace.c_str(),
             cop);
 
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+        logCMPIObjectPath(FL,cop);
+#endif
+
         if (data->rc == CMPI_RC_OK)
         {
             CMReturnObjectPath(data->result, cop);
@@ -1987,6 +2045,11 @@ namespace references
         if (data->rc != CMPI_RC_OK)
             return false;
 
+        // log of instance returned from getInstance
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+        //logCMPIInstance(FL,ci);
+#endif
+
         // Deliver the instance.
 
         CMReturnInstance(data->result, ci);
@@ -2135,7 +2198,12 @@ namespace reference_names
         if (data->rc != CMPI_RC_OK)
             return false;
 
-        // Deliver the object path.
+        // Commented out log of instance returned from getInstance
+#ifdef CIMPLE_LOG_CMPI_OBJECTS
+        logCMPIObjectPath(FL,cop);
+#endif
+
+        // Deliver the object path and release it immediatly
 
         CMReturnObjectPath(data->result, cop);
         CMRelease(cop);

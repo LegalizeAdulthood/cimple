@@ -1,5 +1,5 @@
 ## Defines mak variables common to all Microsoft Windows MSCV configurations.
-## Thie file is intended to be included by specific windows platform
+## This file is intended to be included by specific windows platform
 ## files
 ##
 
@@ -106,6 +106,16 @@ _win_path = $(subst /,\,$(1))
 ##==============================================================================
 
 mkdirhier = - mkdir $(subst /,\,$(1))
+
+##==============================================================================
+##
+## diff
+## KS_TODO - This creates a pegasus dependency since mu is a pegasus tool
+##     We want to eliminate this in the future
+##
+##==============================================================================
+
+diff = - mu compare
 
 ##==============================================================================
 ##

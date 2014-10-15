@@ -32,6 +32,7 @@
 #include "Converter.h"
 #include <pegasus/utils/Str.h>
 #include <pegasus/utils/Containers.h>
+#include <cimple/Adapter_Tracer.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -41,6 +42,7 @@ int Converter::to_cimple_instance(
     const Meta_Class* mc,
     Instance*& inst)
 {
+    PENTRY("Converter::to_cimple_instance");
     const Meta_Repository* mr = mc->meta_repository;
 
     InstanceContainer cont(mr, ns, pi);
@@ -49,11 +51,16 @@ int Converter::to_cimple_instance(
     int rc = cont.convert(mc, 0, inst);
 
     if (rc != 0 || !inst)
+    {
+        PEXIT_RTN_VAL(-1);
         return -1;
+    }
 
     // set the namespace in the instance and any other
     // reachable instance if not already set.
     __set_name_space_recursive(inst, ns, false);
+
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
@@ -63,6 +70,7 @@ int Converter::to_cimple_key(
     const Meta_Class* mc,
     Instance*& inst)
 {
+    PENTRY("Converter::to_cimple_key");
     const Meta_Repository* mr = mc->meta_repository;
 
     ObjectPathContainer cont(mr, ns, op);
@@ -71,11 +79,15 @@ int Converter::to_cimple_key(
     int rc = cont.convert(mc, CIMPLE_FLAG_KEY, inst);
 
     if (rc != 0 || !inst)
+    {
+        PEXIT_RTN_VAL(-1)
         return -1;
+    }
 
     // set the namespace in the instance and any other
     // reachable instance if not already set.
     __set_name_space_recursive(inst, ns, false);
+    PEXIT_RTN_VAL(0)
     return 0;
 }
 
@@ -87,22 +99,31 @@ int Converter::to_cimple_method(
     uint32 flags,
     Instance*& meth)
 {
+    PENTRY("Converter::to_cimple_method");
     const Meta_Repository* mr = mc->meta_repository;
     assert(mr);
 
     const Meta_Method* mm = find_method(mc, method_name);
 
     if (!mm)
+    {
+        PEXIT_RTN_VAL(-1)
         return -1;
+    }
 
     ParamValueContainer cont(mr, ns, params);
 
     int rc = cont.convert((const Meta_Class*)mm, flags, meth);
 
     if (rc != 0 || !meth)
+    {
+        PEXIT_RTN_VAL(-1)
         return -1;
+    }
 
     __set_name_space_recursive(meth, ns, false);
+
+    PEXIT_RTN_VAL(0)
     return 0;
 }
 
@@ -112,6 +133,8 @@ int Converter::to_pegasus_instance(
     const Instance* inst, 
     Pegasus::CIMInstance& ci_out)
 {
+    PENTRY("Converter::to_pegasus_instance");
+
     CIMPLE_ASSERT(inst);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
@@ -129,7 +152,10 @@ int Converter::to_pegasus_instance(
             inst->meta_class->meta_repository, *tns, cop);
 
         if (cont.convert(inst, CIMPLE_FLAG_KEY) != 0)
+        {
+            PEXIT_RTN_VAL(-1)
             return -1;
+        }
 
         cop = cont.rep();
     }
@@ -143,7 +169,10 @@ int Converter::to_pegasus_instance(
         InstanceContainer cont(inst->meta_class->meta_repository, *tns, ci);
 
         if (cont.convert(inst, 0) != 0)
+        {
+            PEXIT_RTN_VAL(-1)
             return -1;
+        }
 
         ci = cont.rep();
     }
@@ -154,6 +183,7 @@ int Converter::to_pegasus_instance(
 
     ci_out = ci;
 
+    PEXIT_RTN_VAL(0)
     return 0;
 }
 
@@ -170,6 +200,7 @@ int Converter::to_pegasus_assoc_instance(
     const Instance* inst, 
     Pegasus::CIMInstance& ci_out)
 {
+    PENTRY("Converter::to_pegasus_assoc_instance");
     CIMPLE_ASSERT(inst);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
@@ -185,7 +216,9 @@ int Converter::to_pegasus_assoc_instance(
            Pegasus::CIMNamespaceName(inst->__name_space.c_str());
     }
 
-    return(to_pegasus_instance(hn, result_namespace, inst, ci_out));
+    int rtnVal = to_pegasus_instance(hn, result_namespace, inst, ci_out);
+    PEXIT_RTN_VAL(rtnVal);
+    return(rtnVal);
 }
 
 /*
@@ -201,6 +234,7 @@ int Converter::to_pegasus_object_path(
     const Instance* inst,
     Pegasus::CIMObjectPath& cop_out)
 {
+    PENTRY("Converter::to_pegasus_object_path");
     CIMPLE_ASSERT(inst);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
@@ -216,12 +250,16 @@ int Converter::to_pegasus_object_path(
             inst->meta_class->meta_repository, *tns, cop);
 
         if (cont.convert(inst, CIMPLE_FLAG_KEY) != 0)
+        {
+            PEXIT_RTN_VAL(-1);
             return -1;
+        }
 
         cop = cont.rep();
     }
 
     cop_out = cop;
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
@@ -239,6 +277,7 @@ int Converter::to_pegasus_assoc_object_path(
     const Instance* inst,
     Pegasus::CIMObjectPath& cop_out)
 {
+    PENTRY("Converter::to_pegasus_assoc_object_path");
     CIMPLE_ASSERT(inst);
     CIMPLE_ASSERT(inst->__magic == CIMPLE_INSTANCE_MAGIC);
 
@@ -254,7 +293,9 @@ int Converter::to_pegasus_assoc_object_path(
            Pegasus::CIMNamespaceName(inst->__name_space.c_str());
     }
 
-    return(to_pegasus_object_path(hn, result_namespace, inst, cop_out));
+    int rtnVal = to_pegasus_object_path(hn, result_namespace, inst, cop_out);
+    PEXIT_RTN_VAL(rtnVal);
+    return(rtnVal);
 }
 
 int Converter::to_pegasus_method(
@@ -265,6 +306,7 @@ int Converter::to_pegasus_method(
     Pegasus::Array<Pegasus::CIMParamValue>& params,
     Pegasus::CIMValue& return_value)
 {
+    PENTRY("Converter::to_pegasus_method");
     CIMPLE_ASSERT(meth != 0);
     CIMPLE_ASSERT(meth->__magic == CIMPLE_INSTANCE_MAGIC);
 
@@ -276,12 +318,16 @@ int Converter::to_pegasus_method(
         cont.return_value().clear();
 
         if (cont.convert(meth, flags) != 0)
+        {
+            PEXIT_RTN_VAL(-1);
             return -1;
+        }
 
         params = cont.rep();
         return_value = cont.return_value();
     }
 
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 

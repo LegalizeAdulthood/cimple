@@ -839,7 +839,7 @@ void Value::fprint(FILE* os) const
             break;
 
         case INSTANCE:
-            cimple::print(_instance);
+            cimple::fprint(os,_instance);
             break;
 
         case BOOLEAN_ARRAY:

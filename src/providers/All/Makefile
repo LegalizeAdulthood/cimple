@@ -69,8 +69,8 @@ register-sfcb:
 ##============================================================================
 ##
 ## Live manual tests using Pegasus cimcli
-## These tests are simply a demonstration that the provider works.  They
-## do not tests the results today, simply assure that there is no exception
+## These tests are a demonstration that the provider works.  They
+## do not test the results today, simply assure that there is no exception
 ## on response
 ##===========================================================================	
 manual-test:

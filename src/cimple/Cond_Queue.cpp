@@ -41,7 +41,7 @@ Cond_Queue::Cond_Queue(size_t max_size) :
 Cond_Queue::~Cond_Queue()
 {
     if (_data != _auto_data)
-    delete [] _data;
+        delete [] _data;
 }
 
 void Cond_Queue::enqueue(void* entry)
@@ -49,12 +49,12 @@ void Cond_Queue::enqueue(void* entry)
     Auto_Mutex auto_mutex(_lock);
 
     while (_size == _max_size)
-    _not_full.wait(_lock);
+        _not_full.wait(_lock);
 
     _data[_tail++] = entry;
 
     if (_tail == _max_size)
-    _tail = 0;
+        _tail = 0;
 
     _size++;
 
@@ -66,12 +66,12 @@ void* Cond_Queue::dequeue()
     Auto_Mutex auto_mutex(_lock);
 
     while (_size == 0)
-    _not_empty.wait(_lock);
+        _not_empty.wait(_lock);
 
     void* entry = _data[_head++];
 
     if (_head == _max_size)
-    _head = 0;
+        _head = 0;
 
     _size--;
 

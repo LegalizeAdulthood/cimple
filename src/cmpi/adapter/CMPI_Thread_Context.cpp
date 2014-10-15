@@ -33,7 +33,7 @@
 #include <cimple/log.h>
 
 CIMPLE_NAMESPACE_BEGIN
-
+#define FL __FILE__, __LINE__
 extern int cmpi_to_cimple_value(
     const Meta_Repository* mr,
     const CMPIBroker* cb,
@@ -128,6 +128,8 @@ static CMPI_Thread_Context* _top()
 
 CMPI_Thread_Context::~CMPI_Thread_Context()
 {
+    log(LL_DBG, __FILE__, __LINE__, "enter: %s()",
+        "CMPI_Thread_Context::~CMPI_Thread_Context");
 }
 
 Thread_Context* CMPI_Thread_Context::thread_create_hook(void* arg)
@@ -713,6 +715,9 @@ CMPI_Thread_Context::CMPI_Thread_Context(
     _cmpi_context(cmpi_context),
     _cmpi_adapter(cmpi_adapter)
 {
+    cmpi_adapter->ent(FL, "createInstance");
+
+    cmpi_adapter->ret(FL, "createInstance");
 }
 
 bool CMPI_Thread_Context::get_username(String& user_name)

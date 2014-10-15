@@ -56,6 +56,7 @@ Enum_Instances_Status President_Provider::enum_instances(
     const President* model,
     Enum_Instances_Handler<President>* handler)
 {
+    printf("President_Provider::enum_instances\n");
     President* instance;
 
     instance = President::create(true);

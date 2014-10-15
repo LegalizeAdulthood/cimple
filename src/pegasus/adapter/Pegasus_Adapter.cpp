@@ -35,12 +35,8 @@
 #include <pegasus/utils/Str.h>
 #include "Pegasus_Thread_Context.h"
 #include <cimple/log.h>
-
-#if 0
-# define TRACE CIMPLE_TRACE
-#else
-# define TRACE
-#endif
+#include <cimple/Adapter_Tracer.h>
+#include <pegasus/utils/print.h>
 
 // Export cimple_pegasus_adapter() only for shared library.
 #ifdef CIMPLE_STATIC
@@ -53,9 +49,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 static P_String _get_host_name()
 {
-/*
-ATTN: get host name here.
-*/
+    /*
+    ATTN: get host name here.
+    */
     return P_String();
 }
 
@@ -72,6 +68,7 @@ static void _throw(P_CIMStatusCode code, const P_String& msg)
 
 static void _check(int cimple_error)
 {
+    PENTRY("_check");
     P_CIMStatusCode code;
 
     switch (cimple_error)
@@ -137,18 +134,20 @@ static void _check(int cimple_error)
             CIMPLE_ERR(("Invalid Error return code = %u\n", cimple_error));
             code = Pegasus::CIM_ERR_FAILED;
     }
-
+    PEXITUINT32(code);
     _throw(code);
 }
 
 static int _de_nullify_properties(const P_CIMPropertyList& pl, Instance* ci)
 {
+    PENTRY("_de_nullify_properties");
     // If the property list is null, define all the properties (the requestor
     // wants them all).
 
     if (pl.isNull())
     {
         cimple::de_nullify_properties(ci);
+        PEXIT();
         return 0;
     }
 
@@ -179,6 +178,7 @@ static int _de_nullify_properties(const P_CIMPropertyList& pl, Instance* ci)
             null_of(mp, (char*)ci + mp->offset) = 0;
     }
 
+    PEXIT();
     return 0;
 }
 
@@ -196,18 +196,29 @@ static bool _contains(const P_CIMPropertyList& pl, const P_CIMName& name)
     return false;
 }
 
+// Discard properties not in the propertyList
 static void _discard_properties(P_CIMInstance& pi, const P_CIMPropertyList& pl)
 {
+    PENTRY("_discard_properties");
     if (pl.isNull())
+    {
+        PEXIT();
         return;
+    }
 
     for (P_Uint32 i = 0; i < pi.getPropertyCount(); )
     {
+        // If propertyList does not contain this name, remove property
         if (_contains(pl, pi.getProperty(i).getName()))
+        {
             i++;
+        }
         else
+        {
             pi.removeProperty(i);
+        }
     }
+    PEXIT();
 }
 
 Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
@@ -215,19 +226,22 @@ Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
     _handler(0),
     _cimom_handle(0)
 {
-    TRACE;
+    PENTRY("Pegasus_Adapter");
     CIMPLE_ASSERT(_provider != 0);
     _provider->get_meta_class(_mc);
+    PEXIT();
 }
 
 Pegasus_Adapter::~Pegasus_Adapter()
 {
+    PENTRY("~Pegasus_Adapter");
     delete _provider;
-    TRACE;
+    PEXIT();
 }
 
 void Pegasus_Adapter::initialize(P_CIMOMHandle& handle)
 {
+    PENTRY("initialize");
     Auto_Mutex am(mutex);
 
     _cimom_handle = &handle;
@@ -237,16 +251,20 @@ void Pegasus_Adapter::initialize(P_CIMOMHandle& handle)
 
     _handle = &handle;
     _provider->load();
+
+    PEXIT();
 }
 
 void Pegasus_Adapter::terminate(void)
 {
+    PENTRY("Pegasus_Adapter::terminate");
     Auto_Mutex am(mutex);
 
     P_OperationContext context;
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
 
     _provider->unload();
+    PEXIT();
 }
 
 void Pegasus_Adapter::getInstance(
@@ -257,6 +275,8 @@ void Pegasus_Adapter::getInstance(
     const P_CIMPropertyList& propertyList,
     P_InstanceResponseHandler& handler)
 {
+
+    PENTRY("getInstance");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -272,14 +292,20 @@ void Pegasus_Adapter::getInstance(
     Instance* model = 0;
 
     if (Converter::to_cimple_key(*ns, objectPath, mc, model) != 0)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     Ref<Instance> model_d(model);
 
     // Mark properties mentioned in property list as non-null.
 
     if (_de_nullify_properties(propertyList, model) != 0)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     // Invoke provider:
 
@@ -296,6 +322,7 @@ void Pegasus_Adapter::getInstance(
     if (Converter::to_pegasus_instance(_get_host_name(),
         objectPath.getNameSpace(), inst, pi) != 0)
     {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
     }
 
@@ -307,6 +334,7 @@ void Pegasus_Adapter::getInstance(
     handler.processing();
     handler.deliver(pi);
     handler.complete();
+    PEXIT();
 }
 
 
@@ -327,10 +355,14 @@ static bool _enum_instances_proc(
     Enum_Instances_Status status, 
     void* client_data)
 {
+    PENTRY("_enum_instances_proc");
     // Ignore the final call.
 
     if (!instance)
+    {
+        PEXITBOOL(false);
         return false;
+    }
 
     Ref<Instance> instance_d(instance);
     Enum_Instance_Data* data = (Enum_Instance_Data*)client_data;
@@ -340,15 +372,21 @@ static bool _enum_instances_proc(
         data->name_space, instance, pi) != 0)
     {
         // ATTN: what do we do here?
+        PEXITBOOL(true);
         return false;
     }
 
     // Discard properties:
     _discard_properties(pi, data->propertyList);
 
+
+    /// KS_TODO delete this logPegasusInstance(pi, LL_DBG, __FILE__, __LINE__);
+
     data->handler->deliver(pi);
 
     // Keep them coming!
+
+    PEXITBOOL(true);
     return true;
 }
 
@@ -360,6 +398,7 @@ void Pegasus_Adapter::enumerateInstances(
     const P_CIMPropertyList& propertyList,
     P_InstanceResponseHandler& handler)
 {
+    PENTRY("enumerateInstances");
     Auto_Mutex am(mutex);
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
@@ -379,7 +418,10 @@ void Pegasus_Adapter::enumerateInstances(
     // Validate properties that appear in the property list.
 
     if (_de_nullify_properties(propertyList, model) != 0)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     // Invoke the provider:
 
@@ -393,8 +435,8 @@ void Pegasus_Adapter::enumerateInstances(
         model, _enum_instances_proc, &data);
 
     _check(status);
-
     handler.complete();
+    PEXIT();
 }
 
 struct Handle_Enumerate_Instance_Names_Data
@@ -409,7 +451,7 @@ static bool _enum_instance_names_proc(
     Enum_Instances_Status status, 
     void* client_data)
 {
-    TRACE;
+    PENTRY("_enum_instance_names_proc");
 
     Handle_Enumerate_Instance_Names_Data* data = 
         (Handle_Enumerate_Instance_Names_Data*)client_data;
@@ -419,7 +461,10 @@ static bool _enum_instance_names_proc(
     // Ignore the final call.
 
     if (!instance || data->error)
+    {
+        PEXITBOOL(false);
         return false;
+    }
 
 #if 0
     Ref<Instance> instance_d(instance);
@@ -434,6 +479,7 @@ static bool _enum_instance_names_proc(
     {
         destroy(instance);
         data->error = true;
+        PEXITBOOL(false);
         return false;
     }
 
@@ -444,6 +490,8 @@ static bool _enum_instance_names_proc(
     handler->deliver(op);
 
     // Keep them coming!
+
+    PEXITBOOL(true);
     return true;
 }
 
@@ -452,6 +500,7 @@ void Pegasus_Adapter::enumerateInstanceNames(
     const P_CIMObjectPath& objectPath,
     P_ObjectPathResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::enumerateInstanceNames");
     Auto_Mutex am(mutex);
 
     Pegasus_Thread_Context_Pusher pusher(_cimom_handle, &context);
@@ -481,11 +530,15 @@ void Pegasus_Adapter::enumerateInstanceNames(
         model, _enum_instance_names_proc, &data);
 
     if (data.error)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     _check(status);
 
     handler.complete();
+    PEXIT();
 }
 
 void Pegasus_Adapter::createInstance(
@@ -494,6 +547,7 @@ void Pegasus_Adapter::createInstance(
     const P_CIMInstance& instance,
     P_ObjectPathResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::createInstance");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -509,7 +563,10 @@ void Pegasus_Adapter::createInstance(
     Instance* ci = 0;
 
     if (Converter::to_cimple_instance(*ns, instance, mc, ci) != 0)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     Ref<Instance> ci_d(ci);
 
@@ -526,12 +583,14 @@ void Pegasus_Adapter::createInstance(
     if (Converter::to_pegasus_object_path(_get_host_name(), 
         objectPath.getNameSpace(), ci, op) != 0)
     {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
     }
 
     handler.processing();
     handler.deliver(op);
     handler.complete();
+    PEXIT();
 }
 
 void Pegasus_Adapter::modifyInstance(
@@ -542,6 +601,7 @@ void Pegasus_Adapter::modifyInstance(
     const P_CIMPropertyList& propertyList,
     P_ResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::modifyInstance");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -557,7 +617,10 @@ void Pegasus_Adapter::modifyInstance(
     Instance* ci = 0;
 
     if (Converter::to_cimple_instance(*ns, instance, mc, ci) != 0)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     Ref<Instance> ci_d(ci);
 
@@ -569,7 +632,10 @@ void Pegasus_Adapter::modifyInstance(
     // Marks properties mentioned in property list as non-null.
 
     if (_de_nullify_properties(propertyList, model) != 0)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     // Invoke provider:
 
@@ -581,6 +647,7 @@ void Pegasus_Adapter::modifyInstance(
 
     handler.processing();
     handler.complete();
+    PEXIT();
 }
 
 void Pegasus_Adapter::deleteInstance(
@@ -753,13 +820,17 @@ static bool _enum_associator_proc_1(
     Enum_Associators_Status status,
     void* client_data)
 {
+    PENTRY("_enum_associator_proc_1");
     Handle_Associators_Request_Data_1* data = 
         (Handle_Associators_Request_Data_1*)client_data;
 
     // Ignore the final call or if already in an error state:
 
     if (!associator || data->error)
+    {
+        PEXITBOOL(false);
         return false;
+    }
 
     // Convert associator to pegasus instance.
 
@@ -769,15 +840,19 @@ static bool _enum_associator_proc_1(
         data->objectPath.getNameSpace(),associator, ci) != 0)
     {
         data->error = true;
+        PEXITBOOL(false);
         return false;
     }
 
     // Discard properties:
     _discard_properties(ci, data->propertyList);
-
+    //logPegasusInstance(ci, LL_DBG, __FILE__, __LINE__);
+    PTRACEPEGASUSINSTANCE(ci);
+    //printf("_enum_associator_proc_1-2 %s %u \n", __FILE__, __LINE__);    
     data->handler.deliver(ci);
 
     // Keep them coming!
+    PEXITBOOL(true);
     return true;
 }
 
@@ -818,14 +893,19 @@ static bool _enum_associator_proc_2(
     Enum_Associator_Names_Status status,
     void* client_data)
 {
+    PENTRY("_enum_associator_proc_2");
     Handle_Associators_Request_Data_2* data = 
         (Handle_Associators_Request_Data_2*)client_data;
 
     // Ignore the final call or if already in an error state:
 
     if (!associator_name || data->error)
+    {
+        PEXITBOOL(false);
         return false;
-
+    }
+    //printf("_enum_associator_proc_2 %s %u associator_name = \n", __FILE__, __LINE__);
+    //print(associator_name);
     // Convert associator to object path:
 
     P_CIMObjectPath objectPath;
@@ -834,9 +914,12 @@ static bool _enum_associator_proc_2(
         data->objectPath.getNameSpace(), associator_name, objectPath) != 0)
     {
         data->error = true;
+        PEXITBOOL(false);
         return false;
     }
 
+
+    //printf("_enum_associator_proc_2 %s %u path %s\n", __FILE__, __LINE__, (const char *)objectPath.toString().getCString());
     // Get instance from the provider:
 
     P_CIMInstance instance;
@@ -854,15 +937,33 @@ static bool _enum_associator_proc_2(
 
         // ATTN: added this since instance lacks an object path. Find out why!
         instance.setPath(objectPath);
-
+        //logPegasusInstance(instance, LL_DBG, __FILE__, __LINE__);
+        PTRACEPEGASUSINSTANCE(instance);
         data->handler.deliver(instance);
+    }
+    // Error in getInstance. Issue error and ignore
+    catch(const  P_CIMException& e)
+    {
+        CIMPLE_ERR(("CIMException: associators getInstance. path = %s"
+                    ". Error = %u, Msg = %s",
+            (const char*)objectPath.toString().getCString(),        
+            e.getCode(),(const char*)e.getMessage().getCString() ));            
+    }
+    catch (const P_Exception& e)
+    {
+        CIMPLE_ERR(("Exception: associators getInstance. path = %s, msg = %s",
+                (const char*)objectPath.toString().getCString(),
+                 (const char*)e.getMessage().getCString() ));
     }
     catch (...)
     {
         // Ignore!
+        CIMPLE_ERR(("Error: associators getInstance path = %s\n",
+            (const char*)objectPath.toString().getCString() ));
     }
 
     // Keep them coming!
+    PEXITBOOL(true);
     return true;
 }
 
@@ -878,6 +979,7 @@ void Pegasus_Adapter::associators(
     const P_CIMPropertyList& propertyList,
     P_ObjectResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::associators");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -898,9 +1000,11 @@ void Pegasus_Adapter::associators(
 
     if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED );
         _throw(Pegasus::CIM_ERR_FAILED);
     }
-
+    //printf("Pegasus_Adapter::associators %s %u \n", __FILE__, __LINE__);
+    //print(ck);
     Ref<Instance> ck_d(ck);
 
     // Start processing:
@@ -918,6 +1022,7 @@ void Pegasus_Adapter::associators(
             propertyList,
             handler);
 
+        //printf("Pegasus_Adapter::associators %s %u \n", __FILE__, __LINE__);
         Enum_Associators_Status status = _provider->enum_associators(
             ck, 
             *Str(resultClass), 
@@ -926,17 +1031,25 @@ void Pegasus_Adapter::associators(
             _enum_associator_proc_1, 
             &data);
 
+        //printf("Pegasus_Adapter::associators %s %u status = %u \n",
+        //        __FILE__, __LINE__, (unsigned int)status);
         if (status != ENUM_ASSOCIATORS_UNSUPPORTED)
         {
             if (data.error)
+            {
+
+                PEXITTHROW(Pegasus::CIM_ERR_FAILED );
                 _throw(Pegasus::CIM_ERR_FAILED);
+            }
 
             _check(status);
             handler.complete();
+            PEXIT();
             return;
         }
     }
 
+    //printf("Pegasus_Adapter::associators 2 %s %u \n", __FILE__, __LINE__);
     // Second try enum_associator_names().
     {
         Handle_Associators_Request_Data_2 data(
@@ -948,6 +1061,8 @@ void Pegasus_Adapter::associators(
             propertyList,
             handler);
 
+        //printf("Pegasus_Adapter::associators 3 %s %u \n", __FILE__, __LINE__);
+        // Call common function in Provider_Handle to process instance
         Enum_Associator_Names_Status status = 
             _provider->enum_associator_names(
                 ck, 
@@ -958,11 +1073,17 @@ void Pegasus_Adapter::associators(
                 &data);
 
         if (data.error)
+        {
+            PEXITTHROW(Pegasus::CIM_ERR_FAILED );
             _throw(Pegasus::CIM_ERR_FAILED);
+        }
 
         _check(status);
 
+        //printf("Pegasus_Adapter::associators 4 %s %u \n", __FILE__, __LINE__);
         handler.complete();
+
+        PEXIT();
         return;
     }
 }
@@ -979,13 +1100,17 @@ static bool _enum_associator_names_proc(
     Enum_Associator_Names_Status status,
     void* client_data)
 {
+    PENTRY("_enum_associator_names_proc");
     Handle_Associator_Names_Request_Data* data = 
         (Handle_Associator_Names_Request_Data*)client_data;
 
     // Ignore last call or if already in an error state:
 
     if (!assoc_name || data->error)
+    {
+        PEXITBOOL(false);
         return false;
+    }
 
     // Convert assoc_name to an Pegasus object path:
 
@@ -995,6 +1120,7 @@ static bool _enum_associator_names_proc(
         data->objectPath.getNameSpace(), assoc_name, op) != 0)
     {
         data->error = true;
+        PEXITBOOL(false);
         return false;
     }
 
@@ -1003,6 +1129,7 @@ static bool _enum_associator_names_proc(
     data->handler->deliver(op);
 
     // Keep them coming!
+    PEXIT();
     return true;
 }
 
@@ -1015,6 +1142,7 @@ void Pegasus_Adapter::associatorNames(
     const P_String& resultRole,
     P_ObjectPathResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::associatorNames");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -1030,12 +1158,16 @@ void Pegasus_Adapter::associatorNames(
     const Meta_Class* source_mc = find_meta_class(objectPath);
 
     if (!source_mc)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_INVALID_CLASS );
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
+    }
 
     Instance* ck = 0;
 
     if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
     }
 
@@ -1058,11 +1190,15 @@ void Pegasus_Adapter::associatorNames(
             &data);
 
     if (data.error)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     _check(status);
 
     handler.complete();
+    PEXIT();
 }
 
 struct Handle_References_Request_Data
@@ -1207,13 +1343,17 @@ static bool _enumerate_reference_names_proc(
     Enum_References_Status status,
     void* client_data)
 {
+    PENTRY("_enumerate_reference_names_proc");
     Handle_Reference_Names_Request_Data* data = 
         (Handle_Reference_Names_Request_Data*)client_data;
 
     // Ignore last call and return if already got an error.
 
     if (!reference || data->error)
+    {
+        PEXITBOOL(false);
         return false;
+    }
 
     Ref<Instance> reference_d(reference);
 
@@ -1225,12 +1365,14 @@ static bool _enumerate_reference_names_proc(
         data->objectPath.getNameSpace(), reference, op) != 0)
     {
         data->error = true;
+        PEXITBOOL(false);
         return false;
     }
 
     data->handler.deliver(op);
 
     // Keep them coming.
+    PEXITBOOL(true);
     return true;
 }
 
@@ -1241,6 +1383,7 @@ void Pegasus_Adapter::referenceNames(
     const P_String& role,
     P_ObjectPathResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::referenceNames");
     Auto_Mutex am(mutex);
 
     Str ns(objectPath.getNameSpace());
@@ -1256,7 +1399,10 @@ void Pegasus_Adapter::referenceNames(
     const Meta_Class* source_mc = find_meta_class(objectPath);
 
     if (!source_mc)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_INVALID_CLASS);
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
+    }
 
     // Convert object name to CIMPLE key.
 
@@ -1264,6 +1410,7 @@ void Pegasus_Adapter::referenceNames(
 
     if (Converter::to_cimple_key(*ns, objectPath, source_mc, ck) != 0 || !ck)
     {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
     }
 
@@ -1290,11 +1437,15 @@ void Pegasus_Adapter::referenceNames(
     destroy(model);
 
     if (data.error)
+    {
+        PEXITTHROW(Pegasus::CIM_ERR_FAILED);
         _throw(Pegasus::CIM_ERR_FAILED);
+    }
 
     _check(status);
 
     handler.complete();
+    PEXIT();
 }
 
 struct Indication_Proc_Data
@@ -1316,6 +1467,7 @@ struct Indication_Proc_Data
 */
 static bool _indication_proc(Instance* indication, void* client_data)
 {
+    PENTRY("_indication_proc");
     Indication_Proc_Data* data = (Indication_Proc_Data*)client_data;
     Auto_Mutex am(data->adapter->mutex);
 
@@ -1324,6 +1476,7 @@ static bool _indication_proc(Instance* indication, void* client_data)
     if (indication == 0)
     {
         delete data;
+        PEXITBOOL(false);
         return false;
     }
 
@@ -1340,6 +1493,7 @@ static bool _indication_proc(Instance* indication, void* client_data)
         if (Converter::to_pegasus_instance(_get_host_name(), 
             ns.c_str(), indication, pegasus_indication) != 0)
         {
+            PEXITBOOL(false);
             return false;
         }
 
@@ -1357,12 +1511,15 @@ static bool _indication_proc(Instance* indication, void* client_data)
     }
 
     // Keep them coming!
+
+    PEXITBOOL(true);
     return true;
 }
 
 void Pegasus_Adapter::enableIndications(
     P_IndicationResponseHandler& handler)
 {
+    PENTRY("Pegasus_Adapter::enableIndications");
     Auto_Mutex am(mutex);
 
     if (_handler_refs.get() == 0)
@@ -1383,10 +1540,12 @@ void Pegasus_Adapter::enableIndications(
     }
 
     _handler_refs.inc();
+    PEXIT();
 }
 
 void Pegasus_Adapter::disableIndications()
 {
+    PENTRY("Pegasus_Adapter::disableIndications");
     Auto_Mutex am(mutex);
 
     _handler_refs.dec();
@@ -1401,6 +1560,7 @@ void Pegasus_Adapter::disableIndications()
 
         _provider->disable_indications();
     }
+    PEXIT();
 }
 
 /*
@@ -1413,6 +1573,7 @@ void Pegasus_Adapter::createSubscription(
     const P_CIMPropertyList& propertyList,
     const P_Uint16 repeatNotificationPolicy)
 {
+    PENTRY("Pegasus_Adapter::createSubscription");
     Auto_Mutex am(mutex);
 
     try
@@ -1445,6 +1606,7 @@ void Pegasus_Adapter::createSubscription(
     }
 
     // Nothing to do!
+    PEXIT();
 }
 
 void Pegasus_Adapter::modifySubscription(
@@ -1454,7 +1616,9 @@ void Pegasus_Adapter::modifySubscription(
     const P_CIMPropertyList& propertyList,
     const P_Uint16 repeatNotificationPolicy)
 {
+    PENTRY("Pegasus_Adapter::modifySubscription");
     // Nothing to do!
+    PEXIT();
 }
 
 void Pegasus_Adapter::deleteSubscription(
@@ -1462,12 +1626,15 @@ void Pegasus_Adapter::deleteSubscription(
     const P_CIMObjectPath& subscriptionName,
     const Pegasus::Array<P_CIMObjectPath>& classNames)
 {
+    PENTRY("Pegasus_Adapter::deleteSubscription");
     // Nothing to do!
+    PEXIT();
 }
 
 const Meta_Class* Pegasus_Adapter::find_meta_class(
     const P_CIMObjectPath& objectPath) const
 {
+    PENTRY("Pegasus_Adapter::find_meta_class");
     Str class_name(objectPath.getClassName());
 
     // Invoke provider to get the meta-repository.
@@ -1476,24 +1643,36 @@ const Meta_Class* Pegasus_Adapter::find_meta_class(
     _provider->get_repository(repository);
 
     if (!repository)
+    {
+        PEXIT();
         return 0;
+    }
 
     // Find the class.
 
+    PEXIT();
     return cimple::find_meta_class(repository, class_name);
 }
 
 const Meta_Class* Pegasus_Adapter::find_model_meta_class(
     const P_CIMObjectPath& objectPath) const
 {
+    PENTRY("Pegasus_Adapter::find_model_meta_class");
     const Meta_Class* mc = find_meta_class(objectPath);
 
     if (!mc)
+    {
+        PEXIT();
         _throw(Pegasus::CIM_ERR_NOT_FOUND);
+    }
 
     if (!is_subclass(_mc, mc))
+    {
+        PEXIT();
         _throw(Pegasus::CIM_ERR_INVALID_CLASS);
+    }
 
+    PEXIT();
     return mc;
 }
 
@@ -1509,8 +1688,6 @@ extern "C" CIMPLE_ADAPTER_LINKAGE int cimple_pegasus_adapter(
     void* arg6, /* unused */
     void* arg7) /* unused */
 {
-    TRACE;
-
     // Extract arguments:
 
     const P_String& providerName = *((P_String*)arg1);

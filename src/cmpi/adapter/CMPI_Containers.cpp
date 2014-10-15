@@ -244,6 +244,7 @@ struct to_cimple_array_value
         }
 
         CMPICount n = CMGetArrayCount(data.value.array, NULL);
+        //CIMPLE_DBG(("Convert to cimple array size %u", n));
 
         for (CMPICount i = 0; i < n; i++)
         {
@@ -347,7 +348,7 @@ static Instance* _to_cimple_instance(
     {
         return 0;
     }
-
+    //CIMPLE_DBG(("_to_cimple_instance Enter"));
     CMPIObjectPath* cop = CMGetObjectPath(ci, NULL);
 
     if (!cop)
@@ -363,7 +364,7 @@ static Instance* _to_cimple_instance(
         CIMPLE_WARN(("CMGetClassName() failed"));
         return 0;
     }
-
+    //CIMPLE_DBG(("KS TRACE ClassName=%s", _c_str(cn)));
     const Meta_Class* mc = find_meta_class(mr, _c_str(cn));
 
     if (!mc)
@@ -376,9 +377,12 @@ static Instance* _to_cimple_instance(
     
     Instance* inst = 0;
 
+    //CIMPLE_DBG(("KS TRACE before convert ClassName=%s", _c_str(cn)));
     if (cont.convert(mc, 0, inst) != 0 || !inst)
         return 0;
 
+    //CIMPLE_DBG(("KS TRACE before convert ClassName=%s", _c_str(cn)));
+    //print(inst);
     return inst;
 }
 
@@ -391,8 +395,12 @@ int cmpi_to_cimple_value(
 {
     // Handle nulls up-front:
 
-    if (data.state & CMPI_nullValue)
+    //CIMPLE_DBG(("cmpi_to_cimple_value Enter state %X", data.state));
+    // TODO - Should be CMIsNullValue(data)  // from cmpimacs.h
+    //if (data.state & CMPI_nullValue)
+    if (CMIsNullValue(data))
     {
+        //CIMPLE_DBG(("cmpi_to_cimple_value Enter NULL Process %X", data.state & CMPI_nullValue));
         switch (data.type)
         {
             case CMPI_boolean:
@@ -530,6 +538,7 @@ int cmpi_to_cimple_value(
 
     // Non handle non-nulls:
 
+    //CIMPLE_DBG(("cmpi_to_cimple_value is nonNull"));
     switch (data.type)
     {
         case CMPI_boolean:
@@ -1237,6 +1246,7 @@ int CMPIInstance_Container::get_name(size_t pos, String& name)
     }
 
     name = _c_str(tmp);
+    //CIMPLE_DBG(("name=%s pos=%u", name, pos));
     return 0;
 }
 

@@ -6,12 +6,12 @@ INSTALL=1
 ## Define the following variable to include extra debugging tools into
 ## the CMPI adapter. This is experimental and purely a debug tool
 ## It provides display, etc. utiliites for cmpi entities. To enable this
-## uncomment the following variable
-####CMPI_ADAPTER_DEBUG = 1
+## uncomment the following variable.
+//CMPI_ADAPTER_DEBUG = 1
 
 LIBRARY = cimplecmpiadap
 
-LIBRARIES = cimple konkret
+LIBRARIES = cimple
 
 SOURCES = \
     CMPI_Containers.cpp \

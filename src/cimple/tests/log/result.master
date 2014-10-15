@@ -1,0 +1,18 @@
+LOG_LEVEL=DBG
+LOG_LEVEL=DBG
+MAX_LOG_FILE_SIZE=100000
+MAX_LOG_BACKUP_FILES=5
+LOG_LEVEL=WARN
+MAX_LOG_FILE_SIZE=100000
+MAX_LOG_BACKUP_FILES=5
+LOG_LEVEL=DBG
+MAX_LOG_FILE_SIZE=500
+MAX_LOG_BACKUP_FILES=5
+ INFO: main.cpp(188): Generate INFO Test 9992
+ INFO: main.cpp(188): Generate INFO Test 9993
+ INFO: main.cpp(188): Generate INFO Test 9994
+ INFO: main.cpp(188): Generate INFO Test 9995
+ INFO: main.cpp(188): Generate INFO Test 9996
+ INFO: main.cpp(188): Generate INFO Test 9997
+ INFO: main.cpp(188): Generate INFO Test 9998
+ INFO: main.cpp(188): Generate INFO Test 9999

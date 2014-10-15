@@ -15,6 +15,7 @@ DIRS = \
     datetime \
     find_token \
     join \
+    log \
     mutex \
     model_path \
     print \

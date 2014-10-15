@@ -30,6 +30,7 @@
 #include <pegasus/utils/Str.h>
 #include <cimple/Thread.h>
 #include <cimple/log.h>
+#include <cimple/Adapter_Tracer.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -363,6 +364,7 @@ void Pegasus_Thread_Context::allow_unload(bool flag)
 
 bool Pegasus_Thread_Context::get_username(String& user_name)
 {
+    PENTRY("Pegasus_Thread_Context::get_username");
     // Experimental code to test feasibility of providing a username to
     // the provider.
     Pegasus_Thread_Context* context = _top();
@@ -384,17 +386,22 @@ bool Pegasus_Thread_Context::get_username(String& user_name)
             if (ic)
             {
                 user_name = ic->getUserName().getCString();
+                PEXITBOOL(true);
                 return true;
             }
             else
             {
-                CIMPLE_ERR(("get_username:  Identy Container Error"));
+                // log the error
+                CIMPLE_ERR(
+                   ("Pegasus_Thread_Context::get_username:"
+                    " Identity Container Error"));
             }
         }
     }
     else
-        CIMPLE_ERR(("get_username: Null context found"));
+        CIMPLE_ERR(("Pegasus_Thread_Context::get_username: Null context found"));
 
+    PEXITBOOL(false);
     return false;
 }
 

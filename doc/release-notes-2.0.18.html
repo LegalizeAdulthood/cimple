@@ -1,0 +1,370 @@
+<html lang="en">
+<head>
+<title>CIMPLE 2.0.18 Release Notes</title>
+<meta http-equiv="Content-Type" content="text/html">
+<meta name="description" content="CIMPLE 2.0.18 Release Notes">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+--></style>
+</head>
+<body>
+<h1 class="settitle">CIMPLE 2.0.18 Release Notes</h1>
+   <div class="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a name="toc_TOC0" href="#TOC0">1 Introduction</a>
+<li><a name="toc_TOC1" href="#TOC1">2 What's New?</a>
+<ul>
+<li><a href="#TOC2">2.1 New Functionality Overview</a>
+<li><a href="#TOC3">2.2 Logging Modifications</a>
+<li><a href="#TOC4">2.3 Dynamic control of configuration parameters</a>
+<li><a href="#TOC5">2.4 Adapter Tracing</a>
+<li><a href="#TOC6">2.5 Utility extensions (genclass, genprov, genmod, etc.)</a>
+</li></ul>
+<li><a name="toc_TOC7" href="#TOC7">3 Bug Fixes</a>
+<li><a name="toc_TOC8" href="#TOC8">4 Migration Notes</a>
+<li><a name="toc_TOC9" href="#TOC9">5 Platform Support</a>
+</li></ul>
+</div>
+
+
+
+<!-- ============================================================================= -->
+<!-- Chapter: Introduction -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC0"></a>1 Introduction</h2>
+
+<p>This document introduces CIMPLE 2.0.18 and explains what has changed since
+the last public release (CIMPLE 2.0.16). If you are unfamiliar with the
+major changes introduced by CIMPLE 2.0.16, you might want to review them
+on the cimplewbem web site.
+
+   <p>This was done because we specifically included new functionality in this
+release.
+
+   <p>NOTE: This release note covers only the version 2.0.18 release.
+
+<p class="noindent">The next chapter describes what is new in this release. Chapter 3 discusses
+bugs fixed by this release. Chapter 4 explains how to migrate providers
+developed with earlier versions.
+
+<!-- ============================================================================= -->
+<!-- Chapter: What's New? -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC1"></a>2 What's New?</h2>
+
+<p>This chapter covers new capabilities introduced by CIMPLE 2.0.18. Note that
+the release notes were not originally attached to the 2.0.0 release but were
+available with the 2.0.6 update to this release.
+
+   <p>Note also that release notes were not consistently relese for versions between
+2.0.6 and 2.0.16.  This note covers changes made specifically between 2.0.16
+and 2.0.18.
+
+<!--  -->
+<h3 class="section"><a name="TOC2"></a>2.1 New Functionality Overview</h3>
+
+<p>The following new functionality has been implemented:
+
+   <p>1. Increased control of logging through both runtime and compile time
+parameters
+
+   <p>2. Addition of tracing for the adapters with implementation of this
+in the Pegasus adapter.
+
+   <p>3. Addition of class to control dynamic configuration of CIMPLE providers
+from the providers themselves.
+
+   <p>In addition there have been:
+
+   <p>1. Extensions to test providers and unit tests. 
+2. Correction of some issues in the provider adapters, primarily the
+Pegasus adapter.
+
+<!--  -->
+<h3 class="section"><a name="TOC3"></a>2.2 Logging Modifications</h3>
+
+<p>As the requirement for logging provider information moves from development
+to production releases of providers, more control over logging was
+requested.
+
+   <p>This version implements:
+
+   <p>1. a compile configuration parameter to compile of the log macros defined
+in the log.h file (CIMPLE_FATAL, CIMPLE_ERR, CIMPLE_WARN, CIMPLE_INFO, and
+CIMPLE_DBG. if the configure flag &mdash;&ndash;disable_log_macros is set all of these
+macros are completely disable.  Note that direct calls to the log and vlog
+functions in log.h are NOT disabled but we encourage users to implement
+logging through the macros.
+
+   <p>2. Extension of logging to allow the user to set maximum size limits on the
+output log file and to create a backup file each time this limit is reached. 
+In addition, the capability exists to limit the number of backup files.
+
+   <p>The runtime parameters to control log file size and number of backups are
+
+   <p>MAX_LOG_FILE_SIZE=&lt;integer&gt;
+   where integer is the approximate number of bytes in the log file before
+   it is rolled over into an archive file. 
+   If this &lt;integer&gt; is set to zero, the log file is considered to be
+   unlimited (i.e. the same behavior as earlier versions of CIMPLE). 
+   If this parameter is not included in the .cimplerc config file it is
+   assumed to be zero(0).
+
+   <p>MAX_LOG_BACKUP_FILES=&lt;integer&gt;
+   where &lt;integer&gt; is between 0 and 9.  This defines the maximum number of
+   backup files that will be maintained.  Each time the log messages file
+   is rolled over it is renamed messages.1 and all existing archived files
+   are incremented by one (i.e. the existing messages.1 becomes messages.2). 
+   The oldest file is removed if its archive number is greater than the
+   value of MAX_LOG_BACKUP_FILEs
+
+   <p>There is a special behavior if MAX_LOG_BACKUP_FILES =0.  In this case,
+   the log file is simple removed and restarted.
+
+   <p>3. Addition of a runtime control for log output with a new runtime
+   configuration parameter.
+
+   <p>ENABLE_LOGGING="true" | "false"
+   This runtime configuration variable absolutely controls the output of
+   log files.  If set to false, all logging is turned off.
+
+<!--  -->
+<h3 class="section"><a name="TOC4"></a>2.3 Dynamic control of configuration parameters</h3>
+
+<p>A new class has been added to CIMPLE to allow providers to dynamically
+control at least some of the runtime configuration parameters from the
+provider iteself.  Today this includes the following functions ad
+defined in src/cimple/CimpleConfig.h:
+
+   <p>Set the log level to the level defined by the input level
+   param level String parameter that defines log level. Must be one
+   of the predefined constants
+   &mdash;return true if set correctly Else false
+
+   <p>static bool setLogLevel(String&amp; level);
+
+   <p>Set the log level to the level defined by the enum variable input
+   &mdash;param level - Level to set
+   &mdash;return bool true if operation executed.
+
+   <p>static bool setLogLevel(Log_Level level);
+
+   <p>Get the current log level
+   &mdash;return Log_Level
+
+   <p>static Log_Level getLogLevel();
+
+   <p>Get the String that defines the current log level (i.e. DBG, WARN, etc.) 
+    &mdash;return String that defines the current log level
+
+   <p>static const char getLogLevelString();
+
+   <p>Set the HOME environment variable that defines the location of the
+    various files used by CIMPLE. There is no corresponding get method. 
+    &mdash;param env_var
+    &mdash;return bool true if accepted
+
+   <p>static bool setHomeEnv(const charenv_var);
+
+   <p>Set the maximum size in bytes of the log file before it is pruned and
+    a new file started. 
+    &mdash;param newSize uint32 variable that defines the maximum size in bytes. 
+       If zero (0) the size is unlimited.  This is the default unless the
+       log size varaible is set either by this method or the CIMPLE
+       config file. 
+    &mdash;return bool Returns true if the input is accepted.
+
+   <p>static bool setLogFileMaxSize(uint32 newSize);
+
+   <p>Get the value of the variable that defines the maximum size of the
+    log file. 
+    &mdash;return uint32 - value of the maximum File size variable.
+
+   <p>static uint32 getLogFileMaxSize();
+
+   <p>Set the internal variable that controls the maximum number of log files
+    that CIMPLE will maintain.  If the logFileMaxSize is set to a non-zero
+    value, each time the log file reaches that size, it is closed, the name
+    changed and a new log file started.  This variable controls the maximum
+    number of backup log files maintained.  When this limit is reached,
+    old files will be deleted. If the current value set by this variable is
+    zero (0) no old files will be maintained and the current file will be
+    deleted when it reaches the maximum size.  Zero is the default value for
+    the variable if it is not set by this method or the CIMPLE config file. 
+    The backup log files are numbered messages.n where n is the number of
+    backup file, 1 being the newest. 
+    &mdash;param number uint32 integer between 0 and 9 that defines maximum
+      number of backup files to be maintained. 
+    &mdash;return bool Returns true if the method is accepted. 
+    NOTE: Maximum number of backup files is 9. Also there is a cost to
+    keeping many files because of the renaming process.
+
+   <p>static bool setLogMaxBackupFiles(uint32 number);
+
+   <p>Get the current value for the variable that controls the maximum
+    number of log files maintained
+    &mdash;return uint32
+
+   <p>static uint32 getLogMaxBackupFiles();
+
+   <p>Set the logging enabled state to either true or false. When the logging
+    state is true, logging is enabled. Otherwise it is completely disabled. 
+    The default before being set by either this method or the CIMPLE
+    configuration files is true. 
+    &mdash;param netState Boolean defining the new state
+    &mdash;return bool
+
+   <p>static bool setLogEnabledState(bool netState);
+
+   <p>Get current logEnabledState
+    &mdash;return bool Returns the current state
+
+   <p>static bool getLogEnabledState();
+
+   <p>Forces a reread of the CIMPLE configuration file.  Normally this is
+    for testing only.
+
+   <p>static void readConfig();
+
+   <p>Remove Log files.  Cleans and restarts the log files.  This removes any
+    log backup files also.  Use this ONLY if you want to completely delete
+    log files.  Removes all files in the log directory with the logfile
+    name. 
+    &mdash;return true if operation successfully executed. False
+         indicates some error in trying to remove files.
+
+   <p>static bool removeLogFiles();
+
+   <p>Enable or Disable the logging calls from log macros. This corresponds
+    to the ENABLELOGGING runtime configure parameter in .cimplerc
+    &mdash;param newState - The state to which this variable is to be set.  If
+    false, logging is immediatly disabled (no more log entries are generated)
+    &mdash;return bool defining the previous state before newState is set into
+    the variable
+
+   <p>static bool setEnableLoggingState(bool newState);
+
+   <p>Get the current state of the enable logging variable. 
+   &mdash;return true if logging enabled.
+
+   <p>static bool getEnableLoggingState();
+
+   <p>NOTE: Please consider this class experimental for this version as it is the
+first release of this interface.
+
+<!--  -->
+<h3 class="section"><a name="TOC5"></a>2.4 Adapter Tracing</h3>
+
+<p>Created a generalized tracing capability (that uses the log for output)
+for the adapters.  In the past, there was very little tracing capability
+for the Pegasus adapter and today the cmpi adapter has tracing permanently
+integrated and activated.
+
+   <p>With this capability tracing can be controlled at the compile level with
+the configuration parameter &ndash;enable-adapter-trace which will enable compile
+of tracing statements.
+
+   <p>When activated, tracing outputs trace statements from the defined adapter
+to the log file.
+
+   <p>Activation of this capability is a compile time options with the
+&ndash;enable-adapter-trace option to configure and configure.bat.  This retains
+the original behavior of disable tracing/logging of adapters with no option
+set for the Pegasus (C++) provider.  The CMPI provider adapter retains its
+current and is not controlled through this configuration parameter today.
+
+   <p>For this release only the Pegasus adapter has been modified for this capability
+and control is somewhat limited since it uses the same runtime parameters
+as logging with all tracing controlled through the severity option (all
+adapter traces are at the level LL_DBG).  This will be extended in future
+releases to further separate adapter traces from provider tracing.
+
+   <p>It is expected that adapter tracing will be primarily used in development
+and can be compiled off in release mode.
+
+   <p>In addition functions have been added for both the cmpi and pegasus adapters
+to be able to print or log all the information in cmpi or pegasus instances
+as they pass through the adapters. Note that these functions have not been
+fully implemented in the providers themselves but that the functions exist
+with limited usage in the Pegasus provider.
+
+<!--  -->
+<h3 class="section"><a name="TOC6"></a>2.5 Utility extensions (genclass, genprov, genmod, etc.)</h3>
+
+<p>Addition of a common parameter for genclass, genprov, genmod, genproj to
+allow the class list to be provided via a file input.  This was provided
+because on windows at least, some users were reaching the limit of the
+cmd buffer with single command line inputs to these utilities.
+
+   <p>The new option is -F &lt;filename&gt; where filename is the name of a file that
+contains the list of classes one class per line.
+
+   <p>The original functionality using -f as an option in genclass has been
+maintained also for backward compatibilty.
+
+<!-- ============================================================================= -->
+<!-- Chapter: Bug Fixes -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC7"></a>3 Bug Fixes</h2>
+
+<p>This release fixes the bugs described below (all critical bugs were addressed
+by earlier maintenance releases).
+
+   <p>See the ChangeLog and version diff file for more information about bug
+fixes.
+
+<!-- ============================================================================= -->
+<!-- Chapter: Migration Notes -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC8"></a>4 Migration Notes</h2>
+
+<p>Always regenerate classes, providers, and modules when using a new version
+of CIMPLE. This is a trivial matter of running <code>genrpoj</code> as follows:
+
+<pre class="example">     $ genproj MODULE-NAME CLASS-1 CLASS-2 ... CLASS-N
+</pre>
+   <p class="noindent">This regenerates the classes and module and will patch your providers
+if necessary. This operation will not require any rework on your part. Just
+regnerate, clean, and remake.
+
+<!-- ============================================================================= -->
+<!-- Chapter: Platform Support -->
+<!-- ============================================================================= -->
+<h2 class="chapter"><a name="TOC9"></a>5 Platform Support</h2>
+
+<p>CIMPLE 2.0.18 supports the following platforms.
+
+     <ul>
+<li>Linux-X86 32-bit, GNU C++
+<li>Linux-X86 64-bit, GNU C++
+<li>Linux-IA64 64-bit, GNU C++
+<li>Linux-S390 32-bit, GNU C++
+<li>Linux-S390 64-bit, GNU C++
+<li>Linux-PPC 32-bit, GNU C++
+<li>Linux-PPC 64-bit, GNU C++
+<li>Darwin-X86-32-bit, GNU C++
+<li>Solaris-SPARC-64-bit, GNU C++
+<li>Solaris-X86 32-bit and 64-bit, CC Compiler
+<li>VxWorks-XScale-32-bit, GNU C++
+<li>Windows-X86-32-bit, MSVC
+<li>Windows-X86-64-bit, MSVC
+<li>Solaris-X86-32bit and 64 bit CC compiler
+<li>Solaris-SPARC 64-bit CC compiler
+<li>Windows-x86-32-bit WMI provider MSVC
+</ul>
+
+</body></html>
+

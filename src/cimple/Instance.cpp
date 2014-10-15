@@ -552,7 +552,7 @@ bool key_eq(const Instance* i1, const Instance* i2)
     return true;
 }
 
-// ATTN: fix copy to work between instances of different classes.
+// ATTN: Extend copy to work between instances of different classes.
 /*
     Common internal copy function used by the public copy functions.
     Copies the features of one instance (src) to a destination instance
@@ -1128,7 +1128,7 @@ static bool _str_to_sint64(const char*& str, sint64& x)
 
 #else
 
-    // ATTN: hanlde overflow here!
+    // ATTN: handle overflow here!
     x = strtol(str, &end, 10);
 
 #endif
@@ -1139,7 +1139,7 @@ static bool _str_to_sint64(const char*& str, sint64& x)
         return true;
     }
 
-    // Try hexidecimal.
+    // Try hexadecimal.
 
 #if defined(__USE_GNU)
 
@@ -1147,7 +1147,7 @@ static bool _str_to_sint64(const char*& str, sint64& x)
 
 #elif defined(CIMPLE_WINDOWS_MSVC)
 
-    // ATTN: hanlde overflow here!
+    // ATTN: handle overflow here!
     x = strtol(str, &end, 16);
 
 #endif

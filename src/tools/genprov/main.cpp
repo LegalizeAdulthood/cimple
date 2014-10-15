@@ -36,6 +36,9 @@ bool force_opt = false;
 // ATTN: handle break in method name between class name and method name.
 
 const char END[] = "/*@END@*/";
+static string class_list_file;
+
+
 
 static inline const char* _to_string(int data_type)
 {
@@ -822,7 +825,7 @@ int main(int argc, char** argv)
     // Check options:
     int opt;
 
-    while ((opt = getopt(argc, argv, "I:M:fhV")) != -1)
+    while ((opt = getopt(argc, argv, "I:M:F:fhV")) != -1)
     {
         switch (opt)
         {
@@ -856,6 +859,17 @@ int main(int argc, char** argv)
                 break;
             } 
 
+			case 'F':
+			 {
+                if (!optarg)
+                {
+                    err("missing argument on -F option");
+                    exit(1);
+                }
+
+                class_list_file = optarg;
+                break;
+			}
             case 'f':
                 force_opt = true;
                 break;
@@ -879,24 +893,41 @@ int main(int argc, char** argv)
     }
 
     // Check usage.
+    //argc -= optind;
+    //argv += optind;
 
-    argc -= optind;
-    argv += optind;
+    //if no arguments and no classlist file, error
+    // Expect at least one argument or a class_list_file
 
-    if (argc < 1)
+    if (optind == argc && class_list_file.size() == 0)
     {
-        fprintf(stderr, (char*)USAGE, arg0);
+        fprintf(stderr,"Error: No arguments and no classlist file.\n");
+        fprintf(stderr,"%s",(char*)USAGE, arg0);
         exit(1);
     }
+	
+    //  Build class list from file and command line input
+ 
+	vector<string> classes;
 
-    // Load repository. 
+    // append classes to class list file if -F option
+
+    if (class_list_file.size() != 0)
+        load_class_list_file(classes, class_list_file);
+
+    // get classes from command line and append to class list:
+
+    for (int i = optind; i < argc; i++)
+        append_unique(classes, argv[i]);
+
+    // Load repository
 
     load_repository(mof_files);
 
     // Create providers.
-
-    for (int i = 0; i < argc; i++)
-        genprov(argv[i]);
+	
+	for (int j = 0; j < classes.size(); j++)
+        genprov(classes[j]);
 
     return 0;
 }

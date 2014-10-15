@@ -24,6 +24,17 @@
 **==============================================================================
 */
 
+/*
+    Implements a cooperative lock file mechanism that can be used to
+    lock files between processes (not threads).  This creates a lock
+    file and provides for lock and unlock functions that the user must
+    use to define file lock regions for other files.
+    Thus log.cpp locks the log file with a lock file and
+    places lock(), unlock() around all modifications to that file.
+    However a that does not use this lock mechanism could access "locked"
+    file at any time.
+    
+*/
 #include <cassert>
 #include "File_Lock.h"
 

@@ -60,24 +60,6 @@ static bool _contains(const vector<string>& v, const string& s)
     return false;
 }
 
-size_t find(vector<string>& array, const string& x)
-{
-    for (size_t i = 0; i < array.size(); i++)
-    {
-        if (array[i] == x)
-            return i;
-    }
-
-    return size_t(-1);
-}
-
-void append_unique(vector<string>& array, const string& x)
-{
-    size_t pos = find(array, x);
-
-    if (pos == size_t(-1))
-        array.push_back(x);
-}
 
 void print(vector<string>& array)
 {

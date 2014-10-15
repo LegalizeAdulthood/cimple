@@ -1,6 +1,7 @@
 #include <cimple/config.h>
 #include <pegasus/utils/pegasus.h>
 #include <pegasus/utils/Containers.h>
+#include <pegasus/utils/print.h>
 #include <pegasus/utils/Str.h>
 #include "Class1.h"
 #include "Class2.h"
@@ -11,6 +12,8 @@
 
 using namespace Pegasus;
 using namespace cimple;
+
+static bool verbose;
 
 const char* ns = "root/cimv2";
 
@@ -39,11 +42,13 @@ void roundtrip(CIMInstance& ci, const Meta_Class* mc)
         cont.convert(mc, 0, inst2);
     }
 
-#if 0
-    printf("Roundtrip instances\n");
-    print(inst1);
-    print(inst2);
-#endif
+    if (verbose)
+    {
+        printf("Roundtrip instances\n");
+        print(inst1);
+        print(inst2);
+    }
+
 
     if (!identical(inst1, inst2))
     {
@@ -72,6 +77,11 @@ void test1()
     ci.addProperty(CIMProperty("p5", p5));
     ci.addProperty(CIMProperty("p6", CIMValue(CIMTYPE_STRING, false)));
     ci.addProperty(CIMProperty("junk", Pegasus::String("No such property")));
+    if (verbose)
+    {
+        printf("Print Pegasus instance\n");
+        cimple::print(ci);
+    }
     roundtrip(ci, &Class1::static_meta_class);
 
     InstanceContainer cont(Class1::static_meta_class.meta_repository, ns, ci);
@@ -143,6 +153,11 @@ void test3()
     CIMInstance ci("Assoc1");
     ci.addProperty(CIMProperty("left", left));
     ci.addProperty(CIMProperty("right", right));
+    if (verbose)
+    {
+        printf("Print Pegasus instance\n");
+        cimple::print(ci);
+    }
     roundtrip(ci, &Assoc1::static_meta_class);
 
     InstanceContainer cont(Assoc1::static_meta_class.meta_repository, ns, ci);
@@ -180,6 +195,11 @@ void test4()
     CIMInstance ci("Assoc2");
     ci.addProperty(CIMProperty("left", left));
     ci.addProperty(CIMProperty("right", right));
+    if (verbose)
+    {
+        printf("Print Pegasus instance\n");
+        cimple::print(ci);
+    }
     roundtrip(ci, &Assoc2::static_meta_class);
 
     InstanceContainer cont(Assoc2::static_meta_class.meta_repository, ns, ci);
@@ -227,6 +247,12 @@ void test6()
     CIMInstance class3("Class3");
     class3.addProperty(CIMProperty("key", Uint32(200)));
     class3.addProperty(CIMProperty("embedded", CIMValue(CIMObject(class2))));
+    if (verbose)
+    {
+        printf("test6 Print Pegasus instance\n");
+        cimple::print(class2);
+        cimple::print(class3);
+    }
     roundtrip(class3, &Class3::static_meta_class);
 
     InstanceContainer cont(
@@ -266,6 +292,13 @@ void test7()
     CIMInstance class3("Class4");
     class3.addProperty(CIMProperty("key", Uint32(200)));
     class3.addProperty(CIMProperty("embedded", CIMValue(class2)));
+
+    if (verbose)
+    {
+        printf("Print Pegasus instance\n");
+        cimple::print(class2);
+        cimple::print(class3);
+    }
     roundtrip(class3, &Class3::static_meta_class);
 
     InstanceContainer cont(
@@ -304,7 +337,6 @@ void test7()
 #ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
 void test8()
 {
-
     Pegasus::Array<Pegasus::CIMInstance> embedded;
     {
         CIMInstance class2("Class2");
@@ -324,6 +356,11 @@ void test8()
     CIMInstance class3("Class5");
     class3.addProperty(CIMProperty("key", Uint32(999)));
     class3.addProperty(CIMProperty("embedded", CIMValue(embedded)));
+    if (verbose)
+    {
+        printf("test8. Print Pegasus instance\n");
+        cimple::print(class3);
+    }
     roundtrip(class3, &Class5::static_meta_class);
 
     InstanceContainer cont(
@@ -370,6 +407,11 @@ void test9()
     CIMInstance ci("Assoc1");
     ci.addProperty(CIMProperty("left", left));
     ci.addProperty(CIMProperty("right", right));
+    if (verbose)
+    {
+        printf("Print Pegasus instance\n");
+        cimple::print(ci);
+    }
     roundtrip(ci, &Assoc1::static_meta_class);
 
     InstanceContainer cont(Assoc1::static_meta_class.meta_repository, ns, ci);
@@ -382,6 +424,7 @@ void test9()
 
 int main(int argc, char** argv)
 {
+    verbose = getenv("CIMPLE_TEST_VERBOSE") ? true : false;
     try
     {
         test1();
@@ -390,9 +433,9 @@ int main(int argc, char** argv)
         test4();
         test5();
         test6();
-        test7();
 #ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
-        test8();
+        test7();        // test single instance of embedded instances
+        test8();        // test array of embedded instances
 #endif
         test9();
     }

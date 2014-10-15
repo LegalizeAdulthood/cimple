@@ -27,7 +27,7 @@
 /*
     Test of the condition queue mechanism that creates a reader and writer
     thread as detachable threads. The writer writes a defined number of
-    items to a common queue, the reader reads them nfrom the queue. When
+    items to a common queue, the reader reads them from the queue. When
     finished the reader signals finished back to the main thread.
 */
 #include <cassert>
@@ -54,7 +54,8 @@ static void* _writer(void* arg)
         queue->enqueue((void*)i);
     }
 
-    Time::sleep(10000 * 1000);
+    // Not sure why this delay was in original code. Removed.
+    //Time::sleep(10000 * 1000);
 
     return 0;
 }
@@ -63,6 +64,7 @@ static void* _reader(void* arg)
 {
     Cond_Queue* queue = (Cond_Queue*)arg;
 
+    // loop in reader until all items received
     for (size_t i = 0; i < NUM_WRITES; i++)
     {
         // printf("reader: %u\n", i);
@@ -71,7 +73,11 @@ static void* _reader(void* arg)
     }
 
     Time::sleep(500 * 1000);
+
+    // Set successful flag. Reader loop completed.
     _success = true;
+
+    // signal that reader is finished.
     _finished.signal();
 
     return 0;
@@ -79,18 +85,27 @@ static void* _reader(void* arg)
 
 int main(int argc, char** argv)
 {
+    // set up Cond_Queue with max 16 items in the queue
     Cond_Queue queue(16);
 
-    Thread thread2;
-    Thread::create_detached(thread2, _writer, &queue);
+    // define and start the writer and reader threads
+    Thread threadWriter;
+    Thread::create_detached(threadWriter, _writer, &queue);
 
-    Thread thread1;
-    Thread::create_detached(thread1, _reader, &queue);
+    Thread threadReader;
+    Thread::create_detached(threadReader, _reader, &queue);
 
+    // wait for reader to finish
     _finished_lock.lock();
     _finished.wait(_finished_lock);
 
+    // test if successful
     assert(_success == true);
+
+    // Sleep to be sure all threads complete. Eliminates warnings in
+    // valgrind test
+    Time::sleep(500 * 1000);
+
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;

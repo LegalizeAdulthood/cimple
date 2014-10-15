@@ -113,6 +113,7 @@ int cimom::enum_instances(
     Array<Instance>& instances)
 {
     printf("NOT IMPLEMENTED.\n");
+    // absolute assert. Should NEVER be called
     assert(false);
     return 0;
 }

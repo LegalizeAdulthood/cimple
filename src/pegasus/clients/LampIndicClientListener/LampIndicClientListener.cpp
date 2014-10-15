@@ -264,7 +264,6 @@ int main(int argc, char ** argv)
 
         // Sleep 5 seconds waiting for indications
         cimple::Time::sleep(5 * 1000000);
-        cout << "Slept 5 seconds" << endl;
         assert(_success == true);
         cout << "Received all indications. Clean up" << endl;
 

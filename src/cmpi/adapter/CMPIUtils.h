@@ -26,7 +26,14 @@
 /*
     Debugging utilities to be used with the CMPI Provider.  These are only
     compiled when the CMPI_ADAPTER_DEBUG compiler flag is set.  See the
-    Makefile
+    Makefile.
+        Display tools for cmpi that are compiled only in compile debug mode
+        Includes:
+            CMPIInstance and CMPIObjectPath
+                - output to std output
+                - output to file
+                - format to string
+                - output to CIMPLE log
 */
 #ifndef _CMPI_Utils_h
 #define _CMPI_Utils_h
@@ -43,8 +50,9 @@
 CIMPLE_NAMESPACE_BEGIN
 
 /*
-    Print the CMPIObjectPath to the output file. 
+    Print the CMPIObjectPath or CMPIInstance to the  defined output file. 
 */
+
 CMPIStatus printCMPIObjectPath(FILE* os,
                                const CMPIObjectPath* self,
                                size_t indent = 0);
@@ -52,6 +60,40 @@ CMPIStatus printCMPIObjectPath(FILE* os,
 CMPIStatus printCMPIInstance(FILE* os,
                              const CMPIInstance* self,
                              size_t indent = 0);
+
+/*
+    Print the CMPIObjectPath or CMPIInstance to std output 
+*/
+
+CMPIStatus printCMPIObjectPath(const CMPIObjectPath* self,
+                               size_t indent = 0);
+
+CMPIStatus printCMPIInstance(const CMPIInstance* self,
+                             size_t indent = 0);
+
+// Print the CIMPIObjectPath or CMPIInstance to a CIMPLE String
+
+CMPIStatus printCMPIObjectPath(String& str,
+                               const CMPIObjectPath* self,
+                               size_t indent = 0);
+
+CMPIStatus printCMPIInstance(String& str,
+                             const CMPIInstance* self,
+                             size_t indent = 0);
+
+// Log a formatted CMPIObjectPath. This logs only in
+// debug mode. These two methods differ in that they require the file and line
+// information for the log.
+
+CMPIStatus logCMPIObjectPath(const char* file, int line,
+                             const CMPIObjectPath* self,
+                             size_t indent = 0);
+
+// Log a formatted CMPIInstanc to the log file with file/line info. This
+// logs only in debug log mode. Note that this
+CMPIStatus logCMPIInstance(const char* file, int line,
+                           const CMPIInstance* self,
+                           size_t indent = 0);
 
 CIMPLE_NAMESPACE_END
 

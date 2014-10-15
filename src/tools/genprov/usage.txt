@@ -9,6 +9,7 @@ OPTIONS:
     -V      -- print the version.
     -I      -- add to MOF include path (can be repeated).
     -M file -- add to list of MOF files to be parsed (can be repeated).
+    -F file -- Read class names from this file (one per line).
     -f      -- force overwrite of existing files (be careful).
     -h      -- print this message.
 

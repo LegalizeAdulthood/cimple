@@ -64,5 +64,7 @@
 #include "real.h"
 #include "boolean.h"
 #include "Stack.h"
+#include "FileSystem.h"
+#include "CimpleConfig.h"
 
 #endif /* _cimple_h */

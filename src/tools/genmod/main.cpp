@@ -1,3 +1,30 @@
+/*
+**==============================================================================
+**
+** Copyright (c) 2003 - 2008, Michael Brasher, Karl Schopmeyer
+** Copyright (c) 2007 - 2011 Inova Development Inc.
+** Copyright (c) 2009 - 2011 Karl Schopmeyer
+** 
+** Permission is hereby granted, free of charge, to any person obtaining a
+** copy of this software and associated documentation files (the "Software"),
+** to deal in the Software without restriction, including without limitation
+** the rights to use, copy, modify, merge, publish, distribute, sublicense,
+** and/or sell copies of the Software, and to permit persons to whom the
+** Software is furnished to do so, subject to the following conditions:
+** 
+** The above copyright notice and this permission notice shall be included in
+** all copies or substantial portions of the Software.
+** 
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+** SOFTWARE.
+**
+**==============================================================================
+*/
 #include <cimple/config.h>
 #include <cassert>
 #include <getopt.h>
@@ -17,6 +44,8 @@
 using namespace std;
 bool cmpi_opt = false;
 bool pegasus_opt = false;
+static string class_list_file;
+
 
 void gen_comment_line(FILE* os, size_t n)
 {
@@ -405,6 +434,177 @@ static void gen_module(const char* module_name, int argc, char** argv)
     fclose(os);
 }
 
+static void gen_module_file(const char* module_name, vector<string>& classes)
+{
+    // Build provider info list.
+
+    vector<const MOF_Class_Decl*> cds;
+
+    for (int i = 0; i < classes.size(); i++)
+    {
+        // Lookup class.
+
+        const char* class_name = classes[i].c_str();
+        const MOF_Class_Decl* cd = MOF_Class_Decl::find((char*)class_name);
+
+        if (!cd)
+            err("no such class in MOF repository: %s", class_name);
+
+        cds.push_back(cd);
+    }
+
+    // Open output file.
+
+    const char file_name[] = "module.cpp";
+
+    FILE* os = fopen(file_name, "wb");
+
+    if (!os)
+        err("failed to open output file \"%s\"", file_name);
+
+    // Generate warning block.
+
+    gen_warning(os);
+
+    // Generate the NOCHKSRC flag for pegasus chksrc program
+    // The output code will have lines longer than 80 characters.
+    fprintf(os,"/* NOCHKSRC */\n");
+
+    // Includes:
+
+    fprintf(os, "#include <cimple/cimple.h>\n");
+
+    for (size_t i = 0; i < cds.size(); i++)
+    {
+        fprintf(os, "#include \"%s_Provider.h\"\n", cds[i]->name);
+    }
+
+    fprintf(os, "\n");
+
+    // CIMPLE namespace:
+
+    fprintf(os, "using namespace cimple;\n");
+    fprintf(os, "\n");
+
+    // Write proc() functions.
+
+    for (size_t i = 0; i < cds.size(); i++)
+        write_proc(os, cds[i]);
+
+    // Module:
+
+    fprintf(os, "CIMPLE_MODULE(%s_Module);\n", module_name);
+
+    // Providers:
+
+    for (size_t i = 0; i < cds.size(); i++)
+    {
+        const char* cn = cds[i]->name;
+        int mask = cds[i]->qual_mask;
+
+        if (mask & MOF_QT_INDICATION)
+            fprintf(os, "CIMPLE_INDICATION_PROVIDER(%s_Provider);\n", cn);
+        else if (mask & MOF_QT_ASSOCIATION)
+            fprintf(os, "CIMPLE_ASSOCIATION_PROVIDER(%s_Provider);\n", cn);
+        else
+            fprintf(os, "CIMPLE_INSTANCE_PROVIDER(%s_Provider);\n", cn);
+    }
+
+    fprintf(os, "\n");
+
+    // Generate Pegasus entry point.
+
+    fprintf(os, "#ifdef CIMPLE_PEGASUS_MODULE\n");
+    fprintf(os, "  CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;\n");
+    fprintf(os, "# define __CIMPLE_FOUND_ENTRY_POINT\n");
+    fprintf(os, "#endif\n");
+    fprintf(os, "\n");
+
+    // Generate CMPI entry point.
+
+    fprintf(os, "#ifdef CIMPLE_CMPI_MODULE\n");
+
+    for (size_t i = 0; i < cds.size(); i++)
+    {
+        const char* cn = cds[i]->name;
+        int mask = cds[i]->qual_mask;
+
+        if (mask & MOF_QT_INDICATION)
+        {
+            fprintf(os, 
+                "  CIMPLE_CMPI_INDICATION_PROVIDER(%s_Provider);\n", cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_INDICATION_PROVIDER2(%s_Provider, %s);\n",
+                cn, cn);
+        }
+        else if (mask & MOF_QT_ASSOCIATION)
+        {
+            fprintf(os, 
+                "  CIMPLE_CMPI_ASSOCIATION_PROVIDER(%s_Provider);\n",
+                cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_ASSOCIATION_PROVIDER2(%s_Provider, %s);\n",
+                cn, cn);
+        }
+        else
+        {
+            fprintf(os, 
+                "  CIMPLE_CMPI_INSTANCE_PROVIDER(%s_Provider);\n", cn);
+            fprintf(os, 
+                "  CIMPLE_CMPI_INSTANCE_PROVIDER2(%s_Provider, %s);\n", cn, cn);
+        }
+    }
+
+    fprintf(os, "# define __CIMPLE_FOUND_ENTRY_POINT\n");
+    fprintf(os, "#endif\n");
+    fprintf(os, "\n");
+
+    // Generate OpenWBEM entry point.
+
+    fprintf(os, "#ifdef CIMPLE_OPENWBEM_MODULE\n");
+    fprintf(os, "  CIMPLE_OPENWBEM_PROVIDER(%s_Module);\n", module_name);
+    fprintf(os, "# define __CIMPLE_FOUND_ENTRY_POINT\n");
+    fprintf(os, "#endif\n\n");
+
+    // Generate WMI entry point.
+
+    /*
+        #ifdef CIMPLE_WMI_MODULE
+          // {23CB8761-914A-11cf-B705-00AA0062CBBB}
+          DEFINE_GUID(CLSID_Gadget_Module,
+            0x23cb8761, 0x914a,
+            0x11cf, 0xb7, 0x5,
+            0x0, 0xaa, 0x0, 0x62,
+            0xcb, 0xbb);
+          CIMPLE_WMI_PROVIDER_ENTRY_POINTS(CLSID_Gadget_Module)
+        # define __CIMPLE_FOUND_ENTRY_POINT
+        #endif
+    */
+    {
+        fprintf(os, "#ifdef CIMPLE_WMI_MODULE\n");
+        fprintf(os, "# include \"guid.h\"\n");
+        fprintf(os, "  CIMPLE_WMI_PROVIDER_ENTRY_POINTS(CLSID_%s_Module)\n",
+            module_name);
+        fprintf(os, "# define __CIMPLE_FOUND_ENTRY_POINT\n");
+        fprintf(os, "#endif\n\n");
+    }
+
+    // Generate check for entry point.
+
+    const char MESSAGE[] = 
+        "No provider entry point found. Please define one of the following: "
+        "CIMPLE_PEGASUS_MODULE, CIMPLE_CMPI_MODULE, CIMPLE_OPENWBEM_MODULE, "
+        "CIMPLE_WMI_MODULE";
+
+    fprintf(os, "#ifndef __CIMPLE_FOUND_ENTRY_POINT\n");
+    fprintf(os, "# error \"%s\"\n", MESSAGE);
+    fprintf(os, "#endif\n");
+
+    printf("Created %s\n", file_name);
+
+    fclose(os);
+}
+
 int main(int argc, char** argv)
 {
     const char* arg0 = argv[0];
@@ -415,7 +615,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "I:M:hV")) != -1)
+    while ((opt = getopt(argc, argv, "I:M:f:F:hV")) != -1)
     {
         switch (opt)
         {
@@ -447,8 +647,21 @@ int main(int argc, char** argv)
 
                 mof_files.push_back(optarg);
                 break;
-            } 
+            }
+            // because we had to sue the capitol form for the genprov
+            // we claim it for all the others also.
+            case 'f':
+            case 'F':
+			 {
+                if (!optarg)
+                {
+                    err("missing argument on -f or -F option");
+                    exit(1);
+                }
 
+                class_list_file = optarg;
+                break;
+			}
             case 'h':
             {
                 fprintf(stderr, (char*)USAGE, arg0);
@@ -469,22 +682,46 @@ int main(int argc, char** argv)
 
     // Check usage.
 
-    argc -= optind;
-    argv += optind;
+    //argc -= optind;
+    //argv += optind;
 
     if (argc < 2)
     {
-        fprintf(stderr, (char*)USAGE, arg0);
+        fprintf(stderr, "Error: Module Name argument required\n");
+        fprintf(stderr,"%s %s",(char*)USAGE, arg0);
         exit(1);
     }
 
+     if (optind == argc && class_list_file.size() == 0)
+    {
+        fprintf(stderr, "Error: Class list information required\n");
+        fprintf(stderr,"%s %s",(char*)USAGE, arg0);
+        exit(1);
+    }
+
+    // generate the class list from a combination of the command line input
+    // and any defined class list file
+
+	vector<string> classes;
+
+    if (class_list_file.size())
+        load_class_list_file(classes, class_list_file);
+
+    // Generate classes list from command line starting after
+    // module name parameter
+
+    for (int i = optind + 1; i < argc; i++)
+        append_unique(classes, argv[i]);
+		
     // Load repository. 
 
     load_repository(mof_files);
 
     // Generate module file.
 
-    gen_module(argv[0], argc - 1, argv + 1);
+    //// remove this gen_module_file(argv[0], argc - 1, argv + 1);
+	
+	gen_module_file(argv[0], classes);
 
     // Generate guid.h file.
 

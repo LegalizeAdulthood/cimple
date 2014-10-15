@@ -24,6 +24,15 @@
 **==============================================================================
 */
 
+/*************************************************************************** 
+        Display tools for cmpi that are compiled only in compile debug mode
+        Includes:
+            CMPIInstance and CMPIObjectPath
+                output to file
+                format to string
+                log
+****************************************************************************/
+
 #include "CMPIUtils.h"
 #include <cimple/config.h>
 #include <string.h>
@@ -58,9 +67,8 @@ static CMPIBoolean CMPIOKAY(CMPIStatus st)
     return st.rc == CMPI_RC_OK;
 }
 
-//#define KSTATUS_INIT { CMPI_RC_OK, NULL }
-#define CMPIRETURN(CODE) return __KReturn(CMPI_RC_##CODE)
-static void __KSetStatus(CMPIStatus* status, CMPIrc rc)
+#define CMPIRETURN(CODE) return _return(CMPI_RC_##CODE)
+static void _setStatus(CMPIStatus* status, CMPIrc rc)
 {
     if (status)
     {
@@ -69,88 +77,94 @@ static void __KSetStatus(CMPIStatus* status, CMPIrc rc)
     }
 }
 
-static CMPIStatus __KReturn(CMPIrc RC)
+static CMPIStatus _return(CMPIrc RC)
 {
     CMPIStatus status;
-    __KSetStatus(&status, RC);
+    _setStatus(&status, RC);
     return status;
 }
 
-static void _indent(FILE* os, size_t n)
+// Indent str by defined value
+static void _indent(String& str, size_t n)
 {
     size_t i;
     for (i = 0; i < n; i++)
-        fprintf(os, "    ");
+    {
+        str.append("    ");
+    }
 }
 
+// Append formated scalar value to str
 static void _print_scalar(
-    FILE* os,
+    String& str,            // append format to this String
     const CMPIData* cd, 
     size_t n)
 {
     if (cd->state & CMPI_nullValue)
     //if (CMIsNullValue(cd))
     {
-        fprintf(os, "null");
+        str.append("null");
         return;
     }
 
+    String strl = "";
     switch (cd->type & ~CMPI_ARRAY)
     {
         case CMPI_boolean:
-            fprintf(os, "%s", cd->value.boolean ? "true" : "false");
+            strl = (cd->value.boolean ? "true" : "false");
             break;
         case CMPI_uint8:
-            fprintf(os, "%u", cd->value.uint8);
+            strl = string_printf("%u", cd->value.uint8);
             break;
         case CMPI_sint8:
-            fprintf(os, "%d", cd->value.sint8);
+            strl = string_printf("%d", cd->value.sint8);
             break;
         case CMPI_uint16:
-            fprintf(os, "%u", cd->value.uint16);
+            strl = string_printf("%u", cd->value.uint16);
             break;
         case CMPI_sint16:
-            fprintf(os, "%d", cd->value.sint16);
+            strl = string_printf("%d", cd->value.sint16);
             break;
         case CMPI_uint32:
-            fprintf(os, "%u", cd->value.uint32);
+            strl = string_printf("%u", cd->value.uint32);
             break;
         case CMPI_sint32:
-            fprintf(os, "%d", cd->value.sint32);
+            strl = string_printf("%d", cd->value.sint32);
             break;
         case CMPI_uint64:
-            fprintf(os, "%llu", cd->value.uint64);
+            string_printf("%llu", cd->value.uint64);
             break;
         case CMPI_sint64:
-            fprintf(os, "%lld", cd->value.sint64);
+            strl = string_printf("%lld", cd->value.sint64);
             break;
         case CMPI_real32:
-            fprintf(os, "%f", cd->value.real32);
+            strl = string_printf("%f", cd->value.real32);
             break;
         case CMPI_real64:
-            fprintf(os, "%f", cd->value.real64);
+            strl = string_printf("%f", cd->value.real64);
             break;
         case CMPI_char16:
-            fprintf(os, "%u", cd->value.char16);
+            strl = string_printf("%u", cd->value.char16);
             break;
         case CMPI_string:
             /* ATTN: improve string formatting */
-            fprintf(os, "\"%s\"", CMPIChars(cd->value.string));
+            strl = string_printf("\"%s\"", CMPIChars(cd->value.string));
             break;
         case CMPI_dateTime:
-            fprintf(os, "%s", 
+            strl = string_printf("%s", 
                 CMPIChars(CMGetStringFormat(cd->value.dateTime, NULL)));
             break;
         case CMPI_ref:
-            printCMPIObjectPath(os, cd->value.ref, n);
+            printCMPIObjectPath(strl, cd->value.ref, n);
             break;
         case CMPI_instance:
-            printCMPIInstance(os, cd->value.inst, n);
+            printCMPIInstance(strl, cd->value.inst, n);
             break;
     }
+    str.append(strl);
 }
 
-static void _print_array(FILE* os, const CMPIData* cd, size_t n)
+static void _print_array(String& str, const CMPIData* cd, size_t n)
 {
     CMPICount count;
     CMPIArray* array;
@@ -159,17 +173,16 @@ static void _print_array(FILE* os, const CMPIData* cd, size_t n)
     if (cd->state & CMPI_nullValue)
     //if (CMIsNullValue(cd))
     {
-        fprintf(os, "null");
+        str.append("null");
         return;
     }
 
     if (!(array = cd->value.array))
         return;
 
-    fprintf(os, "{");
+    str.append("{");
 
     count = CMGetArrayCount(array, NULL);
-
     for (i = 0; i < count; i++)
     {
         CMPIStatus st = { CMPI_RC_OK, NULL };
@@ -177,18 +190,67 @@ static void _print_array(FILE* os, const CMPIData* cd, size_t n)
 
         if (CMPIOKAY(st))
         {
-            _print_scalar(os, &cd, n);
+            _print_scalar(str, &cd, n);
 
             if (i + 1 != count)
-                fprintf(os, ", ");
+                str.append(", ");
         }
     }
 
-    fprintf(os, "}");
+    str.append("}");
+}
+static void _print_value(String& str, const CMPIData* cd, size_t indent)
+{
+    if (cd->type & CMPI_ARRAY)
+        _print_array(str, cd, indent);
+    else
+        _print_scalar(str, cd, indent);
 }
 
+// output formatted CMPIObjectPath to File
 CMPIStatus printCMPIObjectPath(
     FILE* os,
+    const CMPIObjectPath* self,
+    size_t indent )
+{
+    String str = "";
+    CMPIStatus st =  printCMPIObjectPath(
+        str, self, indent);
+    // TODO show status returned if bad
+    fprintf(os, "%s", str.c_str());
+    return st;
+}
+
+// output formatted CMPIObjectPath to stdout
+CMPIStatus printCMPIObjectPath(
+    const CMPIObjectPath* self,
+    size_t indent )
+{
+    String str = "";
+    CMPIStatus st =  printCMPIObjectPath(
+        str, self, indent);
+    printf("%s", str.c_str());
+    return st;
+}
+
+// Output the formatted object path to the log file as DEBUG output
+CMPIStatus logCMPIObjectPath(
+    const char* file, int line,
+    const CMPIObjectPath* self,
+    size_t indent )
+{
+    String str = "";
+    CMPIStatus st =  printCMPIObjectPath(
+        str, self, indent);
+    // TODO show status returned if bad.
+    log(LL_DBG, file, line, "CMPIObjectPath: %s", str.c_str());
+
+    return st;
+}
+
+// print CMPIObjectPath to a String
+CMPIStatus printCMPIObjectPath(
+    String& str,
     const CMPIObjectPath* self, 
     size_t indent )
 {
@@ -211,12 +273,11 @@ CMPIStatus printCMPIObjectPath(
     if (!(cn = CMGetClassName(self, &st)))
         return st;
 
-    /* Print namesapce:classname */
+    /* Print namespace:classname */
 
-    fprintf(os, "%s:%s\n", CMPIChars(ns), CMPIChars(cn));
-    _indent(os, indent);
-    fprintf(os, "{\n");
-    indent++;
+    str.append(string_printf("%s:%s\n", CMPIChars(ns), CMPIChars(cn)));
+    _indent(str, indent++);
+    str.append("{\n");
 
     /* Print properties */
 
@@ -242,28 +303,66 @@ CMPIStatus printCMPIObjectPath(
 
         /* Print property name */
 
-        _indent(os, indent);
-        fprintf(os, "%s=", CMPIChars(pn));
+        _indent(str, indent);
+        str.append(string_printf("%s=", CMPIChars(pn)));
 
         /* Print property value */
+        _print_value(str,&cd, indent);
 
-        if (cd.type & CMPI_ARRAY)
-            _print_array(os, &cd, indent);
-        else
-            _print_scalar(os, &cd, indent);
-
-        fprintf(os, "\n");
+        str.append("\n");
     }
 
-    indent--;
-    _indent(os, indent);
-    fprintf(os, "}\n");
+    _indent(str, --indent);
+    str.append("}\n");
 
     CMPIRETURN(OK);
 }
 
+// output formatted CMPIObjectPath to File
 CMPIStatus printCMPIInstance(
     FILE* os,
+    const CMPIInstance* self,
+    size_t indent )
+{
+    String str = "";
+    CMPIStatus st =  printCMPIInstance(
+        str, self, indent);
+    fprintf(os, "%s", str.c_str());
+
+    return st;
+}
+
+// output formatted CMPIObjectPath to stdout
+CMPIStatus printCMPIInstance(
+    const CMPIInstance* self,
+    size_t indent )
+{
+    String str = "";
+    CMPIStatus st =  printCMPIInstance(
+        str, self, indent);
+    printf("%s", str.c_str());
+
+    return st;
+}
+
+// output formatted CMPIObjectPath to log
+CMPIStatus logCMPIInstance(
+    const char* file, int line,
+    const CMPIInstance* self)
+{
+    size_t indent = 0;
+    String str = "";
+    CMPIStatus st =  printCMPIInstance(
+        str, self, indent);
+
+    log(LL_DBG, file, line, "CMPIInstance: %s", str.c_str());
+
+    return st;
+}
+
+// generate formatted out of CMPI Instance in str
+CMPIStatus printCMPIInstance(
+    String& str,
     const CMPIInstance* self, 
     size_t indent)
 {
@@ -295,11 +394,10 @@ CMPIStatus printCMPIInstance(
         return st;
 
     /* Print namespace:classname */
-
-    fprintf(os, "%s:%s\n", CMPIChars(ns), CMPIChars(cn));
-    _indent(os, indent);
-    fprintf(os, "{\n");
-    indent++;
+    
+    str.append(string_printf("%s:%s\n", CMPIChars(ns), CMPIChars(cn)));
+    _indent(str, indent++);
+    str.append("{\n");
 
     /* Print properties */
 
@@ -325,26 +423,24 @@ CMPIStatus printCMPIInstance(
 
         /* Print property name */
 
-        _indent(os, indent);
-        fprintf(os, "%s=", CMPIChars(pn));
+        _indent(str, indent);
+        str.append(string_printf("%s=", CMPIChars(pn)));
 
         /* Print property value */
 
-        if (cd.type & CMPI_ARRAY)
-            _print_array(os, &cd, indent);
-        else
-            _print_scalar(os, &cd, indent);
+        _print_value(str, &cd, indent);
 
         //if (cd.type != CMPI_ref || cd.state & CMPI_nullValue)
         if (cd.type != CMPI_ref || CMIsNullValue(cd))
-            fprintf(os, "\n");
+            str.append("\n");
     }
 
-    indent--;
-    _indent(os, indent);
-    fprintf(os, "}\n");
+
+    _indent(str, --indent);
+    str.append("}\n");
 
     CMPIRETURN(OK);
 }
+
 
 CIMPLE_NAMESPACE_END

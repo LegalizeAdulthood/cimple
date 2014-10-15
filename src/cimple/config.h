@@ -201,6 +201,34 @@ CIMPLE_NAMESPACE_END
 # define CIMPLE_ASSERT(COND) /* */
 #endif
 
+// assert define primarily for CIMPLE tests.  Should act the same as 
+// standard assert except generate different message
+#define CIMPLE_TEST_ASSERT(COND)                                         \
+    do                                                                    \
+    {                                                                     \
+        if (!(COND))                                                      \
+        {                                                                 \
+            printf("CIMPLE_TEST_ASSERT failed in file %s at line %d\n",  \
+                __FILE__, __LINE__);                                      \
+            abort();                                                      \
+        }                                                                 \
+    } while (0)
+
+// Used to generate assert message during tests but not stop the test.
+// to be used as temporary indicator for asserts during testing where
+// we have errors in test.  SHOULD NOT EXIST when CIMPLE released.
+#define CIMPLE_TEST_ASSERT_TEMP(COND)                                     \
+    do                                                                    \
+    {                                                                     \
+        if (!(COND))                                                      \
+        {                                                                 \
+            printf("CIMPLE_TEST_ASSERT_TEMP failed in file %s at line %d\n", \
+                __FILE__, __LINE__);                                      \
+                                                     \
+        }                                                                 \
+    } while (0)
+
+
 CIMPLE_NAMESPACE_BEGIN
 
 CIMPLE_EXPORT void __cimple_assert(
@@ -387,7 +415,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 2
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 16
+#define CIMPLE_REVISION 18
 
 //==============================================================================
 //

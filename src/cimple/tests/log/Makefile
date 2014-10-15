@@ -9,6 +9,40 @@ LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
 
+## set local definition of CIMPLE_HOME env var for this test to
+## the current directory. This env variable is used in the
+## test program
+export CIMPLE_HOME_TEST=$(CURDIR)
 
+## set as runtests because we do not have common DIFF and CUT
+## for all platforms
+## This test tests for exact log output information.
 tests:
-	$(BINDIR)/$(BINARY)
+##  remove any temporary files
+	@ $(RM) .cimple -rf
+	@ $(RM) -rf .cimplerc
+	@ $(RM) -rf result
+
+	echo CIMPLE_HOME_TEST = $(CIMPLE_HOME_TEST)
+
+##  execute the program
+	@ $(BINDIR)/$(BINARY)
+
+## test output in .cimple for messages
+## TODO this test is worthless since all options testing should
+## be within main.cpp.
+
+ifdef DISABLE_LOG_MACROS_OPT
+	$(ECHO) should be no log
+endif
+	@ $(RM) .cimple -rf
+	@ $(RM) -rf .cimplerc
+	@ $(RM) -rf result
+
+##
+vg:
+	echo CIMPLE_HOME_TEST = $(CIMPLE_HOME_TEST)
+	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)
+	$(RM) .cimple -rf
+	$(RM) .cimplerc
+	$(RM) result

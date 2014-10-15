@@ -1,7 +1,9 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
+** Copyright (c) 2003 - 2008, Michael Brasher, Karl Schopmeyer
+** Copyright (c) 2007 - 2011 Inova Development Inc.
+** Copyright (c) 2009 - 2011 Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -57,27 +59,247 @@ static bool descriptions_opt = false;
 static bool boolean_qualifiers_opt = false;
 static string class_list_file;
 static bool sources_opt = false;
+static bool verbose_opt = false;
 
 string meta_repository_name;
 
-size_t find(vector<string>& array, const string& x)
+/*******************************************************************************
+**
+**  create the CRC for a class.
+**
+*******************************************************************************/
+// ATTN: do we need to implement qualifiers for parameters?
+// ATTN: optimize out empty Meta_Qualifier arrays (MQAs).
+
+char data_type_tag(int data_type)
 {
-    for (size_t i = 0; i < array.size(); i++)
+    switch (data_type)
     {
-        if (array[i] == x)
-            return i;
+        case TOK_BOOLEAN:
+            return 'O';
+        case TOK_UINT8:
+            return 'B';
+        case TOK_SINT8:
+            return 'b';
+        case TOK_UINT16:
+            return 'S';
+        case TOK_SINT16:
+            return 's';
+        case TOK_UINT32:
+            return 'I';
+        case TOK_SINT32:
+            return 'i';
+        case TOK_UINT64:
+            return 'L';
+        case TOK_SINT64:
+            return 'l';
+        case TOK_REAL32:
+            return 'F';
+        case TOK_REAL64:
+            return 'D';
+        case TOK_CHAR16:
+            return 'C';
+        case TOK_STRING:
+            return 'Z';
+        case TOK_DATETIME:
+            return 'T';
+        default:
+            assert(0);
     }
 
-    return size_t(-1);
+    return 0;
 }
 
-void append_unique(vector<string>& array, const string& x)
+void put_qual_sig(int qual_mask, string& sig)
 {
-    size_t pos = find(array, x);
+    string tmp;
 
-    if (pos == size_t(-1))
-        array.push_back(x);
+    if (qual_mask & MOF_QT_KEY)
+        tmp += 'K';
+
+    if (qual_mask & MOF_QT_EMBEDDEDOBJECT)
+        tmp += 'E';
+
+    if (qual_mask & MOF_QT_STATIC)
+        tmp += 'S';
+
+    if (qual_mask & MOF_QT_IN)
+        tmp += 'I';
+
+    if (qual_mask & MOF_QT_OUT)
+        tmp += 'O';
+
+    if (tmp.size())
+    {
+        sig += '[';
+        sig += tmp;
+        sig += ']';
+    }
 }
+
+void put_data_type_sig(int data_type, int array_index, string& sig)
+{
+    // Subscript:
+
+    if (array_index == -1)
+        sig += "@";
+    else if (array_index > 0)
+    {
+        char buffer[16];
+        sprintf(buffer, "@%d", array_index);
+        sig += buffer;
+    }
+
+    // Type:
+
+    sig += data_type_tag(data_type);
+}
+
+void make_signature(const MOF_Class_Decl* cd, string& sig)
+{
+    sig.erase(sig.begin(), sig.end());
+
+    // Object type tag: [A]ssociation, [I]ndication, [C]lass.
+
+    if (cd->qual_mask & MOF_QT_ASSOCIATION)
+        sig += 'A';
+    else if (cd->qual_mask & MOF_QT_INDICATION)
+        sig += 'N';
+    else
+        sig += 'C';
+
+    // Class name:
+
+    sig += cd->name;
+
+    // Super class name:
+
+    if (cd->super_class_name)
+    {
+        sig += ';';
+        sig += cd->super_class_name;
+    }
+
+    sig += '\n';
+
+    // Class features:
+
+    MOF_Feature_Info* p = cd->all_features;
+
+    for (; p; p = (MOF_Feature_Info*)p->next)
+    {
+        MOF_Feature* f = p->feature;
+
+        // The next character written is a tag which represents the data type.
+        // It will be one of the following:
+        //
+        //     'O' - boolean
+        //     'B' - uint8 (unsigned byte)
+        //     'b' - sint8 (signed byte)
+        //     'S' - uint16 (unsigned short)
+        //     's' - sint16 (signed short)
+        //     'I' - uint32 (unsigned integer)
+        //     'i' - sint32 (sint32 integer)
+        //     'L' - uint64 (unsigned long)
+        //     'l' - sint64 (singed long)
+        //     'F' - real32 (float)
+        //     'D' - real64 (double)
+        //     'C' - char16
+        //     'Z' - string
+        //     'T' - datetime
+        //     'R' - reference
+        //     'M' - method
+
+        // Property:
+
+        MOF_Property_Decl* prop = dynamic_cast<MOF_Property_Decl*>(f);
+
+        if (prop)
+        {
+            // Qualifiers:
+
+            put_qual_sig(
+                prop->qual_mask & (MOF_QT_EMBEDDEDOBJECT|MOF_QT_KEY), sig);
+
+            // Type:
+
+            put_data_type_sig(prop->data_type, prop->array_index, sig);
+
+            // Name:
+
+            sig += f->name;
+
+            sig += '\n';
+        }
+
+        // Reference:
+
+        MOF_Reference_Decl* ref = dynamic_cast<MOF_Reference_Decl*>(f);
+
+        if (ref)
+        {
+            // Qualifiers:
+
+            put_qual_sig(ref->qual_mask & MOF_QT_KEY, sig);
+
+            sig += 'R';
+            sig += ref->class_name;
+            sig += ';';
+            sig += ref->name;
+            sig += '\n';
+        }
+
+        // Method:
+
+        MOF_Method_Decl* meth = dynamic_cast<MOF_Method_Decl*>(f);
+
+        if (meth)
+        {
+            put_qual_sig(meth->qual_mask & MOF_QT_STATIC, sig);
+
+            sig += 'M';
+            sig += data_type_tag(meth->data_type);
+            sig += meth->name;
+            sig += ';';
+
+            MOF_Parameter* param = meth->parameters;
+
+            for (; param; param = (MOF_Parameter*)param->next)
+            {
+                // Qualifiers:
+
+                put_qual_sig(param->qual_mask & (MOF_QT_IN|MOF_QT_OUT), sig);
+
+                // Data type:
+
+                if (param->data_type == TOK_REF)
+                {
+                    sig += 'R';
+                    sig += param->ref_name;
+                    sig += ';';
+                }
+                else
+                {
+                    put_data_type_sig(
+                        param->data_type, param->array_index, sig);
+                }
+
+                // Param name:
+
+                sig += param->name;
+                sig += ';';
+            }
+
+            sig += "\n";
+        }
+    }
+}
+
+/*******************************************************************************
+**
+**
+**
+*******************************************************************************/
 
 void print(vector<string>& array)
 {
@@ -90,6 +312,9 @@ void nl()
     fputc('\n', _os);
 }
 
+// vfprintf the formatted input definition.  out uses the va print structure
+// to format the variable number of inputs and outputs to the stream defined
+// by _os
 static
 CIMPLE_PRINTF_ATTR(1, 2)
 void out(const char* format, ...)
@@ -100,13 +325,17 @@ void out(const char* format, ...)
     va_end(ap);
 }
 
-#if 0
+
 static void _print_include_paths()
 {
-    for (size_t i = 0; i < MOF_num_include_paths; i++)
-        printf("MOF_include_paths[%u]=\"%s\"\n", (int)i, MOF_include_paths[i]);
+    if (MOF_num_include_paths == 0)
+        printf("No MOF_include_paths\n");
+    else
+        for (size_t i = 0; i < MOF_num_include_paths; i++)
+            printf("MOF_include_paths[%u]=\"%s\"\n", (int)i,
+            MOF_include_paths[i]);
 }
-#endif
+
 
 static inline const char* _to_string(int data_type)
 {
@@ -171,12 +400,47 @@ void str_literal_out(const char* str)
     out("\"");
 }
 
-void literal_out(const MOF_Literal* ml)
+void int_literal_out(const MOF_Literal* ml, const char* x)
+{
+    out(("%s(" CIMPLE_LLD  ")"), x, ml->int_value);
+}
+
+/*
+    Output the literal value converted to string
+    Note that sin64 and uint64 get wrapped in a macro because
+    of issues with the literal constant definitions in the compilers
+    i.e suffixes
+*/
+void literal_out(const MOF_Literal* ml, int data_type)
 {
     switch (ml->value_type)
     {
         case TOK_INT_VALUE:
-            out(CIMPLE_LLD, ml->int_value);
+            // Some integer types need suffixing to avoid compiler
+            // issues. Add the suffixes as defined by the
+            // macros in config.h
+            switch(data_type)
+            {
+                case TOK_SINT64:
+                    int_literal_out(ml, "CIMPLE_SINT64_LITERAL");
+                    break;
+
+                case TOK_UINT64:
+                    int_literal_out(ml, "CIMPLE_UINT64_LITERAL");
+                    break;
+
+                case TOK_UINT32:
+                    int_literal_out(ml, "CIMPLE_UINT32_LITERAL");
+                    break;
+
+                case TOK_SINT32:
+                    int_literal_out(ml, "CIMPLE_SINT32_LITERAL");
+                    break;
+
+                default:
+                    out(CIMPLE_LLD, ml->int_value);
+    
+            }
             break;
 
         case TOK_REAL_VALUE:
@@ -279,7 +543,7 @@ void gen_value_scalar_def(
 
     out("{\n");
     out("    ");
-    literal_out(mof_literal);
+    literal_out(mof_literal, mof_data_type);
     out("\n");
     out("};\n");
     nl();
@@ -461,7 +725,7 @@ void gen_value_array_def(
     for (const MOF_Literal* p = mof_literal; p; p = (const MOF_Literal*)p->next)
     {
         out("    ");
-        literal_out(p);
+        literal_out(p, data_type);
         out(",\n");
     }
 
@@ -2232,10 +2496,14 @@ static vector<string> _generated_classes;
 
 static void _append_genmak(const char* buffer)
 {
-    // Append generated source file name to .genmak.tmp
+    // Append generated source file name to .genclass file
 
     if (sources_opt)
     {
+        if (verbose_opt)
+        {
+            printf("Append %s to .getclass file\n", buffer);
+        }
         FILE* os = fopen(".genclass", "a");
 
         if (!os)
@@ -2303,12 +2571,13 @@ void generate_class(const char* class_name)
         char buffer[1024];
         sprintf(buffer, "%s.h", class_name);
         
+        // Open the output file and save the FILE pointer
         if ((_os = fopen(buffer, "wb")) == 0)
         {
             err("error: cannot open \"%s\"", buffer);
             exit(1);
         }
-
+        // required for Pegasus and CIMPLE src length test tools
         out("/*NOCHKSRC*/\n");
 
         gen_header_file(class_decl);
@@ -2320,6 +2589,7 @@ void generate_class(const char* class_name)
     // Generate source file:
 
     {
+        // open the <classname>.cpp file
         char buffer[1024];
         sprintf(buffer, "%s.cpp", class_name);
         
@@ -2636,70 +2906,70 @@ void gen_repository(const vector<string>& classes)
     }
 }
 
-static bool legal_class_name(const string& ident)
-{
-    const char* p = ident.c_str();
+//static bool legal_class_name(const string& ident)
+//{
+//    const char* p = ident.c_str();
+//
+//    if (!isalpha(*p) && *p != '_')
+//        return false;
+//
+//    while (isalnum(*p) || *p == '_')
+//        p++;
+//
+//    return *p == '\0';
+//}
 
-    if (!isalpha(*p) && *p != '_')
-        return false;
-
-    while (isalnum(*p) || *p == '_')
-        p++;
-
-    return *p == '\0';
-}
-
-void load_class_list_file(vector<string>& classes, const string& path)
-{
-    FILE* is = fopen(path.c_str(), "r");
-
-    if (!is)
-        err("failed to open \"%s\"", path.c_str());
-
-    char buffer[1024];
-
-    for (int line = 1; fgets(buffer, sizeof(buffer), is) != NULL; line++)
-    {
-        if (buffer[0] == '#')
-            continue;
-
-        char* start = buffer;
-
-        /* Remove leading whitespace. */
-
-        while (isspace(*start))
-            start++;
-
-        /* Remove trailing whitespace. */
-
-        char* p = start;
-
-        while (*p)
-            p++;
-
-        while (p != start && isspace(p[-1]))
-            *--p = '\0';
-
-        /* Skip empty lines. */
-
-        if (*start == '\0')
-            continue;
-
-        /* Check whether legal class name. */
-
-        if (!legal_class_name(start))
-        {
-            err("illegal class name on line %d of %s: \"%s\"", 
-                line, path.c_str(), start);
-        }
-
-        /* Append class to list. */
-
-        append_unique(classes, start);
-    }
-
-    fclose(is);
-}
+//void load_class_list_file(vector<string>& classes, const string& path)
+//{
+//    FILE* is = fopen(path.c_str(), "r");
+//
+//    if (!is)
+//        err("failed to open class list input file \"%s\"", path.c_str());
+//
+//    char buffer[1024];
+//
+//    for (int line = 1; fgets(buffer, sizeof(buffer), is) != NULL; line++)
+//    {
+//        if (buffer[0] == '#')
+//            continue;
+//
+//        char* start = buffer;
+//
+//        /* Remove leading whitespace. */
+//
+//        while (isspace(*start))
+//            start++;
+//
+//        /* Remove trailing whitespace. */
+//
+//        char* p = start;
+//
+//        while (*p)
+//            p++;
+//
+//        while (p != start && isspace(p[-1]))
+//            *--p = '\0';
+//
+//        /* Skip empty lines. */
+//
+//        if (*start == '\0')
+//            continue;
+//
+//        /* Check whether legal class name. */
+//
+//        if (!legal_class_name(start))
+//        {
+//            err("illegal class name on line %d of %s: \"%s\"",
+//                line, path.c_str(), start);
+//        }
+//
+//        /* Append class to list. */
+//
+//        append_unique(classes, start);
+//    }
+//
+//    fclose(is);
+//}
 
 int main(int argc, char** argv)
 {
@@ -2714,13 +2984,17 @@ int main(int argc, char** argv)
 
     unlink(".genclass");
 
+    if (verbose_opt )
+    {
+        printf("Remove any existing .genclass");
+    }
     // Add the current directory to the search path:
 
     MOF_include_paths[MOF_num_include_paths++] = ".";
 
     // Process command-line options.
 
-    for (int opt; (opt = getopt(argc, argv, "SI:M:hrVlesqdbf:H")) != -1; )
+    for (int opt; (opt = getopt(argc, argv, "SI:M:hrVvlesqdbf:F:H")) != -1; )
     {
         switch (opt)
         {
@@ -2768,6 +3042,9 @@ int main(int argc, char** argv)
                 gen_repository_opt = true;
                 break;
 
+            case 'v':
+                verbose_opt = true;
+                break;
             case 'l':
                 linkage_opt = true;
                 break;
@@ -2793,8 +3070,17 @@ int main(int argc, char** argv)
                 break;
 
             case 'f':
+            case 'F':
+			 {
+                if (!optarg)
+                {
+                    err("missing argument on -f or -F option");
+                    exit(1);
+                }
+
                 class_list_file = optarg;
                 break;
+			}
 
             case 'S':
                 sources_opt = true;
@@ -2806,8 +3092,12 @@ int main(int argc, char** argv)
         }
     }
 
-    // Build meta-repository symbol name:
+    if (verbose_opt)
+    {
+        _print_include_paths();
+    }
 
+    // Build meta-repository symbol name:
     if (gen_repository_opt)
     {
         cimple::UUID uuid;
@@ -2815,23 +3105,28 @@ int main(int argc, char** argv)
         char uuid_str[CIMPLE_UUID_STRING_SIZE];
         cimple::uuid_to_string(uuid, uuid_str);
         meta_repository_name = string("__meta_repository_") + string(uuid_str);
+
+        if (verbose_opt)
+            printf("Generate Repository option set."
+                   "meta-repository name = %s\n",meta_repository_name.c_str());
     }
 
     // We expect at least one argument (or -f option)
 
     if (optind == argc && !schema_opt && class_list_file.size() == 0)
     {
+        printf("Error: Classed defined (-F or -s or class arguments\n");
         printf("%s",(char*)USAGE);
         exit(1);
     }
 
     // Setup the MOF include path.
 
-    setup_mof_path();
+    setup_mof_path(verbose_opt);
 
     // Load the repository:
 
-    load_repository(extra_mof_files);
+    load_repository(extra_mof_files, verbose_opt);
 
     // Read class list file given by -f (if any).
 
@@ -2840,21 +3135,39 @@ int main(int argc, char** argv)
     if (class_list_file.size())
         load_class_list_file(classes, class_list_file);
 
-    // Generate classes:
+    // Get class list from command line and add to list of
+    // classes to process
 
     for (int i = optind; i < argc; i++)
         append_unique(classes, argv[i]);
 
+    // if schema opt set, generate the entire CIM Schema
     if (schema_opt)
     {
         // Generate entire CIM schema:
 
-        for (const MOF_Class_Decl* p = MOF_Class_Decl::list; 
-            p; 
+        if (verbose_opt)
+        {
+            printf("Generate complete Schema\n");
+        }
+
+        for (const MOF_Class_Decl* p = MOF_Class_Decl::list; p; 
             p = (const MOF_Class_Decl*)(p->next))
         {
             generate_class(p->name);
         }
+    }
+
+    if (verbose_opt)
+    {
+        bool first = true;
+        printf("Class list =");
+        for (size_t i = 0; i < classes.size(); i++)
+        {
+            printf("%s %s", (first? " ":", "), classes[i].c_str());
+            first = false;
+        }
+        printf("\n");
     }
 
     for (size_t i = 0; i < classes.size(); i++)

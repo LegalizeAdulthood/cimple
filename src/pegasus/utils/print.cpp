@@ -24,6 +24,10 @@
 **==============================================================================
 */
 
+/*
+    Functions to display Pegasus CIMInstances.
+*/
+
 #include <cassert>
 #include "pegasus.h"
 #include "Str.h"
@@ -32,297 +36,384 @@
 using namespace Pegasus;
 
 CIMPLE_NAMESPACE_BEGIN
+static const char* _typeStrings[] =
+{
+    "boolean",
+    "uint8",
+    "sint8",
+    "uint16",
+    "sint16",
+    "uint32",
+    "sint32",
+    "uint64",
+    "sint64",
+    "real32",
+    "real64",
+    "char16",
+    "string",
+    "datetime",
+    "reference",
+    "object",
+    "instance"
+};
 
-static void print_scalar(const Pegasus::String& name, const CIMValue& v)
+static void format_scalar(String& str,
+             const CIMValue& v, size_t indent)
 {
     if (v.isNull())
     {
-        printf("NULL");
-        return;
+        str.append("NULL");
     }
-
-    switch (v.getType())
+    else
     {
-        case CIMTYPE_BOOLEAN:
+        switch (v.getType())
         {
-            Boolean x;
-            v.get(x);
-            if (x)
-                printf("true");
-            else
-                printf("false");
-            break;
-        }
-
-        case CIMTYPE_UINT8:
-        {
-            Uint8 x;
-            v.get(x);
-            printf("%d", x);
-            break;
-        }
-
-        case CIMTYPE_SINT8:
-        {
-            Sint8 x;
-            v.get(x);
-            printf("%u", x);
-            break;
-        }
-
-        case CIMTYPE_UINT16:
-        {
-            Uint16 x;
-            v.get(x);
-            printf("%d", x);
-            break;
-        }
-
-        case CIMTYPE_SINT16:
-        {
-            Sint16 x;
-            v.get(x);
-            printf("%u", x);
-            break;
-        }
-
-        case CIMTYPE_UINT32:
-        {
-            Uint32 x;
-            v.get(x);
-            printf("%d", x);
-            break;
-        }
-
-        case CIMTYPE_SINT32:
-        {
-            Sint32 x;
-            v.get(x);
-            printf("%u", x);
-            break;
-        }
-
-        case CIMTYPE_UINT64:
-        {
-            Uint64 x;
-            v.get(x);
-            printf(CIMPLE_LLU, x);
-            break;
-        }
-
-        case CIMTYPE_SINT64:
-        {
-            Sint64 x;
-            v.get(x);
-            printf(CIMPLE_LLD, x);
-            break;
-        }
-
-        case CIMTYPE_REAL32:
-        {
-            Real32 x;
-            v.get(x);
-            printf("%f", x);
-            break;
-        }
-
-        case CIMTYPE_REAL64:
-        {
-            Real64 x;
-            v.get(x);
-            printf("%lf", x);
-            break;
-        }
-
-        case CIMTYPE_CHAR16:
-        {
-            Char16 x;
-            v.get(x);
-            printf("%d", Uint32(x));
-            break;
-        }
-
-        case CIMTYPE_STRING:
-        {
-            Pegasus::String x;
-            v.get(x);
-            printf("%s", *Str(x));
-            break;
-        }
-
-        case CIMTYPE_DATETIME:
-        {
-            CIMDateTime x;
-            v.get(x);
-            printf("%s", *Str(x.toString()));
-            break;
-        }
-
-        case CIMTYPE_REFERENCE:
-        {
-            CIMObjectPath x;
-            v.get(x);
-            printf("%s", *Str(x.toString()));
-            break;
-        }
-
-        case CIMTYPE_OBJECT:
-        {
-            CIMObject x;
-            v.get(x);
-
-            if (x.isInstance())
+            case CIMTYPE_BOOLEAN:
             {
-                print(CIMInstance(x), true);
+                Boolean x;
+                v.get(x);
+                string_append_printf(str,"%s", (x? "true" : "false"));
+                break;
             }
-            else
+    
+            case CIMTYPE_UINT8:
             {
-                printf("<CLASS>");
+                Uint8 x;
+                v.get(x);
+                string_append_printf(str,"%d", x);
+                break;
             }
-            break;
-        }
-
+    
+            case CIMTYPE_SINT8:
+            {
+                Sint8 x;
+                v.get(x);
+                string_append_printf(str,"%u", x);
+                break;
+            }
+    
+            case CIMTYPE_UINT16:
+            {
+                Uint16 x;
+                v.get(x);
+                string_append_printf(str,"%d", x);
+                break;
+            }
+    
+            case CIMTYPE_SINT16:
+            {
+                Sint16 x;
+                v.get(x);
+                string_append_printf(str,"%u", x);
+                break;
+            }
+    
+            case CIMTYPE_UINT32:
+            {
+                Uint32 x;
+                v.get(x);
+                string_append_printf(str,"%d", x);
+                break;
+            }
+    
+            case CIMTYPE_SINT32:
+            {
+                Sint32 x;
+                v.get(x);
+                string_append_printf(str,"%u", x);
+                break;
+            }
+    
+            case CIMTYPE_UINT64:
+            {
+                Uint64 x;
+                v.get(x);
+                string_append_printf(str,CIMPLE_LLU, x);
+                break;
+            }
+    
+            case CIMTYPE_SINT64:
+            {
+                Sint64 x;
+                v.get(x);
+                string_append_printf(str,CIMPLE_LLD, x);
+                break;
+            }
+    
+            case CIMTYPE_REAL32:
+            {
+                Real32 x;
+                v.get(x);
+                string_append_printf(str,"%f", x);
+                break;
+            }
+    
+            case CIMTYPE_REAL64:
+            {
+                Real64 x;
+                v.get(x);
+                string_append_printf(str,"%lf", x);
+                break;
+            }
+    
+            case CIMTYPE_CHAR16:
+            {
+                Char16 x;
+                v.get(x);
+                string_append_printf(str,"%d", Uint32(x));
+                break;
+            }
+    
+            case CIMTYPE_STRING:
+            {
+                Pegasus::String x;
+                v.get(x);
+                string_append_printf(str,"\"%s\"", *Str(x));
+                break;
+            }
+    
+            case CIMTYPE_DATETIME:
+            {
+                CIMDateTime x;
+                v.get(x);
+                string_append_printf(str,"%s", *Str(x.toString()));
+                break;
+            }
+    
+            case CIMTYPE_REFERENCE:
+            {
+                CIMObjectPath x;
+                v.get(x);
+                string_append_printf(str,"%s", *Str(x.toString()));
+                break;
+            }
+    
+            case CIMTYPE_OBJECT:
+            {
+                CIMObject x;
+                v.get(x);
+    
+                if (x.isInstance())
+                {
+                    formatToString(str, CIMInstance(x), indent);
+                }
+                // Following should never occur in the adapter and
+                // since our support for clients is limited we will simply
+                // output indicator that this is a class.
+                else
+                {
+                    str.append("<CLASS>");
+                }
+                break;
+            }
+    
 #ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
-
-        case CIMTYPE_INSTANCE:
-        {
-            CIMInstance x;
-            v.get(x);
-
-            print(x, true);
-        }
-
+    
+            case CIMTYPE_INSTANCE:
+            {
+                CIMInstance x;
+                v.get(x);
+                formatToString(str, x, indent);
+                break;
+            }
+    
 #endif /* CIMPLE_ENABLE_EMBEDDED_INSTANCES */
-
-        default:
-            break;
+    
+            default:
+                printf("Error: Scalar type %u not defined\n",
+                       v.getType() );
+                break;
+        }
     }
 }
 
+// Set separator character if not first item in list
+void _set_separator(String& str, size_t i)
+{
+    if (i != 0)
+        str.append(", ");
+}
+
+// Template for processing arrays of each data type. Gets array and
+// loops to process scalar values
 template<class T>
-static void print_array_aux(
-    const Pegasus::String& name, 
+static void format_array_aux(
+    String & str,
     const CIMValue& v, 
-    T* tag)
+    T* tag,
+    size_t& indent)
 {
     Pegasus::Array<T> x;
     v.get(x);
 
-    printf("{");
-
-    for (Uint32 i = 0; i < x.size(); i++)
+    for (size_t i = 0; i < x.size(); i++)
     {
-        print_scalar(name, CIMValue(x[i]));
+        _set_separator(str, i);
 
-        if (i + 1 != x.size())
-            printf(", ");
+        format_scalar(str, CIMValue(x[i]), indent);
     }
-
-    printf("}");
 }
 
-static void print_array(const Pegasus::String& name, const CIMValue& v)
+static void format_array(String& str,
+    const CIMValue& v,
+    size_t& indent)
 {
+    str.append("{ ");
     switch (v.getType())
     {
         case CIMTYPE_BOOLEAN:
-            print_array_aux(name, v, (Boolean*)0);
+            format_array_aux(str, v, (Boolean*)0, indent);
             break;
 
         case CIMTYPE_UINT8:
-            print_array_aux(name, v, (Uint8*)0);
+            format_array_aux(str, v, (Uint8*)0, indent);
             break;
 
         case CIMTYPE_SINT8:
-            print_array_aux(name, v, (Sint8*)0);
+            format_array_aux(str, v, (Sint8*)0, indent);
             break;
 
         case CIMTYPE_UINT16:
-            print_array_aux(name, v, (Uint16*)0);
+            format_array_aux(str, v, (Uint16*)0, indent);
             break;
 
         case CIMTYPE_SINT16:
-            print_array_aux(name, v, (Sint16*)0);
+            format_array_aux(str, v, (Sint16*)0, indent);
             break;
 
         case CIMTYPE_UINT32:
-            print_array_aux(name, v, (Uint32*)0);
+            format_array_aux(str, v, (Uint32*)0, indent);
             break;
 
         case CIMTYPE_SINT32:
-            print_array_aux(name, v, (Sint32*)0);
+            format_array_aux(str, v, (Sint32*)0, indent);
             break;
 
         case CIMTYPE_UINT64:
-            print_array_aux(name, v, (Uint64*)0);
+            format_array_aux(str, v, (Uint64*)0, indent);
             break;
 
         case CIMTYPE_SINT64:
-            print_array_aux(name, v, (Sint64*)0);
+            format_array_aux(str, v, (Sint64*)0, indent);
             break;
 
         case CIMTYPE_REAL32:
-            print_array_aux(name, v, (Real32*)0);
+            format_array_aux(str, v, (Real32*)0, indent);
             break;
 
         case CIMTYPE_REAL64:
-            print_array_aux(name, v, (Real64*)0);
+            format_array_aux(str, v, (Real64*)0, indent);
             break;
 
         case CIMTYPE_CHAR16:
-            print_array_aux(name, v, (Char16*)0);
+            format_array_aux(str, v, (Char16*)0, indent);
             break;
 
         case CIMTYPE_STRING:
-            print_array_aux(name, v, (Pegasus::String*)0);
+            format_array_aux(str, v, (Pegasus::String*)0, indent);
             break;
 
         case CIMTYPE_DATETIME:
-            print_array_aux(name, v, (CIMDateTime*)0);
+            format_array_aux(str, v, (CIMDateTime*)0, indent);
             break;
 
         case CIMTYPE_REFERENCE:
-            print_array_aux(name, v, (CIMObjectPath*)0);
+            format_array_aux(str, v, (CIMObjectPath*)0, indent);
             break;
 
+        case CIMTYPE_OBJECT:
+            format_array_aux(str, v, (CIMObject*)0, indent);
+            break;
+
+#ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
+        case CIMTYPE_INSTANCE:
+            format_array_aux(str, v, (CIMInstance*)0, indent);
+            break;
+#endif
         default:
+            printf("Error: Array. Type %u not defined\n",v.getType());
             break;
     }
+    str.append(" }");
 }
 
-static void print_value(const Pegasus::String& name, const CIMValue& v)
+// Print name and value indented and on single line
+void format_property(String& str, CIMConstProperty cp, size_t& indent_level)
 {
-    printf("%s=", *Str(name));
+    CIMValue v = cp.getValue();
+
+    // Display property name, type and array indicator
+    istring_printf(str, indent_level, "%s %s%s = ",
+        _typeStrings[v.getType()],
+        *Str(cp.getName()),
+        (v.isArray()? "[]" : ""));
 
     if (v.isArray())
-        print_array(name, v);
+        format_array(str, v, indent_level);
     else
-        print_scalar(name, v);
+        format_scalar(str, v, indent_level);
 
-    printf("\n");
+    str.append("\n");
 }
 
-void print(const CIMConstInstance& ci, bool indent)
+// put the formatted definition of the instance into a String. The indent
+// level is an internal function to provide indenting of embedded entities
+void formatToString(String& str,
+                    const CIMConstInstance& ci,
+                    size_t indent_level)
 {
-    char in[5];
-
-    if (indent)
-        strcpy(in, "    ");
-    else
-        strcpy(in, "");
-
-    printf("%sinstance of %s\n", in, *Str(ci.getClassName()));
-    printf("%s{\n", in);
-
-    for (Uint32 i = 0; i < ci.getPropertyCount(); i++)
+    if (ci.isUninitialized())
     {
-        CIMConstProperty cp = ci.getProperty(i);
-
-        printf("%s    ", in);
-        print_value(*Str(cp.getName()), cp.getValue());
+        str.append("Unitialized Instance\n");
     }
+    else
+    {
+        string_append_printf(str, "instance of %s\n", *Str(ci.getClassName()));
+        
+        istring_printf(str, indent_level++, "{\n");
 
-    printf("%s}\n", in);
+        for (Uint32 i = 0; i < ci.getPropertyCount(); i++)
+        {
+            CIMConstProperty cp = ci.getProperty(i);
+            format_property(str, cp, indent_level);
+        }
+    
+        istring_printf(str, --indent_level, "%s", "}");
+    }
+}
+
+/**
+ * print a CIM Instance to standard output formatted roughly as mof is 
+ * formatted. 
+ * @param ci CIMInstance (Pegasus C++ object format) of instance
+ */
+void print(const CIMConstInstance& ci)
+{
+    String str;
+    size_t indent_level = 0;
+    formatToString(str, ci, indent_level);
+    printf("%s\n", str.c_str());
+}
+
+/**
+ * Output a formated display of a Pegasus CIMInstance to the CIMPLE log 
+ * file. This function is intended to be used by the CIMPLE pegasus adapter 
+ * and should be used through a macro call so that it can be completely 
+ * disabled when not required. 
+ * 
+ * @param ci Instance to be displayed
+ * @param lvl  Log level
+ * @param file Code Source Line (__FILE__)
+ * @param line Code source line (__LINE__)
+ */
+void logPegasusInstance(const CIMConstInstance& ci,
+                        const Log_Level lvl,
+                        const char* file,
+                        int line)
+{
+    String str;
+    formatToString(str, ci, 0);
+    log(LL_DBG, file, line, "PegasusInstance: %s", str.c_str());
 }
 
 CIMPLE_NAMESPACE_END

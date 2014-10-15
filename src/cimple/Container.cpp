@@ -28,6 +28,7 @@
 #include "Container.h"
 #include "Buffer.h"
 #include "Property.h"
+#include <cimple/Adapter_Tracer.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -46,6 +47,7 @@ Container::~Container()
 */
 int Container::convert(const Meta_Class* mc, uint32 flags, Instance*& inst)
 {
+    PENTRY("Container::convert");
     const char* cn = mc->name;
 
     // Create hew new instance (if incoming one is null) and nullify
@@ -122,7 +124,7 @@ int Container::convert(const Meta_Class* mc, uint32 flags, Instance*& inst)
             continue;
         }
     }
-
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
@@ -137,9 +139,11 @@ int Container::convert(const Meta_Class* mc, uint32 flags, Instance*& inst)
 */
 int Container::convert(const Instance* instance, uint32 flags)
 {
+    PENTRY("Container::convert");
     if (!instance)
     {
         CIMPLE_WARN(("ignored null instance arg"));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
@@ -203,7 +207,7 @@ int Container::convert(const Instance* instance, uint32 flags)
             CIMPLE_WARN(("unexpected failure: %s.%s", mc->name, mf->name));
         }
     }
-
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 

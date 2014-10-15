@@ -65,6 +65,7 @@ String string_vprintf_test(const char* fmt, ...)
     va_end(ap);
     return(rtn);
 }
+
 bool _equal(char* data, char * test)
 {
     return((strcmp(data, test) == 0)? true : false);
@@ -91,8 +92,6 @@ void _cprint(const String& x)
 static void* test01(void* arg)
 {
     // standard char* strings for test
-
-    const char testconst[] = "abcdefghijklmnopqrstuvwxyz";    
     char test[] = "abcdefghijklmnopqrstuvwxyz";
 
     // test str_printf
@@ -140,12 +139,22 @@ static void* test01(void* arg)
 
     // test string_printf()
     {
-        String output;
-        output = string_vprintf_test("%s", test);
+        String output = string_vprintf_test("%s", test);
         _cprint(output.c_str());
 
         assert(_equal(output,test));
     }
+
+    /// TODO Fix this
+//  // test istring_printf()
+//  {
+//      String output;
+//      size_t level = 2;
+//      istring_printf(output,2,"%s",test);
+//      _cprint(output.c_str());
+//
+//      assert(_equal(output,test));
+//  }
 
     return arg;
 }

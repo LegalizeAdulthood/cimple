@@ -30,7 +30,10 @@
 #include "pegasus.h"
 #include "Containers.h"
 #include "Str.h"
+#include <cimple/Adapter_Tracer.h>
 
+// TODO - Remove this code.  This is old code to do a simple trace.
+//        replaced by the Adapter_Tracer code
 #if 0
 
 struct Trc
@@ -70,20 +73,28 @@ static Instance* _to_cimple_instance(
     const char* ns,
     const Pegasus::CIMInstance ci)
 {
+    PENTRY("_to_cimple_instance");
     Str cn(ci.getClassName());
     const Meta_Class* mc = find_meta_class(mr, *cn);
 
     if (!mc)
     {
         CIMPLE_WARN(("cannot find meta class: %s", *cn));
+        PEXIT();
         return 0;
     }
 
     Instance* inst = 0;
 
     if (InstanceContainer(mr, ns, ci).convert(mc, 0, inst) != 0 || !inst)
+    {
+        PEXIT();
         return 0;
+    }
 
+    // Return only basic instance here because we have no trace function
+    // for Instance * type.
+    PEXIT();
     return inst;
 }
 
@@ -93,6 +104,7 @@ static int _to_cimple_value(
     const Pegasus::CIMValue& cv, 
     Value& v)
 {
+    PENTRY("_to_cimple_value");
     if (cv.isArray())
     {
         switch (cv.getType())
@@ -343,7 +355,8 @@ static int _to_cimple_value(
             }
 
             default:
-                CIMPLE_WARN(("unexpected branch"));
+                CIMPLE_WARN(("unexpected value type"));
+                PEXIT_RTN_VAL(-1);
                 return -1;
         }
     }
@@ -565,11 +578,13 @@ static int _to_cimple_value(
             }
 
             default:
-                CIMPLE_WARN(("Unexpected branch"));
+                CIMPLE_WARN(("Unexpected value type"));
+                PEXIT_RTN_VAL(-1);
                 return -1;
         }
     }
 
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
@@ -579,9 +594,11 @@ static int _to_pegasus_instance(
     const Instance* x, 
     Pegasus::CIMInstance& ci)
 {
+    PENTRY("_to_pegasus_instance");
     if (!x)
     {
         CIMPLE_WARN(("unexpected null instance"));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
@@ -592,10 +609,12 @@ static int _to_pegasus_instance(
     if (cont.convert(x, 0) != 0)
     {
         CIMPLE_WARN(("InstanceContainer::convert() failed"));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
     ci = cont.rep();
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
@@ -605,9 +624,11 @@ static int _to_pegasus_object_path(
     const Instance* x, 
     Pegasus::CIMObjectPath& cop)
 {
+    PENTRY("_to_pegasus_object_path");
     if (!x)
     {
         CIMPLE_WARN(("unexpected null instance"));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
@@ -624,10 +645,13 @@ static int _to_pegasus_object_path(
     if (cont.convert(x, CIMPLE_FLAG_KEY) != 0)
     {
         CIMPLE_WARN(("ObjectPathContainer::convert() failed"));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
     cop = cont.rep();
+
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
@@ -642,12 +666,14 @@ int _to_pegasus_value(
 
     // Handle null-case up front.
 
+    // TODO Improve the following sligtly by removing all of the
+    // return 0s in favor of break and single return.
     if (v.null())
     {
         switch (v.type())
         {
             case Value::NONE:
-                CIMPLE_WARN(("unexpected branch"));
+                CIMPLE_WARN(("unexpected value type"));
                 return -1;
 
             case Value::BOOLEAN:
@@ -805,7 +831,9 @@ int _to_pegasus_value(
                     cv.setNullValue(Pegasus::CIMTYPE_REFERENCE, true);
                 }
                 else
+                {
                     CIMPLE_WARN(("unexpected branch"));
+                }
 
                 return 0;
             }
@@ -821,7 +849,7 @@ int _to_pegasus_value(
     {
         case Value::NONE:
         {
-            CIMPLE_WARN(("unexpected branch"));
+            CIMPLE_WARN(("unexpected value type"));
             return -1;
         }
 
@@ -1227,6 +1255,8 @@ InstanceContainer::InstanceContainer(
     _ns(ns),
     _rep(rep)
 {
+    PENTRY("InstanceContainer::InstanceContainer");
+    PEXIT();
 }
 
 InstanceContainer::~InstanceContainer()
@@ -1235,24 +1265,29 @@ InstanceContainer::~InstanceContainer()
 
 size_t InstanceContainer::get_size()
 {
+    PENTRY("InstanceContainer::get_size");
     try
     {
+        PEXIT();
         return _rep.getPropertyCount();
     }
     catch (Pegasus::Exception& e)
     {
         CIMPLE_WARN(("unexpected exception: %s", *Str(e)));
+        PEXIT();
         return 0;
     }
 }
 
 int InstanceContainer::get_name(size_t pos, String& name)
 {
+    PENTRY("InstanceContainer::get_name");
     try
     {
         if (pos > _rep.getPropertyCount())
         {
             CIMPLE_ERR(("bounds error"));
+            PEXIT_RTN_VAL(-1);
             return -1;
         }
 
@@ -1262,14 +1297,17 @@ int InstanceContainer::get_name(size_t pos, String& name)
     catch (Pegasus::Exception& e)
     {
         CIMPLE_WARN(("unexpected exception: %s", *Str(e)));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
 int InstanceContainer::get_value(size_t pos, Value::Type type, Value& value)
 {
+    PENTRY("InstanceContainer::get_value");
     try
     {
         value.clear();
@@ -1277,6 +1315,7 @@ int InstanceContainer::get_value(size_t pos, Value::Type type, Value& value)
         if (pos > _rep.getPropertyCount())
         {
             CIMPLE_ERR(("bounds error"));
+            PEXIT_RTN_VAL(-1);
             return -1;
         }
 
@@ -1287,6 +1326,7 @@ int InstanceContainer::get_value(size_t pos, Value::Type type, Value& value)
         if (_to_cimple_value(_mr, _ns, cv, value) != 0)
         {
             CIMPLE_WARN(("_to_cimple_value() failed"));
+            PEXIT_RTN_VAL(-1);
             return -1;
         }
 
@@ -1304,21 +1344,25 @@ int InstanceContainer::get_value(size_t pos, Value::Type type, Value& value)
         {
             CIMPLE_WARN((
                 "type mismatch: %s/%s", name_of(value.type()), name_of(type)));
+            PEXIT_RTN_VAL(-1);
             return -1;
         }
     }
     catch (Pegasus::Exception& e)
     {
         CIMPLE_WARN(("unexpected exception: %s", *Str(e)));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 
 int InstanceContainer::set_value(
     const char* name, const Value& value, uint32 flags)
 {
+    PENTRY("InstanceContainer::set_value");
     try
     {
         // Convert to Pegasus value.
@@ -1328,6 +1372,7 @@ int InstanceContainer::set_value(
         if (_to_pegasus_value(_mr, _ns, value, flags, cv) != 0)
         {
             CIMPLE_WARN(("_to_pegasus_value() failed"));
+            PEXIT_RTN_VAL(-1);
             return -1;
         }
 
@@ -1344,11 +1389,13 @@ int InstanceContainer::set_value(
             catch (Pegasus::Exception& e)
             {
                 CIMPLE_WARN(("unexpected exception: %s", *Str(e)));
+                PEXIT_RTN_VAL(-1);
                 return -1;
             }
             catch (...)
             {
                 CIMPLE_WARN(("unknown exception"));
+                PEXIT_RTN_VAL(-1);
                 return -1;
             }
             _rep.addProperty(Pegasus::CIMProperty(name, cv));
@@ -1362,9 +1409,11 @@ int InstanceContainer::set_value(
     catch (Pegasus::Exception& e)
     {
         CIMPLE_WARN(("unexpected exception: %s", *Str(e)));
+        PEXIT_RTN_VAL(-1);
         return -1;
     }
 
+    PEXIT_RTN_VAL(0);
     return 0;
 }
 

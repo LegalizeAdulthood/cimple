@@ -10,6 +10,7 @@ SOURCES = \
     Cond_Queue.cpp \
     Exception.cpp \
     boolean.cpp \
+    CimpleConfig.cpp \
     real.cpp \
     Arg.cpp \
     Ops.cpp \
@@ -54,6 +55,14 @@ SOURCES = \
     Type.cpp \
     Property.cpp \
     TSD.cpp \
+    FileSystem.cpp
+
+## Compile of adapter trace macros and code depends on existence
+## this config variable.
+ifdef ENABLE_ADAPTER_TRACE_OPT
+    SOURCES += Adapter_Tracer.cpp
+    DEFINES += -DENABLE_ADAPTER_TRACE_OPT
+endif
 
 ## The encoder functions are optional components
 ## so compiled only when flag set. This code is experimental an should not

@@ -24,6 +24,13 @@
 **==============================================================================
 */
 
+/*
+ * A simple scheduler that allows thread-save scheduling for timed
+ * functions. Each function is defined as a separate thread.
+ * LIMITS: Today it schedules calls sequentially so that no more than
+ * a single scheduled event may occur simultaneously.
+*/
+
 #ifndef _cimple_Scheduler_h
 #define _cimple_Scheduler_h
 
