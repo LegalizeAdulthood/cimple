@@ -85,9 +85,9 @@ struct swap_bytes<uint16>
 {
     static uint16 func(uint16 x)
     {
-	return (uint16)(
-	    (((uint16)(x) & 0x00ffu) << 8) |
-	    (((uint16)(x) & 0xff00u) >> 8));
+        return (uint16)(
+            (((uint16)(x) & 0x00ffu) << 8) |
+            (((uint16)(x) & 0xff00u) >> 8));
     }
 };
 
@@ -96,11 +96,11 @@ struct swap_bytes<uint32>
 {
     static uint32 func(uint32 x)
     {
-	return (uint32)(
-	    (((uint32)(x) & 0x000000fful) << 24) |
-	    (((uint32)(x) & 0x0000ff00ul) <<  8) |
-	    (((uint32)(x) & 0x00ff0000ul) >>  8) |
-	    (((uint32)(x) & 0xff000000ul) >> 24));
+        return (uint32)(
+            (((uint32)(x) & 0x000000fful) << 24) |
+            (((uint32)(x) & 0x0000ff00ul) <<  8) |
+            (((uint32)(x) & 0x00ff0000ul) >>  8) |
+            (((uint32)(x) & 0xff000000ul) >> 24));
     }
 };
 

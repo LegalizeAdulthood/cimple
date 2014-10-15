@@ -54,26 +54,26 @@ public:
 
     void inc_size()
     {
-	CIMPLE_ASSERT(_size < _N);
-	_size++;
+        CIMPLE_ASSERT(_size < _N);
+        _size++;
     }
 
     T& operator[](size_t i) 
     { 
-	CIMPLE_ASSERT(i < _N);
-	return _data[i]; 
+        CIMPLE_ASSERT(i < _N);
+        return _data[i]; 
     }
 
     const T& operator[](size_t i) const
     { 
-	CIMPLE_ASSERT(i < _N);
-	return _data[i]; 
+        CIMPLE_ASSERT(i < _N);
+        return _data[i]; 
     }
 
     void append(const T& x)
     {
-	CIMPLE_ASSERT(_size < N);
-	_data[_size++] = x;
+        CIMPLE_ASSERT(_size < N);
+        _data[_size++] = x;
     }
 
 private:

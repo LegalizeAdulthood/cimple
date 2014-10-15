@@ -45,10 +45,10 @@ void TLS::_create()
 
     if (_initialized == 0)
     {
-	if (pthread_key_create(&_key, NULL) != 0)
-	    assert(0);
+        if (pthread_key_create(&_key, NULL) != 0)
+            assert(0);
 
-	_initialized = 1;
+        _initialized = 1;
     }
 }
 

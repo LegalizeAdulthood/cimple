@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 {
 #if 0 
     for (size_t i = 0; i < num_properties; i++)
-	printf("%s %d\n", properties[i].name, properties[i].offset);
+        printf("%s %d\n", properties[i].name, properties[i].offset);
 #endif
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

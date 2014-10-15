@@ -79,9 +79,9 @@ test_list::~test_list()
 {
     for (List_Elem* p = _list.head; p; )
     {
-    	List_Elem* next = p->next;
-    	delete p;
-    	p = next;
+        List_Elem* next = p->next;
+        delete p;
+        p = next;
     }
 }
 
@@ -97,11 +97,11 @@ void test_list::add(int id, int order, String& s)
         // insert in order sequence
         for (List_Elem* p = _list.head; p; p = p->next)
         {
-        	if (x->order_value < ((test_elem*)p)->order_value)
-        	{
-        	    _list.insert_before(p, x);
-        	    return;
-        	}
+                if (x->order_value < ((test_elem*)p)->order_value)
+                {
+                    _list.insert_before(p, x);
+                    return;
+                }
         }
     }
 
@@ -122,15 +122,15 @@ bool test_list::remove(int id)
 {
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-    	test_elem* x = (test_elem*)p;
+        test_elem* x = (test_elem*)p;
     
-    	if (x->id == id)
-    	{
-    	    // Found!
-    	    _list.remove(p);
-    	    delete x;
-    	    return true;
-    	}
+        if (x->id == id)
+        {
+            // Found!
+            _list.remove(p);
+            delete x;
+            return true;
+        }
     }
 
     // Not found!
@@ -141,12 +141,12 @@ bool test_list::find(int id)
 {
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-    	test_elem* x = (test_elem*)p;
+        test_elem* x = (test_elem*)p;
     
-    	if (x->id == id)
-    	{
-    	    return true;
-    	}
+        if (x->id == id)
+        {
+            return true;
+        }
     }
 
     // Not found!
@@ -158,12 +158,12 @@ size_t test_list::pos(int id)
     size_t pos = 1;
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-    	test_elem* x = (test_elem*)p;
+        test_elem* x = (test_elem*)p;
     
-    	if (x->id == id)
-    	{
-    	    return pos;
-    	}
+        if (x->id == id)
+        {
+            return pos;
+        }
         pos++;
     }
 

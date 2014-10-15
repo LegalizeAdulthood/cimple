@@ -40,20 +40,20 @@ int Cond::wait(Mutex& mutex, uint64 timeout_usec)
 
     for (;;)
     {
-	switch (pthread_cond_timedwait(&_cond, &mutex._mut, &ts))
-	{
-	    case EINTR:
-		continue;
+        switch (pthread_cond_timedwait(&_cond, &mutex._mut, &ts))
+        {
+            case EINTR:
+                continue;
 
-	    case ETIMEDOUT:
-		return -1;
+            case ETIMEDOUT:
+                return -1;
 
-	    case 0:
-		return 0;
+            case 0:
+                return 0;
 
-	    default:
-		CIMPLE_ASSERT(0);
-	}
+            default:
+                CIMPLE_ASSERT(0);
+        }
     }
 
     // Unreachable:

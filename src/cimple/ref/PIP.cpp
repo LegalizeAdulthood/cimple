@@ -50,9 +50,9 @@ Get_Instance_Status PIP_Base::get_instance(
 
     if (pos != size_t(-1))
     {
-	Instance* person = _map._instances[pos];
-	copy(inst, person);
-	return GET_INSTANCE_OK;
+        Instance* person = _map._instances[pos];
+        copy(inst, person);
+        return GET_INSTANCE_OK;
     }
 
     return GET_INSTANCE_NOT_FOUND;
@@ -62,7 +62,7 @@ Enum_Instance_Status PIP_Base::enum_instance(
     Instance* inst, uint64& state)
 {
     if (state == _map._instances.size())
-	return ENUM_INSTANCE_DONE;
+        return ENUM_INSTANCE_DONE;
 
     copy(inst, _map._instances[state]);
 
@@ -74,7 +74,7 @@ Create_Instance_Status PIP_Base::create_instance(
     const Instance* inst)
 {
     if (_map._find(inst) != size_t(-1))
-	return CREATE_INSTANCE_DUPLICATE;
+        return CREATE_INSTANCE_DUPLICATE;
 
     _map._insert(clone(inst));
 
@@ -87,7 +87,7 @@ Delete_Instance_Status PIP_Base::delete_instance(
     size_t pos = _map._find(inst);
 
     if (pos == size_t(-1))
-	return DELETE_INSTANCE_NOT_FOUND;
+        return DELETE_INSTANCE_NOT_FOUND;
 
     _map._remove(pos);
 
@@ -100,7 +100,7 @@ Modify_Instance_Status PIP_Base::modify_instance(
     size_t pos = _map._find(inst);
 
     if (pos == size_t(-1))
-	return MODIFY_INSTANCE_NOT_FOUND;
+        return MODIFY_INSTANCE_NOT_FOUND;
 
     copy(_map._instances[pos], inst);
 

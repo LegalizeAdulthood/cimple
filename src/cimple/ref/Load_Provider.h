@@ -45,12 +45,12 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-	const Instance* model,
-	Instance*& instance);
+        const Instance* model,
+        Instance*& instance);
 
     Enum_Instances_Status _enum_instances(
-	const Instance* instance,
-	Enum_Instances_Handler_Base* handler);
+        const Instance* instance,
+        Enum_Instances_Handler_Base* handler);
 
     Create_Instance_Status create_instance(const Instance* instance);
 
@@ -79,18 +79,18 @@ public:
     typedef CLASS Class;
 
     Load_Provider() : Load_Provider_Base(
-	&PROVIDER::Class::static_meta_class) { }
+        &PROVIDER::Class::static_meta_class) { }
 
     Enum_Instances_Status enum_instances(
-	const Instance* instance,
-	Enum_Instances_Handler<CLASS>* handler);
+        const Instance* instance,
+        Enum_Instances_Handler<CLASS>* handler);
 
     static Create_Provider_Status create_provider(PROVIDER** provider);
 
     static Destroy_Provider_Status destroy_provider(PROVIDER* provider);
 
     static int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+        int operation, void* arg0, void* arg1, void* arg2, void* arg3);
 };
 
 template<class PROVIDER, class CLASS>

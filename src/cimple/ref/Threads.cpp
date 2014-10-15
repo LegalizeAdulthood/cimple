@@ -31,7 +31,7 @@ CIMPLE_NAMESPACE_BEGIN
 Thread::~Thread()
 {
     if (_has_attr)
-	pthread_attr_destroy(&_attr);
+        pthread_attr_destroy(&_attr);
 }
 
 int Threads::create_detached(Thread& thread, Thread_Proc proc, void* arg)

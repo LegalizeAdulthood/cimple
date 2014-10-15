@@ -52,13 +52,13 @@ public:
 
     /** Elects a thread to execute the given thread routine. If none are
         available, it blocks until one is. Returns a Cond_Queue object that
-	must be passed to join(), otherwise, the Cond_Queue object is leaked
-	and the thread may hang forever.
+        must be passed to join(), otherwise, the Cond_Queue object is leaked
+        and the thread may hang forever.
     */
     Cond_Queue* create_joinable(Thread_Proc proc, void* arg);
 
     /** Elects a thread to execute the given thread routine. If none are
-	available, it blocks until one is.
+        available, it blocks until one is.
     */
     void create_detached(Thread_Proc proc, void* arg);
 

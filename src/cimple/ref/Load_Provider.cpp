@@ -51,8 +51,8 @@ Get_Instance_Status Load_Provider_Base::get_instance(
 
     if (pos != size_t(-1))
     {
-	instance = clone(_map._instances[pos]);
-	return GET_INSTANCE_OK;
+        instance = clone(_map._instances[pos]);
+        return GET_INSTANCE_OK;
     }
 
     return GET_INSTANCE_NOT_FOUND;
@@ -63,7 +63,7 @@ Enum_Instances_Status Load_Provider_Base::_enum_instances(
     Enum_Instances_Handler_Base* handler)
 {
     for (size_t i = 0; i < _map._instances.size(); i++)
-	handler->_proc(_map._instances[i], handler->_client_data);
+        handler->_proc(_map._instances[i], handler->_client_data);
 
     return ENUM_INSTANCES_OK;
 }

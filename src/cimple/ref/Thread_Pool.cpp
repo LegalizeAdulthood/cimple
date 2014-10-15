@@ -34,29 +34,29 @@ void* Thread_Pool::_thread_proc(void* arg)
 
     for (;;)
     {
-	// Wait for someone to call Thread_Pool::create()
+        // Wait for someone to call Thread_Pool::create()
 
-	Cond_Queue_Entry entry;
-	pool->_queue.dequeue(entry);
+        Cond_Queue_Entry entry;
+        pool->_queue.dequeue(entry);
 
-	// Extract the arguments:
+        // Extract the arguments:
 
-	Thread_Proc proc = Thread_Proc(entry.args[0]);
-	void* arg = (void*)(entry.args[1]);
-	Cond_Queue* queue = (Cond_Queue*)(entry.args[2]);
+        Thread_Proc proc = Thread_Proc(entry.args[0]);
+        void* arg = (void*)(entry.args[1]);
+        Cond_Queue* queue = (Cond_Queue*)(entry.args[2]);
 
-	// Invoke the thread routine.
+        // Invoke the thread routine.
 
-	void* return_value = proc(arg);
+        void* return_value = proc(arg);
 
-	// Enqueue the return value for thread waiting on Thread_Proc::join().
+        // Enqueue the return value for thread waiting on Thread_Proc::join().
 
-	if (queue)
-	{
-	    Cond_Queue_Entry return_entry;
-	    return_entry.args[0] = (unsigned long)return_value;
-	    queue->enqueue(return_entry);
-	}
+        if (queue)
+        {
+            Cond_Queue_Entry return_entry;
+            return_entry.args[0] = (unsigned long)return_value;
+            queue->enqueue(return_entry);
+        }
     }
 }
 
@@ -70,9 +70,9 @@ Thread_Pool* Thread_Pool::create_pool(size_t num_threads)
 
     for (size_t i = 0; i < num_threads; i++)
     {
-	Thread thread;
-	int r = Thread::create(thread, _thread_proc, pool, true);
-	assert(r == 0);
+        Thread thread;
+        int r = Thread::create(thread, _thread_proc, pool, true);
+        assert(r == 0);
     }
 
     return pool;

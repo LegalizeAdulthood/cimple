@@ -47,9 +47,9 @@ void List::append(List_Elem* p)
     p->next = 0;
 
     if (tail)
-	tail->next = p;
+        tail->next = p;
     else
-	head = p;
+        head = p;
 
     tail = p;
 }

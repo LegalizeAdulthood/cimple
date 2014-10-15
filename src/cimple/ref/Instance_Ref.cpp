@@ -42,8 +42,8 @@ Instance_Ref& Instance_Ref::operator=(const Instance_Ref& x)
 {
     if (_instance != x._instance)
     {
-	unref(_instance);
-	ref(_instance = x._instance);
+        unref(_instance);
+        ref(_instance = x._instance);
     }
     return *this;
 }

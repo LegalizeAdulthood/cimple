@@ -58,7 +58,7 @@ private:
 inline void* TLS::get()
 {
     if (_initialized == 0)
-	_create();
+        _create();
 
     return pthread_getspecific(_key);
 }
@@ -66,7 +66,7 @@ inline void* TLS::get()
 inline void TLS::set(void* value)
 {
     if (_initialized == 0)
-	_create();
+        _create();
 
     pthread_setspecific(_key, value);
 }

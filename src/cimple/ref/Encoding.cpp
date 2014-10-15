@@ -39,21 +39,21 @@ uint64 swap_bytes<uint64>::func(uint64 x)
 #ifdef _GNU_SOURCE
 
     return
-	 (((x) & 0xff00000000000000ull) >> 56) | 
-	 (((x) & 0x00ff000000000000ull) >> 40) | 
-	 (((x) & 0x0000ff0000000000ull) >> 24) |
-	 (((x) & 0x000000ff00000000ull) >>  8) |
-	 (((x) & 0x00000000ff000000ull) <<  8) |
-	 (((x) & 0x0000000000ff0000ull) << 24) |
-	 (((x) & 0x000000000000ff00ull) << 40) |
-	 (((x) & 0x00000000000000ffull) << 56);
+         (((x) & 0xff00000000000000ull) >> 56) | 
+         (((x) & 0x00ff000000000000ull) >> 40) | 
+         (((x) & 0x0000ff0000000000ull) >> 24) |
+         (((x) & 0x000000ff00000000ull) >>  8) |
+         (((x) & 0x00000000ff000000ull) <<  8) |
+         (((x) & 0x0000000000ff0000ull) << 24) |
+         (((x) & 0x000000000000ff00ull) << 40) |
+         (((x) & 0x00000000000000ffull) << 56);
 
 #else /* _GNU_SOURCE */
 
     union
     {
-	uint64 x;
-	uint8 data[8];
+        uint64 x;
+        uint8 data[8];
     }
     u;
 
@@ -105,8 +105,8 @@ static void _pack_array(
 
     while (size--)
     {
-	pack_elem(out, data);
-	data += elem_size;
+        pack_elem(out, data);
+        data += elem_size;
     }
 }
 
@@ -115,7 +115,7 @@ struct pack_elem
 {
     static void func(Buffer& out, const void* elem)
     {
-	pack<T>(out, *((T*)elem));
+        pack<T>(out, *((T*)elem));
     }
 };
 
@@ -219,7 +219,7 @@ unpack<boolean>::unpack(
     const uint8* ptr = (const uint8*)(in.data() + pos);
 
     for (size_t i = 0; i < size; i++)
-	data[i] = ptr[i] ? true : false;
+        data[i] = ptr[i] ? true : false;
 
     pos += size;
 }
@@ -239,7 +239,7 @@ unpack<uint16>::unpack(
 
 #ifdef CIMPLE_LITTLE_ENDIAN
     for (size_t i = 0; i < size; i++)
-	data[i] = swap_bytes<uint64>::func(ptr[i]);
+        data[i] = swap_bytes<uint64>::func(ptr[i]);
 
     pos += size * sizeof(uint16);
 #else
@@ -257,7 +257,7 @@ unpack<uint32>::unpack(
 
 #ifdef CIMPLE_LITTLE_ENDIAN
     for (size_t i = 0; i < size; i++)
-	data[i] = swap_bytes<uint64>::func(ptr[i]);
+        data[i] = swap_bytes<uint64>::func(ptr[i]);
 
     pos += size * sizeof(uint32);
 #else
@@ -275,7 +275,7 @@ unpack<uint64>::unpack(
 
 #ifdef CIMPLE_LITTLE_ENDIAN
     for (size_t i = 0; i < size; i++)
-	data[i] = swap_bytes<uint64>::func(ptr[i]);
+        data[i] = swap_bytes<uint64>::func(ptr[i]);
 
     pos += size * sizeof(uint64);
 #else
@@ -289,14 +289,14 @@ unpack<String>::unpack(
     const Buffer& in, size_t& pos, String* data, size_t size)
 {
     while (size--)
-	unpack<String>(in, pos, *data++);
+        unpack<String>(in, pos, *data++);
 }
 
 unpack<Datetime>::unpack(
     const Buffer& in, size_t& pos, Datetime* data, size_t size)
 {
     while (size--)
-	unpack<Datetime>(in, pos, *data++);
+        unpack<Datetime>(in, pos, *data++);
 }
 
 #endif
@@ -306,41 +306,41 @@ struct unpack_elem
 {
     static void func(const Buffer& in, size_t& pos, void* elem)
     {
-	unpack<T>(in, pos, *((T*)elem));
+        unpack<T>(in, pos, *((T*)elem));
     }
 };
 
 struct Array_Friend
 {
     static void unpack_raw_array(
-	const Buffer& in, 
-	size_t& pos, 
-	void (*unpack_elem)(const Buffer& in, size_t& pos, void* elem),
-	Array_Base& x)
+        const Buffer& in, 
+        size_t& pos, 
+        void (*unpack_elem)(const Buffer& in, size_t& pos, void* elem),
+        Array_Base& x)
     {
-	// Clear the array.
+        // Clear the array.
 
-	x._remove(0, x.size());
+        x._remove(0, x.size());
 
-	// Unpack the size.
+        // Unpack the size.
 
-	uint32 size;
-	unpack<uint32>(in, pos, size);
+        uint32 size;
+        unpack<uint32>(in, pos, size);
 
-	// Unpack the elements.
+        // Unpack the elements.
 
-	while (size--)
-	{
-	    union
-	    {
-		double align1;
-		uint64 align2;
-		char data[32];
-	    }
-	    u;
-	    unpack_elem(in, pos, u.data);
-	    x._append(u.data, 1);
-	}
+        while (size--)
+        {
+            union
+            {
+                double align1;
+                uint64 align2;
+                char data[32];
+            }
+            u;
+            unpack_elem(in, pos, u.data);
+            x._append(u.data, 1);
+        }
     }
 };
 
@@ -359,25 +359,25 @@ struct _unpack_helper
 {
     _unpack_helper(const Buffer& in, size_t& pos, Array<T>& x)
     {
-	x.clear();
+        x.clear();
 
-	// Unpack array size.
+        // Unpack array size.
 
-	uint32 size;
-	unpack<uint32>(in, pos, size);
+        uint32 size;
+        unpack<uint32>(in, pos, size);
 
-	// Unpack data.
+        // Unpack data.
 
-	pos = align(pos, sizeof(T));
-	const T* data = (const T*)(in.data() + pos);
+        pos = align(pos, sizeof(T));
+        const T* data = (const T*)(in.data() + pos);
 
 #ifdef CIMPLE_LITTLE_ENDIAN
-	for (size_t i = 0; i < size; i++)
-	    x.append(swap_bytes<T>::func(data[i]));
+        for (size_t i = 0; i < size; i++)
+            x.append(swap_bytes<T>::func(data[i]));
 #else
-	x.assign(data, size);
+        x.assign(data, size);
 #endif
-	pos += size * sizeof(T);
+        pos += size * sizeof(T);
     }
 };
 
@@ -415,9 +415,9 @@ unpack<String>::unpack(const Buffer& in, size_t& pos, Array<String>& x)
 
     while (size--)
     {
-	String tmp;
-	unpack<String>(in, pos, tmp);
-	x.append(tmp);
+        String tmp;
+        unpack<String>(in, pos, tmp);
+        x.append(tmp);
     }
 }
 

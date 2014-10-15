@@ -56,7 +56,7 @@ void Predicate::wait()
     Auto_Mutex auto_mutex(_mutex);
 
     while (_n > 0)
-	_cond.wait(_mutex);
+        _cond.wait(_mutex);
 }
 
 CIMPLE_NAMESPACE_END

@@ -47,17 +47,17 @@ static void _insert_timer(List& list, Timer* timer)
 
     if (list.empty())
     {
-	list.append(timer);
-	return;
+        list.append(timer);
+        return;
     }
 
     for (List_Elem* p = list.head; p; p = p->next)
     {
-	if (timer->deadline < ((Timer*)p)->deadline)
-	{
-	    list.insert_before(p, timer);
-	    return;
-	}
+        if (timer->deadline < ((Timer*)p)->deadline)
+        {
+            list.insert_before(p, timer);
+            return;
+        }
     }
 
     list.append(timer);
@@ -71,9 +71,9 @@ Scheduler::~Scheduler()
 {
     for (List_Elem* p = _list.head; p; )
     {
-	List_Elem* next = p->next;
-	delete p;
-	p = next;
+        List_Elem* next = p->next;
+        delete p;
+        p = next;
     }
 }
 
@@ -102,16 +102,16 @@ bool Scheduler::remove_timer(size_t timer_id)
 
     for (List_Elem* p = _list.head; p; p = p->next)
     {
-	Timer* timer = (Timer*)p;
+        Timer* timer = (Timer*)p;
 
-	if (timer->id == timer_id)
-	{
-	    // Found!
-	    _list.remove(p);
-	    _id_pool.put(timer->id);
-	    delete timer;
-	    return true;
-	}
+        if (timer->id == timer_id)
+        {
+            // Found!
+            _list.remove(p);
+            _id_pool.put(timer->id);
+            delete timer;
+            return true;
+        }
     }
 
     // Not found!
@@ -129,9 +129,9 @@ void Scheduler::dispatch()
 
     if (_list.empty())
     {
-	_lock.unlock();
-	Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
-	return;
+        _lock.unlock();
+        Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
+        return;
     }
 
     // Sleep until the closest deadline
@@ -141,44 +141,44 @@ void Scheduler::dispatch()
 
     if (now < closest_deadline)
     {
-	uint64 diff = closest_deadline - now;
+        uint64 diff = closest_deadline - now;
 
-	if (diff > MAX_TIME_INSIDE_DISPATCH_USEC)
-	{
-	    _lock.unlock();
-	    Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
-	    return;
-	}
+        if (diff > MAX_TIME_INSIDE_DISPATCH_USEC)
+        {
+            _lock.unlock();
+            Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
+            return;
+        }
 
-	_lock.unlock();
-	Time::sleep(diff);
-	_lock.lock();
+        _lock.unlock();
+        Time::sleep(diff);
+        _lock.lock();
 
-	now = closest_deadline;
+        now = closest_deadline;
     }
 
     // Dispatch expired timers (there will be at least one).
 
     for (;;)
     {
-	Timer* timer = (Timer*)_list.head;
+        Timer* timer = (Timer*)_list.head;
 
-	if (!timer || now < timer->deadline)
-	    break;
+        if (!timer || now < timer->deadline)
+            break;
 
-	_list.remove(timer);
+        _list.remove(timer);
 
-	_lock.unlock();
-	uint64 new_timeout = timer->proc(timer->arg);
-	_lock.lock();
+        _lock.unlock();
+        uint64 new_timeout = timer->proc(timer->arg);
+        _lock.lock();
 
-	if (new_timeout == 0)
-	    delete timer;
-	else
-	{
-	    timer->deadline = Time::now() + new_timeout;
-	    _insert_timer(_list, timer);
-	}
+        if (new_timeout == 0)
+            delete timer;
+        else
+        {
+            timer->deadline = Time::now() + new_timeout;
+            _insert_timer(_list, timer);
+        }
     }
 
     _lock.unlock();
@@ -189,7 +189,7 @@ void* Scheduler::_thread_proc(void* arg)
     Scheduler* sched = (Scheduler*)arg;
 
     while (sched->_thread_running)
-	sched->dispatch();
+        sched->dispatch();
 
     return 0;
 }
@@ -201,7 +201,7 @@ int Scheduler::start_thread()
     Auto_Mutex auto_lock(_lock);
 
     if (_thread_running)
-	return -1;
+        return -1;
 
     _thread_running = true;
 
@@ -215,7 +215,7 @@ int Scheduler::stop_thread()
     Auto_Mutex auto_lock(_lock);
 
     if (!_thread_running)
-	return -1;
+        return -1;
 
     // Setting this to false will cause _thread_proc() to fall out of its
     // loop and terminate.
