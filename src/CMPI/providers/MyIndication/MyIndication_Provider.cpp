@@ -28,9 +28,9 @@ Timer_Status MyIndication_Provider::timer(uint64& timeout)
 #if 1
     if (_indication_handler)
     {
-	MyIndication* indic = MyIndication::create();
-	indic->IndicationTime.value = Datetime::now();
-	_indication_handler->handle(indic);
+        MyIndication* indic = MyIndication::create();
+        indic->IndicationTime.value = Datetime::now();
+        _indication_handler->handle(indic);
     }
 #endif
 
@@ -49,8 +49,8 @@ Disable_Indications_Status MyIndication_Provider::disable_indications()
 {
     if (_indication_handler)
     {
-	delete _indication_handler;
-	_indication_handler = 0;
+        delete _indication_handler;
+        _indication_handler = 0;
     }
 
     return DISABLE_INDICATIONS_OK;
@@ -67,9 +67,9 @@ Invoke_Method_Status MyIndication_Provider::DeliverIndications(
 #if 1
     if (_indication_handler)
     {
-	MyIndication* indic = MyIndication::create();
-	// indic->IndicationTime.value = Datetime::now();
-	_indication_handler->handle(indic);
+        MyIndication* indic = MyIndication::create();
+        // indic->IndicationTime.value = Datetime::now();
+        _indication_handler->handle(indic);
     }
 #endif
 
@@ -96,7 +96,7 @@ int MyIndication_Provider::proc(
 
     if (operation != OPERATION_INVOKE_METHOD)
         return Indication_Provider_Proc_T<Provider>::proc(registration,
-	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+            operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;
     const Class* self = (const Class*)arg1;

@@ -42,7 +42,7 @@ public:
     }
 
     Raw_Array(const T* data, size_t size) : 
-	Array_Base(sizeof(T), data, size) 
+        Array_Base(sizeof(T), data, size) 
     {
     }
 
@@ -52,104 +52,104 @@ public:
 
     Raw_Array<T>& operator=(const Raw_Array<T>& x)
     {
-	_assign(x);
-	return *this;
+        _assign(x);
+        return *this;
     }
 
     void clear()
     {
-	remove(0, _rep->size);
+        remove(0, _rep->size);
     }
 
     size_t size() const 
     { 
-	return _rep->size; 
+        return _rep->size; 
     }
 
     size_t capacity() const 
     { 
-	return _rep->cap; 
+        return _rep->cap; 
     }
 
     const T* data() const 
     { 
-	return (T*)_rep->data; 
+        return (T*)_rep->data; 
     }
 
     T* data() 
     { 
-	return (T*)_rep->data; 
+        return (T*)_rep->data; 
     }
 
     T& operator[](size_t pos) 
     { 
-	return ((T*)_rep->data)[pos]; 
+        return ((T*)_rep->data)[pos]; 
     }
 
     const T& operator[](size_t pos) const 
     { 
-	return ((T*)_rep->data)[pos]; 
+        return ((T*)_rep->data)[pos]; 
     }
 
     void resize(size_t size) 
     {
-	static T x;
-	_resize(size, &x); 
+        static T x;
+        _resize(size, &x); 
     }
 
     void assign(const Raw_Array<T>& x) 
     { 
-	_assign(x); 
+        _assign(x); 
     }
 
     void assign(const T* data, size_t size) 
     { 
-	_assign(data, size); 
+        _assign(data, size); 
     }
 
     void swap(Raw_Array<T>& x) 
     { 
-	_swap(x); 
+        _swap(x); 
     }
 
     void insert(size_t pos, const T* data, size_t size)
     {
-	_insert(pos, data, size);
+        _insert(pos, data, size);
     }
 
     void insert(size_t pos, const T& elem)
     {
-	return _insert(pos, &elem, 1);
+        return _insert(pos, &elem, 1);
     }
 
     void append(const T* data, size_t size)
     {
-	_append(data, size);
+        _append(data, size);
     }
 
     void append(const T& elem)
     {
-	_append(&elem, 1);
+        _append(&elem, 1);
     }
 
     void prepend(const T* data, size_t size)
     {
-	_prepend(data, size);
+        _prepend(data, size);
     }
 
     void prepend(const T& elem)
     {
-	_prepend(&elem, 1);
+        _prepend(&elem, 1);
     }
 
     void remove(size_t pos, size_t size)
     {
-	_remove(pos, size);
+        _remove(pos, size);
     }
 
     void remove(size_t pos)
     {
-	_remove(pos, 1);
+        _remove(pos, 1);
     }
 };
 

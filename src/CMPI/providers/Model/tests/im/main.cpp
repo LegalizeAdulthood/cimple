@@ -46,63 +46,63 @@ int main(int argc, char** argv)
 
     try
     {
-	CIMClient client;
-	client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        CIMClient client;
+        client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
 
-	// Build object path:
+        // Build object path:
 
-	CIMObjectPath object_path("Model.k1=\"key\",k2=5555,k3=false");
-	// CIMObjectPath object_path("Model");
-	object_path.setNameSpace(NAMESPACE);
+        CIMObjectPath object_path("Model.k1=\"key\",k2=5555,k3=false");
+        // CIMObjectPath object_path("Model");
+        object_path.setNameSpace(NAMESPACE);
 
-	// Invoke the method:
+        // Invoke the method:
 
-	Array<CIMParamValue> inParams;
-	Array<CIMParamValue> outParams;
-	inParams.append(CIMParamValue("w", String("hello")));
-	inParams.append(CIMParamValue("x", Uint32(99)));
+        Array<CIMParamValue> inParams;
+        Array<CIMParamValue> outParams;
+        inParams.append(CIMParamValue("w", String("hello")));
+        inParams.append(CIMParamValue("x", Uint32(99)));
 
         CIMValue value = client.invokeMethod(
             // NAMESPACE, object_path, "stub2", inParams, outParams);
             NAMESPACE, object_path, "stub", inParams, outParams);
 
-	{
-	    String t;
-	    assert(value.getType() == CIMTYPE_STRING);
-	    value.get(t);
-	    cout << "return=" << t << endl;
-	}
+        {
+            String t;
+            assert(value.getType() == CIMTYPE_STRING);
+            value.get(t);
+            cout << "return=" << t << endl;
+        }
 
-	for (size_t i = 0; i < outParams.size(); i++)
-	{
-	    const CIMParamValue& pv = outParams[i];
-	    const CIMValue v = pv.getValue();
+        for (size_t i = 0; i < outParams.size(); i++)
+        {
+            const CIMParamValue& pv = outParams[i];
+            const CIMValue v = pv.getValue();
 
-	    if (pv.getParameterName() == "y")
-	    {
-		Boolean t = true;
-		assert(v.getType() == CIMTYPE_BOOLEAN);
-		pv.getValue().get(t);
+            if (pv.getParameterName() == "y")
+            {
+                Boolean t = true;
+                assert(v.getType() == CIMTYPE_BOOLEAN);
+                pv.getValue().get(t);
 
-		cout << "y=" << t << endl;
-		//assert(t == false);
-	    }
-	    else if (pv.getParameterName() == "z")
-	    {
-		Real32 t = 0;
-		assert(v.getType() == CIMTYPE_REAL32);
-		pv.getValue().get(t);
-		cout << "z=" << t << endl;
-	    }
-	}
+                cout << "y=" << t << endl;
+                //assert(t == false);
+            }
+            else if (pv.getParameterName() == "z")
+            {
+                Real32 t = 0;
+                assert(v.getType() == CIMTYPE_REAL32);
+                pv.getValue().get(t);
+                cout << "z=" << t << endl;
+            }
+        }
 
 #if 0
 #endif
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);

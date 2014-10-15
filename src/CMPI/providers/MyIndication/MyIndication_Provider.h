@@ -23,7 +23,7 @@ public:
     CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
 
     CIMPLE_HIDE Enable_Indications_Status enable_indications(
-	Indication_Handler<MyIndication>* indication_handler);
+        Indication_Handler<MyIndication>* indication_handler);
 
     CIMPLE_HIDE Disable_Indications_Status disable_indications();
 
@@ -31,16 +31,16 @@ public:
         Property<uint32>& return_value);
 
     CIMPLE_HIDE static int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
+        void* arg7);
 
 private:
 

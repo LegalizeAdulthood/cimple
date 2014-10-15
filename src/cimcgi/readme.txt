@@ -45,9 +45,9 @@ follows.
 
     class Contact
     {
-	[Key] uint32 SSN;
-	stirng FirstName;
-	stirng LastName;
+        [Key] uint32 SSN;
+        stirng FirstName;
+        stirng LastName;
     };
 
 Ass with all CIMPLE providers, a corresponding C++ class must be generated
@@ -58,15 +58,15 @@ Here is a second provider, that provides the entries in the /etc/passwd file.
 
     #!/bin/sh
     SCRIPT=`cat<<END
-	{
-	    print "name="\\$1;
-	    print "uid="\\$3;
-	    print "gid="\\$4;
-	    print "fullName="\\$5;
-	    print "homeDir="\\$6;
-	    print "shellProgram="\\$7;
-	    print "";
-	}
+        {
+            print "name="\\$1;
+            print "uid="\\$3;
+            print "gid="\\$4;
+            print "fullName="\\$5;
+            print "homeDir="\\$6;
+            print "shellProgram="\\$7;
+            print "";
+        }
     END
     `
     awk -F ":" "$SCRIPT" /etc/passwd
@@ -106,11 +106,11 @@ FUTURE DIRECTIONS:
 1.  Consider whether GET-INSTANCE can be implemented more efficiently
     by passing keys to the program, perhaps in the following format.
 
-	key1=value1,key2=value2
+        key1=value1,key2=value2
 
     For example:
 
-	ssn=44455777
+        ssn=44455777
 
 2.  Consider whether CGI providers should be extended to handle more
     operations, such as CREATE-INSTANCE or MODIFY-INSTANCE.

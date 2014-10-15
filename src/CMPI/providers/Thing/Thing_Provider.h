@@ -23,33 +23,33 @@ public:
     CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
 
     CIMPLE_HIDE Get_Instance_Status get_instance(
-	const Thing* model,
-	Thing*& instance);
+        const Thing* model,
+        Thing*& instance);
 
     CIMPLE_HIDE Enum_Instances_Status enum_instances(
-	const Thing* model,
-	Enum_Instances_Handler<Thing>* handler);
+        const Thing* model,
+        Enum_Instances_Handler<Thing>* handler);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(
-	const Thing* instance);
+        const Thing* instance);
 
     CIMPLE_HIDE Delete_Instance_Status delete_instance(
-	const Thing* instance);
+        const Thing* instance);
 
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
-	const Thing* instance);
+        const Thing* instance);
 
     static CIMPLE_HIDE int proc(
-	const Registration* registration,
-	int operation, 
-	void* arg0, 
-	void* arg1, 
-	void* arg2, 
-	void* arg3,
-	void* arg4,
-	void* arg5,
-	void* arg6,
-	void* arg7);
+        const Registration* registration,
+        int operation, 
+        void* arg0, 
+        void* arg1, 
+        void* arg2, 
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
+        void* arg7);
 
 private:
 

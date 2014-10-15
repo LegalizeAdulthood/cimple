@@ -46,7 +46,7 @@ Enum_Instances_Status ThingLink_Provider::enum_instances(
     Enum_Instances_Handler<ThingLink>* handler)
 {
     for (size_t i = 0; i < _map.size(); i++)
-	handler->handle(_map[i]->clone());
+        handler->handle(_map[i]->clone());
 
     return ENUM_INSTANCES_OK;
 }
@@ -106,7 +106,7 @@ int ThingLink_Provider::proc(
     typedef ThingLink Class;
     typedef ThingLink_Provider Provider;
     return Association_Provider_Proc_T<Provider>::proc(registration,
-	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+        operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 
 CIMPLE_NAMESPACE_END

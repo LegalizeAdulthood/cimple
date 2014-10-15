@@ -34,7 +34,7 @@ public:
     }
 
     Array(const CIMPLE_T* data, size_t size) : 
-	Array_Base(sizeof(CIMPLE_T), data, size) 
+        Array_Base(sizeof(CIMPLE_T), data, size) 
     {
     }
 
@@ -44,103 +44,103 @@ public:
 
     Array<CIMPLE_T>& operator=(const Array<CIMPLE_T>& x)
     {
-	_assign(x);
-	return *this;
+        _assign(x);
+        return *this;
     }
 
     void clear()
     {
-	remove(0, _rep->size);
+        remove(0, _rep->size);
     }
 
     size_t size() const 
     { 
-	return _rep->size; 
+        return _rep->size; 
     }
 
     size_t capacity() const 
     { 
-	return _rep->cap; 
+        return _rep->cap; 
     }
 
     const CIMPLE_T* data() const 
     { 
-	return (CIMPLE_T*)_rep->data; 
+        return (CIMPLE_T*)_rep->data; 
     }
 
     CIMPLE_T* data() 
     { 
-	return (CIMPLE_T*)_rep->data; 
+        return (CIMPLE_T*)_rep->data; 
     }
 
     CIMPLE_T& operator[](size_t pos) 
     { 
-	return ((CIMPLE_T*)_rep->data)[pos]; 
+        return ((CIMPLE_T*)_rep->data)[pos]; 
     }
 
     const CIMPLE_T& operator[](size_t pos) const 
     { 
-	return ((CIMPLE_T*)_rep->data)[pos]; 
+        return ((CIMPLE_T*)_rep->data)[pos]; 
     }
 
     void resize(size_t size) 
     {
-	static CIMPLE_T x;
-	_resize(size, &x); 
+        static CIMPLE_T x;
+        _resize(size, &x); 
     }
 
     void assign(const Array<CIMPLE_T>& x) 
     { 
-	_assign(x); 
+        _assign(x); 
     }
 
     void assign(const CIMPLE_T* data, size_t size) 
     { 
-	_assign(data, size); 
+        _assign(data, size); 
     }
 
     void swap(Array<CIMPLE_T>& x) 
     { 
-	_swap(x); 
+        _swap(x); 
     }
 
     void insert(size_t pos, const CIMPLE_T* data, size_t size)
     {
-	_insert(pos, data, size);
+        _insert(pos, data, size);
     }
 
     void insert(size_t pos, const CIMPLE_T& elem)
     {
-	_insert(pos, &elem, 1);
+        _insert(pos, &elem, 1);
     }
 
     void append(const CIMPLE_T* data, size_t size)
     {
-	_append(data, size);
+        _append(data, size);
     }
 
     void append(const CIMPLE_T& elem)
     {
-	_append(&elem, 1);
+        _append(&elem, 1);
     }
 
     void prepend(const CIMPLE_T* data, size_t size)
     {
-	_prepend(data, size);
+        _prepend(data, size);
     }
 
     void prepend(const CIMPLE_T& elem)
     {
-	_prepend(&elem, 1);
+        _prepend(&elem, 1);
     }
 
     void remove(size_t pos, size_t size)
     {
-	_remove(pos, size);
+        _remove(pos, size);
     }
 
     void remove(size_t pos)
     {
-	_remove(pos, 1);
+        _remove(pos, 1);
     }
 };

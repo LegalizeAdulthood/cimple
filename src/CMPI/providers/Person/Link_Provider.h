@@ -29,24 +29,24 @@ public:
     CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
 
     CIMPLE_HIDE Get_Instance_Status get_instance(
-	const Link* model, 
-	Link*& instance);
+        const Link* model, 
+        Link*& instance);
 
     CIMPLE_HIDE Enum_Instances_Status enum_instances(
-	const Link* model, 
-	Enum_Instances_Handler<Link>* handler);
+        const Link* model, 
+        Enum_Instances_Handler<Link>* handler);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(
-	const Link* instance);
+        const Link* instance);
 
     CIMPLE_HIDE Delete_Instance_Status delete_instance(
-	const Link* instance);
+        const Link* instance);
 
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
-	const Link* instance);
+        const Link* instance);
 
     static CIMPLE_HIDE int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+        int operation, void* arg0, void* arg1, void* arg2, void* arg3);
 
 private:
 

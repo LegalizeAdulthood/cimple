@@ -3,17 +3,17 @@
 <!-- This DTD defines the schema for XML 1.0 Documents  -->
 <!-- representing CIM Element Declarations or Messages. -->
 <!--                                                    -->
-<!-- DTD Version : 2.2					--> 
+<!-- DTD Version : 2.2                                  --> 
 <!-- DSP0203                                            -->
 <!-- Date: December 09, 2004                            -->
 <!-- Status: Preliminary                                -->
 <!-- ************************************************** -->
 <!-- *********************************************************** -->
 <!-- Copyright 2001-2004 Distributed Management Task Force, Inc. -->
-<!-- All rights reserved.  					 -->
+<!-- All rights reserved.                                        -->
 <!--   DMTF is a not-for-profit association of industry members  -->
-<!-- dedicated to promoting enterprise and systems management 	 -->
-<!-- and interoperability. DMTF specifications and documents	 -->
+<!-- dedicated to promoting enterprise and systems management    -->
+<!-- and interoperability. DMTF specifications and documents     -->
 <!-- may be reproduced for uses consistent with this purpose     -->
 <!-- by members and non-members, provided that correct           -->
 <!-- attribution is given. As DMTF specifications may be         -->
@@ -86,8 +86,8 @@
 <!-- ************************************************** -->
 <!ELEMENT CIM (MESSAGE | DECLARATION)>
 <!ATTLIST CIM
-	CIMVERSION CDATA #REQUIRED
-	DTDVERSION CDATA #REQUIRED
+        CIMVERSION CDATA #REQUIRED
+        DTDVERSION CDATA #REQUIRED
 >
 <!-- ************************************************** -->
 <!-- Object declaration elements                        -->
@@ -105,13 +105,13 @@
          %QualifierFlavor;>
 <!ELEMENT SCOPE EMPTY>
 <!ATTLIST SCOPE
-	CLASS (true | false) "false"
-	ASSOCIATION (true | false) "false"
-	REFERENCE (true | false) "false"
-	PROPERTY (true | false) "false"
-	METHOD (true | false) "false"
-	PARAMETER (true | false) "false"
-	INDICATION (true | false) "false"
+        CLASS (true | false) "false"
+        ASSOCIATION (true | false) "false"
+        REFERENCE (true | false) "false"
+        PROPERTY (true | false) "false"
+        METHOD (true | false) "false"
+        PARAMETER (true | false) "false"
+        INDICATION (true | false) "false"
 >
 <!-- ************************************************** -->
 <!-- Object Value elements                              -->
@@ -135,28 +135,28 @@
 <!ELEMENT HOST (#PCDATA)>
 <!ELEMENT NAMESPACE EMPTY>
 <!ATTLIST NAMESPACE
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT CLASSPATH (NAMESPACEPATH, CLASSNAME)>
 <!ELEMENT LOCALCLASSPATH (LOCALNAMESPACEPATH, CLASSNAME)>
 <!ELEMENT CLASSNAME EMPTY>
 <!ATTLIST CLASSNAME
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT INSTANCEPATH (NAMESPACEPATH, INSTANCENAME)>
 <!ELEMENT LOCALINSTANCEPATH (LOCALNAMESPACEPATH, INSTANCENAME)>
 <!ELEMENT INSTANCENAME (KEYBINDING* | KEYVALUE? | VALUE.REFERENCE?)>
 <!ATTLIST INSTANCENAME
-	%ClassName; 
+        %ClassName; 
 >
 <!ELEMENT OBJECTPATH (INSTANCEPATH | CLASSPATH)>
 <!ELEMENT KEYBINDING (KEYVALUE | VALUE.REFERENCE)>
 <!ATTLIST KEYBINDING
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT KEYVALUE (#PCDATA)>
 <!ATTLIST KEYVALUE
-	VALUETYPE (string | boolean | numeric) "string"
+        VALUETYPE (string | boolean | numeric) "string"
         %CIMType;              #IMPLIED>
 
 <!-- ************************************************** -->
@@ -164,12 +164,12 @@
 <!-- ************************************************** -->
 <!ELEMENT CLASS (QUALIFIER*, (PROPERTY | PROPERTY.ARRAY | PROPERTY.REFERENCE)*, METHOD*)>
 <!ATTLIST CLASS
-	%CIMName; 
-	%SuperClass; 
+        %CIMName; 
+        %SuperClass; 
 >
 <!ELEMENT INSTANCE (QUALIFIER*, (PROPERTY | PROPERTY.ARRAY | PROPERTY.REFERENCE)*)>
 <!ATTLIST INSTANCE
-	%ClassName;
+        %ClassName;
         xml:lang   NMTOKEN      #IMPLIED 
 >
 <!ELEMENT QUALIFIER ((VALUE | VALUE.ARRAY)?)>
@@ -199,10 +199,10 @@
 >
 <!ELEMENT PROPERTY.REFERENCE (QUALIFIER*, (VALUE.REFERENCE)?)>
 <!ATTLIST PROPERTY.REFERENCE
-	%CIMName; 
-	%ReferenceClass; 
-	%ClassOrigin; 
-	%Propagated; 
+        %CIMName; 
+        %ReferenceClass; 
+        %ClassOrigin; 
+        %Propagated; 
 >
 <!ELEMENT METHOD (QUALIFIER*, (PARAMETER | PARAMETER.REFERENCE | PARAMETER.ARRAY | PARAMETER.REFARRAY)*)>
 <!ATTLIST METHOD 
@@ -216,8 +216,8 @@
          %CIMType;              #REQUIRED>
 <!ELEMENT PARAMETER.REFERENCE (QUALIFIER*)>
 <!ATTLIST PARAMETER.REFERENCE
-	%CIMName; 
-	%ReferenceClass; 
+        %CIMName; 
+        %ReferenceClass; 
 >
 <!ELEMENT PARAMETER.ARRAY (QUALIFIER*)>
 <!ATTLIST PARAMETER.ARRAY 
@@ -226,24 +226,24 @@
          %ArraySize;>
 <!ELEMENT PARAMETER.REFARRAY (QUALIFIER*)>
 <!ATTLIST PARAMETER.REFARRAY
-	%CIMName; 
-	%ReferenceClass; 
-	%ArraySize; 
+        %CIMName; 
+        %ReferenceClass; 
+        %ArraySize; 
 >
 <!ELEMENT TABLECELL.DECLARATION EMPTY> 
 <!ATTLIST TABLECELL.DECLARATION
      %CIMName;
-     %CIMType;   	#REQUIRED
+     %CIMType;          #REQUIRED
      ISARRAY           (true|false) "false"
      %ArraySize;
-     CELLPOS  		CDATA       #REQUIRED
-     SORTPOS     	CDATA       #IMPLIED
+     CELLPOS            CDATA       #REQUIRED
+     SORTPOS            CDATA       #IMPLIED
      SORTDIR            (ASC|DESC)  #IMPLIED
 >
 <!ELEMENT TABLECELL.REFERENCE EMPTY> 
 <!ATTLIST TABLECELL.REFERENCE
      %CIMName;
-     %ReferenceClass;	
+     %ReferenceClass;   
      ISARRAY        (true|false) "false"
      %ArraySize; 
      CELLPOS          CDATA       #REQUIRED
@@ -259,8 +259,8 @@
 <!-- ************************************************** -->
 <!ELEMENT MESSAGE (SIMPLEREQ | MULTIREQ | SIMPLERSP | MULTIRSP | SIMPLEEXPREQ | MULTIEXPREQ | SIMPLEEXPRSP | MULTIEXPRSP)>
 <!ATTLIST MESSAGE
-	ID CDATA #REQUIRED
-	PROTOCOLVERSION CDATA #REQUIRED
+        ID CDATA #REQUIRED
+        PROTOCOLVERSION CDATA #REQUIRED
 >
 <!ELEMENT MULTIREQ (SIMPLEREQ, SIMPLEREQ+)>
 <!ELEMENT MULTIEXPREQ (SIMPLEEXPREQ, SIMPLEEXPREQ+)>
@@ -268,27 +268,27 @@
 <!ELEMENT SIMPLEEXPREQ (EXPMETHODCALL)>
 <!ELEMENT IMETHODCALL (LOCALNAMESPACEPATH, IPARAMVALUE*, RESPONSEDESTINATION?)>
 <!ATTLIST IMETHODCALL
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT METHODCALL ((LOCALINSTANCEPATH | LOCALCLASSPATH), PARAMVALUE*, RESPONSEDESTINATION?)>
 <!ATTLIST METHODCALL
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT EXPMETHODCALL (EXPPARAMVALUE*)>
 <!ATTLIST EXPMETHODCALL
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT PARAMVALUE (VALUE | VALUE.REFERENCE | VALUE.ARRAY | VALUE.REFARRAY)?>
 <!ATTLIST PARAMVALUE
-	%CIMName; 
+        %CIMName; 
         %ParamType;  #IMPLIED
 > <!ELEMENT IPARAMVALUE (VALUE | VALUE.ARRAY | VALUE.REFERENCE | INSTANCENAME | CLASSNAME | QUALIFIER.DECLARATION | CLASS | INSTANCE | VALUE.NAMEDINSTANCE)?>
 <!ATTLIST IPARAMVALUE
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT EXPPARAMVALUE (INSTANCE?|VALUE?|METHODRESPONSE?|IMETHODRESPONSE?)>
 <!ATTLIST EXPPARAMVALUE
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT MULTIRSP (SIMPLERSP, SIMPLERSP+)>
 <!ELEMENT MULTIEXPRSP (SIMPLEEXPRSP, SIMPLEEXPRSP+)>
@@ -296,24 +296,24 @@
 <!ELEMENT SIMPLEEXPRSP (EXPMETHODRESPONSE)>
 <!ELEMENT METHODRESPONSE (ERROR|(RETURNVALUE?,PARAMVALUE*))>
 <!ATTLIST METHODRESPONSE
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT EXPMETHODRESPONSE (ERROR|IRETURNVALUE?)>
 <!ATTLIST EXPMETHODRESPONSE
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT IMETHODRESPONSE (ERROR|IRETURNVALUE?)>
 <!ATTLIST IMETHODRESPONSE
-	%CIMName; 
+        %CIMName; 
 >
 <!ELEMENT ERROR (INSTANCE*)>
 <!ATTLIST ERROR
-	CODE CDATA #REQUIRED
-	DESCRIPTION CDATA #IMPLIED
+        CODE CDATA #REQUIRED
+        DESCRIPTION CDATA #IMPLIED
 >
 <!ELEMENT RETURNVALUE (VALUE | VALUE.REFERENCE)>
 <!ATTLIST RETURNVALUE
-	%ParamType;       #IMPLIED 
+        %ParamType;       #IMPLIED 
 >
 <!ELEMENT IRETURNVALUE (CLASSNAME* | INSTANCENAME* | VALUE* | VALUE.OBJECTWITHPATH* | VALUE.OBJECTWITHLOCALPATH* | VALUE.OBJECT* | OBJECTPATH* | QUALIFIER.DECLARATION* | VALUE.ARRAY? | VALUE.REFERENCE? | CLASS* | INSTANCE* | VALUE.NAMEDINSTANCE* | TABLE )>
 <!ELEMENT RESPONSEDESTINATION (INSTANCE)> 

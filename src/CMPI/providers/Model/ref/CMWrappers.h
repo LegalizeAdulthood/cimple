@@ -15,43 +15,43 @@
 const char* type_name_of(CMPIType type)
 {
     if (type & CMPI_boolean)
-	return "boolean";
+        return "boolean";
 
     if (type & CMPI_uint8)
-	return "uint8";
+        return "uint8";
 
     if (type & CMPI_sint8)
-	return "sint8";
+        return "sint8";
 
     if (type & CMPI_uint16)
-	return "uint16";
+        return "uint16";
 
     if (type & CMPI_sint16)
-	return "sint16";
+        return "sint16";
 
     if (type & CMPI_uint32)
-	return "uint32";
+        return "uint32";
 
     if (type & CMPI_sint32)
-	return "sint32";
+        return "sint32";
 
     if (type & CMPI_uint64)
-	return "uint64";
+        return "uint64";
 
     if (type & CMPI_sint64)
-	return "sint64";
+        return "sint64";
 
     if (type & CMPI_real32)
-	return "real32";
+        return "real32";
 
     if (type & CMPI_real64)
-	return "real64";
+        return "real64";
 
     if (type & CMPI_char16)
-	return "char16";
+        return "char16";
 
     if (type & CMPI_string)
-	return "string";
+        return "string";
 
     return "unknown";
 }
@@ -188,7 +188,7 @@ class CMW_Const_Object_Path
 public:
 
     CMW_Const_Object_Path(const CMPIObjectPath* rep) : 
-	_rep((CMPIObjectPath*)rep)
+        _rep((CMPIObjectPath*)rep)
     {
     }
 
@@ -198,79 +198,79 @@ public:
 
     CMPIObjectPath* clone() const
     {
-	return CMClone(_rep, NULL);
+        return CMClone(_rep, NULL);
     }
 
     const char* name_space() const
     {
-	return CMGetCharsPtr(CMGetNameSpace(_rep, NULL), NULL);
+        return CMGetCharsPtr(CMGetNameSpace(_rep, NULL), NULL);
     }
 
     const char* class_name() const
     {
-	return CMGetCharsPtr(CMGetClassName(_rep, NULL), NULL);
+        return CMGetCharsPtr(CMGetClassName(_rep, NULL), NULL);
     }
 
     const char* host_name() const
     {
-	return CMGetCharsPtr(CMGetHostname(_rep, NULL), NULL);
+        return CMGetCharsPtr(CMGetHostname(_rep, NULL), NULL);
     }
 
     size_t key_count() const
     {
-	return CMGetKeyCount(_rep, NULL);
+        return CMGetKeyCount(_rep, NULL);
     }
 
     bool get_key_string(const char* name, const char*& value) const
     {
-	return _get_key(name, value);
+        return _get_key(name, value);
     }
 
     bool get_key_uint32(const char* name, CMPIUint32& value) const
     {
-	return _get_key(name, value);
+        return _get_key(name, value);
     }
 
     CMPIData get_key_at(size_t index, const char*& name) const
     {
-	CMPIString* tmp = NULL;
-	CMPIData data = CMGetKeyAt(_rep, index, &tmp, NULL);
-	name = CMGetCharPtr(tmp);
-	return data;
+        CMPIString* tmp = NULL;
+        CMPIData data = CMGetKeyAt(_rep, index, &tmp, NULL);
+        name = CMGetCharPtr(tmp);
+        return data;
     }
 
     void dump() const
     {
-	printf("CMPIObjectPath:\n");
-	printf("    name_space[%s]\n", name_space());
-	printf("    class_name[%s]\n", class_name());
-	printf("    host_name[%s]\n", host_name());
+        printf("CMPIObjectPath:\n");
+        printf("    name_space[%s]\n", name_space());
+        printf("    class_name[%s]\n", class_name());
+        printf("    host_name[%s]\n", host_name());
 
-	for (size_t i = 0; i < key_count(); i++)
-	{
-	    const char* name;
-	    CMPIData d = get_key_at(i, name);
+        for (size_t i = 0; i < key_count(); i++)
+        {
+            const char* name;
+            CMPIData d = get_key_at(i, name);
 
-	    printf("    %s %s[", type_name_of(d.type), name);
+            printf("    %s %s[", type_name_of(d.type), name);
 
-	    if (d.type & CMPI_string)
-	    {
-		const char* x;
-		value_of(d, x);
-		printf("%s", x);
-	    }
-	    else if (d.type & CMPI_uint32)
-	    {
-		CMPIUint32 x;
-		value_of(d, x);
-		printf("%u", x);
-	    }
-	    else
-	    {
-	    }
+            if (d.type & CMPI_string)
+            {
+                const char* x;
+                value_of(d, x);
+                printf("%s", x);
+            }
+            else if (d.type & CMPI_uint32)
+            {
+                CMPIUint32 x;
+                value_of(d, x);
+                printf("%u", x);
+            }
+            else
+            {
+            }
 
-	    printf("]\n");
-	}
+            printf("]\n");
+        }
     }
 
 protected:
@@ -284,15 +284,15 @@ private:
     template<class T>
     bool _get_key(const char* name, T& value) const
     {
-	CMPIStatus st;
-	CMPIData data = CMGetKey(_rep, name, &st);
+        CMPIStatus st;
+        CMPIData data = CMGetKey(_rep, name, &st);
 
-	if (st.rc == CMPI_RC_OK && (data.type & type_of(value)))
-	{
-	    value_of(data, value);
-	    return true;
-	}
-	return false;
+        if (st.rc == CMPI_RC_OK && (data.type & type_of(value)))
+        {
+            value_of(data, value);
+            return true;
+        }
+        return false;
     }
 };
 
@@ -301,56 +301,56 @@ class CMW_Object_Path : public CMW_Const_Object_Path
 public:
 
     CMW_Object_Path(
-	const CMPIBroker* broker,
-	const char* name_space = 0,
-	const char* class_name = 0,
-	CMPIStatus* status = 0)
+        const CMPIBroker* broker,
+        const char* name_space = 0,
+        const char* class_name = 0,
+        CMPIStatus* status = 0)
     {
-	_rep = CMNewObjectPath(broker, name_space, class_name, status);
+        _rep = CMNewObjectPath(broker, name_space, class_name, status);
     }
 
     ~CMW_Object_Path()
     {
-	if (_rep)
-	    CMRelease(_rep);
+        if (_rep)
+            CMRelease(_rep);
     } 
 
     void name_space(const char* name_space)
     {
-	CMSetNameSpace(_rep, name_space);
+        CMSetNameSpace(_rep, name_space);
     }
 
     void class_name(const char* class_name)
     {
-	CMSetClassName(_rep, class_name);
+        CMSetClassName(_rep, class_name);
     }
 
     void host_name(const char* host_name)
     {
-	CMSetHostname(_rep, host_name);
+        CMSetHostname(_rep, host_name);
     }
 
     void add_key_string(const char* name, const char* value)
     {
-	CMAddKey(_rep, name, value, CMPI_chars);
+        CMAddKey(_rep, name, value, CMPI_chars);
     }
 
     void add_key_uint32(const char* name, CMPIUint32 value)
     {
-	CMAddKey(_rep, name, &value, CMPI_uint32);
+        CMAddKey(_rep, name, &value, CMPI_uint32);
     }
 
     CMPIObjectPath* rep()
     {
-	return _rep;
+        return _rep;
     }
 
 #if 0
 
     void get_key_at(
-	CMPIObjectPath* _rep, size_t i, const char*& name)
+        CMPIObjectPath* _rep, size_t i, const char*& name)
     {
-	key1 = CMGetKeyAt(object1, i, &keyname, &status);
+        key1 = CMGetKeyAt(object1, i, &keyname, &status);
     }
 
 #endif

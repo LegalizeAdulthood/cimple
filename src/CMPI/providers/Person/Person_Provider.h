@@ -23,24 +23,24 @@ public:
     CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
 
     CIMPLE_HIDE Get_Instance_Status get_instance(
-	const Person* model, 
-	Person*& instance);
+        const Person* model, 
+        Person*& instance);
 
     CIMPLE_HIDE Enum_Instances_Status enum_instances(
-	const Person* model, 
-	Enum_Instances_Handler<Person>* handler);
+        const Person* model, 
+        Enum_Instances_Handler<Person>* handler);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(
-	const Person* inst);
+        const Person* inst);
 
     CIMPLE_HIDE Delete_Instance_Status delete_instance(
-	const Person* inst);
+        const Person* inst);
 
     CIMPLE_HIDE Modify_Instance_Status modify_instance(
-	const Person* inst);
+        const Person* inst);
 
     static CIMPLE_HIDE int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+        int operation, void* arg0, void* arg1, void* arg2, void* arg3);
 
 private:
     Instance_Map<Person> _map;

@@ -34,23 +34,23 @@ CIMPLE_NAMESPACE_BEGIN
 /** This class is used to automatically 'destroy' heap objects when it
     goes out of scope. For example,
 
-	<pre>
-	char* str = str_clone("hello");
-	Destroyer<char> str_destroyer(str);
-	</pre>
+        <pre>
+        char* str = str_clone("hello");
+        Destroyer<char> str_destroyer(str);
+        </pre>
 
     A destroy() function must be defined for each type of object it is used
     with. The prototype must be:
 
-	<pre>
-	void destroy(T* p);
-	</pre>
+        <pre>
+        void destroy(T* p);
+        </pre>
 
     For example, for char, the prototype is:
 
-	<pre>
-	void destroy(char* p);
-	</pre>
+        <pre>
+        void destroy(char* p);
+        </pre>
 */
 template<class T>
 class Destroyer
@@ -63,14 +63,14 @@ public:
 
     ~Destroyer() 
     {
-	destroyer(_p);
+        destroyer(_p);
     }
 
     T* steal()
     {
-	T* tmp = _p;
-	_p = 0;
-	return tmp;
+        T* tmp = _p;
+        _p = 0;
+        return tmp;
     }
 
 private:

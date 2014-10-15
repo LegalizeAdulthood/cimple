@@ -48,28 +48,28 @@ int Sockets::init_addr(sockaddr_in& addr, const char* host, uint16 port)
 
     if (isalpha(host[0]))
     {
-	hostent* ent = 0;
-	hostent result;
-	char data[4096];
-	int error_num;
+        hostent* ent = 0;
+        hostent result;
+        char data[4096];
+        int error_num;
 
-	int status = gethostbyname_r(
-	    host, &result, data, sizeof(data), &ent, &error_num);
+        int status = gethostbyname_r(
+            host, &result, data, sizeof(data), &ent, &error_num);
 
-	if (status != 0 || ent == 0)
-	    return -1;
+        if (status != 0 || ent == 0)
+            return -1;
 
-	addr.sin_family = ent->h_addrtype;
-	memcpy(&addr.sin_addr, ent->h_addr, ent->h_length);
+        addr.sin_family = ent->h_addrtype;
+        memcpy(&addr.sin_addr, ent->h_addr, ent->h_length);
     }
     else
     {
-	addr.sin_addr.s_addr = inet_addr((char*)host);
+        addr.sin_addr.s_addr = inet_addr((char*)host);
 
-	if ((int)addr.sin_addr.s_addr == -1)
-	    return -1;
+        if ((int)addr.sin_addr.s_addr == -1)
+            return -1;
 
-	addr.sin_family = AF_INET;
+        addr.sin_family = AF_INET;
     }   
 
     addr.sin_port = htons(port);
@@ -121,14 +121,14 @@ int Sockets::bind(Sock sock, const sockaddr_in& addr)
     CIMPLE_RESTART(::bind(sock, (sockaddr*)&addr, sizeof(addr)), result);
 
     if (result != 0)
-	return -1;
+        return -1;
 
     if (addr.sin_port == 0)
     {
-	socklen_t length = sizeof(addr);
+        socklen_t length = sizeof(addr);
 
-	if (::getsockname(sock, (sockaddr*)&addr, &length) != 0)
-	    return -1;
+        if (::getsockname(sock, (sockaddr*)&addr, &length) != 0)
+            return -1;
     }
 
     return 0;
@@ -250,31 +250,31 @@ ssize_t Sockets::recv_n(Sock sock, void* data, size_t size)
     char* p = (char*)data;
 
     if (size == 0)
-	return -1;
+        return -1;
 
     while (r)
     {
-	ssize_t n = Sockets::recv(sock, p, r);
+        ssize_t n = Sockets::recv(sock, p, r);
 
-	if (n == -1)
-	{
-	    if (errno == EWOULDBLOCK)
-	    {
-		size_t total = size - r;
+        if (n == -1)
+        {
+            if (errno == EWOULDBLOCK)
+            {
+                size_t total = size - r;
 
-		if (total)
-		    return total;
+                if (total)
+                    return total;
 
-		return -1;
-	    }
-	    else
-		return -1;
-	}
-	else if (n == 0)
-	    return size - r;
+                return -1;
+            }
+            else
+                return -1;
+        }
+        else if (n == 0)
+            return size - r;
 
-	r -= n;
-	p += n;
+        r -= n;
+        p += n;
     }
 
     return size - r;
@@ -291,33 +291,33 @@ ssize_t Sockets::recv_n(
 
     while (r)
     {
-	uint32 events = 1;
-	int count = Sockets::wait(sock, events, timeout);
+        uint32 events = 1;
+        int count = Sockets::wait(sock, events, timeout);
 
-	if (count == 1 && events & READ)
-	{
-	    ssize_t n = Sockets::recv_n(sock, p, r);
+        if (count == 1 && events & READ)
+        {
+            ssize_t n = Sockets::recv_n(sock, p, r);
 
-	    if (n == -1)
-	    {
-		Sockets::set_blocking(sock, blocking);
-		return -1;
-	    }
+            if (n == -1)
+            {
+                Sockets::set_blocking(sock, blocking);
+                return -1;
+            }
 
-	    if (n == 0)
-	    {
-		Sockets::set_blocking(sock, blocking);
-		return size;
-	    }
+            if (n == 0)
+            {
+                Sockets::set_blocking(sock, blocking);
+                return size;
+            }
 
-	    r -= n;
-	    p += n;
-	}
-	else
-	{
-	    Sockets::set_blocking(sock, blocking);
-	    return count;
-	}
+            r -= n;
+            p += n;
+        }
+        else
+        {
+            Sockets::set_blocking(sock, blocking);
+            return count;
+        }
     }
 
     Sockets::set_blocking(sock, blocking);
@@ -331,20 +331,20 @@ ssize_t Sockets::send_n(Sock sock, const void* data, size_t size)
 
     while (r)
     {
-	ssize_t n = Sockets::send(sock, p, r);
+        ssize_t n = Sockets::send(sock, p, r);
 
-	if (n == -1)
-	{
-	    if (errno == EWOULDBLOCK)
-		return size - r;
-	    else 
-		return -1;
-	}
-	else if (n == 0)
-	    return size - r;
+        if (n == -1)
+        {
+            if (errno == EWOULDBLOCK)
+                return size - r;
+            else 
+                return -1;
+        }
+        else if (n == 0)
+            return size - r;
 
-	r -= n;
-	p += n;
+        r -= n;
+        p += n;
     }
 
     return size - r;
@@ -361,33 +361,33 @@ ssize_t Sockets::send_n(
 
     while (r)
     {
-	uint32 events = WRITE;
-	int count = Sockets::wait(sock, events, timeout);
+        uint32 events = WRITE;
+        int count = Sockets::wait(sock, events, timeout);
 
-	if (count == 1 && events & WRITE)
-	{
-	    ssize_t n = Sockets::send_n(sock, p, r);
+        if (count == 1 && events & WRITE)
+        {
+            ssize_t n = Sockets::send_n(sock, p, r);
 
-	    if (n == -1)
-	    {
-		Sockets::set_blocking(sock, blocking);
-		return -1;
-	    }
+            if (n == -1)
+            {
+                Sockets::set_blocking(sock, blocking);
+                return -1;
+            }
 
-	    if (n == 0)
-	    {
-		Sockets::set_blocking(sock, blocking);
-		return -1;
-	    }
+            if (n == 0)
+            {
+                Sockets::set_blocking(sock, blocking);
+                return -1;
+            }
 
-	    r -= n;
-	    p += n;
-	}
-	else
-	{
-	    Sockets::set_blocking(sock, blocking);
-	    return count;
-	}
+            r -= n;
+            p += n;
+        }
+        else
+        {
+            Sockets::set_blocking(sock, blocking);
+            return count;
+        }
     }
 
     Sockets::set_blocking(sock, blocking);
@@ -405,9 +405,9 @@ int Sockets::set_blocking(Sock sock, bool flag)
     int flags = fcntl(sock, F_GETFL, 0);
 
     if (flag)
-	flags &= ~O_NONBLOCK;
+        flags &= ~O_NONBLOCK;
     else
-	flags |= O_NONBLOCK;
+        flags |= O_NONBLOCK;
 
     return fcntl(sock, F_SETFL, flags);
 }
@@ -442,14 +442,14 @@ int Sockets::wait(Sock sock, uint32& events, uint64& timeout)
 
     if (result == 1)
     {
-	if (FD_ISSET(sock, &read_set))
-	    events |= READ;
+        if (FD_ISSET(sock, &read_set))
+            events |= READ;
 
-	if (FD_ISSET(sock, &write_set))
-	    events |= WRITE;
+        if (FD_ISSET(sock, &write_set))
+            events |= WRITE;
 
-	if (FD_ISSET(sock, &except_set))
-	    events |= EXCEPT;
+        if (FD_ISSET(sock, &except_set))
+            events |= EXCEPT;
     }
 
     return result;

@@ -45,40 +45,40 @@ int main(int argc, char** argv)
 {
     try
     {
-	CIMClient client;
-	client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+        CIMClient client;
+        client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
 
-	CIMObjectPath object_path;
-	object_path.setClassName("Model");
-	object_path.setNameSpace(NAMESPACE);
+        CIMObjectPath object_path;
+        object_path.setClassName("Model");
+        object_path.setNameSpace(NAMESPACE);
 
-	CIMKeyBinding b_k1("k1", "", CIMKeyBinding::STRING);
-	CIMKeyBinding b_k2("k2", "5555", CIMKeyBinding::NUMERIC);
-	CIMKeyBinding b_k3("k3", "false", CIMKeyBinding::BOOLEAN);
-	Array<CIMKeyBinding> bindings;
-	bindings.append(b_k1);
-	bindings.append(b_k2);
-	bindings.append(b_k3);
-	object_path.setKeyBindings(bindings);
+        CIMKeyBinding b_k1("k1", "", CIMKeyBinding::STRING);
+        CIMKeyBinding b_k2("k2", "5555", CIMKeyBinding::NUMERIC);
+        CIMKeyBinding b_k3("k3", "false", CIMKeyBinding::BOOLEAN);
+        Array<CIMKeyBinding> bindings;
+        bindings.append(b_k1);
+        bindings.append(b_k2);
+        bindings.append(b_k3);
+        object_path.setKeyBindings(bindings);
 
-	CIMInstance instance("Model");
-	instance.setPath(object_path);
-	instance.addProperty(CIMProperty("k1", String("hello world")));
-	instance.addProperty(CIMProperty("k2", Uint32(5555)));
-	instance.addProperty(CIMProperty("k3", Boolean(false)));
-	instance.addProperty(CIMProperty("prop1", String("prop1")));
-	instance.addProperty(CIMProperty("prop2", String("prop2")));
-	instance.addProperty(CIMProperty("prop3", String("prop3")));
-	instance.addProperty(CIMProperty("prop4", String("prop4")));
-	instance.addProperty(CIMProperty("prop5", String("prop5")));
+        CIMInstance instance("Model");
+        instance.setPath(object_path);
+        instance.addProperty(CIMProperty("k1", String("hello world")));
+        instance.addProperty(CIMProperty("k2", Uint32(5555)));
+        instance.addProperty(CIMProperty("k3", Boolean(false)));
+        instance.addProperty(CIMProperty("prop1", String("prop1")));
+        instance.addProperty(CIMProperty("prop2", String("prop2")));
+        instance.addProperty(CIMProperty("prop3", String("prop3")));
+        instance.addProperty(CIMProperty("prop4", String("prop4")));
+        instance.addProperty(CIMProperty("prop5", String("prop5")));
 
-	CIMObjectPath return_object_path = client.createInstance(
-	    NAMESPACE, instance);
+        CIMObjectPath return_object_path = client.createInstance(
+            NAMESPACE, instance);
     }
     catch(Exception& e)
     {
-	PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
-	exit(1);
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
     }
 
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);
