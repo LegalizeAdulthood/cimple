@@ -41,7 +41,7 @@ static uint8* _set_scalar(
     const Meta_Property* mp = find_property(instance->meta_class, name);
 
     if (!mp || mp->subscript || mp->type != type)
-	return 0;
+        return 0;
 
     uint8* field = (uint8*)instance + mp->offset;
     *((uint8*)field + type_size[type]) = null ? 1 : 0;
@@ -60,8 +60,8 @@ int _set_scalar_raw(
 
     if (field)
     {
-	memcpy(field, value, type_size[type]);
-	return 0;
+        memcpy(field, value, type_size[type]);
+        return 0;
     }
 
     return -1;
@@ -76,7 +76,7 @@ static const uint8* _get_scalar(
     const Meta_Property* mp = find_property(instance->meta_class, name);
 
     if (!mp || mp->subscript || mp->type != type)
-	return 0;
+        return 0;
 
     const uint8* field = (uint8*)instance + mp->offset;
     null = *((const uint8*)field + type_size[type]);
@@ -94,8 +94,8 @@ int _get_scalar_raw(
 
     if (field)
     {
-	memcpy(value, field, type_size[type]);
-	return 0;
+        memcpy(value, field, type_size[type]);
+        return 0;
     }
 
     return -1;
@@ -110,7 +110,7 @@ int Facade::_set_array(
     const Meta_Property* mp = find_property(_instance->meta_class, name);
 
     if (!mp || mp->subscript == 0 || mp->type != type)
-	return -1;
+        return -1;
 
     uint8* field = (uint8*)_instance + mp->offset;
     *((uint8*)field + sizeof(Array_Base)) = null ? 1 : 0;
@@ -128,7 +128,7 @@ int Facade::_get_array(
     const Meta_Property* mp = find_property(_instance->meta_class, name);
 
     if (!mp || mp->subscript == 0 || mp->type != type)
-	return -1;
+        return -1;
 
     const uint8* field = (uint8*)_instance + mp->offset;
     null = *((const uint8*)field + type_size[type]);
@@ -144,7 +144,7 @@ Facade::Facade(Instance* instance) : _instance(instance)
 Facade::~Facade()
 {
     if (_instance)
-	cimple::destroy(_instance);
+        cimple::destroy(_instance);
 }
 
 Instance* Facade::steal()
@@ -159,7 +159,7 @@ int Facade::set_null(const char* name, bool null)
     const Meta_Property* mp = find_property(_instance->meta_class, name);
 
     if (!mp)
-	return 0;
+        return 0;
 
     null_of(mp, (uint8*)_instance + mp->offset) = null;
 
@@ -237,8 +237,8 @@ int Facade::set_string(const char* name, const String& value, bool null)
 
     if (field)
     {
-	*((String*)field) = value;
-	return 0;
+        *((String*)field) = value;
+        return 0;
     }
 
     return -1;
@@ -255,18 +255,18 @@ int Facade::set_ref(const char* name, Instance* ref)
 
     if (mr)
     {
-	// ATTN: change Meta_Reference so that it contains a meta-class
-	// so that we can check to see if the ref is derived from it.
-	// Otherwise we have no type-checking whatsoever.
+        // ATTN: change Meta_Reference so that it contains a meta-class
+        // so that we can check to see if the ref is derived from it.
+        // Otherwise we have no type-checking whatsoever.
 
-	Instance* old_ref = *((Instance**)((uint8*)_instance + mr->offset));
+        Instance* old_ref = *((Instance**)((uint8*)_instance + mr->offset));
 
-	if (old_ref)
-	    destroy(old_ref);
+        if (old_ref)
+            destroy(old_ref);
 
-	*((Instance**)((uint8*)_instance + mr->offset)) = ref;
+        *((Instance**)((uint8*)_instance + mr->offset)) = ref;
 
-	return 0;
+        return 0;
     }
 
     return -1;
@@ -422,8 +422,8 @@ int Facade::get_string(const char* name, String& value, bool& null)
 
     if (field)
     {
-	value = *((String*)field);
-	return 0;
+        value = *((String*)field);
+        return 0;
     }
 
     return -1;
@@ -440,8 +440,8 @@ int Facade::get_ref(const char* name, Instance*& ref)
 
     if (mr)
     {
-	ref = *((Instance**)((uint8*)_instance + mr->offset));
-	return 0;
+        ref = *((Instance**)((uint8*)_instance + mr->offset));
+        return 0;
     }
 
     return -1;

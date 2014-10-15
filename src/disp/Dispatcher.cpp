@@ -52,7 +52,7 @@ Dispatcher* Dispatcher::create(const char* path)
     Cache* cache = Cache::create(path);
 
     if (!cache)
-	return 0;
+        return 0;
 
     // Create dispatcher:
 
@@ -75,7 +75,7 @@ Status Dispatcher::get_instance(const Instance* model, Instance*& inst)
     Envelope* env = _find_provider(model);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
@@ -83,14 +83,14 @@ Status Dispatcher::get_instance(const Instance* model, Instance*& inst)
 
     switch (provider_status)
     {
-	case GET_INSTANCE_OK:
-	    return STATUS_OK;
+        case GET_INSTANCE_OK:
+            return STATUS_OK;
 
-	case GET_INSTANCE_NOT_FOUND:
-	    return STATUS_NOT_FOUND;
+        case GET_INSTANCE_NOT_FOUND:
+            return STATUS_NOT_FOUND;
 
-	case GET_INSTANCE_UNSUPPORTED:
-	    return STATUS_UNSUPPORTED;
+        case GET_INSTANCE_UNSUPPORTED:
+            return STATUS_UNSUPPORTED;
     }
 
     return STATUS_OK;
@@ -112,22 +112,22 @@ Status Dispatcher::enum_instances(
     Envelope* env = _find_provider(model);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
     // Invoked provider:
 
     Enum_Instances_Status provider_status = 
-	env->enum_instances(model, proc, client_data);
+        env->enum_instances(model, proc, client_data);
 
     switch (provider_status)
     {
-	case ENUM_INSTANCES_OK:
-	    return STATUS_OK;
+        case ENUM_INSTANCES_OK:
+            return STATUS_OK;
 
-	case ENUM_INSTANCES_FAILED:
-	    return STATUS_FAILED;
+        case ENUM_INSTANCES_FAILED:
+            return STATUS_FAILED;
     }
 
     // Unreachable!
@@ -145,7 +145,7 @@ Status Dispatcher::create_instance(const Instance* inst)
     Envelope* env = _find_provider(inst);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
@@ -153,14 +153,14 @@ Status Dispatcher::create_instance(const Instance* inst)
 
     switch (provider_status)
     {
-	case CREATE_INSTANCE_OK:
-	    return STATUS_OK;
+        case CREATE_INSTANCE_OK:
+            return STATUS_OK;
 
-	case CREATE_INSTANCE_DUPLICATE:
-	    return STATUS_ALREADY_EXISTS;
+        case CREATE_INSTANCE_DUPLICATE:
+            return STATUS_ALREADY_EXISTS;
 
-	case CREATE_INSTANCE_UNSUPPORTED:
-	    return STATUS_UNSUPPORTED;
+        case CREATE_INSTANCE_UNSUPPORTED:
+            return STATUS_UNSUPPORTED;
     }
 
     return STATUS_OK;
@@ -177,7 +177,7 @@ Status Dispatcher::delete_instance(const Instance* inst)
     Envelope* env = _find_provider(inst);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
@@ -185,14 +185,14 @@ Status Dispatcher::delete_instance(const Instance* inst)
 
     switch (provider_status)
     {
-	case DELETE_INSTANCE_OK:
-	    return STATUS_OK;
+        case DELETE_INSTANCE_OK:
+            return STATUS_OK;
 
-	case DELETE_INSTANCE_NOT_FOUND:
-	    return STATUS_NOT_FOUND;
+        case DELETE_INSTANCE_NOT_FOUND:
+            return STATUS_NOT_FOUND;
 
-	case DELETE_INSTANCE_UNSUPPORTED:
-	    return STATUS_UNSUPPORTED;
+        case DELETE_INSTANCE_UNSUPPORTED:
+            return STATUS_UNSUPPORTED;
     }
 
     return STATUS_OK;
@@ -209,7 +209,7 @@ Status Dispatcher::modify_instance(const Instance* inst)
     Envelope* env = _find_provider(inst);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
@@ -217,14 +217,14 @@ Status Dispatcher::modify_instance(const Instance* inst)
 
     switch (provider_status)
     {
-	case MODIFY_INSTANCE_OK:
-	    return STATUS_OK;
+        case MODIFY_INSTANCE_OK:
+            return STATUS_OK;
 
-	case MODIFY_INSTANCE_NOT_FOUND:
-	    return STATUS_NOT_FOUND;
+        case MODIFY_INSTANCE_NOT_FOUND:
+            return STATUS_NOT_FOUND;
 
-	case MODIFY_INSTANCE_UNSUPPORTED:
-	    return STATUS_UNSUPPORTED;
+        case MODIFY_INSTANCE_UNSUPPORTED:
+            return STATUS_UNSUPPORTED;
     }
 
     return STATUS_OK;
@@ -248,30 +248,30 @@ Status Dispatcher::enum_associator_names(
     // Find provider:
 
     if (assoc_class == 0)
-	return STATUS_FAILED;
+        return STATUS_FAILED;
 
     Envelope* env = _find_provider(assoc_class);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
     // Delegate to envelope:
 
     Enum_Associator_Names_Status status = env->enum_associator_names(
-	instance, result_class, role, result_role, proc, client_data);
+        instance, result_class, role, result_role, proc, client_data);
 
     switch (status)
     {
-	case ENUM_ASSOCIATOR_NAMES_OK:
-	    return STATUS_OK;
+        case ENUM_ASSOCIATOR_NAMES_OK:
+            return STATUS_OK;
 
-	case ENUM_ASSOCIATOR_NAMES_FAILED:
-	    return STATUS_FAILED;
+        case ENUM_ASSOCIATOR_NAMES_FAILED:
+            return STATUS_FAILED;
 
-	case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
-	    return STATUS_FAILED;
+        case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
+            return STATUS_FAILED;
     }
 
     // Unreachable!
@@ -297,25 +297,25 @@ Status Dispatcher::enum_references(
     Envelope* env = _find_provider(result_class);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
     // Delegate to envelope:
 
     Enum_References_Status status = env->enum_references(
-	instance, model, role, proc, client_data);
+        instance, model, role, proc, client_data);
 
     switch (status)
     {
-	case ENUM_REFERENCES_OK:
-	    return STATUS_OK;
+        case ENUM_REFERENCES_OK:
+            return STATUS_OK;
 
-	case ENUM_REFERENCES_FAILED:
-	    return STATUS_FAILED;
+        case ENUM_REFERENCES_FAILED:
+            return STATUS_FAILED;
 
-	case ENUM_REFERENCES_UNSUPPORTED:
-	    return STATUS_FAILED;
+        case ENUM_REFERENCES_UNSUPPORTED:
+            return STATUS_FAILED;
     }
 
     // Unreachable!
@@ -338,22 +338,22 @@ Status Dispatcher::enable_indications(
     Envelope* env = _find_provider(class_name);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
     // Enable indications on this provider:
 
     Enable_Indications_Status provider_status = 
-	env->enable_indications(indication_proc, client_data);
+        env->enable_indications(indication_proc, client_data);
 
     switch (provider_status)
     {
-	case ENABLE_INDICATIONS_OK:
-	    return STATUS_OK;
+        case ENABLE_INDICATIONS_OK:
+            return STATUS_OK;
 
-	case ENABLE_INDICATIONS_FAILED:
-	    return STATUS_FAILED;
+        case ENABLE_INDICATIONS_FAILED:
+            return STATUS_FAILED;
     }
 
     // Unreachable:
@@ -373,7 +373,7 @@ Status Dispatcher::disable_indications(const char* class_name)
     Envelope* env = _find_provider(class_name);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
@@ -383,11 +383,11 @@ Status Dispatcher::disable_indications(const char* class_name)
 
     switch (provider_status)
     {
-	case DISABLE_INDICATIONS_OK:
-	    return STATUS_OK;
+        case DISABLE_INDICATIONS_OK:
+            return STATUS_OK;
 
-	case DISABLE_INDICATIONS_FAILED:
-	    return STATUS_FAILED;
+        case DISABLE_INDICATIONS_FAILED:
+            return STATUS_FAILED;
     }
 
     // Unreachable:
@@ -405,7 +405,7 @@ Status Dispatcher::invoke_method(Instance* inst, Instance* method)
     Envelope* env = _find_provider(inst);
 
     if (!env)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     Auto_Mutex a(env->mutex());
 
@@ -413,14 +413,14 @@ Status Dispatcher::invoke_method(Instance* inst, Instance* method)
 
     switch (provider_status)
     {
-	case INVOKE_METHOD_OK:
-	    return STATUS_OK;
+        case INVOKE_METHOD_OK:
+            return STATUS_OK;
 
-	case INVOKE_METHOD_FAILED:
-	    return STATUS_FAILED;
+        case INVOKE_METHOD_FAILED:
+            return STATUS_FAILED;
 
-	case INVOKE_METHOD_UNSUPPORTED:
-	    return STATUS_UNSUPPORTED;
+        case INVOKE_METHOD_UNSUPPORTED:
+            return STATUS_UNSUPPORTED;
     }
 
     return STATUS_OK;
@@ -480,14 +480,14 @@ Status Dispatcher::get_meta_method(
     const Meta_Class* meta_class = _cache->get_meta_class(class_name);
 
     if (!meta_class)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     // Lookup the method.
 
     meta_method = find_method(meta_class, method_name);
 
     if (!meta_method)
-	return STATUS_UNKNOWN_METHOD;
+        return STATUS_UNKNOWN_METHOD;
 
     // Success!
     return STATUS_OK;
@@ -508,12 +508,12 @@ Status Dispatcher::make_instance(const char* class_name, Instance*& instance)
     const Meta_Class* meta_class = get_meta_class(class_name);
 
     if (!meta_class)
-	return STATUS_UNKNOWN_CLASS;
+        return STATUS_UNKNOWN_CLASS;
 
     // Create instance.
 
     if ((instance = cimple::create(meta_class)))
-	return STATUS_OK;
+        return STATUS_OK;
 
     return STATUS_FAILED;
 }
@@ -534,12 +534,12 @@ Status Dispatcher::make_method(
     Status status = get_meta_method(class_name, method_name, meta_method);
 
     if (status != STATUS_OK)
-	return status;
+        return status;
 
     // Create instance.
 
     if ((instance = cimple::create(meta_method)))
-	return STATUS_OK;
+        return STATUS_OK;
 
     return STATUS_FAILED;
 }

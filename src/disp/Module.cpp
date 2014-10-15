@@ -43,7 +43,7 @@ Module::Module(void* handle, Module_Proc proc) :
 Module::~Module()
 {
     if (_providers_loaded)
-	unload_providers();
+        unload_providers();
 
     dlclose(_handle);
 }
@@ -51,7 +51,7 @@ Module::~Module()
 void Module::load_providers()
 {
     if (_providers_loaded)
-	return;
+        return;
 
     // ATTN: call cimple_module_load() here!
 
@@ -59,9 +59,9 @@ void Module::load_providers()
 
     for (Registration* p = _registration; p; p = p->next)
     {
-	Envelope* env = new Envelope(p);
-	env->load();
-	_envelopes.append(env);
+        Envelope* env = new Envelope(p);
+        env->load();
+        _envelopes.append(env);
     }
 
     // Mark as providers_loaded:
@@ -72,7 +72,7 @@ void Module::load_providers()
 void Module::unload_providers()
 {
     if (!_providers_loaded)
-	return;
+        return;
 
     // ATTN: call cimple_module_unload() here!
 
@@ -80,9 +80,9 @@ void Module::unload_providers()
 
     for (List_Elem* p = _envelopes.head; p; p = p->next)
     {
-	Envelope* env = (Envelope*)p;
-	env->unload();
-	delete env;
+        Envelope* env = (Envelope*)p;
+        env->unload();
+        delete env;
     }
 
     // Clear the list:
@@ -98,10 +98,10 @@ Envelope* Module::find_provider(const char* class_name)
 {
     for (List_Elem* p = _envelopes.head; p; p = p->next)
     {
-	Envelope* env = (Envelope*)p;
+        Envelope* env = (Envelope*)p;
 
-	if (eqi(env->class_name(), class_name))
-	    return env;
+        if (eqi(env->class_name(), class_name))
+            return env;
     }
 
     // Not found:

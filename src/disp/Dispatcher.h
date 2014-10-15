@@ -47,74 +47,74 @@ class CIMPLEDISP_LINKAGE Dispatcher
 public:
 
     const Meta_Class* get_meta_class(
-	const char* class_name);
+        const char* class_name);
 
     const Meta_Repository* get_meta_repository();
 
     Status get_meta_method(
-	const char* class_name,
-	const char* method_name,
-	const Meta_Method*& meta_method);
+        const char* class_name,
+        const char* method_name,
+        const Meta_Method*& meta_method);
 
     Status get_instance(
-	const Instance* model, 
-	Instance*& inst);
+        const Instance* model, 
+        Instance*& inst);
 
     Status enum_instances(
-	const Instance* model, 
-	Enum_Instances_Proc proc,
-	void* client_data);
+        const Instance* model, 
+        Enum_Instances_Proc proc,
+        void* client_data);
 
     Status create_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Status delete_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Status modify_instance(
-	const Instance* instance);
+        const Instance* instance);
 
     Status enum_associator_names(
-	const Instance* instance,
-	const char* assoc_class,
-	const char* result_class,
-	const char* role,
-	const char* result_role,
-	Enum_Associator_Names_Proc proc,
-	void* client_data);
+        const Instance* instance,
+        const char* assoc_class,
+        const char* result_class,
+        const char* role,
+        const char* result_role,
+        Enum_Associator_Names_Proc proc,
+        void* client_data);
 
     Status enum_references(
-	const Instance* instance,
-	const Instance* model,
-	const char* result_class,
-	const char* role,
-	Enum_References_Proc proc,
-	void* client_data);
+        const Instance* instance,
+        const Instance* model,
+        const char* result_class,
+        const char* role,
+        Enum_References_Proc proc,
+        void* client_data);
 
     Status enable_indications(
-	const char* class_name, 
-	Indication_Proc indication_proc, 
-	void* client_data);
+        const char* class_name, 
+        Indication_Proc indication_proc, 
+        void* client_data);
 
     Status disable_indications(
-	const char* class_name);
+        const char* class_name);
 
     Status invoke_method(
-	Instance* instance, 
-	Instance* method);
+        Instance* instance, 
+        Instance* method);
 
     Status make_instance(
-	const char* class_name, 
-	Instance*& instance);
+        const char* class_name, 
+        Instance*& instance);
 
     Status make_method(
-	const char* class_name, 
-	const char* method_name, 
-	Instance*& instance);
+        const char* class_name, 
+        const char* method_name, 
+        Instance*& instance);
 
     /** Creates Dispatcher instance.
-	@param path directory holding provider libraries.
-	@return new dispatcher instance.
+        @param path directory holding provider libraries.
+        @return new dispatcher instance.
     */
     static Dispatcher* create(const char* path);
 
@@ -127,36 +127,36 @@ public:
 #ifdef CIMPLE_USE_SYNCHRONOUS_DISPATCHER_METHODS
 
     /** Synchronous version enum_instances(). The asynchronous version of
-	this function is faster since it requires no thread synchronization.
+        this function is faster since it requires no thread synchronization.
     */
     Status enum_instance(
-	const Instance* model, 
-	Instance*& instance_out,
-	State& state);
+        const Instance* model, 
+        Instance*& instance_out,
+        State& state);
 
     /** Synchronous version of enum_associator_names(). The asynchronous 
-	version of this function is faster since it requires no thread 
-	synchronization.
+        version of this function is faster since it requires no thread 
+        synchronization.
     */
     Status enum_associator_name(
-	const Instance* instance,
-	const char* assoc_class,
-	const char* result_class,
-	const char* role,
-	const char* result_role,
-	Instance*& assoc_name_out,
-	State& state); 
+        const Instance* instance,
+        const char* assoc_class,
+        const char* result_class,
+        const char* role,
+        const char* result_role,
+        Instance*& assoc_name_out,
+        State& state); 
 
     /** Synchronous version of enum_references(). The asynchronous version of 
-	this function is faster since it requires no thread synchronization.
+        this function is faster since it requires no thread synchronization.
     */
     Status enum_reference(
-	const Instance* instance,
-	const char* result_class,
-	const char* role,
-	bool keys_only,
-	Instance*& reference_out,
-	State& state);
+        const Instance* instance,
+        const char* result_class,
+        const char* role,
+        bool keys_only,
+        Instance*& reference_out,
+        State& state);
 
 #endif /* CIMPLE_USE_SYNCHRONOUS_DISPATCHER_METHODS */
 

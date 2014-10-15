@@ -33,7 +33,7 @@ void Cache::dump() const
     // Print the modules (and their providers).
 
     for (size_t i = 0; i < _modules.size(); i++)
-	_modules[i]->dump();
+        _modules[i]->dump();
 }
 
 CIMPLE_NAMESPACE_END

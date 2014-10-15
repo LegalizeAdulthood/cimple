@@ -77,15 +77,15 @@ void test(const Meta_Class* mc)
 int main(int argc, char** argv)
 {
     const struct Meta_Repository* meta_repository = 
-	CIM_ComputerSystem::static_meta_class.meta_repository;
+        CIM_ComputerSystem::static_meta_class.meta_repository;
     assert(meta_repository != 0);
 
     for (size_t i = 0; i < meta_repository->num_meta_classes; i++)
     {
-	const Meta_Class* mc = meta_repository->meta_classes[i];
+        const Meta_Class* mc = meta_repository->meta_classes[i];
 
-	if (strcasecmp(mc->name,  "Foo") == 0)
-	    test(mc);
+        if (strcasecmp(mc->name,  "Foo") == 0)
+            test(mc);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

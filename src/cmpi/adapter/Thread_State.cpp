@@ -109,7 +109,7 @@ void Thread_State::push(
     Thread_State* key = _get_key();
 
     if (!key)
-	key = new Thread_State;
+        key = new Thread_State;
 
     key->broker = broker;
     key->context = context;
@@ -124,7 +124,7 @@ void Thread_State::pop()
     _set_key(0);
 
     if (key)
-	delete key;
+        delete key;
 }
 
 CIMPLE_NAMESPACE_END

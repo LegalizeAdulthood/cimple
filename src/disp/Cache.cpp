@@ -43,7 +43,7 @@ Cache::Cache() : _last_meta_class(0)
 Cache::~Cache()
 {
     for (size_t i = 0; i < _modules.size(); i++)
-	delete _modules[i];
+        delete _modules[i];
 }
 
 static bool _is_lib_name(const String& name)
@@ -71,64 +71,64 @@ Cache* Cache::create(const char* lib_dir)
 
     if (!dir)
     {
-	CIMPLE_ERROR(("cannot access directory: %s", lib_dir));
-	return 0;
+        CIMPLE_ERROR(("cannot access directory: %s", lib_dir));
+        return 0;
     }
 
     // ATTN: readdir not thread safe!
 
     for (dirent* ent; (ent = readdir(dir)) != NULL; )
     {
-	String name(ent->d_name);
+        String name(ent->d_name);
 
-	if (name == "." || name == "..")
-	    continue;
+        if (name == "." || name == "..")
+            continue;
 
-	// Ignore non-libraries:
+        // Ignore non-libraries:
 
-	if (!_is_lib_name(name.c_str()))
-	    continue;
+        if (!_is_lib_name(name.c_str()))
+            continue;
 
-	// Load the library.
+        // Load the library.
 
-	String path(lib_dir, "/", name.c_str());
+        String path(lib_dir, "/", name.c_str());
 
-	void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_GLOBAL);
+        void* handle = dlopen(path.c_str(), RTLD_NOW | RTLD_GLOBAL);
 
-	if (!handle)
-	    continue;
+        if (!handle)
+            continue;
 
 /*
 ATTN: remove this?
 */
 #if 0
-	{
-	    CIMPLE_ERROR((
-		"failed to load : \"%s\": %s", path.c_str(), dlerror()));
+        {
+            CIMPLE_ERROR((
+                "failed to load : \"%s\": %s", path.c_str(), dlerror()));
 
-	    closedir(dir);
-	    delete cache;
-	    return 0;
-	}
+            closedir(dir);
+            delete cache;
+            return 0;
+        }
 #endif
 
-	// Load cimple_module() entry point:
+        // Load cimple_module() entry point:
 
-	Module_Proc module_proc = (Module_Proc)dlsym(handle, "cimple_module");
+        Module_Proc module_proc = (Module_Proc)dlsym(handle, "cimple_module");
 
-	if (module_proc)
-	{
-	    if (cache->_add_module(handle, module_proc) != 0)
-	    {
-		delete cache;
-		closedir(dir);
-		CIMPLE_ERROR(("failed"));
-		return 0;
-	    }
-	    continue;
-	}
+        if (module_proc)
+        {
+            if (cache->_add_module(handle, module_proc) != 0)
+            {
+                delete cache;
+                closedir(dir);
+                CIMPLE_ERROR(("failed"));
+                return 0;
+            }
+            continue;
+        }
 
-	dlclose(handle);
+        dlclose(handle);
     }
 
     // Close directory:
@@ -142,10 +142,10 @@ Envelope* Cache::get_provider_by_class(const char* class_name)
 {
     for (size_t i = 0; i < _envelopes.size(); i++)
     {
-	Envelope* env = (Envelope*)_envelopes[i];
+        Envelope* env = (Envelope*)_envelopes[i];
 
-	if (eqi(env->class_name(), class_name))
-	    return env;
+        if (eqi(env->class_name(), class_name))
+            return env;
     }
 
     // Not found:
@@ -156,10 +156,10 @@ Envelope* Cache::get_provider_by_name(const char* provider_name)
 {
     for (size_t i = 0; i < _envelopes.size(); i++)
     {
-	Envelope* env = (Envelope*)_envelopes[i];
+        Envelope* env = (Envelope*)_envelopes[i];
 
-	if (eqi(env->provider_name(), provider_name))
-	    return env;
+        if (eqi(env->provider_name(), provider_name))
+            return env;
     }
 
     // Not found:
@@ -169,25 +169,25 @@ Envelope* Cache::get_provider_by_name(const char* provider_name)
 const Meta_Class* Cache::get_meta_class(const char* class_name) const
 {
     if (_last_meta_class && eqi(_last_meta_class->name, class_name))
-	return _last_meta_class;
+        return _last_meta_class;
 
     for (size_t i = 0; i < _modules.size(); i++)
     {
-	const Meta_Class* mc = _modules[i]->registration()->meta_class;
+        const Meta_Class* mc = _modules[i]->registration()->meta_class;
 
-	if (eqi(class_name, mc->name))
-	    return mc;
+        if (eqi(class_name, mc->name))
+            return mc;
 
-	if (mc->meta_repository)
-	{
-	    mc = find_meta_class(mc->meta_repository, class_name);
+        if (mc->meta_repository)
+        {
+            mc = find_meta_class(mc->meta_repository, class_name);
 
-	    if (mc)
-	    {
-		((Cache*)this)->_last_meta_class = mc;
-		return mc;
-	    }
-	}
+            if (mc)
+            {
+                ((Cache*)this)->_last_meta_class = mc;
+                return mc;
+            }
+        }
     }
 
     // Not found!
@@ -202,10 +202,10 @@ const Meta_Repository* Cache::get_meta_repository()
 
     for (size_t i = 0; i < _modules.size(); i++)
     {
-	const Meta_Class* mc = _modules[i]->registration()->meta_class;
+        const Meta_Class* mc = _modules[i]->registration()->meta_class;
 
-	if (mc->meta_repository)
-	    return mc->meta_repository;
+        if (mc->meta_repository)
+            return mc->meta_repository;
     }
 
     // Not found!
@@ -224,24 +224,24 @@ int Cache::_add_module(void* handle, Module_Proc module_proc)
 
     for (List_Elem* p = module->envelopes(); p; p = p->next)
     {
-	Envelope* env = (Envelope*)p;
-	const Meta_Class* mc = env->meta_class();
+        Envelope* env = (Envelope*)p;
+        const Meta_Class* mc = env->meta_class();
 
-	// Check for duplicate providers:
+        // Check for duplicate providers:
 
-	for (size_t i = 0; i < _envelopes.size(); i++)
-	{
-	    const Meta_Class* tmp = _envelopes[i]->meta_class();
+        for (size_t i = 0; i < _envelopes.size(); i++)
+        {
+            const Meta_Class* tmp = _envelopes[i]->meta_class();
 
-	    if (eqi(mc->name, tmp->name))
-	    {
-		CIMPLE_ERROR(("more than one provider for class %s", mc->name));
-		delete module;
-		return -1;
-	    }
-	}
+            if (eqi(mc->name, tmp->name))
+            {
+                CIMPLE_ERROR(("more than one provider for class %s", mc->name));
+                delete module;
+                return -1;
+            }
+        }
 
-	_envelopes.append(env);
+        _envelopes.append(env);
     }
 
     // Add module to the list:

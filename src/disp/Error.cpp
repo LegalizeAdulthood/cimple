@@ -48,7 +48,7 @@ void Error::set(const char* format, ...)
     void* old_message = _message.get();
 
     if (old_message)
-	free(old_message);
+        free(old_message);
 
     _message.set(message);
 }
@@ -76,7 +76,7 @@ void Error::clear()
     void* old_message = _message.get();
 
     if (old_message)
-	free(old_message);
+        free(old_message);
 
     _message.set(0);
 }

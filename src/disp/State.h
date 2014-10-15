@@ -53,7 +53,7 @@ inline State::State() : client_data(0), delete_proc(0)
 inline State::~State()
 {
     if (delete_proc)
-	delete_proc(client_data);
+        delete_proc(client_data);
 }
 
 CIMPLE_NAMESPACE_END

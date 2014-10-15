@@ -107,10 +107,10 @@ int main(int argc, char** argv)
 
     for (size_t i = 0; i < 100000; i++)
     {
-	char buffer[32];
-	int m = sprintf(buffer, "%u", uint32(i));
-	b2.append(buffer, m);
-	b.appendf("%u", (unsigned int)i);
+        char buffer[32];
+        int m = sprintf(buffer, "%u", uint32(i));
+        b2.append(buffer, m);
+        b.appendf("%u", (unsigned int)i);
     }
 
     assert(b.size() == b2.size());

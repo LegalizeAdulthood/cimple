@@ -33,12 +33,12 @@
 #define CIMPLE_ASSERT_STATUS(status) \
     do \
     { \
-	if (status != STATUS_OK) \
-	{ \
-	    fprintf(stderr, "CIMPLE_ASSERT_STATUS: %s(%d): %s\n", \
-		__FILE__, __LINE__, Status_to_string(status)); \
-	    exit(1); \
-	} \
+        if (status != STATUS_OK) \
+        { \
+            fprintf(stderr, "CIMPLE_ASSERT_STATUS: %s(%d): %s\n", \
+                __FILE__, __LINE__, Status_to_string(status)); \
+            exit(1); \
+        } \
     } \
     while (0)
 

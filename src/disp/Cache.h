@@ -42,10 +42,10 @@ class CIMPLEDISP_LINKAGE Cache
 public:
 
     /** Creates a new cache by scanning the given directory for modules
-	and repositories. This causes every library to be loaded (whether 
-	it has a cimple_module() or not).
-	@param path directory containing the providers or repositories.
-	@return pointer to a new cache or null on error.
+        and repositories. This causes every library to be loaded (whether 
+        it has a cimple_module() or not).
+        @param path directory containing the providers or repositories.
+        @return pointer to a new cache or null on error.
     */
     static Cache* create(const char* path);
 

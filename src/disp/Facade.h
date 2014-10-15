@@ -37,14 +37,14 @@ CIMPLE_NAMESPACE_BEGIN
     of an instance.
 
     <pre>
-	Instance* inst;
-	...
-	Facade facade(inst);
+        Instance* inst;
+        ...
+        Facade facade(inst);
 
-	facade.set_uint32("count", 10);
+        facade.set_uint32("count", 10);
 
-	uint32 count;
-	facade.get_uint32("count", count);
+        uint32 count;
+        facade.get_uint32("count", count);
     </pre>
 
     All set and get methods return 0 on success and -1 on failure. A failure
@@ -100,46 +100,46 @@ public:
     int set_ref(const char* name, Instance* ref);
 
     int set_boolean_array(
-	const char* name, const Array<boolean>& value, bool null);
+        const char* name, const Array<boolean>& value, bool null);
 
     int set_uint8_array(
-	const char* name, const Array<uint8>& value, bool null);
+        const char* name, const Array<uint8>& value, bool null);
 
     int set_sint8_array(
-	const char* name, const Array<sint8>& value, bool null);
+        const char* name, const Array<sint8>& value, bool null);
 
     int set_uint16_array(
-	const char* name, const Array<uint16>& value, bool null);
+        const char* name, const Array<uint16>& value, bool null);
 
     int set_sint16_array(
-	const char* name, const Array<sint16>& value, bool null);
+        const char* name, const Array<sint16>& value, bool null);
 
     int set_uint32_array(
-	const char* name, const Array<uint32>& value, bool null);
+        const char* name, const Array<uint32>& value, bool null);
 
     int set_sint32_array(
-	const char* name, const Array<sint32>& value, bool null);
+        const char* name, const Array<sint32>& value, bool null);
 
     int set_uint64_array(
-	const char* name, const Array<uint64>& value, bool null);
+        const char* name, const Array<uint64>& value, bool null);
 
     int set_sint64_array(
-	const char* name, const Array<sint64>& value, bool null);
+        const char* name, const Array<sint64>& value, bool null);
 
     int set_real32_array(
-	const char* name, const Array<real32>& value, bool null);
+        const char* name, const Array<real32>& value, bool null);
 
     int set_real64_array(
-	const char* name, const Array<real64>& value, bool null);
+        const char* name, const Array<real64>& value, bool null);
 
     int set_char16_array(
-	const char* name, const Array<char16>& value, bool null);
+        const char* name, const Array<char16>& value, bool null);
 
     int set_string_array(
-	const char* name, const Array<String>& value, bool null);
+        const char* name, const Array<String>& value, bool null);
 
     int set_Datetime_array(
-	const char* name, const Array<Datetime>& value, bool null);
+        const char* name, const Array<Datetime>& value, bool null);
 
     int get_boolean(const char* name, boolean& value, bool& null);
 
@@ -198,15 +198,15 @@ public:
     int get_string_array(const char* name, Array<String>& value, bool& null);
 
     int get_Datetime_array(
-	const char* name, Array<Datetime>& value, bool& null);
+        const char* name, Array<Datetime>& value, bool& null);
 
 private:
 
     int _set_array(
-	Type type, const char* name, const Array_Base& value, bool null);
+        Type type, const char* name, const Array_Base& value, bool null);
 
     int _get_array(
-	Type type, const char* name, Array_Base& value, bool& null);
+        Type type, const char* name, Array_Base& value, bool& null);
 
     Instance* _instance;
 };

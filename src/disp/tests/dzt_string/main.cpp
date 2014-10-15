@@ -45,35 +45,35 @@ int main(int argc, char** argv)
 
     for (const char* p = str.str(); p; dzt_next(p), i++)
     {
-	switch (i)
-	{
-	    case 0:
-		assert(strcmp(p, "Monday") == 0);
-		break;
-	    case 1:
-		assert(strcmp(p, "Tuesday") == 0);
-		break;
-	    case 2:
-		assert(strcmp(p, "Wednesday") == 0);
-		break;
-	    case 3:
-		assert(strcmp(p, "Thursday") == 0);
-		break;
-	    case 4:
-		assert(strcmp(p, "Friday") == 0);
-		break;
-	    case 5:
-		assert(strcmp(p, "Saturday") == 0);
-		break;
-	    case 6:
-		assert(strcmp(p, "Sunday") == 0);
-		break;
-	    default:
-		assert(0);
-		break;
-	}
+        switch (i)
+        {
+            case 0:
+                assert(strcmp(p, "Monday") == 0);
+                break;
+            case 1:
+                assert(strcmp(p, "Tuesday") == 0);
+                break;
+            case 2:
+                assert(strcmp(p, "Wednesday") == 0);
+                break;
+            case 3:
+                assert(strcmp(p, "Thursday") == 0);
+                break;
+            case 4:
+                assert(strcmp(p, "Friday") == 0);
+                break;
+            case 5:
+                assert(strcmp(p, "Saturday") == 0);
+                break;
+            case 6:
+                assert(strcmp(p, "Sunday") == 0);
+                break;
+            default:
+                assert(0);
+                break;
+        }
 
-	// printf("[%s]\n", p);
+        // printf("[%s]\n", p);
     }
 
     printf("+++++ passed all tests (%s)\n", argv[0]);

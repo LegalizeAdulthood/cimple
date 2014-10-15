@@ -71,11 +71,11 @@ Buffer& Buffer::operator=(const Buffer& x)
 {
     if (&x != this)
     {
-	free(_data);
-	_size = x._size;
-	_cap = x._size;
-	_data = (char*)malloc(_cap);
-	memcpy(_data, x._data, _size);
+        free(_data);
+        _size = x._size;
+        _cap = x._size;
+        _data = (char*)malloc(_cap);
+        memcpy(_data, x._data, _size);
     }
 
     return *this;
@@ -85,11 +85,11 @@ void Buffer::reserve(size_t capacity)
 {
     if (capacity > _cap)
     {
-	if (capacity < MIN_CAPACITY)
-	    capacity = MIN_CAPACITY;
+        if (capacity < MIN_CAPACITY)
+            capacity = MIN_CAPACITY;
 
-	_data = (char*)realloc(_data, capacity);
-	_cap = capacity;
+        _data = (char*)realloc(_data, capacity);
+        _cap = capacity;
     }
 }
 
@@ -100,7 +100,7 @@ void Buffer::remove(size_t i, size_t size)
     size_t rem = _size - (i + size);
 
     if (rem)
-	memmove(_data + i, _data + i + size, rem);
+        memmove(_data + i, _data + i + size, rem);
 
     _size -= size;
 }
@@ -114,28 +114,28 @@ void Buffer::insert(size_t i, const char* data, size_t size)
 {
     CIMPLE_ASSERT(i <= _size);
 
-    size_t new_size = _size + size;	
+    size_t new_size = _size + size;     
     size_t rem = _size - i;
 
     if (new_size > _cap)
     {
-	size_t new_cap = _round_up_pow_2(new_size);
-	char* new_data = (char*)malloc(new_cap);
-	memcpy(new_data, _data, i);
-	memcpy(new_data + i, data, size);
-	memcpy(new_data + i + size, _data + i, rem);
-	free(_data);
-	_data = new_data;
-	_size = new_size;
-	_cap = new_cap;
+        size_t new_cap = _round_up_pow_2(new_size);
+        char* new_data = (char*)malloc(new_cap);
+        memcpy(new_data, _data, i);
+        memcpy(new_data + i, data, size);
+        memcpy(new_data + i + size, _data + i, rem);
+        free(_data);
+        _data = new_data;
+        _size = new_size;
+        _cap = new_cap;
     }
     else
     {
-	if (rem)
-	    memmove(_data + i + size, _data + i, rem);
+        if (rem)
+            memmove(_data + i + size, _data + i, rem);
 
-	memcpy(_data + i, data, size);
-	_size += size;
+        memcpy(_data + i, data, size);
+        _size += size;
     }
 }
 
@@ -146,24 +146,24 @@ size_t Buffer::appendf(const char* format, ...)
 
     for (;;)
     {
-	reserve(_size + size);
-	char* str = _data + _size;
+        reserve(_size + size);
+        char* str = _data + _size;
 
-	va_start(ap, format);
+        va_start(ap, format);
 
-	int n = vsnprintf(str, size, format, ap);
-	va_end(ap);
+        int n = vsnprintf(str, size, format, ap);
+        va_end(ap);
 
-	if (n > -1 && n < int(size))
-	{
-	    _size += n;
-	    return size_t(n);
-	}
+        if (n > -1 && n < int(size))
+        {
+            _size += n;
+            return size_t(n);
+        }
 
-	if (n > -1)
-	    size = n + 1;
-	else
-	    size *= 2;
+        if (n > -1)
+            size = n + 1;
+        else
+            size *= 2;
     }
 
     // Unreachable:
@@ -177,7 +177,7 @@ void Buffer::append_uint16(uint16 x)
 
     do
     {
-	*--p = '0' + (x % 10);
+        *--p = '0' + (x % 10);
     }
     while ((x /= 10) != 0);
 
@@ -191,7 +191,7 @@ void Buffer::append_uint32(uint32 x)
 
     do
     {
-	*--p = '0' + (x % 10);
+        *--p = '0' + (x % 10);
     }
     while ((x /= 10) != 0);
 
@@ -205,7 +205,7 @@ void Buffer::append_uint64(uint64 x)
 
     do
     {
-	*--p = '0' + (x % 10);
+        *--p = '0' + (x % 10);
     }
     while ((x /= 10) != 0);
 

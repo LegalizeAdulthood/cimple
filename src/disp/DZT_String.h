@@ -34,9 +34,9 @@ CIMPLE_NAMESPACE_BEGIN
 
 /** This class manages a double-zero-terminated (DZT) string. For example,
 
-	<pre>
-	"Monday\0Tuesday\0Wednesday\0Thursday\0Friday\0Saturday\0Sunday\0\0"
-	</pre>
+        <pre>
+        "Monday\0Tuesday\0Wednesday\0Thursday\0Friday\0Saturday\0Sunday\0\0"
+        </pre>
 
     A DZT string is terminated with a double zero character and may contain 
     single zero characters. This scheme is used to compactly represent lists of
@@ -47,14 +47,14 @@ CIMPLE_NAMESPACE_BEGIN
 
     DZT strings can be iterated using the DZT::next() method like this:
 
-	<pre>
-	const char* dzt_str;
-	...
-	for (const char* p = dzt_str; p; dzt_next(p))
-	{
-	    // p points to current element.
-	}
-	</pre>
+        <pre>
+        const char* dzt_str;
+        ...
+        for (const char* p = dzt_str; p; dzt_next(p))
+        {
+            // p points to current element.
+        }
+        </pre>
 */
 class CIMPLEDISP_LINKAGE DZT_String
 {

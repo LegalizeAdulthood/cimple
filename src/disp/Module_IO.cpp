@@ -33,7 +33,7 @@ void Module::dump() const
     printf("=== Module:\n");
 
     for (Registration* p = _registration; p; p = p->next)
-	printf("    provider(%s, %s)\n", p->provider_name, p->meta_class->name);
+        printf("    provider(%s, %s)\n", p->provider_name, p->meta_class->name);
 }
 
 CIMPLE_NAMESPACE_END
