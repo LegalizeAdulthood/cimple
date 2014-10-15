@@ -1,6 +1,6 @@
 TARGET = $(call lib_target,$(LIBRARY))
 
-$(TARGET): $(OBJECTS) $(LIB)/target
+$(TARGET): $(OBJECTS) $(LIB_DIR)/target
 	$(call make_lib,$(TARGET),$(OBJECTS))
 
 size:

@@ -20,15 +20,15 @@ class CIMPLE_EXPORT Pegasus_Adapter :
 {
 public:
 
-    CIMPLE_HIDE Pegasus_Adapter(Provider_Handle* handle);
+    Pegasus_Adapter(Provider_Handle* handle);
 
-    CIMPLE_HIDE virtual ~Pegasus_Adapter();
+    virtual CIMPLE_HIDE ~Pegasus_Adapter();
 
-    CIMPLE_HIDE virtual void initialize(Pegasus::CIMOMHandle& cimom);
+    virtual CIMPLE_HIDE void initialize(Pegasus::CIMOMHandle& cimom);
 
-    CIMPLE_HIDE virtual void terminate(void);
+    virtual CIMPLE_HIDE void terminate(void);
 
-    CIMPLE_HIDE virtual void getInstance(
+    virtual CIMPLE_HIDE void getInstance(
 	const Pegasus::OperationContext& context,
 	const Pegasus::CIMObjectPath& objectPath,
 	const Pegasus::Boolean includeQualifiers,
@@ -36,7 +36,7 @@ public:
 	const Pegasus::CIMPropertyList& propertyList,
 	Pegasus::InstanceResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void enumerateInstances(
+    virtual CIMPLE_HIDE void enumerateInstances(
 	const Pegasus::OperationContext& context,
 	const Pegasus::CIMObjectPath& objectPath,
 	const Pegasus::Boolean includeQualifiers,
@@ -44,12 +44,12 @@ public:
 	const Pegasus::CIMPropertyList& propertyList,
 	Pegasus::InstanceResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void enumerateInstanceNames(
+    virtual CIMPLE_HIDE void enumerateInstanceNames(
 	const Pegasus::OperationContext& context,
 	const Pegasus::CIMObjectPath& objectPath,
 	Pegasus::ObjectPathResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void modifyInstance(
+    virtual CIMPLE_HIDE void modifyInstance(
 	const Pegasus::OperationContext& context,
 	const Pegasus::CIMObjectPath& objectPath,
 	const Pegasus::CIMInstance& instance,
@@ -57,25 +57,25 @@ public:
 	const Pegasus::CIMPropertyList& propertyList,
 	Pegasus::ResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void createInstance(
+    virtual CIMPLE_HIDE void createInstance(
 	const Pegasus::OperationContext& context,
 	const Pegasus::CIMObjectPath& objectPath,
 	const Pegasus::CIMInstance& instance,
 	Pegasus::ObjectPathResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void deleteInstance(
+    virtual CIMPLE_HIDE void deleteInstance(
 	const Pegasus::OperationContext& context,
 	const Pegasus::CIMObjectPath& objectPath,
 	Pegasus::ResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void invokeMethod(
+    virtual CIMPLE_HIDE void invokeMethod(
         const Pegasus::OperationContext& context,
         const Pegasus::CIMObjectPath& objectPath,
         const Pegasus::CIMName& methodName,
         const Pegasus::Array<Pegasus::CIMParamValue>& inParameters,
         Pegasus::MethodResultResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void associators(
+    virtual CIMPLE_HIDE void associators(
         const Pegasus::OperationContext& context,
         const Pegasus::CIMObjectPath& objectName,
         const Pegasus::CIMName& associationClass,
@@ -87,7 +87,7 @@ public:
         const Pegasus::CIMPropertyList& propertyList,
         Pegasus::ObjectResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void associatorNames(
+    virtual CIMPLE_HIDE void associatorNames(
         const Pegasus::OperationContext& context,
         const Pegasus::CIMObjectPath& objectName,
         const Pegasus::CIMName& associationClass,
@@ -96,7 +96,7 @@ public:
         const Pegasus::String& resultRole,
         Pegasus::ObjectPathResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void references(
+    virtual CIMPLE_HIDE void references(
         const Pegasus::OperationContext& context,
 	const Pegasus::CIMObjectPath& objectName,
         const Pegasus::CIMName& resultClass,
@@ -106,33 +106,33 @@ public:
         const Pegasus::CIMPropertyList& propertyList,
 	Pegasus::ObjectResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void referenceNames(
+    virtual CIMPLE_HIDE void referenceNames(
         const Pegasus::OperationContext& context,
         const Pegasus::CIMObjectPath& objectName,
         const Pegasus::CIMName& resultClass,
         const Pegasus::String& role,
         Pegasus::ObjectPathResponseHandler& handler);
 
-    CIMPLE_HIDE virtual void enableIndications(
+    virtual CIMPLE_HIDE void enableIndications(
 	Pegasus::IndicationResponseHandler & handler);
 
-    CIMPLE_HIDE virtual void disableIndications();
+    virtual CIMPLE_HIDE void disableIndications();
 
-    CIMPLE_HIDE virtual void createSubscription(
+    virtual CIMPLE_HIDE void createSubscription(
         const Pegasus::OperationContext & context,
         const Pegasus::CIMObjectPath & subscriptionName,
         const Pegasus::Array<Pegasus::CIMObjectPath> & classNames,
         const Pegasus::CIMPropertyList & propertyList,
         const Pegasus::Uint16 repeatNotificationPolicy);
 
-    CIMPLE_HIDE virtual void modifySubscription(
+    virtual CIMPLE_HIDE void modifySubscription(
         const Pegasus::OperationContext & context,
         const Pegasus::CIMObjectPath & subscriptionName,
         const Pegasus::Array<Pegasus::CIMObjectPath> & classNames,
         const Pegasus::CIMPropertyList & propertyList,
         const Pegasus::Uint16 repeatNotificationPolicy);
 
-    CIMPLE_HIDE virtual void deleteSubscription(
+    virtual CIMPLE_HIDE void deleteSubscription(
         const Pegasus::OperationContext & context,
         const Pegasus::CIMObjectPath & subscriptionName,
         const Pegasus::Array<Pegasus::CIMObjectPath> & classNames);

@@ -164,6 +164,10 @@ POSIX_LINKAGE int pthread_attr_setdetachstate(
     pthread_attr_t* attr,
     int detachstate);
 
+POSIX_LINKAGE void pthread_exit(void*);
+
+POSIX_LINKAGE int pthread_equal(pthread_t t1, pthread_t t2);
+
 //==============================================================================
 //
 // pthread_cond_t

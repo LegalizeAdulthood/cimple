@@ -1,7 +1,7 @@
 TARGET = $(call shlib_target,$(SH_LIBRARY))
 
 $(TARGET): $(OBJECTS)
-	$(MKDIRHIER) $(LIB)
+	$(MKDIRHIER) $(LIB_DIR)
 	$(call make_shlib,$(SH_LIBRARY),$(OBJECTS),$(LIBRARIES))
 
 size:
@@ -10,7 +10,7 @@ size:
 gen:
 
 load:
-	$(BIN)/dlopen $(TARGET)
+	$(BIN_DIR)/dlopen $(TARGET)
 
 _TARGET_LIST = $(call shlib_clean_targets,$(SH_LIBRARY))
 

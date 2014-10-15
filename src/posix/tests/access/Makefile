@@ -9,6 +9,6 @@ INCLUDES += -I../..
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN)/test_access
+	@ $(BIN_DIR)/test_access
 
 genclass:

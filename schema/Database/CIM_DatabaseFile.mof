@@ -1,4 +1,7 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DBCR00027" type ="change">CPubs edits to the database
+// storage classes.</change>
+
 // ==================================================================
 //  CIM_DatabaseFile
 // ==================================================================
@@ -16,7 +19,7 @@ class CIM_DatabaseFile : CIM_Component {
    CIM_CommonDatabase REF GroupComponent;
 
       [Override ( "PartComponent" ), Description (
-          "One of any number of LogicalFile instances utilized by the "
-          "referenced CommonDatabase.")]
+          "One of any number of LogicalFile instances that are "
+          "utilized by the referenced CommonDatabase.")]
    CIM_LogicalFile REF PartComponent;
 };

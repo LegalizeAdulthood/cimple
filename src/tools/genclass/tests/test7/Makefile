@@ -15,4 +15,4 @@ tests:
 	$(TARGET)
 
 genclass:
-	$(BIN)/genclass YourClass MyClass EmbeddedClass
+	$(BIN_DIR)/genclass YourClass MyClass EmbeddedClass

@@ -1,6 +1,6 @@
 TARGET = $(call bin_target,$(BINARY))
 
-$(TARGET): $(OBJECTS) $(BIN)/target
+$(TARGET): $(OBJECTS) $(BIN_DIR)/target
 	$(call make_bin,$(BINARY),$(OBJECTS),$(LIBRARIES))
 
 size:

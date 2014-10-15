@@ -3,6 +3,10 @@
 
 #include <cimple/cimple.h>
 #include "LampIndic.h"
+#include <cimple/Mutex.h>
+#include <cimple/Thread.h>
+#include <cimple/Atomic_Counter.h>
+#include <cimple/Predicate.h>
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -30,7 +34,7 @@ public:
     CIMPLE_HIDE Invoke_Method_Status DeliverIndications(
         Property<uint32>& return_value);
 
-    CIMPLE_HIDE static int proc(
+    static CIMPLE_HIDE int proc(
 	const Registration* registration,
 	int operation, 
 	void* arg0, 
@@ -44,7 +48,20 @@ public:
 
 private:
 
+    static void* _thread_proc(void* arg);
+
+    void _stop_thread();
+
     Indication_Handler<LampIndic>* _indication_handler;
+    Mutex _indication_handler_mutex;
+    Thread _thread;
+
+    // This counter is used to signal the worker thread to exit (or return).
+    Atomic_Counter _counter;
+
+    // The main provider thread blocks on this object until the worker
+    // thread signals it.
+    Predicate _predicate;
 };
 
 CIMPLE_NAMESPACE_END

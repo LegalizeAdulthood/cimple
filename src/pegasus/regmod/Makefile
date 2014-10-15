@@ -11,6 +11,7 @@ LIBRARIES = \
     cimple \
     pegprovider \
     pegrepository \
+    pegconfig \
     pegcommon
 
 CIMPLE_ROOT = ../../..

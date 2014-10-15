@@ -8,7 +8,7 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN)/test_string
+	@ $(BIN_DIR)/test_string
 
 genclass:
 

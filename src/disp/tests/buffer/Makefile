@@ -8,6 +8,6 @@ LIBRARIES = cimpledisp cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN)/test_buffer
+	@ $(BIN_DIR)/test_buffer
 
 genclass:

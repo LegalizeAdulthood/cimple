@@ -21,6 +21,6 @@ reg:
 	regmod -c $(TARGET)
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)
 
 genclass:

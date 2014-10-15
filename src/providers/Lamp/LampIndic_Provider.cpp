@@ -1,14 +1,68 @@
+#include <cimple/Time.h>
+#include <pthread.h>
+#include <unistd.h>
 #include "LampIndic_Provider.h"
 
-#if 0
-# define TRACE CIMPLE_TRACE
-#else
-# define TRACE
-#endif
+#define TRACE /* CIMPLE_TRACE */
 
 CIMPLE_NAMESPACE_BEGIN
 
-LampIndic_Provider::LampIndic_Provider() : _indication_handler(0)
+static void _send_indication(
+    const char* func, 
+    Indication_Handler<LampIndic>* handler)
+{
+    TRACE;
+
+    // printf("func: %s\n", func);
+
+    if (handler)
+    {
+	LampIndic* indic = LampIndic::create();
+	indic->IndicationIdentifier.value = "GOODBYE";
+	indic->IndicationIdentifier.null = false;
+	handler->handle(indic);
+    }
+}
+
+void* LampIndic_Provider::_thread_proc(void* arg)
+{
+    LampIndic_Provider* provider = (LampIndic_Provider*)arg;
+
+    TRACE;
+
+    for (size_t i = 0; i < 500; i++)
+    {
+	// We must synchronize access to the handler since the provider's
+	// main thread also accesses it.
+
+	provider->_indication_handler_mutex.lock();
+	_send_indication("_thread_proc()", provider->_indication_handler);
+	provider->_indication_handler_mutex.unlock();
+
+	// Stay in this loop for one second.
+
+	for (size_t i = 0; i < 100; i++)
+	{
+	    // See if main thread has asked us to quit by decrementing the
+	    // counter to zero.
+
+	    if (provider->_counter.get() == 0)
+	    {
+		// The main thread is waiting on this signal. Signal it so
+		// it can continue.
+		provider->_predicate.signal();
+		return 0;
+	    }
+
+	    // Sleep no longer than 10 miliseconds.
+	    Time::sleep(10 * Time::MSEC);
+	}
+    }
+
+    return 0;
+}
+
+LampIndic_Provider::LampIndic_Provider() : _indication_handler(0), _counter(0)
 {
     TRACE;
 }
@@ -21,26 +75,47 @@ LampIndic_Provider::~LampIndic_Provider()
 Load_Status LampIndic_Provider::load()
 {
     TRACE;
+
     return LOAD_OK;
 }
 
 Unload_Status LampIndic_Provider::unload()
 {
     TRACE;
+    _stop_thread();
     return UNLOAD_OK;
 }
 
 Timer_Status LampIndic_Provider::timer(uint64& timeout)
 {
     TRACE;
-    return TIMER_CANCEL;
+
+    timeout = 1000;
+
+    _indication_handler_mutex.lock();
+    _send_indication("timer()", _indication_handler);
+    _indication_handler_mutex.unlock();
+
+    return TIMER_RESCHEDULE;
 }
 
 Enable_Indications_Status LampIndic_Provider::enable_indications(
     Indication_Handler<LampIndic>* indication_handler)
 {
     TRACE;
+
+    // Since three threads share the same indication  handler, we use a mutex.
+
+    _indication_handler_mutex.lock();
     _indication_handler = indication_handler;
+    _indication_handler_mutex.unlock();
+
+    // Create a thread to send indications. Increment counter to one first
+    // to indicate that the worker thread has been created.
+
+    _counter.inc();
+    _predicate.reset();
+    Thread::create(_thread, (Thread_Proc)_thread_proc, this);
 
     return ENABLE_INDICATIONS_OK;
 }
@@ -48,11 +123,15 @@ Enable_Indications_Status LampIndic_Provider::enable_indications(
 Disable_Indications_Status LampIndic_Provider::disable_indications()
 {
     TRACE;
+
+    _stop_thread();
+
+    _indication_handler_mutex.lock();
+
     if (_indication_handler)
-    {
 	delete _indication_handler;
-	_indication_handler = 0;
-    }
+
+    _indication_handler_mutex.unlock();
 
     return DISABLE_INDICATIONS_OK;
 }
@@ -61,12 +140,10 @@ Invoke_Method_Status LampIndic_Provider::DeliverIndications(
     Property<uint32>& return_value)
 {
     TRACE;
-    LampIndic* indic = LampIndic::create();
 
-    indic->IndicationIdentifier.value = "HELLO";
-    indic->IndicationIdentifier.null = false;
-
-    _indication_handler->handle(indic);
+    _indication_handler_mutex.lock();
+    _send_indication("DeliverIndications()", _indication_handler);
+    _indication_handler_mutex.unlock();
 
     // Never return null.
     return_value.null = false;
@@ -109,6 +186,21 @@ int LampIndic_Provider::proc(
             method->return_value);
     }
     return -1;
+}
+
+void LampIndic_Provider::_stop_thread()
+{
+    TRACE;
+
+    if (_counter.get() == 1)
+    {
+	// Signal the other thread by decrementing the counter to zero.
+	_counter.dec();
+
+	// Wait for the other thread to exit.
+	_predicate.wait();
+	sleep(1);
+    }
 }
 
 CIMPLE_NAMESPACE_END

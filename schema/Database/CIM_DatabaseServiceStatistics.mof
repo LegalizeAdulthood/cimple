@@ -1,12 +1,16 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR00026" type ="add">CPubs edits to the database
+// statistics classes.</change>
+
+
 // ==================================================================
 //  CIM_DatabaseServiceStatistics
 // ==================================================================
    [Version ( "2.7.0" ), Description (
        "The CIM_DatabaseServiceStatistics class contains the current "
-       "statistics for a database service. These are counters that are "
-       "relative to the start of the service or from the time when a "
-       "reset was issued.")]
+       "statistics for a database service. These statistics are "
+       "counters that are relative to the start of the service or from "
+       "the time when a reset was issued.")]
 class CIM_DatabaseServiceStatistics : CIM_StatisticalData {
 
       [Description (
@@ -46,7 +50,7 @@ class CIM_DatabaseServiceStatistics : CIM_StatisticalData {
       [Description (
           "The total number of transactions that have been completed "
           "by a commit or abort. Some database operations, such as "
-          "read-only queries, MAY not create a transaction."), 
+          "read-only queries, might not create a transaction."), 
        Counter, 
        MappingStrings { 
           "MIB.IETF|RDBMS-MIB.rdbmsSrvInfoFinishedTransactions" }]
@@ -99,8 +103,9 @@ class CIM_DatabaseServiceStatistics : CIM_StatisticalData {
    uint64 PageWrites;
 
       [Description (
-          "The total number of times the database requested disk space "
-          "and it was not available since the service was started."), 
+          "The total number of times that the database requested disk "
+          "space and it was not available since the service was "
+          "started."), 
        Counter, 
        MappingStrings { 
           "MIB.IETF|RDBMS-MIB.rdbmsSrvInfoDiskOutOfSpaces" }]

@@ -53,4 +53,4 @@ cat:
 	catmod $(TARGET)
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)

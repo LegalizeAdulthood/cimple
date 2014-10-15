@@ -14,4 +14,4 @@ include $(TOP)/mak/rules.mak
 genclass:
 
 reg:
-	$(BIN)/regmod -c $(TARGET)
+	$(BIN_DIR)/regmod -c $(TARGET)

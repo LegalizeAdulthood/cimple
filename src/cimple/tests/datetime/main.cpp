@@ -70,6 +70,7 @@ int main(int arc, char** argv)
 	char buffer3[Datetime::BUFFER_SIZE];
 	dt2.ascii(buffer3);
 
+
 	assert(strcmp(buffer1, buffer3) == 0);
 	assert(dt1 == dt2);
     }

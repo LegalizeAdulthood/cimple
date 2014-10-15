@@ -11,6 +11,6 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN)/genclass Person
+	$(BIN_DIR)/genclass Person
 
 tests:

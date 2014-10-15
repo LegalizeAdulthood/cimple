@@ -1,4 +1,7 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DBCR00029" type ="change">CPubs edits to the database
+// system classes.</change>
+
 // ==================================================================
 //  CIM_SNMPDatabaseParameter
 // ==================================================================
@@ -13,13 +16,13 @@
        "named database or service configuration entries. A parameter "
        "entry contains a parameter name, description, and value. See "
        "the description of the rdbmsDbParamTable or the "
-       "rdbmsSrvParamTable for more information on the SNMP "
+       "rdbmsSrvParamTable for more detailed information on the SNMP "
        "definitions.")]
 class CIM_SNMPDatabaseParameter : CIM_DatabaseParameter {
 
       [Description (
-          "The value of a database or service parameter represented as "
-          "a string."), 
+          "The value of a database or service parameter that is "
+          "represented as a string."), 
        MappingStrings { "MIB.IETF|RDBMS-MIB.rdbmsDbParamCurrValue" }]
    string ParameterValue;
 };

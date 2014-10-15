@@ -4,7 +4,7 @@ include $(TOP)/mak/config.mak
 BINARY = genclass
 SOURCES = main.cpp
 LIBRARIES = mof cimplegencommon cimpleutil
-INCLUDES += -I$(SRC)/mof
+INCLUDES += -I$(SRC_DIR)/mof
 
 include $(TOP)/mak/rules.mak
 

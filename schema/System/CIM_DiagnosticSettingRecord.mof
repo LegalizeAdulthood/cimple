@@ -1,56 +1,38 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="SysDevCR00716.001" type = "add">Add LogStorage and
+// OtherLogStorageDescriptions.</change>
+// <change cr="CIMCoreCR00772.000" type = "mod"> Update valuemap for
+// LogOptions.</change>
+// <change cr="CIMCoreCR00744.004" type = "mod"> Remove
+// ModelCorrespondence and clarify description, .</change>
+// <change cr="CIMCoreCR00784.000" type = "modify"> Remove
+// experimental qualifier from LogStorage and
+// OtherLogStorageDescriptions .</change>
 // ==================================================================
 //  CIM_DiagnosticSettingRecord
 // ==================================================================
-   [Version ( "2.9.0" ), Description (
-       "The DiagnosticSettingData that was used to when a Diagnostic "
-       "was run.")]
+   [Version ( "2.11.0" ), Description (
+       "A snapshot of the properties in the DiagnosticSetting instance "
+       "that was used when the Diagnostic was run.")]
 class CIM_DiagnosticSettingRecord : CIM_DiagnosticRecord {
-
-      [Description (
-          "The LogOptions property lists the log options that were "
-          "requested for the Diagnostic Service. A brief summary of "
-          "the various log options can be found in "
-          "CIM_DiagnosticSetting.LogOptions."), 
-       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-          "10", "11", "12", "13", "14" }, 
-       Values { "Unknown", "Other", "Results", "Subtests", "Actions",
-          "Warnings", "Status", "Device Errors", "Service Errors",
-          "Setting Data", "Statistics", "Hardware Configuration",
-          "Software Configuration", "References", "Debug" },
-       ArrayType ( "Indexed" ), 
-       ModelCorrespondence { 
-          "CIM_DiagnosticSettingRecord.OtherLogOptionsDescriptions",
-          "CIM_DiagnosticSetting.LogOptions" }]
-   uint16 LogOptions[];
-
-      [Description (
-          "Provides additional information regarding the types of test "
-          "messages that are logged when the property LogOptions "
-          "includes the value 1 (\"Other\")."), 
-       ModelCorrespondence { "CIM_DiagnosticSettingRecord.LogOptions",
-          "CIM_DiagnosticSetting.OtherLogOptionsDescriptions" }]
-   string OtherLogOptionsDescriptions[];
 
       [Description (
           "When this flag is true, the test will halt after finding "
           "the first error.")]
-   boolean HaltOnError;
+   Boolean HaltOnError;
 
       [Description (
           "When this flag is true, the test software should attempt to "
           "run in an accelerated fashion either by reducing the "
           "coverage or number of tests performed.")]
-   boolean QuickMode;
+   Boolean QuickMode;
 
       [Description (
           "The requested percentage of coverage for the diagnostic "
           "service. For example, a hard drive scan test could be asked "
           "to run at 50%. Permissible values for this property range "
           "from 0 to 100."), 
-       Units ( "Percent" ), MinValue ( 0 ), MaxValue ( 100 ), 
-       ModelCorrespondence { 
-          "CIM_DiagnosticSetting.PercentOfTestCoverage" }]
+       Units ( "Percent" ), MinValue ( 0 ), MaxValue ( 100 )]
    uint8 PercentOfTestCoverage;
 
       [Description (
@@ -58,9 +40,7 @@ class CIM_DiagnosticSettingRecord : CIM_DiagnosticRecord {
           "in the LoopControl array, limiting the number of times a "
           "test should be repeated with a single invocation of RunTest "
           "by a CIM client."), 
-       ArrayType ( "Indexed" ), 
-       ModelCorrespondence { "CIM_DiagnosticSettingRecord.LoopControl",
-          "CIM_DiagnosticSetting.LoopControlParameter" }]
+       ArrayType ( "Indexed" )]
    string LoopControlParameter[];
 
       [Description (
@@ -76,24 +56,18 @@ class CIM_DiagnosticSettingRecord : CIM_DiagnosticRecord {
           "timer runs out, it could set both controls into the "
           "LoopControl array as two separate entries in each array. "
           "The looping test will terminate when the first of the two "
-          "ORed conditions are met. \n"
+          "Ored conditions are met. \n"
           "A brief description for each loop control can be found in "
           "the description of DiagnosticSetting.LoopControl."), 
        ValueMap { "0", "1", "2", "3", "4", "5" }, 
        Values { "Unknown", "Other", "Continuous", "Count", "Timer",
-          "Error Count" }, ArrayType ( "Indexed" ), 
-       ModelCorrespondence { 
-          "CIM_DiagnosticSetting.LoopControlParameter",
-          "CIM_DiagnosticSettingRecord.OtherLoopControlDescriptions" }]
+          "Error Count" }, ArrayType ( "Indexed" )]
    uint16 LoopControl[];
 
       [Description (
           "Provides additional information for LoopControl when its "
           "value is set to 1 ('Other')."), 
-       ArrayType ( "Indexed" ), 
-       ModelCorrespondence { 
-          "CIM_DiagnosticSetting.OtherLoopControlDescriptions",
-          "CIM_DiagnosticSettingRecord.LoopControl" }]
+       ArrayType ( "Indexed" )]
    string OtherLoopControlDescriptions[];
 
       [Description (
@@ -116,11 +90,50 @@ class CIM_DiagnosticSettingRecord : CIM_DiagnosticRecord {
           "0xFFFFFFFF, the provider shall persist results forever. In "
           "this case, the client MUST bear the responsibility for "
           "deleting them."), 
-       Units ( "Seconds" ), 
-       ModelCorrespondence { "CIM_DiagnosticSetting.ResultPersistence" 
-          }]
+       Units ( "Seconds" )]
    uint32 ResultPersistence;
 
+      [Description (
+          "The LogOptions property lists the log options that were "
+          "requested for the Diagnostic Service. A brief summary of "
+          "the various log options can be found in "
+          "CIM_DiagnosticSetting.LogOptions."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+          "10", "11", "12", "13", "14", "0x8000" }, 
+       Values { "Unknown", "Other", "Results", "Subtests", "Actions",
+          "Warnings", "Status", "Device Errors", "Service Errors",
+          "Setting Data", "Statistics", "Hardware Configuration",
+          "Software Configuration", "References", "Debug",
+          "No Log Options" }, ArrayType ( "Indexed" )]
+   uint16 LogOptions[];
+
+      [Description (
+          "Provides additional information regarding the types of test "
+          "messages that are logged when the property LogOptions "
+          "includes the value 1 (\"Other\").")]
+   string OtherLogOptionsDescriptions[];
+
+      [Description (
+          "The LogStorage setting property indicates which types of "
+          "supported storage should be used by the Diagnostic Service "
+          "for logging of the data specified in LogOptions. \n"
+          "The values are: \n"
+          "\"DiagnosticRecordLog\" (Value = 2): Use the "
+          "DiagnosticRecordLog and DiagnosticRecord classes. \n"
+          "\"MessageLog\" (Value = 4): Use the MessageLog class and "
+          "its methods. \n"
+          "\"File\" (Value = 5): Write data to a file."), 
+       ValueMap { "0", "1", "2", "3", "4" }, 
+       Values { "Unknown", "Other", "DiagnosticRecordLog",
+          "MessageLog", "File" }, ArrayType ( "Indexed" )]
+   uint16 LogStorage[];
+
+      [Description (
+          "This property provides additional information for "
+          "LogStorage when the corresponding value is set to 1 "
+          "(\"Other\")."), 
+       ArrayType ( "Indexed" )]
+   string OtherLogStorageDescriptions[];
 
       [Description (
           "A client may want to specify the volume or detail of "
@@ -141,9 +154,7 @@ class CIM_DiagnosticSettingRecord : CIM_DiagnosticRecord {
           "used."), 
        ValueMap { "2", "3", "4" }, 
        Values { "Minimum", "Standard", "Full" },
-       ArrayType ( "Indexed" ), 
-       ModelCorrespondence { "CIM_DiagnosticSetting.LogOptions" }]
+       ArrayType ( "Indexed" )]
    uint16 VerbosityLevel[];
-
 
 };

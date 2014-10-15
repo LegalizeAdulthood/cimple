@@ -1,21 +1,25 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DBCR00027" type ="change">CPubs edits to the database
+// storage classes.</change>
+
 // ==================================================================
 //  CIM_DatabaseSegmentSettingData
 // ==================================================================
    [Version ( "2.8.0" ), Description (
        "This class defines the attributes that affect the growth of a "
        "DatabaseSegment. The attributes are tied to the "
-       "DatabaseSegment through an ElementSettingData association. "
-       "This class MAY also be used to specify the default settings "
-       "for all DatabaseSegment instances created within a "
+       "DatabaseSegment through an ElementSettingData association. \n"
+       "This class can also be used to specify the default settings "
+       "for all DatabaseSegment instances that are created within a "
        "CommonDatabase through an ElementSettingData association to "
        "the CommonDatabase. Processes that create new instances of "
-       "DatabaseSegment and the associated setting data SHOULD check "
-       "for a DatabaseSegmentSettingData instance associated with the "
-       "CommonDatabase and SHOULD only create a new instance of "
-       "DatabaseSegmentSettingData specific to the DatabaseSegment if "
-       "the default settings need to be overridden or frozen for the "
-       "specific DatabaseSegment instance.")]
+       "DatabaseSegment and the associated setting data should check "
+       "for a DatabaseSegmentSettingData instance that is associated "
+       "with the CommonDatabase and should create a new instance of "
+       "DatabaseSegmentSettingData that is specific to the "
+       "DatabaseSegment only if the default settings need to be "
+       "overridden or frozen for the specific DatabaseSegment "
+       "instance.")]
 class CIM_DatabaseSegmentSettingData : CIM_ScopedSettingData {
 
       [Write, Description (
@@ -51,7 +55,7 @@ class CIM_DatabaseSegmentSettingData : CIM_ScopedSettingData {
           "grow over the previously allocated size of all extents for "
           "the segment. A PercentIncrease of 0 indicates that all "
           "incremental extents will be the same size, as specified by "
-          "NextExtentSize. This value is ignored and SHOULD be set to "
+          "NextExtentSize. This value is ignored and should be set to "
           "0 if NextExtentSize has a value other than 0."), 
        MinValue ( 0 ), 
        ModelCorrespondence { 

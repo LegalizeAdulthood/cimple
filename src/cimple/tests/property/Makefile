@@ -10,4 +10,4 @@ include $(TOP)/mak/rules.mak
 genclass:
 
 tests:
-	@ $(BIN)/test_property
+	@ $(BIN_DIR)/test_property

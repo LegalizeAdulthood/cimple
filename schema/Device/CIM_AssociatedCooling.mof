@@ -1,6 +1,6 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
 // ==================================================================
-//  CIM_AssociatedCooling 
+//  CIM_AssociatedCooling
 // ==================================================================
    [Association, Version ( "2.6.0" ), Description (
        "Many Devices, such as processors or power supplies, require "

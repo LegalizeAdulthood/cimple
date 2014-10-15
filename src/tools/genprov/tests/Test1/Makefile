@@ -11,7 +11,7 @@ export CIMPLE_MOF_PATH=$(TOP)/schema
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN)/test_genprov1
+	@ $(BIN_DIR)/test_genprov1
 
 Test1_Provider.cpp:
 	genprov  -f Test1

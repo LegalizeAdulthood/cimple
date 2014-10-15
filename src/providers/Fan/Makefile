@@ -21,6 +21,6 @@ reg:
 	regmod -n root/cimv2 -c $(TARGET)
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)
 
 genclass:

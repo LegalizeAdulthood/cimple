@@ -34,7 +34,8 @@
 #include <cimple/cimple.h>
 #include <cimple/Provider_Handle.h>
 #include <cimple/Scheduler.h>
-#include <cimple/RMutex.h>
+#include <cimple/Mutex.h>
+#include <cimple/Thread.h>
 #include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -52,39 +53,39 @@ public:
 
     ~CMPI_Adapter();
 
-    CIMPLE_HIDE static CMPIStatus cleanup(
+    static CIMPLE_HIDE CMPIStatus cleanup(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context,
 	CMPIBoolean terminating);
 
-    CIMPLE_HIDE static CMPIStatus enumInstanceNames(
+    static CIMPLE_HIDE CMPIStatus enumInstanceNames(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
 	const CMPIObjectPath* cmpi_op);
 
-    CIMPLE_HIDE static CMPIStatus enumInstances(
+    static CIMPLE_HIDE CMPIStatus enumInstances(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
 	const CMPIObjectPath* cmpi_op, 
 	const char** properties);
 
-    CIMPLE_HIDE static CMPIStatus getInstance(
+    static CIMPLE_HIDE CMPIStatus getInstance(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
 	const CMPIObjectPath* cmpi_op, 
 	const char** properties);
 
-    CIMPLE_HIDE static CMPIStatus createInstance(
+    static CIMPLE_HIDE CMPIStatus createInstance(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
 	const CMPIObjectPath* cmpi_op, 
 	const CMPIInstance* cmpi_inst);
 
-    CIMPLE_HIDE static CMPIStatus modifyInstance(
+    static CIMPLE_HIDE CMPIStatus modifyInstance(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
@@ -92,13 +93,13 @@ public:
 	const CMPIInstance* inst,
 	const char** properties);
 
-    CIMPLE_HIDE static CMPIStatus deleteInstance(
+    static CIMPLE_HIDE CMPIStatus deleteInstance(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
 	const CMPIObjectPath* cmpi_op);
 
-    CIMPLE_HIDE static CMPIStatus execQuery(
+    static CIMPLE_HIDE CMPIStatus execQuery(
 	CMPIInstanceMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
@@ -106,12 +107,12 @@ public:
 	const char* lang, 
 	const char* query);
 
-    CIMPLE_HIDE static CMPIStatus methodCleanup(
+    static CIMPLE_HIDE CMPIStatus methodCleanup(
 	CMPIMethodMI* mi, 
 	const CMPIContext* context,
 	CMPIBoolean terminating);
 
-    CIMPLE_HIDE static CMPIStatus invokeMethod(
+    static CIMPLE_HIDE CMPIStatus invokeMethod(
 	CMPIMethodMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
@@ -120,12 +121,12 @@ public:
 	const CMPIArgs* in,
 	CMPIArgs* out);
 
-    CIMPLE_HIDE static CMPIStatus indicationCleanup(
+    static CIMPLE_HIDE CMPIStatus indicationCleanup(
 	CMPIIndicationMI* mi, 
 	const CMPIContext* context,
 	CMPIBoolean terminating);
 
-     CIMPLE_HIDE static CMPIStatus authorizeFilter(
+     static CIMPLE_HIDE CMPIStatus authorizeFilter(
 	 CMPIIndicationMI* mi, 
 	 const CMPIContext* ctx,
 	 const CMPISelectExp* se, 
@@ -133,14 +134,14 @@ public:
 	 const CMPIObjectPath* op,
 	 const char* user);
 
-    CIMPLE_HIDE static CMPIStatus mustPoll(
+    static CIMPLE_HIDE CMPIStatus mustPoll(
 	CMPIIndicationMI* mi, 
 	const CMPIContext* context,
 	const CMPISelectExp* filter, 
 	const char* indication_type,
 	const CMPIObjectPath* class_path);
 
-    CIMPLE_HIDE static CMPIStatus activateFilter(
+    static CIMPLE_HIDE CMPIStatus activateFilter(
 	CMPIIndicationMI* mi, 
 	const CMPIContext* context,
 	const CMPISelectExp* select_expr, 
@@ -148,7 +149,7 @@ public:
 	const CMPIObjectPath* class_path, 
 	CMPIBoolean first_activation);
 
-    CIMPLE_HIDE static CMPIStatus deactivateFilter(
+    static CIMPLE_HIDE CMPIStatus deactivateFilter(
 	CMPIIndicationMI* mi, 
 	const CMPIContext* context,
 	const CMPISelectExp* select_expr, 
@@ -156,20 +157,20 @@ public:
 	const CMPIObjectPath* class_path, 
 	CMPIBoolean last);
 
-    CIMPLE_HIDE static void enableIndications(
+    static CIMPLE_HIDE void enableIndications(
 	CMPIIndicationMI* mi, 
 	const CMPIContext* context);
 
-    CIMPLE_HIDE static void disableIndications(
+    static CIMPLE_HIDE void disableIndications(
 	CMPIIndicationMI* mi, 
 	const CMPIContext* context);
 
-    CIMPLE_HIDE static CMPIStatus associationCleanup(
+    static CIMPLE_HIDE CMPIStatus associationCleanup(
 	CMPIAssociationMI* mi, 
 	const CMPIContext* context,
 	CMPIBoolean terminating);
 
-    CIMPLE_HIDE static CMPIStatus associators( 
+    static CIMPLE_HIDE CMPIStatus associators( 
 	CMPIAssociationMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
@@ -180,7 +181,7 @@ public:
 	const char* result_role, 
 	const char** properties);
 
-    CIMPLE_HIDE static CMPIStatus associatorNames(
+    static CIMPLE_HIDE CMPIStatus associatorNames(
 	CMPIAssociationMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
@@ -190,7 +191,7 @@ public:
 	const char* role, 
 	const char* result_role);
 
-    CIMPLE_HIDE static CMPIStatus references(
+    static CIMPLE_HIDE CMPIStatus references(
 	CMPIAssociationMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
@@ -199,7 +200,7 @@ public:
 	const char* role ,
 	const char** properties);
 
-    CIMPLE_HIDE static CMPIStatus referenceNames(
+    static CIMPLE_HIDE CMPIStatus referenceNames(
 	CMPIAssociationMI* mi, 
 	const CMPIContext* context, 
 	const CMPIResult* result,
@@ -223,9 +224,6 @@ public:
     // for different provider types (instance, method, indication, association).
     size_t load_count;
 
-    // ATTN: make prviate?
-    const CMPIContext* current_context;
-
 private:
 
     const Meta_Class* _mc;
@@ -238,23 +236,25 @@ private:
     CMPI_Adapter*& _adapter_back_pointer;
 
     // Synchronizes access to adapter methods from different threads:
-    RMutex _lock;
+    Mutex _lock;
+
+#ifdef ENABLE_TIMER_PROC
 
     // Scheduler and timer proc to drive provider timer() method.
-    CIMPLE_HIDE static Scheduler* _sched;
+    static CIMPLE_HIDE Scheduler* _sched;
+    static CIMPLE_HIDE Mutex _sched_lock;
 
-    CIMPLE_HIDE static RMutex _sched_lock;
-    pthread_attr_t _timer_thread_attr;
-    pthread_t _timer_thread;
+    Thread _timer_thread;
     size_t _timer_id;
     bool _stop_timer_thread;
-    const CMPIContext* _timer_context;
 
-    CIMPLE_HIDE static uint64 _timer(void* arg);
+    static CIMPLE_HIDE uint64 _timer(void* arg);
 
-    CIMPLE_HIDE static void* _timer_thread_proc(void* arg);
+    static CIMPLE_HIDE void* _timer_thread_proc(void* arg);
 
-    CIMPLE_HIDE static CMPIStatus _cleanup(
+#endif /* ENABLE_TIMER_PROC */
+
+    static CIMPLE_HIDE CMPIStatus _cleanup(
 	CMPI_Adapter* adapter,
 	const CMPIContext* context,
 	CMPIBoolean terminating);

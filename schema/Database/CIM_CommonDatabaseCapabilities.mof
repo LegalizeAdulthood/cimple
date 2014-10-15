@@ -1,10 +1,13 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DBCR00027" type ="change">CPubs edits to the database
+// storage classes.</change>
+
 // ==================================================================
 //  CIM_CommonDatabaseCapabilities
 // ==================================================================
    [Version ( "2.8.0" ), Description (
        "Properties in this class represent general, high-level "
-       "database capabilities that MAY be supported by a common "
+       "database capabilities that may be supported by a common "
        "database. For example, the ability for a database to support "
        "recoverability, replication, parallelism, or clustering would "
        "be specified in this class. Detailed settings, such as the "
@@ -27,7 +30,7 @@ class CIM_CommonDatabaseCapabilities : CIM_Capabilities {
 
       [Description (
           "This property contains additional recovery information for "
-          "the CommonDatabase. This property MUST be specified when "
+          "the CommonDatabase. This property must be specified when "
           "the Recoverability property is \"Other\"."), 
        ArrayType ( "Indexed" ), 
        ModelCorrespondence { 

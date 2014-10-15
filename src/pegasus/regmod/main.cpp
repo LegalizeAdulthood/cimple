@@ -52,6 +52,7 @@ bool dump_opt = false;
 bool help_opt = false;
 bool cmpi_opt = false;
 bool pegasus_cxx_opt = false;
+bool unregister_opt = false;
 Array<String> providing_namespaces;
 
 //------------------------------------------------------------------------------
@@ -65,6 +66,7 @@ void print(CIMClass& c)
 #if defined(Pegasus_Buffer_h)
     Buffer out;
     MofWriter::appendClassElement(out, c);
+    out.append('\0');
     printf("%s\n", out.getData());
 #else
     CIMObject obj(c);
@@ -85,6 +87,7 @@ void print(CIMInstance& i)
 #if defined(Pegasus_Buffer_h)
     Buffer out;
     MofWriter::appendInstanceElement(out, i);
+    out.append('\0');
     printf("%s\n", out.getData());
 #else
     CIMObject obj(i);
@@ -137,7 +140,6 @@ void validate_paths(const string& pegasus_home)
 #else
 	{ "bin/cimserver", false },
 	{ "lib/libpegcommon.so", false },
-	{ "lib/libpegrepository.so", false },
 	{ "lib/libpegprovider.so", false },
 #endif
 	{ "lib", true },
@@ -186,33 +188,6 @@ int load_file(const char* path, string& s)
 
 //------------------------------------------------------------------------------
 //
-// check_cimple_provider_manager_patch()
-//
-//------------------------------------------------------------------------------
-
-void check_cimple_provider_manager_patch(
-    const string& pegasus_lib_dir)
-{
-    // Read library file into memory.
-
-    string lib = pegasus_lib_dir + shlib_name("pegprovidermanager");
-    string s;
-
-    if (load_file(lib.c_str(), s) == -1)
-	err("Pegasus environment is missing this library: %s\n", lib.c_str());
-
-    // Look for "cmplcm" string (indicates CIMPLE patch has been applied).
-
-    if (s.find("cimpleprovmgr") == (size_t)-1)
-    {
-	err("Failed to find CIMPLE patch in %s. Pegasus has not been patched "
-	    "to handle CIMPLE providers. Please patch and try again.", 
-	    lib.c_str());
-    }
-}
-
-//------------------------------------------------------------------------------
-//
 // check_pegasus_environment()
 //
 //------------------------------------------------------------------------------
@@ -231,6 +206,16 @@ void check_pegasus_environment(string& pegasus_home)
     if (pegasus_home.size() == 0)
 	err("PEGASUS_HOME environment variable is empty");
 
+    // Flip backslashes to forward slashes (to accomodate Windows).
+
+    for (size_t i = 0; i < pegasus_home.size(); i++)
+    {
+	if (pegasus_home[i] == '\\')
+	    pegasus_home[i] = '/';
+    }
+
+    // Disallow relative paths.
+
     if (!is_absolute(pegasus_home.c_str()))
 	err("PEGASUS_HOME environment variable must denote an absolute path");
 
@@ -240,24 +225,6 @@ void check_pegasus_environment(string& pegasus_home)
     // Validate known paths to directories and files.
 
     validate_paths(pegasus_home);
-
-    // Check whether libcimpleprovmgr.so has been installed.
-
-// ATTN:
-#if 0
-    string cimpleprovmgr = full_shlib_name(pegasus_home, "cimpleprovmgr");
-
-    if (!exists(cimpleprovmgr))
-    {
-	err("CIMPLE provider manager not installed. Expected to find %s.\n",
-	    cimpleprovmgr.c_str());
-    }
-
-    // Check for CIMPLE provider manager patch.
-
-    if (!cmpi_opt && !pegasus_cxx_opt)
-	check_cimple_provider_manager_patch(shlib_dir(pegasus_home));
-#endif
 }
 
 //------------------------------------------------------------------------------
@@ -277,32 +244,12 @@ cimple::Registration* load_module(const string& path)
 
     // Figure out which adapter is being used (pegasus or cmpi).
 
-#if 0
-    if (dlsym(g_handle, "cimple_pegasus_adapter"))
-    {
-	pegasus_cxx_opt = true;
-	printf("Using Pegasus C++ provider interface\n");
-
-	if (!dlsym(g_handle, "PegasusCreateProvider"))
-	    err("missing PegasusCreateProvider() entry point: %s: %s",
-		path.c_str(), dlerror());
-    }
-    else if (dlsym(g_handle, "cimple_cmpi_adapter"))
-    {
-	cmpi_opt = true;
-	printf("Using CMPI provider interface\n");
-    }
-    else
-    {
-	err("cannot locate adapter entry point (neither %s nor %s found)",
-	    "cimple_pegasus_adapter()", "cimple_cmpi_adapter()");
-    }
-#endif
-
     if (dlsym(g_handle, "PegasusCreateProvider"))
     {
 	pegasus_cxx_opt = true;
-	printf("Using Pegasus C++ provider interface\n");
+
+	if (!dump_opt)
+	    printf("Using Pegasus C++ provider interface\n");
 
 	if (!dlsym(g_handle, "PegasusCreateProvider"))
 	    err("missing PegasusCreateProvider() entry point: %s: %s",
@@ -311,7 +258,9 @@ cimple::Registration* load_module(const string& path)
     else
     {
 	cmpi_opt = true;
-	printf("Using CMPI provider interface\n");
+
+	if (!dump_opt)
+	    printf("Using CMPI provider interface\n");
     }
 
     // Get symbol:
@@ -388,7 +337,7 @@ void unregister_provider(
     // Delete the PG_Provider instance.
 
     try
-	{
+    {
 	char buf[1024];
 	sprintf(buf, 
 	    "PG_Provider.Name=\"%s\","
@@ -493,6 +442,9 @@ void register_module(
 
 	unregister_module(repository, module_name);
 
+	if (unregister_opt)
+	    return;
+
 	if (verbose_opt)
 	    printf("=== Creating provider module instance\n");
 
@@ -573,7 +525,8 @@ void register_provider(
 
     // Print message:
 
-    printf("Registering %s (class %s)\n", 
+    if (!dump_opt)
+	printf("Registering %s (class %s)\n", 
 	provider_name.c_str(), meta_class->name);
 
     // Open repository.
@@ -587,6 +540,9 @@ void register_provider(
 
 	unregister_provider(
 	    repository, module_name, provider_name, class_name);
+
+	if (unregister_opt)
+	    return;
 
 	if (verbose_opt)
 	    printf("=== Creating provider registration instances\n");
@@ -1060,7 +1016,8 @@ void create_class(
     if (verbose_opt)
 	printf("=== Creating class in Pegasus repository (%s)\n", mc->name);
 
-    printf("Creating class %s\n", mc->name);
+    if (!dump_opt)
+	printf("Creating class %s\n", mc->name);
 
     // Create superclass if necessary.
 
@@ -1266,7 +1223,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "bdcvhn:")) != -1)
+    while ((opt = getopt(argc, argv, "bdcvhn:u")) != -1)
     {
 	switch (opt)
 	{
@@ -1292,6 +1249,10 @@ int main(int argc, char** argv)
 
 	    case 'b':
 		g_repository_mode.flag = CIMRepository_Mode::BIN;
+		break;
+
+	    case 'u':
+		unregister_opt = true;
 		break;
 
             default:

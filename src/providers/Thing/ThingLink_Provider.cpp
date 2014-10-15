@@ -4,17 +4,14 @@ CIMPLE_NAMESPACE_BEGIN
 
 ThingLink_Provider::ThingLink_Provider()
 {
-printf("ThingLink_Provider::ThingLink_Provider()\n");
 }
 
 ThingLink_Provider::~ThingLink_Provider()
 {
-printf("ThingLink_Provider::~ThingLink_Provider()\n");
 }
 
 Load_Status ThingLink_Provider::load()
 {
-printf("ThingLink_Provider::load()\n");
     ThingLink* link;
     
     link = ThingLink::create();
@@ -29,7 +26,6 @@ printf("ThingLink_Provider::load()\n");
 
 Unload_Status ThingLink_Provider::unload()
 {
-printf("ThingLink_Provider::unload()\n");
     return UNLOAD_OK;
 }
 

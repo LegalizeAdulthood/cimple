@@ -12,6 +12,6 @@ SOURCES = assoc_person.cpp
 include $(ROOT)/mak/program.mak
 
 tests:
-	$(BIN)/dlopen $(TARGET)
+	$(BIN_DIR)/dlopen $(TARGET)
 
 poststarttests:

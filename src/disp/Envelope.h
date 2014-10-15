@@ -31,8 +31,8 @@
 #include <cimple/Instance.h>
 #include <cimple/Registration.h>
 #include <cimple/Provider_Handle.h>
-#include <cimple/RMutex.h>
 #include <cimple/List.h>
+#include <cimple/Mutex.h>
 #include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN
@@ -56,12 +56,12 @@ public:
 
     const char* class_name() const { return _reg->meta_class->name; }
 
-    RMutex& mutex() { return _mutex; }
+    Mutex& mutex() { return _mutex; }
 
 private:
 
     Registration* _reg;
-    RMutex _mutex;
+    Mutex _mutex;
 
     friend class Cache;
 };

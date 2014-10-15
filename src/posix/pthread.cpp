@@ -160,7 +160,10 @@ int pthread_once(
 	pthread_mutex_lock(&rep->mutex);
 
 	if (rep->initialized == 0)
+	{
 	    (*init_routine)();
+	    rep->initialized = 1;
+	}
 
 	pthread_mutex_unlock(&rep->mutex);
     }
@@ -341,9 +344,9 @@ pthread_t pthread_self()
 {
     pthread_rep_t* rep = (pthread_rep_t*)pthread_getspecific(_pthread_self_key);
 
-    // This thread does has a null _pthread_self_key slot, which means
+    // This thread has a null _pthread_self_key slot, which means
     // it was not created by pthread_create(). It is probably the main
-    // thread but could be a thread that was not created outside this
+    // thread but could be a thread that was created outside this
     // thread package. In either case, we must create a rep for it.
 
     if (!rep)
@@ -384,6 +387,25 @@ int pthread_attr_setdetachstate(
     pthread_attr_rep_t* rep = (pthread_attr_rep_t*)attr;
     rep->detachstate = detachstate;
     return 0;
+}
+
+void pthread_exit(void*)
+{
+    pthread_rep_t* rep = (pthread_rep_t*)pthread_getspecific(_pthread_self_key);
+
+    if (!rep)
+    {
+	rep->event = CreateEvent(0, TRUE, FALSE, 0);
+	CloseHandle(rep->event);
+	delete rep;
+    }
+
+    ExitThread(0);
+}
+
+int pthread_equal(pthread_t t1, pthread_t t2)
+{
+    return t1 == t2;
 }
 
 //==============================================================================
@@ -454,7 +476,9 @@ int pthread_cond_wait(
     pthread_mutex_rep_t* mutex_rep = (pthread_mutex_rep_t*)mutex;
     size_t lock_count = mutex_rep->count;
 
-    while (lock_count > 0)
+    size_t i;
+
+    for (i = 0; i < lock_count; i++)
 	pthread_mutex_unlock(mutex);
 
     // Wait to be signaled.
@@ -464,7 +488,7 @@ int pthread_cond_wait(
 
     // Relock the mutex.
 
-    for (size_t i = 0; i < lock_count; i++)
+    for (i = 0; i < lock_count; i++)
 	pthread_mutex_lock(mutex);
 
     // Reset the event.

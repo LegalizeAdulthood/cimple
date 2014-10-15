@@ -27,18 +27,15 @@
 #ifndef _cimple_Mutex_h
 #define _cimple_Mutex_h
 
-#include <pthread.h>
 #include "config.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** Non-recursive mutex.
-*/
 class CIMPLE_LIBCIMPLE_LINKAGE Mutex
 {
 public:
 
-    Mutex();
+    Mutex(bool recursive = true);
 
     ~Mutex();
 
@@ -48,29 +45,9 @@ public:
 
 private:
 
-    pthread_mutex_t _mut;
+    char _rep[64];
     friend class Cond;
 };
-
-inline Mutex::Mutex()
-{
-    pthread_mutex_init(&_mut, NULL);
-}
-
-inline Mutex::~Mutex()
-{
-    pthread_mutex_destroy(&_mut);
-}
-
-inline void Mutex::lock()
-{
-    pthread_mutex_lock(&_mut);
-}
-
-inline void Mutex::unlock()
-{
-    pthread_mutex_unlock(&_mut);
-}
 
 CIMPLE_NAMESPACE_END
 

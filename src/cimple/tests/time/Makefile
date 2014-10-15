@@ -8,6 +8,6 @@ LIBRARIES = cimple
 include $(TOP)/mak/rules.mak
 
 tests:
-	@ $(BIN)/test_time
+	@ $(BIN_DIR)/test_time
 
 genclass:

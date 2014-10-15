@@ -14,4 +14,4 @@ tests:
 	$(TARGET)
 
 genclass:
-	$(BIN)/genclass -I ../mof Erp
+	$(BIN_DIR)/genclass -I ../mof Erp

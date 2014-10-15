@@ -24,11 +24,11 @@ ifdef DIRS
   include $(TOP)/mak/dir.mak
 endif
 
-$(BIN)/target:
-	$(MKDIRHIER) $(BIN)
-	$(TOUCH) $(BIN)/target
+$(BIN_DIR)/target:
+	$(MKDIRHIER) $(BIN_DIR)
+	$(TOUCH) $(BIN_DIR)/target
 
-$(LIB)/target:
-	$(MKDIRHIER) $(LIB)
-	$(MKDIRHIER) $(LIB)
-	$(TOUCH) $(LIB)/target
+$(LIB_DIR)/target:
+	$(MKDIRHIER) $(LIB_DIR)
+	$(MKDIRHIER) $(LIB_DIR)
+	$(TOUCH) $(LIB_DIR)/target

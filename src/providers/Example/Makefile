@@ -20,7 +20,7 @@ reg:
 
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)
 
 genclass:
 genprov:

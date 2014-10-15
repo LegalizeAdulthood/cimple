@@ -1,11 +1,14 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR00026" type ="add">CPubs edits to the database
+// statistics classes.</change>
+
 // ==================================================================
 //  CIM_DatabaseResourceStatistics
 // ==================================================================
    [Version ( "2.7.0" ), Description (
        "The CIM_DatabaseServiceStatistics class contains the current "
        "statistics for a database resource. This class maps to the "
-       "database and server limited resource tables in the SNMP RDBMS "
+       "database and server-limited resource tables in the SNMP RDBMS "
        "MIB as defined in RFC 1697.")]
 class CIM_DatabaseResourceStatistics : CIM_StatisticalData {
 
@@ -23,10 +26,10 @@ class CIM_DatabaseResourceStatistics : CIM_StatisticalData {
    uint64 Limit;
 
       [Description (
-          "The number of database resources used measured from the "
-          "time when the first service was started for the database. "
+          "The number of database resources used, as measured from the "
+          "time when the first service was started for the database. \n"
           "Other external factors, such as an explicit reset of the "
-          "statistics may cause this measurement to begin at a later "
+          "statistics might cause this measurement to begin at a later "
           "point in time."), 
        Counter, 
        MappingStrings { 
@@ -35,8 +38,8 @@ class CIM_DatabaseResourceStatistics : CIM_StatisticalData {
 
       [Description (
           "The number of times that the system wanted to exceed the "
-          "database resource limit measured from the time when the "
-          "first service was started for the database."), 
+          "database resource limit that is measured from the time when "
+          "the first service was started for the database."), 
        Counter, 
        MappingStrings { 
           "MIB.IETF|RDBMS-MIB.rdbmsDbLimitedResourceFailures" }]

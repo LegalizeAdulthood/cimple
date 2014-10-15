@@ -12,4 +12,4 @@ tests:
 genclass:
 
 run:
-	$(TARGET) $(LIB)
+	$(TARGET) $(LIB_DIR)

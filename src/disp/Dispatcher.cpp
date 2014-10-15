@@ -28,8 +28,8 @@
 #include <dirent.h>
 #include <dlfcn.h>
 #include "Dispatcher.h"
-#include <cimple/RMutex.h>
-#include <cimple/Auto_RMutex.h>
+#include <cimple/Mutex.h>
+#include <cimple/Auto_Mutex.h>
 #include <cimple/Time.h>
 #include "Cache.h"
 #include <cimple/Error.h>
@@ -48,7 +48,7 @@ static uint64 _timer(void* arg)
 {
     Envelope* env = (Envelope*)arg;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     uint64 timeout = 0;
     Timer_Status status = env->timer(timeout);
@@ -122,7 +122,7 @@ Status Dispatcher::get_instance(const Instance* model, Instance*& inst)
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     Get_Instance_Status provider_status = env->get_instance(model, inst);
 
@@ -159,7 +159,7 @@ Status Dispatcher::enum_instances(
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     // Invoked provider:
 
@@ -192,7 +192,7 @@ Status Dispatcher::create_instance(const Instance* inst)
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     Create_Instance_Status provider_status = env->create_instance(inst);
 
@@ -224,7 +224,7 @@ Status Dispatcher::delete_instance(const Instance* inst)
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     Delete_Instance_Status provider_status = env->delete_instance(inst);
 
@@ -256,7 +256,7 @@ Status Dispatcher::modify_instance(const Instance* inst)
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     Modify_Instance_Status provider_status = env->modify_instance(inst);
 
@@ -300,7 +300,7 @@ Status Dispatcher::enum_associator_names(
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     // Delegate to envelope:
 
@@ -344,7 +344,7 @@ Status Dispatcher::enum_references(
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     // Delegate to envelope:
 
@@ -385,7 +385,7 @@ Status Dispatcher::enable_indications(
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     // Enable indications on this provider:
 
@@ -420,7 +420,7 @@ Status Dispatcher::disable_indications(const char* class_name)
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     // Disable indications on this provider:
 
@@ -452,7 +452,7 @@ Status Dispatcher::invoke_method(Instance* inst, Instance* method)
     if (!env)
 	return STATUS_UNKNOWN_CLASS;
 
-    Auto_RMutex a(env->mutex());
+    Auto_Mutex a(env->mutex());
 
     Invoke_Method_Status provider_status = env->invoke_method(inst, method);
 

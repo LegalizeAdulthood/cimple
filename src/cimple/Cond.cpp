@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -24,40 +24,32 @@
 **==============================================================================
 */
 
-#include <errno.h>
+#include <cassert>
+#include <pthread.h>
 #include "Cond.h"
 #include "Time.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-int Cond::wait(Mutex& mutex, uint64 timeout_usec)
+Cond::Cond()
 {
-    struct timespec ts;
-    uint64 deadline_usec = Time::now() + timeout_usec;
-    uint64 deadline_sec = deadline_usec / 1000000;
-    ts.tv_sec = deadline_sec;
-    ts.tv_nsec = (deadline_usec % 1000000) * 1000;
+    assert(sizeof(_rep) >= sizeof(pthread_cond_t));
+    pthread_cond_init((pthread_cond_t*)_rep, 0);
+}
 
-    for (;;)
-    {
-	switch (pthread_cond_timedwait(&_cond, &mutex._mut, &ts))
-	{
-	    case EINTR:
-		continue;
+Cond::~Cond()
+{
+    pthread_cond_destroy((pthread_cond_t*)_rep);
+}
 
-	    case ETIMEDOUT:
-		return -1;
+void Cond::signal()
+{
+    pthread_cond_signal((pthread_cond_t*)_rep);
+}
 
-	    case 0:
-		return 0;
-
-	    default:
-		CIMPLE_ASSERT(0);
-	}
-    }
-
-    // Unreachable:
-    return 0;
+void Cond::wait(Mutex& lock)
+{
+    pthread_cond_wait((pthread_cond_t*)_rep, (pthread_mutex_t*)lock._rep);
 }
 
 CIMPLE_NAMESPACE_END

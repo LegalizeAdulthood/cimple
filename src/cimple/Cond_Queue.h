@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -37,7 +37,7 @@ CIMPLE_NAMESPACE_BEGIN
     available. The enqueue() method blocks until there are less than
     max_size elements.
 */
-class Cond_Queue
+class CIMPLE_LIBCIMPLE_LINKAGE Cond_Queue
 {
 public:
 

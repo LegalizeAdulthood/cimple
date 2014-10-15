@@ -11,7 +11,7 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 genclass:
-	$(BIN)/genclass -I ../mof Test1 Test2
+	$(BIN_DIR)/genclass -I ../mof Test1 Test2
 
 tests:
 	$(TARGET)

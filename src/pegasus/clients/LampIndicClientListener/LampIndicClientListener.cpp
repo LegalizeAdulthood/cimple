@@ -12,10 +12,8 @@ PEGASUS_USING_STD;
 const String FILTER_CLASS = "CIM_IndicationFilter";
 const String HANDLER_CLASS = "CIM_IndicationHandlerCIMXML";
 const String SUBSCRIPTION_CLASS = "CIM_IndicationSubscription";
-// const String QUERY = "SELECT IndicationIdentifier FROM LampIndic";
 const String QUERY = "SELECT * FROM LampIndic";
 const String DESTINATION = "http://localhost:9999/LampIndicListener";
-//const String NAMESPACE = "root/PG_InterOp";
 const String NAMESPACE = "root/cimv2";
 
 class LampIndicConsumer : public CIMIndicationConsumer
@@ -38,12 +36,13 @@ void LampIndicConsumer::consumeIndication(
     CIMConstProperty prop = indication.getProperty(
 	indication.findProperty("IndicationIdentifier"));
 
-    String indicationIdentifier;
-    prop.getValue().get(indicationIdentifier);
+    String ident;
+    prop.getValue().get(ident);
 
     static size_t _count = 0;
 
-    assert(indicationIdentifier == "HELLO");
+    // cout << ident << endl;
+    assert(ident == "HELLO" || ident == "GOODBYE");
 
     if (++_count == 5)
 	_success = true;

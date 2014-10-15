@@ -81,4 +81,4 @@ genclass:
 	genclass -l -r $(CLASSES)
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)

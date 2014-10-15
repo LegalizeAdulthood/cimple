@@ -1,8 +1,11 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="CIMCoreCR00775.002" type ="change"> Updat description of
+// MessageTimestamp property to indicate what the value for unknown
+// should be. </change>
 // ==================================================================
 //  CIM_LogRecord
 // ==================================================================
-   [Version ( "2.9.0" ), Description (
+   [Version ( "2.11.0" ), Description (
        "The LogRecord object can describe the definitional format for "
        "entries in a MessageLog, or can be used to instantiate the "
        "actual records in the Log. The latter approach provides a "
@@ -53,7 +56,8 @@ class CIM_LogRecord : CIM_RecordForLog {
 
       [Key, Description (
           "A LogRecord's key structure includes a timestamp for the "
-          "entry.")]
+          "entry. If the timestamp for the entry is unknown, the “ "
+          "“value 99990101000000.000000+000 SHOULD be used.")]
    datetime MessageTimestamp;
 
       [Deprecated { "CIM_LogRecord.RecordFormat" }, Description (

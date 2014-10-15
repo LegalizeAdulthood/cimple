@@ -30,7 +30,7 @@
 #include <pthread.h>
 #include "config.h"
 #include "List.h"
-#include "RMutex.h"
+#include "Mutex.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -74,7 +74,7 @@ public:
 
 private:
 
-    RMutex _lock;
+    Mutex _lock;
 
     List _list;
 

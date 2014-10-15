@@ -28,7 +28,6 @@
 #define _cimple_Cache_h
 
 #include <cimple/Raw_Array.h>
-#include <cimple/RMutex.h>
 #include "Envelope.h"
 #include "Module.h"
 #include "Repository.h"

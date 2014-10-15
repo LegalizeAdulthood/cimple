@@ -27,7 +27,7 @@
 #include "Time.h"
 #include "Scheduler.h"
 #include "Id_Pool.h"
-#include "Auto_RMutex.h"
+#include "Auto_Mutex.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
@@ -79,7 +79,7 @@ Scheduler::~Scheduler()
 
 size_t Scheduler::add_timer(uint64 timeout, Timer_Proc proc, void* arg)
 {
-    Auto_RMutex auto_lock(_lock);
+    Auto_Mutex auto_lock(_lock);
 
     // Create new timer:
 
@@ -98,7 +98,7 @@ size_t Scheduler::add_timer(uint64 timeout, Timer_Proc proc, void* arg)
 
 bool Scheduler::remove_timer(size_t timer_id)
 {
-    Auto_RMutex auto_lock(_lock);
+    Auto_Mutex auto_lock(_lock);
 
     for (List_Elem* p = _list.head; p; p = p->next)
     {
@@ -196,7 +196,7 @@ void* Scheduler::_thread_proc(void* arg)
 
 int Scheduler::start_thread()
 {
-    Auto_RMutex auto_lock(_lock);
+    Auto_Mutex auto_lock(_lock);
 
     if (_thread_running)
 	return -1;
@@ -212,7 +212,7 @@ int Scheduler::start_thread()
 
 int Scheduler::stop_thread()
 {
-    Auto_RMutex auto_lock(_lock);
+    Auto_Mutex auto_lock(_lock);
 
     if (!_thread_running)
 	return -1;

@@ -49,7 +49,8 @@ Unload_Status Lamp_Provider::unload()
 Timer_Status Lamp_Provider::timer(uint64& timeout_msec)
 {
     TRACE;
-    return TIMER_CANCEL;
+    timeout_msec = 1000;
+    return TIMER_RESCHEDULE;
 }
 
 Get_Instance_Status Lamp_Provider::get_instance(

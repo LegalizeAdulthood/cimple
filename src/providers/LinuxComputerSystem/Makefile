@@ -18,9 +18,9 @@ LIBRARIES += cimplepegadap
 include $(TOP)/mak/rules.mak
 
 reg:
-	$(BIN)/regmod -c $(TARGET)
+	$(BIN_DIR)/regmod -c $(TARGET)
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)
 
 genclass:

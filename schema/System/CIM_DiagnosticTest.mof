@@ -1,8 +1,17 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DMTFCR01281" type = "deprecate"> Deprecate
+// CIM_DiagnosticTest.ClearResults </change>
+// <change cr="CIMCoreCR00737.002" type = "new"> Add TestTypes and
+// OtherTestTypesDescriptions </change>
+// <change cr="CsysdevCR00705.000" type = "mod"> Change references to
+// MessageLog to Log.</change>
+// <change cr="CIMCoreCR00784.000" type = "modify"> Remove
+// experimental qualifier from TestTypes and
+// OtherTestTypeDescriptions.</change>
 // ==================================================================
 //  CIM_DiagnosticTest
 // ==================================================================
-   [Version ( "2.9.0" ), Description (
+   [Version ( "2.11.0" ), Description (
        "The CIM_DiagnosticTest class represents the framework for "
        "running diagnostic tests. Specific diagnostic tests may be "
        "defined by subclassing and/or instantiating this object. To "
@@ -192,9 +201,9 @@ class CIM_DiagnosticTest : CIM_DiagnosticService {
 
       [Deprecated { "CIM_Log.ClearLog" }, Description (
           "This method is deprecated in favor of using the "
-          "corresponding functionality contained in the MessageLog "
-          "class, this is consistant with the deprecation of the "
-          "Result class in favor of MessageLog. \n"
+          "corresponding functionality contained in the Log class, "
+          "this is consistant with the deprecation of the Result class "
+          "in favor of Log. \n"
           "Execution of this method will delete all instances of the "
           "DiagnosticResultForMSE object, for this DiagnosticTest and "
           "the specified ManagedSystemElement (defined using the "
@@ -293,5 +302,42 @@ class CIM_DiagnosticTest : CIM_DiagnosticService {
              "from \"In Progress\" to \"Stopped\" (from 4 to 5).")]
       boolean TestingStopped); 
 
+      [Description (
+          "The descriptions for each test type are below: \n"
+          "\n"
+          "* If \"Functional\" (value=2) is set, this tests one, more "
+          "or all the functionality of the element. \n"
+          "\n"
+          "* If \"Stress\" (value=3) is set, this test is a stress "
+          "test or exerciser for the element. \n"
+          "\n"
+          "* If \"Health Check\" (value=4) is set, this test validates "
+          "the current health of the element. \n"
+          "\n"
+          "* If \"Access Test\" (value=5) is set, this test verifies "
+          "the element is accessible to the system and user. This "
+          "would include access through the OS as a user would access "
+          "the element. \n"
+          "\n"
+          "* If \"Media Verify\" (value=6) is set, this test verifies "
+          "the media for the element. This does not validate that "
+          "specific data is correctly written on the media or even if "
+          "data can be written to the media, but verifies that the "
+          "media itself has no faults."), 
+       ValueMap { "0", "1", "2", "3", "4", "5", "6", "..", "0x8000.." }, 
+       Values { "Unknown", "Other", "Functional", "Stress",
+          "Health Check", "Access Test", "Media Verify",
+          "DMTF Reserved", "Vendor Reserved" }, ArrayType ( "Indexed" ), 
+       ModelCorrespondence { 
+          "CIM_DiagnosticTest.OtherTestTypesDescriptions" }]
+   uint16 TestTypes[];
+
+      [Description (
+          "OtherTestTypesDescriptions is an array that contains an "
+          "element with additional information for each TestTypes "
+          "element with a value of 1 (\"Other\")."), 
+       ArrayType ( "Indexed" ), 
+       ModelCorrespondence { "CIM_DiagnosticTest.TestTypes" }]
+   string OtherTestTypesDescriptions[];
 
 };

@@ -33,7 +33,7 @@ CIMPLE_ROOT = $(call abs_path, $(TOP))
 
 ##==============================================================================
 ##
-## BIN, LIB & SRC
+## BIN_DIR, LIB_DIR & SRC_DIR
 ##
 ##     If PEGASUS_HOME is defined, programs and libraries are placed under
 ##     that directory.
@@ -41,19 +41,19 @@ CIMPLE_ROOT = $(call abs_path, $(TOP))
 ##==============================================================================
 
 ifdef PEGASUS_HOME
-  BIN = $(PEGASUS_HOME)/bin
-  LIB = $(PEGASUS_HOME)/lib
+  BIN_DIR = $(PEGASUS_HOME)/bin
+  LIB_DIR = $(PEGASUS_HOME)/lib
 else
-  BIN = $(CIMPLE_ROOT)/bin
-  LIB = $(CIMPLE_ROOT)/lib
+  BIN_DIR = $(CIMPLE_ROOT)/bin
+  LIB_DIR = $(CIMPLE_ROOT)/lib
 endif
 
-SRC = $(CIMPLE_ROOT)/src
+SRC_DIR = $(CIMPLE_ROOT)/src
 
 ifdef CIMPLE_WINDOWS
-  SHLIB = $(BIN)
+  SHLIB = $(BIN_DIR)
 else
-  SHLIB = $(LIB)
+  SHLIB = $(LIB_DIR)
 endif
 
 ##==============================================================================

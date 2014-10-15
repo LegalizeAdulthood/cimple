@@ -6,8 +6,8 @@ depend:
 gen:
 
 tests:
-	$(BIN)/mofc -I $(TOP)/schema tests.mof
-	@ $(ECHO) "+++++ passed all tests ($(BIN)/mofc)"
+	$(BIN_DIR)/mofc -I $(TOP)/schema tests.mof
+	@ $(ECHO) "+++++ passed all tests ($(BIN_DIR)/mofc)"
 
 sub:
 

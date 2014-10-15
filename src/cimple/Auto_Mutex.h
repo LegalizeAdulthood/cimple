@@ -41,10 +41,8 @@ public:
     ~Auto_Mutex();
 
 private:
-
     Auto_Mutex(const Auto_Mutex&);
     Auto_Mutex& operator=(const Auto_Mutex&);
-
     Mutex& _mutex;
 };
 

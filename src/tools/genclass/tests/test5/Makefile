@@ -22,7 +22,7 @@ INCLUDES += -I.
 include $(TOP)/mak/rules.mak
 
 Erp2.cpp:
-	$(BIN)/genclass Erp2
+	$(BIN_DIR)/genclass Erp2
 
 CLEAN += Erp2.h Erp2.cpp
 
@@ -30,4 +30,4 @@ tests:
 	$(TARGET)
 
 genclass:
-	$(BIN)/genclass CIM_ComputerSystem
+	$(BIN_DIR)/genclass CIM_ComputerSystem

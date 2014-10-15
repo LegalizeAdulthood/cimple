@@ -4,16 +4,18 @@ include $(TOP)/mak/config.mak
 SH_LIBRARY = cimple
 
 SOURCES = \
+    Predicate.cpp \
+    Atomic_Counter.cpp \
+    Cond.cpp \
+    Cond_Queue.cpp \
     Error.cpp \
     version.cpp \
     Id_Pool.cpp \
     List.cpp \
     Mutex.cpp \
     Time.cpp \
+    Thread.cpp \
     Auto_Mutex.cpp \
-    Auto_RMutex.cpp \
-    RMutex.cpp \
-    TLS.cpp \
     Provider_Handle.cpp \
     Array.cpp \
     Raw_Array.cpp \

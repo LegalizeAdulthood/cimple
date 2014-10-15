@@ -4,10 +4,10 @@ include $(TOP)/mak/config.mak
 all:
 	@ $(ECHO) "CIMPLE_PLATFORM=$(CIMPLE_PLATFORM)"
 	@ $(ECHO) "CIMPLE_ROOT=$(CIMPLE_ROOT)"
-	@ $(ECHO) "BIN=$(BIN)"
-	@ $(ECHO) "LIB=$(LIB)"
+	@ $(ECHO) "BIN_DIR=$(BIN_DIR)"
+	@ $(ECHO) "LIB_DIR=$(LIB_DIR)"
 	@ $(ECHO) "SHLIB=$(SHLIB)"
-	@ $(ECHO) "SRC=$(SRC)"
+	@ $(ECHO) "SRC_DIR=$(SRC_DIR)"
 	@ $(ECHO) "INCLUDES=$(INCLUDES)"
 	@ $(ECHO) "CIMPLE_MOF_PATH=$(CIMPLE_MOF_PATH)"
 	@ $(ECHO) "CXX=$(CXX)"

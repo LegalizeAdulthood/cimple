@@ -25,4 +25,4 @@ genclass:
 	genclass Example
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)

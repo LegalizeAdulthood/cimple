@@ -32,4 +32,4 @@ xxx:
 genclass:
 
 tests:
-	@ $(BIN)/dlopen $(TARGET)
+	@ $(BIN_DIR)/dlopen $(TARGET)

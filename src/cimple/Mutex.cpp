@@ -25,7 +25,39 @@
 */
 
 #include "Mutex.h"
+#include <pthread.h>
 
 CIMPLE_NAMESPACE_BEGIN
+
+Mutex::Mutex(bool recursive)
+{
+    assert(sizeof(_rep) >= sizeof(pthread_mutex_t));
+
+    if (recursive)
+    {
+	pthread_mutexattr_t attr;
+	pthread_mutexattr_init(&attr);
+	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+	pthread_mutex_init((pthread_mutex_t*)_rep, &attr);
+	pthread_mutexattr_destroy(&attr);
+    }
+    else
+	pthread_mutex_init((pthread_mutex_t*)_rep, NULL);
+}
+
+Mutex::~Mutex()
+{
+    pthread_mutex_destroy((pthread_mutex_t*)_rep);
+}
+
+void Mutex::lock()
+{
+    pthread_mutex_lock((pthread_mutex_t*)_rep);
+}
+
+void Mutex::unlock()
+{
+    pthread_mutex_unlock((pthread_mutex_t*)_rep);
+}
 
 CIMPLE_NAMESPACE_END

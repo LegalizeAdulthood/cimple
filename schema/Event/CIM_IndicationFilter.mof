@@ -1,8 +1,12 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+//<change cr="WIPCR00230" type="change">Clarify IndicationFilter rules 
+// relatedto embedded query.</change>
+//<change cr="WIPCR00240" type="change">Define DMTF:CQL as the formal 
+// nameof CQL.</change>
 // ==================================================================
 //  CIM_IndicationFilter
 // ==================================================================
-   [Version ( "2.6.0" ), Description (
+   [Version ( "2.11.0" ), Description (
        "CIM_IndicationFilter defines the criteria for generating an "
        "Indication and what data should be returned in the Indication. "
        "It is derived from CIM_ManagedElement to allow modeling the "
@@ -56,11 +60,47 @@ class CIM_IndicationFilter : CIM_ManagedElement {
           "properties to be copied to the CIM_InstIndication's "
           "SourceInstance and PreviousInstance properties. Query "
           "language semantics include projection (e.g., Select), range "
-          "(e.g., From) and predicate (e.g., Where)."), 
+          "(e.g., From) and predicate (e.g., Where). \n"
+          "When used with QueryLanguage set to CQL or CQLT, the FROM "
+          "clause shall contain at least one subclass of Indication "
+          "and may contain any number of other classes or subqueries. "
+          "If only one subclass of Indication is named, it defines the "
+          "Indication that this Instance of IndicationFilter will "
+          "produce. If more than one subclass of Indication is named, "
+          "then one of them must be named explicitly in the "
+          "select-list. \n"
+          "The select-list must refer explicitly or implicitly to "
+          "exactly one Indication subclass. In addition, it shall "
+          "conform to one of several options: \n"
+          "1) only a \"*\": This may only be used if the Indication "
+          "subclass is the only entry on the FROM list. \n"
+          "2) only a \"<Indicationclass or alias>.*\": This form may "
+          "be used if the FROM clause contains more than one "
+          "Indication subclass. \n"
+          "3) a list of the form \"<propertyname>*[\",\"[<literal> AS "
+          "]<propertyname>]\": This form may only be used if the "
+          "Indication subclass is the only entry on the FROM list. In "
+          "this form, the literal is assigned to the named property of "
+          "the selected Indication subclass \n"
+          "4) a list of the form \"<Indicationname>.<propertyname> "
+          "*[\",\" [<Indicationname>.<propertyname> |\"\": <literal> "
+          "AS <propertyname> | <fromname>.<propertyname> AS "
+          "<propertyname> ] ]\" : The first term selects the "
+          "appropriate Indication subclass to produce. Subsequent "
+          "terms allow other properties of that indication, or allow a "
+          "literal or property of another class to be assigned to the "
+          "output as one of the properties of the selected Indication "
+          "subclass. \n"
+          "Note that in all cases, only the property names of the "
+          "selected Indication subclass may be referred to in the "
+          "select-list."), 
        ModelCorrespondence { "CIM_IndicationFilter.QueryLanguage" }]
    string Query;
 
       [Required, Description (
-          "The language in which the query is expressed.")]
+          "The language in which the query is expressed. \n"
+          "The value 'DMTF:CQL' refers to the CIM Query Language "
+          "defined by DSP0200."), 
+       ModelCorrespondence { "CIM_IndicationFilter.Query" }]
    string QueryLanguage;
 };

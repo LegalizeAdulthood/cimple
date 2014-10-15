@@ -26,14 +26,15 @@
 
 #include <cassert>
 #include <cimple/config.h>
-#include <cimple/Threads.h>
+#include <cimple/Thread.h>
 #include <cimple/Cond_Queue.h>
 #include <cimple/Time.h>
 
 using namespace cimple;
 
-Mutex _finished_lock;
-Cond _finished;
+static Mutex _finished_lock;
+static Cond _finished;
+static bool _success = false;
 
 const size_t NUM_WRITES = 100000;
 
@@ -43,9 +44,11 @@ static void* _writer(void* arg)
 
     for (size_t i = 0; i < NUM_WRITES; i++)
     {
-	// printf("writer: %zu\n", i);
+	// printf("writer: %u\n", i);
 	queue->enqueue((void*)i);
     }
+
+    Time::sleep(10000 * 1000);
 
     return 0;
 }
@@ -56,11 +59,13 @@ static void* _reader(void* arg)
 
     for (size_t i = 0; i < NUM_WRITES; i++)
     {
+	// printf("reader: %u\n", i);
 	void* entry = queue->dequeue();
 	assert((size_t)entry == i);
     }
 
     Time::sleep(500 * 1000);
+    _success = true;
     _finished.signal();
 
     return 0;
@@ -71,14 +76,16 @@ int main(int argc, char** argv)
     Cond_Queue queue(16);
 
     Thread thread2;
-    Threads::create_detached(thread2, _writer, &queue);
+    Thread::create(thread2, _writer, &queue);
 
     Thread thread1;
-    Threads::create_detached(thread1, _reader, &queue);
+    Thread::create(thread1, _reader, &queue);
 
+    _finished_lock.lock();
     _finished.wait(_finished_lock);
 
-    printf("+++++ passed all tests\n");
+    assert(_success == true);
+    printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }

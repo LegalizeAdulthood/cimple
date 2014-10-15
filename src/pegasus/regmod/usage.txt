@@ -6,6 +6,7 @@ Where:
     -n : provider namespace (may occur multiple times)
     -d : dump the MOF registration instances to standard output
     -b : use binary repository mode
+    -u : unregister the module
     -h : print this help text
 
 Synopsis:
@@ -18,3 +19,4 @@ Synopsis:
     4.  Checks compatiblity between provider classes and Pegasus classes.
     5.  Creates provider classes in Pegasus repository if they do not exist.
     6.  Registers all providers in the module with the Pegasus repository
+

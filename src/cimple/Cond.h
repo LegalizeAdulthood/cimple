@@ -1,7 +1,7 @@
 /*
 **==============================================================================
 **
-** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
+** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** 
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
@@ -27,53 +27,28 @@
 #ifndef _cimple_Cond_h
 #define _cimple_Cond_h
 
-#include <pthread.h>
 #include "config.h"
 #include "Mutex.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-class Cond
+class CIMPLE_LIBCIMPLE_LINKAGE Cond
 {
 public:
     
     Cond();
 
-    void signal();
+    ~Cond();
 
-    void broadcast();
+    void signal();
 
     void wait(Mutex& lock);
 
-    int wait(Mutex& lock, uint64 timeout_usec);
-
 private:
-
     Cond(const Cond&);
     Cond& operator=(const Cond&);
-
-    pthread_cond_t _cond;
+    char _rep[64];
 };
-
-inline Cond::Cond()
-{
-    pthread_cond_init(&_cond, 0);
-}
-
-inline void Cond::signal()
-{
-    pthread_cond_signal(&_cond);
-}
-
-inline void Cond::broadcast()
-{
-    pthread_cond_broadcast(&_cond);
-}
-
-inline void Cond::wait(Mutex& lock)
-{
-    pthread_cond_wait(&_cond, &lock._mut);
-}
 
 CIMPLE_NAMESPACE_END
 

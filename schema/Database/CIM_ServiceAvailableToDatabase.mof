@@ -1,4 +1,7 @@
 // Copyright (c) 2005 DMTF.  All rights reserved.
+// <change cr="DBCR00029" type ="change">CPubs edits to the database
+// system classes.</change>
+
 // ==================================================================
 //  CIM_ServiceAvailableToDatabase
 // ==================================================================
@@ -25,7 +28,7 @@ class CIM_ServiceAvailableToDatabase : CIM_ServiceAvailableToElement {
           "completely available for use by the database (RESTRICTED), "
           "or the database is not accessible from this service "
           "(UNAVAILABLE). Any service states that do not match one of "
-          "these values SHOULD specify (OTHER)."), 
+          "these values should specify (OTHER)."), 
        ValueMap { "1", "2", "3", "4", "5" }, 
        Values { "Other", "Active", "Available", "Restricted",
           "Unavailable" }, 
@@ -35,18 +38,18 @@ class CIM_ServiceAvailableToDatabase : CIM_ServiceAvailableToElement {
    uint16 AvailableState;
 
       [Description (
-          "A string describing the service's available state when the "
-          "AvailableState property is set to 1 (\"Other\"). This "
-          "property MUST be set to NULL when AvailableState is any "
-          "value other than 1."), 
+          "A string that describes the available state of the service "
+          "when the AvailableState property is set to 1 (\"Other\"). "
+          "This property must be set to NULL when AvailableState is "
+          "any value other than 1."), 
        ModelCorrespondence { 
           "CIM_ServiceAvailableToDatabase.AvailableState" }]
    string OtherAvailableState;
 
       [Description (
           "The time that the database was made active by this service. "
-          "If the AvailableState property is not active, then the "
-          "value of this property MUST be set to zero."), 
+          "\nIf the AvailableState property is not active, then the "
+          "value of this property must be set to 0."), 
        MappingStrings { "MIB.IETF|RDBMS-MIB.rdbmsRelActiveTime" }]
    datetime ActiveTime;
 };

@@ -24,15 +24,44 @@
 **==============================================================================
 */
 
+#include <pthread.h>
 #include <cstdarg>
 #include <cstdio>
-#include <cimple/TLS.h>
 #include <cimple/Strings.h>
 #include "Error.h"
 
 CIMPLE_NAMESPACE_BEGIN
 
-static TLS _message;
+//==============================================================================
+//
+// Message thread-specific storage:
+//
+//==============================================================================
+
+static pthread_key_t _message_key;
+static pthread_once_t _message_key_once = PTHREAD_ONCE_INIT;
+
+static void _make_message_key()
+{
+    pthread_key_create(&_message_key, NULL);
+}
+
+static void _set_message_tss(char* message)
+{
+    pthread_once(&_message_key_once, _make_message_key);
+    pthread_setspecific(_message_key, message);
+}
+
+static char* _get_message_tss()
+{
+    return (char*)pthread_getspecific(_message_key);
+}
+
+//==============================================================================
+//
+// Error
+//
+//==============================================================================
 
 void Error::set(const char* format, ...)
 {
@@ -45,17 +74,17 @@ void Error::set(const char* format, ...)
     // thread-specific-data (no other thread can be accessing this slot since
     // since the thread executing this function owns it).
 
-    void* old_message = _message.get();
+    void* old_message = _get_message_tss();
 
     if (old_message)
 	free(old_message);
 
-    _message.set(message);
+    _set_message_tss(message);
 }
 
 const char* Error::get()
 {
-    const char* message = (const char*)_message.get();
+    const char* message = (const char*)_get_message_tss();
 
     return message ? message : "<unitialized error message>";
 }
@@ -65,20 +94,20 @@ void Error::set_prefix(
     const char* file, 
     size_t line)
 {
-    char* old_message = (char*)_message.get();
-    _message.set(0);
+    char* old_message = (char*)_get_message_tss();
+    _set_message_tss(0);
     Error::set("%s(): %s(%d): %s", function, file, int(line), old_message);
     free(old_message);
 }
 
 void Error::clear()
 {
-    void* old_message = _message.get();
+    void* old_message = _get_message_tss();
 
     if (old_message)
 	free(old_message);
 
-    _message.set(0);
+    _set_message_tss(0);
 }
 
 CIMPLE_NAMESPACE_END
