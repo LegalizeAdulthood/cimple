@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<Arrays>* handler);
 
     Create_Instance_Status create_instance(
-	const Arrays* instance);
+        Arrays* instance);
 
     Delete_Instance_Status delete_instance(
 	const Arrays* instance);

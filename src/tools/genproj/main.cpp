@@ -13,9 +13,55 @@
 
 using namespace std;
 
+#if defined(CIMPLE_WINDOWS)
+
+int which(const string& program, string& path)
+{
+    path.erase(path.begin(), path.end());
+
+    char* sp = getenv("PATH");
+
+    if (!sp)
+        return -1;
+
+    sp = strdup(sp);
+
+    for (char* p = strtok(sp, ":"); p; p = strtok(NULL, ";"))
+    {
+        string tmp = string(p) + string("/") + program;
+
+        if (exists(tmp.c_str()))
+        {
+            path = tmp;
+            return 0;
+        }
+    }
+
+    return -1;
+}
+
+#endif /* CIMPLE_WINDOWS */
+
 static void gen_project(const char* module_name, int argc, char** argv)
 {
     // Locate supporting programs.
+
+#if defined(CIMPLE_WINDOWS)
+
+    string genclass;
+    string genprov;
+    string genmod;
+
+    if (which("genclass.exe", genclass) != 0)
+        err("genclass.exe not found on PATH");
+
+    if (which("genprov.exe", genprov) != 0)
+        err("genprov.exe not found on PATH");
+
+    if (which("genmod.exe", genmod) != 0)
+        err("genmod.exe not found on PATH");
+
+#else /* CIMPLE_WINDOWS */
 
     string genclass = string(CIMPLE_BINDIR) + "/genclass";
     string genprov = string(CIMPLE_BINDIR) + "/genprov";
@@ -29,6 +75,8 @@ static void gen_project(const char* module_name, int argc, char** argv)
 
     if (!exists(genmod))
         err("required program missing: %s", genmod.c_str());
+
+#endif /* !CIMPLE_WINDOWS */
 
     // Run genclass:
     {
@@ -132,4 +180,4 @@ int main(int argc, char** argv)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genproj/main.cpp,v 1.2 2007/04/18 16:55:54 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/genproj/main.cpp,v 1.4 2007/05/07 21:51:06 mbrasher-public Exp $");

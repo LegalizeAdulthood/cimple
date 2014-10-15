@@ -84,6 +84,12 @@ set prev=
     set prev=
   )
 
+  if "%prev%" == "with-namespace" (
+    set with_namespace=%1
+    set found=1
+    set prev=
+  )
+
   ::
   :: Get option
   ::
@@ -150,6 +156,11 @@ set prev=
 
   if "%1" == "--with-schema" (
     set prev=with-schema
+    set found=1
+  )
+
+  if "%1" == "--with-namespace" (
+    set prev=with-namespace
     set found=1
   )
 
@@ -266,6 +277,7 @@ echo with_pegasus_env=%with_pegasus_env%
 echo with_cmpi=%with_cmpi%
 echo with_openwbem=%with_openwbem%
 echo with_schema=%with_schema%
+echo with_namespace=%with_namespace%
 echo enable_debug=%enable_debug%
 echo enable_static=%enable_static%
 :skip
@@ -296,6 +308,10 @@ if not "%enable_debug%" == "" (
 
 if not "%enable_static%" == "" (
     echo WIN_ENABLE_STATIC_OPT=TRUE>> config.options
+)
+
+if not "%with_namespace%" == "" (
+    echo WITH_NAMESPACE_OPT=%with_namespace%>> config.options
 )
 
 echo Created config.options

@@ -53,7 +53,7 @@ Enum_Instances_Status Super_Provider::enum_instances(
 }
 
 Create_Instance_Status Super_Provider::create_instance(
-    const Super* instance)
+    Super* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -73,4 +73,4 @@ Modify_Instance_Status Super_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Super/Super_Provider.cpp,v 1.8 2007/04/18 03:51:29 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Super/Super_Provider.cpp,v 1.9 2007/05/31 16:45:10 mbrasher-public Exp $");

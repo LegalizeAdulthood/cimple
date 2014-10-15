@@ -84,6 +84,14 @@ public:
         Enum_Associator_Names_Proc proc,
         void* client_data);
 
+    Enum_Associators_Status enum_associators(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associators_Proc proc,
+        void* client_data);
+
     Enum_References_Status enum_references(
         const Instance* instance,
         const Instance* model,
@@ -200,6 +208,27 @@ inline Get_Repository_Status Provider_Handle::get_repository(
     return (Get_Repository_Status)_proc(_registration,
         OPERATION_GET_REPOSITORY, 
         (void*)&meta_repository, 0, 0, 0, 0, 0, 0, 0);
+}
+
+inline Enum_Associators_Status Provider_Handle::enum_associators(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associators_Proc proc,
+    void* client_data)
+{
+    return (Enum_Associators_Status)_proc(
+        _registration,
+        OPERATION_ENUM_ASSOCIATORS,
+        _provider, 
+        (void*)instance, 
+        (void*)&result_class, 
+        (void*)&role, 
+        (void*)&result_role,
+        (void*)proc, 
+        (void*)client_data,
+        0);
 }
 
 CIMPLE_NAMESPACE_END

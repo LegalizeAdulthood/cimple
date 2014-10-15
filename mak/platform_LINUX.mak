@@ -96,7 +96,7 @@ ifdef CIMPLE_WERROR
   FLAGS += -Werror
 endif
 
-ifdef DEBUG_OPT
+ifdef ENABLE_DEBUG_OPT
   FLAGS += -g
 else
   FLAGS += -O2

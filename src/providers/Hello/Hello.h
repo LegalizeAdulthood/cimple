@@ -12,11 +12,14 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
+// Hello keys:
+//     Key
+
 class Hello : public Instance
 {
 public:
     // Hello features:
-    Property<String> Key; // KEY
+    Property<String> Key;
     Property<String> Message;
 
     CIMPLE_CLASS(Hello)

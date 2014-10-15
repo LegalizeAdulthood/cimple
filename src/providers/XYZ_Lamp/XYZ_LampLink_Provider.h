@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<XYZ_LampLink>* handler);
 
     Create_Instance_Status create_instance(
-	const XYZ_LampLink* instance);
+        XYZ_LampLink* instance);
 
     Delete_Instance_Status delete_instance(
 	const XYZ_LampLink* instance);
@@ -50,6 +50,15 @@ public:
 	const XYZ_LampLink* model,
 	const String& role,
 	Enum_References_Handler<XYZ_LampLink>* handler);
+
+    Enum_Associators_Status enum_associators(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associators_Handler<Instance>* handler);
+
+    /*@END@*/
 };
 
 CIMPLE_NAMESPACE_END

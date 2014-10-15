@@ -151,8 +151,7 @@ void print(CIMInstance& inst)
                 break;
 
             default:
-                printf("[%d]\n", prop.getType());
-                assert(0);
+                ;
         }
 
         cout << endl;
@@ -397,6 +396,31 @@ void unregister_module(
 
 //------------------------------------------------------------------------------
 //
+// get_PG_ProviderModule()
+//
+//------------------------------------------------------------------------------
+
+int get_PG_ProviderModule(
+    CIMClient& client,
+    const string& module_name,
+    CIMInstance& ci)
+{
+    try
+    {
+        char buf[1024];
+        sprintf(buf, "PG_ProviderModule.Name=\"%s\"", module_name.c_str());
+
+        ci = client.getInstance(REGISTRATION_NAMESPACE, CIMObjectPath(buf));
+        return 0;
+    }
+    catch (...)
+    {
+        return -1;
+    }
+}
+
+//------------------------------------------------------------------------------
+//
 // _isValidUser()
 //
 //------------------------------------------------------------------------------
@@ -405,6 +429,171 @@ bool _isValidUser(const string& user)
 {
     // ATTN: eventually implement this on Linux and Windows.
     return true;
+}
+
+//------------------------------------------------------------------------------
+//
+// make_PG_ProviderModule()
+//
+//------------------------------------------------------------------------------
+
+CIMInstance make_PG_ProviderModule(
+    const string& module_name,
+    const string& location)
+{
+    CIMInstance i("PG_ProviderModule");
+
+    i.addProperty(CIMProperty("Name", String(module_name.c_str())));
+    i.addProperty(CIMProperty("Vendor", String("Pegasus")));
+
+    String version;
+    String interface_version;
+
+    if (cmpi_opt)
+    {
+        version = "2.0.0";
+        interface_version = "2.0.0";
+    }
+    else
+    {
+        version = "2.5.0";
+        interface_version = "2.5.0";
+    }
+
+    i.addProperty(CIMProperty("Version", version));
+
+    if (cmpi_opt)
+    {
+        i.addProperty(CIMProperty("InterfaceType", String("CMPI")));
+    }
+    else if (pegasus_cxx_opt)
+    {
+        i.addProperty(CIMProperty(
+            "InterfaceType", String("C++Default")));
+    }
+    else
+        i.addProperty(CIMProperty("InterfaceType", String("CIMPLE")));
+
+    i.addProperty(CIMProperty("InterfaceVersion", interface_version));
+    i.addProperty(CIMProperty("Location", String(location.c_str())));
+
+    // Inject UserContext if any.
+
+    if (user_opt.size())
+    {
+        // PG_ProviderModule.UserContext:
+
+        Uint16 userContext;
+
+        if (user_opt == "@requestor")
+            userContext = USER_CONTEXT_REQUESTOR;
+        else if (user_opt == "@privileged")
+            userContext = USER_CONTEXT_PRIVILEGED;
+        else if (user_opt == "@cimserver")
+            userContext = USER_CONTEXT_CIMSERVER;
+        else
+            userContext = USER_CONTEXT_DESIGNATED;
+
+        i.addProperty(CIMProperty("UserContext", userContext));
+
+        // PG_ProviderModule.DesignatedUserContext:
+
+        if (userContext == USER_CONTEXT_DESIGNATED)
+        {
+            if (!_isValidUser(user_opt))
+            {
+                err("user given by -U not a valid system user: %s\n", 
+                    user_opt.c_str());
+            }
+
+            String designatedUserContext = user_opt.c_str();
+            i.addProperty(
+                CIMProperty("DesignatedUserContext", 
+                    designatedUserContext));
+        }
+    }
+
+    return i;
+}
+
+//------------------------------------------------------------------------------
+//
+// compatible_modules()
+//
+//------------------------------------------------------------------------------
+
+int compatible_property(CIMInstance& x, CIMInstance& y, const String& name)
+{
+    // Find xp:
+
+    CIMProperty xp;
+
+    try
+    {
+        xp = x.getProperty(x.findProperty(name));
+    }
+    catch(...)
+    {
+        return -1;
+    }
+
+    // Find yp:
+
+    CIMProperty yp;
+
+    try
+    {
+        yp = y.getProperty(y.findProperty(name));
+    }
+    catch(...)
+    {
+        return -1;
+    }
+
+    if (yp.getName() != xp.getName())
+        return -1;
+
+    if (yp.getValue() != xp.getValue())
+        return -1;
+
+    return 0;
+}
+
+int compatible_modules(CIMInstance& x, CIMInstance& y)
+{
+    if (compatible_property(x, y, "Name") != 0)
+        return -1;
+
+    if (compatible_property(x, y, "Vendor") != 0)
+        return -1;
+
+    if (compatible_property(x, y, "Version") != 0)
+        return -1;
+
+    if (compatible_property(x, y, "InterfaceType") != 0)
+        return -1;
+
+    if (compatible_property(x, y, "InterfaceVersion") != 0)
+        return -1;
+
+    if (compatible_property(x, y, "Location") != 0)
+        return -1;
+
+    if (user_opt.size())
+    {
+        if (compatible_property(x, y, "UserContext") != 0)
+            return -1;
+
+        if (user_opt != "@requestor" &&
+            user_opt != "@privileged" &&
+            user_opt != "@cimserver" &&
+            compatible_property(x, y, "DesignatedUserContext") != 0)
+        {
+            return -1;
+        }
+    }
+
+    return 0;
 }
 
 //------------------------------------------------------------------------------
@@ -445,97 +634,49 @@ void register_module(
         else
             location = short_lib_name;
 
-        unregister_module(client, module_name);
+        // Make instance of PG_ProviderModule.
+
+        CIMInstance pmi = make_PG_ProviderModule(module_name, location);
+
+        // If unregister option, unregister module and return now.
 
         if (unregister_opt)
-            return;
-
-        if (verbose_opt)
-            printf("=== Creating provider module instance\n");
-
         {
-            CIMInstance i("PG_ProviderModule");
+            unregister_module(client, module_name);
+            return;
+        }
 
+        // Modify or create PG_ProviderModule instance.
+
+        CIMInstance tci;
+
+        if (get_PG_ProviderModule(client, module_name, tci) == 0)
+        {
+            if (dump_opt)
+                print(pmi);
+            else if (compatible_modules(pmi, tci) == 0)
+            {
+                if (verbose_opt)
+                    printf("=== Using existing provider module instance\n");
+            }
+            else
+            {
+                if (verbose_opt)
+                    printf("=== Updating provider module instance\n");
+
+                unregister_module(client, module_name);
+                client.createInstance(REGISTRATION_NAMESPACE, pmi);
+            }
+        }
+        else
+        {
             if (verbose_opt)
-                printf("Creating PG_ProviderModule instance\n");
-
-            i.addProperty(CIMProperty("Name", String(module_name.c_str())));
-            i.addProperty(CIMProperty("Vendor", String("Pegasus")));
-
-            String version;
-            String interface_version;
-
-            if (cmpi_opt)
-            {
-                version = "2.0.0";
-                interface_version = "2.0.0";
-            }
-            else
-            {
-                version = "2.5.0";
-                interface_version = "2.5.0";
-            }
-
-            i.addProperty(CIMProperty("Version", version));
-
-            if (cmpi_opt)
-            {
-                i.addProperty(CIMProperty("InterfaceType", String("CMPI")));
-            }
-            else if (pegasus_cxx_opt)
-            {
-                i.addProperty(CIMProperty(
-                    "InterfaceType", String("C++Default")));
-            }
-            else
-                i.addProperty(CIMProperty("InterfaceType", String("CIMPLE")));
-
-            i.addProperty(CIMProperty("InterfaceVersion", interface_version));
-            i.addProperty(CIMProperty("Location", String(location.c_str())));
-
-            // Inject UserContext if any.
-
-            if (user_opt.size())
-            {
-                // PG_ProviderModule.UserContext:
-
-                Uint16 userContext;
-
-                if (user_opt == "@requestor")
-                    userContext = USER_CONTEXT_REQUESTOR;
-                else if (user_opt == "@privileged")
-                    userContext = USER_CONTEXT_PRIVILEGED;
-                else if (user_opt == "@cimserver")
-                    userContext = USER_CONTEXT_CIMSERVER;
-                else
-                    userContext = USER_CONTEXT_DESIGNATED;
-
-                i.addProperty(CIMProperty("UserContext", userContext));
-
-                // PG_ProviderModule.DesignatedUserContext:
-
-                if (userContext == USER_CONTEXT_DESIGNATED)
-                {
-                    if (!_isValidUser(user_opt))
-                    {
-                        err("user given by -U not a valid system user: %s\n", 
-                            user_opt.c_str());
-                    }
-
-                    String designatedUserContext = user_opt.c_str();
-                    i.addProperty(
-                        CIMProperty("DesignatedUserContext", 
-                            designatedUserContext));
-                }
-            }
-
-            // Dump.
+                printf("=== Creating provider module instance\n");
 
             if (dump_opt)
-                print(i);
-
-            if (!dump_opt)
-                client.createInstance(REGISTRATION_NAMESPACE, i);
+                print(pmi);
+            else
+                client.createInstance(REGISTRATION_NAMESPACE, pmi);
         }
     }
     catch (CIMException& e)
@@ -1583,8 +1724,14 @@ static void _load_class_deps(const char* lib_path, vector<string>& class_deps)
                 string name = str.substr(0, pos);
                 string value = str.substr(pos+1);
 
-                if (name == "CLASS_DEPENDENCY")
+                // Skip this in case debugger puts #define macro definitions
+                // into debugger info.
+
+                if (value.find("#CLASS;") == string::npos &&
+                    name == "CLASS_DEPENDENCY")
+                {
                     class_deps.push_back(value);
+                }
             }
         }
 
@@ -1599,8 +1746,12 @@ static void _load_class_deps(const char* lib_path, vector<string>& class_deps)
 //
 //------------------------------------------------------------------------------
 
+static const char* arg0;
+
 int main(int argc, char** argv)
 {
+    arg0 = argv[0];
+
     // Setup arg0 for warn() and err().
 
     set_arg0(argv[0]);
@@ -1666,14 +1817,14 @@ int main(int argc, char** argv)
         }
     }
 
-    argc -= optind - 1;
-    argv += optind - 1;
+    argc -= optind;
+    argv += optind;
 
     // check arguments.
 
-    if (argc != 2 || help_opt)
+    if (argc < 1 || help_opt)
     {
-        fprintf(stderr, (const char*)USAGE, argv[0]);
+        fprintf(stderr, (const char*)USAGE, arg0);
         exit(1);
     }
 
@@ -1682,9 +1833,13 @@ int main(int argc, char** argv)
     if (providing_namespaces.size() == 0)
         providing_namespaces.append(DEFAULT_PROVIDING_NAMESPACE);
 
-    const char* lib_path = argv[1];
+    const char* lib_path = argv[0];
 
     // Get class dependency list:
+
+    // ATTN: CIMPLE_CLASS_DEPENENCY macro scheme is broken in cross
+    // namespace provider case.
+
     static vector<string> class_deps;
     _load_class_deps(lib_path, class_deps);
 
@@ -1692,11 +1847,6 @@ int main(int argc, char** argv)
 
     cimple::Registration* module = load_module(
         lib_path, _meta_classes, _num_meta_classes);
-
-#if 0
-    for (size_t i = 0; i < num_meta_classes; i++)
-        printf("class[%s]\n", meta_classes[i]->name);
-#endif
 
     // If no modules in this library.
 
@@ -1709,9 +1859,28 @@ int main(int argc, char** argv)
     {
         for (cimple::Registration* p = module; p; p = p->next)
         {
+            // Skip class if not included in command line class list (if any).
+
+            if (argc > 1)
+            {
+                bool found = false;
+
+                for (int i = 1; i < argc; i++)
+                {
+                    if (strcasecmp(p->meta_class->name, argv[i]) == 0)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                    continue;
+            }
+
             for (size_t i = 0; i < providing_namespaces.size(); i++)
             {
-                // Create provided class.
+                // Validate and CREATE provided class.
 
                 validate_class(providing_namespaces[Uint32(i)], p->meta_class);
             }
@@ -1750,17 +1919,49 @@ int main(int argc, char** argv)
 
     string short_lib_name = shlib_basename(lib_path);
 
-    // Step #6: register provider module Pegasus repository.
+    // Step #6: register provider module in Pegasus repository.
 
     string module_name = module->module_name;
     register_module(lib_path, short_lib_name, module_name);
 
     // Step #7: register provider module Pegasus repository.
 
-    for (cimple::Registration* p = module; p; p = p->next)
-        register_provider(module_name, p->provider_name, p->meta_class);
+    if (argc == 1)
+    {
+        // Register all providers in the module.
+
+        for (cimple::Registration* p = module; p; p = p->next)
+            register_provider(module_name, p->provider_name, p->meta_class);
+    }
+    else
+    {
+        // Register selected providers in the module.
+
+        for (int i = 1; i < argc; i++)
+        {
+            cimple::Registration* reg = 0;
+
+            for (cimple::Registration* p = module; p; p = p->next)
+            {
+                if (strcasecmp(argv[i], p->meta_class->name) == 0)
+                {
+                    reg = p;
+                    break;
+                }
+            }
+
+            if (!reg)
+            {
+                err("Invalid class given as command line argument: %s. "
+                    "There is no provider for that class in %s.",
+                    argv[i], lib_path);
+            }
+
+            register_provider(module_name, reg->provider_name, reg->meta_class);
+        }
+    }
 
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/regmod/main.cpp,v 1.104 2007/04/12 14:48:48 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/regmod/main.cpp,v 1.108 2007/07/09 23:02:28 mbrasher-public Exp $");

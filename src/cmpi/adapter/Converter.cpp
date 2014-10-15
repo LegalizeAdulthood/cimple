@@ -111,6 +111,8 @@ const char* rc_to_str(CMPIrc rc)
             return "CMPI_RC_ERROR_SYSTEM";
         case CMPI_RC_ERROR:
             return "CMPI_RC_ERROR";
+        default:
+            return "CMPI_RC_ERR_FAILED";
     }
 
     return NULL;
@@ -1167,15 +1169,13 @@ CMPIrc make_method(
         {
             const Meta_Reference* mr = ((const Meta_Reference*)mf);
 
-            // Raise error if not a reference type.
-
-            if (!(data.type & CMPI_ref))
+            if ((data.state & CMPI_nullValue) || !(data.type & CMPI_ref))
             {
-                set_cmpi_error(CMPI_RC_ERR_FAILED, "type mismatch");
-                RETURN(CMPI_RC_ERR_FAILED);
+                // Ignore error since Pegasus/CMPI provider manager send
+                // the wrong type when null reference-arrays are passed
+                // from client.
             }
-
-            if (CMIsArray(data))
+            else if (CMIsArray(data))
             {
                 if (mr->subscript == 0)
                     RETURN(CMPI_RC_ERR_TYPE_MISMATCH);
@@ -1560,4 +1560,4 @@ CIMPLE_NAMESPACE_END
     2.  revisit filtering of return instances (use the model).
 */
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/Converter.cpp,v 1.36 2007/04/24 21:21:58 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/Converter.cpp,v 1.38 2007/07/04 22:02:33 mbrasher-public Exp $");

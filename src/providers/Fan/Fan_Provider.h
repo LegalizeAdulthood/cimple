@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<Fan>* handler);
 
     Create_Instance_Status create_instance(
-	const Fan* inst);
+        Fan* instance);
 
     Delete_Instance_Status delete_instance(
 	const Fan* inst);

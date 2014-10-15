@@ -32,7 +32,7 @@
 PEGASUS_USING_PEGASUS;
 PEGASUS_USING_STD;
 
-int main(int argc, char** argv)
+void test1()
 {
     try
     {
@@ -90,10 +90,53 @@ int main(int argc, char** argv)
         PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
         exit(1);
     }
+}
 
+void test2()
+{
+    try
+    {
+        CIMClient client;
+        client.connect("localhost", 5988, String::EMPTY, String::EMPTY);
+
+        // Define instance name:
+
+        CIMObjectPath instanceName("RefArray.key=1");
+
+        // Define input arguments:
+
+        Array<CIMParamValue> inParams;
+        Array<CIMParamValue> outParams;
+
+        // Invoke the method:
+
+        const String NAMESPACE = "root/cimv2";
+
+        CIMValue arr1_value(CIMTYPE_REFERENCE, true);
+        arr1_value.setNullValue(CIMTYPE_REFERENCE, true);
+        inParams.append(CIMParamValue("arr1", arr1_value));
+
+        CIMValue returnValue = client.invokeMethod(
+            NAMESPACE,
+            CIMObjectPath("RefArray.key=1"),
+            "SendRefArray",
+            inParams,
+            outParams);
+    }
+    catch(Exception& e)
+    {
+        PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
+        exit(1);
+    }
+}
+
+int main(int argc, char** argv)
+{
     PEGASUS_STD(cout) << "+++++ passed all tests" << PEGASUS_STD(endl);
+    test1();
+    test2();
 
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/SendRefArray/main.cpp,v 1.3 2007/03/16 21:21:38 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/RefArray/SendRefArray/main.cpp,v 1.6 2007/07/04 22:02:33 mbrasher-public Exp $");

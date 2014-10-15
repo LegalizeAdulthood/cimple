@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<ThingLink>* handler);
 
     Create_Instance_Status create_instance(
-	const ThingLink* instance);
+        ThingLink* instance);
 
     Delete_Instance_Status delete_instance(
 	const ThingLink* instance);
@@ -50,6 +50,15 @@ public:
 	const ThingLink* model,
 	const String& role,
 	Enum_References_Handler<ThingLink>* handler);
+
+    Enum_Associators_Status enum_associators(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associators_Handler<Instance>* handler);
+
+    /*@END@*/
 
 private:
 

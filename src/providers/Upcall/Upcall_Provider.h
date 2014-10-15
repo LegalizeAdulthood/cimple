@@ -29,7 +29,7 @@ public:
         Enum_Instances_Handler<Upcall>* handler);
 
     Create_Instance_Status create_instance(
-        const Upcall* instance);
+        Upcall* instance);
 
     Delete_Instance_Status delete_instance(
         const Upcall* instance);

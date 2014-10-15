@@ -29,7 +29,7 @@ public:
         Enum_Instances_Handler<Methods>* handler);
 
     Create_Instance_Status create_instance(
-        const Methods* instance);
+        Methods* instance);
 
     Delete_Instance_Status delete_instance(
         const Methods* instance);

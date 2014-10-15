@@ -66,7 +66,7 @@ Enum_Instances_Status PersonLink_Provider::enum_instances(
 }
 
 Create_Instance_Status PersonLink_Provider::create_instance(
-    const PersonLink* instance)
+    PersonLink* instance)
 {
     if (_map.find(instance) != size_t(-1))
         return CREATE_INSTANCE_DUPLICATE;
@@ -130,6 +130,18 @@ Enum_References_Status PersonLink_Provider::enum_references(
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
+Enum_Associators_Status PersonLink_Provider::enum_associators(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associators_Handler<Instance>* handler)
+{
+    return ENUM_ASSOCIATORS_UNSUPPORTED;
+}
+
+/*@END@*/
+
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/PersonLink_Provider.cpp,v 1.8 2007/04/18 03:29:40 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/PersonLink_Provider.cpp,v 1.9 2007/05/31 16:45:09 mbrasher-public Exp $");

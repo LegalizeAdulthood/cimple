@@ -43,6 +43,16 @@ const Meta_Class* find_meta_class(
     const Meta_Repository* meta_repository,
     const char* class_name);
 
+/* Returns 0 if #sub# is a subclass of #super# and 1 if not. Returns -1 if 
+   unable to find either of the named classes in the meta repository or if 
+   any of the pointers are null.
+*/
+CIMPLE_CIMPLE_LINKAGE
+int is_subclass(
+    const Meta_Repository* meta_repository,
+    const char* super,
+    const char* sub);
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_Meta_Repository_h */

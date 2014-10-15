@@ -12,9 +12,7 @@ DIRS = \
     cast \
     class \
     clone \
-    print
-
-XDIRS = \
+    print \
     datetime
 
 include $(TOP)/mak/rules.mak

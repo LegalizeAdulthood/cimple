@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<XYZ_Lamp>* handler);
 
     Create_Instance_Status create_instance(
-	const XYZ_Lamp* instance);
+        XYZ_Lamp* instance);
 
     Delete_Instance_Status delete_instance(
 	const XYZ_Lamp* instance);
@@ -43,6 +43,8 @@ public:
         const Property<String>& arg1,
         const Property<String>& arg2,
         Property<uint32>& return_value);
+
+    /*@END@*/
 };
 
 CIMPLE_NAMESPACE_END

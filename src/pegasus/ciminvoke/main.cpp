@@ -68,8 +68,9 @@ private:
     CString _cstr;
 };
 
+static
 CIMPLE_PRINTF_ATTR(1, 2)
-static void err(const char* format, ...)
+void err(const char* format, ...)
 {
     fputc('\n', stderr);
     va_list ap;

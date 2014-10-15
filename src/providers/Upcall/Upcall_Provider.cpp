@@ -95,7 +95,7 @@ Enum_Instances_Status Upcall_Provider::enum_instances(
 }
 
 Create_Instance_Status Upcall_Provider::create_instance(
-    const Upcall* instance)
+    Upcall* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -115,4 +115,4 @@ Modify_Instance_Status Upcall_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Upcall/Upcall_Provider.cpp,v 1.8 2007/04/18 03:51:30 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Upcall/Upcall_Provider.cpp,v 1.9 2007/05/31 16:45:10 mbrasher-public Exp $");

@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<LampLink>* handler);
 
     Create_Instance_Status create_instance(
-	const LampLink* instance);
+        LampLink* instance);
 
     Delete_Instance_Status delete_instance(
 	const LampLink* instance);
@@ -44,6 +44,13 @@ public:
 	const String& role,
 	const String& result_role,
 	Enum_Associator_Names_Handler<Instance>* handler);
+
+    Enum_Associators_Status enum_associators(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associators_Handler<Instance>* handler);
 
     Enum_References_Status enum_references(
 	const Instance* instance,

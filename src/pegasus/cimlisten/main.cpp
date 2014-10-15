@@ -1,4 +1,5 @@
 #include <cassert>
+#include <getopt.h>
 #include <cimple/Time.h>
 #include <Pegasus/Common/Config.h>
 #include <Pegasus/Client/CIMClient.h>

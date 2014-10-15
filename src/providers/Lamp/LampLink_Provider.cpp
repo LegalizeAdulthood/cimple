@@ -2,7 +2,7 @@
 #include "Lamp.h"
 
 #if 0
-# define CIMPLE_TRACE
+# define TRACE CIMPLE_TRACE
 #else
 # define TRACE
 #endif
@@ -68,7 +68,7 @@ Enum_Instances_Status LampLink_Provider::enum_instances(
 }
 
 Create_Instance_Status LampLink_Provider::create_instance(
-    const LampLink* instance)
+    LampLink* instance)
 {
     TRACE;
     return CREATE_INSTANCE_UNSUPPORTED;
@@ -100,6 +100,82 @@ Enum_Associator_Names_Status LampLink_Provider::enum_associator_names(
     return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
 }
 
+Enum_Associators_Status LampLink_Provider::enum_associators(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associators_Handler<Instance>* handler)
+{
+    TRACE;
+
+    // The source must always be "Lamp".
+
+    Lamp* source = cast<Lamp*>(instance);
+
+    if (!source)
+        return ENUM_ASSOCIATORS_FAILED;
+
+    // The result class must be "Lamp" too.
+
+    if (result_class.size() && result_class != "Lamp")
+        return ENUM_ASSOCIATORS_FAILED;
+
+    // Handle the "left" to "right" role.
+
+    if ((eqi(role, "left") || role.empty()) &&
+        (eqi(result_role, "right") || result_role.empty()))
+    {
+        if (source->model.value == "A")
+        {
+            Lamp* target = Lamp::create(true);
+            target->model.set("B");
+            target->vendor.set("US Lighting");
+            target->wattage.set(400);
+            target->color.set("Blue");
+            handler->handle(target);
+        }
+
+        if (source->model.value == "B")
+        {
+            Lamp* target = Lamp::create(true);
+            target->model.set("A");
+            target->vendor.set("Euro Lamps Inc");
+            target->wattage.set(300);
+            target->color.set("Silver");
+            handler->handle(target);
+        }
+    }
+
+    // Handle the "right" to "left" role.
+
+    if ((eqi(role, "right") || role.empty()) &&
+        (eqi(result_role, "left") || result_role.empty()))
+    {
+        if (source->model.value == "A")
+        {
+            Lamp* target = Lamp::create(true);
+            target->model.set("B");
+            target->vendor.set("US Lighting");
+            target->wattage.set(400);
+            target->color.set("Blue");
+            handler->handle(target);
+        }
+
+        if (source->model.value == "B")
+        {
+            Lamp* target = Lamp::create(true);
+            target->model.set("A");
+            target->vendor.set("Euro Lamps Inc");
+            target->wattage.set(300);
+            target->color.set("Silver");
+            handler->handle(target);
+        }
+    }
+
+    return ENUM_ASSOCIATORS_OK;
+}
+
 Enum_References_Status LampLink_Provider::enum_references(
     const Instance* instance,
     const LampLink* model,
@@ -112,4 +188,4 @@ Enum_References_Status LampLink_Provider::enum_references(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampLink_Provider.cpp,v 1.9 2007/04/18 03:51:27 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/LampLink_Provider.cpp,v 1.13 2007/06/01 16:49:59 mbrasher-public Exp $");

@@ -1,4 +1,4 @@
-Usage: %s [-cvh] provider-module-library
+Usage: %s [-cvh] provider-module-library [classname...]
 
 Where:
     -V           : print the version
@@ -16,16 +16,24 @@ Where:
     -h           : print this help text
 
 Synopsis:
-    This utility registers (or unregisters) all providers contained in a
-    CIMPLE provider module library, with the Pegasus CIMOM. Registration 
-    performs the following steps:
+    This utility registers (or unregisters) one more more providers contained 
+    in a CIMPLE provider module library, with the Pegasus CIMOM. There are two
+    forms for registering providers. The following registers ALL providers
+    contained in the provider module library.
 
-    1.  Checks to see if PEGASUS_HOME is defined.
-    2.  Checks to see if the Pegasus repository exists.
-    3.  Validates the module library by loading it.
-    4.  Checks compatiblity between provider classes and Pegasus classes.
-    5.  Creates provider classes in Pegasus repository if they do not exist.
-    6.  Registers all providers in the module with the Pegasus repository
+        $ regmod [OPTIONS] provider-module-library
+
+    Alternatively, the following registers only providers for the classes
+    explicitly listed after the provider module library.
+
+        $ regmod [OPTIONS] provider-module-library classname...
+
+    This utility performs the following steps:
+
+    1.  Validates the module library by loading it.
+    2.  Checks compatiblity between provider classes and Pegasus classes.
+    3.  Creates provider classes in Pegasus repository if they do not exist.
+    4.  Registers all providers in the module with the Pegasus repository
 
     There are three ways to unregister:
 

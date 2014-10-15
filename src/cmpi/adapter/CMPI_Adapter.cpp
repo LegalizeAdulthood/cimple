@@ -39,6 +39,13 @@
 
 #define FL __FILE__, __LINE__
 
+// Export cimple_cmpi_adapter() only for shared library.
+#ifdef CIMPLE_STATIC
+# define CIMPLE_ADAPTER_LINKAGE CIMPLE_HIDE
+#else
+# define CIMPLE_ADAPTER_LINKAGE CIMPLE_EXPORT
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
 //------------------------------------------------------------------------------
@@ -1246,7 +1253,59 @@ CMPIStatus CMPI_Adapter::associationCleanup(
 //
 //------------------------------------------------------------------------------
 
-namespace associators
+namespace associators1
+{
+    struct Data
+    {
+        const CMPIBroker* broker;
+        const CMPIContext* context;
+        const CMPIResult* result;
+        const char* name_space;
+        const char** properties;
+        CMPIrc rc;
+    };
+
+    static bool _proc(
+        const Instance* cimple_inst, 
+        Enum_Associators_Status status, 
+        void* client_data)
+    {
+        Data* data = (Data*)client_data;
+
+        if (!cimple_inst)
+            return false;
+
+        // Ignore if an error was already encountered.
+
+        if (data->rc != CMPI_RC_OK)
+            return false;
+
+        // Convert to a CMPI instance.
+
+        CMPIInstance* cmpi_inst = 0;
+
+        data->rc = make_cmpi_instance(
+            data->broker, 
+            cimple_inst, 
+            data->name_space,
+            0,
+            cmpi_inst); 
+
+        if (data->rc != CMPI_RC_OK)
+        {
+            data->rc = CMPI_RC_ERR_FAILED;
+            return false;
+        }
+
+        // Deliver instance to requestor:
+
+        CMReturnInstance(data->result, cmpi_inst);
+
+        return true;
+    }
+}
+
+namespace associators2
 {
     struct Data
     {
@@ -1348,36 +1407,66 @@ CMPIStatus CMPI_Adapter::associators(
         CMReturn(rc);
     }
 
-    // Invoke the provider:
-
-    associators::Data data = { adapter->broker, 
-        context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
-
-    Enum_Associator_Names_Status status = adapter->enum_associator_names(
-        cimple_ref,
-        result_class,
-        role,
-        result_role,
-        associators::_proc,
-        &data);
-
-    switch (status)
+    // First try enum_associators().
     {
-        case ENUM_ASSOCIATOR_NAMES_OK:
-            adapter->ret(FL, "associators", CMPI_RC_OK);
-            CMReturn(CMPI_RC_OK);
+        associators2::Data data = { adapter->broker, 
+            context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
 
-        case ENUM_ASSOCIATOR_NAMES_FAILED:
-            adapter->ret(FL, "associators", CMPI_RC_ERR_FAILED);
-            CMReturn(CMPI_RC_ERR_FAILED);
+        Enum_Associators_Status status = adapter->enum_associators(
+            cimple_ref,
+            result_class,
+            role,
+            result_role,
+            associators1::_proc,
+            &data);
 
-        case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
-            adapter->ret(FL, "associators", CMPI_RC_ERR_NOT_SUPPORTED);
-            CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+        switch (status)
+        {
+            case ENUM_ASSOCIATORS_OK:
+                adapter->ret(FL, "associators", CMPI_RC_OK);
+                CMReturn(CMPI_RC_OK);
+
+            case ENUM_ASSOCIATORS_FAILED:
+                adapter->ret(FL, "associators", CMPI_RC_ERR_FAILED);
+                CMReturn(CMPI_RC_ERR_FAILED);
+
+            case ENUM_ASSOCIATORS_UNSUPPORTED:
+                // Fall through to case below.
+                break;
+        }
     }
 
-    adapter->ret(FL, "associators", CMPI_RC_OK);
-    CMReturn(CMPI_RC_OK);
+    // Next try enum_associator_names().
+    {
+        associators2::Data data = { adapter->broker, 
+            context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
+
+        Enum_Associator_Names_Status status = adapter->enum_associator_names(
+            cimple_ref,
+            result_class,
+            role,
+            result_role,
+            associators2::_proc,
+            &data);
+
+        switch (status)
+        {
+            case ENUM_ASSOCIATOR_NAMES_OK:
+                adapter->ret(FL, "associators", CMPI_RC_OK);
+                CMReturn(CMPI_RC_OK);
+
+            case ENUM_ASSOCIATOR_NAMES_FAILED:
+                adapter->ret(FL, "associators", CMPI_RC_ERR_FAILED);
+                CMReturn(CMPI_RC_ERR_FAILED);
+
+            case ENUM_ASSOCIATOR_NAMES_UNSUPPORTED:
+                adapter->ret(FL, "associators", CMPI_RC_ERR_NOT_SUPPORTED);
+                CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
+        }
+
+        adapter->ret(FL, "associators", CMPI_RC_OK);
+        CMReturn(CMPI_RC_OK);
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -1835,7 +1924,7 @@ CIMPLE_NAMESPACE_END
 
 using namespace cimple;
 
-extern "C" CIMPLE_EXPORT int cimple_cmpi_adapter(
+extern "C" CIMPLE_ADAPTER_LINKAGE int cimple_cmpi_adapter(
     void* arg0, /* provider-interface */
     void* arg1, /* static-data */
     void* arg2, /* registration */
@@ -1971,4 +2060,4 @@ void CMPI_Adapter::trc(
 #endif
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/CMPI_Adapter.cpp,v 1.61 2007/04/24 20:51:56 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cmpi/adapter/CMPI_Adapter.cpp,v 1.64 2007/07/19 21:30:38 mbrasher-public Exp $");

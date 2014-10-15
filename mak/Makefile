@@ -29,3 +29,4 @@ vars:
 	@ echo RPATH{$(RPATH)}
 	@ echo LDPATH{$(LDPATH)}
 	@ echo LD_LIBRARY_PATH{$(LD_LIBRARY_PATH)}
+	@ echo WITH_NAMESPACE_OPT{$(WITH_NAMESPACE_OPT)}

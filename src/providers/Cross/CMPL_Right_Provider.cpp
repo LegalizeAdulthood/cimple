@@ -39,7 +39,7 @@ Enum_Instances_Status CMPL_Right_Provider::enum_instances(
 }
 
 Create_Instance_Status CMPL_Right_Provider::create_instance(
-    const CMPL_Right* instance)
+    CMPL_Right* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -59,4 +59,4 @@ Modify_Instance_Status CMPL_Right_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Right_Provider.cpp,v 1.4 2007/04/18 03:51:25 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/Attic/CMPL_Right_Provider.cpp,v 1.5 2007/05/31 16:45:08 mbrasher-public Exp $");

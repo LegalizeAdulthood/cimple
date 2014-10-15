@@ -89,15 +89,24 @@ ifneq ($(WITH_PEGASUS_OPT),)
     CIMCLI=$(wildcard $(WITH_PEGASUS_OPT)/sbin/cimcli)
   endif
 
+  ifeq ($(CIMCLI),)
+    CIMCLI=$(wildcard $(WITH_PEGASUS_OPT)/bin/CLI.exe)
+  endif
+
+  ifeq ($(CIMCLI),)
+    CIMCLI=$(wildcard $(WITH_PEGASUS_OPT)/bin/cimcli.exe)
+  endif
+
+
 endif
 
 ##==============================================================================
 ##
-## DEBUG_OPT
+## ENABLE_DEBUG_OPT
 ##
 ##==============================================================================
 
-ifdef DEBUG_OPT
+ifdef ENABLE_DEBUG_OPT
   DEFINES += -DCIMPLE_DEBUG
 endif
 

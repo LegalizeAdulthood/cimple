@@ -45,7 +45,7 @@ Enum_Instances_Status LinuxComputerSystem_Provider::enum_instances(
 }
 
 Create_Instance_Status LinuxComputerSystem_Provider::create_instance(
-    const LinuxComputerSystem* instance)
+    LinuxComputerSystem* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -84,4 +84,4 @@ Invoke_Method_Status LinuxComputerSystem_Provider::SetPowerState(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/LinuxComputerSystem/LinuxComputerSystem_Provider.cpp,v 1.21 2007/04/18 03:29:38 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/LinuxComputerSystem/LinuxComputerSystem_Provider.cpp,v 1.22 2007/05/31 16:45:09 mbrasher-public Exp $");

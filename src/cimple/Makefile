@@ -6,6 +6,9 @@ INSTALL=1
 LIBRARY = cimple
 
 SOURCES = \
+    octets.cpp \
+    Provider2.cpp \
+    Exception.cpp \
     config.cpp \
     Tracer.cpp \
     ptr_array.cpp \
@@ -38,7 +41,8 @@ SOURCES = \
     Strings.cpp \
     Type.cpp \
     Property.cpp \
-    Hnd.cpp \
+    Handle.cpp \
+    Reference.cpp \
     TSD.cpp
 
 DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
@@ -68,7 +72,8 @@ INSTALL_HEADERS = \
     Error.h \
     flags.h \
     flavor.h \
-    Hnd.h \
+    Handle.h \
+    Reference.h \
     Instance.h \
     Instance_Map.h \
     io.h \
@@ -110,6 +115,3 @@ INSTALL_HEADERS = \
     Type.h
 
 include $(TOP)/mak/rules.mak
-
-zzz:
-	echo $(STATIC_CXX)

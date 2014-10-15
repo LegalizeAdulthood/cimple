@@ -8,6 +8,16 @@ Enum_Associator_Names_Status <CLASS>_Provider::enum_associator_names(
     return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
 }
 
+Enum_Associators_Status <CLASS>_Provider::enum_associators(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associators<Instance>* handler)
+{
+    return ENUM_ASSOCIATORS_UNSUPPORTED;
+}
+
 Enum_References_Status <CLASS>_Provider::enum_references(
     const Instance* instance,
     const <CLASS>* model,

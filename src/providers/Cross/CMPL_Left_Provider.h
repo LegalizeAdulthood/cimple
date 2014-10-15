@@ -29,7 +29,7 @@ public:
         Enum_Instances_Handler<CMPL_Left>* handler);
 
     Create_Instance_Status create_instance(
-        const CMPL_Left* instance);
+        CMPL_Left* instance);
 
     Delete_Instance_Status delete_instance(
         const CMPL_Left* instance);

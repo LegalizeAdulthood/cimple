@@ -35,7 +35,7 @@ Enum_Instances_Status XYZ_Lamp_Provider::enum_instances(
 }
 
 Create_Instance_Status XYZ_Lamp_Provider::create_instance(
-    const XYZ_Lamp* instance)
+    XYZ_Lamp* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -62,6 +62,8 @@ Invoke_Method_Status XYZ_Lamp_Provider::foo(
     return INVOKE_METHOD_UNSUPPORTED;
 }
 
+/*@END@*/
+
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_Lamp_Provider.cpp,v 1.6 2007/04/18 03:51:31 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_Lamp_Provider.cpp,v 1.7 2007/05/31 16:45:10 mbrasher-public Exp $");

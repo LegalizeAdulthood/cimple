@@ -28,15 +28,17 @@ public:
         const Person* model, 
         Enum_Instances_Handler<Person>* handler);
 
-    Create_Instance_Status create_instance(
-        const Person* inst);
-
     Delete_Instance_Status delete_instance(
         const Person* inst);
 
     Modify_Instance_Status modify_instance(
         const Person* model,
         const Person* instance);
+
+    Create_Instance_Status create_instance(
+        Person* instance);
+
+    /*@END@*/
 
 private:
     Instance_Map<Person> _map;

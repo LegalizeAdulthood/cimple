@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<CIM_DiskDrive>* handler);
 
     Create_Instance_Status create_instance(
-	const CIM_DiskDrive* instance);
+        CIM_DiskDrive* instance);
 
     Delete_Instance_Status delete_instance(
 	const CIM_DiskDrive* instance);

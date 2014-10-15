@@ -34,14 +34,14 @@
 #define CIMPLE_HAVE_ZU
 
 #if (__GNUC__ >= 4)
-# define CIMPLE_HIDE __attribute__((visibility("hidden")))
 # define CIMPLE_EXPORT __attribute__((visibility("default")))
 # define CIMPLE_IMPORT __attribute__((visibility("default")))
 #else
-# define CIMPLE_HIDE /* empty */
 # define CIMPLE_EXPORT /* empty */
 # define CIMPLE_IMPORT /* empty */
 #endif
+
+#define CIMPLE_HIDE __attribute__((visibility("hidden")))
 
 #define CIMPLE_UINT64 unsigned long long
 

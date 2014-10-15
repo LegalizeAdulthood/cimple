@@ -47,7 +47,7 @@ Enum_Instances_Status CMPL_Cross_Provider::enum_instances(
 }
 
 Create_Instance_Status CMPL_Cross_Provider::create_instance(
-    const CMPL_Cross* instance)
+    CMPL_Cross* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -84,6 +84,18 @@ Enum_References_Status CMPL_Cross_Provider::enum_references(
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
+Enum_Associators_Status CMPL_Cross_Provider::enum_associators(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associators_Handler<Instance>* handler)
+{
+    return ENUM_ASSOCIATORS_UNSUPPORTED;
+}
+
+/*@END@*/
+
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/CMPL_Cross_Provider.cpp,v 1.3 2007/04/18 03:28:50 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Cross/Attic/CMPL_Cross_Provider.cpp,v 1.4 2007/05/31 16:45:08 mbrasher-public Exp $");

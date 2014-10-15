@@ -1,0 +1,11 @@
+class DualNamespace1
+{
+    [Key]
+    uint32 Key;
+};
+
+class DualNamespace2
+{
+    [Key]
+    uint32 Key;
+};

@@ -29,7 +29,7 @@ public:
         Enum_Instances_Handler<CMPL_Cross>* handler);
 
     Create_Instance_Status create_instance(
-        const CMPL_Cross* instance);
+        CMPL_Cross* instance);
 
     Delete_Instance_Status delete_instance(
         const CMPL_Cross* instance);
@@ -50,6 +50,15 @@ public:
         const CMPL_Cross* model,
         const String& role,
         Enum_References_Handler<CMPL_Cross>* handler);
+
+    Enum_Associators_Status enum_associators(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associators_Handler<Instance>* handler);
+
+    /*@END@*/
 };
 
 CIMPLE_NAMESPACE_END

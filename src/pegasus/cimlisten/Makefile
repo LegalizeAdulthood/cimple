@@ -16,8 +16,4 @@ LIBRARIES = \
 
 include $(TOP)/mak/pegasus.mak
 include $(TOP)/mak/rules.mak
-
-live:
-	$(TARGET)
-
 include ../check-pegasus.mak

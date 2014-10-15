@@ -51,6 +51,13 @@ public:
         const String& role,
         Enum_References_Handler<ComputerSystemDiskDrive>* handler);
 
+    Enum_Associators_Status enum_associators(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associators_Handler<Instance>* handler);
+
     /*@END@*/
 };
 

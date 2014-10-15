@@ -35,7 +35,7 @@ Enum_Instances_Status XYZ_LampLink_Provider::enum_instances(
 }
 
 Create_Instance_Status XYZ_LampLink_Provider::create_instance(
-    const XYZ_LampLink* instance)
+    XYZ_LampLink* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -72,6 +72,18 @@ Enum_References_Status XYZ_LampLink_Provider::enum_references(
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
+Enum_Associators_Status XYZ_LampLink_Provider::enum_associators(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associators_Handler<Instance>* handler)
+{
+    return ENUM_ASSOCIATORS_UNSUPPORTED;
+}
+
+/*@END@*/
+
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampLink_Provider.cpp,v 1.6 2007/04/18 03:51:31 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/XYZ_Lamp/XYZ_LampLink_Provider.cpp,v 1.7 2007/05/31 16:45:10 mbrasher-public Exp $");

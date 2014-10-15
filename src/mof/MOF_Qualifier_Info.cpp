@@ -214,9 +214,29 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
             (qi->flavor & MOF_FLAVOR_DISABLEOVERRIDE) &&
             !MOF_Literal::identical(q->params, qi->qualifier->params))
         {
-            MOF_error_printf(
-                "attempt to override non-overridable qualifier: %s", 
-                q->name);
+            char context[1024];
+            *context = '\0';
+
+            if (class_name)
+            {
+                strcat(context, class_name);
+
+                if (feature_name)
+                {
+                    strcat(context, ".");
+                    strcat(context, feature_name);
+
+                    if (param_name)
+                    {
+                        strcat(context, "().");
+                        strcat(context, param_name);
+                    }
+                }
+            }
+
+            MOF_error_printf("attempt to override non-overridable qualifier "
+                "(%s) on %s", 
+                q->name, context);
         }
 
         /*
@@ -293,4 +313,4 @@ void MOF_Qualifier_Info::print_list(size_t nesting) const
         p->print(nesting);
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier_Info.cpp,v 1.6 2007/03/07 18:57:15 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Qualifier_Info.cpp,v 1.8 2007/06/15 14:03:15 mbrasher-public Exp $");

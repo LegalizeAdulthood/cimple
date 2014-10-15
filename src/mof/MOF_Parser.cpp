@@ -47,7 +47,23 @@ FILE* MOF_open_file(const char* path, string& full_path)
     full_path.erase(full_path.begin(), full_path.end());
 
     if (*path == '/')
+    {
+        full_path = path;
         return fopen(path, "rb");
+    }
+
+#ifdef MOF_WINDOWS
+    // Check for drive letter:
+    {
+
+        const char* p = path;
+        if (isalpha(p[0]) && p[1] == ':' && (p[2] == '/' || p[2] == '\\'))
+        {
+            full_path = path;
+            return fopen(path, "rb");
+        }
+    }
+#endif
 
     for (size_t i = 0; i < MOF_num_include_paths; i++)
     {
@@ -93,4 +109,4 @@ int MOF_parse_file(const char* mof_file)
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parser.cpp,v 1.8 2007/03/29 22:02:01 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/mof/MOF_Parser.cpp,v 1.9 2007/06/19 18:28:43 mbrasher-public Exp $");

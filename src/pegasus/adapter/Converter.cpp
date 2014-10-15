@@ -1062,15 +1062,25 @@ static Instance* _make_cimple_instance(
 
                 Pegasus::Array<P_CIMObjectPath> x;
 
-                try
+                if (v.isNull() || v.getType() != Pegasus::CIMTYPE_REFERENCE)
                 {
-                    v.get(x);
+                    // Ignore type since there is a bug in Pegasus that
+                    // sends null-boolean values instead of null-reference 
+                    // arrays.
                 }
-                catch (...)
+                else
                 {
-                    CIMPLE_ERROR(("type mismatch on ref feature %s", mf->name));
-                    destroy(instance);
-                    return 0;
+                    try
+                    {
+                        v.get(x);
+                    }
+                    catch (...)
+                    {
+                        CIMPLE_ERROR(
+                            ("type mismatch on ref feature %s", mf->name));
+                        destroy(instance);
+                        return 0;
+                    }
                 }
 
                 for (P_Uint32 i = 0; i < x.size(); i++)
@@ -1594,4 +1604,4 @@ int Converter::to_pegasus_method(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Converter.cpp,v 1.42 2007/04/17 19:45:11 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Converter.cpp,v 1.43 2007/07/04 22:02:33 mbrasher-public Exp $");

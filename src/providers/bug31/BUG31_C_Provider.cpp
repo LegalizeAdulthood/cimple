@@ -36,7 +36,7 @@ Enum_Instances_Status BUG31_C_Provider::enum_instances(
 }
 
 Create_Instance_Status BUG31_C_Provider::create_instance(
-    const BUG31_C* instance)
+    BUG31_C* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -98,4 +98,4 @@ Invoke_Method_Status BUG31_C_Provider::meth(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_C_Provider.cpp,v 1.6 2007/04/18 03:51:31 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/bug31/BUG31_C_Provider.cpp,v 1.7 2007/05/31 16:45:11 mbrasher-public Exp $");

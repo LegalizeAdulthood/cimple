@@ -1,0 +1,2 @@
+To use CIMPLE with an OpenPegasus source distribution, install directly into 
+the PEGASUS_HOME directory.

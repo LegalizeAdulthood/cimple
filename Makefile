@@ -15,8 +15,8 @@ check:
 	$(MAKE) tests
 
 distclean: clean
-	$(RM) config.options
-	$(RM) src/cimple/options.h
+	$(call rm,config.options)
+	$(call rm,src/cimple/options.h)
 	$(call rmdirhier,$(LIBDIR))
 	$(call rmdirhier,$(BINDIR))
 
@@ -56,7 +56,7 @@ run:
 	$(MAKE) regmod
 	$(MAKE) live
 
-regress: clean all
+regress:
 	$(MAKE) stop_cimserver
 	$(MAKE) prepare
 	$(MAKE) start_cimserver
@@ -64,6 +64,8 @@ regress: clean all
 	$(MAKE) stop_cimserver
 	$(ECHONL)
 	$(ECHO) "==== Regression suite passed"
+
+world: clean all regress
 
 ##==============================================================================
 ##
@@ -73,9 +75,9 @@ regress: clean all
 
 MAJOR=1
 MINOR=0
-REVSION=0
-VERSION=$(MAJOR).$(MINOR).$(REVSION)
-TAG=cimple_$(MAJOR)_$(MINOR)_$(REVSION)
+REVISION=18
+VERSION=$(MAJOR).$(MINOR).$(REVISION)
+TAG=cimple_$(MAJOR)_$(MINOR)_$(REVISION)
 
 tag:
 	@ cvs tag -F $(TAG) > /dev/null

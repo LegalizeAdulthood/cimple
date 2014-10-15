@@ -28,6 +28,7 @@
 #include <cctype>
 #include <cimple/String.h>
 #include <cimple/Array.h>
+#include <cimple/octets.h>
 
 using namespace cimple;
 
@@ -456,7 +457,41 @@ int main(int argc, char** argv)
         printf("+++++ passed all tests (%s)\n", argv[0]);
     }
 
+    // Octet string testing.
+    {
+        String s = octets_to_string(0, 0);
+        assert(s == "0x00000004");
+        assert(string_to_octets(s, 0, 0) == 0);
+    }
+    {
+        unsigned char data1[] = { 1, 2, 3, 4 };
+        String s = octets_to_string(data1, sizeof(data1));
+        assert(s == "0x0000000801020304");
+
+        assert(string_to_octets(s, 0, 0) == 4);
+        unsigned char data2[4] = { 0, 0, 0, 0 };
+        ssize_t n = string_to_octets(s, data2, sizeof(data2));
+        assert(n == sizeof(data1));
+
+        assert(memcmp(data1, data2, sizeof(data1)) == 0);
+    }
+    {
+        unsigned char data1[] = { 1, 2, 3, 4, 5, 6 };
+        String s = octets_to_string(data1, sizeof(data1));
+        assert(s == "0x0000000A010203040506");
+        assert(string_to_octets(s, 0, 0) == 6);
+        unsigned char data2[] = { 0, 0, 0, 0, 0, 0 };
+        ssize_t n = string_to_octets(s, data2, sizeof(data2));
+        assert(n == 6);
+        assert(memcmp(data1, data2, sizeof(data1)) == 0);
+
+        Array<uint8> arr;
+        assert(string_to_octets(s, arr) != -1);
+        assert(memcmp(data1, arr.data(), sizeof(data1)) == 0);
+        assert(arr.size() == sizeof(data1));
+    }
+
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/string/test_string.cpp,v 1.15 2007/03/07 20:18:13 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/string/test_string.cpp,v 1.17 2007/06/27 00:12:33 mbrasher-public Exp $");

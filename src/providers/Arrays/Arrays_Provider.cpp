@@ -48,7 +48,7 @@ Enum_Instances_Status Arrays_Provider::enum_instances(
 }
 
 Create_Instance_Status Arrays_Provider::create_instance(
-    const Arrays* instance)
+    Arrays* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -70,4 +70,4 @@ Modify_Instance_Status Arrays_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Arrays/Arrays_Provider.cpp,v 1.6 2007/04/18 03:28:48 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Arrays/Arrays_Provider.cpp,v 1.7 2007/05/31 16:45:06 mbrasher-public Exp $");

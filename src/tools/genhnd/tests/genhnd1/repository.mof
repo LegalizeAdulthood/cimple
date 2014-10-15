@@ -1,0 +1,13 @@
+[Association]
+class Assoc
+{
+   [Key] CIM_Job REF Left;
+   [Key] CIM_Job REF Right;
+};
+
+[Association]
+class ConcreteAssoc : Assoc
+{
+   [Key] CIM_ConcreteJob REF Left;
+   [Key] CIM_ConcreteJob REF Right;
+};

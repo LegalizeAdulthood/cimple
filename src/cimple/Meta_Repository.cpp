@@ -51,6 +51,27 @@ const Meta_Class* find_meta_class(
     return 0;
 }
 
+int is_subclass(
+    const Meta_Repository* meta_repository,
+    const char* super,
+    const char* sub)
+{
+    if (!meta_repository || !super || !sub)
+        return -1;
+
+    const Meta_Class* super_mc = find_meta_class(meta_repository, super);
+
+    if (!super_mc)
+        return -1;
+
+    const Meta_Class* sub_mc = find_meta_class(meta_repository, sub);
+
+    if (!sub_mc)
+        return -1;
+
+    return is_subclass(super_mc, sub_mc) ? 0 : 1;
+}
+
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Repository.cpp,v 1.6 2007/03/07 18:41:15 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Meta_Repository.cpp,v 1.7 2007/07/04 17:54:43 mbrasher-public Exp $");

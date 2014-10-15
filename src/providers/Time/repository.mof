@@ -1,0 +1,5 @@
+class CMPL_Time
+{
+    [Static] uint32 SetTime([In] datetime Time);
+    [Static] uint32 GetTime([In(false), Out] datetime Time);
+};

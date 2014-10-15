@@ -94,7 +94,7 @@ AR = link
 
 FLAGS = -EHsc -GR -W3 -MD
 
-ifdef DEBUG_OPT
+ifdef ENABLE_DEBUG_OPT
   FLAGS += -Od -Zi
 else
   FLAGS += -O2
@@ -126,7 +126,7 @@ OBJ = .obj
 
 LINK_FLAGS += -nologo -dll
 
-ifdef DEBUG_OPT
+ifdef ENABLE_DEBUG_OPT
   LINK_FLAGS += -debug
 endif
 

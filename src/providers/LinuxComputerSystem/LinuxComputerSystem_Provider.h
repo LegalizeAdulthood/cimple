@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<LinuxComputerSystem>* handler);
 
     Create_Instance_Status create_instance(
-	const LinuxComputerSystem* instance);
+        LinuxComputerSystem* instance);
 
     Delete_Instance_Status delete_instance(
 	const LinuxComputerSystem* instance);

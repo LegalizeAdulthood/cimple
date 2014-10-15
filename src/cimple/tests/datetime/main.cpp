@@ -30,6 +30,12 @@
 
 using namespace cimple;
 
+void check_datetime(const char* str)
+{
+    Datetime dt(str);
+    assert(strcmp(str, dt.ascii().c_str()) == 0);
+}
+
 int main(int arc, char** argv)
 {
     {
@@ -52,9 +58,9 @@ int main(int arc, char** argv)
             year, month, day, hours, minutes, seconds, microseconds, utc);
 
         char buffer2[Datetime::BUFFER_SIZE];
-        sprintf(buffer2, "%04d%02d%02d%02d%02d%02d.%06d%c%03d",
+        sprintf(buffer2, "%04d%02d%02d%02d%02d%02d.%06d%s%03d",
             year, month, day, hours, minutes, seconds, microseconds, 
-            utc < 0 ? '-' : '+', utc);
+            utc < 0 ? "" : "+", utc);
 
         assert(strcmp(buffer1, buffer2) == 0);
 
@@ -69,7 +75,6 @@ int main(int arc, char** argv)
         assert(dt2.is_timestamp());
         char buffer3[Datetime::BUFFER_SIZE];
         dt2.ascii(buffer3);
-
 
         assert(strcmp(buffer1, buffer3) == 0);
         assert(dt1 == dt2);
@@ -159,11 +164,12 @@ int main(int arc, char** argv)
 
     Datetime now = Datetime::now();
 
-    printf("%s\n", now.ascii(true).c_str());
+    check_datetime("20070711110702.264323-300");
+    check_datetime("20070101120000.123456-360");
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 
     return 0;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/datetime/main.cpp,v 1.20 2007/04/12 14:48:44 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/tests/datetime/main.cpp,v 1.21 2007/07/11 17:17:17 mbrasher-public Exp $");

@@ -77,7 +77,7 @@ Enum_Instances_Status Lamp_Provider::enum_instances(
 }
 
 Create_Instance_Status Lamp_Provider::create_instance(
-    const Lamp* instance)
+    Lamp* instance)
 {
     TRACE;
     return _map.create_instance(instance);
@@ -113,4 +113,4 @@ Invoke_Method_Status Lamp_Provider::foo(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/Lamp_Provider.cpp,v 1.24 2007/04/18 03:51:27 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Lamp/Lamp_Provider.cpp,v 1.25 2007/05/31 16:45:08 mbrasher-public Exp $");

@@ -1,26 +1,13 @@
-This subdirectory tree contains the CIMPLE distribution. It comprises the 
-following components:
+CIMPLE is an environment for developing providers that interoperate with 
+several CIM server implementations. A provider developed with CIMPLE 
+transparently supports the following provider interfaces:
 
-    1. Full MOF compiler.
+    - OpenGroup CMPI Interface
+    - OpenPegasus C++ Interface
+    - OpenWBEM C++ Interface
 
-    2. Class generator (generates metadata for a given MOF class).
+CIMPLE greatly reduces the effort of developing providers with source code
+generation and automation tools. For a complete description, see the following 
+document, under the doc directory:
 
-    3. Provider generator (generates a provider skeleton for a MOF class).
-
-    4. The CIMPLE provider engine.
-
-    5. CIMPLE-Pegasus-C++ provider adapter.
-
-    6. CIMPLE-CMPI provider adapter.
-
-    7. Sample CIMPLE providers.
-
-    8. Several command line utilities.
-
-CIMPLE supports several Linux distributions and Windows.
-
-The doc directory contains several useful documents including these:
-
-    Build How-To (doc/build-howto.txt)
-    The CIMPLE Whitepaper (doc/whitepaper.pdf)
-    The CIMPLE Provider Development Manual (doc/provdevman.pdf)
+    Using_CIMPLE.pdf

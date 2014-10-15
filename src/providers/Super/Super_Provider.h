@@ -29,7 +29,7 @@ public:
 	Enum_Instances_Handler<Super>* handler);
 
     Create_Instance_Status create_instance(
-	const Super* instance);
+        Super* instance);
 
     Delete_Instance_Status delete_instance(
 	const Super* instance);

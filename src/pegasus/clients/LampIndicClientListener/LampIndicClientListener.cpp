@@ -228,7 +228,9 @@ int main(int argc, char ** argv)
         for (int i = 0; i < 5; i++)
             _invokeMethod(client, "LampIndic");
 
+printf("BEFORE\n");
         cimple::Time::sleep(5 * 1000000);
+printf("AFTER\n");
         assert(_success == true);
 
         printf("+++++ passed all tests\n");

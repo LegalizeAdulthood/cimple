@@ -14,7 +14,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 using namespace cimple;
 
-extern const Meta_Repository __meta_repository_1EF8761F95D6132EAF6BDA50670F490B;
+extern const Meta_Repository __meta_repository_BEFE7A8C330910859DDB2100BD230D2C;
 
 extern const Meta_Property
 _Hello_Key;
@@ -75,10 +75,9 @@ const Meta_Class Hello::static_meta_class =
     _locals,
     0, /* super_class */ 
     1, /* num_keys */
-    0xBE363E9A, /* crc */
-    &__meta_repository_1EF8761F95D6132EAF6BDA50670F490B,
+    &__meta_repository_BEFE7A8C330910859DDB2100BD230D2C,
 };
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Hello/Hello.cpp,v 1.1 2007/03/30 18:51:59 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Hello/Hello.cpp,v 1.2 2007/05/07 22:27:50 mbrasher-public Exp $");

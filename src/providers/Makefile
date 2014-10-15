@@ -27,7 +27,10 @@ DIRS = \
     bug31/meth \
     RefArray/SendRefArray \
     CIM_ConcreteJob/meth \
-    Delegate
+    Delegate \
+    Employee \
+    Time \
+    Time/InvokeTime
 
 ifdef CIMPLE_UNIX
   DIRS += UnixUser

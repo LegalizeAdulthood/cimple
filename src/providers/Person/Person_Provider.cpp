@@ -88,7 +88,8 @@ Enum_Instances_Status Person_Provider::enum_instances(
     return ENUM_INSTANCES_OK;
 }
 
-Create_Instance_Status Person_Provider::create_instance(const Person* instance)
+Create_Instance_Status Person_Provider::create_instance(
+    Person* instance)
 {
     if (_map.find(instance) != size_t(-1))
         return CREATE_INSTANCE_DUPLICATE;
@@ -126,4 +127,4 @@ Modify_Instance_Status Person_Provider::modify_instance(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person_Provider.cpp,v 1.38 2007/04/18 03:29:40 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Person/Person_Provider.cpp,v 1.39 2007/05/31 16:45:09 mbrasher-public Exp $");

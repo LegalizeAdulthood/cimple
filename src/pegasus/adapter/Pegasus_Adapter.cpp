@@ -14,6 +14,13 @@
 
 #define INDICATION_NAMESPACE "root/cimv2"
 
+// Export cimple_pegasus_adapter() only for shared library.
+#ifdef CIMPLE_STATIC
+# define CIMPLE_ADAPTER_LINKAGE CIMPLE_HIDE
+#else
+# define CIMPLE_ADAPTER_LINKAGE CIMPLE_EXPORT
+#endif
+
 CIMPLE_NAMESPACE_BEGIN
 
 static P_String _get_host_name()
@@ -526,7 +533,7 @@ void Pegasus_Adapter::invokeMethod(
     handler.complete();
 }
 
-struct Handle_Associators_Request_Data
+struct Handle_Associators_Request_Data_1
 {
     P_CIMOMHandle* handle;
     const P_OperationContext& context;
@@ -537,7 +544,7 @@ struct Handle_Associators_Request_Data
     P_ObjectResponseHandler& handler;
     bool error;
 
-    Handle_Associators_Request_Data(
+    Handle_Associators_Request_Data_1(
         P_CIMOMHandle* handle_,
         const P_OperationContext& context_,
         const P_CIMObjectPath& objectPath_,
@@ -558,13 +565,75 @@ struct Handle_Associators_Request_Data
     }
 };
 
-static bool _enum_associator_proc(
+static bool _enum_associator_proc_1(
+    const Instance* associator,
+    Enum_Associators_Status status,
+    void* client_data)
+{
+    Handle_Associators_Request_Data_1* data = 
+        (Handle_Associators_Request_Data_1*)client_data;
+
+    // Ignore the final call or if already in an error state:
+
+    if (!associator || data->error)
+        return false;
+
+    // Convert associator to pegasus instance.
+
+    P_CIMInstance ci;
+
+    if (Converter::to_pegasus_instance(_get_host_name(), 
+        data->objectPath.getNameSpace(), associator, ci) != 0)
+    {
+        data->error = true;
+        return false;
+    }
+
+    data->handler.deliver(ci);
+
+    // Keep them coming!
+    return true;
+}
+
+struct Handle_Associators_Request_Data_2
+{
+    P_CIMOMHandle* handle;
+    const P_OperationContext& context;
+    const P_CIMObjectPath& objectPath;
+    P_Boolean includeQualifiers;
+    P_Boolean includeClassOrigin;
+    const P_CIMPropertyList& propertyList;
+    P_ObjectResponseHandler& handler;
+    bool error;
+
+    Handle_Associators_Request_Data_2(
+        P_CIMOMHandle* handle_,
+        const P_OperationContext& context_,
+        const P_CIMObjectPath& objectPath_,
+        P_Boolean includeQualifiers_,
+        P_Boolean includeClassOrigin_,
+        const P_CIMPropertyList& propertyList_,
+        P_ObjectResponseHandler& handler_)
+        : 
+        handle(handle_),
+        context(context_),
+        objectPath(objectPath_),
+        includeQualifiers(includeQualifiers_),
+        includeClassOrigin(includeClassOrigin_),
+        propertyList(propertyList_),
+        handler(handler_),
+        error(false)
+    {
+    }
+};
+
+static bool _enum_associator_proc_2(
     const Instance* associator_name,
     Enum_Associator_Names_Status status,
     void* client_data)
 {
-    Handle_Associators_Request_Data* data = 
-        (Handle_Associators_Request_Data*)client_data;
+    Handle_Associators_Request_Data_2* data = 
+        (Handle_Associators_Request_Data_2*)client_data;
 
     // Ignore the final call or if already in an error state:
 
@@ -647,34 +716,68 @@ void Pegasus_Adapter::associators(
 
     Ref<Instance> ck_d(ck);
 
-    // Invoke the provider.
+    // Start processing:
 
     handler.processing();
 
-    Handle_Associators_Request_Data data(
-        _handle,
-        context,
-        objectPath,
-        includeQualifiers,
-        includeClassOrigin,
-        propertyList,
-        handler);
+    // First try enum_associators().
+    {
+        Handle_Associators_Request_Data_1 data(
+            _handle,
+            context,
+            objectPath,
+            includeQualifiers,
+            includeClassOrigin,
+            propertyList,
+            handler);
 
-    Enum_Associator_Names_Status status = 
-        _provider->enum_associator_names(
+        Enum_Associators_Status status = _provider->enum_associators(
             ck, 
             *Str(resultClass), 
             *Str(role), 
             *Str(resultRole), 
-            _enum_associator_proc, 
+            _enum_associator_proc_1, 
             &data);
 
-    if (data.error)
-        _throw(Pegasus::CIM_ERR_FAILED);
+        if (status != ENUM_ASSOCIATORS_UNSUPPORTED)
+        {
+            if (data.error)
+                _throw(Pegasus::CIM_ERR_FAILED);
 
-    _check(status);
+            _check(status);
+            handler.complete();
+            return;
+        }
+    }
 
-    handler.complete();
+    // Second try enum_associator_names().
+    {
+        Handle_Associators_Request_Data_2 data(
+            _handle,
+            context,
+            objectPath,
+            includeQualifiers,
+            includeClassOrigin,
+            propertyList,
+            handler);
+
+        Enum_Associator_Names_Status status = 
+            _provider->enum_associator_names(
+                ck, 
+                *Str(resultClass), 
+                *Str(role), 
+                *Str(resultRole), 
+                _enum_associator_proc_2, 
+                &data);
+
+        if (data.error)
+            _throw(Pegasus::CIM_ERR_FAILED);
+
+        _check(status);
+
+        handler.complete();
+        return;
+    }
 }
 
 struct Handle_Associator_Names_Request_Data
@@ -1164,7 +1267,7 @@ const Meta_Class* Pegasus_Adapter::find_model_meta_class(
 
 CIMPLE_NAMESPACE_END
 
-extern "C" CIMPLE_EXPORT int cimple_pegasus_adapter(
+extern "C" CIMPLE_ADAPTER_LINKAGE int cimple_pegasus_adapter(
     void* arg0, /* provider-interface */
     void* arg1, /* provider-name */
     void* arg2, /* registration */
@@ -1202,4 +1305,4 @@ extern "C" CIMPLE_EXPORT int cimple_pegasus_adapter(
     return -1;
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Adapter.cpp,v 1.55 2007/04/24 20:51:56 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/pegasus/adapter/Pegasus_Adapter.cpp,v 1.57 2007/07/19 21:30:38 mbrasher-public Exp $");

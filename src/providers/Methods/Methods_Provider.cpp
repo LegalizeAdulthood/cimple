@@ -54,7 +54,7 @@ Enum_Instances_Status Methods_Provider::enum_instances(
 }
 
 Create_Instance_Status Methods_Provider::create_instance(
-    const Methods* instance)
+    Methods* instance)
 {
     TRACE;
     return CREATE_INSTANCE_UNSUPPORTED;

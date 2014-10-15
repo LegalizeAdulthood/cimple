@@ -349,7 +349,7 @@ void Datetime::set_timestamp(
     tm.tm_hour = hours;
     tm.tm_min = minutes;
     tm.tm_sec = seconds;
-    tm.tm_isdst = 1;
+    tm.tm_isdst = -1;
 
     time_t t = mktime(&tm);
     _rep->usec = uint64(t) * uint64(1000000) + microseconds;
@@ -383,7 +383,7 @@ Datetime Datetime::now()
     uint64 usec = uint64(tv.tv_sec) * uint64(1000000) + tv.tv_usec;
     sint32 offset = tz.tz_minuteswest;
 
-    return Datetime(usec, offset);
+    return Datetime(usec, -offset);
 }
 
 bool Datetime::set(const char* str)
@@ -501,4 +501,4 @@ void Datetime::_cow()
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Datetime.cpp,v 1.28 2007/04/12 14:48:43 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/cimple/Datetime.cpp,v 1.29 2007/07/11 17:17:17 mbrasher-public Exp $");

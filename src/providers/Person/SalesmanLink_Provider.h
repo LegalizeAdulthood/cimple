@@ -29,7 +29,7 @@ public:
         Enum_Instances_Handler<SalesmanLink>* handler);
 
     Create_Instance_Status create_instance(
-        const SalesmanLink* instance);
+        SalesmanLink* instance);
 
     Delete_Instance_Status delete_instance(
         const SalesmanLink* instance);
@@ -50,6 +50,15 @@ public:
         const SalesmanLink* model,
         const String& role,
         Enum_References_Handler<SalesmanLink>* handler);
+
+    Enum_Associators_Status enum_associators(
+        const Instance* instance,
+        const String& result_class,
+        const String& role,
+        const String& result_role,
+        Enum_Associators_Handler<Instance>* handler);
+
+    /*@END@*/
 };
 
 CIMPLE_NAMESPACE_END

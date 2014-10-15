@@ -90,6 +90,10 @@ do
       enable_static=1
       ;;
 
+    --with-namespace=*)
+      with_namespace=$optarg 
+      ;;
+
     *)
       echo "$0: unknown option:  $opt"
       exit 1
@@ -425,6 +429,10 @@ echo "PLATFORM=$platform" >> $fn
 echo "LIBBASE_OPT=$libbase" >> $fn
 echo "WITH_PEGASUS_LIBDIR_OPT=$with_pegasus_libdir" >> $fn
 echo "WITH_PEGASUS_INCLUDES_OPT=$with_pegasus_includes" >> $fn
+
+if [ ! -z "$with_namespace" ]; then
+    echo "WITH_NAMESPACE_OPT=$with_namespace" >> $fn
+fi
 
 echo "Created $fn."
 echo "Configured for $host."

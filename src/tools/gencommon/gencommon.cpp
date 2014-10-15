@@ -31,6 +31,7 @@
 #include <unistd.h>
 #include <string>
 #include <dirent.h>
+#include <cctype>
 #include <util/util.h>
 #include "MOF_Parser.h"
 #include "gencommon.h"
@@ -102,19 +103,40 @@ void setup_mof_path()
 {
     char* mof_path = getenv("CIMPLE_MOF_PATH");
 
+#if defined(CIMPLE_WINDOWS)
+    if (!mof_path)
+    {
+        err("CIMPLE_MOF_PATH undefined");
+    }
+#else
     if (!mof_path)
         mof_path = CIMPLE_DEFAULT_SCHEMA;
+#endif
 
     char* tmp = strdup(mof_path);
     bool found = false;
 
-    for (char* p = strtok(tmp, ":"); p; p = strtok(NULL, ":"))
+#if defined(CIMPLE_WINDOWS)
+    const char SEP[] = ";";
+#else
+    const char SEP[] = ":";
+#endif
+
+
+
+    for (char* p = strtok(tmp, SEP); p; p = strtok(NULL, SEP))
     {
         MOF_include_paths[MOF_num_include_paths++] = strdup(p);
 
         if (_find_schema_mof(p, _schema_mof) == 0)
             found = true;
 
+        struct stat st;
+
+        if (stat(p, &st) != 0)
+        {
+            err("CIMPLE_MOF_PATH specifies a non-existent directory: %s", p);
+        }
     }
 
     free(tmp);
@@ -170,4 +192,4 @@ void load_repository(const vector<string>& extra_mof_files)
         MOF_parse_file(mof_files[i].c_str());
 }
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/gencommon/gencommon.cpp,v 1.16 2007/03/29 23:11:07 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/tools/gencommon/gencommon.cpp,v 1.19 2007/06/19 18:28:43 mbrasher-public Exp $");

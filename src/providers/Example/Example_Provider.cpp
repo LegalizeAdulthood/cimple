@@ -35,7 +35,7 @@ Enum_Instances_Status Example_Provider::enum_instances(
 }
 
 Create_Instance_Status Example_Provider::create_instance(
-    const Example* instance)
+    Example* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -106,4 +106,4 @@ Invoke_Method_Status Example_Provider::foo5(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Example/Example_Provider.cpp,v 1.21 2007/04/18 03:51:26 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/Example/Example_Provider.cpp,v 1.22 2007/05/31 16:45:08 mbrasher-public Exp $");

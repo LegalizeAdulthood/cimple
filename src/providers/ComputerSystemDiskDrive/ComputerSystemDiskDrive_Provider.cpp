@@ -72,6 +72,16 @@ Enum_References_Status ComputerSystemDiskDrive_Provider::enum_references(
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
+Enum_Associators_Status ComputerSystemDiskDrive_Provider::enum_associators(
+    const Instance* instance,
+    const String& result_class,
+    const String& role,
+    const String& result_role,
+    Enum_Associators_Handler<Instance>* handler)
+{
+    return ENUM_ASSOCIATORS_UNSUPPORTED;
+}
+
 /*@END@*/
 
 CIMPLE_NAMESPACE_END

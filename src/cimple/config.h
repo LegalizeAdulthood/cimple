@@ -74,10 +74,15 @@
 
 //==============================================================================
 //
+// CIMPLE_NAMESPACE
 // CIMPLE_NAMESPACE_BEGIN
 // CIMPLE_NAMESPACE_END
 //
 //==============================================================================
+
+#ifdef CIMPLE_NAMESPACE
+# define cimple CIMPLE_NAMESPACE
+#endif
 
 #define CIMPLE_NAMESPACE_BEGIN namespace cimple {
 #define CIMPLE_NAMESPACE_END }
@@ -185,7 +190,7 @@ CIMPLE_NAMESPACE_END
 //
 //==============================================================================
 
-#ifdef __USE_GNU
+#if defined(__USE_GNU) && (__GNUC__ >= 4)
 # define CIMPLE_PRINTF_ATTR(A1, A2) __attribute__((format (printf, A1, A2)))
 #else
 # define CIMPLE_PRINTF_ATTR(A1, A2) /* empty */
@@ -348,7 +353,7 @@ CIMPLE_NAMESPACE_END
 
 #define CIMPLE_MAJOR 1
 #define CIMPLE_MINOR 0
-#define CIMPLE_REVISION 0
+#define CIMPLE_REVISION 18
 
 //==============================================================================
 //
@@ -398,7 +403,7 @@ extern int __CIMPLE_VERSION_SYMBOL(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION);
 //
 //==============================================================================
 
-CIMPLE_UNUSED static const char __cimple_version_tag[] = \
+static CIMPLE_UNUSED const char __cimple_version_tag[] = \
     "@(#)CIMPLE_VERSION="CIMPLE_VERSION_STRING;
 
 //==============================================================================
@@ -409,12 +414,15 @@ CIMPLE_UNUSED static const char __cimple_version_tag[] = \
 
 #ifdef __GNUC__
 # define CIMPLE_ID(STR) \
-    CIMPLE_UNUSED static const char __cimple_id[] = "@(#)" STR
+    static CIMPLE_UNUSED const char __cimple_id[] = "@(#)" STR
 #else
 # define CIMPLE_ID(STR) \
-    CIMPLE_UNUSED static const char __cimple_id[] = "@(#)" STR; \
+    static CIMPLE_UNUSED const char __cimple_id[] = "@(#)" STR; \
     static const char* __cimple_id_func() { return __cimple_id; }
 #endif
+
+#undef CIMPLE_ID
+#define CIMPLE_ID(X) /* */
 
 //==============================================================================
 //
@@ -433,7 +441,7 @@ CIMPLE_UNUSED static const char __cimple_version_tag[] = \
 //==============================================================================
 
 #ifndef CIMPLE_NO_VERSION_SYMBOL
-    CIMPLE_UNUSED static int __cimple_version_symbol =
+    static CIMPLE_UNUSED int __cimple_version_symbol =
         __CIMPLE_VERSION_SYMBOL(CIMPLE_MAJOR, CIMPLE_MINOR, CIMPLE_REVISION);
 #endif
 

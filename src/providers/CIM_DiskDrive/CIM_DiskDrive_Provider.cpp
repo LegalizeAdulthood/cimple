@@ -35,7 +35,7 @@ Enum_Instances_Status CIM_DiskDrive_Provider::enum_instances(
 }
 
 Create_Instance_Status CIM_DiskDrive_Provider::create_instance(
-    const CIM_DiskDrive* instance)
+    CIM_DiskDrive* instance)
 {
     return CREATE_INSTANCE_UNSUPPORTED;
 }
@@ -127,4 +127,4 @@ Invoke_Method_Status CIM_DiskDrive_Provider::LockMedia(
 
 CIMPLE_NAMESPACE_END
 
-CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_DiskDrive/CIM_DiskDrive_Provider.cpp,v 1.4 2007/04/18 03:28:48 mbrasher-public Exp $");
+CIMPLE_ID("$Header: /home/cvs/cimple/src/providers/CIM_DiskDrive/CIM_DiskDrive_Provider.cpp,v 1.5 2007/05/31 16:45:06 mbrasher-public Exp $");

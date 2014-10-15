@@ -12,4 +12,4 @@ tests:
 CLEAN += memstream.tmp
 
 clean:
-	$(RM) $(CLEAN)
+	$(call rm,$(CLEAN))

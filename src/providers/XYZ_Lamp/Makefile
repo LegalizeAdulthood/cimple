@@ -35,3 +35,4 @@ genprov:
 
 genmod:
 	$(BINDIR)/genmod XYZ_Lamp XYZ_Lamp XYZ_LampLink XYZ_LampIndic
+

@@ -141,6 +141,13 @@ enum Get_Repository_Status
     GET_REPOSITORY_OK = 0,
 };
 
+enum Enum_Associators_Status
+{
+    ENUM_ASSOCIATORS_OK = 0,
+    ENUM_ASSOCIATORS_FAILED = 170,
+    ENUM_ASSOCIATORS_UNSUPPORTED = 171,
+};
+
 enum Provider_Operation
 {
     OPERATION_GET_META_CLASS,
@@ -159,6 +166,7 @@ enum Provider_Operation
     OPERATION_GET_REPOSITORY,
     OPERATION_ENUM_ASSOCIATOR_NAMES,
     OPERATION_ENUM_REFERENCES,
+    OPERATION_ENUM_ASSOCIATORS,
 };
 
 //==============================================================================
@@ -270,6 +278,42 @@ public:
     }
 
     Enum_Associator_Names_Proc _proc;
+    void* _client_data;
+};
+
+//==============================================================================
+//
+// Enum_Associators_Handler<>
+//
+//==============================================================================
+
+// Called each time a qualifying associator is found. A null value for
+// associator indicates the final call (in which status is set). This 
+// callback must NOT pass associator to destroy(). Also, associator 
+// is not valid beyond the scope of this function (it is destroyed immediately
+// after this callback is invoked).
+typedef bool (*Enum_Associators_Proc)(
+    const Instance* associator,
+    Enum_Associators_Status status,
+    void* client_data); 
+
+template<class CLASS>
+class Enum_Associators_Handler
+{
+public:
+
+    Enum_Associators_Handler(
+        Enum_Associators_Proc proc, void* client_data) :
+        _proc(proc), _client_data(client_data)
+    {
+    }
+
+    bool handle(CLASS* instance)
+    {
+        return _proc(instance, ENUM_ASSOCIATORS_OK, _client_data);
+    }
+
+    Enum_Associators_Proc _proc;
     void* _client_data;
 };
 
@@ -632,6 +676,38 @@ public:
                 // callback would be called here and by the Provider_Handle
                 // method with the same name as well.
                 if (status != ENUM_ASSOCIATOR_NAMES_UNSUPPORTED)
+                    handler._proc(0, status, handler._client_data);
+
+                return status;
+            }
+
+            case OPERATION_ENUM_ASSOCIATORS:
+            {
+                // arg0: provider
+                // arg1: instance
+                // arg2: result_class
+                // arg3: role
+                // arg4: result_role
+                // arg5: proc
+                // arg6: client_data
+
+                PROVIDER* provider = (PROVIDER*)arg0;
+
+                Enum_Associators_Handler<Instance> handler(
+                    (Enum_Associators_Proc)arg5, (void*)arg6);
+
+                Enum_Associators_Status status = 
+                    provider->enum_associators(
+                        (const Instance*)arg1, /* instance */
+                        *((const String*)arg2), /* result_class */
+                        *((const String*)arg3), /* role */
+                        *((const String*)arg4), /* result_role */
+                        &handler);
+
+                // ATTN: a hack for now since otherwise the user's
+                // callback would be called here and by the Provider_Handle
+                // method with the same name as well.
+                if (status != ENUM_ASSOCIATORS_UNSUPPORTED)
                     handler._proc(0, status, handler._client_data);
 
                 return status;

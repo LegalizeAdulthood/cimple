@@ -51,8 +51,9 @@ public:
 
     virtual ~Tracer();
 
+    virtual
     CIMPLE_PRINTF_ATTR(3, 4)
-    virtual void trace(Trace_Level level, const char* format, ...);
+    void trace(Trace_Level level, const char* format, ...);
 
 private:
     FILE* _os;

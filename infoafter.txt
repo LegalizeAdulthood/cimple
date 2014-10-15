@@ -1,0 +1,13 @@
+Post-install notes:
+
+    1.  Add APPDIR/bin to your PATH.
+
+    2.  Add APPDIR/data/schema/cim214 to your CIMPLE_MOF_PATH 
+        (or whichever schema directory you prefer).
+
+    3.  CIMPLE was installed into the following locations:
+
+            APPDIR/bin - CIMPLE binaries
+            APPDIR/lib - CIMPLE libraries
+            APPDIR/include/cimple - CIMPLE include files.
+            APPDIR/data/schema - CIM schemas (MOF files).
