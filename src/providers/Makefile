@@ -32,6 +32,7 @@ reg:
 	$(MAKE) -C $(TOP)/src/providers/Fan reg
 	$(MAKE) -C $(TOP)/src/providers/Methods reg
 	$(MAKE) -C $(TOP)/src/providers/ComputerSystemDiskDrive reg
+	$(MAKE) -C $(TOP)/src/CMPI/providers/Thing reg
 
 xreg:
 	$(MAKE) -C $(TOP)/src/providers/MyIndication reg
@@ -70,6 +71,12 @@ live-tests:
 	CLI rn Person.ssn=5
 	call_foo
 	call_foo2
+	CLI ei Thing
+	CLI gi Thing.key=200
+	CLI a Thing.key=100
+	CLI an Thing.key=100
+	CLI r Thing.key=100
+	CLI rn Thing.key=100
 
 endif
 

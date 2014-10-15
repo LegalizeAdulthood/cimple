@@ -40,6 +40,7 @@ public:
 	const Person* inst);
 
     static CIMPLE_HIDE int proc(
+	const Registration* registration,
 	int operation, 
 	void* arg0, 
 	void* arg1, 

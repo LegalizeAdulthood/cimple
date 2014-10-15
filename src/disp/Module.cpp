@@ -26,7 +26,7 @@
 
 #include <dlfcn.h>
 #include "Module.h"
-#include "Error.h"
+#include <cimple/Error.h>
 #include "Envelope.h"
 
 CIMPLE_NAMESPACE_BEGIN

@@ -308,6 +308,31 @@ inline void clear(String& x)
     x.clear(); 
 }
 
+/* Returns the initial segment  of s which consists entirely of characters 
+   in accept.
+*/
+inline String spn(const String& s, const char* accept)
+{
+    return String(s.c_str(), strspn(s.c_str(), accept));
+}
+
+/* Returns the initial segment  of s which consists entirely of characters 
+   not in reject.
+*/
+inline String cspn(const String& s, const char* reject)
+{
+    return String(s.c_str(), strcspn(s.c_str(), reject));
+}
+
+/* Returns the concatenation of s1 and s2. 
+*/
+inline String cat(const String& s1, const String& s2)
+{
+    String s = s1;
+    s.append(s2);
+    return s;
+}
+
 CIMPLE_NAMESPACE_END
 
 #endif /* _cimple_String_h */

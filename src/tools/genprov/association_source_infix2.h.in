@@ -16,7 +16,7 @@ int <CLASS>_Provider::proc(
     typedef <CLASS>_Provider Provider;
 
     if (operation != OPERATION_INVOKE_METHOD)
-        return Association_Provider_Proc_T<Provider>::proc(
+        return Association_Provider_Proc_T<Provider>::proc(registration,
 	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;

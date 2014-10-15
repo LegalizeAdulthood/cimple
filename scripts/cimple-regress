@@ -1,0 +1,280 @@
+#!/bin/sh
+
+##==============================================================================
+##
+## cimple-regress
+##
+## This script performs a full regression test of CIMPLE, which comprises the
+## following steps:
+##
+##     1. Checks out Pegasus (from anonymous CVS).
+##     2. Checks out CIMPLE (from anonymous CVS).
+##     3. Builds Pegasus.
+##     4. Creates the Pegasus repository.
+##     5. Configures and builds CIMPLE.
+##     6. Runs CIMPLE unit tests.
+##     7. Registers CIMPLE test providers.
+##     8. Runs CIMPLE live tests (against live cimserver and test providers).
+##
+##==============================================================================
+
+##==============================================================================
+##
+## set_root()
+##
+##==============================================================================
+
+function set_root()
+{
+    DIRNAME=cimple-regress.dir
+    ROOT=`pwd`/$DIRNAME
+}
+
+##==============================================================================
+##
+## detect_platform()
+##
+##==============================================================================
+
+function detect_platform()
+{
+    ARCH=`uname -m`
+    OS=`uname -s`
+    TOKEN="$OS-$ARCH"
+
+    case "$TOKEN" in
+
+	Linux-i686)
+	    export PLATFORM=LINUX_IX86_GNU
+	    ;;
+
+	Linux-x86_64)
+	    export PLATFORM=LINUX_X86_64_GNU
+	    ;;
+
+	Linux-ppc)
+	    export PLATFORM=LINUX_PPC_GNU
+	    ;;
+
+	*)
+	    echo "Failed to automatically detect platform"
+	    exit 1
+	    ;;
+
+    esac
+}
+
+##==============================================================================
+##
+## create_dir()
+##
+##==============================================================================
+
+function create_dir()
+{
+    rm -rf $DIRNAME
+    mkdir $DIRNAME
+}
+
+##==============================================================================
+##
+## setup_pegasus()
+##
+##==============================================================================
+
+function setup_pegasus()
+{
+    export PEGASUS_ROOT=$ROOT/pegasus
+    export PEGASUS_HOME=$PEGASUS_ROOT/home
+    detect_platform
+    export PEGASUS_PLATFORM=$PLATFORM
+
+    export LD_LIBRARY_PATH=$PEGASUS_HOME/lib
+    export PATH=$PEGASUS_HOME/bin:$PATH
+}
+
+##==============================================================================
+##
+## checkout_pegasus()
+##
+##==============================================================================
+
+function checkout_pegasus()
+{
+    cd $ROOT
+    export CVSROOT=:pserver:anon:anon@cvs.opengroup.org:/cvs/MSB
+    cvs co pegasus
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: cvs co cimple failed"
+	exit 1
+    fi
+}
+
+##==============================================================================
+##
+## checkout_cimple()
+##
+##==============================================================================
+
+function checkout_cimple()
+{
+    cd $ROOT
+    export CVSROOT=:pserver:anon:anon@cimple.org/home/cvs
+    cvs co cimple 2> /dev/null
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: cvs co cimple failed"
+	exit 1
+    fi
+}
+
+##==============================================================================
+##
+## build_pegasus()
+##
+##==============================================================================
+
+function build_pegasus()
+{
+    cd $PEGASUS_ROOT
+    make
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: failed to build Pegasus"
+	exit 1
+    fi
+
+    make repository
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: failed to build Pegasus repository"
+	exit 1
+    fi
+}
+
+##==============================================================================
+##
+## build_cimple()
+##
+##==============================================================================
+
+function build_cimple()
+{
+    # Install the patch:
+    cd $ROOT/cimple/src/pegasus/patch
+    make patch
+
+    # Build CIMPLE
+    cd $ROOT/cimple
+    ./configure
+    make
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: failed to build CIMPLE"
+	exit 1
+    fi
+}
+
+##==============================================================================
+##
+## echo_env()
+##
+##==============================================================================
+
+function echo_env()
+{
+    echo "ROOT=$ROOT"
+    echo "PEGASUS_ROOT=$PEGASUS_ROOT"
+    echo "PEGASUS_HOME=$PEGASUS_HOME"
+    echo "PEGASUS_PLATFORM=$PEGASUS_PLATFORM"
+}
+
+##==============================================================================
+##
+## test_cimple()
+##
+##==============================================================================
+
+function test_cimple()
+{
+    cd $ROOT/cimple
+    make -s tests
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: CIMPLE tests failed"
+	exit 1
+    fi
+}
+
+##==============================================================================
+##
+## register_providers()
+##
+##==============================================================================
+
+function register_providers()
+{
+    cd $ROOT/cimple
+    make reg
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: CIMPLE provider registration failed"
+	exit 1
+    fi
+}
+
+##==============================================================================
+##
+## run_live_tests()
+##
+##==============================================================================
+
+function run_live_tests()
+{
+    cimserver -s
+
+    echo "Waiting 5 seconds..."
+    sleep 5
+
+    echo "Starting cimserver..."
+    cimserver
+
+    echo "Waiting 5 seconds..."
+    sleep 5
+
+    cd $ROOT/cimple
+    make live-tests
+
+    if [ ! "$?"  == "0" ]
+    then
+	echo "$0: CIMPLE live tests failed"
+	exit 1
+    fi
+
+    cimserver -s
+}
+
+##==============================================================================
+##
+## main
+##
+##==============================================================================
+
+set_root
+create_dir
+setup_pegasus
+checkout_pegasus
+build_pegasus
+checkout_cimple
+build_cimple
+test_cimple
+register_providers
+run_live_tests

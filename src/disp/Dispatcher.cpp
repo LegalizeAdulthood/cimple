@@ -32,7 +32,7 @@
 #include <cimple/Auto_RMutex.h>
 #include <cimple/Time.h>
 #include "Cache.h"
-#include "Error.h"
+#include <cimple/Error.h>
 
 // ATTN: implement destroy factory method.
 

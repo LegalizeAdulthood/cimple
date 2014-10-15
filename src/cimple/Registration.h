@@ -30,18 +30,26 @@
 #include "Provider.h"
 
 #define CIMPLE_MODULE(MODULE) \
-    static Registration* _cimple_registration = 0; \
+    static cimple::Registration* _cimple_registration_head = 0; \
     static const char* _cimple_module_name = #MODULE; \
-    extern "C" CIMPLE_EXPORT Registration* cimple_module() \
-	{ return _cimple_registration; }
+    extern "C" CIMPLE_EXPORT cimple::Registration* cimple_module() \
+	{ return _cimple_registration_head; }
 
 #define CIMPLE_PROVIDER(PROVIDER) \
-    static Registration CIMPLE_PASTE(_cimple_##PROVIDER##_,__LINE__)( \
+    static cimple::Registration _cimple_registration_##PROVIDER( \
 	_cimple_module_name, \
 	#PROVIDER, \
-	PROVIDER::proc, \
-	&PROVIDER::Class::static_meta_class, \
-	_cimple_registration);
+	cimple::PROVIDER::proc, \
+	&cimple::PROVIDER::Class::static_meta_class, \
+	_cimple_registration_head);
+
+#define CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT \
+    extern "C" extern void* __cimple_create_pegasus_adapter(void*, void*); \
+    extern "C" void* PegasusCreateProvider(void* arg) \
+    { \
+	return __cimple_create_pegasus_adapter( \
+	    arg, _cimple_registration_head); \
+    } \
 
 CIMPLE_NAMESPACE_BEGIN
 

@@ -5,12 +5,13 @@ SH_LIBRARY = cmplcimcgi
 
 SOURCES = module.cpp 
 
-LIBRARIES =
+LIBRARIES = cimple cmplrep
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
-
-DEFINES += -DCIMPLE_LIBCIMPLE
 
 include $(TOP)/mak/rules.mak
 
 genclass:
+
+reg:
+	$(BIN)/regmod -c $(TARGET)

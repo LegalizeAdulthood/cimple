@@ -6,6 +6,6 @@ class Thing
 [Association]
 class ThingLink
 {
-    Thing ref left;
-    Thing ref right;
+    [Key] Thing ref left;
+    [Key] Thing ref right;
 };

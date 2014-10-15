@@ -1,3 +1,4 @@
+#include <cimple/version.h>
 #include <cstdlib>
 #include <cstdio>
 #include <cctype>
@@ -12,6 +13,8 @@ it can be embedded in a C program. This utility allows programs to eliminate\n\
 dependencies on external static files. The character array is written to\n\
 standard output.\n\
 \n";
+
+CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {

@@ -27,6 +27,7 @@
 // Truncated debugger symbols.
 
 #include <cimple/config.h>
+#include <cimple/version.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <getopt.h>
@@ -1604,6 +1605,8 @@ void gen_repository(const vector<string>& classes)
 	fclose(_os);
     }
 }
+
+CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {

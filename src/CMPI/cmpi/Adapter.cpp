@@ -99,8 +99,6 @@ void* Adapter::_timer_thread_proc(void* arg)
 
     Adapter* adapter = (Adapter*)arg;
 
-    printf("Adapter::_timer_thread_proc()\n");
-
     CBAttachThread(adapter->broker, adapter->_timer_context);
     _context_tls.set((void*)adapter->_timer_context);
 
@@ -133,8 +131,8 @@ Adapter::Adapter(
     const CMPIBroker* broker_, 
     const CMPIContext* context,
     const char* provider_name, 
-    Provider_Proc proc) :
-    Provider_Handle(proc),
+    const Registration* registration) :
+    Provider_Handle(registration),
     _indications_enabled(false)
 {
     TRACE;
@@ -187,6 +185,8 @@ Adapter::Adapter(
 
     // Create a scheduler on first invocation.
 
+#if 0
+
     if (_sched == 0)
     {
 	_sched_lock.lock();
@@ -210,6 +210,8 @@ Adapter::Adapter(
     // Schedule timer to call the provider's timer() method:
 
     _timer_id = _sched->add_timer(1, _timer, this);
+
+#endif
 
     // Save meta-class:
 
@@ -1097,13 +1099,18 @@ CMPIStatus Adapter::associators(
     const CMPIContext* context, 
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op, 
-    const char* assoc_class, 
-    const char* result_class,
-    const char* role, 
-    const char* result_role, 
+    const char* assoc_class_, 
+    const char* result_class_,
+    const char* role_, 
+    const char* result_role_, 
     const char** properties)
 {
     TRACE;
+
+    const char* assoc_class = assoc_class_ ? assoc_class_ : "";
+    const char* result_class = result_class_ ? result_class_ : "";
+    const char* role = role_ ? role_ : "";
+    const char* result_role = result_role_ ? result_role_ : "";
 
     _context_tls.set((void*)context);
     Adapter* adapter = (Adapter*)mi->hdl;
@@ -1197,12 +1204,17 @@ CMPIStatus Adapter::associatorNames(
     const CMPIContext* context, 
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op, 
-    const char* assoc_class, 
-    const char* result_class,
-    const char* role, 
-    const char* result_role)
+    const char* assoc_class_, 
+    const char* result_class_,
+    const char* role_, 
+    const char* result_role_)
 {
     TRACE;
+
+    const char* assoc_class = assoc_class_ ? assoc_class_ : "";
+    const char* result_class = result_class_ ? result_class_ : "";
+    const char* role = role_ ? role_ : "";
+    const char* result_role = result_role_ ? result_role_ : "";
 
     _context_tls.set((void*)context);
     Adapter* adapter = (Adapter*)mi->hdl;
@@ -1306,11 +1318,14 @@ CMPIStatus Adapter::references(
     const CMPIContext* context, 
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op, 
-    const char* result_class, 
-    const char* role ,
+    const char* result_class_, 
+    const char* role_,
     const char** properties)
 {
     TRACE;
+
+    const char* result_class = result_class_ ? result_class_ : "";
+    const char* role = role_ ? role_ : "";
 
     _context_tls.set((void*)context);
     Adapter* adapter = (Adapter*)mi->hdl;
@@ -1356,6 +1371,8 @@ CMPIStatus Adapter::references(
 	    CMReturn(CMPI_RC_OK);
 
         case ENUM_REFERENCES_FAILED:
+	    CMReturn(CMPI_RC_ERR_FAILED);
+
         case ENUM_REFERENCES_UNSUPPORTED:
 	    CMReturn(CMPI_RC_ERR_FAILED);
     }
@@ -1427,14 +1444,17 @@ CMPIStatus Adapter::referenceNames(
     const CMPIContext* context, 
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op, 
-    const char* result_class, 
-    const char* role)
+    const char* result_class_, 
+    const char* role_)
 {
     TRACE;
 
     _context_tls.set((void*)context);
     Adapter* adapter = (Adapter*)mi->hdl;
     Auto_RMutex auto_lock(adapter->_lock);
+
+    const char* result_class = result_class_ ? result_class_ : "";
+    const char* role = role_ ? role_ : "";
 
     // Lookup meta class for cmpi_op (not the same as the provider class).
 

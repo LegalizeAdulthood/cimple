@@ -1,0 +1,89 @@
+From: m.brasher@inovadevelopment.com
+Sent: Wednesday, February 22, 2006 7:28 PM
+To: Karl Schopmeyer
+Cc: Mike Brasher (Inova)
+Subject: Scripted Providers (Basic Idea)
+
+Karl,
+
+The following is a complete read-only UnixUser provider.
+
+    #!/bin/sh
+
+    CLASS=UnixUser
+
+    SCRIPT=`cat<<END
+    {
+        print "name="\\$1;
+        print "uid="\\$3;
+        print "gid="\\$4;
+        print "fullName="\\$5;
+        print "homeDir="\\$6;
+        print "shellProgram="\\$7;
+        print "";
+    }
+    END
+    `
+    awk -F ":" "$SCRIPT" /etc/passwd
+
+If you run it, it writes the following to standard output (abbreviated
+somewhat):
+
+    name=csm
+    uid=501
+    gid=0
+    fullName=
+    homeDir=/home/csm
+    shellProgram=/bin/bash
+
+    name=cvsinova
+    uid=502
+    gid=502
+    fullName=
+    homeDir=/tmp
+    shellProgram=/bin/false
+
+    name=kschopmeyer
+    uid=503
+    gid=503
+    fullName=
+    homeDir=/home/kschopmeyer
+    shellProgram=/bin/bash
+
+    .
+    .
+    .
+
+As you can see properties are separated by newlines. Instances are separated
+by double-newlines.
+
+The provider provides the UnixUser class.
+
+    class UnixUser
+    {
+        [key] string name;
+        string password;
+        uint32 uid;
+        uint32 gid;
+        string fullName;
+        string homeDir;
+        string shellProgram;
+    };
+
+All we need to do is write the generic script provider once. All the user
+would do is register it like this:
+
+    regmod passwd-provider.sh
+
+The script provider simply executes the script and parses the output into
+an instance of UnixUser.
+
+This is kind of a CGI for the CIMOM. Very crude but effective for some
+problems.
+
+We can work out a set of environment variables for communicating data from
+the
+CIMOM to the provider.
+
+
+Mike

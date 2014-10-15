@@ -40,11 +40,12 @@
 #define CIMPLE_WINDOWS
 #define CIMPLE_UINT64 unsigned __int64
 #define CIMPLE_SINT64 signed __int64
-#define CIMPLE_HIDE /* empty */
+#define CIMPLE_HIDE
 #define CIMPLE_WINDOWS
 #define CIMPLE_IMPORT __declspec(dllimport)
 #define CIMPLE_EXPORT __declspec(dllexport)
 #define for if (0) ; else for
+#define CMPI_PLATFORM_WIN32_IX86_MSVC
 
 inline strcasecmp(const char* s1, const char* s2)
 {

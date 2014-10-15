@@ -9,3 +9,4 @@
 #pragma include ("ComputerSystemDiskDrive.mof")
 #pragma include ("Thing.mof")
 #pragma include ("Person2.mof")
+#pragma include ("User.mof")

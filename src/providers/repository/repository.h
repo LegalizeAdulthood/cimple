@@ -30,6 +30,7 @@
 #include "Arg.h"
 #include "Methods.h"
 #include "UnixUser.h"
+#include "User.h"
 #include "MyEmbeddedClass.h"
 #include "CIM_LogicalDevice.h"
 #include "CIM_MediaAccessDevice.h"

@@ -84,4 +84,68 @@ void Instance_Map_Base::_remove(size_t pos)
 	_instances.remove(pos);
 }
 
+Get_Instance_Status Instance_Map_Base::_get_instance(
+    const Instance* model, 
+    Instance*& instance)
+{
+    Instance* tmp = _lookup(model);
+
+    if (!tmp)
+	return GET_INSTANCE_NOT_FOUND;
+
+    instance = clone(tmp);
+    return GET_INSTANCE_OK;
+}
+
+Enum_Instances_Status Instance_Map_Base::_enum_instances(
+    const Instance* model,
+    Enum_Instances_Proc proc,
+    void* client_data)
+{
+    for (size_t i = 0; i < _instances.size(); i++)
+    {
+	Instance* inst = clone(_instances[i]);
+	proc(inst, ENUM_INSTANCES_OK, client_data);
+    }
+
+    return ENUM_INSTANCES_OK;
+}
+
+Create_Instance_Status Instance_Map_Base::_create_instance(
+    const Instance* instance)
+{
+    if (_find(instance) != (size_t)-1)
+	return CREATE_INSTANCE_DUPLICATE;
+
+    _instances.append(clone(instance));
+    return CREATE_INSTANCE_OK;
+}
+
+Delete_Instance_Status Instance_Map_Base::_delete_instance(
+    const Instance* instance)
+{
+    size_t pos = _find(instance);
+
+    if (pos == (size_t)-1)
+	return DELETE_INSTANCE_NOT_FOUND;
+
+    destroy(_instances[pos]);
+    _instances.remove(pos);
+
+    return DELETE_INSTANCE_OK;
+}
+
+Modify_Instance_Status Instance_Map_Base::_modify_instance(
+    const Instance* instance)
+{
+    size_t pos = _find(instance);
+
+    if (pos == (size_t)-1)
+	return MODIFY_INSTANCE_NOT_FOUND;
+
+    copy(_instances[pos], instance);
+
+    return MODIFY_INSTANCE_OK;
+}
+
 CIMPLE_NAMESPACE_END

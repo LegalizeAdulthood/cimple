@@ -17,7 +17,7 @@ extern CIMPLE_HIDE const Meta_Reference _ThingLink_left;
 
 const Meta_Reference _ThingLink_left =
 {
-    CIMPLE_FLAG_REFERENCE,
+    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "left",
     &Thing::static_meta_class,
     CIMPLE_OFF(ThingLink,left)
@@ -27,7 +27,7 @@ extern CIMPLE_HIDE const Meta_Reference _ThingLink_right;
 
 const Meta_Reference _ThingLink_right =
 {
-    CIMPLE_FLAG_REFERENCE,
+    CIMPLE_FLAG_REFERENCE|CIMPLE_FLAG_KEY,
     "right",
     &Thing::static_meta_class,
     CIMPLE_OFF(ThingLink,right)
@@ -47,8 +47,8 @@ const Meta_Class ThingLink::static_meta_class =
     CIMPLE_ARRAY_SIZE(_ThingLink_meta_features),
     sizeof(ThingLink),
     0,
-    0,
-    0xC6FBA3C7,
+    2,
+    0x32F93684,
 };
 
 CIMPLE_NAMESPACE_END

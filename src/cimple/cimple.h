@@ -27,6 +27,7 @@
 #ifndef _cimple_h
 #define _cimple_h
 
+#include "version.h"
 #include "config.h"
 #include "flags.h"
 #include "Type.h"

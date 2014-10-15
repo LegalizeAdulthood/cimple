@@ -1,3 +1,4 @@
+#include <cimple/version.h>
 #include <dlfcn.h>
 #include <cstdlib>
 #include <cstdio>
@@ -40,6 +41,8 @@ int process(const char* path)
 
     return 0;
 }
+
+CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {

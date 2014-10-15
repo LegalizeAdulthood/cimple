@@ -1,3 +1,4 @@
+#include <cimple/version.h>
 #include <cassert>
 #include <getopt.h>
 #include <cstdlib>
@@ -403,6 +404,8 @@ bool is_dir(const string& path)
 
     return S_ISDIR(st.st_mode);
 }
+
+CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {

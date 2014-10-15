@@ -15,6 +15,7 @@ LEX_AND_YACC_SOURCES = \
 
 SOURCES = \
     $(LEX_AND_YACC_SOURCES) \
+    version.cpp \
     MOF_Buffer.cpp \
     MOF_Class_Decl.cpp \
     MOF_Data_Type.cpp \

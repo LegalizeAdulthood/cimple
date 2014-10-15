@@ -4,6 +4,7 @@ include $(TOP)/mak/config.mak
 SH_LIBRARY = cimpledisp
 
 SOURCES = \
+    version.cpp \
     Buffer.cpp \
     Cache.cpp \
     Cache_IO.cpp \
@@ -11,7 +12,6 @@ SOURCES = \
     Dispatcher_IO.cpp \
     DZT_String.cpp \
     Envelope.cpp \
-    Error.cpp \
     Facade.cpp \
     Facade_IO.cpp \
     Files.cpp \

@@ -121,6 +121,7 @@ Modify_Instance_Status Person_Provider::modify_instance(const Person* instance)
 }
 
 int Person_Provider::proc(
+    const Registration* registration,
     int operation, 
     void* arg0, 
     void* arg1, 
@@ -136,7 +137,7 @@ int Person_Provider::proc(
 
     typedef Person Class;
     typedef Person_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(
+    return Provider_Proc_T<Provider>::proc(registration,
 	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 

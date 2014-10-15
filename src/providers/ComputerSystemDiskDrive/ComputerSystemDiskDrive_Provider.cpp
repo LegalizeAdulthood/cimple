@@ -58,6 +58,7 @@ Modify_Instance_Status ComputerSystemDiskDrive_Provider::modify_instance(
 }
 
 int ComputerSystemDiskDrive_Provider::proc(
+    const Registration* registration,
     int operation,
     void* arg0, 
     void* arg1, 
@@ -73,7 +74,7 @@ int ComputerSystemDiskDrive_Provider::proc(
 
     typedef ComputerSystemDiskDrive Class;
     typedef ComputerSystemDiskDrive_Provider Provider;
-    return Provider_Proc_T<Provider>::proc(
+    return Provider_Proc_T<Provider>::proc(registration,
 	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 

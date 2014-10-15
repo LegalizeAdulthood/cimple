@@ -32,7 +32,7 @@
 #include <cimple/Scheduler.h>
 #include "Status.h"
 #include "State.h"
-#include "Error.h"
+#include <cimple/Error.h>
 #include "linkage.h"
 
 CIMPLE_NAMESPACE_BEGIN

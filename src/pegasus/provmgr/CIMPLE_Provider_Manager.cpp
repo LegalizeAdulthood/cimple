@@ -24,7 +24,9 @@
 **==============================================================================
 */
 
+#include <cimple/version.h>
 #include <Pegasus/ProviderManager2/OperationResponseHandler.h>
+#include <Pegasus/Common/PegasusVersion.h>
 #include <cimple/config.h>
 # include <libgen.h>
 
@@ -36,6 +38,9 @@
 #include "CStr.h"
 #include "CIMPLE_Provider_Manager.h"
 
+#if defined(PEGASUS_VERSION_NUMBER) && (PEGASUS_VERSION_NUMBER >= 0x02050100)
+# define NEED_EXTRA_HANDLER_ARGS
+#endif
 
 // ATTN: the indication namespace is hard coded for now. 
 #define INDICATION_NAMESPACE "root/cimv2"
@@ -252,7 +257,11 @@ Message* CIMPLE_Provider_Manager::_handleInitializeProviderRequest(
     CIMInitializeProviderResponseMessage* response =
 	(CIMInitializeProviderResponseMessage*)request->buildResponse();
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    OperationResponseHandler handler(request, response, _responseChunkCallback);
+#else
     OperationResponseHandler handler(request, response);
+#endif
 
     return response;
 }
@@ -278,7 +287,12 @@ Message* CIMPLE_Provider_Manager::_handleGetInstanceRequest(
 
     // Create handler.
 
-    GetInstanceResponseHandler handler(request, response);
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    GetInstanceResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
+    GetInstanceResponseHandlerhandler(request, response);
+#endif
 
     // Get meta class.
 
@@ -404,7 +418,12 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstancesRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    EnumerateInstancesResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     EnumerateInstancesResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -516,7 +535,12 @@ Message* CIMPLE_Provider_Manager::_handleEnumerateInstanceNamesRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    EnumerateInstanceNamesResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     EnumerateInstanceNamesResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -582,7 +606,12 @@ Message* CIMPLE_Provider_Manager::_handleCreateInstanceRequest(
 
     // Create handler.
 
-    CreateInstanceResponseHandler handler(request, response);
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    CreateInstanceResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
+    CreateInstanceResponseHandlerhandler(request, response);
+#endif
 
     // Get meta class.
 
@@ -665,7 +694,12 @@ Message* CIMPLE_Provider_Manager::_handleModifyInstanceRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    ModifyInstanceResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     ModifyInstanceResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -737,7 +771,12 @@ Message* CIMPLE_Provider_Manager::_handleDeleteInstanceRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    DeleteInstanceResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     DeleteInstanceResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -887,7 +926,12 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorsRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    AssociatorsResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     AssociatorsResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -1016,7 +1060,12 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    AssociatorNamesResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     AssociatorNamesResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -1140,7 +1189,12 @@ Message* CIMPLE_Provider_Manager::_handleReferencesRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    ReferencesResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     ReferencesResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -1275,7 +1329,12 @@ Message* CIMPLE_Provider_Manager::_handleReferenceNamesRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    ReferenceNamesResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     ReferenceNamesResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -1361,7 +1420,12 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    InvokeMethodResponseHandler handler(
+	request, response, _responseChunkCallback);
+#else
     InvokeMethodResponseHandler handler(request, response);
+#endif
 
     // Get meta class.
 
@@ -1467,7 +1531,11 @@ Message* CIMPLE_Provider_Manager::_handleCreateSubscriptionRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    OperationResponseHandler handler(request, response, _responseChunkCallback);
+#else
     OperationResponseHandler handler(request, response);
+#endif
 
     // Create a new subscription for each class name in the request. Add the
     // subscription to the subscriptions table. But if the subscription exists 
@@ -1532,7 +1600,11 @@ Message* CIMPLE_Provider_Manager::_handleModifySubscriptionRequest(
     CIMModifySubscriptionResponseMessage* response =
         (CIMModifySubscriptionResponseMessage*)(request->buildResponse());
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    OperationResponseHandler handler(request, response, _responseChunkCallback);
+#else
     OperationResponseHandler handler(request, response);
+#endif
 
     return response;
 }
@@ -1558,7 +1630,11 @@ Message* CIMPLE_Provider_Manager::_handleDeleteSubscriptionRequest(
 
     // Create handler:
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    OperationResponseHandler handler(request, response, _responseChunkCallback);
+#else
     OperationResponseHandler handler(request, response);
+#endif
 
     // Disable indication providers that provide these classes.
 
@@ -1616,7 +1692,11 @@ Message* CIMPLE_Provider_Manager::_handleSubscriptionInitCompleteRequest(
 
     // Create handler.
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    OperationResponseHandler handler(request, response, _responseChunkCallback);
+#else
     OperationResponseHandler handler(request, response);
+#endif
 
     // Enable each indication providers for which there is a subscription:
 
@@ -1700,8 +1780,13 @@ int CIMPLE_Provider_Manager::_enable_indications(
 
     // Create the Pegasus indication response handler:
 
+#ifdef NEED_EXTRA_HANDLER_ARGS
+    IndicationResponseHandler* handler = new EnableIndicationsResponseHandler(
+	0, 0, sub->provider, _indicationCallback, _responseChunkCallback);
+#else
     IndicationResponseHandler* handler = new EnableIndicationsResponseHandler(
 	0, 0, sub->provider, _indicationCallback);
+#endif
 
     // Use the dispatcher to enable indications on the given provider.
 
@@ -1814,3 +1899,5 @@ CIMPLE_EXPORT void __libcimpleprovmgr()
     // Entry point used by loadpm utility to see if this provider manager
     // can be loaded.
 }
+
+CIMPLE_INJECT_VERSION_TAG;

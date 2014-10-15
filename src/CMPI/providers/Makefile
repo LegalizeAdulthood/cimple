@@ -6,3 +6,5 @@ DIRS = Thing
 include $(TOP)/mak/dir.mak
 
 genclass:
+
+tests:

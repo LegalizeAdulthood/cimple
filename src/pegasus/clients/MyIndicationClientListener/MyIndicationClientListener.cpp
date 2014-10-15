@@ -6,7 +6,6 @@
 #include <Pegasus/Common/System.h>
 #include <Pegasus/Common/MofWriter.h>
 
-#define PRINT_INSTANCE
 #ifdef PRINT_INSTANCE
 #include <Pegasus/Common/Buffer.h>
 #endif

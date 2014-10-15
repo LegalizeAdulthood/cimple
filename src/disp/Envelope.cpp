@@ -32,10 +32,10 @@
 CIMPLE_NAMESPACE_BEGIN
 
 Envelope::Envelope(Registration* reg) : 
-    Provider_Handle(reg->provider_proc), _reg(reg)
+    Provider_Handle(reg), _reg(reg)
 {
     assert(reg != 0);
-    assert(_provider != 0);
+    // assert(_provider != 0);
 }
 
 Envelope::~Envelope()

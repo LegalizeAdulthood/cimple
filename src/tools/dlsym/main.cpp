@@ -1,6 +1,9 @@
+#include <cimple/version.h>
 #include <dlfcn.h>
 #include <cstdlib>
 #include <cstdio>
+
+CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {

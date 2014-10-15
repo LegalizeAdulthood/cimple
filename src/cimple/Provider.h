@@ -313,7 +313,10 @@ public:
 //
 //==============================================================================
 
+struct Registration;
+
 typedef int (*Provider_Proc)(
+    const Registration* registration,
     int operation, 
     void* arg0, 
     void* arg1, 
@@ -341,6 +344,7 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
+	const Registration* registration,
 	int operation, 
 	void* arg0, 
 	void* arg1, 
@@ -419,6 +423,7 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
+	const Registration* registration,
 	int operation, 
 	void* arg0, 
 	void* arg1, 
@@ -439,7 +444,7 @@ public:
 	    case OPERATION_TIMER:
 	    case OPERATION_GET_REPOSITORY:
 	    {
-		return Provider_Proc_Common_T<PROVIDER>::proc(
+		return Provider_Proc_Common_T<PROVIDER>::proc(registration,
 		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	    }
 
@@ -503,6 +508,7 @@ public:
     typedef Indication_Handler<CLASS> INDICATION_HANDLER;
 
     static int proc(
+	const Registration* registration,
 	int operation, 
 	void* arg0, 
 	void* arg1, 
@@ -523,7 +529,7 @@ public:
 	    case OPERATION_TIMER:
 	    case OPERATION_GET_REPOSITORY:
 	    {
-		return Provider_Proc_Common_T<PROVIDER>::proc(
+		return Provider_Proc_Common_T<PROVIDER>::proc(registration,
 		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	    }
 
@@ -563,6 +569,7 @@ public:
     typedef typename PROVIDER::Class CLASS;
 
     static int proc(
+	const Registration* registration,
 	int operation, 
 	void* arg0, 
 	void* arg1, 
@@ -588,7 +595,7 @@ public:
 	    case OPERATION_DELETE_INSTANCE:
 	    case OPERATION_MODIFY_INSTANCE:
 	    {
-		return Provider_Proc_T<PROVIDER>::proc(
+		return Provider_Proc_T<PROVIDER>::proc(registration,
 		    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 	    }
 

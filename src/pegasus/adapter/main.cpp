@@ -1,0 +1,5 @@
+#include "Lamp_Provider.h"
+
+CIMPLE_MODULE(Lamp_Module);
+CIMPLE_PROVIDER(Lamp_Provider);
+CIMPLE_PEGASUS_PROVIDER_ENTRY_POINT;

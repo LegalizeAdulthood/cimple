@@ -102,6 +102,7 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
 
     Enum_Associator_Names_Status enum_associator_names_status = 
 	(Enum_Associator_Names_Status)_proc(
+	    _registration,
 	    OPERATION_ENUM_ASSOCIATOR_NAMES,
 	    _provider, 
 	    (void*)instance, 
@@ -224,6 +225,7 @@ Enum_References_Status Provider_Handle::enum_references(
 
     Enum_References_Status enum_references_status = 
 	(Enum_References_Status)_proc(
+	    _registration,
 	    OPERATION_ENUM_REFERENCES,
 	    _provider, 
 	    (void*)instance, 
@@ -317,6 +319,7 @@ Get_Instance_Status Provider_Handle::get_instance(
     // Use OPERATION_GET_INSTANCE:
 
     Get_Instance_Status get_instance_status = (Get_Instance_Status)_proc(
+	_registration,
 	OPERATION_GET_INSTANCE, 
 	_provider, (void*)model, &instance, 0, 0, 0, 0, 0);
 

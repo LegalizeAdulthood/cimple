@@ -27,6 +27,7 @@
 #ifndef _Adapter_h
 #define _Adapter_h
 
+#include <cimple/config.h>
 #include <cmpidt.h>
 #include <cmpift.h>
 #include <cmpimacs.h>
@@ -46,7 +47,7 @@ public:
 	const CMPIBroker* broker_, 
 	const CMPIContext* context,
 	const char* provider_name,
-	Provider_Proc proc);
+	const Registration* registration);
 
     ~Adapter();
 

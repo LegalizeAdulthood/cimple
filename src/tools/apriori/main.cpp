@@ -1,5 +1,5 @@
-
 #include <cimple/config.h>
+#include <cimple/version.h>
 #include <cstdio>
 #include <algorithm>
 #include <iostream>
@@ -271,6 +271,8 @@ int get_switch_opt(
 
     return -1;
 }
+
+CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {

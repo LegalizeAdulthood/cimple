@@ -15,6 +15,7 @@ CLASSES = \
     Link2 \
     Methods \
     UnixUser \
+    User \
     MyEmbeddedClass \
     DiskDrive \
     ComputerSystem \
@@ -56,6 +57,7 @@ SOURCES = \
     Person2.cpp \
     repository.cpp \
     UnixUser.cpp \
+    User.cpp \
     Thing.cpp \
     ThingLink.cpp
 

@@ -23,6 +23,8 @@
 **
 **==============================================================================
 */
+
+#include <cimple/version.h>
 #include <cstdio>
 #include <cstdlib>
 #include <getopt.h>
@@ -175,3 +177,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_INJECT_VERSION_TAG;

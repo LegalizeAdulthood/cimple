@@ -1,9 +1,23 @@
 
-Please add the following lines to this file in Pegasus:
+Patch for Pegasus version 2.5.1 and later:
+================================================================================
 
-	src/Pegasus/ProviderManager2/BasicProviderManagerRouter.cpp
+#define PEGASUS_ENABLE_CIMPLE_PROVIDER_MANAGER
+#if defined(PEGASUS_ENABLE_CIMPLE_PROVIDER_MANAGER)
+        if (interfaceType == "CIMPLE")
+        {
+            ProviderManagerContainer* pmc = new ProviderManagerContainer(
+                "cimpleprovmgr", "CIMPLE", "CIMPLE",
+                _indicationCallback,
+                _responseChunkCallback,
+                _subscriptionInitComplete);
+            _providerManagerTable.append(pmc);
+            return pmc->getProviderManager();
+        }
+#endif
 
-Add right after similar blocks around line 441.
+Patch for Pegasus 2.5.0:
+================================================================================
 
 #define PEGASUS_ENABLE_CIMPLE_PROVIDER_MANAGER
 #if defined(PEGASUS_ENABLE_CIMPLE_PROVIDER_MANAGER)

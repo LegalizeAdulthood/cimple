@@ -4,6 +4,8 @@ include $(TOP)/mak/config.mak
 SH_LIBRARY = cimple
 
 SOURCES = \
+    Error.cpp \
+    version.cpp \
     Id_Pool.cpp \
     List.cpp \
     Mutex.cpp \

@@ -27,6 +27,7 @@
 #ifndef _cmpi_Converter_h
 #define _cmpi_Converter_h
 
+#include <cimple/config.h>
 #include "cmpidt.h"
 #include "cmpift.h"
 #include "cmpimacs.h"

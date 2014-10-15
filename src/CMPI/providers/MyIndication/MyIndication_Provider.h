@@ -31,7 +31,16 @@ public:
         Property<uint32>& return_value);
 
     CIMPLE_HIDE static int proc(
-	int operation, void* arg0, void* arg1, void* arg2, void* arg3);
+	const Registration* registration,
+	int operation, 
+	void* arg0, 
+	void* arg1, 
+	void* arg2, 
+	void* arg3,
+	void* arg4,
+	void* arg5,
+	void* arg6,
+	void* arg7);
 
 private:
 

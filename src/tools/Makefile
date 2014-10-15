@@ -10,7 +10,9 @@ DIRS = \
     genclass \
     genclass/tests \
     genprov \
+    genprov/tests \
     testprov \
-    apriori
+    apriori \
+    cwhat
 
 include $(TOP)/mak/dir.mak

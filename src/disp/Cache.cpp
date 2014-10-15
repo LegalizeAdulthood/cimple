@@ -30,7 +30,7 @@
 #include <dlfcn.h>
 #include "Cache.h"
 #include "string.h"
-#include "Error.h"
+#include <cimple/Error.h>
 
 // ATTN: implement destroy() method.
 

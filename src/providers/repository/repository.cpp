@@ -33,6 +33,7 @@ static const Meta_Class* _meta_classes[] =
     &Arg::static_meta_class,
     &Methods::static_meta_class,
     &UnixUser::static_meta_class,
+    &User::static_meta_class,
     &MyEmbeddedClass::static_meta_class,
     &CIM_LogicalDevice::static_meta_class,
     &CIM_MediaAccessDevice::static_meta_class,

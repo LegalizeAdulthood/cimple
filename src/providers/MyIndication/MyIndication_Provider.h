@@ -31,6 +31,7 @@ public:
         Property<uint32>& return_value);
 
     static int proc(
+	const Registration* registration,
 	int operation, 
 	void* arg0, 
 	void* arg1, 

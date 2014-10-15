@@ -1,3 +1,4 @@
+#include <cimple/version.h>
 #include <Pegasus/Common/Config.h>
 #include <Pegasus/Repository/CIMRepository.h>
 #include <Pegasus/Common/MofWriter.h>
@@ -50,6 +51,7 @@ bool verbose_opt = false;
 bool dump_opt = false;
 bool help_opt = false;
 bool cmpi_opt = false;
+bool pegasus_cxx_opt = false;
 Array<String> providing_namespaces;
 
 //------------------------------------------------------------------------------
@@ -463,6 +465,11 @@ void register_module(
 
 	    if (cmpi_opt)
 		i.addProperty(CIMProperty("InterfaceType", String("CMPI")));
+	    else if (pegasus_cxx_opt)
+	    {
+		i.addProperty(CIMProperty(
+		    "InterfaceType", String("C++Default")));
+	    }
 	    else
 		i.addProperty(CIMProperty("InterfaceType", String("CIMPLE")));
 
@@ -520,6 +527,11 @@ void register_provider(
     const cimple::Meta_Class* meta_class)
 {
     const string& class_name = meta_class->name;
+
+    // Print message:
+
+    printf("Registering %s (class %s)\n", 
+	provider_name.c_str(), meta_class->name);
 
     // Open repository.
 
@@ -1005,6 +1017,8 @@ void create_class(
     if (verbose_opt)
 	printf("=== Creating class in Pegasus repository (%s)\n", mc->name);
 
+    printf("Creating class %s\n", mc->name);
+
     // Create superclass if necessary.
 
     if (mc->super_meta_class)
@@ -1041,9 +1055,14 @@ void create_class(
 
 	// Add properties.
 
+	size_t num_keys = 0;
+
 	for (size_t i = 0; i < mc->num_meta_features; i++)
 	{
 	    const cimple::Meta_Feature* mf = mc->meta_features[i];
+
+	    if (mf->flags & CIMPLE_FLAG_KEY)
+		num_keys++;
 
 	    // Ignore non-local feature:
 
@@ -1102,6 +1121,11 @@ void create_class(
 	    if (mf->flags & CIMPLE_FLAG_METHOD)
 		add_method(rep, ns, c, (const cimple::Meta_Method*)mf);
 	}
+
+	// Complain if no keys:
+
+	if (num_keys == 0)
+	    err("class has no keys: %s", mc->name);
 
 	// Create the class.
 
@@ -1199,7 +1223,7 @@ int main(int argc, char** argv)
 
     int opt;
 
-    while ((opt = getopt(argc, argv, "bdcvhn:m")) != -1)
+    while ((opt = getopt(argc, argv, "bdcvhn:mp")) != -1)
     {
 	switch (opt)
 	{
@@ -1236,6 +1260,11 @@ int main(int argc, char** argv)
 	    case 'm':
 	    {
 		cmpi_opt = true;
+	    }
+
+	    case 'p':
+	    {
+		pegasus_cxx_opt = true;
 	    }
 	}
     }
@@ -1283,6 +1312,11 @@ int main(int argc, char** argv)
 
     cimple::Registration* module = load_module(lib_path);
 
+    // If no modules in this library.
+
+    if (!module)
+	err("module contains no providers: %s", lib_path);
+
     // validate CIMPLE classes against Pegasus classes in each namespace.
 
     for (cimple::Registration* p = module; p; p = p->next)
@@ -1314,3 +1348,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+CIMPLE_INJECT_VERSION_TAG;

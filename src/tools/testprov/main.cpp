@@ -1,3 +1,4 @@
+#include <cimple/version.h>
 #include <dlfcn.h>
 #include <cstdlib>
 #include <cstdio>
@@ -267,6 +268,8 @@ void process(const char* path, const char* class_name)
     draw_box("modify_instances()");
     modify_instances(disp, meta_class, instances);
 }
+
+CIMPLE_INJECT_VERSION_TAG;
 
 int main(int argc, char** argv)
 {

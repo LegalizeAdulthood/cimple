@@ -1,0 +1,11 @@
+class Test2
+{
+    [Key] string key;
+};
+
+[Association]
+class Test2Link
+{
+    [Key] Test2 ref r1;
+    [Key] Test2 ref r2;
+};

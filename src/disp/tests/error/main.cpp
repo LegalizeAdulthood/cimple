@@ -1,5 +1,5 @@
 #include <cassert>
-#include <disp/Error.h>
+#include <cimple/Error.h>
 
 using namespace cimple;
 

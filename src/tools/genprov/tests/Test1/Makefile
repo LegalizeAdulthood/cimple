@@ -1,0 +1,18 @@
+TOP = ../../../../..
+include $(TOP)/mak/config.mak
+
+BINARY = test_genprov1
+SOURCES = main.cpp Test1.cpp Test1_Provider.cpp
+LIBRARIES = cimple
+CLEAN += Test1.cpp Test1.h Test1_Provider.cpp Test1_Provider.h
+
+include $(TOP)/mak/rules.mak
+
+tests:
+	@ $(BIN)/test_genprov1
+
+Test1_Provider.cpp:
+	genprov  -f Test1
+
+Test1.cpp:
+	genclass Test1

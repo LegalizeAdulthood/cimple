@@ -131,6 +131,7 @@ Enum_References_Status Link_Provider::enum_references(
 }
 
 int Link_Provider::proc(
+    const Registration* registration,
     int operation, 
     void* arg0, 
     void* arg1, 
@@ -146,7 +147,7 @@ int Link_Provider::proc(
 
     typedef Link Class;
     typedef Link_Provider Provider;
-    return Association_Provider_Proc_T<Provider>::proc(
+    return Association_Provider_Proc_T<Provider>::proc(registration,
 	operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 }
 

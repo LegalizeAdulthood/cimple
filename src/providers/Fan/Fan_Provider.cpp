@@ -100,6 +100,7 @@ Invoke_Method_Status Fan_Provider::SetSpeed(
 }
 
 int Fan_Provider::proc(
+    const Registration* registration,
     int operation, 
     void* arg0, 
     void* arg1, 
@@ -117,7 +118,7 @@ int Fan_Provider::proc(
     typedef Fan_Provider Provider;
 
     if (operation != OPERATION_INVOKE_METHOD)
-        return Provider_Proc_T<Provider>::proc(
+        return Provider_Proc_T<Provider>::proc(registration,
 	    operation, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     Provider* provider = (Provider*)arg0;

@@ -40,8 +40,14 @@
 	CMPIStatus*) \
     { \
 	static CMPI##TYPE##MI mi; \
-	__init_mi(&__adapter##PROVIDER, broker, context, #PROVIDER, \
-	    (void*)PROVIDER::proc, MI_TYPE_##TYPE, &mi); \
+	__init_mi( \
+	    &__adapter##PROVIDER, \
+	    &_cimple_registration_##PROVIDER, \
+	    broker, \
+	    context, \
+	    #PROVIDER, \
+	    MI_TYPE_##TYPE, \
+	    &mi); \
 	return &mi; \
     }
 
@@ -71,10 +77,10 @@ enum MI_Type
 
 CIMPLECMPI_LINKAGE void __init_mi(
     void** adapter,
+    const void* registration,
     const CMPIBroker* broker,
     const CMPIContext* context,
     const char* provider_name,
-    void* provider_proc,
     MI_Type mi_type,
     void* mi);
 

@@ -29,10 +29,10 @@
 
 void __init_mi(
     void** adapter_,
+    const void* registration,
     const CMPIBroker* broker,
     const CMPIContext* context,
     const char* provider_name,
-    void* provider_proc,
     MI_Type mi_type,
     void* mi_)
 {
@@ -42,7 +42,7 @@ void __init_mi(
         adapter->load_count++;
     else
         adapter = new Adapter(
-	    broker, context, provider_name, (Provider_Proc)provider_proc);
+	    broker, context, provider_name, (const Registration*)registration);
 
     switch (mi_type)
     {
