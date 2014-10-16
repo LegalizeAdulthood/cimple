@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -124,7 +124,7 @@ static void _release(__Array_Rep* rep)
 
 static __Array_Rep* _clone(
     const __Array_Traits* traits,
-    const char* data, 
+    const char* data,
     size_t size)
 {
     __Array_Rep* rep = _allocate(traits, size);
@@ -150,9 +150,9 @@ void __construct(__Array_Rep*& rep, const __Array_Rep* x)
 }
 
 void __construct(
-    __Array_Rep*& rep, 
+    __Array_Rep*& rep,
     const __Array_Traits* traits,
-    const char* data, 
+    const char* data,
     size_t size)
 {
     rep = _clone(traits, data, size);
@@ -195,7 +195,7 @@ void __resize(__Array_Rep*& rep, size_t size, const void* elem)
     if (diff > 0)
     {
         __reserve(rep, size);
-        _fill(rep, 
+        _fill(rep,
             rep->data + (rep->size * rep->traits->elem_size), diff, elem);
     }
     else if (diff < 0)
@@ -220,8 +220,8 @@ void __insert(__Array_Rep*& rep, size_t pos, const void* data, size_t size)
     size_t elem_size = rep->traits->elem_size;
     char* ptr = (char*)(rep->data + pos * elem_size);
     memmove(
-        rep->data + (pos + size) * elem_size, 
-        ptr, 
+        rep->data + (pos + size) * elem_size,
+        ptr,
         (rep->size - pos) * elem_size);
     _copy(rep, ptr, (char*)data, size);
     rep->size += size;
@@ -245,8 +245,8 @@ void __remove(__Array_Rep*& rep, size_t pos, size_t size)
     char* ptr = rep->data + pos * elem_size;
     _destroy(rep, ptr, size);
     memmove(
-        ptr, 
-        rep->data + (pos + size) * elem_size, 
+        ptr,
+        rep->data + (pos + size) * elem_size,
         (rep->size - (pos + size)) * elem_size);
     rep->size -= size;
 }

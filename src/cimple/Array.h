@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,12 +32,12 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** The #Array# class manages a sequence of elements located on the heap. 
+/** The #Array# class manages a sequence of elements located on the heap.
 
     \section section1 Introduction
 
-    The #Array class has functions for inserting, accessing, and removing 
-    elements. This class is similar to the STL #vector class but offers three 
+    The #Array class has functions for inserting, accessing, and removing
+    elements. This class is similar to the STL #vector class but offers three
     major advantages.
 
         - It causes virtually no code bloat due to template usage.
@@ -81,7 +81,7 @@ CIMPLE_NAMESPACE_BEGIN
 
     Prepend() adds elements to the beginning of the array and append() adds
     them to the end. Insert() adds elements at a given position. The example
-    below builds an array with two elements and then inserts an element in 
+    below builds an array with two elements and then inserts an element in
     the middle.
 
     \code
@@ -91,7 +91,7 @@ CIMPLE_NAMESPACE_BEGIN
     a.insert(1, 300);
     \endcode
 
-    There are also forms of these three functions for adding more than one 
+    There are also forms of these three functions for adding more than one
     element as shown below.
 
     \code
@@ -127,9 +127,9 @@ CIMPLE_NAMESPACE_BEGIN
 
     \section section4 Clearing an Array
 
-    The clear() function removes all elements from an array. After calling 
+    The clear() function removes all elements from an array. After calling
     clear(), the size() function will return zero. But clearing an array does
-    not necessarily reclaim any memory used by the array. The memory is 
+    not necessarily reclaim any memory used by the array. The memory is
     retained to reduce overhead associated with any future insertions. To
     reclaim the memory, the array itself must be destructed.
 
@@ -157,12 +157,12 @@ CIMPLE_NAMESPACE_BEGIN
     \section section6 Error Checking
 
     The #Array class (like the functions in the standard C library) performs
-    no error checking on input arguments. For example, passing a null pointer 
-    to a member function will result in a crash. Similary, passing an 
-    out-of-range index will have unpredictable results. It is the caller's 
-    responsibility to avoid these errors. Explict error checking would make 
-    the implementation bigger and slower, which is mainly why the C library 
-    routines do not check for errors either. For example, the following use 
+    no error checking on input arguments. For example, passing a null pointer
+    to a member function will result in a crash. Similary, passing an
+    out-of-range index will have unpredictable results. It is the caller's
+    responsibility to avoid these errors. Explict error checking would make
+    the implementation bigger and slower, which is mainly why the C library
+    routines do not check for errors either. For example, the following use
     of strcpy() will surely cause a crash.
 
     \code
@@ -300,12 +300,12 @@ public:
 
     /** Make an array with four elements.
     */
-    static Array<T> make(const T& x0, const T& x1, const T& x2, 
+    static Array<T> make(const T& x0, const T& x1, const T& x2,
         const T& x3);
 
     /** Make an array with five elements.
     */
-    static Array<T> make(const T& x0, const T& x1, const T& x2, 
+    static Array<T> make(const T& x0, const T& x1, const T& x2,
         const T& x3, const T& x4);
 
 private:
@@ -314,7 +314,7 @@ private:
 };
 
 template<class T>
-inline Array<T>::Array() 
+inline Array<T>::Array()
 {
     __construct(_rep, __Array_Traits_Factory<T>::traits());
 }
@@ -346,64 +346,64 @@ inline Array<T>& Array<T>::operator=(const Array<T>& x)
 }
 
 template<class T>
-inline void Array<T>::assign(const Array& x) 
-{ 
-    __assign(_rep, x); 
-}
-
-template<class T>
-inline void Array<T>::assign(const T* data, size_t size) 
+inline void Array<T>::assign(const Array& x)
 {
-    __assign(_rep, data, size); 
+    __assign(_rep, x);
 }
 
 template<class T>
-inline size_t Array<T>::size() const 
+inline void Array<T>::assign(const T* data, size_t size)
+{
+    __assign(_rep, data, size);
+}
+
+template<class T>
+inline size_t Array<T>::size() const
 {
     return _rep->size;
 }
 
 template<class T>
-inline size_t Array<T>::capacity() const 
+inline size_t Array<T>::capacity() const
 {
     return _rep->capacity;
 }
 
 template<class T>
-inline const T* Array<T>::data() const 
-{ 
+inline const T* Array<T>::data() const
+{
     return (const T*)_rep->data;
 }
 
 template<class T>
-inline T* Array<T>::data() 
-{ 
+inline T* Array<T>::data()
+{
     return (T*)_rep->data;
 }
 
 template<class T>
-inline T& Array<T>::operator[](size_t pos) 
+inline T& Array<T>::operator[](size_t pos)
 {
     return data()[pos];
 }
 
 template<class T>
-inline const T& Array<T>::operator[](size_t pos) const 
+inline const T& Array<T>::operator[](size_t pos) const
 {
     return data()[pos];
 }
 
 template<class T>
-inline void Array<T>::reserve(size_t capacity) 
+inline void Array<T>::reserve(size_t capacity)
 {
-    __reserve(_rep, capacity); 
+    __reserve(_rep, capacity);
 }
 
 template<class T>
-inline void Array<T>::resize(size_t size) 
+inline void Array<T>::resize(size_t size)
 {
     static T x;
-    __resize(_rep, size, &x); 
+    __resize(_rep, size, &x);
 }
 
 template<class T>
@@ -461,7 +461,7 @@ inline void Array<T>::clear()
 }
 
 template<class T>
-inline void Array<T>::swap(Array& x) 
+inline void Array<T>::swap(Array& x)
 {
     __Array_Rep* tmp = _rep;
     _rep = x._rep;
@@ -503,8 +503,8 @@ inline Array<T> Array<T>::make(const T& x0, const T& x1, const T& x2)
 
 template<class T>
 inline Array<T> Array<T>::make(
-    const T& x0, 
-    const T& x1, 
+    const T& x0,
+    const T& x1,
     const T& x2,
     const T& x3)
 {
@@ -518,8 +518,8 @@ inline Array<T> Array<T>::make(
 
 template<class T>
 inline Array<T> Array<T>::make(
-    const T& x0, 
-    const T& x1, 
+    const T& x0,
+    const T& x1,
     const T& x2,
     const T& x3,
     const T& x4)
