@@ -33,6 +33,9 @@ regmod:
 register:
 	$(BINDIR)/regmod -c $(TARGET)
 
+All_Class.cpp All_Part.cpp repository.cpp: All_Class.mof All_Part.mof
+	$(BINDIR)/genclass -r All_Class
+
 genclass:
 	$(BINDIR)/genclass -r All_Class
 
