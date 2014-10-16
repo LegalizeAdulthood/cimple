@@ -13,11 +13,14 @@ SHARED_LIBRARY=cmplderivedassoc
 ## Define source files for compile and link
 ##
 
-SOURCES += CMPL_Base.cpp
-SOURCES += CMPL_Derived.cpp
-SOURCES += CMPL_Other.cpp
-SOURCES += CMPL_Assoc.cpp
-SOURCES += repository.cpp
+GENCLASS_SOURCES = \
+    CMPL_Assoc.cpp \
+    CMPL_Base.cpp \
+    CMPL_Derived.cpp \
+    CMPL_Other.cpp \
+    repository.cpp
+
+SOURCES += $(GENCLASS_SOURCES)
 SOURCES += CMPL_Base_Provider.cpp
 SOURCES += CMPL_Derived_Provider.cpp
 SOURCES += CMPL_Other_Provider.cpp
@@ -38,7 +41,7 @@ include $(TOP)/mak/rules.mak
 genproj:
 	genproj cmplderivedassoc -F classlist.txt
 
-genclass:
+genclass $(GENCLASS_SOURCES): providerclasses.mof repository.mof
 	$(BINDIR)/genclass -r  -F classlist.txt
 
 genprov:

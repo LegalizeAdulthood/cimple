@@ -122,6 +122,16 @@ src/providers/Delegate/Delegator.cpp
 src/providers/Delegate/Delegator.h
 src/providers/Delegate/repository.cpp
 src/providers/Delegate/repository.h
+src/providers/DerivedAssoc/CMPL_Assoc.cpp
+src/providers/DerivedAssoc/CMPL_Assoc.h
+src/providers/DerivedAssoc/CMPL_Base.cpp
+src/providers/DerivedAssoc/CMPL_Base.h
+src/providers/DerivedAssoc/CMPL_Derived.cpp
+src/providers/DerivedAssoc/CMPL_Derived.h
+src/providers/DerivedAssoc/CMPL_Other.cpp
+src/providers/DerivedAssoc/CMPL_Other.h
+src/providers/DerivedAssoc/repository.cpp
+src/providers/DerivedAssoc/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
