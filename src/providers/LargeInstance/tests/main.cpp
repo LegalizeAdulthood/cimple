@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -158,7 +158,7 @@ int main(int argc, char** argv)
                 if (sizeOfInstanceOpt == 0)
                 {
                     fprintf(stderr,
-                        "%s: bad instance size option argument: %s\n", 
+                        "%s: bad instance size option argument: %s\n",
                         arg0, argv[1]);
                     exit(1);
                 }
@@ -176,8 +176,8 @@ int main(int argc, char** argv)
 
                 if (instanceCountOpt == 0)
                 {
-                    fprintf(stderr, 
-                        "%s: bad operation type option argument: %s\n", 
+                    fprintf(stderr,
+                        "%s: bad operation type option argument: %s\n",
                         arg0, argv[1]);
                     exit(1);
                 }
@@ -195,8 +195,8 @@ int main(int argc, char** argv)
 
                 if (repeatOpt == 0)
                 {
-                    fprintf(stderr, 
-                        "%s: bad repeat option argument: %s\n", 
+                    fprintf(stderr,
+                        "%s: bad repeat option argument: %s\n",
                         arg0, argv[1]);
                     exit(1);
                 }
@@ -215,27 +215,27 @@ int main(int argc, char** argv)
                 if (enumerationTypeOpt == 0)
                 {
                     fprintf(stderr,
-                        "%s: bad enumeration type option argument: %s\n", 
+                        "%s: bad enumeration type option argument: %s\n",
                         arg0, argv[1]);
                     exit(1);
                 }
                 if (enumerationTypeOpt > 3)
                 {
-                    fprintf(stderr, 
+                    fprintf(stderr,
                         "%s: invalid operation type option argument:"
-                        "Value not in range %s\n", 
+                        "Value not in range %s\n",
                         arg0, argv[1]);
                     exit(1);
                 }
                 break;
-            } 
+            }
 
             case 'h':
             {
                 fprintf(stderr, (char*)USAGE, arg0);
                 printf("Options are countToDeliver %u "
                    "returned InstanceSize %u type %u repeats %u\n",
-                   instanceCountOpt,sizeOfInstanceOpt, 
+                   instanceCountOpt,sizeOfInstanceOpt,
                    enumerationTypeOpt, repeatOpt);
                 exit(0);
             }
@@ -269,16 +269,16 @@ int main(int argc, char** argv)
         {
             printf("Options are countToDeliver %u "
                    "returned InstanceSize %u type %u repeats %u\n",
-                   instanceCountOpt,sizeOfInstanceOpt, 
+                   instanceCountOpt,sizeOfInstanceOpt,
                    enumerationTypeOpt, repeatOpt);
         }
         CIMClient client;
         client.connectLocal();
 
-        setConfigParameters(client, instanceCountOpt,sizeOfInstanceOpt, 
+        setConfigParameters(client, instanceCountOpt,sizeOfInstanceOpt,
                             enumerationTypeOpt);
 
-        getConfigParameters(client, instanceCountOpt, sizeOfInstanceOpt, 
+        getConfigParameters(client, instanceCountOpt, sizeOfInstanceOpt,
                             enumerationTypeOpt);
 
         for (Uint32 i = 0 ; i < repeatOpt ; i++)

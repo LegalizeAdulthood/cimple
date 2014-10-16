@@ -70,7 +70,7 @@ SFCB_REGSDIR=/usr/local/var/lib/sfcb/stage/regs
 register-sfcb:
 	cp $(TARGET) /usr/lib64/
 	cp All_Class.mof $(SFCB_MOFSDIR)/All_Class.mof
-	cp All_Part.mof $(SFCB_MOFSDIR)/All_Part.mof 
+	cp All_Part.mof $(SFCB_MOFSDIR)/All_Part.mof
 	cp All_Class.reg $(SFCB_REGSDIR)/All_Class.reg
 	sfcbrepos
 
@@ -110,11 +110,11 @@ setconfig:
     setconfig
 
 getconfig:
-	cimcli im $(TEST_CLASS).Key=1 getconfig -l localhost -n $(TEST_NAMESPACE) 
+	cimcli im $(TEST_CLASS).Key=1 getconfig -l localhost -n $(TEST_NAMESPACE)
 
 testmethod:
 	cimcli im $(TEST_CLASS) test -l localhost -n $(TEST_NAMESPACE)
-   
+
 
 ##===========================================================================
 ## Manual commands to make this CMPI provider
@@ -122,12 +122,12 @@ testmethod:
 cmpi:
 	$(MAKE) clean
 	-cimserver -s
-	export CIMPLE_PROVIDER_TYPE=CMPI 
+	export CIMPLE_PROVIDER_TYPE=CMPI
 	$(MAKE)
 	$(MAKE) insmod
 	cimserver
 	$(MAKE) register
-    
-    
+
+
 	
 

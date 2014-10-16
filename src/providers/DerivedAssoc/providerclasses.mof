@@ -17,4 +17,4 @@ class CMPL_Assoc
 { 
               [key] CMPL_Base REF Antecedent; 
               [key] CMPL_Other REF Dependant;   
-}; 
+};

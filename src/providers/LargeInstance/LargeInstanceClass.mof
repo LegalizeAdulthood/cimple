@@ -21,7 +21,7 @@ class CMPL_LargeInstance
     "Direct - Generate directly with the create function. "
     "Clone - Create and clone each object. "
     "Cache - Create at provider startup and get from Cache." ),
-    ValueMap { "1", "2", "3"}, 
+    ValueMap { "1", "2", "3"},
        Values { "Direct", "Clone", "Cache"}]
     Uint16 instanceDeliveryType = 1;
 
@@ -34,9 +34,9 @@ class CMPL_LargeInstance
     "Array of strings that can be set to size determined by the "
     "sizeOfInstance parameter.")]
     String largeArrayProperty[];
-    
+
     // Allow setting and getting the provider configuration parameters of
-    // type (1 = create instances directly, 
+    // type (1 = create instances directly,
     //       2 = Created in repository and cloned
     // size - Approximate size of each instance
     // count - count of instances to return from enumerate operations.

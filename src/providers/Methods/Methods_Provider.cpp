@@ -163,7 +163,7 @@ Invoke_Method_Status Methods_Provider::foo5(
 {
     out_arg = in_arg;
     return_value.set(1200);
-    
+
     return INVOKE_METHOD_OK;
 }
 

@@ -25,7 +25,7 @@ Load_Status Lamp_Provider::load()
     TRACE;
 
     Lamp* instance;
-    
+
     instance = Lamp::create();
     instance->model.value = "A";
     instance->vendor.value = "Euro Lamps Inc";

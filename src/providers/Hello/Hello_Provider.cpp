@@ -50,21 +50,21 @@ Enum_Instances_Status Hello_Provider::enum_instances(
         if (username.size() != 0)
         {
             CIMPLE_INFO(("Hello Provider. username = %s\n", username.c_str()));
-            firstMessage.append(". User name = ");   
+            firstMessage.append(". User name = ");
             firstMessage.append(username);
         }
         else    // returned username but empty
         {
             firstMessage.append(". User name empty\n");
         }
-        
+
     }
     else    // get_username returned error code
     {
         CIMPLE_INFO(("Hello Provider.No username found. Error rtnd\n"));
     }
-    
-    // 
+
+    //
     // As a demonstration attach the input namespace from the model for the
     // request to the Message text and log the information.
     //

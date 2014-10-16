@@ -35,7 +35,7 @@ void* OutOfOfficeNotice_Provider::_indication_thread(void* arg)
     return 0;
 }
 
-OutOfOfficeNotice_Provider::OutOfOfficeNotice_Provider() : 
+OutOfOfficeNotice_Provider::OutOfOfficeNotice_Provider() :
     _indication_handler(0)
 {
 }

@@ -2,7 +2,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-DerivedIndication_Provider::DerivedIndication_Provider() : 
+DerivedIndication_Provider::DerivedIndication_Provider() :
     _indication_handler(0)
 {
 }

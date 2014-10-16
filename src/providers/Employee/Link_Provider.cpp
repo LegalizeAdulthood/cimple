@@ -113,7 +113,7 @@ Enum_Associators_Status Link_Provider::enum_associators(
     //         [Key] Manager REF Mgr;
     //     };
     //
-    // The instance parameter refers to the "source" instance of the 
+    // The instance parameter refers to the "source" instance of the
     // association. This function creates "result" instances and passes
     // them to the handler. If the source is a manager, the results will
     // be employees. If the source is an employee, the result will be

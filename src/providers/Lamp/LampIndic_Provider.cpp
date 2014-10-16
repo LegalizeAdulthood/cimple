@@ -15,12 +15,12 @@
 CIMPLE_NAMESPACE_BEGIN
 
 static void _send_indication(
-    const char* func, 
+    const char* func,
     Indication_Handler<LampIndic>* handler)
 {
     TRACE;
 
-    char utf8_chars[] = 
+    char utf8_chars[] =
     {
         '\xCE', '\x99', '\xCE', '\xBF', '\xCF', '\x8D',
         '\xCE', '\xBD', '\xCE', '\xB9', '\xCE', '\xBA',
@@ -52,7 +52,7 @@ void* LampIndic_Provider::_thread_proc(void* arg)
 
     TRACE;
 
-    // ATTN: This sleep prevents a "Recursive Use of CIMOMHandle Attempted" 
+    // ATTN: This sleep prevents a "Recursive Use of CIMOMHandle Attempted"
     // message from Pegasus ClientCIMOMHandleAccessController() in
     // ClientCIMOMHandleRep.cpp.
     sleep(1);

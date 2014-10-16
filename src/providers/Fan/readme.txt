@@ -5,6 +5,6 @@ This provider includes its own test client with the client defined in the
 set_speed subdirectory.  The client only tests the extrinsic method.
 
 The provider defines 3 instances. It allows only enumerate, get, modify
-operations these instances. 
+operations these instances.
 
 March 09
