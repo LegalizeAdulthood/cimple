@@ -20,6 +20,9 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -n root/cimv2 -c $(TARGET)
 
+Arrays.cpp repostiory.cpp: repository.mof
+	$(BINDIR)/genclass -r Arrays
+
 genclass:
 	$(BINDIR)/genclass -r Arrays
 

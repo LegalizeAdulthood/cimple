@@ -7,15 +7,18 @@ SHARED_LIBRARY = cimple_CIM_ConcreteJob
 
 INCLUDES += $(CMPI_INCLUDES)
 
-SOURCES = \
+GENERATED_SOURCES = \
     CIM_ConcreteJob.cpp \
-    CIM_ConcreteJob_Provider.cpp \
     CIM_Job.cpp \
     CIM_LogicalElement.cpp \
     CIM_ManagedElement.cpp \
     CIM_ManagedSystemElement.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENERATED_SOURCES) \
+    CIM_ConcreteJob_Provider.cpp \
+    module.cpp
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -25,6 +28,9 @@ include $(TOP)/mak/rules.mak
 
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
+
+$(GENERATED_SOURCES):
+	$(BINDIR)/genclass -r CIM_ConcreteJob
 
 genclass:
 	$(BINDIR)/genclass -r CIM_ConcreteJob

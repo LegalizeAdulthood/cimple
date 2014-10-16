@@ -8,11 +8,11 @@ SHARED_LIBRARY = cimplebug31
 INCLUDES += $(CMPI_INCLUDES)
 
 SOURCES = \
-    BUG31_C_Provider.cpp \
     BUG31_A.cpp \
     BUG31_B.cpp \
     BUG31_C.cpp \
     repository.cpp \
+    BUG31_C_Provider.cpp \
     module.cpp
 
 CIMPLE_CMPI_MODULE=1
@@ -23,6 +23,9 @@ include $(TOP)/mak/rules.mak
 
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
+
+BUG31_A.cpp BUG31_B.cpp BUG31_C.cpp repository.cpp: repository.mof
+	$(BINDIR)/genclass -r BUG31_A BUG31_B BUG31_C
 
 genclass:
 	$(BINDIR)/genclass -r BUG31_A BUG31_B BUG31_C
