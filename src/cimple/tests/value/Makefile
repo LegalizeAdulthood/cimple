@@ -12,7 +12,7 @@ include $(TOP)/mak/rules.mak
 run:
 	$(TARGET)
 
-## This will be moved to live after we define DIFF through all possible 
+## This will be moved to live after we define DIFF through all possible
 ## platforms.
 runtest:
 	$(TARGET) >result

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -48,19 +48,19 @@ extern int cmpi_to_cimple_value(
 //==============================================================================
 
 static CMPIEnumeration* cimple_CBEnumInstances(
-    const CMPIBroker* mb, 
+    const CMPIBroker* mb,
     const CMPIContext* ctx,
-    const CMPIObjectPath* op, 
-    const char** properties, 
+    const CMPIObjectPath* op,
+    const char** properties,
     CMPIStatus* rc)
 {
     return (mb->bft->enumerateInstances(mb, ctx, op, properties, rc));
 }
 
 inline static CMPIStatus cimple_CBSetInstance(
-    const CMPIBroker* mb, 
+    const CMPIBroker* mb,
     const CMPIContext* ctx,
-    const CMPIObjectPath* op, 
+    const CMPIObjectPath* op,
     const CMPIInstance* inst)
 {
     return (mb->bft->modifyInstance(mb, ctx, op, inst, NULL));
@@ -250,7 +250,7 @@ Instance_Enumerator_Rep* CMPI_Thread_Context::instance_enumerator_create(
     CMPIStatus status;
 
     CMPIEnumeration* enumeration = cimple_CBEnumInstances(
-        context->cmpi_broker(), 
+        context->cmpi_broker(),
         context->cmpi_context(),
         object_path,
         NULL, // properties
@@ -725,34 +725,34 @@ bool CMPI_Thread_Context::get_username(String& user_name)
     CIMPLE_ASSERT(_cmpi_adapter != 0);
     CMPI_Thread_Context* context = _top();
 
-    // experimental code to get username. 
+    // experimental code to get username.
 
-    if(context != 0) 
+    if(context != 0)
     {
         // Experimental code to get User Name from context. This just
         // gets the user name and displays it.
 
         const CMPIContext* cc = context->cmpi_context();
 
-        if(cc) 
-        { 
-            CMPIStatus rc; 
-            CMPIData userName = (cc->ft->getEntry)(cc,CMPIPrincipal,&rc); 
-            if(rc.rc==CMPI_RC_OK) 
+        if(cc)
+        {
+            CMPIStatus rc;
+            CMPIData userName = (cc->ft->getEntry)(cc,CMPIPrincipal,&rc);
+            if(rc.rc==CMPI_RC_OK)
             {
                 //printf("usernameType=%d##usernameValue=%s\n",userName.type,
                 //       userName.value.string->ft->getCharPtr(
                 //                      userName.value.string,&rc));
                 user_name = userName.value.string->ft->getCharPtr(
                                         userName.value.string,&rc);
-              
+
                 return true;
-            } 
-            else 
-            { 
+            }
+            else
+            {
                 CIMPLE_ERR(("username not OK cmpirc=%d",rc.rc));
-            } 
-        } 
+            }
+        }
     }
     return false;
 }

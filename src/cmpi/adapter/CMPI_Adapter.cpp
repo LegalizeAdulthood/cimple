@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -40,7 +40,7 @@
 #define STATIC_DATA_MAGIC 0x5DE2B131
 
 // If the following comment is removed, all CMPI objects input and output
-// are fully logged at DEBUG level.  This is a special function that 
+// are fully logged at DEBUG level.  This is a special function that
 // should be used sparingly and to debug any CMPI issues. Can only be activated
 // if CMPI_ADAPTER_DEBUG is set (see Makefile) because that is what enables
 // CMPIUtils.
@@ -125,9 +125,9 @@ static const char* _rc_to_str(CMPIrc rc)
 //------------------------------------------------------------------------------
 
 CMPI_Adapter::CMPI_Adapter(
-    const CMPIBroker* broker_, 
+    const CMPIBroker* broker_,
     const CMPIContext* context,
-    const char* prov_name, 
+    const char* prov_name,
     const Registration* registration,
     CMPI_Static_Data* static_data)
     :
@@ -290,7 +290,7 @@ static CMPI_Adapter* _adapter(MI* mi)
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::instanceCleanup(
-    CMPIInstanceMI* mi, 
+    CMPIInstanceMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -310,14 +310,14 @@ CMPIStatus CMPI_Adapter::instanceCleanup(
 //------------------------------------------------------------------------------
 
 // Define a data structure and processing function for enumerate instance
-// names operations and the CMPI adapter.  The following is a standard pattern 
+// names operations and the CMPI adapter.  The following is a standard pattern
 // used by CIMPLE to interface the generic enumerateInstanceNames functions
 // with each adapter. A struct Data is defined to contain adapter specific
 // information and a _proc function to process each instance.  Note that
 // this is defined in a specific namespace so that it does not conflict
 // with other symbols.
 
-// 
+//
 namespace enum_instance_names
 {
     // Response data structure
@@ -376,8 +376,8 @@ namespace enum_instance_names
 // The enumerate Instance Names processor for CMPI
 
 CMPIStatus CMPI_Adapter::enumInstanceNames(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
     const CMPIObjectPath* cop)
 {
@@ -416,11 +416,11 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
 
     const char* ns = name_space(cop);
 
-    enum_instance_names::Data data = 
+    enum_instance_names::Data data =
         { adapter->broker, result, ns, CMPI_RC_OK };
 
-    Enum_Instances_Status status = 
-        adapter->enum_instances(cimple_ref, enum_instance_names::_proc, &data); 
+    Enum_Instances_Status status =
+        adapter->enum_instances(cimple_ref, enum_instance_names::_proc, &data);
 
     switch (status)
     {
@@ -457,7 +457,7 @@ CMPIStatus CMPI_Adapter::enumInstanceNames(
 //------------------------------------------------------------------------------
 
 // Define a data structure and processing function for enumerate instance
-// operations and the CMPI adapter.  The following is a standard pattern 
+// operations and the CMPI adapter.  The following is a standard pattern
 // used by CIMPLE to interface the generic enumerateInstanceNames functions
 // with each adapter. A struct Data is defined to contain adapter specific
 // information and a _proc function to process each instance.  Note that
@@ -480,7 +480,7 @@ namespace enum_instances
     // This function handles a single instance. It Filters properties
     // and converts CIMPLE instances returned by the provider handler
     // to CMPI instances..
-    
+
     static bool _proc(
         Instance* inst,
         Enum_Instances_Status status,
@@ -499,15 +499,15 @@ namespace enum_instances
             return false;
 
         // Create CMPI object path.
-    
+
         CMPIObjectPath* instCop = NULL;
-    
+
         CMPIrc rc = make_cmpi_object_path(
             data->broker,
             inst,
             name_space(data->cop),
             instCop);
-    
+
         if (rc != CMPI_RC_OK)
         {
             // Propagate error!
@@ -519,7 +519,7 @@ namespace enum_instances
         // instance by setting unwanted properties to NULL. This filter call
         // removes any key properties not on the list.
         // Remove the filter properties call. cmpi properties are filtered by
-        // make_cmpi_instance() now that the CMSetPropertyFilter() 
+        // make_cmpi_instance() now that the CMSetPropertyFilter()
         // Function has been added and the property list passed to
         // make_cmpi_instance. This has the advantage that cmpi traces
         // this action when trace is turned on.
@@ -531,13 +531,13 @@ namespace enum_instances
         CMPIInstance* ci = 0;
 
         data->rc = make_cmpi_instance(
-            data->broker, 
-            inst, 
-            name_space(data->cop), 
+            data->broker,
+            inst,
+            name_space(data->cop),
             instCop,
             data->properties,
-            ci); 
-        
+            ci);
+
         // Diagnostic display to log of created instance.
 #ifdef CIMPLE_LOG_CMPI_OBJECTS
         //logCMPIInstance(FL,ci);
@@ -557,13 +557,13 @@ namespace enum_instances
    Creates CIMPLE instance with properties not filtered,
    calls CIMPLE provider. Provider return processed through
    enum_instances above.
- 
+
 */
 CMPIStatus CMPI_Adapter::enumInstances(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
+    const CMPIObjectPath* cop,
     const char** properties)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -595,22 +595,22 @@ CMPIStatus CMPI_Adapter::enumInstances(
     // Filter properties in reference: This provides an instance with
     // properties non-null so that the provider has a list
     // of the properties that the client wants in the
-    // model object provided. 
+    // model object provided.
 
     if (properties)
         filter_properties(cimple_ref, properties, true);
 
     // Invoke provider:
 
-    enum_instances::Data data = 
+    enum_instances::Data data =
         { adapter->broker, result, cop, properties, CMPI_RC_OK };
 
     // call the enum_instances::_proc function through the
     // cimple ProviderHandle::enum_instances function with the
     // enum_instances::_proc function as the response handler
-    
-    Enum_Instances_Status status = 
-        adapter->enum_instances(cimple_ref, enum_instances::_proc, &data); 
+
+    Enum_Instances_Status status =
+        adapter->enum_instances(cimple_ref, enum_instances::_proc, &data);
 
     switch (status)
     {
@@ -643,10 +643,10 @@ CMPIStatus CMPI_Adapter::enumInstances(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::getInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
+    const CMPIObjectPath* cop,
     const char** properties)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -691,7 +691,7 @@ CMPIStatus CMPI_Adapter::getInstance(
 
     Instance* inst = 0;
 
-    Get_Instance_Status status = 
+    Get_Instance_Status status =
         adapter->get_instance(cimple_ref, inst);
 
     Ref<Instance> inst_destroyer(inst);
@@ -732,7 +732,7 @@ CMPIStatus CMPI_Adapter::getInstance(
         name_space(cop),
         cop,
         properties,
-        ci); 
+        ci);
 
     // log of instance returned from getInstance
 #ifdef CIMPLE_LOG_CMPI_OBJECTS
@@ -742,7 +742,7 @@ CMPIStatus CMPI_Adapter::getInstance(
     if (rc == CMPI_RC_OK)
     {
         CMReturnInstance(result, ci);
-        // Release with CMRelease not required.  
+        // Release with CMRelease not required.
         // object released at end of operation
         //CMRelease(ci);
         CMReturnDone(result);
@@ -761,10 +761,10 @@ CMPIStatus CMPI_Adapter::getInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::createInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
+    const CMPIObjectPath* cop,
     const CMPIInstance* ci)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -811,7 +811,7 @@ CMPIStatus CMPI_Adapter::createInstance(
         {
             CMPIObjectPath* cop_out;
 
-            CMPIrc rc = make_cmpi_object_path(adapter->broker, inst, 
+            CMPIrc rc = make_cmpi_object_path(adapter->broker, inst,
                 name_space(cop), cop_out);
 
             if (rc != CMPI_RC_OK)
@@ -857,10 +857,10 @@ CMPIStatus CMPI_Adapter::createInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::modifyInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
+    const CMPIObjectPath* cop,
     const CMPIInstance* ci,
     const char** properties)
 {
@@ -948,8 +948,8 @@ CMPIStatus CMPI_Adapter::modifyInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::deleteInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
     const CMPIObjectPath* cop)
 {
@@ -982,7 +982,7 @@ CMPIStatus CMPI_Adapter::deleteInstance(
 
     // Invoke provider:
 
-    Delete_Instance_Status status = 
+    Delete_Instance_Status status =
         adapter->delete_instance(cimple_ref);
 
     switch (status)
@@ -1019,11 +1019,11 @@ CMPIStatus CMPI_Adapter::deleteInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::execQuery(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
-    const char* lang, 
+    const CMPIObjectPath* ref,
+    const char* lang,
     const char* query)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -1041,7 +1041,7 @@ CMPIStatus CMPI_Adapter::execQuery(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::methodCleanup(
-    CMPIMethodMI* mi, 
+    CMPIMethodMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -1061,11 +1061,11 @@ CMPIStatus CMPI_Adapter::methodCleanup(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::invokeMethod(
-    CMPIMethodMI* mi, 
-    const CMPIContext* context, 
+    CMPIMethodMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
-    const char* method, 
+    const CMPIObjectPath* cop,
+    const char* method,
     const CMPIArgs* in,
     CMPIArgs* out)
 {
@@ -1209,7 +1209,7 @@ CMPIStatus CMPI_Adapter::invokeMethod(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::indicationCleanup(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -1228,10 +1228,10 @@ CMPIStatus CMPI_Adapter::indicationCleanup(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::authorizeFilter(
-     CMPIIndicationMI* mi, 
+     CMPIIndicationMI* mi,
      const CMPIContext* context,
-     const CMPISelectExp* select_expr, 
-     const char* name_space, 
+     const CMPISelectExp* select_expr,
+     const char* name_space,
      const CMPIObjectPath* cmpi_object_path,
      const char* user_name)
 {
@@ -1250,9 +1250,9 @@ CMPIStatus CMPI_Adapter::authorizeFilter(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::mustPoll(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
-    const CMPISelectExp* filter, 
+    const CMPISelectExp* filter,
     const char* indication_type,
     const CMPIObjectPath* class_path)
 {
@@ -1271,13 +1271,13 @@ CMPIStatus CMPI_Adapter::mustPoll(
 //------------------------------------------------------------------------------
 
 // Creates or updates an entry in name_spaces table for adapter with
-// the namespace from the class_path provided. 
+// the namespace from the class_path provided.
 CMPIStatus CMPI_Adapter::activateFilter(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
-    const CMPISelectExp* select_expr, 
+    const CMPISelectExp* select_expr,
     const char* indication_type,
-    const CMPIObjectPath* class_path, 
+    const CMPIObjectPath* class_path,
     CMPIBoolean first)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -1290,7 +1290,7 @@ CMPIStatus CMPI_Adapter::activateFilter(
     if (ns)
     {
         // Create entry or update existing entry. There is an entry
-        // in the namespaces table for each new name_space and a 
+        // in the namespaces table for each new name_space and a
         // count for the number of times it has been activated.
 
         Name_Space_Entry entry(ns, 1);
@@ -1314,11 +1314,11 @@ CMPIStatus CMPI_Adapter::activateFilter(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::deactivateFilter(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
-    const CMPISelectExp* select_expr, 
+    const CMPISelectExp* select_expr,
     const char* indication_type,
-    const CMPIObjectPath* class_path, 
+    const CMPIObjectPath* class_path,
     CMPIBoolean last)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -1356,7 +1356,7 @@ CMPIStatus CMPI_Adapter::deactivateFilter(
 //------------------------------------------------------------------------------
 
 // The address of this function is provided to the CIMPLE provider with the
-// enableIndications() call. 
+// enableIndications() call.
 // This function is called by the CIMPLE Indication_Handler()
 // to deliver each indication.
 
@@ -1385,12 +1385,12 @@ static bool _indication_proc(Instance* inst, void* client_data)
         CMPIInstance* ci = 0;
 
         CMPIrc rc = make_cmpi_instance(
-            adapter->broker, 
+            adapter->broker,
             inst,
             name_space.c_str(),
             0,
             0,
-            ci); 
+            ci);
 
         // Deliver the indication (we cannot do anything about failures).
 
@@ -1400,7 +1400,7 @@ static bool _indication_proc(Instance* inst, void* client_data)
 
             // Deliver the indication:
 
-            CMPI_Thread_Context* thread_context = 
+            CMPI_Thread_Context* thread_context =
                 (CMPI_Thread_Context*)Thread_Context::top();
             assert(thread_context != 0);
 
@@ -1409,7 +1409,7 @@ static bool _indication_proc(Instance* inst, void* client_data)
                 thread_context->cmpi_context(),
                 name_space.c_str(),
                 ci);
-            
+
             // Release the indication immediatly after delivering it.
             // This avoids the broker holding the indications until
             // the broker is released.
@@ -1426,9 +1426,9 @@ static bool _indication_proc(Instance* inst, void* client_data)
 // CMPI_Adapter::enableIndications()
 //
 //------------------------------------------------------------------------------
-// 
+//
 FIX_RETURN_TYPE CMPI_Adapter::enableIndications(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -1478,7 +1478,7 @@ FIX_RETURN_TYPE CMPI_Adapter::enableIndications(
 //------------------------------------------------------------------------------
 
 FIX_RETURN_TYPE CMPI_Adapter::disableIndications(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -1523,7 +1523,7 @@ FIX_RETURN_TYPE CMPI_Adapter::disableIndications(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::associationCleanup(
-    CMPIAssociationMI* mi, 
+    CMPIAssociationMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -1555,8 +1555,8 @@ namespace associators1
     };
 
     static bool _proc(
-        const Instance* inst, 
-        Enum_Associators_Status status, 
+        const Instance* inst,
+        Enum_Associators_Status status,
         void* client_data)
     {
         Data* data = (Data*)client_data;
@@ -1579,16 +1579,16 @@ namespace associators1
                                     String(data->name_space)
                                     :
                                     inst->__name_space);
- 
+
         CMPIInstance* ci = 0;
 
         data->rc = make_cmpi_instance(
-            data->broker, 
-            inst, 
+            data->broker,
+            inst,
             result_namespace.c_str(),
             0,
             data->properties,
-            ci); 
+            ci);
 
         if (data->rc != CMPI_RC_OK)
         {
@@ -1627,8 +1627,8 @@ namespace associators2
     };
 
     static bool _proc(
-        const Instance* inst, 
-        Enum_Associator_Names_Status status, 
+        const Instance* inst,
+        Enum_Associator_Names_Status status,
         void* client_data)
     {
         Data* data = (Data*)client_data;
@@ -1681,15 +1681,15 @@ namespace associators2
     }
 }
 
-CMPIStatus CMPI_Adapter::associators( 
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+CMPIStatus CMPI_Adapter::associators(
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
-    const char* assoc_class_, 
+    const CMPIObjectPath* cop,
+    const char* assoc_class_,
     const char* result_class_,
-    const char* role_, 
-    const char* result_role_, 
+    const char* role_,
+    const char* result_role_,
     const char** properties)
 {
     const char* assoc_class = assoc_class_ ? assoc_class_ : "";
@@ -1738,7 +1738,7 @@ CMPIStatus CMPI_Adapter::associators(
 
     // First try enum_associators().
     {
-        associators1::Data data = { adapter->broker, 
+        associators1::Data data = { adapter->broker,
             context, result, name_space(cop), properties, CMPI_RC_OK };
 
         Enum_Associators_Status status = adapter->enum_associators(
@@ -1772,7 +1772,7 @@ CMPIStatus CMPI_Adapter::associators(
     // Next try enum_associator_names() because of the fallthrough
 
     {
-        associators2::Data data = { adapter->broker, 
+        associators2::Data data = { adapter->broker,
             context, result, name_space(cop), properties, CMPI_RC_OK };
 
         Enum_Associator_Names_Status status = adapter->enum_associator_names(
@@ -1818,7 +1818,7 @@ CMPIStatus CMPI_Adapter::associators(
 // instance to a cmpi_object_path and delivers it to the cimserver.
 // This function includes a structure to define data for the procedure and
 // a callback procedure _proc in their own namespace.
-// 
+//
 namespace associator_names
 {
     struct Data
@@ -1831,7 +1831,7 @@ namespace associator_names
     };
 
     static bool _proc(
-        const Instance* inst, 
+        const Instance* inst,
         Enum_Associator_Names_Status status,
         void* client_data)
     {
@@ -1848,7 +1848,7 @@ namespace associator_names
                                     String(data->name_space)
                                     :
                                     inst->__name_space);
-                                                    
+
         Ref<Instance> inst_destroyer(inst);
 
         // Ignore if an error was already encountered.
@@ -1886,13 +1886,13 @@ namespace associator_names
 //
 
 CMPIStatus CMPI_Adapter::associatorNames(
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
-    const char* assoc_class_, 
+    const CMPIObjectPath* cop,
+    const char* assoc_class_,
     const char* result_class_,
-    const char* role_, 
+    const char* role_,
     const char* result_role_)
 {
     const char* assoc_class = assoc_class_ ? assoc_class_ : "";
@@ -1939,7 +1939,7 @@ CMPIStatus CMPI_Adapter::associatorNames(
 
     // Invoke the provider:
 
-    associator_names::Data data = 
+    associator_names::Data data =
         { adapter->broker, context, result, name_space(cop), CMPI_RC_OK };
 
     Enum_Associator_Names_Status status = adapter->enum_associator_names(
@@ -1992,7 +1992,7 @@ namespace references
     };
 
     static bool _proc(
-        Instance* inst, 
+        Instance* inst,
         Enum_References_Status status,
         void* client_data)
     {
@@ -2011,15 +2011,15 @@ namespace references
             return false;
 
         // Create CMPI object path.
-    
+
         CMPIObjectPath* instCop = NULL;
-    
+
         CMPIrc rc = make_cmpi_object_path(
             data->broker,
             inst,
             data->name_space,
             instCop);
-    
+
         if (rc != CMPI_RC_OK)
         {
             // Propagate error!
@@ -2060,11 +2060,11 @@ namespace references
 }
 
 CMPIStatus CMPI_Adapter::references(
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
-    const char* result_class_, 
+    const CMPIObjectPath* cop,
+    const char* result_class_,
     const char* role_,
     const char** properties)
 {
@@ -2116,7 +2116,7 @@ CMPIStatus CMPI_Adapter::references(
 
     // Invoke the provider:
 
-    references::Data data = { adapter->broker, 
+    references::Data data = { adapter->broker,
         context, result, name_space(cop), properties, CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
@@ -2166,7 +2166,7 @@ namespace reference_names
     };
 
     static bool _proc(
-        Instance* inst, 
+        Instance* inst,
         Enum_References_Status status,
         void* client_data)
     {
@@ -2213,11 +2213,11 @@ namespace reference_names
 }
 
 CMPIStatus CMPI_Adapter::referenceNames(
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cop, 
-    const char* result_class_, 
+    const CMPIObjectPath* cop,
+    const char* result_class_,
     const char* role_)
 {
     CMPI_Adapter* adapter = _adapter(mi);
@@ -2269,7 +2269,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
 
     // Invoke the provider:
 
-    reference_names::Data data = { 
+    reference_names::Data data = {
         adapter->broker, context, result, name_space(cop), CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
@@ -2308,7 +2308,7 @@ CMPIStatus CMPI_Adapter::referenceNames(
 //------------------------------------------------------------------------------
 
 CMPIStatus CMPI_Adapter::cleanup(
-    CMPI_Adapter* adapter, 
+    CMPI_Adapter* adapter,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {

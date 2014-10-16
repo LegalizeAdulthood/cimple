@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -94,7 +94,7 @@ CMPIrc make_cimple_method(
 
 CMPIrc make_cmpi_object_path(
     const CMPIBroker* cb,
-    const Instance* inst, 
+    const Instance* inst,
     const char* ns,
     CMPIObjectPath*& cop);
 
@@ -102,7 +102,7 @@ CMPIrc make_cmpi_object_path(
     Create a CMPI instance from a CIMPLE instance.
 
     @param cb CMPI Broker
-    @param inst CIMPLE Instance. This is the input instance for the 
+    @param inst CIMPLE Instance. This is the input instance for the
     conversion
     @param ns Namespace
     @param cop CIMObjectPath for the cimple instance. Creates this
@@ -114,7 +114,7 @@ CMPIrc make_cmpi_object_path(
 */
 CMPIrc make_cmpi_instance(
     const CMPIBroker* cb,
-    const Instance* inst, 
+    const Instance* inst,
     const char* ns,
     const CMPIObjectPath* cop,
     const char**properties,

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2010 Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,7 +24,7 @@
 **==============================================================================
 */
 
-/*************************************************************************** 
+/***************************************************************************
         Display tools for cmpi that are compiled only in compile debug mode
         Includes:
             CMPIInstance and CMPIObjectPath
@@ -97,7 +97,7 @@ static void _indent(String& str, size_t n)
 // Append formated scalar value to str
 static void _print_scalar(
     String& str,            // append format to this String
-    const CMPIData* cd, 
+    const CMPIData* cd,
     size_t n)
 {
     if (cd->state & CMPI_nullValue)
@@ -151,7 +151,7 @@ static void _print_scalar(
             strl = string_printf("\"%s\"", CMPIChars(cd->value.string));
             break;
         case CMPI_dateTime:
-            strl = string_printf("%s", 
+            strl = string_printf("%s",
                 CMPIChars(CMGetStringFormat(cd->value.dateTime, NULL)));
             break;
         case CMPI_ref:
@@ -251,7 +251,7 @@ CMPIStatus logCMPIObjectPath(
 // print CMPIObjectPath to a String
 CMPIStatus printCMPIObjectPath(
     String& str,
-    const CMPIObjectPath* self, 
+    const CMPIObjectPath* self,
     size_t indent )
 {
     CMPIString* cn;
@@ -363,7 +363,7 @@ CMPIStatus logCMPIInstance(
 // generate formatted out of CMPI Instance in str
 CMPIStatus printCMPIInstance(
     String& str,
-    const CMPIInstance* self, 
+    const CMPIInstance* self,
     size_t indent)
 {
     CMPIObjectPath* cop;
@@ -394,7 +394,7 @@ CMPIStatus printCMPIInstance(
         return st;
 
     /* Print namespace:classname */
-    
+
     str.append(string_printf("%s:%s\n", CMPIChars(ns), CMPIChars(cn)));
     _indent(str, indent++);
     str.append("{\n");

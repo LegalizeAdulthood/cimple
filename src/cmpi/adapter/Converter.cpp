@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,7 +37,7 @@ CIMPLE_NAMESPACE_BEGIN
 */
 CMPIrc make_cmpi_object_path(
     const CMPIBroker* cb,
-    const cimple::Instance* inst, 
+    const cimple::Instance* inst,
     const char* ns,
     CMPIObjectPath*& cop)
 {
@@ -64,7 +64,7 @@ CMPIrc make_cmpi_object_path(
 */
 CMPIrc make_cmpi_instance(
     const CMPIBroker* cb,
-    const Instance* inst, 
+    const Instance* inst,
     const char* ns,
     const CMPIObjectPath* cop,
     const char** properties,
@@ -113,7 +113,7 @@ CMPIrc make_cmpi_instance(
         // convert the CIMPLE instance to a CMPI instance. This calls
         // the cimple convert function which in turns will call the
         // set_value in the CMPI container for each feature to be
-        // converted.        
+        // converted.
         if (cont.convert(inst, 0) != 0)
         {
             return CMPI_RC_ERR_FAILED;

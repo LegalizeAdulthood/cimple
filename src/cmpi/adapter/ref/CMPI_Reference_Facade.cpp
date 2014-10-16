@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -50,7 +50,7 @@ static const char* _get_chars_ptr(CMPIString* str)
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMGetCharsPtr(%p, %p) failed", 
+        throw_exception(status, "CMGetCharsPtr(%p, %p) failed",
             (void*)str, (void*)&status);
     }
 
@@ -65,7 +65,7 @@ static CMPIData _get_key_at(CMPIObjectPath* cop, size_t i, const char*& name)
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMGetKeyAt(%p, %d, %p, %p) failed", 
+        throw_exception(status, "CMGetKeyAt(%p, %d, %p, %p) failed",
             (void*)cop, (int)i, (void*)&name_str, (void*)&status);
     }
 
@@ -73,7 +73,7 @@ static CMPIData _get_key_at(CMPIObjectPath* cop, size_t i, const char*& name)
 
     if (!name)
     {
-        throw_exception("CMGetKeyAt(%p, %d, %p, %p) produced null name", 
+        throw_exception("CMGetKeyAt(%p, %d, %p, %p) produced null name",
             (void*)cop, (int)i, (void*)&name_str, (void*)&status);
     }
 
@@ -101,7 +101,7 @@ void CMPI_Reference_Facade::host_name(const String& host_name)
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMSetHostname(%p, %s) failed", 
+        throw_exception(status, "CMSetHostname(%p, %s) failed",
             (void*)_cop, host_name.c_str());
     }
 }
@@ -113,7 +113,7 @@ String CMPI_Reference_Facade::host_name() const
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMGetHostname(%p, %p) failed", 
+        throw_exception(status, "CMGetHostname(%p, %p) failed",
             (void*)_cop, (void*)&status);
     }
 
@@ -141,7 +141,7 @@ void CMPI_Reference_Facade::name_space(const String& name_space)
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMSetNameSpace(%p, %s) failed", 
+        throw_exception(status, "CMSetNameSpace(%p, %s) failed",
             (void*)_cop, name_space.c_str());
     }
 }
@@ -153,7 +153,7 @@ String CMPI_Reference_Facade::name_space() const
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMGetNameSpace(%p, %p) failed", 
+        throw_exception(status, "CMGetNameSpace(%p, %p) failed",
             (void*)_cop, (void*)&status);
     }
 
@@ -181,7 +181,7 @@ void CMPI_Reference_Facade::class_name(const String& class_name)
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMSetClassName(%p, %s) failed", 
+        throw_exception(status, "CMSetClassName(%p, %s) failed",
             (void*)_cop, class_name.c_str());
     }
 }
@@ -193,7 +193,7 @@ String CMPI_Reference_Facade::class_name() const
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMGetClassName(%p, %p) failed", 
+        throw_exception(status, "CMGetClassName(%p, %p) failed",
             (void*)_cop, (void*)&status);
     }
 
@@ -215,7 +215,7 @@ size_t CMPI_Reference_Facade::count() const
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMGetKeyCount(%p, %p) failed", 
+        throw_exception(status, "CMGetKeyCount(%p, %p) failed",
             (void*)_cop, (void*)&status);
     }
 
@@ -552,19 +552,19 @@ CMPI_Reference_Facade* CMPI_Reference_Facade::create(
 
     if (status.rc != CMPI_RC_OK)
     {
-        throw_exception(status, "CMNewObjectPath(%p, %s, %s, %p)", 
-            (void*)broker, 
-            name_space.c_str(), 
-            class_name.c_str(), 
+        throw_exception(status, "CMNewObjectPath(%p, %s, %s, %p)",
+            (void*)broker,
+            name_space.c_str(),
+            class_name.c_str(),
             (void*)&status);
     }
 
     if (!cop)
     {
-        throw_exception("CMNewObjectPath(%p, %s, %s, %p) returned null", 
-            (void*)broker, 
-            name_space.c_str(), 
-            class_name.c_str(), 
+        throw_exception("CMNewObjectPath(%p, %s, %s, %p) returned null",
+            (void*)broker,
+            name_space.c_str(),
+            class_name.c_str(),
             (void*)&status);
     }
 

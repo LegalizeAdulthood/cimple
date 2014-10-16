@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -53,127 +53,127 @@ struct to_cimple_scalar
 {
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<boolean>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, boolean& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, boolean& x)
     {
         x = boolean(v.boolean);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<uint8>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, uint8& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, uint8& x)
     {
         x = uint8(v.uint8);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<sint8>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, sint8& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, sint8& x)
     {
         x = sint8(v.sint8);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<uint16>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, uint16& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, uint16& x)
     {
         x = uint16(v.uint16);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<sint16>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, sint16& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, sint16& x)
     {
         x = sint16(v.sint16);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<uint32>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, uint32& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, uint32& x)
     {
         x = uint32(v.uint32);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<sint32>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, sint32& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, sint32& x)
     {
         x = sint32(v.sint32);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<uint64>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, uint64& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, uint64& x)
     {
         x = uint64(v.uint64);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<sint64>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, sint64& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, sint64& x)
     {
         x = sint64(v.sint64);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<real32>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, real32& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, real32& x)
     {
         x = real32(v.real32);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<real64>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, real64& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, real64& x)
     {
         x = real64(v.real64);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<char16>
 {
-    static int func(const Meta_Repository* mr, const CMPIValue& v, char16& x) 
+    static int func(const Meta_Repository* mr, const CMPIValue& v, char16& x)
     {
         x = char16(v.char16);
         return 0;
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<Datetime>
 {
     static int func(const Meta_Repository* mr, const CMPIValue& v, Datetime& x)
@@ -197,7 +197,7 @@ struct to_cimple_scalar<Datetime>
     }
 };
 
-template<> 
+template<>
 struct to_cimple_scalar<String>
 {
     static int func(const Meta_Repository* mr, const CMPIValue& v, String& x)
@@ -331,7 +331,7 @@ static Instance* _to_cimple_instance(
     Instance* inst = 0;
 
     CMPIObjectPath_Container cont(mr, cb, ns, cop);
-    
+
     if (cont.convert(mc, CIMPLE_FLAG_KEY, inst) != 0 || !inst)
         return 0;
 
@@ -374,7 +374,7 @@ static Instance* _to_cimple_instance(
     }
 
     CMPIInstance_Container cont(mr, cb, ns, ci);
-    
+
     Instance* inst = 0;
 
     //CIMPLE_DBG(("KS TRACE before convert ClassName=%s", _c_str(cn)));
@@ -589,7 +589,7 @@ int cmpi_to_cimple_value(
             if (data.value.inst)
             {
                 Instance* inst;
-                
+
                 if (data.type == CMPI_instance)
                     inst = _to_cimple_instance(mr, cb, ns, data.value.inst);
                 else
@@ -691,7 +691,7 @@ int cmpi_to_cimple_value(
                 else
                 {
                     Instance* inst;
-                    
+
                     if (data.type == CMPI_instanceA)
                         inst = _to_cimple_instance(mr, cb, ns, tmp.value.inst);
                     else
@@ -721,7 +721,7 @@ int cmpi_to_cimple_value(
 template<class T>
 struct to_cmpi_scalar
 {
-    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb,
         const char* ns, const T& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
@@ -734,7 +734,7 @@ struct to_cmpi_scalar
 template<>
 struct to_cmpi_scalar<boolean>
 {
-    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb,
         const char* ns, const boolean& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
@@ -747,7 +747,7 @@ struct to_cmpi_scalar<boolean>
 template<>
 struct to_cmpi_scalar<String>
 {
-    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb,
         const char* ns, const String& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
@@ -760,7 +760,7 @@ struct to_cmpi_scalar<String>
 template<>
 struct to_cmpi_scalar<Datetime>
 {
-    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb,
         const char* ns, const Datetime& x, CMPIType type, CMPIData& d)
     {
         d.state = 0;
@@ -773,7 +773,7 @@ struct to_cmpi_scalar<Datetime>
 template<>
 struct to_cmpi_scalar<Instance*>
 {
-    static int func(const Meta_Repository* mr, const CMPIBroker* cb, 
+    static int func(const Meta_Repository* mr, const CMPIBroker* cb,
         const char* ns_, Instance* x, CMPIType type, CMPIData& d)
     {
         memset(&d, 0, sizeof(d));
@@ -870,11 +870,11 @@ template<class T>
 struct to_cmpi_array
 {
     static int func(
-        const Meta_Repository* mr, 
-        const CMPIBroker* cb, 
+        const Meta_Repository* mr,
+        const CMPIBroker* cb,
         const char* ns,
-        const Array<T>& a, 
-        CMPIType type, 
+        const Array<T>& a,
+        CMPIType type,
         CMPIData& d)
     {
         d.state = 0;
@@ -906,10 +906,10 @@ struct to_cmpi_array
 };
 
 static int _to_cmpi_data(
-    const Meta_Repository* mr, 
-    const CMPIBroker* cb, 
+    const Meta_Repository* mr,
+    const CMPIBroker* cb,
     const char* ns,
-    const Value& v, 
+    const Value& v,
     uint32 flags,
     CMPIData& data)
 {
@@ -1197,11 +1197,11 @@ static int _to_cmpi_data(
 //==============================================================================
 
 CMPIInstance_Container::CMPIInstance_Container(
-    const Meta_Repository* mr, 
-    const CMPIBroker* cb, 
+    const Meta_Repository* mr,
+    const CMPIBroker* cb,
     const char* ns,
     Rep* rep)
-    : 
+    :
     Container(mr), _cb(cb), _ns(ns), _rep(rep)
 {
 }
@@ -1240,7 +1240,7 @@ int CMPIInstance_Container::get_name(size_t pos, String& name)
     {
         CMPICount n = CMGetPropertyCount(_rep, NULL);
         CIMPLE_WARN((
-            "CMGetPropertyAt() threw exception: index=%u size=%u", 
+            "CMGetPropertyAt() threw exception: index=%u size=%u",
                 (uint32)pos, (uint32)n));
         return -1;
     }
@@ -1272,7 +1272,7 @@ int CMPIInstance_Container::get_value(
 
     if (value.type() != type)
     {
-        CIMPLE_WARN(("type mismatch on %s: %s/%s", 
+        CIMPLE_WARN(("type mismatch on %s: %s/%s",
             _c_str(name), name_of(value.type()), name_of(type)));
         return -1;
     }
@@ -1314,11 +1314,11 @@ int CMPIInstance_Container::set_value(
 //==============================================================================
 
 CMPIObjectPath_Container::CMPIObjectPath_Container(
-    const Meta_Repository* mr, 
-    const CMPIBroker* cb, 
+    const Meta_Repository* mr,
+    const CMPIBroker* cb,
     const char* ns,
     Rep* rep)
-    : 
+    :
     Container(mr),
     _cb(cb),
     _ns(ns),
@@ -1332,7 +1332,7 @@ CMPIObjectPath_Container::~CMPIObjectPath_Container()
 
 size_t CMPIObjectPath_Container::get_size()
 {
-    // KS_TODO Dec 2010. Possible issue with this and Pegasus 2.10.  
+    // KS_TODO Dec 2010. Possible issue with this and Pegasus 2.10.
     // Need if zero, need to try the zeroth and determine from this
     // if keycount really zero. Issue introduced by Pegasus v 2.10
     // Note that we already commented out code elsewhere to correct this issue
@@ -1441,7 +1441,7 @@ int CMPIObjectPath_Container::get_value(
 
     if (value.type() != type)
     {
-        CIMPLE_WARN(("type mismatch on %s: %s/%s", 
+        CIMPLE_WARN(("type mismatch on %s: %s/%s",
             _c_str(name), name_of(value.type()), name_of(type)));
         return -1;
     }
@@ -1478,11 +1478,11 @@ int CMPIObjectPath_Container::set_value(
 //==============================================================================
 
 CMPIArgs_Container::CMPIArgs_Container(
-    const Meta_Repository* mr, 
-    const CMPIBroker* cb, 
+    const Meta_Repository* mr,
+    const CMPIBroker* cb,
     const char* ns,
     Rep* rep)
-    : 
+    :
     Container(mr),
     _cb(cb),
     _ns(ns),
@@ -1544,7 +1544,7 @@ int CMPIArgs_Container::get_value(size_t pos, Value::Type type, Value& value)
 
     if (value.type() != type)
     {
-        CIMPLE_WARN(("type mismatch on %s: %s/%s", 
+        CIMPLE_WARN(("type mismatch on %s: %s/%s",
             _c_str(name), name_of(value.type()), name_of(type)));
         return -1;
     }
