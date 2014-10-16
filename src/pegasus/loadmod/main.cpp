@@ -30,8 +30,8 @@ int main(int argc, char** argv)
 
     if (!symbol)
     {
-        fprintf(stderr, 
-            "%s: dlsym() failed on symbol \"PegasusCreateProvider\"\n", 
+        fprintf(stderr,
+            "%s: dlsym() failed on symbol \"PegasusCreateProvider\"\n",
             argv[0]);
         exit(1);
     }

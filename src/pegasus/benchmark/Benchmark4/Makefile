@@ -15,7 +15,7 @@ LIBRARIES = \
     pegconfig \
     pegcommon
 
-INCLUDES += 
+INCLUDES +=
 
 CIMPLE_ROOT = ../../../..
 

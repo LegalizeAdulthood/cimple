@@ -4,7 +4,7 @@
 using namespace Pegasus;
 
 static void _inject_object_path(
-    CIMInstance& instance, 
+    CIMInstance& instance,
     const CIMObjectPath& objectPath,
     const char* tag)
 {
@@ -77,7 +77,7 @@ static CIMInstance _create_Benchmark(
         CIMProperty("VendorEquipmentType", String("VendorEquipmentType")));
 
     ci.addProperty(CIMProperty("UserTracking", String("UserTracking")));
-    
+
     ci.addProperty(CIMProperty("CanBeFRUed", Boolean(true)));
 
     ci.addProperty(CIMProperty("RemovalConditions", Uint16(0)));

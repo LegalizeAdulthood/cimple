@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -45,7 +45,7 @@ PEGASUS_NAMESPACE_BEGIN
 
 static void _to_pegasus_scalar(
     const Meta_Property* mp,
-    const void* field, 
+    const void* field,
     CIMValue& value)
 {
     CIMPLE_ASSERT(mp != 0);
@@ -136,7 +136,7 @@ struct _to_pegasus_array_helper
 {
     static void func(
         const Meta_Property* mp,
-        const void* field, 
+        const void* field,
         CIMValue& value)
     {
         const cimple::Array<CT>& tmp = *((const cimple::Array<CT>*)field);
@@ -155,7 +155,7 @@ struct _to_pegasus_array_helper
 
 static void _to_pegasus_array(
     const Meta_Property* mp,
-    const void* f, 
+    const void* f,
     CIMValue& v)
 {
     CIMPLE_ASSERT(mp != 0);
@@ -267,8 +267,8 @@ static void _to_pegasus_array(
 static int _to_pegasus_value(
     const String& hn,
     const CIMNamespaceName& ns,
-    const Instance* ci, 
-    const Meta_Feature* mf, 
+    const Instance* ci,
+    const Meta_Feature* mf,
     CIMValue& value)
 {
     CIMPLE_ASSERT(ci != 0);
@@ -380,7 +380,7 @@ static int _to_pegasus_value(
 int Converter::to_pegasus_instance(
     const String& hn,
     const CIMNamespaceName& ns,
-    const Instance* ci, 
+    const Instance* ci,
     CIMInstance& pi)
 {
     CIMPLE_ASSERT(ci != 0);
@@ -694,7 +694,7 @@ static int _to_cimple_property(
 //
 // _to_cimple_instance()
 //
-//     This function converts an array of name/value pairs into a CIMPLE 
+//     This function converts an array of name/value pairs into a CIMPLE
 //     instance. This function is called to create the following kinds of
 //     instances:
 //
@@ -716,8 +716,8 @@ static const String _bindings_get_name(const void* data, size_t index)
 }
 
 static const CIMValue _bindings_get_value(
-    const void* data, 
-    size_t index, 
+    const void* data,
+    size_t index,
     CIMType expected_type)
 {
     Key_Bindings& bindings = *((Key_Bindings*)data);
@@ -740,8 +740,8 @@ static const String _instance_get_name(const void* data, size_t index)
 }
 
 static const CIMValue _instance_get_value(
-    const void* data, 
-    size_t index, 
+    const void* data,
+    size_t index,
     CIMType expected_type)
 {
     CIMInstance* instance = (CIMInstance*)data;
@@ -755,7 +755,7 @@ static const String _params_get_name(const void* data, size_t index)
 }
 
 static const CIMValue _params_get_value(
-    const void* data, 
+    const void* data,
     size_t index,
     CIMType expected_type)
 {
@@ -889,12 +889,12 @@ int Converter::_to_cimple_ref(
     // Create the reference instance:
 
     ref = _make_cimple_instance(
-        &bindings, 
+        &bindings,
         bindings.size(),
         _bindings_get_name,
         _bindings_get_value,
-        mr->meta_class, 
-        true); 
+        mr->meta_class,
+        true);
 
     if (!ref)
         return -1;
@@ -951,8 +951,8 @@ int Converter::to_cimple_key(
 //
 // to_pegasus_object_path()
 //
-//     Converts a cimple key coponents of a CIMPLE instance to a Pegasus object 
-//     path. Pegasus object paths have four elements: 
+//     Converts a cimple key coponents of a CIMPLE instance to a Pegasus object
+//     path. Pegasus object paths have four elements:
 //
 //         - host
 //         - namespace
@@ -1010,7 +1010,7 @@ int Converter::to_pegasus_object_path(
 //
 // de_nullify_properties()
 //
-//     Validates (makes non-null) all properties of a CIMPLE instance which 
+//     Validates (makes non-null) all properties of a CIMPLE instance which
 //     are mentioned in the property list.
 //
 //------------------------------------------------------------------------------
@@ -1047,7 +1047,7 @@ int Converter::de_nullify_properties(
             CIMPLE_ERROR(("no such property: %s", name.c_str()));
             return -1;
         }
-            
+
         if (mp->flags & CIMPLE_FLAG_PROPERTY)
             null_of(mp, (char*)ci + mp->offset) = 0;
     }

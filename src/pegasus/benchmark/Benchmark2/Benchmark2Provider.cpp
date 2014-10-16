@@ -7,7 +7,7 @@ extern size_t memo_deep_size(const void* ptr, size_t size);
 using namespace Pegasus;
 
 static void _inject_object_path(
-    CIMInstance& instance, 
+    CIMInstance& instance,
     const CIMObjectPath& objectPath,
     const char* tag)
 {
@@ -80,7 +80,7 @@ static CIMInstance _create_Benchmark(
         CIMProperty("VendorEquipmentType", String("VendorEquipmentType")));
 
     ci.addProperty(CIMProperty("UserTracking", String("UserTracking")));
-    
+
     ci.addProperty(CIMProperty("CanBeFRUed", Boolean(true)));
 
     ci.addProperty(CIMProperty("RemovalConditions", Uint16(0)));
@@ -177,7 +177,7 @@ void Benchmark2Provider::enumerateInstanceNames(
     Pegasus::ObjectPathResponseHandler& handler)
 {
 
-    
+
 }
 
 void Benchmark2Provider::modifyInstance(
@@ -211,7 +211,7 @@ void Benchmark2Provider::deleteInstance(
         "Benchmark2Provider::deleteInstance()");
 }
 
-extern "C" PEGASUS_EXPORT 
+extern "C" PEGASUS_EXPORT
 Pegasus::CIMProvider* PegasusCreateProvider(const Pegasus::String& name)
 {
     if (name == "Benchmark2_Provider")

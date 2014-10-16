@@ -8,7 +8,7 @@ using namespace Pegasus;
 
 static void _inject_object_path(
     const Pegasus::CIMObjectPath& objectPath,
-    CIMInstance& instance, 
+    CIMInstance& instance,
     const String& tag)
 {
     Array<CIMKeyBinding> bindings;
@@ -79,7 +79,7 @@ static CIMInstance _create_Benchmark(
         CIMProperty("VendorEquipmentType", String("VendorEquipmentType")));
 
     ci.addProperty(CIMProperty("UserTracking", String("UserTracking")));
-    
+
     ci.addProperty(CIMProperty("CanBeFRUed", Boolean(true)));
 
     ci.addProperty(CIMProperty("RemovalConditions", Uint16(0)));
@@ -194,7 +194,7 @@ void Benchmark4Provider::enumerateInstanceNames(
     Pegasus::ObjectPathResponseHandler& handler)
 {
 
-    
+
 }
 
 void Benchmark4Provider::modifyInstance(
@@ -228,7 +228,7 @@ void Benchmark4Provider::deleteInstance(
         "Benchmark4Provider::deleteInstance()");
 }
 
-extern "C" PEGASUS_EXPORT 
+extern "C" PEGASUS_EXPORT
 Pegasus::CIMProvider* PegasusCreateProvider(const Pegasus::String& name)
 {
     if (name == "Benchmark4_Provider")

@@ -4,5 +4,5 @@ all:
 DIR=$(PEGASUS_ROOT)/src/Pegasus/ProviderManager2
 
 patch:
-	cp patch.diff $(DIR); 
+	cp patch.diff $(DIR);
 	( cd $(DIR); patch -p0 < patch.diff; make; rm -f patch.diff )

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,7 +42,7 @@
 # define NEED_EXTRA_HANDLER_ARGS
 #endif
 
-// ATTN: the indication namespace is hard coded for now. 
+// ATTN: the indication namespace is hard coded for now.
 #define INDICATION_NAMESPACE "root/cimv2"
 
 using namespace std;
@@ -90,7 +90,7 @@ static void _print_instance(const CIMInstance& inst)
 //------------------------------------------------------------------------------
 
 static void _set_status(
-    OperationResponseHandler& handler, 
+    OperationResponseHandler& handler,
     const char* format,
     ...)
 {
@@ -251,7 +251,7 @@ Message* CIMPLE_Provider_Manager::_handleInitializeProviderRequest(
 {
     FTRACE;
 
-    CIMInitializeProviderRequestMessage* request = 
+    CIMInitializeProviderRequestMessage* request =
         dynamic_cast<CIMInitializeProviderRequestMessage*>(message);
 
     CIMInitializeProviderResponseMessage* response =
@@ -488,7 +488,7 @@ static bool _enum_instance_names_proc(
 {
     FTRACE;
 
-    Handle_Enumerate_Instance_Names_Data* data = 
+    Handle_Enumerate_Instance_Names_Data* data =
         (Handle_Enumerate_Instance_Names_Data*)client_data;
 
     EnumerateInstanceNamesResponseHandler& handler = *data->handler;
@@ -841,7 +841,7 @@ static bool _enum_associator_proc(
 {
     FTRACE;
 
-    Handle_Associators_Request_Data* data = 
+    Handle_Associators_Request_Data* data =
         (Handle_Associators_Request_Data*)client_data;
 
     AssociatorsResponseHandler& handler = *data->handler;
@@ -970,7 +970,7 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorsRequest(
     data.disp = _disp;
     data.error = false;
 
-    Status stat = _disp->enum_associator_names(ck, assoc_class, result_class, 
+    Status stat = _disp->enum_associator_names(ck, assoc_class, result_class,
         role, result_role, _enum_associator_proc, &data);
 
     if (data.error)
@@ -1008,7 +1008,7 @@ static bool _enum_associator_names_proc(
 {
     FTRACE;
 
-    Handle_Associator_Names_Request_Data* data = 
+    Handle_Associator_Names_Request_Data* data =
         (Handle_Associator_Names_Request_Data*)client_data;
 
     AssociatorNamesResponseHandler& handler = *data->handler;
@@ -1102,7 +1102,7 @@ Message* CIMPLE_Provider_Manager::_handleAssociatorNamesRequest(
     data.disp = _disp;
     data.error = false;
 
-    Status stat = _disp->enum_associator_names(ck, assoc_class, result_class, 
+    Status stat = _disp->enum_associator_names(ck, assoc_class, result_class,
         role, result_role, _enum_associator_names_proc, &data);
 
     if (data.error)
@@ -1140,7 +1140,7 @@ static bool _enumerate_references_proc(
 {
     FTRACE;
 
-    Handle_References_Request_Data* data = 
+    Handle_References_Request_Data* data =
         (Handle_References_Request_Data*)client_data;
     ReferencesResponseHandler& handler = *data->handler;
 
@@ -1280,7 +1280,7 @@ static bool _enumerate_reference_names_proc(
 {
     FTRACE;
 
-    Handle_Reference_Names_Request_Data* data = 
+    Handle_Reference_Names_Request_Data* data =
         (Handle_Reference_Names_Request_Data*)client_data;
     ReferenceNamesResponseHandler& handler = *data->handler;
 
@@ -1478,7 +1478,7 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
     Array<CIMParamValue> out_params;
     CIMValue return_value;
 
-    if (Converter::to_pegasus_method(System::getHostName(), 
+    if (Converter::to_pegasus_method(System::getHostName(),
         request->nameSpace, meth, out_params, return_value) != 0)
     {
         _set_status(handler, "%s", Error::get());
@@ -1491,12 +1491,12 @@ Message* CIMPLE_Provider_Manager::_handleInvokeMethodRequest(
 
     if (return_value.isNull())
     {
-        _set_status(handler, 
+        _set_status(handler,
             "method \"%s\" returned null value\n", meth_name.c_str());
         return response;
     }
 
-    handler.deliver(return_value); 
+    handler.deliver(return_value);
 
     for (size_t i = 0; i < out_params.size(); i++)
         handler.deliverParamValue(out_params[i]);
@@ -1538,7 +1538,7 @@ Message* CIMPLE_Provider_Manager::_handleCreateSubscriptionRequest(
 #endif
 
     // Create a new subscription for each class name in the request. Add the
-    // subscription to the subscriptions table. But if the subscription exists 
+    // subscription to the subscriptions table. But if the subscription exists
     // already, just increment its reference count.
 
     {
@@ -1672,7 +1672,7 @@ Message* CIMPLE_Provider_Manager::_handleSubscriptionInitCompleteRequest(
 {
     FTRACE;
 
-    // When the server starts, it calls _handleCreateSubscriptionRequest() 
+    // When the server starts, it calls _handleCreateSubscriptionRequest()
     // for each subscription it finds in the repository. Afterwards it calls
     // _handleCreateSubscriptionRequest() to announce the completion of
     // this process.
@@ -1734,7 +1734,7 @@ static bool _indication_proc(Instance* indication, void* client_data)
 
     CIMInstance pegasus_indication;
 
-    if (Converter::to_pegasus_instance(System::getHostName(), 
+    if (Converter::to_pegasus_instance(System::getHostName(),
         data->name_space, indication, pegasus_indication) != 0)
     {
         return false;
@@ -1825,7 +1825,7 @@ void CIMPLE_Provider_Manager::_create_disp(Message* message)
 
     try
     {
-        const ProviderIdContainer& pic = 
+        const ProviderIdContainer& pic =
             request->operationContext.get(ProviderIdContainer::NAME);
 
         CIMInstance module = pic.getModule();

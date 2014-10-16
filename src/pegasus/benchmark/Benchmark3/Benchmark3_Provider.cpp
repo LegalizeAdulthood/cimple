@@ -136,17 +136,17 @@ Invoke_Method_Status Benchmark3_Provider::ConnectorPower(
 
 int Benchmark3_Provider::proc(
     const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
+    int operation,
+    void* arg0,
+    void* arg1,
+    void* arg2,
     void* arg3,
     void* arg4,
     void* arg5,
     void* arg6,
     void* arg7)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Benchmark3 Class;

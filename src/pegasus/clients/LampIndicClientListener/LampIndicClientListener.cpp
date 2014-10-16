@@ -30,7 +30,7 @@ bool _success = false;
 static void _dump(const String& s)
 {
     CString cstr(s.getCString());
-    
+
     for (const char* p = (const char*)cstr; *p; p++)
     {
         char c = *p;
@@ -247,9 +247,9 @@ int main(int argc, char ** argv)
 
         CIMObjectPath subscriptionObjectPath;
 
-        try 
+        try
         {
-            subscriptionObjectPath = 
+            subscriptionObjectPath =
                 _createSubscription(client, filter, handler);
         }
         catch (Exception& e)

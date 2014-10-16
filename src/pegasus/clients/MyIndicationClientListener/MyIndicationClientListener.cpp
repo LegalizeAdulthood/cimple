@@ -220,7 +220,7 @@ int main(int argc, char ** argv)
         CIMObjectPath handler = _getHandlerName(client);
         // cout << "HANDLER[" << handler.toString() << "]\n" << endl;
 
-        try 
+        try
         {
             _createSubscription(client, filter, handler);
         }

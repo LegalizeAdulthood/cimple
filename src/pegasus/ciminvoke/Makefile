@@ -7,7 +7,7 @@ INSTALL=1
 
 BINARY = ciminvoke
 
-SOURCES = main.cpp 
+SOURCES = main.cpp
 
 LIBRARIES = pegclient pegcommon cimple
 

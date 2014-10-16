@@ -52,7 +52,7 @@ public:
 //==============================================================================
 
 static CIMObjectPath create_filter(
-    CIMClient& client, 
+    CIMClient& client,
     const String& query,
     const String& name)
 {
@@ -256,7 +256,7 @@ int main(int argc, char ** argv)
 
                 if (seconds_opt == 0)
                 {
-                    fprintf(stderr, "%s: bad seconds option argument: %s\n", 
+                    fprintf(stderr, "%s: bad seconds option argument: %s\n",
                         arg0, argv[1]);
                     exit(1);
                 }
@@ -360,7 +360,7 @@ int main(int argc, char ** argv)
 
         CIMObjectPath cop;
 
-        try 
+        try
         {
             cop = create_subscription(client, filter, handler);
         }

@@ -2,7 +2,7 @@
 
 Synopsis:
 =========
- 
+
 Ciminvoke is a utility to request the Pegasus CIM server to invoke extrinsic
 methods.
 
