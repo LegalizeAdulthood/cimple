@@ -30,11 +30,11 @@ genmod:
 	genmod $(PROVIDER_MODULE) $(Classes)
 
 genproj:
-	genproj Person Person 
+	genproj Person Person
 
 ## provider registration, installation and removal targets
 ## normally user should only need to call register
-# 
+#
 register:
 SOURCEPATH=$(subst /,\,$(TARGET))
 DESTPATH=c:\WINDOWS\system32\wbem\$(LIBRARY).dll

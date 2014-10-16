@@ -1,6 +1,6 @@
 Instance of __Win32Provider as $P
 {
-    Name = "GadgetProvider";   
+    Name = "GadgetProvider";
     ClsId = "{31777099-4d40-1bab-8c3b-ecc9128b55c8}";
 };
 

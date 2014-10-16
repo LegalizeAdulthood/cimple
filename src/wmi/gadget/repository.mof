@@ -39,8 +39,8 @@ class Widget
 
     [implemented, static]
     boolean foo(
-        [in] uint32 arg1, 
-        [in] string arg2, 
+        [in] uint32 arg1,
+        [in] string arg2,
         [in(false), out] uint32 arg3,
         [in(false), out] string arg4);
 

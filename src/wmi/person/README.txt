@@ -31,7 +31,7 @@ The provider can be created by the following steps:
 
    [c:...\Person] make
 
-4. Register and install the provider with wmi. Sample registration is 
+4. Register and install the provider with wmi. Sample registration is
    included in the Makefile
 
    [c:...\Person] make regwmi
@@ -40,11 +40,11 @@ The provider can be created by the following steps:
    verified with wmi client tools such as wmitest, wbemtest, etc.
 
 
-NOTE: The sample Makefile specifically puts the Person class and the 
+NOTE: The sample Makefile specifically puts the Person class and the
    registration into the root/cimv2 namespace
 
    The Makefile does not provide a way to completely remove the provider
-   and registration. 
+   and registration.
 
 17 Dec 2008
 
