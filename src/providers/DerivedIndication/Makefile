@@ -5,13 +5,16 @@ MODULE=1
 
 SHARED_LIBRARY = cimplederivedindic
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_Indication.cpp \
     DerivedIndication.cpp \
-    DerivedIndication_Provider.cpp \
-    module.cpp \
     MyIndication.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    DerivedIndication_Provider.cpp \
+    module.cpp
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -22,7 +25,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r DerivedIndication
 
 genprov:

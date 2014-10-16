@@ -132,6 +132,14 @@ src/providers/DerivedAssoc/CMPL_Other.cpp
 src/providers/DerivedAssoc/CMPL_Other.h
 src/providers/DerivedAssoc/repository.cpp
 src/providers/DerivedAssoc/repository.h
+src/providers/DerivedIndication/CIM_Indication.cpp
+src/providers/DerivedIndication/CIM_Indication.h
+src/providers/DerivedIndication/DerivedIndication.cpp
+src/providers/DerivedIndication/DerivedIndication.h
+src/providers/DerivedIndication/MyIndication.cpp
+src/providers/DerivedIndication/MyIndication.h
+src/providers/DerivedIndication/repository.cpp
+src/providers/DerivedIndication/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
