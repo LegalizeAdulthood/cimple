@@ -162,6 +162,16 @@ src/providers/EmbeddedArray/EA_Class2.cpp
 src/providers/EmbeddedArray/EA_Class2.h
 src/providers/EmbeddedArray/repository.cpp
 src/providers/EmbeddedArray/repository.h
+src/providers/Employee/Employee.cpp
+src/providers/Employee/Employee.h
+src/providers/Employee/Link.cpp
+src/providers/Employee/Link.h
+src/providers/Employee/Manager.cpp
+src/providers/Employee/Manager.h
+src/providers/Employee/OutOfOfficeNotice.cpp
+src/providers/Employee/OutOfOfficeNotice.h
+src/providers/Employee/repository.cpp
+src/providers/Employee/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

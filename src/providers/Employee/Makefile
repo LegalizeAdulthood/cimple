@@ -5,18 +5,21 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleEmployee
 
-SOURCES = \
-    module.cpp \
-    Resource.cpp \
+GENCLASS_SOURCES = \
     Employee.cpp \
-    Employee_Provider.cpp \
     Link.cpp \
-    Link_Provider.cpp \
     Manager.cpp \
-    Manager_Provider.cpp \
     OutOfOfficeNotice.cpp \
-    OutOfOfficeNotice_Provider.cpp \
+    Resource.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Employee_Provider.cpp \
+    Link_Provider.cpp \
+    Manager_Provider.cpp \
+    OutOfOfficeNotice_Provider.cpp \
+    module.cpp
 
 # Allow building providers for either CMPI or Pegasus C++ provider interface
 # Changing Provider interfaces requires reregistering the provider.
@@ -39,7 +42,7 @@ genprov:
 genmod:
 	$(BINDIR)/genmod Employee Employee Manager Link OutOfOfficeNotice
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Employee Manager Link OutOfOfficeNotice
 
 genproj:
