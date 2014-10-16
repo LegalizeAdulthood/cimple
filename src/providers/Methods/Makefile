@@ -7,12 +7,15 @@ MODULE=1
 
 SHARED_LIBRARY = cimplemethods
 
-SOURCES = \
+GENCLASS_SOURCES = \
     Argument.cpp \
     Methods.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     Methods_Provider.cpp \
     module.cpp \
-    repository.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
 ## Changing Provider interfaces requires reregistering the provider. Default CMPI
@@ -29,7 +32,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Methods
 
 genprov:

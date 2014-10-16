@@ -230,6 +230,12 @@ src/providers/LinuxComputerSystem/LinuxComputerSystem.cpp
 src/providers/LinuxComputerSystem/LinuxComputerSystem.h
 src/providers/LinuxComputerSystem/repository.cpp
 src/providers/LinuxComputerSystem/repository.h
+src/providers/Methods/Argument.cpp
+src/providers/Methods/Argument.h
+src/providers/Methods/Methods.cpp
+src/providers/Methods/Methods.h
+src/providers/Methods/repository.cpp
+src/providers/Methods/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
