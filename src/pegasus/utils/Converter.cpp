@@ -3,17 +3,17 @@
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009
 **               Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -130,7 +130,7 @@ int Converter::to_cimple_method(
 int Converter::to_pegasus_instance(
     const Pegasus::String& hn,
     const Pegasus::CIMNamespaceName& ns,
-    const Instance* inst, 
+    const Instance* inst,
     Pegasus::CIMInstance& ci_out)
 {
     PENTRY("Converter::to_pegasus_instance");
@@ -197,7 +197,7 @@ int Converter::to_pegasus_instance(
 int Converter::to_pegasus_assoc_instance(
     const Pegasus::String& hn,
     const Pegasus::CIMNamespaceName& ns,
-    const Instance* inst, 
+    const Instance* inst,
     Pegasus::CIMInstance& ci_out)
 {
     PENTRY("Converter::to_pegasus_assoc_instance");
@@ -212,7 +212,7 @@ int Converter::to_pegasus_assoc_instance(
     }
     else
     {
-       result_namespace = 
+       result_namespace =
            Pegasus::CIMNamespaceName(inst->__name_space.c_str());
     }
 
@@ -289,7 +289,7 @@ int Converter::to_pegasus_assoc_object_path(
     }
     else
     {
-       result_namespace = 
+       result_namespace =
            Pegasus::CIMNamespaceName(inst->__name_space.c_str());
     }
 

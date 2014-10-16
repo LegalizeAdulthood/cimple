@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,8 +38,8 @@
 
 struct Trc
 {
-    Trc(const char* file_, size_t line_) : file(file_), line(line_) 
-    { 
+    Trc(const char* file_, size_t line_) : file(file_), line(line_)
+    {
         printf("ENTER[%s:%u]\n", file, line);
     }
 
@@ -101,7 +101,7 @@ static Instance* _to_cimple_instance(
 static int _to_cimple_value(
     const Meta_Repository* mr,
     const char* ns,
-    const Pegasus::CIMValue& cv, 
+    const Pegasus::CIMValue& cv,
     Value& v)
 {
     PENTRY("_to_cimple_value");
@@ -289,7 +289,7 @@ static int _to_cimple_value(
                     if (!x[i].isInstance())
                     {
                         _release(a);
-                        CIMPLE_WARN(("embedded classes not supported: %s", 
+                        CIMPLE_WARN(("embedded classes not supported: %s",
                             *Str(x[i].getClassName())));
                         return -1;
                     }
@@ -333,7 +333,7 @@ static int _to_cimple_value(
                     }
 
                     Instance* inst = 0;
-                    
+
                     int rc = ObjectPathContainer(mr, ns, x[i]).convert(
                         mc, CIMPLE_FLAG_KEY, inst);
 
@@ -341,7 +341,7 @@ static int _to_cimple_value(
                     {
                         _release(a);
                         CIMPLE_WARN((
-                            "ObjectPathContainer::convert() failed: %s", 
+                            "ObjectPathContainer::convert() failed: %s",
                             mc->name));
                         return -1;
                     }
@@ -561,13 +561,13 @@ static int _to_cimple_value(
                 }
 
                 Instance* inst = 0;
-                
+
                 int rc = ObjectPathContainer(mr, ns, x).convert(
                     mc, CIMPLE_FLAG_KEY, inst);
 
                 if (rc != 0 || !inst)
                 {
-                    CIMPLE_WARN(("ObjectPathContainer::convert() failed: %s", 
+                    CIMPLE_WARN(("ObjectPathContainer::convert() failed: %s",
                         *cn));
                     return -1;
                 }
@@ -591,7 +591,7 @@ static int _to_cimple_value(
 static int _to_pegasus_instance(
     const Meta_Repository* mr,
     const char* ns,
-    const Instance* x, 
+    const Instance* x,
     Pegasus::CIMInstance& ci)
 {
     PENTRY("_to_pegasus_instance");
@@ -621,7 +621,7 @@ static int _to_pegasus_instance(
 static int _to_pegasus_object_path(
     const Meta_Repository* mr,
     const char* ns,
-    const Instance* x, 
+    const Instance* x,
     Pegasus::CIMObjectPath& cop)
 {
     PENTRY("_to_pegasus_object_path");
@@ -1250,7 +1250,7 @@ InstanceContainer::InstanceContainer(
     const Meta_Repository* mr,
     const char* ns,
     const InstanceContainer::Rep& rep)
-    : 
+    :
     Container(mr),
     _ns(ns),
     _rep(rep)
@@ -1332,7 +1332,7 @@ int InstanceContainer::get_value(size_t pos, Value::Type type, Value& value)
 
         // Adjust for Pegasus bug that sends instance-arrays as string-arrays.
 
-        if (value.type() == Value::STRING_ARRAY && 
+        if (value.type() == Value::STRING_ARRAY &&
             type == Value::INSTANCE_ARRAY)
         {
             Array<Instance*> a;
@@ -1427,7 +1427,7 @@ ObjectPathContainer::ObjectPathContainer(
     const Meta_Repository* mr,
     const char* ns,
     const ObjectPathContainer::Rep& rep)
-    : 
+    :
     Container(mr),
     _ns(ns),
     _rep(rep)
@@ -1455,7 +1455,7 @@ int ObjectPathContainer::get_name(size_t pos, String& name)
 {
     try
     {
-        const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings = 
+        const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings =
             _rep.getKeyBindings();
 
         if (pos > bindings.size())
@@ -1481,7 +1481,7 @@ int ObjectPathContainer::get_value(size_t pos, Value::Type type, Value& value)
     {
         value.clear();
 
-        const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings = 
+        const Pegasus::Array<Pegasus::CIMKeyBinding>& bindings =
             _rep.getKeyBindings();
 
         if (pos > bindings.size())
@@ -1511,7 +1511,7 @@ int ObjectPathContainer::get_value(size_t pos, Value::Type type, Value& value)
                     }
 
                     Instance* inst = 0;
-                    
+
                     int rc = ObjectPathContainer(_mr, _ns, op).convert(
                         mc, CIMPLE_FLAG_KEY, inst);
 
@@ -1723,8 +1723,8 @@ int ObjectPathContainer::set_value(
         // Create the key binding.
 
         Pegasus::CIMKeyBinding ckb;
-        
-        try 
+
+        try
         {
             ckb = Pegasus::CIMKeyBinding(name, cv);
         }
@@ -1775,7 +1775,7 @@ ParamValueContainer::ParamValueContainer(
     const Meta_Repository* mr,
     const char* ns,
     const ParamValueContainer::Rep& rep)
-    : 
+    :
     Container(mr),
     _ns(ns),
     _rep(rep)

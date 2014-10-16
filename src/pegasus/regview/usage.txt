@@ -2,7 +2,7 @@ Usage: %s [-chmnsVv] [-C classname] [modules]
 
 Where:
 
-    -c           : Display instances of Pegasus registration classes in place 
+    -c           : Display instances of Pegasus registration classes in place
                    of formatted output.
     -C  ClassName: Display registration for particular class. This
                    parameter may be repeated to display multiple classes
@@ -29,7 +29,7 @@ Output form is:
             <class Name>: Namespaces[<Namespaces>] <Provider Types>
                   <optional info if verbose mode>
 
-    where: InterfaceType    Defines CMPI, C++Default, JMPI, etc. 
+    where: InterfaceType    Defines CMPI, C++Default, JMPI, etc.
            InterfaceVersion Defines the version for this interface
            Location         Defines the module name
            status           Current status for this provider
@@ -41,4 +41,4 @@ Example:
 %%<regview CMPL_Time_Module returns:
     CMPL_Time_Module[#1}: C++Default Ver[2.5.0] Vendor[Pegasus] Loc[cimpletime]
         CMPL_Time_Provider[#0]:
-            CMPL_Time: Instance,Method[2,5] NameSpaces[root/cimv2] 
+            CMPL_Time: Instance,Method[2,5] NameSpaces[root/cimv2]

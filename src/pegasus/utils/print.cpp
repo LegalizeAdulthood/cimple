@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -75,7 +75,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%s", (x? "true" : "false"));
                 break;
             }
-    
+
             case CIMTYPE_UINT8:
             {
                 Uint8 x;
@@ -83,7 +83,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%d", x);
                 break;
             }
-    
+
             case CIMTYPE_SINT8:
             {
                 Sint8 x;
@@ -91,7 +91,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%u", x);
                 break;
             }
-    
+
             case CIMTYPE_UINT16:
             {
                 Uint16 x;
@@ -99,7 +99,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%d", x);
                 break;
             }
-    
+
             case CIMTYPE_SINT16:
             {
                 Sint16 x;
@@ -107,7 +107,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%u", x);
                 break;
             }
-    
+
             case CIMTYPE_UINT32:
             {
                 Uint32 x;
@@ -115,7 +115,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%d", x);
                 break;
             }
-    
+
             case CIMTYPE_SINT32:
             {
                 Sint32 x;
@@ -123,7 +123,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%u", x);
                 break;
             }
-    
+
             case CIMTYPE_UINT64:
             {
                 Uint64 x;
@@ -131,7 +131,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,CIMPLE_LLU, x);
                 break;
             }
-    
+
             case CIMTYPE_SINT64:
             {
                 Sint64 x;
@@ -139,7 +139,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,CIMPLE_LLD, x);
                 break;
             }
-    
+
             case CIMTYPE_REAL32:
             {
                 Real32 x;
@@ -147,7 +147,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%f", x);
                 break;
             }
-    
+
             case CIMTYPE_REAL64:
             {
                 Real64 x;
@@ -155,7 +155,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%lf", x);
                 break;
             }
-    
+
             case CIMTYPE_CHAR16:
             {
                 Char16 x;
@@ -163,7 +163,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%d", Uint32(x));
                 break;
             }
-    
+
             case CIMTYPE_STRING:
             {
                 Pegasus::String x;
@@ -171,7 +171,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"\"%s\"", *Str(x));
                 break;
             }
-    
+
             case CIMTYPE_DATETIME:
             {
                 CIMDateTime x;
@@ -179,7 +179,7 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%s", *Str(x.toString()));
                 break;
             }
-    
+
             case CIMTYPE_REFERENCE:
             {
                 CIMObjectPath x;
@@ -187,12 +187,12 @@ static void format_scalar(String& str,
                 string_append_printf(str,"%s", *Str(x.toString()));
                 break;
             }
-    
+
             case CIMTYPE_OBJECT:
             {
                 CIMObject x;
                 v.get(x);
-    
+
                 if (x.isInstance())
                 {
                     formatToString(str, CIMInstance(x), indent);
@@ -206,9 +206,9 @@ static void format_scalar(String& str,
                 }
                 break;
             }
-    
+
 #ifdef CIMPLE_ENABLE_EMBEDDED_INSTANCES
-    
+
             case CIMTYPE_INSTANCE:
             {
                 CIMInstance x;
@@ -216,9 +216,9 @@ static void format_scalar(String& str,
                 formatToString(str, x, indent);
                 break;
             }
-    
+
 #endif /* CIMPLE_ENABLE_EMBEDDED_INSTANCES */
-    
+
             default:
                 printf("Error: Scalar type %u not defined\n",
                        v.getType() );
@@ -239,7 +239,7 @@ void _set_separator(String& str, size_t i)
 template<class T>
 static void format_array_aux(
     String & str,
-    const CIMValue& v, 
+    const CIMValue& v,
     T* tag,
     size_t& indent)
 {
@@ -369,7 +369,7 @@ void formatToString(String& str,
     else
     {
         string_append_printf(str, "instance of %s\n", *Str(ci.getClassName()));
-        
+
         istring_printf(str, indent_level++, "{\n");
 
         for (Uint32 i = 0; i < ci.getPropertyCount(); i++)
@@ -377,14 +377,14 @@ void formatToString(String& str,
             CIMConstProperty cp = ci.getProperty(i);
             format_property(str, cp, indent_level);
         }
-    
+
         istring_printf(str, --indent_level, "%s", "}");
     }
 }
 
 /**
- * print a CIM Instance to standard output formatted roughly as mof is 
- * formatted. 
+ * print a CIM Instance to standard output formatted roughly as mof is
+ * formatted.
  * @param ci CIMInstance (Pegasus C++ object format) of instance
  */
 void print(const CIMConstInstance& ci)
@@ -396,11 +396,11 @@ void print(const CIMConstInstance& ci)
 }
 
 /**
- * Output a formated display of a Pegasus CIMInstance to the CIMPLE log 
- * file. This function is intended to be used by the CIMPLE pegasus adapter 
- * and should be used through a macro call so that it can be completely 
- * disabled when not required. 
- * 
+ * Output a formated display of a Pegasus CIMInstance to the CIMPLE log
+ * file. This function is intended to be used by the CIMPLE pegasus adapter
+ * and should be used through a macro call so that it can be completely
+ * disabled when not required.
+ *
  * @param ci Instance to be displayed
  * @param lvl  Log level
  * @param file Code Source Line (__FILE__)

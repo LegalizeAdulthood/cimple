@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2009, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -308,7 +308,7 @@ String _toString(const Array<Uint16> in)
 //------------------------------------------------------------------------------
 //
 // get the value of a property from an instance
-// 
+//
 // -----------------------------------------------------------------------------
 
 // Find a property in an instance. Returns the findPropery position and if
@@ -352,7 +352,7 @@ bool getPropertyValue(const CIMInstance& instance,
 
 //------------------------------------------------------------------------------
 //
-// get the value of a property with name from instance.  Must be a 
+// get the value of a property with name from instance.  Must be a
 // String property.
 //
 //------------------------------------------------------------------------------
@@ -412,11 +412,11 @@ String _tostring_cimvalue(const CIMValue& v, T*)
         {
             Array<T> x;
             v.get(x);
-    
+
             for (Uint32 i = 0; i < x.size(); i++)
             {
                 _toString_elem(s, x[i]);
-    
+
                 if (i + 1 != x.size())
                     s.append(",");
             }
@@ -452,7 +452,7 @@ String dispPropertyValueString(CIMInstance& inst, const String& propName,
         rtn.append(display);
         rtn.append("[");
     }
-    
+
     if ((pos = inst.findProperty(propName)) != PEG_NOT_FOUND)
     {
         CIMConstProperty p = inst.getProperty(pos);
@@ -620,7 +620,7 @@ String getMappedPropertyValue(const CIMClass& c,
         {
             Array<Uint16> values;
             // following returns a bool
-            if(getPropertyValue(inst, String(propName), values))    
+            if(getPropertyValue(inst, String(propName), values))
             {
                     s.append(mapValues(values, propName,"ValueMap",
                                     "Values", c));
@@ -727,11 +727,11 @@ bool enumerateInstances(
 //------------------------------------------------------------------------------
 //
 // find_capabilities(name) - Find capabilities instances for this provider name
-// The key properties are ProviderModuleName and ProviderName. 
+// The key properties are ProviderModuleName and ProviderName.
 // NOTE: This would be simpler with a get_instance but that does not work
 // because one of the keys of capabilities is CapabilityId which is not
-// part of either the provider or providermodule instances. 
-// 
+// part of either the provider or providermodule instances.
+//
 // Returns the instance and return = 0 if found.
 //
 //------------------------------------------------------------------------------
@@ -744,19 +744,19 @@ int find_capabilities(CIMClient& client,
 {
     // Enumerate the class and find matching provider name and
     // provider module name instance.
-    
+
     Array<CIMInstance> instances;
-    
+
     if (!enumerateInstances(client, INTEROP_NAMESPACE, CAPABILITIES_CLASSNAME,
                            instances))
     {
         err("failed to enumerate capabilities class");
         exit(1);
     }
-    
+
     // filter out all provider instances where ProviderModuleName does not
     // match the target provider module.
-    
+
     for (Uint32 i = 0 ; i < instances.size() ; i++)
     {
         String thisProviderModuleName =
@@ -770,7 +770,7 @@ int find_capabilities(CIMClient& client,
             capabilities.append(instances[i]);
         }
     }
-    
+
     if (capabilities.size() == 0)
     {
         printf("Warning: No capability instance found for %s %s\n",
@@ -783,11 +783,11 @@ int find_capabilities(CIMClient& client,
 
 //------------------------------------------------------------------------------
 //
-// find_provider_modules() 
+// find_provider_modules()
 //     Find the provider modules for a particular class definition.
-//     Searches the capabilities class 
-//     returns the list of provider module names that correspond to 
-//     the class defined in the input targetClass. 
+//     Searches the capabilities class
+//     returns the list of provider module names that correspond to
+//     the class defined in the input targetClass.
 //
 //------------------------------------------------------------------------------
 
@@ -805,9 +805,9 @@ int find_providerModules(CIMClient& client,
         err("Error: failed to enumerate capabilities class");
         exit(1);
     }
-    
+
     // filter out all instances that do not match this classname
-    
+
     for (Uint32 i = 0 ; i < instances.size() ; i++)
     {
         if (String::compareNoCase(targetClass,
@@ -845,7 +845,7 @@ Array<CIMInstance> find_providers(CIMClient& client,
     Array<CIMInstance> rtn;
     for (Uint32 i = 0 ; i < providers.size() ; i++)
     {
-        String providerModuleName = 
+        String providerModuleName =
             get_property_value_string(providers[i], String("ProviderModuleName"));
         if (providerModuleName == name)
         {
@@ -980,7 +980,7 @@ int main(int argc, char** argv)
         exit(1);
     }
 
-    // Add any entries from the -c option to the list of potential 
+    // Add any entries from the -c option to the list of potential
     // provider modules by calling the find_provider_modules function
     // to map from capabilities back to provider module name.
 
@@ -1012,7 +1012,7 @@ int main(int argc, char** argv)
             continue;
         }
 
-        // get the properties from this providerModule instance and 
+        // get the properties from this providerModule instance and
         // display
 
         Uint16 user_context;
@@ -1054,7 +1054,7 @@ int main(int argc, char** argv)
                      << _spaces()
                      << dispPropertyValueString(providerModules[i], "Location", "Loc");
             }
-    
+
             if (verbose_opt)
             {
                 cout << _spaces()
@@ -1084,7 +1084,7 @@ int main(int argc, char** argv)
 
         // Get the providers for this provider module from
         // the provider class.
-        
+
         Array<CIMInstance> providers;
         if (providerModuleName != String::EMPTY)
         {
@@ -1119,12 +1119,12 @@ int main(int argc, char** argv)
             getPropertyValue(providers[j], String("StatusDescriptions"),
                                status_descriptions);
 
-            String this_provider_module_name = 
+            String this_provider_module_name =
             get_property_value_string(providers[j], String("ProviderModuleName"));
 
             // test to be sure we have good linkage to instance
             // of provider module name.  This is probably not needed.
-            
+
             if (this_provider_module_name != providerModuleName)
             {
                 cout << "Error in instance linkage "
@@ -1137,7 +1137,7 @@ int main(int argc, char** argv)
 
             if (class_opt)
             {
-                cout << "ProviderModule = " << providerModuleName 
+                cout << "ProviderModule = " << providerModuleName
                     << "[#" << j << "]" << endl;
                 print(providers[j]);
             }
@@ -1149,7 +1149,7 @@ int main(int argc, char** argv)
                 // if not summary output the provider basic information
                 if (!summary_opt)
                 {
-                    cout << ":" 
+                    cout << ":"
                          << dispPropertyValueString(providers[j], "Status", "Status")
                          << dispPropertyValueString(providers[j], "HealthState",
                                             "HealthState")
@@ -1194,8 +1194,8 @@ int main(int argc, char** argv)
             {
                 if (class_opt)
                 {
-                    cout << "ProviderModule:Provider = " 
-                        << providerModuleName 
+                    cout << "ProviderModule:Provider = "
+                        << providerModuleName
                         << ":" << providerName << endl;
                     print(caps[k]);
                 }
@@ -1203,7 +1203,7 @@ int main(int argc, char** argv)
                 {
                     // get the Provider type and map the value and value map
                     // qualifiers to produce the providerTypeString
-    
+
                     Array<Uint16> provider_types;
                     getPropertyValue(caps[k], String("ProviderType"),
                                        provider_types);

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003 - 2009, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -67,14 +67,14 @@ static const cimple::Meta_Class* const* _meta_classes = 0;
 static size_t _num_meta_classes = 0;
 
 void create_class(
-    CIMClient& client, 
+    CIMClient& client,
     const String& ns,
     const cimple::Meta_Class* mc);
 
 void check_class_compatibility(
     CIMClient& client,
     const String& ns,
-    const cimple::Meta_Class* mc, 
+    const cimple::Meta_Class* mc,
     CIMClass& c);
 
 //------------------------------------------------------------------------------
@@ -191,7 +191,7 @@ void print(CIMInstance& inst)
 }
 
 int delete_instance(
-    CIMClient& client, 
+    CIMClient& client,
     const char* name_space,
     const char* object_path)
 {
@@ -211,7 +211,7 @@ int delete_instance(
     {
         if (verbose_opt)
         {
-            printf("delete_instance(%s, %s): error: %s\n", 
+            printf("delete_instance(%s, %s): error: %s\n",
                 name_space, object_path, *cimple::Str(e));
         }
 
@@ -221,7 +221,7 @@ int delete_instance(
     {
         if (verbose_opt)
         {
-            printf("delete_instance(%s, %s): error: %s\n", 
+            printf("delete_instance(%s, %s): error: %s\n",
                 name_space, object_path, *cimple::Str(e));
         }
 
@@ -231,7 +231,7 @@ int delete_instance(
     {
         if (verbose_opt)
         {
-            printf("delete_instance(%s, %s): error: unknown exception\n", 
+            printf("delete_instance(%s, %s): error: unknown exception\n",
                 name_space, object_path);
         }
 
@@ -243,7 +243,7 @@ int delete_instance(
 }
 
 int get_instance(
-    CIMClient& client, 
+    CIMClient& client,
     const char* name_space,
     const char* object_path,
     CIMInstance& ci)
@@ -264,7 +264,7 @@ int get_instance(
     {
         if (verbose_opt)
         {
-            printf("get_instance(%s, %s): error: %s\n", 
+            printf("get_instance(%s, %s): error: %s\n",
                 name_space, object_path, *cimple::Str(e));
         }
 
@@ -274,7 +274,7 @@ int get_instance(
     {
         if (verbose_opt)
         {
-            printf("get_instance(%s, %s): error: %s\n", 
+            printf("get_instance(%s, %s): error: %s\n",
                 name_space, object_path, *cimple::Str(e));
         }
 
@@ -284,7 +284,7 @@ int get_instance(
     {
         if (verbose_opt)
         {
-            printf("get_instance(%s, %s): error: unknown exception\n", 
+            printf("get_instance(%s, %s): error: unknown exception\n",
                 name_space, object_path);
         }
 
@@ -296,7 +296,7 @@ int get_instance(
 }
 
 int create_instance(
-    CIMClient& client, 
+    CIMClient& client,
     const char* name_space,
     CIMInstance& ci)
 {
@@ -319,7 +319,7 @@ int create_instance(
     {
         if (verbose_opt)
         {
-            printf("create_instance(%s, %s): error: %s\n", 
+            printf("create_instance(%s, %s): error: %s\n",
                 name_space, object_path, *cimple::Str(e));
         }
 
@@ -329,7 +329,7 @@ int create_instance(
     {
         if (verbose_opt)
         {
-            printf("create_instance(%s, %s): error: %s\n", 
+            printf("create_instance(%s, %s): error: %s\n",
                 name_space, object_path, *cimple::Str(e));
         }
 
@@ -339,7 +339,7 @@ int create_instance(
     {
         if (verbose_opt)
         {
-            printf("create_instance(%s, %s): error: unknown exception\n", 
+            printf("create_instance(%s, %s): error: unknown exception\n",
                 name_space, object_path);
         }
 
@@ -415,12 +415,12 @@ cimple::Registration* load_module(
     // Get symbol:
 
     const char SYMBOL[] = "cimple_module";
-    cimple::Module_Proc module_proc = 
+    cimple::Module_Proc module_proc =
         (cimple::Module_Proc)dlsym(g_handle, SYMBOL);
 
     if (!module_proc)
     {
-        err("cannot find symbol \"%s\" in library %s: %s", 
+        err("cannot find symbol \"%s\" in library %s: %s",
             SYMBOL, path.c_str(), dlerror());
     }
 
@@ -463,11 +463,11 @@ void delete_capabilities(
     const string& class_name)
 {
     char buf[1024];
-    sprintf(buf, 
+    sprintf(buf,
         "PG_ProviderCapabilities."
         "ProviderName=\"%s\","
         "ProviderModuleName=\"%s\","
-        "CapabilityID=\"%s\"", 
+        "CapabilityID=\"%s\"",
         provider_name.c_str(),
         module_name.c_str(),
         class_name.c_str());
@@ -495,7 +495,7 @@ void unregister_provider(
     try
     {
         char buf[1024];
-        sprintf(buf, 
+        sprintf(buf,
             "PG_Provider.Name=\"%s\","
             "ProviderModuleName=\"%s\"",
             provider_name.c_str(),
@@ -682,13 +682,13 @@ CIMInstance make_PG_ProviderModule(
         {
             if (!_isValidUser(user_opt))
             {
-                err("user given by -U not a valid system user: %s\n", 
+                err("user given by -U not a valid system user: %s\n",
                     user_opt.c_str());
             }
 
             String designatedUserContext = user_opt.c_str();
             i.addProperty(
-                CIMProperty("DesignatedUserContext", 
+                CIMProperty("DesignatedUserContext",
                     designatedUserContext));
         }
     }
@@ -808,7 +808,7 @@ void register_module(
         }
 
         string location;
-        
+
         if (absolute_opt)
             location = lib_path;
         else
@@ -888,7 +888,7 @@ void register_module(
 //------------------------------------------------------------------------------
 
 static void check_cmpi_entry_point(
-    const char* provider_name, 
+    const char* provider_name,
     const char* provider_type)
 {
     char sym_name[1024];
@@ -961,7 +961,7 @@ void compute_closure(
 
                 if (mf->flags & CIMPLE_FLAG_REFERENCE)
                 {
-                    const cimple::Meta_Reference* mr = 
+                    const cimple::Meta_Reference* mr =
                         (cimple::Meta_Reference*)mf;
 
                     compute_closure(mr->meta_class, closure);
@@ -1006,7 +1006,7 @@ void uninstall_classes(
     CIMClient& client,
     const cimple::Meta_Class* meta_class)
 {
-    // Find closure and remove classes with the same prefix as the one 
+    // Find closure and remove classes with the same prefix as the one
     // installed by this provider (assuming thre prefix is not "CIM_").
 
     vector<string> closure;
@@ -1181,7 +1181,7 @@ void register_provider(
         // Remove old registration instances.
 
         CIMClient client;
-        
+
         try
         {
             client.connectLocal();
@@ -1257,16 +1257,16 @@ void register_provider(
                     catch (CIMException& e)
                     {
                         char buf[1024];
-                        sprintf(buf, 
+                        sprintf(buf,
                             "PG_ProviderCapabilities."
                             "ProviderName=\"%s\","
                             "ProviderModuleName=\"%s\","
-                            "CapabilityID=\"%s\"", 
+                            "CapabilityID=\"%s\"",
                             provider_name.c_str(),
                             module_name.c_str(),
                             _meta_classes[i]->name);
                         CString msg = e.getMessage().getCString();
-                        err("registration error: %s: %s", 
+                        err("registration error: %s: %s",
                             buf, (const char*)msg);
                     }
                 }
@@ -1288,11 +1288,11 @@ void register_provider(
             catch (CIMException& e)
             {
                 char buf[1024];
-                sprintf(buf, 
+                sprintf(buf,
                     "PG_ProviderCapabilities."
                     "ProviderName=\"%s\","
                     "ProviderModuleName=\"%s\","
-                    "CapabilityID=\"%s\"", 
+                    "CapabilityID=\"%s\"",
                     provider_name.c_str(),
                     module_name.c_str(),
                     class_name.c_str());
@@ -1362,7 +1362,7 @@ void check_method_compatibility(
 
         if (pos == (Uint32)-1)
         {
-            warn("Parameter not found in Pegasus repository class: %s.%s", 
+            warn("Parameter not found in Pegasus repository class: %s.%s",
                 mm->name, mf->name);
             continue;
         }
@@ -1473,7 +1473,7 @@ void check_method_compatibility(
 void check_class_compatibility(
     CIMClient& client,
     const String& ns,
-    const cimple::Meta_Class* mc, 
+    const cimple::Meta_Class* mc,
     CIMClass& c)
 {
     if (verbose_opt)
@@ -1487,7 +1487,7 @@ void check_class_compatibility(
 
         if (strcasecmp(mc->super_meta_class->name, tmp) != 0)
         {
-            err(INCOMPATIBLE "They have different super classes", 
+            err(INCOMPATIBLE "They have different super classes",
                 mc->name);
         }
 
@@ -1706,7 +1706,7 @@ bool class_exists(
 void add_method(
     CIMClient& client,
     const String& ns,
-    CIMClass& cc, 
+    CIMClass& cc,
     const cimple::Meta_Method* mm)
 {
     // Create method.
@@ -1816,7 +1816,7 @@ void create_class(
         printf("=== Creating class (%s)\n", mc->name);
 
     if (!dump_opt)
-        printf("Creating class %s (%s)\n", mc->name, 
+        printf("Creating class %s (%s)\n", mc->name,
             (const char*)ns.getCString());
 
     // Create superclass if necessary.
@@ -1834,7 +1834,7 @@ void create_class(
 
         if (mc->super_meta_class)
             super_class_name = mc->super_meta_class->name;
-        
+
         CIMClass c(mc->name);
 
         if (super_class_name.size())

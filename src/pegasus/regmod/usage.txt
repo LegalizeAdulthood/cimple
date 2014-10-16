@@ -4,7 +4,7 @@ Where:
     -V           : print the version
     -c           : create classes (or delete them when -u present)
     -i           : delete indirect classes (when -u and -c present)
-    -s           : provide subclasses of the provided class (or delete them 
+    -s           : provide subclasses of the provided class (or delete them
                    with -u)
     -v           : verbose mode
     -n namespace : provider namespace (may occur multiple times)
@@ -16,7 +16,7 @@ Where:
     -h           : print this help text
 
 Synopsis:
-    This utility registers (or unregisters) one more more providers contained 
+    This utility registers (or unregisters) one more more providers contained
     in a CIMPLE provider module library, with the Pegasus CIMOM. There are two
     forms for registering providers. The following registers ALL providers
     contained in the provider module library.
