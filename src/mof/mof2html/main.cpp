@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,9 +57,9 @@ Where:\n\
     -v string  CIM Version string for index page\n\
 \n"
 
-// Appends this subelement to cimple version string since we are going to 
+// Appends this subelement to cimple version string since we are going to
 // distribute this program independently so that we can keep subversions within
-// a cimple release version. For 
+// a cimple release version. For
 const char* mof2html_ver = "002";
 
 // Options variables
@@ -95,8 +95,8 @@ void gen_html_linebreak(FILE* os, int count)
 //
 // _process_command_line_options()
 //
-//      Process argc/argv for command line options. Reorder argv[], placing 
-//      the options before the non-options. Returns the index of the first 
+//      Process argc/argv for command line options. Reorder argv[], placing
+//      the options before the non-options. Returns the index of the first
 //      non-option.
 //
 //------------------------------------------------------------------------------
@@ -437,13 +437,13 @@ void gen_class_header(FILE* os, const MOF_Class_Decl* cd)
 
     if (cd->super_class)
     {
-        fprintf(os, "<h2>%s %s : %s\n", 
+        fprintf(os, "<h2>%s %s : %s\n",
             _meta_type_name(cd), cd->name,
             html_file_name_href(cd->super_class->name).c_str());
     }
     else
     {
-        fprintf(os, "          <h2>%s %s</h2>\n", 
+        fprintf(os, "          <h2>%s %s</h2>\n",
             _meta_type_name(cd), cd->name);
     }
 
@@ -500,8 +500,8 @@ void gen_method_page(const MOF_Class_Decl* p, const MOF_Feature_Info* f)
 
     if (p->super_class)
     {
-        fprintf(os, "          %s %s : <a href=%s.html>%s</a>\n", 
-            _meta_type_name(p), p->name, p->super_class->name, 
+        fprintf(os, "          %s %s : <a href=%s.html>%s</a>\n",
+            _meta_type_name(p), p->name, p->super_class->name,
                 p->super_class->name);
     }
     else
@@ -531,8 +531,8 @@ void gen_method_page(const MOF_Class_Decl* p, const MOF_Feature_Info* f)
     const MOF_Method_Decl* md = f->feature->
     const MOF_Parameter* parameters = md->parameters;
 
-    for (const MOF_Feature_Info* f = (const MOF_Feature_Info*)p->all_features; 
-        f; 
+    for (const MOF_Feature_Info* f = (const MOF_Feature_Info*)p->all_features;
+        f;
         f = (const MOF_Feature_Info*)f->next)
     {
     }
@@ -582,8 +582,8 @@ void gen_class_html(const MOF_Class_Decl* p,
 
     if (p->super_class)
     {
-        fprintf(os, "          %s %s : <a href=%s.html>%s</a>\n", 
-            _meta_type_name(p), p->name, p->super_class->name, 
+        fprintf(os, "          %s %s : <a href=%s.html>%s</a>\n",
+            _meta_type_name(p), p->name, p->super_class->name,
                 p->super_class->name);
     }
     else
@@ -610,8 +610,8 @@ void gen_class_html(const MOF_Class_Decl* p,
 
     // For all Features in the class
     for (
-        const MOF_Feature_Info* f = (const MOF_Feature_Info*)p->all_features; 
-        f; 
+        const MOF_Feature_Info* f = (const MOF_Feature_Info*)p->all_features;
+        f;
         f = (const MOF_Feature_Info*)f->next)
     {
         fprintf(os, "      <tr valign=top>\n");
@@ -627,12 +627,12 @@ void gen_class_html(const MOF_Class_Decl* p,
 
         if (f->propagated)
         {
-            fprintf(os, "        <td bgcolor=%s><i>%s</i></td>\n", 
+            fprintf(os, "        <td bgcolor=%s><i>%s</i></td>\n",
                 bgcolor, f->feature->name);
         }
         else
         {
-            fprintf(os, "        <td bgcolor=%s><b>%s</b></td>\n", 
+            fprintf(os, "        <td bgcolor=%s><b>%s</b></td>\n",
                 bgcolor, f->feature->name);
         }
 
@@ -684,11 +684,11 @@ void gen_class_html(const MOF_Class_Decl* p,
             fprintf(os, "        <td>%s</td>\n", f->class_origin->name);
         else
         {
-            fprintf(os, "        <td><a href=%s.html>%s</a></td>\n", 
+            fprintf(os, "        <td><a href=%s.html>%s</a></td>\n",
                 f->class_origin->name, f->class_origin->name);
         }
 
-        // 
+        //
         // Description
         //
 
@@ -698,7 +698,7 @@ void gen_class_html(const MOF_Class_Decl* p,
         fprintf(os, "</td>\n");
 #endif
 
-        // 
+        //
         // Qualifiers
         //
 
@@ -716,7 +716,7 @@ void gen_class_html(const MOF_Class_Decl* p,
     if (children_names.size() != 0)
     {
         fprintf(os, "  <h2>Direct Subclasses:</h2>\n");
-    
+
         // output comma separated list of children class names
         for (size_t i = 0 ; i < children_names.size() ; i++)
         {
@@ -750,7 +750,7 @@ struct Class_Decl
     // constructor. Saves the * to MOF_Class_Decl in the local structure.
     Class_Decl(const MOF_Class_Decl* cd) : class_decl(cd) { }
 
-    // declare operation < for sort 
+    // declare operation < for sort
     friend int operator<(const Class_Decl& x, const Class_Decl& y)
     {
         return strcmp(x.class_decl->name, y.class_decl->name) < 0;
@@ -758,7 +758,7 @@ struct Class_Decl
 };
 //------------------------------------------------------------------------------
 //
-// ClassesTable - Structure containing classes 
+// ClassesTable - Structure containing classes
 //
 //------------------------------------------------------------------------------
 class ClassesTable
@@ -855,7 +855,7 @@ void ClassesTable::sort_table()
     sort(Class_Decls.begin(), Class_Decls.end());
 }
 
-// search the classes array for a particlar class.   
+// search the classes array for a particlar class.
 // TODO build this into the struct
 const MOF_Class_Decl* find_class_decl(vector<Class_Decl>& classes,
                                       const char* class_name)
@@ -879,7 +879,7 @@ const MOF_Class_Decl* find_class_decl(vector<Class_Decl>& classes,
 // the defined indent, the href for the class pointing to the class html, and
 // the anchor with the classname.
 // If show_metatype is true, it generates the meta_type string.
-// If show_superclass is true, the superclass href is also appended. 
+// If show_superclass is true, the superclass href is also appended.
 
 void gen_class_href(FILE* os,
                       const MOF_Class_Decl* cd,
@@ -901,9 +901,9 @@ void gen_class_href(FILE* os,
     }
 
     // print the href and anchor for the defined name
-    fprintf(os, "  <a href=\"%s.html\">%s (%s)</a>" 
+    fprintf(os, "  <a href=\"%s.html\">%s (%s)</a>"
                 "<a name=\"%s\"></a>",
-        cd->name, cd->name, 
+        cd->name, cd->name,
         ((show_metatype)? _meta_type_name(cd) : ""),
         cd->name);
 
@@ -921,7 +921,7 @@ void gen_class_href(FILE* os,
     // TODO: add the meta_type_name to the superclass
     if ( show_superclass && cd->super_class_name != 0)
     {
-        fprintf(os, " : <a href=\"#%s\">%s</a>", 
+        fprintf(os, " : <a href=\"#%s\">%s</a>",
             cd->super_class_name, cd->super_class_name);
     }
 
@@ -957,7 +957,7 @@ vector<Class_Decl>  find_children(vector<Class_Decl>& classes,
 
 /* Recursive function to generate all the children classes of an input
    class. each call outputs the  level of the hiearchy as an href
-   and recalls gen_children to generate the next level. 
+   and recalls gen_children to generate the next level.
 */
 void gen_children(FILE* os,
                     vector<Class_Decl>& classes,
@@ -968,7 +968,7 @@ void gen_children(FILE* os,
 
     vector<Class_Decl> children = find_children(classes, class_name);
 
-    // for each child, print the href and recall print_children to 
+    // for each child, print the href and recall print_children to
     // get the next level.
     for (size_t i = 0 ; i < children.size() ; i++)
     {
@@ -1029,7 +1029,7 @@ void gen_list_page_title(FILE* os)
 }
 
 void gen_class_tree_doc(const char* filename,
-                  vector<Class_Decl>& classes, 
+                  vector<Class_Decl>& classes,
                   const char* listfilename)
 {
     FILE* os = open_file(filename);
@@ -1052,7 +1052,7 @@ void gen_class_tree_doc(const char* filename,
     for (size_t i = 0; i < classes.size(); i++)
     {
         const MOF_Class_Decl* cd = classes[i].class_decl;
-        
+
         // Output for the highest level (no superclass) and call the
         // gen_children function to generate subclasses.
         if (cd->super_class_name == 0)
@@ -1071,7 +1071,7 @@ void gen_class_list_doc(const char* filename, vector<Class_Decl>&  classes,
                        const char* treefilename)
 {
     FILE* os = open_file(filename);
-    
+
     //
     // Generate list file
     //
@@ -1195,14 +1195,14 @@ void gen_association_doc(vector<Class_Decl>& classes, const char* filename)
         }
         prev_class_name = rd->class_name;
 
-        fprintf(os, "%22s %22s %22s %22s\n", 
+        fprintf(os, "%22s %22s %22s %22s\n",
                                     out, rd->name, f->feature->name,
                                     associations[i].classname);
     }
 }
 
 
-/* 
+/*
     Generate the class docs including:
     - files for each class
     - alphabetic list file
@@ -1222,8 +1222,8 @@ void gen_class_html_docs()
     // the MOF_Class_Decl list
 
     vector<Class_Decl> classes;
-    for (MOF_Class_Decl* p = MOF_Class_Decl::list; 
-        p; 
+    for (MOF_Class_Decl* p = MOF_Class_Decl::list;
+        p;
         p = (MOF_Class_Decl*)p->next)
     {
         classes.push_back(p);
@@ -1264,7 +1264,7 @@ int main(int argc, char** argv)
     //
     // Process the command line options. Reorders argv[] so that all
     // of the options appear first (before any of the ordinary arguments).
-    // Returns 
+    // Returns
     //
 
     int first_non_option_index = _process_command_line_options(argc, argv);
@@ -1299,7 +1299,7 @@ int main(int argc, char** argv)
     // The output for the parser is the intermediate tree structure
     // as defined by the MOF_CLASS_DECL, MOF_INSTANCE_DECL, and
     // MOF_qualifier_Decl structures.
-    
+
     //
     // Print out all the declarations:
     //
@@ -1315,7 +1315,7 @@ int main(int argc, char** argv)
 
     //
     // Generate class name list and html page for each mof entry
-    // This is, in effect the second phase of a mof compiler, the 
+    // This is, in effect the second phase of a mof compiler, the
     // compiler generation phase. It uses the structures generated by
     // the parser phase.
     //

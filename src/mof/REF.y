@@ -122,7 +122,7 @@ key_val_pair
     }
     ;
 
-value_array 
+value_array
     : REF_TOK_OPEN_BRACE value_list REF_TOK_CLOSE_BRACE
     {
         REF_trace("value_array:1");
@@ -130,7 +130,7 @@ value_array
     }
     ;
 
-value_list 
+value_list
     : value
     {
         REF_trace("value_list:1");
@@ -143,7 +143,7 @@ value_list
         $$ = $1;
     }
     ;
-    
+
 value
     : REF_TOK_INT_VALUE
     {
@@ -192,9 +192,9 @@ value
         MOF_ASSERT($$ != NULL);
         $$->value_type = TOK_NULL_VALUE;
     }
-    ;                              
+    ;
 
-multi_string 
+multi_string
     : REF_TOK_STRING_VALUE
     {
         REF_trace("multi_string:1");

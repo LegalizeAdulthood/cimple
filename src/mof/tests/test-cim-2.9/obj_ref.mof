@@ -17,7 +17,7 @@ class Class_2 : Class_1
 [Association]
 class Class_3
 {
-    Class_1 ref r1 = 
+    Class_1 ref r1 =
         "Class_2."
         "Key5={true, false, true},"
         "KEY2=\"Hello World\","

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,7 +31,7 @@
 #include "MOF_Indent.h"
 #include "MOF_String.h"
 
-MOF_Qualifier_Info::MOF_Qualifier_Info() 
+MOF_Qualifier_Info::MOF_Qualifier_Info()
     : qualifier(0), flavor(0), propagated(false)
 {
 
@@ -97,7 +97,7 @@ static MOF_mask _make_qual_mask(
     /*
      * Set bits for qualifiers whose default is true.
      */
-    
+
     if (prop)
         mask |= MOF_QT_READ;
 
@@ -118,8 +118,8 @@ static MOF_mask _make_qual_mask(
                 MOF_Literal* lit = p->qualifier->params;
                 bool flag = true;
 
-                /* 
-                 * Ignore errors (these are checked elsewhere). 
+                /*
+                 * Ignore errors (these are checked elsewhere).
                  */
 
                 if (lit && (lit->next || lit->value_type != TOK_BOOL_VALUE))
@@ -210,7 +210,7 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
 
         qi = _find(inherited_qual_info_list, q->name);
 
-        if (qi && 
+        if (qi &&
             (qi->flavor & MOF_FLAVOR_DISABLEOVERRIDE) &&
             !MOF_Literal::identical(q->params, qi->qualifier->params))
         {
@@ -235,7 +235,7 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
             }
 
             MOF_error_printf("attempt to override non-overridable qualifier "
-                "(%s) on %s", 
+                "(%s) on %s",
                 q->name, context);
         }
 
@@ -248,7 +248,7 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
 
         new_qi->qualifier = q;
 
-        /* 
+        /*
          * If overriding, else use declaration:
          */
 
@@ -274,11 +274,11 @@ MOF_Qualifier_Info* MOF_Qualifier_Info::make_all_qualifiers(
          * and qualifier not already present locally).
          */
 
-        if ((qi->flavor & MOF_FLAVOR_TOSUBCLASS) && 
+        if ((qi->flavor & MOF_FLAVOR_TOSUBCLASS) &&
             !_find(all_qualifiers_list, qi->qualifier->name))
         {
             MOF_Qualifier_Info* new_qi;
-            
+
             if ((new_qi = _clone_propagated(qi)) == 0)
                 MOF_error_printf("out of memory");
 

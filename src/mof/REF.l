@@ -109,8 +109,8 @@ BLANK                   [ \t\n]
 
 \" {
     MOF_read_string(
-        yyinput, 
-        REF_error, 
+        yyinput,
+        REF_error,
         (char**)0,
         &REF_lval.string_value);
     return REF_TOK_STRING_VALUE;
@@ -172,7 +172,7 @@ BLANK                   [ \t\n]
 
     if ((REF_lval.string_value = strdup(yytext)) == NULL)
         REF_error("out of memory");
-    
+
     return REF_TOK_IDENT;
 }
 

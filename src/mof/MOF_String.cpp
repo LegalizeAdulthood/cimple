@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -46,8 +46,8 @@ void MOF_strtolower(char* s)
 }
 
 size_t MOF_count_char(
-    const char* str, 
-    size_t length, 
+    const char* str,
+    size_t length,
     char ch)
 {
     size_t i;
@@ -63,10 +63,10 @@ size_t MOF_count_char(
 }
 
 size_t MOF_char16_to_asc7(
-    MOF_char16 ch, 
+    MOF_char16 ch,
     char str[7])
 {
-    if(ch < 0x80) 
+    if(ch < 0x80)
     {
         str[0] = (char)ch;
         str[1] = '\0';
@@ -91,7 +91,7 @@ size_t MOF_asc7_to_char16(
 
         p += 2;
 
-        /* 
+        /*
          * Count the number of hex digits (but not more than four).
          */
 
@@ -228,7 +228,7 @@ char* MOF_escape(const char* asc7)
     for (const char* p = asc7; *p; )
     {
         MOF_char16 ch;
-        
+
         p += MOF_asc7_to_char16(p, &ch);
 
         switch (ch)
