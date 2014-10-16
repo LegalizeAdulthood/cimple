@@ -13,7 +13,7 @@ Thing_Provider::~Thing_Provider()
 Load_Status Thing_Provider::load()
 {
     Thing* thing;
-    
+
     thing = Thing::create();
     thing->key.value = 100;
     _map.insert(thing);
@@ -73,16 +73,16 @@ Modify_Instance_Status Thing_Provider::modify_instance(
 int Thing_Provider::proc(
     const Registration* registration,
     int operation,
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
+    void* arg0,
+    void* arg1,
+    void* arg2,
     void* arg3,
     void* arg4,
     void* arg5,
     void* arg6,
     void* arg7)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Thing Class;

@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 SH_LIBRARY = cmplthing
 
-INCLUDES += -I$(TOP)/src/providers/repository 
+INCLUDES += -I$(TOP)/src/providers/repository
 INCLUDES += -I$(TOP)/src/CMPI/cmpi
 INCLUDES += $(CMPI_INCLUDES)
 INCLUDES += -I$(PEGASUS_ROOT)/src/Pegasus/Provider/CMPI

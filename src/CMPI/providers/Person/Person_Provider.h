@@ -23,11 +23,11 @@ public:
     CIMPLE_HIDE Timer_Status timer(uint64& timeout_msec);
 
     CIMPLE_HIDE Get_Instance_Status get_instance(
-        const Person* model, 
+        const Person* model,
         Person*& instance);
 
     CIMPLE_HIDE Enum_Instances_Status enum_instances(
-        const Person* model, 
+        const Person* model,
         Enum_Instances_Handler<Person>* handler);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(

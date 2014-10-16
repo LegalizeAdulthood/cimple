@@ -59,7 +59,7 @@ Timer_Status Person_Provider::timer(uint64& timeout_msec)
 }
 
 Get_Instance_Status Person_Provider::get_instance(
-    const Person* model, 
+    const Person* model,
     Person*& instance)
 {
     return GET_INSTANCE_UNSUPPORTED;
@@ -76,7 +76,7 @@ Get_Instance_Status Person_Provider::get_instance(
 }
 
 Enum_Instances_Status Person_Provider::enum_instances(
-    const Person* model, 
+    const Person* model,
     Enum_Instances_Handler<Person>* handler)
 {
     for (size_t i = 0; i < _map.size(); i++)
@@ -127,7 +127,7 @@ Modify_Instance_Status Person_Provider::modify_instance(const Person* instance)
 int Person_Provider::proc(
     int operation, void* arg0, void* arg1, void* arg2, void* arg3)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Person Class;

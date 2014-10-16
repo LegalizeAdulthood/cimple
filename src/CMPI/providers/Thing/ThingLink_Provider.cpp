@@ -13,7 +13,7 @@ ThingLink_Provider::~ThingLink_Provider()
 Load_Status ThingLink_Provider::load()
 {
     ThingLink* link;
-    
+
     link = ThingLink::create();
     link->left = Thing::create();
     link->left->key.value = 100;
@@ -90,17 +90,17 @@ Enum_References_Status ThingLink_Provider::enum_references(
 
 int ThingLink_Provider::proc(
     const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
+    int operation,
+    void* arg0,
+    void* arg1,
+    void* arg2,
     void* arg3,
     void* arg4,
     void* arg5,
     void* arg6,
     void* arg7)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef ThingLink Class;

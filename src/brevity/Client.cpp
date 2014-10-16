@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -302,8 +302,8 @@ void Client::connect(const String& url)
 }
 
 void Client::connect(
-    const String& url, 
-    const String& username, 
+    const String& url,
+    const String& username,
     const String& password)
 {
     Client_Rep* rep = (Client_Rep*)_rep;
@@ -326,7 +326,7 @@ void Client::connect(
 
         if (scheme != "http")
         {
-            throw Exception(Exception::BAD_URL, 
+            throw Exception(Exception::BAD_URL,
                 "unknown scheme: %s", scheme.c_str());
         }
 
@@ -339,7 +339,7 @@ void Client::connect(
         }
         catch (...)
         {
-            throw Exception(Exception::CONNECT_FAILED, 
+            throw Exception(Exception::CONNECT_FAILED,
                 "failed to connect to \"%s\"", url.c_str());
         }
     }
@@ -353,7 +353,7 @@ void Client::connect(
         }
         catch (...)
         {
-            throw Exception(Exception::CONNECT_FAILED, 
+            throw Exception(Exception::CONNECT_FAILED,
                 "failed to connect to local CIM server");
         }
     }
@@ -724,7 +724,7 @@ void Client::modify_instance(
 
 Instance_Enum Client::associators(
     const String& ns,
-    const Instance_Ref& in, 
+    const Instance_Ref& in,
     const String& assoc_class,
     const String& result_class,
     const String& role,
@@ -770,7 +770,7 @@ Instance_Enum Client::associators(
 
         Pegasus::Array<Pegasus::CIMObject> tmp = rep->client.associators(
                 ns.c_str(),
-                cop, 
+                cop,
                 ac,
                 rc,
                 role.c_str(),
@@ -806,7 +806,7 @@ Instance_Enum Client::associators(
 
 Instance_Name_Enum Client::associator_names(
     const String& ns,
-    const Instance_Ref& in, 
+    const Instance_Ref& in,
     const String& assoc_class,
     const String& result_class,
     const String& role,
@@ -850,10 +850,10 @@ Instance_Name_Enum Client::associator_names(
         if (result_class.size())
             rc = Pegasus::CIMName(result_class.c_str());
 
-        Pegasus::Array<Pegasus::CIMObjectPath> paths= 
+        Pegasus::Array<Pegasus::CIMObjectPath> paths=
             rep->client.associatorNames(
                 ns.c_str(),
-                cop, 
+                cop,
                 ac,
                 rc,
                 role.c_str(),
@@ -876,7 +876,7 @@ Instance_Name_Enum Client::associator_names(
 
 Instance_Enum Client::references(
     const String& ns,
-    const Instance_Ref& in, 
+    const Instance_Ref& in,
     const String& result_class,
     const String& role)
 {
@@ -915,7 +915,7 @@ Instance_Enum Client::references(
 
         Pegasus::Array<Pegasus::CIMObject> tmp = rep->client.references(
                 ns.c_str(),
-                cop, 
+                cop,
                 rc,
                 role.c_str());
 
@@ -949,7 +949,7 @@ Instance_Enum Client::references(
 
 Instance_Name_Enum Client::reference_names(
     const String& ns,
-    const Instance_Ref& in, 
+    const Instance_Ref& in,
     const String& result_class,
     const String& role)
 {
@@ -986,7 +986,7 @@ Instance_Name_Enum Client::reference_names(
         if (result_class.size())
             rc = Pegasus::CIMName(result_class.c_str());
 
-        Pegasus::Array<Pegasus::CIMObjectPath> paths= 
+        Pegasus::Array<Pegasus::CIMObjectPath> paths=
             rep->client.referenceNames(ns.c_str(), cop, rc, role.c_str());
 
         r = new Instance_Name_Enum_Rep(in.meta_class(), paths);

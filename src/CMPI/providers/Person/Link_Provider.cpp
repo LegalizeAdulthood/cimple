@@ -46,7 +46,7 @@ Timer_Status Link_Provider::timer(uint64& timeout_msec)
 }
 
 Get_Instance_Status Link_Provider::get_instance(
-    const Link* model, 
+    const Link* model,
     Link*& instance)
 {
     Link* link = _map.lookup(model);
@@ -61,7 +61,7 @@ Get_Instance_Status Link_Provider::get_instance(
 }
 
 Enum_Instances_Status Link_Provider::enum_instances(
-    const Link* model, 
+    const Link* model,
     Enum_Instances_Handler<Link>* handler)
 {
     for (size_t i = 0; i < _map.size(); i++)
@@ -113,7 +113,7 @@ Modify_Instance_Status Link_Provider::modify_instance(const Link* instance)
 int Link_Provider::proc(
     int operation, void* arg0, void* arg1, void* arg2, void* arg3)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Link Class;
