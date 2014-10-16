@@ -23,7 +23,7 @@ struct File
     int type;
 };
 
-static const File _files[] = 
+static const File _files[] =
 {
 #ifdef CIMPLE_WINDOWS
     { "regmod.exe", 'p' },
@@ -390,7 +390,7 @@ void scan(const string& path)
 
     vector<string> paths;
     dirent* ent;
-    
+
     while ((ent = readdir(dir)) != NULL)
     {
         // Skip over "." and ".."
@@ -403,7 +403,7 @@ void scan(const string& path)
         // Build full path name for this file:
 
         string fn;
-        
+
         if (path.size() == 1 && path[0] == '/')
             fn = string("/") + name;
         else
@@ -419,7 +419,7 @@ void scan(const string& path)
         if (lstat(fn.c_str(), &st) == -1)
 #endif
         {
-            fprintf(stderr, 
+            fprintf(stderr,
                 "%s: warning: cannot stat \"%s\"\n", arg0, fn.c_str());
             continue;
         }

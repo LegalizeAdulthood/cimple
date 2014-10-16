@@ -82,7 +82,7 @@ void emit_code(vector<Info>& v)
     //
     // Generate enumerated type:
     //
-    //     enum 
+    //     enum
     //     {
     //        ...
     //     };
@@ -120,8 +120,8 @@ void emit_code(vector<Info>& v)
         case 5: hash_str = HASH5; break;
         case 6: hash_str = HASH6; break;
         default: assert(0);
-    }; 
-        
+    };
+
     printf("    size_t code = %s;\n", hash_str);
 
     printf("\n");
@@ -238,7 +238,7 @@ int get_opt(
 
     for (int i = 0; i < argc; i++)
     {
-        if (strcmp(argv[i], opt_name) == 0) 
+        if (strcmp(argv[i], opt_name) == 0)
         {
             if (i + 1 == argc)
                 return -1;
@@ -261,7 +261,7 @@ int get_switch_opt(
 {
     for (int i = 0; i < argc; i++)
     {
-        if (strcmp(argv[i], opt_name) == 0) 
+        if (strcmp(argv[i], opt_name) == 0)
         {
             memmove(&argv[i], &argv[i+1], (argc - i) * sizeof(char*));
             argc--;

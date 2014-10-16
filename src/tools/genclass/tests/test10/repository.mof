@@ -8,15 +8,15 @@ class Methods
     [key] uint32 key;
 
     string foo(
-        [in] uint32 arg1, 
-        [in] string arg2, 
+        [in] uint32 arg1,
+        [in] string arg2,
         [in] boolean arg3,
-        [in(false), out] uint32 arg4, 
-        [in(false), out] string arg5, 
+        [in(false), out] uint32 arg4,
+        [in(false), out] string arg5,
         [in(false), out] boolean arg6);
 
     string foo2(
-        [in] Argument ref arg1, 
+        [in] Argument ref arg1,
         [in(false), out] Argument ref arg2);
 
     [Static] string foo3();

@@ -22,7 +22,7 @@
 # include <unistd.h>
 #endif
 
-const char REVISION[] = 
+const char REVISION[] =
     "$Revision: 1.21 $";
 
 const char CIMPLE_INFO[] = "cimpleinfo.out";

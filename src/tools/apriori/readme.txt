@@ -1,6 +1,6 @@
 
 Apriori generates a no-collision hash function for a set of input strings
-which are known apriori. N input strings are mapped perfectly onto integers 
+which are known apriori. N input strings are mapped perfectly onto integers
 in the range 0 to N-1. The generated hash function is defined as follows.
 
         int hash(const char* p, size_t n);
@@ -14,7 +14,7 @@ The usage is as follows.
 
         % apriori apriori-spec-file
 
-The specification file is read and the hash function (written in ANSI C) is 
+The specification file is read and the hash function (written in ANSI C) is
 written to standard output. Also, an enumerated type is written whose tags
 correspond to string in the input set.
 

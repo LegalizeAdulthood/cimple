@@ -3,7 +3,7 @@ of the CIMPLE registration process using regmod.  This information
 includes the providers and their types and classes served and entry point.
 
 Example
-%%>catmod libcimpleLamp.so 
+%%>catmod libcimpleLamp.so
 
 Produces the following output:
 
