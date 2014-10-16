@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,7 +33,7 @@
 
 MOF_Class_Decl* MOF_Class_Decl::list = 0;
 
-MOF_Class_Decl::MOF_Class_Decl() : alias(0), super_class_name(0), 
+MOF_Class_Decl::MOF_Class_Decl() : alias(0), super_class_name(0),
     super_class(0), features(0), all_features(0)
 {
 
@@ -65,13 +65,13 @@ void MOF_Class_Decl::print() const
     MOF_Feature* p;
 #endif
 
-    /* 
+    /*
      * Print the class header:
      */
 
     printf("+ class %s : %s as %s\n", name, super_class_name, alias);
 
-    /* 
+    /*
      * Print local qualifiers:
      */
 
@@ -84,7 +84,7 @@ void MOF_Class_Decl::print() const
     all_qualifiers->print_list(1);
 
 #if 0
-    /* 
+    /*
      * Print class features:
      */
 
@@ -104,7 +104,7 @@ static void _check_duplicate_features(
 {
     MOF_Feature* p;
     MOF_Feature* q;
-    
+
     for (p = (MOF_Feature*)class_decl->features; p; p = (MOF_Feature*)p->next)
     {
         for (q = class_decl->features; q != p; q = (MOF_Feature*)q->next)
@@ -178,7 +178,7 @@ static void _validate_feature_compatibility(
         if (pp->array_index != qq->array_index)
             MOF_error_printf(MESSAGE, p->name);
     }
-    else 
+    else
         MOF_ASSERT(0);
 }
 
@@ -240,7 +240,7 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
         for (; p; p = (MOF_Feature_Info*)p->next)
         {
             MOF_Feature_Info* info;
-            
+
             if ((info = new MOF_Feature_Info()) == 0)
             {
                 MOF_error("out of memory");
@@ -317,7 +317,7 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
 
                     _build_param_qual_info_list(
                         class_decl->name, p, q->feature);
-                    
+
                     /*
                      * Override the feature.
                      */
@@ -366,7 +366,7 @@ static void _build_all_features(MOF_Class_Decl* class_decl)
                 /*
                  * Create a new class feature info entry and insert it.
                  */
-                
+
                 if ((info = new MOF_Feature_Info()) == 0)
                 {
                     MOF_error("out of memory");
@@ -503,7 +503,7 @@ void MOF_Class_Decl::validate()
 
         if (super_class_decl == 0)
         {
-            MOF_error_printf("no such super class: \"%s\"", 
+            MOF_error_printf("no such super class: \"%s\"",
                 super_class_name);
         }
 
@@ -534,11 +534,11 @@ void MOF_Class_Decl::validate()
      */
 
     all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
-        name, 
-        0, 
-        0, 
+        name,
         0,
-        qualifiers, 
+        0,
+        0,
+        qualifiers,
         super_class_qualifiers,
         &qual_mask,
         false); /* prop */
@@ -568,7 +568,7 @@ void MOF_Class_Decl::validate()
      * Build a combined feature list (combine inherited and local features
      * into a single list for easier processing).
      */
-    
+
     _build_all_features(this);
 
     if (qual_mask & MOF_QT_ASSOCIATION)
@@ -628,8 +628,8 @@ void MOF_Class_Decl::validate()
 
     for (MOF_Feature* p = features; p; p = (MOF_Feature*)p->next)
     {
-        for (MOF_Qualifier_Info* q = p->all_qualifiers; 
-            q; 
+        for (MOF_Qualifier_Info* q = p->all_qualifiers;
+            q;
             q = (MOF_Qualifier_Info*)q->next)
         {
             if (strcasecmp(q->qualifier->name, "EmbeddedInstance") != 0)
@@ -709,7 +709,7 @@ void MOF_Class_Decl::validate()
             if (p->type == MOF_FEATURE_REF)
             {
                 MOF_error_printf(
-                    "only associations can have references: \"%s\"", 
+                    "only associations can have references: \"%s\"",
                     name);
             }
         }
@@ -733,7 +733,7 @@ void MOF_Class_Decl::validate()
         if (num_refs < 2)
         {
             MOF_error_printf(
-                "associations must contain two or more references: \"%s\"", 
+                "associations must contain two or more references: \"%s\"",
                 name);
         }
     }
@@ -776,7 +776,7 @@ void MOF_Class_Decl::validate()
         if (num_refs1 != num_refs2)
         {
             MOF_error_printf(
-                "an association sub-class cannot add new references: \"%s\"", 
+                "an association sub-class cannot add new references: \"%s\"",
                 name);
             return;
         }
@@ -880,7 +880,7 @@ size_t MOF_Class_Decl::count_keys() const
 
 void MOF_Class_Decl::print_static_list()
 {
-    MOF_Class_Decl* p = MOF_Class_Decl::list; 
+    MOF_Class_Decl* p = MOF_Class_Decl::list;
 
     for (; p; p = (MOF_Class_Decl*)p->next)
         p->print();
@@ -927,7 +927,7 @@ using namespace std;
 
 void MOF_Class_Decl::print_nested_refs()
 {
-    MOF_Class_Decl* p = MOF_Class_Decl::list; 
+    MOF_Class_Decl* p = MOF_Class_Decl::list;
     vector<string> v;
 
     for (; p; p = (MOF_Class_Decl*)p->next)
@@ -942,7 +942,7 @@ void MOF_Class_Decl::print_nested_refs()
         }
     }
 
-    p = MOF_Class_Decl::list; 
+    p = MOF_Class_Decl::list;
 
     for (; p; p = (MOF_Class_Decl*)p->next)
     {

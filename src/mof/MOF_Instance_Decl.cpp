@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,7 +34,7 @@
 
 MOF_Instance_Decl* MOF_Instance_Decl::list = 0;
 
-MOF_Instance_Decl::MOF_Instance_Decl() : inst_name(0), class_name(0), 
+MOF_Instance_Decl::MOF_Instance_Decl() : inst_name(0), class_name(0),
     class_decl(0), alias(0), properties(0), all_features(0)
 {
 
@@ -130,7 +130,7 @@ void _make_obj_ref(
 
             MOF_ASSERT(feature->type != MOF_FEATURE_METHOD);
 
-            /* 
+            /*
              * Create new MOF_Key_Value_Pair.
              */
 
@@ -142,7 +142,7 @@ void _make_obj_ref(
                 return;
             }
 
-            /* 
+            /*
              * Initialize MOF_Key_Value_Pair object.
              */
 
@@ -164,7 +164,7 @@ void _make_obj_ref(
                  * Grab is_array flag.
                  */
 
-                pair->is_array 
+                pair->is_array
                     = prop_decl->array_index == 0 ? false : true;
 
                 /*
@@ -216,7 +216,7 @@ void _make_obj_ref(
             /*
              * Append to list
              */
-            
+
             if (obj_ref->pairs)
                 obj_ref->pairs->append(pair);
             else
@@ -278,7 +278,7 @@ MOF_Instance_Decl* MOF_Instance_Decl::find(const char* inst_name)
 }
 
 static void _build_all_features_list(
-    const MOF_Class_Decl* class_decl, 
+    const MOF_Class_Decl* class_decl,
     MOF_Instance_Decl* inst_decl)
 {
     MOF_Feature_Info* p;
@@ -316,7 +316,7 @@ static void _build_all_features_list(
         {
             MOF_error("out of memory");
             return;
-        } 
+        }
 
         /*
          * If instance contains a property with this name:
@@ -358,13 +358,13 @@ static void _build_all_features_list(
                  * Build the all qualifiers list
                  */
 
-                prop_decl->all_qualifiers = 
+                prop_decl->all_qualifiers =
                     MOF_Qualifier_Info::make_all_qualifiers(
-                        class_decl->name, 
-                        0, 
-                        inst_prop->name, 
+                        class_decl->name,
                         0,
-                        prop_decl->qualifiers, 
+                        inst_prop->name,
+                        0,
+                        prop_decl->qualifiers,
                         feature->all_qualifiers,
                         &prop_decl->qual_mask,
                         true); /* prop */
@@ -375,8 +375,8 @@ static void _build_all_features_list(
 
                 if (inst_prop->initializer)
                 {
-                    inst_prop->initializer->validate("property", 
-                        inst_prop->name, prop_decl->data_type, 
+                    inst_prop->initializer->validate("property",
+                        inst_prop->name, prop_decl->data_type,
                         prop_decl->array_index);
                 }
             }
@@ -414,13 +414,13 @@ static void _build_all_features_list(
                  * Build the all qualifiers list
                  */
 
-                ref_decl->all_qualifiers = 
+                ref_decl->all_qualifiers =
                     MOF_Qualifier_Info::make_all_qualifiers(
-                    class_decl->name, 
-                    0, 
-                    inst_prop->name, 
+                    class_decl->name,
                     0,
-                    ref_decl->qualifiers, 
+                    inst_prop->name,
+                    0,
+                    ref_decl->qualifiers,
                     feature->all_qualifiers,
                     &ref_decl->qual_mask,
                     false); /* prop */
@@ -466,7 +466,7 @@ static void _build_all_features_list(
                     obj_ref->normalize();
 
                     /*
-                     * Be sure the class of the initializer is a sub-class 
+                     * Be sure the class of the initializer is a sub-class
                      * of the class of the class's ref decl.
                      */
 
@@ -475,11 +475,11 @@ static void _build_all_features_list(
                 }
                 else if (inst_prop->alias)
                 {
-                    MOF_Object_Reference* obj_ref = 
+                    MOF_Object_Reference* obj_ref =
                         MOF_Instance_Decl::alias_to_obj_ref(inst_prop->alias);
 
                     /*
-                     * Be sure the class of the initializer is a sub-class 
+                     * Be sure the class of the initializer is a sub-class
                      * of the class of the class's ref decl.
                      */
 
@@ -513,12 +513,12 @@ static void _build_all_features_list(
 }
 
 static void _check_undefined_properties(
-    const MOF_Class_Decl* class_decl, 
+    const MOF_Class_Decl* class_decl,
     MOF_Instance_Decl* inst_decl)
 {
     MOF_Property* p;
 
-    /* 
+    /*
      * First check that all instance properties are declared in class
      * and that the types are consistent.
      */
@@ -559,7 +559,7 @@ static void _check_duplicate_properties(
 {
     MOF_Property* p;
     MOF_Property* q;
-    
+
     for (p = inst_decl->properties; p; p = (MOF_Property*)p->next)
     {
         for (q = inst_decl->properties; q != p; q = (MOF_Property*)q->next)
@@ -606,11 +606,11 @@ void MOF_Instance_Decl::handle(MOF_Instance_Decl* inst_decl)
      */
 
     inst_decl->all_qualifiers = MOF_Qualifier_Info::make_all_qualifiers(
-        class_decl->name, 
-        0, 
-        0, 
+        class_decl->name,
         0,
-        inst_decl->qualifiers, 
+        0,
+        0,
+        inst_decl->qualifiers,
         class_decl->all_qualifiers,
         &inst_decl->qual_mask,
         false); /* prop */
@@ -686,7 +686,7 @@ MOF_Object_Reference* MOF_Instance_Decl::alias_to_obj_ref(const char* alias)
      * Lookup the instance for this alias:
      */
 
-    MOF_Instance_Decl* inst_decl = 
+    MOF_Instance_Decl* inst_decl =
         MOF_Instance_Decl::find_by_alias((char*)alias, false);
 
     if (!inst_decl)
@@ -710,7 +710,7 @@ void MOF_Instance_Decl::print() const
 
 void MOF_Instance_Decl::print_static_list()
 {
-    MOF_Instance_Decl* p = MOF_Instance_Decl::list; 
+    MOF_Instance_Decl* p = MOF_Instance_Decl::list;
 
     for (; p; p = (MOF_Instance_Decl*)p->next)
         p->print();

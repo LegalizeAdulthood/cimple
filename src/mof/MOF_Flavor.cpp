@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,7 +28,7 @@
 #include "MOF_Error.h"
 
 MOF_mask MOF_Flavor::merge(
-    MOF_mask to, 
+    MOF_mask to,
     MOF_mask from)
 {
     MOF_mask mask = to;
@@ -47,7 +47,7 @@ MOF_mask MOF_Flavor::merge(
     if (!(mask & (MOF_FLAVOR_TOSUBCLASS | MOF_FLAVOR_RESTRICTED)))
         mask |= from & (MOF_FLAVOR_TOSUBCLASS | MOF_FLAVOR_RESTRICTED);
 
-    /* 
+    /*
      * If TRANSLATABLE not already set, inherit it:
      */
 
@@ -85,7 +85,7 @@ MOF_mask MOF_Flavor::fixup(
     bool provide_defaults)
 {
     MOF_mask tmp = 0;
-    
+
     /*
      * Check for conflicting flavors:
      */

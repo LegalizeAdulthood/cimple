@@ -124,20 +124,20 @@ static void MOF_trace(const char* str);
 %type <decl_init> prop_decl_array_init
 %type <decl_init> prop_decl_body
 %type <decl_init> prop_decl_scalar_init
-%type <decl_init> qual_decl_array_init 
+%type <decl_init> qual_decl_array_init
 %type <decl_init> qual_decl_init
 %type <decl_init> qual_decl_scalar_init
-%type <flavor> flavor 
+%type <flavor> flavor
 %type <flavor> flavor_list
-%type <flavor> qual_decl_flavor 
-%type <flavor> qual_flavor 
+%type <flavor> qual_decl_flavor
+%type <flavor> qual_flavor
 %type <flavor> qual_flavor_list
 %type <prop> inst_body
 %type <inst_decl> inst_decl
 %type <inst_decl> inst_head
 %type <int_value> array_index
 %type <int_value> data_type
-%type <int_value> param_body; 
+%type <int_value> param_body;
 %type <int_value> TOK_CHAR16
 %type <int_value> TOK_DATETIME
 %type <int_value> TOK_INT_VALUE
@@ -154,7 +154,7 @@ static void MOF_trace(const char* str);
 %type <int_value> TOK_UINT8
 %type <literal> array_init
 %type <literal> init
-%type <literal> literal; 
+%type <literal> literal;
 %type <literal> qual_param;
 %type <literal> scalar_init_list
 %type <literal> TOK_NULL_VALUE
@@ -185,7 +185,7 @@ static void MOF_trace(const char* str);
 %type <string_value> inst_alias
 %type <string_literal> string_literal
 %type <string_value> name
-%type <obj_ref> obj_ref; 
+%type <obj_ref> obj_ref;
 %type <string_value> object_ref;
 %type <string_value> super_class_name
 %type <string_value> pragma_name
@@ -216,7 +216,7 @@ start
         /* printf("start rule reached\n"); */
     }
 
-MOF_specification 
+MOF_specification
     : /* empty */
     {
         MOF_trace("MOF_specification:1");
@@ -227,7 +227,7 @@ MOF_specification
     }
     ;
 
-MOF_productions 
+MOF_productions
     : MOF_production
     {
         MOF_trace("MOF_productions:1");
@@ -238,7 +238,7 @@ MOF_productions
     }
     ;
 
-MOF_production 
+MOF_production
     : compiler_directive
     {
         MOF_trace("MOF_production:1");
@@ -269,7 +269,7 @@ MOF_production
 **==============================================================================
 */
 
-compiler_directive 
+compiler_directive
     : TOK_PRAGMA pragma_name TOK_OPEN_PAREN pragma_param TOK_CLOSE_PAREN
     {
         MOF_Pragma::handle($2, $4.raw);
@@ -303,8 +303,8 @@ pragma_param
 **==============================================================================
 */
 
-name 
-    : TOK_IDENT 
+name
+    : TOK_IDENT
     {
         MOF_trace("name:1");
         /* heap string */
@@ -352,7 +352,7 @@ qual_decl
     }
     ;
 
-qual_decl_body 
+qual_decl_body
     : name TOK_COLON data_type qual_decl_init qual_decl_scope qual_decl_flavor
     {
         MOF_trace("qual_decl_body:1");
@@ -367,7 +367,7 @@ qual_decl_body
     }
     ;
 
-qual_decl_init 
+qual_decl_init
     : qual_decl_array_init
     {
         MOF_trace("qual_decl_init:1");
@@ -380,7 +380,7 @@ qual_decl_init
     }
     ;
 
-qual_decl_array_init 
+qual_decl_array_init
     : array_index TOK_EQUAL array_init
     {
         MOF_trace("qual_decl_array_init:1");
@@ -395,7 +395,7 @@ qual_decl_array_init
     }
     ;
 
-qual_decl_scalar_init 
+qual_decl_scalar_init
     : TOK_EQUAL literal
     {
         MOF_trace("qual_decl_scalar_init:1");
@@ -410,7 +410,7 @@ qual_decl_scalar_init
     }
     ;
 
-qual_decl_scope 
+qual_decl_scope
     : TOK_COMMA TOK_SCOPE TOK_OPEN_PAREN scope_list TOK_CLOSE_PAREN
     {
         MOF_trace("qual_decl_scope:1");
@@ -418,7 +418,7 @@ qual_decl_scope
     }
     ;
 
-scope_list 
+scope_list
     : scope
     {
         MOF_trace("scope_list:1");
@@ -431,7 +431,7 @@ scope_list
     }
     ;
 
-scope 
+scope
     : TOK_SCHEMA
     {
         MOF_trace("scope:1");
@@ -479,7 +479,7 @@ scope
     }
     ;
 
-qual_decl_flavor 
+qual_decl_flavor
     : TOK_COMMA TOK_FLAVOR TOK_OPEN_PAREN flavor_list TOK_CLOSE_PAREN
     {
         MOF_trace("qual_decl_flavor:1");
@@ -492,7 +492,7 @@ qual_decl_flavor
     }
     ;
 
-flavor_list 
+flavor_list
     : flavor
     {
         MOF_trace("flavor_list:1");
@@ -506,7 +506,7 @@ flavor_list
     }
     ;
 
-flavor 
+flavor
     : TOK_ENABLEOVERRIDE
     {
         MOF_trace("flavor:1");
@@ -542,7 +542,7 @@ flavor
 **==============================================================================
 */
 
-qual_list 
+qual_list
     : TOK_OPEN_BRACKET qual_list_body TOK_CLOSE_BRACKET
     {
         $$ = $2;
@@ -550,8 +550,8 @@ qual_list
     }
     ;
 
-qual_list_body 
-    : qual 
+qual_list_body
+    : qual
     {
         MOF_trace("qual_list_body:1");
         $1->validate();
@@ -566,7 +566,7 @@ qual_list_body
     }
     ;
 
-qual 
+qual
     : name qual_param qual_flavor
     {
         MOF_trace("qual:1");
@@ -578,7 +578,7 @@ qual
     }
     ;
 
-qual_param 
+qual_param
     : TOK_OPEN_PAREN literal TOK_CLOSE_PAREN
     {
         MOF_trace("qual_param:1");
@@ -596,7 +596,7 @@ qual_param
     }
     ;
 
-qual_flavor 
+qual_flavor
     : TOK_COLON qual_flavor_list
     {
         MOF_trace("qual_flavor:1");
@@ -609,7 +609,7 @@ qual_flavor
     }
     ;
 
-qual_flavor_list 
+qual_flavor_list
     : flavor
     {
         MOF_trace("qual_flavor_list:1");
@@ -635,7 +635,7 @@ qual_flavor_list
 **==============================================================================
 */
 
-class_decl 
+class_decl
     : class_head class_body TOK_SEMICOLON
     {
         MOF_trace("class_decl:1");
@@ -652,7 +652,7 @@ class_decl
     }
     ;
 
-class_head 
+class_head
     : TOK_CLASS TOK_IDENT class_alias super_class_name
     {
         MOF_trace("class_head:1");
@@ -664,7 +664,7 @@ class_head
     }
     ;
 
-class_body 
+class_body
     : TOK_OPEN_BRACE feature_list TOK_CLOSE_BRACE
     {
         MOF_trace("class_body:1");
@@ -672,8 +672,8 @@ class_body
     }
     ;
 
-class_alias 
-    : TOK_AS TOK_ALIAS_IDENT 
+class_alias
+    : TOK_AS TOK_ALIAS_IDENT
     {
         MOF_trace("class_alias:1");
         $$ = $2;
@@ -685,7 +685,7 @@ class_alias
     }
     ;
 
-super_class_name 
+super_class_name
     : TOK_COLON TOK_IDENT
     {
         MOF_trace("super_class_name:1");
@@ -698,7 +698,7 @@ super_class_name
     }
     ;
 
-feature_list 
+feature_list
     : /* empty */
     {
         MOF_trace("feature_list:1");
@@ -715,7 +715,7 @@ feature_list
     }
     ;
 
-feature 
+feature
     : prop_decl
     {
         MOF_trace("feature:1");
@@ -741,7 +741,7 @@ feature
 **==============================================================================
 */
 
-prop_decl 
+prop_decl
     : prop_decl_head prop_decl_body TOK_SEMICOLON
     {
         MOF_trace("prop_decl:1");
@@ -760,7 +760,7 @@ prop_decl
     }
     ;
 
-prop_decl_head 
+prop_decl_head
     : data_type name
     {
         MOF_trace("prop_decl_head:1");
@@ -772,7 +772,7 @@ prop_decl_head
     }
     ;
 
-prop_decl_body 
+prop_decl_body
     : prop_decl_array_init
     {
         MOF_trace("prop_decl_body:1");
@@ -785,7 +785,7 @@ prop_decl_body
     }
     ;
 
-prop_decl_array_init 
+prop_decl_array_init
     : array_index TOK_EQUAL array_init
     {
         MOF_trace("prop_decl_array_init:1");
@@ -800,7 +800,7 @@ prop_decl_array_init
     }
     ;
 
-prop_decl_scalar_init 
+prop_decl_scalar_init
     : TOK_EQUAL literal
     {
         MOF_trace("prop_decl_scalar_init:1");
@@ -823,7 +823,7 @@ prop_decl_scalar_init
 **==============================================================================
 */
 
-ref_decl 
+ref_decl
     : ref_head ref_body TOK_SEMICOLON
     {
         MOF_trace("ref_decl:1");
@@ -844,7 +844,7 @@ ref_decl
     }
     ;
 
-ref_head 
+ref_head
     : object_ref name
     {
         MOF_trace("ref_head:1");
@@ -855,7 +855,7 @@ ref_head
         $$->name = $2;
     }
 
-ref_body 
+ref_body
     : TOK_EQUAL ref_init
     {
         MOF_trace("ref_body:1");
@@ -869,7 +869,7 @@ ref_body
     }
     ;
 
-ref_init 
+ref_init
     : TOK_ALIAS_IDENT
     {
         MOF_trace("ref_init:1");
@@ -881,13 +881,13 @@ ref_init
         $$.alias = NULL;
         $$.obj_ref = MOF_Instance_Decl::alias_to_obj_ref($1);
     }
-    | obj_ref 
+    | obj_ref
     {
         MOF_trace("ref_init:2");
         $$.alias = NULL;
         $$.obj_ref = $1;
     }
-    ; 
+    ;
 
 /*
 **==============================================================================
@@ -897,7 +897,7 @@ ref_init
 **==============================================================================
 */
 
-method_decl 
+method_decl
     : method_head method_body TOK_SEMICOLON
     {
         MOF_trace("method_decl:1");
@@ -915,7 +915,7 @@ method_decl
     }
     ;
 
-method_head 
+method_head
     : data_type name
     {
         MOF_trace("method_head:1");
@@ -927,7 +927,7 @@ method_head
     }
     ;
 
-method_body 
+method_body
     : TOK_OPEN_PAREN param_list TOK_CLOSE_PAREN
     {
         MOF_trace("method_body:1");
@@ -940,7 +940,7 @@ method_body
     }
     ;
 
-param_list 
+param_list
     : param
     {
         MOF_trace("param_list:1");
@@ -952,7 +952,7 @@ param_list
         $$ = $1;
         $$->append($3);
     }
-    ;                    
+    ;
 
 /*
 **==============================================================================
@@ -962,7 +962,7 @@ param_list
 **==============================================================================
 */
 
-param 
+param
     : param_head param_body
     {
         MOF_trace("param:1");
@@ -979,7 +979,7 @@ param
     }
     ;
 
-param_head 
+param_head
     : param_data_type name
     {
         MOF_trace("param_head:1");
@@ -988,7 +988,7 @@ param_head
     }
     ;
 
-param_body 
+param_body
     : array_index
     {
         MOF_trace("param_body:1");
@@ -1002,7 +1002,7 @@ param_body
     }
     ;
 
-param_data_type 
+param_data_type
     : data_type
     {
         MOF_trace("param_data_type:1");
@@ -1027,7 +1027,7 @@ param_data_type
 **==============================================================================
 */
 
-inst_decl 
+inst_decl
     : inst_head inst_body TOK_SEMICOLON
     {
         MOF_trace("inst_decl:1");
@@ -1045,7 +1045,7 @@ inst_decl
     }
     ;
 
-inst_head 
+inst_head
     : TOK_INSTANCE TOK_OF TOK_IDENT inst_alias
     {
         MOF_trace("inst_head:1");
@@ -1056,7 +1056,7 @@ inst_head
     }
     ;
 
-inst_body 
+inst_body
     : TOK_OPEN_BRACE prop_list TOK_CLOSE_BRACE
     {
         MOF_trace("inst_body:1");
@@ -1064,7 +1064,7 @@ inst_body
     }
     ;
 
-inst_alias 
+inst_alias
     : TOK_AS TOK_ALIAS_IDENT
     {
         MOF_trace("inst_alias:1");
@@ -1085,7 +1085,7 @@ inst_alias
 **==============================================================================
 */
 
-prop_list 
+prop_list
     : prop
     {
         MOF_trace("prop_list:1");
@@ -1099,7 +1099,7 @@ prop_list
     }
     ;
 
-prop 
+prop
     : prop_body
     {
         MOF_trace("prop:1");
@@ -1115,7 +1115,7 @@ prop
     }
     ;
 
-prop_body 
+prop_body
     : TOK_IDENT TOK_EQUAL init TOK_SEMICOLON
     {
         MOF_trace("prop_body:1");
@@ -1145,7 +1145,7 @@ prop_body
 **==============================================================================
 */
 
-object_ref 
+object_ref
     : TOK_IDENT TOK_REF
     {
         MOF_trace("object_ref:1");
@@ -1153,14 +1153,14 @@ object_ref
     }
     ;
 
-obj_ref 
+obj_ref
     : string_literal
     {
         MOF_trace("obj_ref:1");
 
         if (REF_parse($1.escaped, &$$) != 0)
         {
-            MOF_error_printf("malformed object reference: \"%s\": %s", 
+            MOF_error_printf("malformed object reference: \"%s\": %s",
                 $1.escaped, ref_error_message);
         }
 
@@ -1186,7 +1186,7 @@ obj_ref
 **==============================================================================
 */
 
-array_index 
+array_index
     : TOK_OPEN_BRACKET TOK_CLOSE_BRACKET
     {
         MOF_trace("array_index:1");
@@ -1214,7 +1214,7 @@ array_index
 **==============================================================================
 */
 
-data_type 
+data_type
     : TOK_UINT8
     {
         MOF_trace("data_type:1");
@@ -1295,7 +1295,7 @@ data_type
 **==============================================================================
 */
 
-init 
+init
     : literal
     {
         MOF_trace("init:1");
@@ -1308,7 +1308,7 @@ init
     }
     ;
 
-array_init 
+array_init
     : TOK_OPEN_BRACE scalar_init_list TOK_CLOSE_BRACE
     {
         MOF_trace("array_init:1");
@@ -1316,7 +1316,7 @@ array_init
     }
     ;
 
-scalar_init_list 
+scalar_init_list
     : literal
     {
         MOF_trace("scalar_init_list:1");
@@ -1329,7 +1329,7 @@ scalar_init_list
         $$ = $1;
     }
     ;
-    
+
 /*
 **==============================================================================
 **
@@ -1338,7 +1338,7 @@ scalar_init_list
 **==============================================================================
 */
 
-literal 
+literal
     : TOK_INT_VALUE
     {
         MOF_trace("literal:1");
@@ -1387,7 +1387,7 @@ literal
         MOF_ASSERT($$ != NULL);
         $$->value_type = TOK_NULL_VALUE;
     }
-    ;                              
+    ;
 
 /*
 **==============================================================================
@@ -1397,7 +1397,7 @@ literal
 **==============================================================================
 */
 
-string_literal 
+string_literal
     : TOK_STRING_VALUE
     {
         MOF_trace("string_literal:1");
