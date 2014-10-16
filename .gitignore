@@ -146,6 +146,16 @@ src/providers/DualNamespace/DualNamespace2.cpp
 src/providers/DualNamespace/DualNamespace2.h
 src/providers/DualNamespace/repository.cpp
 src/providers/DualNamespace/repository.h
+src/providers/Embedded/CMPL_Embedded.cpp
+src/providers/Embedded/CMPL_Embedded.h
+src/providers/Embedded/CMPL_Embedded1.cpp
+src/providers/Embedded/CMPL_Embedded1.h
+src/providers/Embedded/CMPL_Embedded2.cpp
+src/providers/Embedded/CMPL_Embedded2.h
+src/providers/Embedded/CMPL_Embedded3.cpp
+src/providers/Embedded/CMPL_Embedded3.h
+src/providers/Embedded/repository.cpp
+src/providers/Embedded/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

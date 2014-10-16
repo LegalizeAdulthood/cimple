@@ -5,14 +5,17 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleemb
 
-SOURCES = \
+GENCLASS_SOURCES = \
+    CMPL_Embedded.cpp \
     CMPL_Embedded1.cpp \
     CMPL_Embedded2.cpp \
     CMPL_Embedded3.cpp \
-    CMPL_Embedded.cpp \
-    CMPL_Embedded_Provider.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    CMPL_Embedded_Provider.cpp \
+    module.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
 ## Changing Provider interfaces requires reregistering the provider. Default Pegasus
@@ -26,7 +29,7 @@ include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r CMPL_Embedded
 
 genprov:
