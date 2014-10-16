@@ -7,8 +7,7 @@ SHARED_LIBRARY = cimple_CIM_StoragePool
 
 INCLUDES += $(CMPI_INCLUDES)
 
-SOURCES = \
-    repository.cpp \
+GENCLASS_SOURCES = \
     CIM_ConcreteJob.cpp \
     CIM_EnabledLogicalElement.cpp \
     CIM_Job.cpp \
@@ -20,8 +19,12 @@ SOURCES = \
     CIM_StorageExtent.cpp \
     CIM_StoragePool.cpp \
     CIM_StorageSetting.cpp \
-    module.cpp \
-    CIM_StoragePool_Provider.cpp
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    CIM_StoragePool_Provider.cpp \
+    module.cpp
 
 CIMPLE_CMPI_MODULE=1
 include ../common.mak
@@ -31,7 +34,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES):
 	$(BINDIR)/genclass -r CIM_StoragePool
 
 genprov:
