@@ -1,6 +1,6 @@
 Instance of __Win32Provider as $P
 {
-    Name = "GidgetProvider";   
+    Name = "GidgetProvider";
     ClsId = "{23CB8761-914A-11cf-B705-00AA0062CBBB}";
 };
 
@@ -19,6 +19,6 @@ class Gidget
     [key]
     string MyKey = "Junk";
 
-    [PropertyContext("Name")] 
+    [PropertyContext("Name")]
     uint32 MyValue;
 };

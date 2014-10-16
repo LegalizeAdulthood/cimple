@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,7 +38,7 @@
 //
 //==============================================================================
 
-typedef struct 
+typedef struct
 {
    WCHAR*  key;
    long value;
@@ -89,9 +89,9 @@ inline bool _equal(BSTR s1, BSTR s2)
 }
 
 static SCODE _makeGidget(
-    IWbemServices* nameSpace, 
-    LPWSTR key, 
-    long value, 
+    IWbemServices* nameSpace,
+    LPWSTR key,
+    long value,
     IWbemClassObject** newInstance,
     WCHAR* className,
     IWbemContext* context)
@@ -252,7 +252,7 @@ log("START...\n");
        AddRef();
        return NOERROR;
     }
-    
+
     *ptr = NULL;
     return E_NOINTERFACE;
 }
@@ -271,16 +271,16 @@ STDMETHODIMP_(ULONG) GidgetProvider::Release()
 
     if (n == 0)
         delete this;
-    
+
     return n;
 }
 
 STDMETHODIMP GidgetProvider::Initialize(
-    LPWSTR user, 
+    LPWSTR user,
     LONG flags,
-    LPWSTR nameSpaceName, 
+    LPWSTR nameSpaceName,
     LPWSTR locale,
-    IWbemServices* nameSpace, 
+    IWbemServices* nameSpace,
     IWbemContext* context,
     IWbemProviderInitSink* initSink)
 {
@@ -333,7 +333,7 @@ HRESULT GidgetProvider::CreateInstanceEnumAsync(
         handler->SetStatus(0, hr, NULL, NULL);
         return hr;
     }
-  
+
     // Check parameters:
 
     if (!handler || !_nameSpace)
@@ -348,13 +348,13 @@ HRESULT GidgetProvider::CreateInstanceEnumAsync(
             IWbemClassObject FAR* newInstance = NULL;
 
             SCODE sc = _makeGidget(
-                _nameSpace, 
+                _nameSpace,
                 _defs[i].key,
-                _defs[i].value, 
-                &newInstance, 
-                className, 
+                _defs[i].value,
+                &newInstance,
+                className,
                 context);
-     
+
             if (sc != S_OK)
             {
                 handler->SetStatus(0,sc,NULL, NULL);
@@ -388,7 +388,7 @@ SCODE GidgetProvider::GetObjectAsync(
     {
         handler->SetStatus(0, hr, NULL, NULL);
         return hr ;
-    }   
+    }
 
     if (_impersonateLevel() == RPC_C_IMP_LEVEL_IDENTIFY)
     {

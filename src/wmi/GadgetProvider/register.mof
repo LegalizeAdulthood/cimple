@@ -1,6 +1,6 @@
 Instance of __Win32Provider as $P
 {
-    Name = "GadgetProvider";   
+    Name = "GadgetProvider";
     ClsId = "{23CB8761-914A-11cf-B705-00AA0062CBBB}";
 };
 
@@ -19,7 +19,7 @@ class Gadget
     [key]
     string MyKey;
 
-    [PropertyContext("Name")] 
+    [PropertyContext("Name")]
     uint32 MyValue;
 };
 
