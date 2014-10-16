@@ -3,7 +3,7 @@
 <!-- This DTD defines the schema for XML 1.0 Documents  -->
 <!-- representing CIM Element Declarations or Messages. -->
 <!--                                                    -->
-<!-- DTD Version : 2.2                                  --> 
+<!-- DTD Version : 2.2                                  -->
 <!-- DSP0203                                            -->
 <!-- Date: December 09, 2004                            -->
 <!-- Status: Preliminary                                -->
@@ -57,7 +57,7 @@
 <!ENTITY % ParamType "PARAMTYPE (boolean|string|char16|uint8|sint8|uint16|sint16|uint32|sint32|uint64|sint64|datetime|real32|real64|reference)">
 <!-- ************************************************** -->
 <!-- DEPRECATION NOTE: The flavor TOINSTANCE is         -->
-<!-- DEPRECATED and MAY be removed from the             --> 
+<!-- DEPRECATED and MAY be removed from the             -->
 <!-- QualifierFlavor entity in a future version of this -->
 <!-- document.  Its usage is discouraged.               -->
 <!-- ************************************************** -->
@@ -97,8 +97,8 @@
 <!ELEMENT DECLGROUP.WITHNAME ((LOCALNAMESPACEPATH | NAMESPACEPATH)?, QUALIFIER.DECLARATION*, VALUE.NAMEDOBJECT*)>
 <!ELEMENT DECLGROUP.WITHPATH (VALUE.OBJECTWITHPATH | VALUE.OBJECTWITHLOCALPATH)*>
 <!ELEMENT QUALIFIER.DECLARATION (SCOPE?, (VALUE | VALUE.ARRAY)?)>
-<!ATTLIST QUALIFIER.DECLARATION 
-         %CIMName;               
+<!ATTLIST QUALIFIER.DECLARATION
+         %CIMName;
          %CIMType;               #REQUIRED
          ISARRAY    (true|false) #IMPLIED
          %ArraySize;
@@ -135,24 +135,24 @@
 <!ELEMENT HOST (#PCDATA)>
 <!ELEMENT NAMESPACE EMPTY>
 <!ATTLIST NAMESPACE
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT CLASSPATH (NAMESPACEPATH, CLASSNAME)>
 <!ELEMENT LOCALCLASSPATH (LOCALNAMESPACEPATH, CLASSNAME)>
 <!ELEMENT CLASSNAME EMPTY>
 <!ATTLIST CLASSNAME
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT INSTANCEPATH (NAMESPACEPATH, INSTANCENAME)>
 <!ELEMENT LOCALINSTANCEPATH (LOCALNAMESPACEPATH, INSTANCENAME)>
 <!ELEMENT INSTANCENAME (KEYBINDING* | KEYVALUE? | VALUE.REFERENCE?)>
 <!ATTLIST INSTANCENAME
-        %ClassName; 
+        %ClassName;
 >
 <!ELEMENT OBJECTPATH (INSTANCEPATH | CLASSPATH)>
 <!ELEMENT KEYBINDING (KEYVALUE | VALUE.REFERENCE)>
 <!ATTLIST KEYBINDING
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT KEYVALUE (#PCDATA)>
 <!ATTLIST KEYVALUE
@@ -164,73 +164,73 @@
 <!-- ************************************************** -->
 <!ELEMENT CLASS (QUALIFIER*, (PROPERTY | PROPERTY.ARRAY | PROPERTY.REFERENCE)*, METHOD*)>
 <!ATTLIST CLASS
-        %CIMName; 
-        %SuperClass; 
+        %CIMName;
+        %SuperClass;
 >
 <!ELEMENT INSTANCE (QUALIFIER*, (PROPERTY | PROPERTY.ARRAY | PROPERTY.REFERENCE)*)>
 <!ATTLIST INSTANCE
         %ClassName;
-        xml:lang   NMTOKEN      #IMPLIED 
+        xml:lang   NMTOKEN      #IMPLIED
 >
 <!ELEMENT QUALIFIER ((VALUE | VALUE.ARRAY)?)>
-<!ATTLIST QUALIFIER 
+<!ATTLIST QUALIFIER
          %CIMName;
          %CIMType;              #REQUIRED
          %Propagated;
          %QualifierFlavor;
-         xml:lang   NMTOKEN     #IMPLIED 
+         xml:lang   NMTOKEN     #IMPLIED
 >
 <!ELEMENT PROPERTY (QUALIFIER*, VALUE?)>
-<!ATTLIST PROPERTY 
+<!ATTLIST PROPERTY
          %CIMName;
          %ClassOrigin;
          %Propagated;
          %CIMType;              #REQUIRED
-         xml:lang   NMTOKEN     #IMPLIED 
+         xml:lang   NMTOKEN     #IMPLIED
 >
 <!ELEMENT PROPERTY.ARRAY (QUALIFIER*, VALUE.ARRAY?)>
-<!ATTLIST PROPERTY.ARRAY 
+<!ATTLIST PROPERTY.ARRAY
          %CIMName;
          %CIMType;              #REQUIRED
          %ArraySize;
          %ClassOrigin;
          %Propagated;
-         xml:lang   NMTOKEN     #IMPLIED 
+         xml:lang   NMTOKEN     #IMPLIED
 >
 <!ELEMENT PROPERTY.REFERENCE (QUALIFIER*, (VALUE.REFERENCE)?)>
 <!ATTLIST PROPERTY.REFERENCE
-        %CIMName; 
-        %ReferenceClass; 
-        %ClassOrigin; 
-        %Propagated; 
+        %CIMName;
+        %ReferenceClass;
+        %ClassOrigin;
+        %Propagated;
 >
 <!ELEMENT METHOD (QUALIFIER*, (PARAMETER | PARAMETER.REFERENCE | PARAMETER.ARRAY | PARAMETER.REFARRAY)*)>
-<!ATTLIST METHOD 
+<!ATTLIST METHOD
          %CIMName;
          %CIMType;              #IMPLIED
          %ClassOrigin;
          %Propagated;>
 <!ELEMENT PARAMETER (QUALIFIER*)>
-<!ATTLIST PARAMETER 
+<!ATTLIST PARAMETER
          %CIMName;
          %CIMType;              #REQUIRED>
 <!ELEMENT PARAMETER.REFERENCE (QUALIFIER*)>
 <!ATTLIST PARAMETER.REFERENCE
-        %CIMName; 
-        %ReferenceClass; 
+        %CIMName;
+        %ReferenceClass;
 >
 <!ELEMENT PARAMETER.ARRAY (QUALIFIER*)>
-<!ATTLIST PARAMETER.ARRAY 
+<!ATTLIST PARAMETER.ARRAY
          %CIMName;
          %CIMType;              #REQUIRED
          %ArraySize;>
 <!ELEMENT PARAMETER.REFARRAY (QUALIFIER*)>
 <!ATTLIST PARAMETER.REFARRAY
-        %CIMName; 
-        %ReferenceClass; 
-        %ArraySize; 
+        %CIMName;
+        %ReferenceClass;
+        %ArraySize;
 >
-<!ELEMENT TABLECELL.DECLARATION EMPTY> 
+<!ELEMENT TABLECELL.DECLARATION EMPTY>
 <!ATTLIST TABLECELL.DECLARATION
      %CIMName;
      %CIMType;          #REQUIRED
@@ -240,12 +240,12 @@
      SORTPOS            CDATA       #IMPLIED
      SORTDIR            (ASC|DESC)  #IMPLIED
 >
-<!ELEMENT TABLECELL.REFERENCE EMPTY> 
+<!ELEMENT TABLECELL.REFERENCE EMPTY>
 <!ATTLIST TABLECELL.REFERENCE
      %CIMName;
-     %ReferenceClass;   
+     %ReferenceClass;
      ISARRAY        (true|false) "false"
-     %ArraySize; 
+     %ArraySize;
      CELLPOS          CDATA       #REQUIRED
      SORTPOS          CDATA       #IMPLIED
      SORTDIR         (ASC|DESC)   #IMPLIED
@@ -268,27 +268,27 @@
 <!ELEMENT SIMPLEEXPREQ (EXPMETHODCALL)>
 <!ELEMENT IMETHODCALL (LOCALNAMESPACEPATH, IPARAMVALUE*, RESPONSEDESTINATION?)>
 <!ATTLIST IMETHODCALL
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT METHODCALL ((LOCALINSTANCEPATH | LOCALCLASSPATH), PARAMVALUE*, RESPONSEDESTINATION?)>
 <!ATTLIST METHODCALL
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT EXPMETHODCALL (EXPPARAMVALUE*)>
 <!ATTLIST EXPMETHODCALL
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT PARAMVALUE (VALUE | VALUE.REFERENCE | VALUE.ARRAY | VALUE.REFARRAY)?>
 <!ATTLIST PARAMVALUE
-        %CIMName; 
+        %CIMName;
         %ParamType;  #IMPLIED
 > <!ELEMENT IPARAMVALUE (VALUE | VALUE.ARRAY | VALUE.REFERENCE | INSTANCENAME | CLASSNAME | QUALIFIER.DECLARATION | CLASS | INSTANCE | VALUE.NAMEDINSTANCE)?>
 <!ATTLIST IPARAMVALUE
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT EXPPARAMVALUE (INSTANCE?|VALUE?|METHODRESPONSE?|IMETHODRESPONSE?)>
 <!ATTLIST EXPPARAMVALUE
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT MULTIRSP (SIMPLERSP, SIMPLERSP+)>
 <!ELEMENT MULTIEXPRSP (SIMPLEEXPRSP, SIMPLEEXPRSP+)>
@@ -296,15 +296,15 @@
 <!ELEMENT SIMPLEEXPRSP (EXPMETHODRESPONSE)>
 <!ELEMENT METHODRESPONSE (ERROR|(RETURNVALUE?,PARAMVALUE*))>
 <!ATTLIST METHODRESPONSE
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT EXPMETHODRESPONSE (ERROR|IRETURNVALUE?)>
 <!ATTLIST EXPMETHODRESPONSE
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT IMETHODRESPONSE (ERROR|IRETURNVALUE?)>
 <!ATTLIST IMETHODRESPONSE
-        %CIMName; 
+        %CIMName;
 >
 <!ELEMENT ERROR (INSTANCE*)>
 <!ATTLIST ERROR
@@ -313,11 +313,11 @@
 >
 <!ELEMENT RETURNVALUE (VALUE | VALUE.REFERENCE)>
 <!ATTLIST RETURNVALUE
-        %ParamType;       #IMPLIED 
+        %ParamType;       #IMPLIED
 >
 <!ELEMENT IRETURNVALUE (CLASSNAME* | INSTANCENAME* | VALUE* | VALUE.OBJECTWITHPATH* | VALUE.OBJECTWITHLOCALPATH* | VALUE.OBJECT* | OBJECTPATH* | QUALIFIER.DECLARATION* | VALUE.ARRAY? | VALUE.REFERENCE? | CLASS* | INSTANCE* | VALUE.NAMEDINSTANCE* | TABLE )>
-<!ELEMENT RESPONSEDESTINATION (INSTANCE)> 
-<!ELEMENT SIMPLEREQACK (ERROR?)> 
-<!ATTLIST SIMPLEREQACK  
+<!ELEMENT RESPONSEDESTINATION (INSTANCE)>
+<!ELEMENT SIMPLEREQACK (ERROR?)>
+<!ATTLIST SIMPLEREQACK
          INSTANCEID CDATA     #REQUIRED
-> 
+>

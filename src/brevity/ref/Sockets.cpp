@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -70,7 +70,7 @@ int Sockets::init_addr(sockaddr_in& addr, const char* host, uint16 port)
             return -1;
 
         addr.sin_family = AF_INET;
-    }   
+    }
 
     addr.sin_port = htons(port);
     return 0;
@@ -337,7 +337,7 @@ ssize_t Sockets::send_n(Sock sock, const void* data, size_t size)
         {
             if (errno == EWOULDBLOCK)
                 return size - r;
-            else 
+            else
                 return -1;
         }
         else if (n == 0)
@@ -350,7 +350,7 @@ ssize_t Sockets::send_n(Sock sock, const void* data, size_t size)
     return size - r;
 }
 
-ssize_t Sockets::send_n( 
+ssize_t Sockets::send_n(
     Sock sock, const void* data, size_t size, uint64& timeout)
 {
     const char* p = (const char*)data;

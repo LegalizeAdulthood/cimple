@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -150,7 +150,7 @@ struct Working_Instance
     const Meta_Class* mc;
     char name_space[CIMXML_STRING_SIZE];
 
-    Working_Instance(Instance* instance_) : instance(instance_), mf(0), mc(0) 
+    Working_Instance(Instance* instance_) : instance(instance_), mf(0), mc(0)
     {
         *name_space = '\0';
     }
@@ -162,9 +162,9 @@ struct Working_Instance
         *name_space = '\0';
     }
 
-    friend bool operator==(const Working_Instance&, const Working_Instance&) 
-    { 
-        return false; 
+    friend bool operator==(const Working_Instance&, const Working_Instance&)
+    {
+        return false;
     }
 };
 
@@ -201,23 +201,23 @@ private:
     }
 
     int _find_required_attr(
-        const char** attrs, 
-        const char* name, 
+        const char** attrs,
+        const char* name,
         const char*& value);
 
     int _find_version_attr(
-        const char** attrs, 
-        const char* name, 
+        const char** attrs,
+        const char* name,
         Version& version);
 
     int _find_fixed_str_attr(
-        const char** attrs, 
-        const char* name, 
+        const char** attrs,
+        const char* name,
         char str[CIMXML_STRING_SIZE]);
 
     int _find_uint32_attr(
-        const char** attrs, 
-        const char* name, 
+        const char** attrs,
+        const char* name,
         uint32& x);
 
     int _find_type_attr(const char** attrs, const char* name, Type& type);

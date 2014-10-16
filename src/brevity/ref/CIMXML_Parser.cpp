@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -434,14 +434,14 @@ static const char _PROPERTY_children[] =
 
 static const char _PROPERTY_ARRAY_children[] =
 {
-    TAG_QUALIFIER, 
+    TAG_QUALIFIER,
     TAG_VALUE_ARRAY, /* done */
     TAG_NULL,
 };
 
 static const char _PROPERTY_REFERENCE_children[] =
 {
-    TAG_QUALIFIER, 
+    TAG_QUALIFIER,
     TAG_VALUE_REFERENCE,
     TAG_NULL,
 };
@@ -674,7 +674,7 @@ void CIMXML_Context::clear()
 void CIMXML_Context::print() const
 {
     printf("CIMXML_Context:\n");
-    printf("  CIM_CIMVERSION: %u.%u\n", 
+    printf("  CIM_CIMVERSION: %u.%u\n",
         CIM_CIMVERSION.major, CIM_CIMVERSION.minor);
     printf("  CIM_DTDVERSION: %u.%u\n",
         CIM_DTDVERSION.major, CIM_DTDVERSION.minor);
@@ -719,7 +719,7 @@ void CIMXML_Parser::handle_start_element(const char* el, const char** attrs)
 
         if (!children || strchr(children, tag) == 0)
         {
-            raise("\"%s\" is not a valid subelement of \"%s\"", 
+            raise("\"%s\" is not a valid subelement of \"%s\"",
                 el, _tag_names[_tags.top()]);
             return;
         }
@@ -953,8 +953,8 @@ void CIMXML_Parser::handle_character_data(const char* s, int len)
 }
 
 int CIMXML_Parser::_find_required_attr(
-    const char** attrs, 
-    const char* name, 
+    const char** attrs,
+    const char* name,
     const char*& value)
 {
     value = _find_attr(attrs, name);
@@ -969,8 +969,8 @@ int CIMXML_Parser::_find_required_attr(
 }
 
 int CIMXML_Parser::_find_version_attr(
-    const char** attrs, 
-    const char* name, 
+    const char** attrs,
+    const char* name,
     Version& version)
 {
     const char* value;
@@ -988,8 +988,8 @@ int CIMXML_Parser::_find_version_attr(
 }
 
 int CIMXML_Parser::_find_fixed_str_attr(
-    const char** attrs, 
-    const char* name, 
+    const char** attrs,
+    const char* name,
     char str[CIMXML_STRING_SIZE])
 {
     const char* value;
@@ -1008,8 +1008,8 @@ int CIMXML_Parser::_find_fixed_str_attr(
 }
 
 int CIMXML_Parser::_find_type_attr(
-    const char** attrs, 
-    const char* name, 
+    const char** attrs,
+    const char* name,
     Type& type)
 {
     const char* value;
@@ -1027,8 +1027,8 @@ int CIMXML_Parser::_find_type_attr(
 }
 
 int CIMXML_Parser::_find_uint32_attr(
-    const char** attrs, 
-    const char* name, 
+    const char** attrs,
+    const char* name,
     uint32& x)
 {
     const char* value;
@@ -1168,14 +1168,14 @@ void CIMXML_Parser::_start_INSTANCENAME(const char** attrs)
     // INSTANCENAME.CLASSNAME:
 
     const char* classname;
-    
+
     if (_find_required_attr(attrs, "CLASSNAME", classname) != 0)
         return;
 
     // Find the meta class:
 
     const Meta_Class* mc;
-    
+
     if (_resolve_meta_class(classname, mc) != 0)
     {
         raise("failed to resolve meta class for %s", classname);
@@ -1254,7 +1254,7 @@ void CIMXML_Parser::_start_INSTANCE(const char** attrs)
     // Find the meta class:
 
     const Meta_Class* mc;
-    
+
     if (_resolve_meta_class(classname, mc) != 0)
     {
         raise("failed to resolve meta class for %s", classname);

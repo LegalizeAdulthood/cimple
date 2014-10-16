@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -58,26 +58,26 @@ public:
     */
     void disconnect();
 
-    /** Create an instance. 
+    /** Create an instance.
     */
     Instance_Ref create_instance(
         const String& name_space,
         const Instance_Hnd& new_instance);
 
-    /** Modify an instance. 
+    /** Modify an instance.
     */
     void modify_instance(
         const String& name_space,
         const Instance_Hnd& modified_instance);
 
-    /** Modify an instance. 
+    /** Modify an instance.
     */
     void modify_instance(
         const String& name_space,
         const Instance_Hnd& modified_instance,
         const Array<String>& property_list);
 
-    /** Get an instance. 
+    /** Get an instance.
     */
     Instance_Hnd get_instance(
         const String& name_space,
@@ -87,7 +87,7 @@ public:
     */
     Instance_Enum enum_instances(
         const String& name_space,
-        const Instance_Ref& class_name, 
+        const Instance_Ref& class_name,
         bool deep_inheritance = true);
 
     /** Enumerate instance names.
@@ -106,7 +106,7 @@ public:
     */
     Instance_Enum associators(
         const String& name_space,
-        const Instance_Ref& instance_name, 
+        const Instance_Ref& instance_name,
         const String& assoc_class = String(),
         const String& result_class = String(),
         const String& role = String(),
@@ -116,7 +116,7 @@ public:
     */
     Instance_Name_Enum associator_names(
         const String& name_space,
-        const Instance_Ref& instance_name, 
+        const Instance_Ref& instance_name,
         const String& assoc_class = String(),
         const String& result_class = String(),
         const String& role = String(),
@@ -126,7 +126,7 @@ public:
     */
     Instance_Enum references(
         const String& name_space,
-        const Instance_Ref& instance_name, 
+        const Instance_Ref& instance_name,
         const String& result_class = String(),
         const String& role = String());
 
@@ -134,7 +134,7 @@ public:
     */
     Instance_Name_Enum reference_names(
         const String& ns,
-        const Instance_Ref& in, 
+        const Instance_Ref& in,
         const String& result_class = String(),
         const String& role = String());
 
