@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,7 +33,7 @@
 static const CMPIBroker * _broker;
 
 CMPIStatus StubsProviderCleanup(
-    CMPIInstanceMI* self, 
+    CMPIInstanceMI* self,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -42,8 +42,8 @@ CMPIStatus StubsProviderCleanup(
 }
 
 static CMPIStatus StubsProviderEnumInstanceNames(
-    CMPIInstanceMI* self, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
     const CMPIObjectPath* ref)
 {
@@ -54,10 +54,10 @@ static CMPIStatus StubsProviderEnumInstanceNames(
 }
 
 static CMPIStatus StubsProviderEnumInstances(
-    CMPIInstanceMI* self, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
+    const CMPIObjectPath* ref,
     const char** properties)
 {
     printf("==== StubsProviderEnumInstances()\n");
@@ -67,10 +67,10 @@ static CMPIStatus StubsProviderEnumInstances(
 }
 
 static CMPIStatus StubsProviderGetInstance(
-    CMPIInstanceMI* self, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
+    const CMPIObjectPath* ref,
     const char** properties)
 {
     CMPIInstance* inst;
@@ -88,10 +88,10 @@ static CMPIStatus StubsProviderGetInstance(
 }
 
 static CMPIStatus StubsProviderCreateInstance(
-    CMPIInstanceMI* self, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
+    const CMPIObjectPath* ref,
     const CMPIInstance* inst)
 {
     printf ("==== StubsProviderCreateInstance()\n");
@@ -101,10 +101,10 @@ static CMPIStatus StubsProviderCreateInstance(
 }
 
 static CMPIStatus StubsProviderModifyInstance(
-    CMPIInstanceMI* self, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
+    const CMPIObjectPath* ref,
     const CMPIInstance* inst,
     const char** properties)
 {
@@ -114,8 +114,8 @@ static CMPIStatus StubsProviderModifyInstance(
 }
 
 static CMPIStatus StubsProviderDeleteInstance(
-    CMPIInstanceMI* self, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
     const CMPIObjectPath* ref)
 {
@@ -125,11 +125,11 @@ static CMPIStatus StubsProviderDeleteInstance(
 }
 
 static CMPIStatus StubsProviderExecQuery(
-    CMPIInstanceMI* self, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
-    const char* lang, 
+    const CMPIObjectPath* ref,
+    const char* lang,
     const char* query)
 {
     printf ("==== StubsProviderExecQuery()\n");
@@ -138,7 +138,7 @@ static CMPIStatus StubsProviderExecQuery(
 }
 
 static CMPIStatus StubsProviderMethodCleanup(
-    CMPIMethodMI* self, 
+    CMPIMethodMI* self,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -146,11 +146,11 @@ static CMPIStatus StubsProviderMethodCleanup(
 }
 
 static CMPIStatus StubsProviderInvokeMethod(
-    CMPIMethodMI* self, 
-    const CMPIContext* context, 
+    CMPIMethodMI* self,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
-    const char* method, 
+    const CMPIObjectPath* ref,
+    const char* method,
     const CMPIArgs* in,
     CMPIArgs* out)
 {

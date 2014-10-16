@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -50,8 +50,8 @@ static size_t _round_up_pow_2(size_t x)
     return x;
 }
 
-Buffer::Buffer() : _data(0), _size(0), _cap(0) 
-{ 
+Buffer::Buffer() : _data(0), _size(0), _cap(0)
+{
 }
 
 Buffer::Buffer(const Buffer& x)
@@ -62,9 +62,9 @@ Buffer::Buffer(const Buffer& x)
     memcpy(_data, x._data, _size);
 }
 
-Buffer::~Buffer() 
-{ 
-    free(_data); 
+Buffer::~Buffer()
+{
+    free(_data);
 }
 
 Buffer& Buffer::operator=(const Buffer& x)
@@ -114,7 +114,7 @@ void Buffer::insert(size_t i, const char* data, size_t size)
 {
     CIMPLE_ASSERT(i <= _size);
 
-    size_t new_size = _size + size;     
+    size_t new_size = _size + size;
     size_t rem = _size - i;
 
     if (new_size > _cap)

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -45,8 +45,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-/** This class implements a simple scheme for setting and getting the error 
-    message for the current thread. It uses thread-specific-data (TLS) so that 
+/** This class implements a simple scheme for setting and getting the error
+    message for the current thread. It uses thread-specific-data (TLS) so that
     each thread may have its own error message.
 */
 class CIMPLEDISP_LINKAGE Error
@@ -58,8 +58,8 @@ public:
 
     // Prepends debugging information to error message:
     static void set_prefix(
-        const char* function, 
-        const char* file, 
+        const char* function,
+        const char* file,
         size_t line);
 
     static const char* get();

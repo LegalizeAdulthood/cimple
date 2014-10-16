@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -103,7 +103,7 @@ Status Dispatcher::get_instance(const Instance* model, Instance*& inst)
 //------------------------------------------------------------------------------
 
 Status Dispatcher::enum_instances(
-    const Instance* model, 
+    const Instance* model,
     Enum_Instances_Proc proc,
     void* client_data)
 {
@@ -118,7 +118,7 @@ Status Dispatcher::enum_instances(
 
     // Invoked provider:
 
-    Enum_Instances_Status provider_status = 
+    Enum_Instances_Status provider_status =
         env->enum_instances(model, proc, client_data);
 
     switch (provider_status)
@@ -329,7 +329,7 @@ Status Dispatcher::enum_references(
 //------------------------------------------------------------------------------
 
 Status Dispatcher::enable_indications(
-    const char* class_name, 
+    const char* class_name,
     Indication_Proc indication_proc,
     void* client_data)
 {
@@ -344,7 +344,7 @@ Status Dispatcher::enable_indications(
 
     // Enable indications on this provider:
 
-    Enable_Indications_Status provider_status = 
+    Enable_Indications_Status provider_status =
         env->enable_indications(indication_proc, client_data);
 
     switch (provider_status)

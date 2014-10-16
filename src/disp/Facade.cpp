@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,9 +33,9 @@ CIMPLE_NAMESPACE_BEGIN
 #ifdef CIMPLE_USE_FACADE
 
 static uint8* _set_scalar(
-    Instance* instance, 
+    Instance* instance,
     Type type,
-    const char* name, 
+    const char* name,
     bool null)
 {
     const Meta_Property* mp = find_property(instance->meta_class, name);
@@ -52,7 +52,7 @@ static uint8* _set_scalar(
 int _set_scalar_raw(
     Instance* instance,
     Type type,
-    const char* name, 
+    const char* name,
     const void* value,
     bool null)
 {
@@ -68,9 +68,9 @@ int _set_scalar_raw(
 }
 
 static const uint8* _get_scalar(
-    const Instance* instance, 
+    const Instance* instance,
     Type type,
-    const char* name, 
+    const char* name,
     bool& null)
 {
     const Meta_Property* mp = find_property(instance->meta_class, name);
@@ -86,7 +86,7 @@ static const uint8* _get_scalar(
 int _get_scalar_raw(
     const Instance* instance,
     Type type,
-    const char* name, 
+    const char* name,
     void* value,
     bool& null)
 {
@@ -103,7 +103,7 @@ int _get_scalar_raw(
 
 int Facade::_set_array(
     Type type,
-    const char* name, 
+    const char* name,
     const Array_Base& value,
     bool null)
 {
@@ -121,7 +121,7 @@ int Facade::_set_array(
 
 int Facade::_get_array(
     Type type,
-    const char* name, 
+    const char* name,
     Array_Base& value,
     bool& null)
 {
