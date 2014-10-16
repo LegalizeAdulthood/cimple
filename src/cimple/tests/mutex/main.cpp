@@ -459,7 +459,7 @@ void test03()
     // Changed this from 100, 50 to 1000, 900 because failing on
     // 32 bit systems. Set very large to accomodate virtual
     // environments
-    TASSERT(test3.test_range_ms(2000, 1000));
+    TASSERT(test3.test_range_ms(2000, 2000 - 100));
     printf("Test03 Passed in %u ms\n", test3.get_interval_ms() );
 }
 
