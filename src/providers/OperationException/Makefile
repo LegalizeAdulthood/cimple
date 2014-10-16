@@ -13,9 +13,12 @@ SHARED_LIBRARY=CIMPLE_Exception
 ## Define source files for compile and link
 ##
 
-SOURCES += CIMPLE_Exception.cpp
-SOURCES += CIMPLE_ExceptionLink.cpp
-SOURCES += repository.cpp
+GENCLASS_SOURCES = \
+    CIMPLE_Exception.cpp \
+    CIMPLE_ExceptionLink.cpp \
+    repository.cpp
+
+SOURCES += $(GENCLASS_SOURCES) 
 SOURCES += CIMPLE_Exception_Provider.cpp
 SOURCES += CIMPLE_ExceptionLink_Provider.cpp
 SOURCES += module.cpp
@@ -33,7 +36,7 @@ include ../common.mak
 include $(TOP)/mak/rules.mak
 
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r CIMPLE_Exception CIMPLE_ExceptionLink
 
 genprov:
@@ -51,6 +54,4 @@ genproj:
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-
-
-
+repository.mof: CIMPLE_Exception.mof CIMPLE_ExceptionLink.mof

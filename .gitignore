@@ -284,6 +284,12 @@ src/providers/MySpareConfigurationService/SNIA_SpareConfigurationService.cpp
 src/providers/MySpareConfigurationService/SNIA_SpareConfigurationService.h
 src/providers/MySpareConfigurationService/repository.cpp
 src/providers/MySpareConfigurationService/repository.h
+src/providers/OperationException/CIMPLE_Exception.cpp
+src/providers/OperationException/CIMPLE_Exception.h
+src/providers/OperationException/CIMPLE_ExceptionLink.cpp
+src/providers/OperationException/CIMPLE_ExceptionLink.h
+src/providers/OperationException/repository.cpp
+src/providers/OperationException/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
