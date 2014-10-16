@@ -5,21 +5,36 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleLamp
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_Indication.cpp \
     Lamp.cpp \
     LampIndicA.cpp \
     LampIndicB.cpp \
     LampIndicC.cpp \
     LampIndic.cpp \
-    LampIndic_Provider.cpp \
     LampLink.cpp \
-    LampLink_Provider.cpp \
-    Lamp_Provider.cpp \
     ModernLamp.cpp \
     Persistent.cpp \
-    module.cpp \
     repository.cpp
+
+GENCLASS_HEADERS = \
+    CIM_Indication.h \
+    Lamp.h \
+    LampIndicA.h \
+    LampIndicB.h \
+    LampIndicC.h \
+    LampIndic.h \
+    LampLink.h \
+    ModernLamp.h \
+    Persistent.h \
+    repository.h
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    LampIndic_Provider.cpp \
+    LampLink_Provider.cpp \
+    Lamp_Provider.cpp \
+    module.cpp
 
 # Allow building providers for either CMPI or Pegasus C++ provider interface
 # Changing Provider interfaces requires reregistering the provider. Default Pegasus
@@ -40,7 +55,7 @@ regmod:
 regmodxyz:
 	$(BINDIR)/regmod -n root/xyz -s -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES) $(GENCLASS_HEADERS): repository.mof
 	$(BINDIR)/genclass -r Lamp ModernLamp LampLink LampIndic LampIndicA LampIndicB LampIndicC Persistent
 
 genprov:
@@ -61,3 +76,6 @@ live:
 
 test:
 	$(CIMCLI) an 'Lamp.model="A"'
+
+LampIndic_Provider.cpp: LampIndic_Provider.h
+LampIndic_Provider.h: LampIndic.h
