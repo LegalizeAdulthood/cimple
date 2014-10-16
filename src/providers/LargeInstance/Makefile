@@ -8,12 +8,14 @@ TEST_CLASS = CMPL_LargeInstance
 SHARED_LIBRARY = cimpleLargeInstances
 TEST_NAMESPACE=root/cimv2
 
+GENCLASS_SOURCES = \
+    CMPL_LargeInstance.cpp \
+    repository.cpp
 
 SOURCES = \
-    CMPL_LargeInstance.cpp \
+    $(GENCLASS_SOURCES) \
     CMPL_LargeInstance_Provider.cpp \
-    module.cpp \
-    repository.cpp
+    module.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
 ## Changing Provider interfaces requires reregistering the provider. Default Pegasus
@@ -28,7 +30,7 @@ include ../common.mak
 include $(TOP)/mak/rules.mak
 
 ## Generate the class. First step in writing the provider once mof exists in repository.mof
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r $(TEST_CLASS)
 
 ## Generate the Provider.  Run this after genclass target

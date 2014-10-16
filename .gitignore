@@ -206,6 +206,10 @@ src/providers/Lamp/Persistent.cpp
 src/providers/Lamp/Persistent.h
 src/providers/Lamp/repository.cpp
 src/providers/Lamp/repository.h
+src/providers/LargeInstance/CMPL_LargeInstance.cpp
+src/providers/LargeInstance/CMPL_LargeInstance.h
+src/providers/LargeInstance/repository.cpp
+src/providers/LargeInstance/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
