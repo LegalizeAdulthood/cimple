@@ -5,12 +5,15 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleexample
 
-SOURCES = \
+GENCLASS_SOURCES = \
     Example.cpp \
-    Example_Provider.cpp \
     House.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Example_Provider.cpp \
+    module.cpp
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -21,7 +24,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Example House
 
 genprov:

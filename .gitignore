@@ -172,6 +172,12 @@ src/providers/Employee/OutOfOfficeNotice.cpp
 src/providers/Employee/OutOfOfficeNotice.h
 src/providers/Employee/repository.cpp
 src/providers/Employee/repository.h
+src/providers/Example/Example.cpp
+src/providers/Example/Example.h
+src/providers/Example/House.cpp
+src/providers/Example/House.h
+src/providers/Example/repository.cpp
+src/providers/Example/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
