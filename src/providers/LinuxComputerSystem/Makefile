@@ -5,7 +5,7 @@ MODULE=1
 
 SHARED_LIBRARY = cimplelinuxsysprov
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
     CIM_EnabledLogicalElement.cpp \
@@ -15,9 +15,12 @@ SOURCES = \
     CIM_ManagedSystemElement.cpp \
     CIM_System.cpp \
     LinuxComputerSystem.cpp \
-    LinuxComputerSystem_Provider.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    LinuxComputerSystem_Provider.cpp \
+    module.cpp
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -28,7 +31,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r LinuxComputerSystem
 
 genprov:
