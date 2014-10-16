@@ -3,17 +3,17 @@
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** Copyright (c) 2007 Novell, Inc.
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -62,16 +62,16 @@ namespace  Converter
         const OpenWBEM::StringArray* propertyList,
         cimple::Instance* cimple_instance);
 
-    int to_openwbem_method(const OpenWBEM::CIMObjectPath& path, 
-        const cimple::Instance* meth, 
-        OpenWBEM::CIMParamValueArray& out, 
-        OpenWBEM::CIMValue& return_value); 
+    int to_openwbem_method(const OpenWBEM::CIMObjectPath& path,
+        const cimple::Instance* meth,
+        OpenWBEM::CIMParamValueArray& out,
+        OpenWBEM::CIMValue& return_value);
 
-    int to_cimple_method(const OpenWBEM::String& methodName, 
-        const OpenWBEM::CIMParamValueArray& in, 
-        const cimple::Meta_Class* mc, 
-        cimple::Instance*& meth); 
-}; 
+    int to_cimple_method(const OpenWBEM::String& methodName,
+        const OpenWBEM::CIMParamValueArray& in,
+        const cimple::Meta_Class* mc,
+        cimple::Instance*& meth);
+};
 
 CIMPLE_NAMESPACE_END
 

@@ -3,17 +3,17 @@
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** Copyright (c) 2007 Novell, Inc.
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -40,8 +40,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-class CIMPLE_HIDE OpenWBEM_Adapter : 
-    public OpenWBEM::CppMethodProviderIFC, 
+class CIMPLE_HIDE OpenWBEM_Adapter :
+    public OpenWBEM::CppMethodProviderIFC,
     public OpenWBEM::CppAssociatorProviderIFC,
     public OpenWBEM::CppIndicationProviderIFC
 // we inherit from instance through the assoc provider IFC
@@ -226,7 +226,7 @@ public:
      *  information to identify which association must be
      *  traversed in case it supports more than one
      *  association.
-     *  
+     *
      * @param objectName Defines the source CIM Object whose associated
      *  Objects are to be returned.  This is an instance name.
      *  Instance name (modelpath).
@@ -244,7 +244,7 @@ public:
      *  plays the specified role (i.e. the name of the Property in the
      *  Association Class that refers to the source Object MUST match the
      *  value of this parameter).
-     *  
+     *
      * @param resultRole The resultRole input parameter if not empty (""),
      *  MUST be a valid Property name.  It acts as a filter on the returned
      *  set of Objects by mandating that each returned Object MUST be
@@ -405,26 +405,26 @@ public:
 
     virtual void activateFilter(
         const OpenWBEM::ProviderEnvironmentIFCRef& env,
-        const OpenWBEM::WQLSelectStatement& filter, 
-        const OpenWBEM::String& eventType, 
+        const OpenWBEM::WQLSelectStatement& filter,
+        const OpenWBEM::String& eventType,
         const OpenWBEM::String& nameSpace,
-        const OpenWBEM::StringArray& classes, 
+        const OpenWBEM::StringArray& classes,
         bool firstActivation);
 
     virtual void authorizeFilter(
         const OpenWBEM::ProviderEnvironmentIFCRef& env,
-        const OpenWBEM::WQLSelectStatement& filter, 
-        const OpenWBEM::String& eventType, 
+        const OpenWBEM::WQLSelectStatement& filter,
+        const OpenWBEM::String& eventType,
         const OpenWBEM::String& nameSpace,
-        const OpenWBEM::StringArray& classes, 
+        const OpenWBEM::StringArray& classes,
         const OpenWBEM::String& owner);
 
     virtual void deActivateFilter(
         const OpenWBEM::ProviderEnvironmentIFCRef& env,
-        const OpenWBEM::WQLSelectStatement& filter, 
-        const OpenWBEM::String& eventType, 
+        const OpenWBEM::WQLSelectStatement& filter,
+        const OpenWBEM::String& eventType,
         const OpenWBEM::String& nameSpace,
-        const OpenWBEM::StringArray& classes, 
+        const OpenWBEM::StringArray& classes,
         bool lastActivation);
 
     /**
@@ -440,18 +440,18 @@ public:
      * If the provider is going to start a thread that will wait for some
      * external event, it should do it the first time activateFilter is called
      * firstActivation will == true.
-     * If a provider may take a long time to generate all instances in 
+     * If a provider may take a long time to generate all instances in
      * enumInstances, it should either not be polled or it should have a large
      * poll interval.
      * Also, a provider that is polled can only do lifecycle indications.
      * If the provider doesn't do lifecycle indications, then it must return
      * 0 from mustPoll, and has to generate indications by another means.
-     * @param env 
+     * @param env
      */
     virtual int mustPoll(
         const OpenWBEM::ProviderEnvironmentIFCRef& env,
-        const OpenWBEM::WQLSelectStatement& filter, 
-        const OpenWBEM::String& eventType, 
+        const OpenWBEM::WQLSelectStatement& filter,
+        const OpenWBEM::String& eventType,
         const OpenWBEM::String& nameSpace,
         const OpenWBEM::StringArray& classes);
 

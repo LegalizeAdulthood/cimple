@@ -7,7 +7,7 @@ LIBRARY = cimpleowadap
 
 SOURCES = \
     OpenWBEM_Adapter.cpp \
-    Converter.cpp  
+    Converter.cpp
 
 LIBRARIES = \
     owprovider \

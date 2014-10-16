@@ -14,7 +14,7 @@ ECHOEMPTYLINE=echo.
 else
 QT:="
 DBQT:=\"
-ECHOEMPTYLINE= echo "" 
+ECHOEMPTYLINE= echo ""
 endif
 
 OPTIONS_H=$(TOP)/src/cimple/options.h
@@ -28,7 +28,7 @@ $(OPTIONS_H): ../../config.options
 	echo // > $(OPTIONS_H)
 	echo //  This file built by CIMPLE using src/options/Makefile >> $(OPTIONS_H)
 	echo //  It provides internal definitions for CIMPLE configure >> $(OPTIONS_H)
-	echo //  options that are used within the CIMPLE code. The file is >> $(OPTIONS_H) 
+	echo //  options that are used within the CIMPLE code. The file is >> $(OPTIONS_H)
 	echo //  regenerated each time the configuration options >> $(OPTIONS_H)
 	echo //  file is changed. >> $(OPTIONS_H)
 	echo //  Please do not change this file, Change options with the >> $(OPTIONS_H)
@@ -67,10 +67,10 @@ ifeq ($(OS_TYPE),windows)
   ifdef CIMPLEHOME_ENVVAR_OPT
 	echo #define CIMPLEHOME_ENVVAR "$(CIMPLEHOME_ENVVAR_OPT)" >> $(OPTIONS_H)
   else
-	echo #define CIMPLEHOME_ENVVAR "CIMPLE_HOME" >> $(OPTIONS_H)      
+	echo #define CIMPLEHOME_ENVVAR "CIMPLE_HOME" >> $(OPTIONS_H)
   endif
 
-## definitions for non-windows platforms.  
+## definitions for non-windows platforms.
 else
 	$(ECHOEMPTYLINE) >> $(OPTIONS_H)
 	echo $(QT)#define CIMPLE_PLATFORM_$(PLATFORM)$(QT) >> $(OPTIONS_H)
@@ -102,7 +102,7 @@ else
   ifdef CIMPLEHOME_ENVVAR_OPT
 	echo $(QT)#define CIMPLEHOME_ENVVAR $(DBQT)$(CIMPLEHOME_ENVVAR_OPT)$(DBQT)$(QT) >> $(OPTIONS_H)
   else
-	echo $(QT)#define CIMPLEHOME_ENVVAR $(DBQT)CIMPLE_HOME$(DBQT)$(QT) >> $(OPTIONS_H)      
+	echo $(QT)#define CIMPLEHOME_ENVVAR $(DBQT)CIMPLE_HOME$(DBQT)$(QT) >> $(OPTIONS_H)
   endif
 
 endif

@@ -7,7 +7,7 @@ using namespace Pegasus;
 
 CIMPLE_NAMESPACE_BEGIN
 
-static char _digit[256] = 
+static char _digit[256] =
 {
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
@@ -28,7 +28,7 @@ static char _digit[256] =
 };
 
 
-static int _isdigit[256] = 
+static int _isdigit[256] =
 {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
@@ -206,7 +206,7 @@ int Uint64_From_Str(P_Uint64& self, const char* str)
             y = _digit[(unsigned char)str[2]];
 
             if (y >= 0)
-            { 
+            {
                 int z;
 
                 if (str[3] == '\0')
@@ -331,7 +331,7 @@ int Sint8_From_Str(P_Sint8& self, const char* str)
 {
     P_Sint64 x;
 
-    if (Sint64_From_Str(x, str) != 0 || 
+    if (Sint64_From_Str(x, str) != 0 ||
         x < CIMPLE_SINT8_MIN || x > CIMPLE_SINT8_MAX)
     {
         return -1;
@@ -346,7 +346,7 @@ int Sint16_From_Str(P_Sint16& self, const char* str)
 {
     P_Sint64 x;
 
-    if (Sint64_From_Str(x, str) != 0 || 
+    if (Sint64_From_Str(x, str) != 0 ||
         x < CIMPLE_SINT16_MIN || x > CIMPLE_SINT16_MAX)
     {
         return -1;
@@ -361,7 +361,7 @@ int Sint32_From_Str(P_Sint32& self, const char* str)
 {
     P_Sint64 x;
 
-    if (Sint64_From_Str(x, str) != 0 || 
+    if (Sint64_From_Str(x, str) != 0 ||
         x < CIMPLE_SINT32_MIN || x > CIMPLE_SINT32_MAX)
     {
         return -1;

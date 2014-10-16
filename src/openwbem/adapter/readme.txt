@@ -1,7 +1,7 @@
 This directory contains the CIMPLE/OpenWBEM adapter.
 
-TODO: 
+TODO:
 - up-calls
 - indications
 - test extrinsic methods
-- REF arrays as output parameters to extrinsic methods 
+- REF arrays as output parameters to extrinsic methods

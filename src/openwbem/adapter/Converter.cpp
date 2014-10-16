@@ -3,17 +3,17 @@
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
 ** Copyright (c) 2007 Novell, Inc.
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -53,12 +53,12 @@ CIMPLE_NAMESPACE_BEGIN
 namespace Converter
 {
 
-using namespace OpenWBEM; 
+using namespace OpenWBEM;
 
 ///////////////////////////////////////////////////////////////////////////////
 static void _to_openwbem_scalar(
     const Meta_Property* mp,
-    const void* field, 
+    const void* field,
     OpenWBEM::CIMValue& value)
 {
     CIMPLE_ASSERT(mp != 0);
@@ -114,12 +114,12 @@ static void _to_openwbem_scalar(
 
         case CHAR16:
             //value.set(Pegasus::Char16(*((char16*)field)));
-            value.set(CIMValue(OpenWBEM::String((*((char16*)field))))); 
+            value.set(CIMValue(OpenWBEM::String((*((char16*)field)))));
             break;
 
         case STRING:
             value.set(CIMValue(OpenWBEM::String(
-                (*((String*)field)).c_str(), (*((String*)field)).size()))); 
+                (*((String*)field)).c_str(), (*((String*)field)).size())));
             break;
 
         case DATETIME:
@@ -138,15 +138,15 @@ struct _to_openwbem_array_helper
 {
     static void func(
         const Meta_Property* mp,
-        const void* field, 
+        const void* field,
         OpenWBEM::CIMValue& value)
     {
         const Array<CT>& tmp = *((const Array<CT>*)field);
-        OpenWBEM::Array<OT> array; 
+        OpenWBEM::Array<OT> array;
         array.reserve(tmp.size());
         for (size_t i = 0; i < tmp.size();  ++i)
         {
-            array.push_back(tmp[i]); 
+            array.push_back(tmp[i]);
         }
         value.set(CIMValue(array));
     }
@@ -154,7 +154,7 @@ struct _to_openwbem_array_helper
 ///////////////////////////////////////////////////////////////////////////////
 static void _to_openwbem_array(
     const Meta_Property* mp,
-    const void* f, 
+    const void* f,
     OpenWBEM::CIMValue& v)
 {
     CIMPLE_ASSERT(mp != 0);
@@ -164,8 +164,8 @@ static void _to_openwbem_array(
 
     if (null_of(mp, f))
     {
-        v.set(CIMValue(StringArray())); 
-        v.setNull(); 
+        v.set(CIMValue(StringArray()));
+        v.setNull();
         return;
     }
 
@@ -218,7 +218,7 @@ static void _to_openwbem_array(
         case CHAR16:
             // TODO _to_openwbem_array_helper<
             //     char16, OpenWBEM::Char16>::func(mp, f, v);
-            assert(0); 
+            assert(0);
             break;
 
         case STRING:
@@ -260,8 +260,8 @@ static void _to_openwbem_array(
 ///////////////////////////////////////////////////////////////////////////////
 static int _to_openwbem_value(
     const OpenWBEM::String& ns,
-    const Instance* ci, 
-    const Meta_Feature* mf, 
+    const Instance* ci,
+    const Meta_Feature* mf,
     OpenWBEM::CIMValue& value)
 {
     CIMPLE_ASSERT(ci != 0);
@@ -312,10 +312,10 @@ static int _to_openwbem_value(
 
             if (is_array)
             {
-                value.set(OpenWBEM::CIMValue(OpenWBEM::StringArray())); 
+                value.set(OpenWBEM::CIMValue(OpenWBEM::StringArray()));
             }
 
-            value.setNull(); 
+            value.setNull();
 
             return 0;
         }
@@ -372,7 +372,7 @@ int to_openwbem_instance(
         const cimple::Instance* ci,
         OpenWBEM::CIMInstance& oi)
 {
-    TRACE ; 
+    TRACE ;
     CIMPLE_ASSERT(ci != 0);
     CIMPLE_ASSERT(ci->__magic == CIMPLE_INSTANCE_MAGIC);
 
@@ -381,11 +381,11 @@ int to_openwbem_instance(
     // Create OpenWBEM instance of the given class.
 
     oi.setClassName(mc->name);
-    oi.setNameSpace(ns); 
+    oi.setNameSpace(ns);
 
     // Copy properties from CIMPLE to OpenWBEM instance and to object path.
 
-    OpenWBEM::CIMPropertyArray cpa; 
+    OpenWBEM::CIMPropertyArray cpa;
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
@@ -407,7 +407,7 @@ int to_openwbem_instance(
 
         try
         {
-            oi.setProperty(mf->name, cv); 
+            oi.setProperty(mf->name, cv);
         }
         catch(...)
         {
@@ -416,9 +416,9 @@ int to_openwbem_instance(
         }
     }
 
-    oi.setKeys(cpa); 
+    oi.setKeys(cpa);
 
-    TRACE ; 
+    TRACE ;
     return 0;
 }
 
@@ -444,16 +444,16 @@ struct _to_cimple_scalar
             value.get(ot);
             CT ct = ot;
             ((Property<CT>*)field)->value = ct;
-            ((Property<CT>*)field)->null = 0; 
+            ((Property<CT>*)field)->null = 0;
         }
         else
         {
-            ((Property<CT>*)field)->null = 1; 
+            ((Property<CT>*)field)->null = 1;
         }
     }
 };
 
-template<> 
+template<>
 struct _to_cimple_scalar<OpenWBEM::Char16, char16>
 {
     typedef OpenWBEM::Char16 OT;
@@ -470,11 +470,11 @@ struct _to_cimple_scalar<OpenWBEM::Char16, char16>
             value.get(ot);
             CT ct = uint16(ot);
             ((Property<CT>*)field)->value = ct;
-            ((Property<CT>*)field)->null = 0; 
+            ((Property<CT>*)field)->null = 0;
         }
         else
         {
-            ((Property<CT>*)field)->null = 1; 
+            ((Property<CT>*)field)->null = 1;
         }
     }
 };
@@ -499,17 +499,17 @@ struct _to_cimple_array
         {
             OpenWBEM::Array<OT> tmp;
             value.get(tmp);
-            for (typename OpenWBEM::Array<OT>::const_iterator iter = 
+            for (typename OpenWBEM::Array<OT>::const_iterator iter =
                 tmp.begin(); iter != tmp.end(); ++iter)
             {
-                CT ct = *iter; 
-                ((Property< Array<CT> >*)field)->value.append(ct); 
+                CT ct = *iter;
+                ((Property< Array<CT> >*)field)->value.append(ct);
             }
-            ((Property< Array<CT> >*)field)->null = 0; 
+            ((Property< Array<CT> >*)field)->null = 0;
         }
         else
         {
-            ((Property< Array<CT> >*)field)->null = 1; 
+            ((Property< Array<CT> >*)field)->null = 1;
         }
     }
 };
@@ -538,7 +538,7 @@ struct _to_cimple_array
     else        \
     {           \
         _to_cimple_array<ow_type, cimple_type>::func(v, ci, f);         \
-    }           
+    }
 
 static int _to_cimple_property(
     const OpenWBEM::CIMValue& v,
@@ -559,77 +559,77 @@ static int _to_cimple_property(
     switch (v.getType())
     {
     case OpenWBEM::CIMDataType::UINT8:
-        _to_cimple_property_macro(UINT8, OpenWBEM::UInt8, uint8); 
+        _to_cimple_property_macro(UINT8, OpenWBEM::UInt8, uint8);
         break;
     case OpenWBEM::CIMDataType::SINT8:
-        _to_cimple_property_macro(SINT8, OpenWBEM::Int8, sint8); 
+        _to_cimple_property_macro(SINT8, OpenWBEM::Int8, sint8);
         break;
     case OpenWBEM::CIMDataType::UINT16:
-        _to_cimple_property_macro(UINT16, OpenWBEM::UInt16, uint16); 
-        break; 
+        _to_cimple_property_macro(UINT16, OpenWBEM::UInt16, uint16);
+        break;
     case OpenWBEM::CIMDataType::SINT16:
-        _to_cimple_property_macro(SINT16, OpenWBEM::Int16, sint16); 
+        _to_cimple_property_macro(SINT16, OpenWBEM::Int16, sint16);
         break;
     case OpenWBEM::CIMDataType::UINT32:
-        _to_cimple_property_macro(UINT32, OpenWBEM::UInt32, uint32); 
+        _to_cimple_property_macro(UINT32, OpenWBEM::UInt32, uint32);
         break;
-    case OpenWBEM::CIMDataType::SINT32: 
-        _to_cimple_property_macro(SINT32, OpenWBEM::Int32, sint32); 
-        break; 
+    case OpenWBEM::CIMDataType::SINT32:
+        _to_cimple_property_macro(SINT32, OpenWBEM::Int32, sint32);
+        break;
     case OpenWBEM::CIMDataType::UINT64:
-        _to_cimple_property_macro(UINT64, OpenWBEM::UInt64, uint64); 
+        _to_cimple_property_macro(UINT64, OpenWBEM::UInt64, uint64);
         break;
     case OpenWBEM::CIMDataType::SINT64:
-        _to_cimple_property_macro(SINT64, OpenWBEM::Int64, sint64); 
+        _to_cimple_property_macro(SINT64, OpenWBEM::Int64, sint64);
         break;
     case OpenWBEM::CIMDataType::STRING:
-        _cimple_check_type(STRING); 
+        _cimple_check_type(STRING);
         if (!v)
         {
-            (*((Property<String>*)f)).null = 1; 
+            (*((Property<String>*)f)).null = 1;
         }
         else
         {
-            (*((Property<String>*)f)).null = 0; 
+            (*((Property<String>*)f)).null = 0;
             if (mp->subscript == 0)
             {
                 OpenWBEM::String str;
                 v.get(str);
-                (*((Property<String>*)f)).value = str.c_str(); 
+                (*((Property<String>*)f)).value = str.c_str();
             }
             else
             {
-                OpenWBEM::StringArray sa; 
-                v.get(sa); 
+                OpenWBEM::StringArray sa;
+                v.get(sa);
                 Array<String> a;
 
-                for (OpenWBEM::StringArray::const_iterator iter = sa.begin(); 
+                for (OpenWBEM::StringArray::const_iterator iter = sa.begin();
                       iter != sa.end(); ++iter)
                 {
-                    a.append(String(iter->c_str())); 
+                    a.append(String(iter->c_str()));
                 }
                 (*((Property<Array_String>*)f)).value = a;
             }
         }
-        break; 
+        break;
     case OpenWBEM::CIMDataType::BOOLEAN:
-        _to_cimple_property_macro(BOOLEAN, OpenWBEM::Bool, boolean); 
-        break; 
+        _to_cimple_property_macro(BOOLEAN, OpenWBEM::Bool, boolean);
+        break;
     case OpenWBEM::CIMDataType::REAL32:
-        _to_cimple_property_macro(REAL32, OpenWBEM::Real32, real32); 
+        _to_cimple_property_macro(REAL32, OpenWBEM::Real32, real32);
         break;
     case OpenWBEM::CIMDataType::REAL64:
-        _to_cimple_property_macro(REAL64, OpenWBEM::Real64, real64); 
-        break; 
+        _to_cimple_property_macro(REAL64, OpenWBEM::Real64, real64);
+        break;
     case OpenWBEM::CIMDataType::DATETIME:
-        _cimple_check_type(DATETIME); 
+        _cimple_check_type(DATETIME);
         if (!v)
         {
-            (*((Property<Datetime>*)f)).null = 1; 
+            (*((Property<Datetime>*)f)).null = 1;
         }
         else
         {
-            (*((Property<Datetime>*)f)).null = 0; 
+            (*((Property<Datetime>*)f)).null = 0;
             if (mp->subscript == 0)
             {
                 OpenWBEM::CIMDateTime dt;
@@ -638,89 +638,89 @@ static int _to_cimple_property(
             }
             else
             {
-                OpenWBEM::Array<CIMDateTime> cdta; 
-                v.get(cdta); 
+                OpenWBEM::Array<CIMDateTime> cdta;
+                v.get(cdta);
                 Array<Datetime> a;
-                for (OpenWBEM::Array<CIMDateTime>::const_iterator iter = 
-                      cdta.begin(); 
+                for (OpenWBEM::Array<CIMDateTime>::const_iterator iter =
+                      cdta.begin();
                       iter != cdta.end(); ++iter)
                 {
                     Datetime dt;
-                    dt.set(iter->toString().c_str()); 
+                    dt.set(iter->toString().c_str());
                     a.append(dt);
                 }
                 (*((Property<Array_Datetime>*)f)).value = a;
             }
         }
-        break; 
+        break;
     case OpenWBEM::CIMDataType::CHAR16:
-        // TODO _to_cimple_property_macro(CHAR16, OpenWBEM::Char16, char16); 
+        // TODO _to_cimple_property_macro(CHAR16, OpenWBEM::Char16, char16);
         // break;
     case OpenWBEM::CIMDataType::REFERENCE:
     case OpenWBEM::CIMDataType::EMBEDDEDCLASS:
     case OpenWBEM::CIMDataType::EMBEDDEDINSTANCE:
-    default: 
+    default:
         CIMPLE_ERROR(("unexpected condition"));
         return -1;
-        break; 
+        break;
     }
     return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 template <typename ParmOrProp>
-Instance* _make_cimple_instance(const OpenWBEM::Array<ParmOrProp>& bindings, 
-                                       const Meta_Class* mc, 
+Instance* _make_cimple_instance(const OpenWBEM::Array<ParmOrProp>& bindings,
+                                       const Meta_Class* mc,
                                        bool keys_only)
 {
-    Instance* instance = create(mc); 
-    //CIMPLE_ASSERT(mc->__magic == CIMPLE_INSTANCE_MAGIC); 
+    Instance* instance = create(mc);
+    //CIMPLE_ASSERT(mc->__magic == CIMPLE_INSTANCE_MAGIC);
 
-    // nullify properties: 
-    nullify_properties(instance); 
+    // nullify properties:
+    nullify_properties(instance);
 
-    for (typename OpenWBEM::Array<ParmOrProp>::const_iterator iter = 
-          bindings.begin(); 
+    for (typename OpenWBEM::Array<ParmOrProp>::const_iterator iter =
+          bindings.begin();
           iter != bindings.end(); ++iter)
     {
-        const Meta_Feature* mf = find_feature(mc, iter->getName().c_str()); 
+        const Meta_Feature* mf = find_feature(mc, iter->getName().c_str());
         if (!mf)
         {
-            CIMPLE_ERROR(("no such feature: %s", iter->getName().c_str())); 
-            destroy(instance); 
-            return 0; 
+            CIMPLE_ERROR(("no such feature: %s", iter->getName().c_str()));
+            destroy(instance);
+            return 0;
         }
-        // skip non-keys if requested. 
+        // skip non-keys if requested.
         if (keys_only && !(mf->flags & CIMPLE_FLAG_KEY))
         {
-            continue; 
+            continue;
         }
-        // initialize the feature. 
+        // initialize the feature.
         if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
-            const Meta_Property* mp = (const Meta_Property*)mf; 
-            const OpenWBEM::CIMValue value = iter->getValue(); 
+            const Meta_Property* mp = (const Meta_Property*)mf;
+            const OpenWBEM::CIMValue value = iter->getValue();
             if (_to_cimple_property(value, instance, mp) != 0)
             {
-                CIMPLE_ERROR(("type mismatch on %s", mp->name)); 
-                destroy(instance); 
-                return 0; 
+                CIMPLE_ERROR(("type mismatch on %s", mp->name));
+                destroy(instance);
+                return 0;
             }
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = (const Meta_Reference*)mf; 
-            const OpenWBEM::CIMValue value = iter->getValue(); 
-            // TODO finish this. 
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
+            const OpenWBEM::CIMValue value = iter->getValue();
+            // TODO finish this.
         }
         else
         {
-            CIMPLE_ERROR(("feature not found: %s\n", mf->name)); 
-            destroy(instance); 
-            return 0; 
+            CIMPLE_ERROR(("feature not found: %s\n", mf->name));
+            destroy(instance);
+            return 0;
         }
     }
-    return instance; 
+    return instance;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -747,7 +747,7 @@ int to_cimple_key(
         return -1;
     }
 
-    ci = _make_cimple_instance<OpenWBEM::CIMProperty>(bindings.getKeys(), 
+    ci = _make_cimple_instance<OpenWBEM::CIMProperty>(bindings.getKeys(),
                                                       mc, false);
 
     return ci ? 0 : -1;
@@ -759,38 +759,38 @@ int to_openwbem_object_path(
         const cimple::Instance* ci,
         OpenWBEM::CIMObjectPath& object_path)
 {
-    CIMPLE_ASSERT(ci->__magic == CIMPLE_INSTANCE_MAGIC); 
-    const Meta_Class* mc = ci->meta_class; 
+    CIMPLE_ASSERT(ci->__magic == CIMPLE_INSTANCE_MAGIC);
+    const Meta_Class* mc = ci->meta_class;
 
-    // TODO hostname? 
-    object_path.setNameSpace(name_space); 
-    object_path.setClassName(mc->name); 
+    // TODO hostname?
+    object_path.setNameSpace(name_space);
+    object_path.setClassName(mc->name);
 
-    // build up key bindings from this CIMPLE instance. 
+    // build up key bindings from this CIMPLE instance.
     for (size_t i = 0; i < mc->num_meta_features; ++i)
     {
-        const Meta_Feature* mf = mc->meta_features[i]; 
-        // Ignore non-key features: 
+        const Meta_Feature* mf = mc->meta_features[i];
+        // Ignore non-key features:
         if (!(mf->flags & CIMPLE_FLAG_KEY))
         {
-            continue; 
+            continue;
         }
 
-        // Ignore methods: 
+        // Ignore methods:
         if (mf->flags & CIMPLE_FLAG_METHOD)
         {
-            continue; 
+            continue;
         }
 
         // convert feature to property
-        OpenWBEM::CIMValue value(CIMNULL); 
+        OpenWBEM::CIMValue value(CIMNULL);
         if (_to_openwbem_value(name_space, ci, mf, value) != 0)
         {
-            return -1; 
+            return -1;
         }
         object_path.setKeyValue(mf->name, value);
     }
-    return 0; 
+    return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -815,10 +815,10 @@ int de_nullify_properties(
 
     const Meta_Class* mc = ci->meta_class;
 
-    for (OpenWBEM::StringArray::const_iterator iter = propertyList->begin(); 
+    for (OpenWBEM::StringArray::const_iterator iter = propertyList->begin();
           iter != propertyList->end(); ++iter)
     {
-        const Meta_Property* mp = 
+        const Meta_Property* mp =
             (Meta_Property*)find_feature(mc, iter->c_str());
 
         if (!mp)
@@ -842,109 +842,109 @@ int de_nullify_properties(
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-int to_openwbem_method(const OpenWBEM::CIMObjectPath& path, 
-                                  const cimple::Instance* meth, 
-                                  OpenWBEM::CIMParamValueArray& out_params, 
+int to_openwbem_method(const OpenWBEM::CIMObjectPath& path,
+                                  const cimple::Instance* meth,
+                                  OpenWBEM::CIMParamValueArray& out_params,
                                   OpenWBEM::CIMValue& return_value)
 {
-    CIMPLE_ASSERT(meth != 0); 
-    out_params.clear();  // TODO: is this wise? 
-    // iterate the meta-method to initialize out_params and return value; 
-    const Meta_Method* mm = (const Meta_Method*)meth->meta_class; 
-    CIMPLE_ASSERT(mm->flags & CIMPLE_FLAG_METHOD); 
-    bool found_return_value(false); 
+    CIMPLE_ASSERT(meth != 0);
+    out_params.clear();  // TODO: is this wise?
+    // iterate the meta-method to initialize out_params and return value;
+    const Meta_Method* mm = (const Meta_Method*)meth->meta_class;
+    CIMPLE_ASSERT(mm->flags & CIMPLE_FLAG_METHOD);
+    bool found_return_value(false);
 
     for (size_t i = 0; i < mm->num_meta_features; ++i)
     {
-        const Meta_Feature* mf = mm->meta_features[i]; 
-        // convert to OpenWBEM value; 
+        const Meta_Feature* mf = mm->meta_features[i];
+        // convert to OpenWBEM value;
         if (mf->flags & CIMPLE_FLAG_OUT)
         {
             if (strcasecmp(mf->name, "return_value") == 0)
             {
-                found_return_value = true; 
-                _to_openwbem_value(path.getFullNameSpace().getNameSpace(), 
-                                   meth, mf, return_value); 
+                found_return_value = true;
+                _to_openwbem_value(path.getFullNameSpace().getNameSpace(),
+                                   meth, mf, return_value);
             }
             else
             {
-                OpenWBEM::CIMValue value(CIMNULL); 
-                _to_openwbem_value(path.getFullNameSpace().getNameSpace(), 
-                                   meth, mf, value); 
-                out_params.append(OpenWBEM::CIMParamValue(mf->name, value)); 
+                OpenWBEM::CIMValue value(CIMNULL);
+                _to_openwbem_value(path.getFullNameSpace().getNameSpace(),
+                                   meth, mf, value);
+                out_params.append(OpenWBEM::CIMParamValue(mf->name, value));
             }
         }
     }
     if (!found_return_value)
     {
-        CIMPLE_ERROR(("return value missing")); 
-        return -1; 
+        CIMPLE_ERROR(("return value missing"));
+        return -1;
     }
-    return 0; 
+    return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-int to_cimple_method(const OpenWBEM::String& methodName, 
-                                const OpenWBEM::CIMParamValueArray& in_params, 
-                                const cimple::Meta_Class* mc, 
+int to_cimple_method(const OpenWBEM::String& methodName,
+                                const OpenWBEM::CIMParamValueArray& in_params,
+                                const cimple::Meta_Class* mc,
                                 cimple::Instance*& meth)
 {
-    meth = 0; 
+    meth = 0;
     // first look up method:
-    const Meta_Method* mm = find_method(mc, methodName.c_str()); 
+    const Meta_Method* mm = find_method(mc, methodName.c_str());
     if (!mm)
     {
-        CIMPLE_ERROR(("no such method: %s", methodName.c_str())); 
-        return -1; 
+        CIMPLE_ERROR(("no such method: %s", methodName.c_str()));
+        return -1;
     }
     // create new method instance
-    meth = _make_cimple_instance<OpenWBEM::CIMParamValue>(in_params, 
-        (Meta_Class*)mm, false); 
+    meth = _make_cimple_instance<OpenWBEM::CIMParamValue>(in_params,
+        (Meta_Class*)mm, false);
     if (!meth)
     {
-        return -1; 
+        return -1;
     }
     // Create reference output parameters
     for (size_t i = 0; i < mm->num_meta_features; ++i)
     {
-        const Meta_Feature* mf = mm->meta_features[i]; 
+        const Meta_Feature* mf = mm->meta_features[i];
         if (mf->flags & CIMPLE_FLAG_REFERENCE && mf->flags & CIMPLE_FLAG_OUT)
         {
-            const Meta_Reference* mr = (const Meta_Reference*)mf; 
-            Instance*& ref = __ref_of(meth, mr); 
+            const Meta_Reference* mr = (const Meta_Reference*)mf;
+            Instance*& ref = __ref_of(meth, mr);
             if (!ref)
             {
-                ref = create(mr->meta_class); 
+                ref = create(mr->meta_class);
             }
         }
     }
-    // Iterate the meta-method looking for missing input parameters; 
+    // Iterate the meta-method looking for missing input parameters;
     for (size_t i = 0; i < mm->num_meta_features; ++i)
     {
-        const Meta_Feature* mf = mm->meta_features[i]; 
+        const Meta_Feature* mf = mm->meta_features[i];
         if (mf->flags & CIMPLE_FLAG_PROPERTY && mf->flags & CIMPLE_FLAG_IN)
         {
-            const Meta_Property* mp = (const Meta_Property*) mf; 
-            bool found = false; 
-            for (OpenWBEM::CIMParamValueArray::const_iterator iter = 
-                  in_params.begin(); 
+            const Meta_Property* mp = (const Meta_Property*) mf;
+            bool found = false;
+            for (OpenWBEM::CIMParamValueArray::const_iterator iter =
+                  in_params.begin();
                   iter != in_params.end(); ++iter)
             {
                 if (iter->getName().equalsIgnoreCase(mp->name))
                 {
-                    found = true; 
-                    break; 
+                    found = true;
+                    break;
                 }
             }
             if (!found)
             {
-                CIMPLE_ERROR(("missing input parameter: %s", mp->name)); 
-                return -1; 
+                CIMPLE_ERROR(("missing input parameter: %s", mp->name));
+                return -1;
             }
         }
     }
 
-    return 0; 
+    return 0;
 }
 
 } // end Converter namespace

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -53,7 +53,7 @@ Pegasus_Thread_Context::~Pegasus_Thread_Context()
 
 static Pegasus_Thread_Context* _top()
 {
-    Pegasus_Thread_Context* context = 
+    Pegasus_Thread_Context* context =
         (Pegasus_Thread_Context*)Thread_Context::top();
     assert(context != 0);
 
@@ -65,7 +65,7 @@ Thread_Context* Pegasus_Thread_Context::thread_create_hook(void* arg)
     Pegasus_Thread_Context* context = _top();
     assert(context != 0);
 
-    P_OperationContext* operation_context = 
+    P_OperationContext* operation_context =
         new P_OperationContext(*context->operation_context());
 
     return new Pegasus_Thread_Context(
@@ -133,7 +133,7 @@ void Pegasus_Thread_Context::instance_enumerator_destroy(
 bool Pegasus_Thread_Context::instance_enumerator_more(
     Instance_Enumerator_Rep* rep_)
 {
-    Pegasus_Instance_Enumerator_Rep* rep = 
+    Pegasus_Instance_Enumerator_Rep* rep =
         (Pegasus_Instance_Enumerator_Rep*)rep_;
 
     if (!rep)
@@ -145,7 +145,7 @@ bool Pegasus_Thread_Context::instance_enumerator_more(
 void Pegasus_Thread_Context::instance_enumerator_next(
     Instance_Enumerator_Rep* rep_)
 {
-    Pegasus_Instance_Enumerator_Rep* rep = 
+    Pegasus_Instance_Enumerator_Rep* rep =
         (Pegasus_Instance_Enumerator_Rep*)rep_;
 
     if (rep && rep->pos != rep->instances.size())
@@ -155,7 +155,7 @@ void Pegasus_Thread_Context::instance_enumerator_next(
 Ref<Instance> Pegasus_Thread_Context::instance_enumerator_get(
     Instance_Enumerator_Rep* rep_)
 {
-    Pegasus_Instance_Enumerator_Rep* rep = 
+    Pegasus_Instance_Enumerator_Rep* rep =
         (Pegasus_Instance_Enumerator_Rep*)rep_;
 
     if (!rep || rep->pos == rep->instances.size())
@@ -194,7 +194,7 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
     {
         // Get the instance.
 
-        P_CIMInstance cim_instance = 
+        P_CIMInstance cim_instance =
             context->cimom_handle()->getInstance(
                 *context->operation_context(),
                 name_space,
@@ -223,7 +223,7 @@ Ref<Instance> Pegasus_Thread_Context::get_instance(
         // Error!
         return Ref<Instance>();
     }
-        
+
     // Unreachable!
     return Ref<Instance>();
 }
@@ -261,7 +261,7 @@ int Pegasus_Thread_Context::create_instance(
         // Error!
         return -1;
     }
-        
+
     // Unreachable!
     return -1;
 }
@@ -299,7 +299,7 @@ int Pegasus_Thread_Context::delete_instance(
         // Error!
         return -1;
     }
-        
+
     // Unreachable!
     return -1;
 }
@@ -339,7 +339,7 @@ int Pegasus_Thread_Context::modify_instance(
         // Error!
         return -1;
     }
-        
+
     // Unreachable!
     return -1;
 }
@@ -376,10 +376,10 @@ bool Pegasus_Thread_Context::get_username(String& user_name)
 
         if (_operation_context->contains(P_IdentityContainer::NAME))
         {
-            const P_OperationContext::Container& c =  
+            const P_OperationContext::Container& c =
                 _operation_context->get(P_IdentityContainer::NAME);
-    
-            const P_IdentityContainer* ic = 
+
+            const P_IdentityContainer* ic =
                 dynamic_cast<const P_IdentityContainer*>(&c);
 
             // TBD - We may be able to remove this if statement.

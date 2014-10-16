@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -101,7 +101,7 @@ static void _check(int cimple_error)
         case MODIFY_INSTANCE_INVALID_PARAMETER:
                code = Pegasus::CIM_ERR_INVALID_PARAMETER;
                break;
-    
+
         case GET_INSTANCE_ACCESS_DENIED:
         case ENUM_INSTANCES_ACCESS_DENIED:
         case CREATE_INSTANCE_ACCESS_DENIED:
@@ -127,7 +127,7 @@ static void _check(int cimple_error)
         case ENUM_ASSOCIATOR_NAMES_FAILED:
             code = Pegasus::CIM_ERR_FAILED;
             break;
-            
+
         // Invalid error code defaults to CIM_ERR_FAILED but with
         // log entry.
         default:
@@ -222,7 +222,7 @@ static void _discard_properties(P_CIMInstance& pi, const P_CIMPropertyList& pl)
 }
 
 Pegasus_Adapter::Pegasus_Adapter(Provider_Handle* provider) :
-    _provider(provider), 
+    _provider(provider),
     _handler(0),
     _cimom_handle(0)
 {
@@ -351,8 +351,8 @@ struct Enum_Instance_Data
 };
 
 static bool _enum_instances_proc(
-    Instance* instance, 
-    Enum_Instances_Status status, 
+    Instance* instance,
+    Enum_Instances_Status status,
     void* client_data)
 {
     PENTRY("_enum_instances_proc");
@@ -447,13 +447,13 @@ struct Handle_Enumerate_Instance_Names_Data
 };
 
 static bool _enum_instance_names_proc(
-    Instance* instance, 
-    Enum_Instances_Status status, 
+    Instance* instance,
+    Enum_Instances_Status status,
     void* client_data)
 {
     PENTRY("_enum_instance_names_proc");
 
-    Handle_Enumerate_Instance_Names_Data* data = 
+    Handle_Enumerate_Instance_Names_Data* data =
         (Handle_Enumerate_Instance_Names_Data*)client_data;
 
     P_ObjectPathResponseHandler* handler = data->handler;
@@ -474,7 +474,7 @@ static bool _enum_instance_names_proc(
 
     P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(_get_host_name(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(),
            data->name_space, instance, op) != 0)
     {
         destroy(instance);
@@ -580,7 +580,7 @@ void Pegasus_Adapter::createInstance(
 
     P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(_get_host_name(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(),
         objectPath.getNameSpace(), ci, op) != 0)
     {
         PEXITTHROW(Pegasus::CIM_ERR_FAILED);
@@ -767,7 +767,7 @@ void Pegasus_Adapter::invokeMethod(
     Pegasus::Array<P_CIMParamValue> out_params;
     P_CIMValue return_value;
 
-    if (Converter::to_pegasus_method(_get_host_name(), cop.getNameSpace(), 
+    if (Converter::to_pegasus_method(_get_host_name(), cop.getNameSpace(),
         meth, CIMPLE_FLAG_OUT, out_params, return_value) != 0)
     {
         _throw(Pegasus::CIM_ERR_FAILED, "CIMPLE to Pegasus conversion failed");
@@ -786,7 +786,7 @@ void Pegasus_Adapter::invokeMethod(
     }
 
     handler.processing();
-    handler.deliver(return_value); 
+    handler.deliver(return_value);
 
     for (size_t i = 0; i < out_params.size(); i++)
         handler.deliverParamValue(out_params[P_Uint32(i)]);
@@ -813,7 +813,7 @@ struct Handle_Associators_Request_Data_1
         P_Boolean includeClassOrigin_,
         const P_CIMPropertyList& propertyList_,
         P_ObjectResponseHandler& handler_)
-        : 
+        :
         handle(handle_),
         context(context_),
         objectPath(objectPath_),
@@ -832,7 +832,7 @@ static bool _enum_associator_proc_1(
     void* client_data)
 {
     PENTRY("_enum_associator_proc_1");
-    Handle_Associators_Request_Data_1* data = 
+    Handle_Associators_Request_Data_1* data =
         (Handle_Associators_Request_Data_1*)client_data;
 
     // Ignore the final call or if already in an error state:
@@ -847,7 +847,7 @@ static bool _enum_associator_proc_1(
 
     P_CIMInstance ci;
 
-    if (Converter::to_pegasus_assoc_instance(_get_host_name(), 
+    if (Converter::to_pegasus_assoc_instance(_get_host_name(),
         data->objectPath.getNameSpace(),associator, ci) != 0)
     {
         data->error = true;
@@ -859,7 +859,7 @@ static bool _enum_associator_proc_1(
     _discard_properties(ci, data->propertyList);
     //logPegasusInstance(ci, LL_DBG, __FILE__, __LINE__);
     PTRACEPEGASUSINSTANCE(ci);
-    //printf("_enum_associator_proc_1-2 %s %u \n", __FILE__, __LINE__);    
+    //printf("_enum_associator_proc_1-2 %s %u \n", __FILE__, __LINE__);
     data->handler.deliver(ci);
 
     // Keep them coming!
@@ -886,7 +886,7 @@ struct Handle_Associators_Request_Data_2
         P_Boolean includeClassOrigin_,
         const P_CIMPropertyList& propertyList_,
         P_ObjectResponseHandler& handler_)
-        : 
+        :
         handle(handle_),
         context(context_),
         objectPath(objectPath_),
@@ -905,7 +905,7 @@ static bool _enum_associator_proc_2(
     void* client_data)
 {
     PENTRY("_enum_associator_proc_2");
-    Handle_Associators_Request_Data_2* data = 
+    Handle_Associators_Request_Data_2* data =
         (Handle_Associators_Request_Data_2*)client_data;
 
     // Ignore the final call or if already in an error state:
@@ -921,7 +921,7 @@ static bool _enum_associator_proc_2(
 
     P_CIMObjectPath objectPath;
 
-    if (Converter::to_pegasus_assoc_object_path(_get_host_name(), 
+    if (Converter::to_pegasus_assoc_object_path(_get_host_name(),
         data->objectPath.getNameSpace(), associator_name, objectPath) != 0)
     {
         data->error = true;
@@ -957,8 +957,8 @@ static bool _enum_associator_proc_2(
     {
         CIMPLE_ERR(("CIMException: associators getInstance. path = %s"
                     ". Error = %u, Msg = %s",
-            (const char*)objectPath.toString().getCString(),        
-            e.getCode(),(const char*)e.getMessage().getCString() ));            
+            (const char*)objectPath.toString().getCString(),
+            e.getCode(),(const char*)e.getMessage().getCString() ));
     }
     catch (const P_Exception& e)
     {
@@ -1011,7 +1011,7 @@ void Pegasus_Adapter::associators(
         // This is consistent with the concept in Pegasus at least that
         // the association provider may be called based on the association
         // class and may be called for objects that it does not comprehend.
-        // The implication of this is that the association class provider 
+        // The implication of this is that the association class provider
         // and the provider for the target instance MUST exist in the
         // same provider module so that both are available with
         // find_meta_class
@@ -1051,11 +1051,11 @@ void Pegasus_Adapter::associators(
 
         //printf("Pegasus_Adapter::associators %s %u \n", __FILE__, __LINE__);
         Enum_Associators_Status status = _provider->enum_associators(
-            ck, 
-            *Str(resultClass), 
-            *Str(role), 
-            *Str(resultRole), 
-            _enum_associator_proc_1, 
+            ck,
+            *Str(resultClass),
+            *Str(role),
+            *Str(resultRole),
+            _enum_associator_proc_1,
             &data);
 
         //printf("Pegasus_Adapter::associators %s %u status = %u \n",
@@ -1089,13 +1089,13 @@ void Pegasus_Adapter::associators(
 
         //printf("Pegasus_Adapter::associators 3 %s %u \n", __FILE__, __LINE__);
         // Call common function in Provider_Handle to process instance
-        Enum_Associator_Names_Status status = 
+        Enum_Associator_Names_Status status =
             _provider->enum_associator_names(
-                ck, 
-                *Str(resultClass), 
-                *Str(role), 
-                *Str(resultRole), 
-                _enum_associator_proc_2, 
+                ck,
+                *Str(resultClass),
+                *Str(role),
+                *Str(resultRole),
+                _enum_associator_proc_2,
                 &data);
 
         if (data.error)
@@ -1127,7 +1127,7 @@ static bool _enum_associator_names_proc(
     void* client_data)
 {
     PENTRY("_enum_associator_names_proc");
-    Handle_Associator_Names_Request_Data* data = 
+    Handle_Associator_Names_Request_Data* data =
         (Handle_Associator_Names_Request_Data*)client_data;
 
     // Ignore last call or if already in an error state:
@@ -1142,7 +1142,7 @@ static bool _enum_associator_names_proc(
 
     P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_assoc_object_path(_get_host_name(), 
+    if (Converter::to_pegasus_assoc_object_path(_get_host_name(),
         data->objectPath.getNameSpace(), assoc_name, op) != 0)
     {
         data->error = true;
@@ -1207,13 +1207,13 @@ void Pegasus_Adapter::associatorNames(
     data.objectPath = objectPath;
     data.error = false;
 
-    Enum_Associator_Names_Status status = 
+    Enum_Associator_Names_Status status =
         _provider->enum_associator_names(
-            ck, 
-            *Str(resultClass), 
-            *Str(role), 
-            *Str(resultRole), 
-            _enum_associator_names_proc, 
+            ck,
+            *Str(resultClass),
+            *Str(role),
+            *Str(resultRole),
+            _enum_associator_names_proc,
             &data);
 
     if (data.error)
@@ -1253,7 +1253,7 @@ static bool _enumerate_references_proc(
     Enum_References_Status status,
     void* client_data)
 {
-    Handle_References_Request_Data* data = 
+    Handle_References_Request_Data* data =
         (Handle_References_Request_Data*)client_data;
 
     // Ignore last call and return if already got an error.
@@ -1267,7 +1267,7 @@ static bool _enumerate_references_proc(
 
     P_CIMInstance pi;
 
-    if (Converter::to_pegasus_instance(_get_host_name(), 
+    if (Converter::to_pegasus_instance(_get_host_name(),
         data->objectPath.getNameSpace(), reference, pi) != 0)
     {
         data->error = true;
@@ -1340,10 +1340,10 @@ void Pegasus_Adapter::references(
     Handle_References_Request_Data data(handler, objectPath, propertyList);
 
     Enum_References_Status status = _provider->enum_references(
-        ck, 
-        model, 
-        *Str(role), 
-        _enumerate_references_proc, 
+        ck,
+        model,
+        *Str(role),
+        _enumerate_references_proc,
         &data);
 
     // KS_TODO - Check why this does not include the
@@ -1383,7 +1383,7 @@ static bool _enumerate_reference_names_proc(
     void* client_data)
 {
     PENTRY("_enumerate_reference_names_proc");
-    Handle_Reference_Names_Request_Data* data = 
+    Handle_Reference_Names_Request_Data* data =
         (Handle_Reference_Names_Request_Data*)client_data;
 
     // Ignore last call and return if already got an error.
@@ -1400,7 +1400,7 @@ static bool _enumerate_reference_names_proc(
 
     P_CIMObjectPath op;
 
-    if (Converter::to_pegasus_object_path(_get_host_name(), 
+    if (Converter::to_pegasus_object_path(_get_host_name(),
         data->objectPath.getNameSpace(), reference, op) != 0)
     {
         data->error = true;
@@ -1468,10 +1468,10 @@ void Pegasus_Adapter::referenceNames(
     Handle_Reference_Names_Request_Data data(handler, objectPath);
 
     Enum_References_Status status = _provider->enum_references(
-        ck, 
-        model, 
-        *Str(role), 
-        _enumerate_reference_names_proc, 
+        ck,
+        model,
+        *Str(role),
+        _enumerate_reference_names_proc,
         &data);
 
     destroy(model);
@@ -1530,7 +1530,7 @@ static bool _indication_proc(Instance* indication, void* client_data)
 
         P_CIMInstance pegasus_indication;
 
-        if (Converter::to_pegasus_instance(_get_host_name(), 
+        if (Converter::to_pegasus_instance(_get_host_name(),
             ns.c_str(), indication, pegasus_indication) != 0)
         {
             PEXITBOOL(false);
@@ -1724,7 +1724,7 @@ extern "C" CIMPLE_ADAPTER_LINKAGE int cimple_pegasus_adapter(
     void* arg2, /* registration */
     void* arg3, /* adapter */
     void* arg4, /* unused */
-    void* arg5, /* unused */ 
+    void* arg5, /* unused */
     void* arg6, /* unused */
     void* arg7) /* unused */
 {
@@ -1739,7 +1739,7 @@ extern "C" CIMPLE_ADAPTER_LINKAGE int cimple_pegasus_adapter(
     {
         if (strcasecmp(r->provider_name, providerName.getCString()) == 0)
         {
-            cimple::Provider_Handle* provider = 
+            cimple::Provider_Handle* provider =
                 new cimple::Provider_Handle(r);
 
             cimple::Pegasus_Adapter* adapter =
