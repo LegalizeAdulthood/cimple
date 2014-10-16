@@ -91,7 +91,57 @@ int main(int argc, char** argv)
         printf("    ");
 
         for (size_t i = 0; i < n; i++)
-            printf("0x%02X,", buffer[i]);
+        {
+            if (isprint(buffer[i]))
+            {
+                if (buffer[i] == '\'')
+                {
+                    printf("'\\''");
+                }
+                else if (buffer[i] == '\\')
+                {
+                    printf("'\\\\'");
+                }
+                else
+                {
+                    printf(" '%c'", char(buffer[i]));
+                }
+            }
+            else
+            {
+                switch (buffer[i])
+                {
+                    case '\a':
+                        printf("'\\a'");
+                        break;
+
+                    case '\b':
+                        printf("'\\b'");
+                        break;
+
+                    case '\f':
+                        printf("'\\f'");
+                        break;
+
+                    case '\n':
+                        printf("'\\n'");
+                        break;
+
+                    case '\r':
+                        printf("'\\r'");
+                        break;
+
+                    case '\t':
+                        printf("'\\t'");
+                        break;
+
+                    default:
+                        printf("0x%02X", buffer[i]);
+                        break;
+                }
+            }
+            printf(",");
+        }
 
         printf("\n");
     }

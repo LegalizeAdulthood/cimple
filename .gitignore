@@ -4,6 +4,7 @@ lib64
 config.options
 *.o
 src/cimple/tests/log/result
+src/tools/file2c/tests/test.h
 src/tools/genclass/usage.h
 src/tools/genhnd/usage.h
 src/tools/genmak/usage.h

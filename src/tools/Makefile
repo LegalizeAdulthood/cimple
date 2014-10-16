@@ -3,6 +3,7 @@ include $(TOP)/mak/config.mak
 
 DIRS = \
     file2c \
+    file2c/tests \
     csleep \
     gencommon \
     genclass \
