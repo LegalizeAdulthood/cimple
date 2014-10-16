@@ -5,7 +5,7 @@ BINARY = test_genclass9
 
 SOURCES = \
     main.cpp \
-    Thing.cpp 
+    Thing.cpp
 
 LIBRARIES = cimple
 

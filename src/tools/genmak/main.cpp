@@ -100,9 +100,9 @@ static void genmak(const char* /* pname */, const char* library_name,
 
     fprintf(out, "\n");
 
-    fprintf(out, "##\n## Module defined as %s interface\n##\n", 
+    fprintf(out, "##\n## Module defined as %s interface\n##\n",
             ( cmpi_opt? "cmpi" : "Pegasus C++") );
-    
+
     if (cmpi_opt)
     {
         fprintf(out, "CIMPLE_CMPI_MODULE=1\n");

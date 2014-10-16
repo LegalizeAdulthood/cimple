@@ -20,7 +20,7 @@ class Thing
 
     datetime prop7 = "20061225123000.000000-360";
 
-    datetime prop8[] = 
+    datetime prop8[] =
         { "20061225123000.000000-360", "20061225123000.000000+360" };
 
     boolean prop9[] = { true, false, true };

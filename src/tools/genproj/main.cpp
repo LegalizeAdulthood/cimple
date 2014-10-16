@@ -229,7 +229,7 @@ static void gen_project(const char* module_name, int argc, char** argv)
 
         if (regmod_opt)
             cmd += "-r ";
-        
+
         cmd += string(module_name);
 
         for (size_t i = 0; i < sources.size(); i++)
