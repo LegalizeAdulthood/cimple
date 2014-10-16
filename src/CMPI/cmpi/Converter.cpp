@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -41,7 +41,7 @@
 
 using namespace cimple;
 
-static CMPIType _cmpi_type[] = 
+static CMPIType _cmpi_type[] =
 {
     CMPI_boolean,
     CMPI_uint8,
@@ -82,8 +82,8 @@ static uint16 _to_cimple_type(CMPIType type)
 }
 
 static CMPIrc _set_cimple_scalar(
-    const Meta_Property* mp, 
-    void* prop, 
+    const Meta_Property* mp,
+    void* prop,
     const CMPIData& data)
 {
     // Scalar case:
@@ -179,8 +179,8 @@ static bool _type_compatible(uint16 type1, uint16 type2)
 }
 
 static CMPIrc _set_cimple_scalar_key(
-    const Meta_Property* mp, 
-    void* prop, 
+    const Meta_Property* mp,
+    void* prop,
     const CMPIData& data)
 {
     // Scalar case:
@@ -259,8 +259,8 @@ static CMPIrc _set_cimple_scalar_key(
 }
 
 static CMPIrc _set_cimple_array(
-    const Meta_Property* mp, 
-    void* prop, 
+    const Meta_Property* mp,
+    void* prop,
     const CMPIData& data)
 {
     // Scalar case:
@@ -362,8 +362,8 @@ static CMPIrc _set_cimple_array(
 }
 
 static CMPIrc _set_cimple_array_key(
-    const Meta_Property* mp, 
-    void* prop, 
+    const Meta_Property* mp,
+    void* prop,
     const CMPIData& data)
 {
     // Scalar case:
@@ -621,7 +621,7 @@ CMPIrc make_cimple_reference(
 }
 
 static CMPIDateTime* _to_cmpi_datetime(
-    const CMPIBroker* broker, 
+    const CMPIBroker* broker,
     const Datetime& x)
 {
     char buf[Datetime::BUFFER_SIZE];
@@ -630,7 +630,7 @@ static CMPIDateTime* _to_cmpi_datetime(
 }
 
 static CMPIString* _to_cmpi_string(
-    const CMPIBroker* broker, 
+    const CMPIBroker* broker,
     const String& x)
 {
     RETURN(CMNewString(broker, x.c_str(), NULL));
@@ -731,7 +731,7 @@ static void _to_cmpi_value(
 
 CMPIrc make_cmpi_object_path(
     const CMPIBroker* broker,
-    const cimple::Instance* cimple_inst, 
+    const cimple::Instance* cimple_inst,
     const char* name_space,
     CMPIObjectPath*& cmpi_op)
 {
@@ -767,7 +767,7 @@ CMPIrc make_cmpi_object_path(
         {
             const Meta_Reference* mr = (const Meta_Reference*)mf;
             const Instance* ref = reference_of(cimple_inst, mr);
-            
+
             if (ref)
             {
                 CMPIValue value;
@@ -791,7 +791,7 @@ CMPIrc make_cmpi_object_path(
 
 CMPIrc make_cmpi_instance(
     const CMPIBroker* broker,
-    const Instance* cimple_inst, 
+    const Instance* cimple_inst,
     const char* name_space,
     const CMPIObjectPath* cmpi_op,
     CMPIInstance*& cmpi_inst)
@@ -840,7 +840,7 @@ CMPIrc make_cmpi_instance(
         {
             const Meta_Reference* mr = (const Meta_Reference*)mf;
             const Instance* ref = reference_of(cimple_inst, mr);
-            
+
             if (ref)
             {
                 CMPIValue value;
@@ -1074,7 +1074,7 @@ CMPIrc make_method_out(
         {
             const Meta_Reference* mr = (const Meta_Reference*)mf;
             const Instance* ref = reference_of(cimple_meth, mr);
-            
+
             if (ref)
             {
                 CMPIValue value;

@@ -1,6 +1,6 @@
-.PHONY: all 
-.PHONY: depend 
-.PHONY: clean 
+.PHONY: all
+.PHONY: depend
+.PHONY: clean
 .PHONY: tests
 .PHONY: gen
 .PHONY: sub
@@ -241,7 +241,7 @@ endif
 ##
 ##==============================================================================
 
-INCLUDES += -I$(TOP)/src 
+INCLUDES += -I$(TOP)/src
 INCLUDES += -I$(TOP)/src/stdincludes/$(PLATFORM)
 INCLUDES += -I$(INCLUDEDIR_OPT)
 

@@ -64,47 +64,47 @@ const char* type_name_of(CMPIType type)
 
 static void get_boolean(const CMPIValue& v, cimple::boolean& x)
 {
-    x = v.boolean; 
+    x = v.boolean;
 }
 
 static void get_uint8(const CMPIValue& v, cimple::uint8& x)
 {
-    x = v.uint8; 
+    x = v.uint8;
 }
 
 static void get_sint8(const CMPIValue& v, cimple::sint8& x)
 {
-    x = v.sint8; 
+    x = v.sint8;
 }
 
 static void get_uint16(const CMPIValue& v, cimple::uint16& x)
 {
-    x = v.uint16; 
+    x = v.uint16;
 }
 
 static void get_sint16(const CMPIValue& v, cimple::sint16& x)
 {
-    x = v.sint16; 
+    x = v.sint16;
 }
 
 static void get_uint32(const CMPIValue& v, cimple::uint32& x)
 {
-    x = v.uint32; 
+    x = v.uint32;
 }
 
 static void get_sint32(const CMPIValue& v, cimple::sint32& x)
 {
-    x = v.sint32; 
+    x = v.sint32;
 }
 
 static void get_uint64(const CMPIValue& v, cimple::uint64& x)
 {
-    x = v.uint64; 
+    x = v.uint64;
 }
 
 static void get_sint64(const CMPIValue& v, cimple::sint64& x)
 {
-    x = v.sint64; 
+    x = v.sint64;
 }
 
 //==============================================================================
@@ -113,64 +113,64 @@ static void get_sint64(const CMPIValue& v, cimple::sint64& x)
 //
 //==============================================================================
 
-static void value_of(const CMPIData& d, bool& x) 
+static void value_of(const CMPIData& d, bool& x)
 {
-    x = d.value.boolean; 
+    x = d.value.boolean;
 }
 
-static void value_of(const CMPIData& d, CMPIUint8& x) 
+static void value_of(const CMPIData& d, CMPIUint8& x)
 {
-    x = d.value.uint8; 
+    x = d.value.uint8;
 }
 
-static void value_of(const CMPIData& d, CMPISint8& x) 
+static void value_of(const CMPIData& d, CMPISint8& x)
 {
-    x = d.value.sint8; 
+    x = d.value.sint8;
 }
 
-static void value_of(const CMPIData& d, CMPIUint16& x) 
+static void value_of(const CMPIData& d, CMPIUint16& x)
 {
-    x = d.value.uint16; 
+    x = d.value.uint16;
 }
 
-static void value_of(const CMPIData& d, CMPISint16& x) 
+static void value_of(const CMPIData& d, CMPISint16& x)
 {
-    x = d.value.sint16; 
+    x = d.value.sint16;
 }
 
-static void value_of(const CMPIData& d, CMPIUint32& x) 
+static void value_of(const CMPIData& d, CMPIUint32& x)
 {
-    x = d.value.uint32; 
+    x = d.value.uint32;
 }
 
-static void value_of(const CMPIData& d, CMPISint32& x) 
+static void value_of(const CMPIData& d, CMPISint32& x)
 {
-    x = d.value.sint32; 
+    x = d.value.sint32;
 }
 
-static void value_of(const CMPIData& d, CMPIUint64& x) 
+static void value_of(const CMPIData& d, CMPIUint64& x)
 {
-    x = d.value.uint64; 
+    x = d.value.uint64;
 }
 
-static void value_of(const CMPIData& d, CMPISint64& x) 
+static void value_of(const CMPIData& d, CMPISint64& x)
 {
-    x = d.value.sint64; 
+    x = d.value.sint64;
 }
 
-static void value_of(const CMPIData& d, CMPIReal32& x) 
+static void value_of(const CMPIData& d, CMPIReal32& x)
 {
-    x = d.value.real32; 
+    x = d.value.real32;
 }
 
-static void value_of(const CMPIData& d, CMPIReal64& x) 
+static void value_of(const CMPIData& d, CMPIReal64& x)
 {
-    x = d.value.real64; 
+    x = d.value.real64;
 }
 
 static void value_of(const CMPIData& d, const char*& x)
-{ 
-    x = CMGetCharPtr(d.value.string); 
+{
+    x = CMGetCharPtr(d.value.string);
 }
 
 //==============================================================================
@@ -187,14 +187,14 @@ class CMW_Const_Object_Path
 {
 public:
 
-    CMW_Const_Object_Path(const CMPIObjectPath* rep) : 
+    CMW_Const_Object_Path(const CMPIObjectPath* rep) :
         _rep((CMPIObjectPath*)rep)
     {
     }
 
     ~CMW_Const_Object_Path()
     {
-    } 
+    }
 
     CMPIObjectPath* clone() const
     {
@@ -313,7 +313,7 @@ public:
     {
         if (_rep)
             CMRelease(_rep);
-    } 
+    }
 
     void name_space(const char* name_space)
     {

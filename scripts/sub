@@ -6,7 +6,7 @@
 ##
 ## Usage: sub file1 file2 ...
 ##
-## This utility applies the SED script /tmp/sub.sed to all files given as 
+## This utility applies the SED script /tmp/sub.sed to all files given as
 ## arguments.
 ##
 ## The original files are first moved to a directory called ".rsub".

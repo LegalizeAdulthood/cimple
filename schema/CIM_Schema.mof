@@ -1,6 +1,6 @@
 #pragma include("cimv211.mof")
 
-// This is a pseudo class that only exists to implement embedded object 
+// This is a pseudo class that only exists to implement embedded object
 // properties. In CIMPLE, these properties are pointers to real instances
 // rather than strings.
 

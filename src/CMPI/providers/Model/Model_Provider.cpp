@@ -130,7 +130,7 @@ Invoke_Method_Status Model_Provider::stub2(
 int Model_Provider::proc(
     int operation, void* arg0, void* arg1, void* arg2, void* arg3)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Model Class;

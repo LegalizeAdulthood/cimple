@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,7 +44,7 @@ class CIMPLECMPI_LINKAGE Adapter : public Provider_Handle
 public:
 
     Adapter(
-        const CMPIBroker* broker_, 
+        const CMPIBroker* broker_,
         const CMPIContext* context,
         const char* provider_name,
         const Registration* registration);
@@ -52,158 +52,158 @@ public:
     ~Adapter();
 
     static CMPIStatus cleanup(
-        CMPIInstanceMI* mi, 
+        CMPIInstanceMI* mi,
         const CMPIContext* context,
         CMPIBoolean terminating);
 
     static CMPIStatus enumInstanceNames(
-        CMPIInstanceMI* mi, 
-        const CMPIContext* context, 
+        CMPIInstanceMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
         const CMPIObjectPath* cmpi_op);
 
     static CMPIStatus enumInstances(
-        CMPIInstanceMI* mi, 
-        const CMPIContext* context, 
+        CMPIInstanceMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* cmpi_op, 
+        const CMPIObjectPath* cmpi_op,
         const char** properties);
 
     static CMPIStatus getInstance(
-        CMPIInstanceMI* mi, 
-        const CMPIContext* context, 
+        CMPIInstanceMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* cmpi_op, 
+        const CMPIObjectPath* cmpi_op,
         const char** properties);
 
     static CMPIStatus createInstance(
-        CMPIInstanceMI* mi, 
-        const CMPIContext* context, 
+        CMPIInstanceMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* cmpi_op, 
+        const CMPIObjectPath* cmpi_op,
         const CMPIInstance* cmpi_inst);
 
     static CMPIStatus modifyInstance(
-        CMPIInstanceMI* mi, 
-        const CMPIContext* context, 
+        CMPIInstanceMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* ref, 
+        const CMPIObjectPath* ref,
         const CMPIInstance* inst,
         const char** properties);
 
     static CMPIStatus deleteInstance(
-        CMPIInstanceMI* mi, 
-        const CMPIContext* context, 
+        CMPIInstanceMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
         const CMPIObjectPath* cmpi_op);
 
     static CMPIStatus execQuery(
-        CMPIInstanceMI* mi, 
-        const CMPIContext* context, 
+        CMPIInstanceMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* ref, 
-        const char* lang, 
+        const CMPIObjectPath* ref,
+        const char* lang,
         const char* query);
 
     static CMPIStatus methodCleanup(
-        CMPIMethodMI* mi, 
+        CMPIMethodMI* mi,
         const CMPIContext* context,
         CMPIBoolean terminating);
 
     static CMPIStatus invokeMethod(
-        CMPIMethodMI* mi, 
-        const CMPIContext* context, 
+        CMPIMethodMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* ref, 
-        const char* method, 
+        const CMPIObjectPath* ref,
+        const char* method,
         const CMPIArgs* in,
         CMPIArgs* out);
 
     static CMPIStatus indicationCleanup(
-        CMPIIndicationMI* mi, 
+        CMPIIndicationMI* mi,
         const CMPIContext* context,
         CMPIBoolean terminating);
 
      static CMPIStatus authorizeFilter(
-         CMPIIndicationMI* mi, 
+         CMPIIndicationMI* mi,
          const CMPIContext* ctx,
-         const CMPISelectExp* se, 
-         const char* ns, 
+         const CMPISelectExp* se,
+         const char* ns,
          const CMPIObjectPath* op,
          const char* user);
 
     static CMPIStatus mustPoll(
-        CMPIIndicationMI* mi, 
+        CMPIIndicationMI* mi,
         const CMPIContext* context,
-        const CMPISelectExp* filter, 
+        const CMPISelectExp* filter,
         const char* indication_type,
         const CMPIObjectPath* class_path);
 
     static CMPIStatus activateFilter(
-        CMPIIndicationMI* mi, 
+        CMPIIndicationMI* mi,
         const CMPIContext* context,
-        const CMPISelectExp* select_expr, 
+        const CMPISelectExp* select_expr,
         const char* indication_type,
-        const CMPIObjectPath* class_path, 
+        const CMPIObjectPath* class_path,
         CMPIBoolean first_activation);
 
     static CMPIStatus deactivateFilter(
-        CMPIIndicationMI* mi, 
+        CMPIIndicationMI* mi,
         const CMPIContext* context,
-        const CMPISelectExp* select_expr, 
+        const CMPISelectExp* select_expr,
         const  char* name_space,
-        const CMPIObjectPath* class_path, 
+        const CMPIObjectPath* class_path,
         CMPIBoolean last);
 
     static void enableIndications(
-        CMPIIndicationMI* mi, 
+        CMPIIndicationMI* mi,
         const CMPIContext* context);
 
     static void disableIndications(
-        CMPIIndicationMI* mi, 
+        CMPIIndicationMI* mi,
         const CMPIContext* context);
 
     static CMPIStatus associationCleanup(
-        CMPIAssociationMI* mi, 
+        CMPIAssociationMI* mi,
         const CMPIContext* context,
         CMPIBoolean terminating);
 
-    static CMPIStatus associators( 
-        CMPIAssociationMI* mi, 
-        const CMPIContext* context, 
+    static CMPIStatus associators(
+        CMPIAssociationMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* cmpi_op, 
-        const char* assoc_class, 
+        const CMPIObjectPath* cmpi_op,
+        const char* assoc_class,
         const char* result_class,
-        const char* role, 
-        const char* result_role, 
+        const char* role,
+        const char* result_role,
         const char** properties);
 
     static CMPIStatus associatorNames(
-        CMPIAssociationMI* mi, 
-        const CMPIContext* context, 
+        CMPIAssociationMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* cmpi_op, 
-        const char* assoc_class, 
+        const CMPIObjectPath* cmpi_op,
+        const char* assoc_class,
         const char* result_class,
-        const char* role, 
+        const char* role,
         const char* result_role);
 
     static CMPIStatus references(
-        CMPIAssociationMI* mi, 
-        const CMPIContext* context, 
+        CMPIAssociationMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* cmpi_op, 
-        const char* result_class, 
+        const CMPIObjectPath* cmpi_op,
+        const char* result_class,
         const char* role ,
         const char** properties);
 
     static CMPIStatus referenceNames(
-        CMPIAssociationMI* mi, 
-        const CMPIContext* context, 
+        CMPIAssociationMI* mi,
+        const CMPIContext* context,
         const CMPIResult* result,
-        const CMPIObjectPath* cmpi_op, 
-        const char* result_class, 
+        const CMPIObjectPath* cmpi_op,
+        const char* result_class,
         const char* role);
 
     CMPIInstanceMIFT instance_ft;

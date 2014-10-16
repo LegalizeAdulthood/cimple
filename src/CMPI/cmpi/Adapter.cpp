@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -128,9 +128,9 @@ RMutex Adapter::_sched_lock;
 //------------------------------------------------------------------------------
 
 Adapter::Adapter(
-    const CMPIBroker* broker_, 
+    const CMPIBroker* broker_,
     const CMPIContext* context,
-    const char* provider_name, 
+    const char* provider_name,
     const Registration* registration) :
     Provider_Handle(registration),
     _indications_enabled(false)
@@ -198,7 +198,7 @@ Adapter::Adapter(
             pthread_attr_init(&_timer_thread_attr);
             pthread_attr_setdetachstate(
                 &_timer_thread_attr, PTHREAD_CREATE_DETACHED);
-            pthread_create(&_timer_thread, &_timer_thread_attr, 
+            pthread_create(&_timer_thread, &_timer_thread_attr,
                 _timer_thread_proc, this);
 
             _timer_context = CBPrepareAttachThread(broker, context);
@@ -248,7 +248,7 @@ Adapter::~Adapter()
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::cleanup(
-    CMPIInstanceMI* mi, 
+    CMPIInstanceMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -307,8 +307,8 @@ namespace enum_instance_names
 }
 
 CMPIStatus Adapter::enumInstanceNames(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op)
 {
@@ -322,7 +322,7 @@ CMPIStatus Adapter::enumInstanceNames(
 
     const Meta_Class* mc = adapter->_mc;
     Instance* cimple_ref = 0;
-    
+
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
 
     if (rc != CMPI_RC_OK)
@@ -338,11 +338,11 @@ CMPIStatus Adapter::enumInstanceNames(
 
     const char* ns = name_space(cmpi_op);
 
-    enum_instance_names::Data data = 
+    enum_instance_names::Data data =
         { adapter->broker, result, ns, CMPI_RC_OK };
 
-    Enum_Instances_Status status = 
-        adapter->enum_instances(cimple_ref, enum_instance_names::_proc, &data); 
+    Enum_Instances_Status status =
+        adapter->enum_instances(cimple_ref, enum_instance_names::_proc, &data);
 
     switch (status)
     {
@@ -400,11 +400,11 @@ namespace enum_instances
         CMPIInstance* cmpi_inst = 0;
 
         data->rc = make_cmpi_instance(
-            data->broker, 
-            cimple_inst, 
-            name_space(data->cmpi_op), 
-            data->cmpi_op, 
-            cmpi_inst); 
+            data->broker,
+            cimple_inst,
+            name_space(data->cmpi_op),
+            data->cmpi_op,
+            cmpi_inst);
 
         if (data->rc != CMPI_RC_OK)
             return false;
@@ -415,10 +415,10 @@ namespace enum_instances
 }
 
 CMPIStatus Adapter::enumInstances(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cmpi_op,
     const char** properties)
 {
     TRACE;
@@ -431,7 +431,7 @@ CMPIStatus Adapter::enumInstances(
 
     const Meta_Class* mc = adapter->_mc;
     Instance* cimple_ref = 0;
-    
+
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
 
     Destroyer<Instance> cimple_ref_d(cimple_ref);
@@ -446,11 +446,11 @@ CMPIStatus Adapter::enumInstances(
 
     // Invoke provider:
 
-    enum_instances::Data data = 
+    enum_instances::Data data =
         { adapter->broker, result, cmpi_op, properties, CMPI_RC_OK };
 
-    Enum_Instances_Status status = 
-        adapter->enum_instances(cimple_ref, enum_instances::_proc, &data); 
+    Enum_Instances_Status status =
+        adapter->enum_instances(cimple_ref, enum_instances::_proc, &data);
 
     switch (status)
     {
@@ -472,10 +472,10 @@ CMPIStatus Adapter::enumInstances(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::getInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cmpi_op,
     const char** properties)
 {
     TRACE;
@@ -489,7 +489,7 @@ CMPIStatus Adapter::getInstance(
     const Meta_Class* mc = adapter->_mc;
 
     Instance* cimple_ref = 0;
-    
+
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
 
     Destroyer<Instance> cimple_ref_d(cimple_ref);
@@ -506,7 +506,7 @@ CMPIStatus Adapter::getInstance(
 
     Instance* cimple_inst = 0;
 
-    Get_Instance_Status status = 
+    Get_Instance_Status status =
         adapter->get_instance(cimple_ref, cimple_inst);
 
     switch (status)
@@ -526,7 +526,7 @@ CMPIStatus Adapter::getInstance(
     CMPIInstance* cmpi_inst;
 
     rc = make_cmpi_instance(
-        adapter->broker, cimple_inst, name_space(cmpi_op), cmpi_op, cmpi_inst); 
+        adapter->broker, cimple_inst, name_space(cmpi_op), cmpi_op, cmpi_inst);
 
     if (rc == CMPI_RC_OK)
     {
@@ -545,10 +545,10 @@ CMPIStatus Adapter::getInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::createInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cmpi_op,
     const CMPIInstance* cmpi_inst)
 {
     TRACE;
@@ -598,10 +598,10 @@ CMPIStatus Adapter::createInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::modifyInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
+    const CMPIObjectPath* cmpi_op,
     const CMPIInstance* cmpi_inst,
     const char** properties)
 {
@@ -652,8 +652,8 @@ CMPIStatus Adapter::modifyInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::deleteInstance(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
     const CMPIObjectPath* cmpi_op)
 {
@@ -667,7 +667,7 @@ CMPIStatus Adapter::deleteInstance(
 
     const Meta_Class* mc = adapter->_mc;
     Instance* cimple_ref = 0;
-    
+
     CMPIrc rc = make_cimple_reference(mc, cmpi_op, cimple_ref);
 
     Destroyer<Instance> cimple_ref_d(cimple_ref);
@@ -677,7 +677,7 @@ CMPIStatus Adapter::deleteInstance(
 
     // Invoke provider:
 
-    Delete_Instance_Status status = 
+    Delete_Instance_Status status =
         adapter->delete_instance(cimple_ref);
 
     switch (status)
@@ -703,11 +703,11 @@ CMPIStatus Adapter::deleteInstance(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::execQuery(
-    CMPIInstanceMI* mi, 
-    const CMPIContext* context, 
+    CMPIInstanceMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* ref, 
-    const char* lang, 
+    const CMPIObjectPath* ref,
+    const char* lang,
     const char* query)
 {
     CMReturn(CMPI_RC_ERR_NOT_SUPPORTED);
@@ -720,7 +720,7 @@ CMPIStatus Adapter::execQuery(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::methodCleanup(
-    CMPIMethodMI* mi, 
+    CMPIMethodMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -734,11 +734,11 @@ CMPIStatus Adapter::methodCleanup(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::invokeMethod(
-    CMPIMethodMI* mi, 
-    const CMPIContext* context, 
+    CMPIMethodMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
-    const char* method, 
+    const CMPIObjectPath* cmpi_op,
+    const char* method,
     const CMPIArgs* in,
     CMPIArgs* out)
 {
@@ -829,7 +829,7 @@ CMPIStatus Adapter::invokeMethod(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::indicationCleanup(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -843,10 +843,10 @@ CMPIStatus Adapter::indicationCleanup(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::authorizeFilter(
-     CMPIIndicationMI* mi, 
+     CMPIIndicationMI* mi,
      const CMPIContext* context,
-     const CMPISelectExp* select_expr, 
-     const char* name_space, 
+     const CMPISelectExp* select_expr,
+     const char* name_space,
      const CMPIObjectPath* cmpi_object_path,
      const char* user_name)
 {
@@ -860,9 +860,9 @@ CMPIStatus Adapter::authorizeFilter(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::mustPoll(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
-    const CMPISelectExp* filter, 
+    const CMPISelectExp* filter,
     const char* indication_type,
     const CMPIObjectPath* class_path)
 {
@@ -877,11 +877,11 @@ CMPIStatus Adapter::mustPoll(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::activateFilter(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
-    const CMPISelectExp* select_expr, 
+    const CMPISelectExp* select_expr,
     const char* indication_type,
-    const CMPIObjectPath* class_path, 
+    const CMPIObjectPath* class_path,
     CMPIBoolean first)
 {
     CMReturn(CMPI_RC_OK);
@@ -894,11 +894,11 @@ CMPIStatus Adapter::activateFilter(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::deactivateFilter(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context,
-    const CMPISelectExp* select_expr, 
+    const CMPISelectExp* select_expr,
     const  char* name_space,
-    const CMPIObjectPath* class_path, 
+    const CMPIObjectPath* class_path,
     CMPIBoolean last)
 {
     CMReturn(CMPI_RC_OK);
@@ -914,7 +914,7 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 {
     TRACE;
 
-    // This function is called by the CIMPLE Indication_Handler<> in order to 
+    // This function is called by the CIMPLE Indication_Handler<> in order to
     // deliver a single indication.
 
     Adapter* adapter = (Adapter*)client_data;
@@ -928,8 +928,8 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 
     CMPIInstance* cmpi_inst = 0;
 
-    CMPIrc rc = make_cmpi_instance(adapter->broker, 
-        cimple_inst, _INDICATIONS_NAMESPACE, 0, cmpi_inst); 
+    CMPIrc rc = make_cmpi_instance(adapter->broker,
+        cimple_inst, _INDICATIONS_NAMESPACE, 0, cmpi_inst);
 
     // Deliver the indication (we cannot do anything about failures).
 
@@ -950,7 +950,7 @@ static bool _indication_proc(Instance* cimple_inst, void* client_data)
 }
 
 void Adapter::enableIndications(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context)
 {
     TRACE;
@@ -988,7 +988,7 @@ void Adapter::enableIndications(
 //------------------------------------------------------------------------------
 
 void Adapter::disableIndications(
-    CMPIIndicationMI* mi, 
+    CMPIIndicationMI* mi,
     const CMPIContext* context)
 {
     TRACE;
@@ -1025,7 +1025,7 @@ void Adapter::disableIndications(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::associationCleanup(
-    CMPIAssociationMI* mi, 
+    CMPIAssociationMI* mi,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {
@@ -1051,8 +1051,8 @@ namespace associators
     };
 
     static bool _proc(
-        const Instance* cimple_inst, 
-        Enum_Associator_Names_Status status, 
+        const Instance* cimple_inst,
+        Enum_Associator_Names_Status status,
         void* client_data)
     {
         Data* data = (Data*)client_data;
@@ -1094,15 +1094,15 @@ namespace associators
     }
 }
 
-CMPIStatus Adapter::associators( 
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+CMPIStatus Adapter::associators(
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
-    const char* assoc_class_, 
+    const CMPIObjectPath* cmpi_op,
+    const char* assoc_class_,
     const char* result_class_,
-    const char* role_, 
-    const char* result_role_, 
+    const char* role_,
+    const char* result_role_,
     const char** properties)
 {
     TRACE;
@@ -1136,7 +1136,7 @@ CMPIStatus Adapter::associators(
 
     // Invoke the provider:
 
-    associators::Data data = { adapter->broker, 
+    associators::Data data = { adapter->broker,
         context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
 
     Enum_Associator_Names_Status status = adapter->enum_associator_names(
@@ -1168,7 +1168,7 @@ namespace associator_names
     };
 
     static bool _proc(
-        const Instance* cimple_inst, 
+        const Instance* cimple_inst,
         Enum_Associator_Names_Status status,
         void* client_data)
     {
@@ -1200,13 +1200,13 @@ namespace associator_names
 }
 
 CMPIStatus Adapter::associatorNames(
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
-    const char* assoc_class_, 
+    const CMPIObjectPath* cmpi_op,
+    const char* assoc_class_,
     const char* result_class_,
-    const char* role_, 
+    const char* role_,
     const char* result_role_)
 {
     TRACE;
@@ -1240,7 +1240,7 @@ CMPIStatus Adapter::associatorNames(
 
     // Invoke the provider:
 
-    associator_names::Data data = 
+    associator_names::Data data =
         { adapter->broker, context, result, name_space(cmpi_op), CMPI_RC_OK };
 
     Enum_Associator_Names_Status status = adapter->enum_associator_names(
@@ -1273,7 +1273,7 @@ namespace references
     };
 
     static bool _proc(
-        Instance* cimple_inst, 
+        Instance* cimple_inst,
         Enum_References_Status status,
         void* client_data)
     {
@@ -1314,11 +1314,11 @@ namespace references
 }
 
 CMPIStatus Adapter::references(
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
-    const char* result_class_, 
+    const CMPIObjectPath* cmpi_op,
+    const char* result_class_,
     const char* role_,
     const char** properties)
 {
@@ -1357,7 +1357,7 @@ CMPIStatus Adapter::references(
 
     // Invoke the provider:
 
-    references::Data data = { adapter->broker, 
+    references::Data data = { adapter->broker,
         context, result, name_space(cmpi_op), properties, CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
@@ -1399,7 +1399,7 @@ namespace reference_names
     };
 
     static bool _proc(
-        Instance* cimple_inst, 
+        Instance* cimple_inst,
         Enum_References_Status status,
         void* client_data)
     {
@@ -1440,11 +1440,11 @@ namespace reference_names
 }
 
 CMPIStatus Adapter::referenceNames(
-    CMPIAssociationMI* mi, 
-    const CMPIContext* context, 
+    CMPIAssociationMI* mi,
+    const CMPIContext* context,
     const CMPIResult* result,
-    const CMPIObjectPath* cmpi_op, 
-    const char* result_class_, 
+    const CMPIObjectPath* cmpi_op,
+    const char* result_class_,
     const char* role_)
 {
     TRACE;
@@ -1483,7 +1483,7 @@ CMPIStatus Adapter::referenceNames(
 
     // Invoke the provider:
 
-    reference_names::Data data = { 
+    reference_names::Data data = {
         adapter->broker, context, result, name_space(cmpi_op), CMPI_RC_OK };
 
     Enum_References_Status status = adapter->enum_references(
@@ -1512,7 +1512,7 @@ CMPIStatus Adapter::referenceNames(
 //------------------------------------------------------------------------------
 
 CMPIStatus Adapter::_cleanup(
-    Adapter* adapter, 
+    Adapter* adapter,
     const CMPIContext* context,
     CMPIBoolean terminating)
 {

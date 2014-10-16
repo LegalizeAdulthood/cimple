@@ -84,7 +84,7 @@ AR = ararm
 ##
 ##==============================================================================
 
-NM = nmarm 
+NM = nmarm
 
 ##==============================================================================
 ##
@@ -93,9 +93,9 @@ NM = nmarm
 ##==============================================================================
 
 FLAGS += -ansi
-FLAGS += -W 
-FLAGS += -Wall 
-FLAGS += -Wno-unused 
+FLAGS += -W
+FLAGS += -Wall
+FLAGS += -Wno-unused
 
 ifdef ENABLE_DEBUG_OPT
   FLAGS += -g
@@ -117,7 +117,7 @@ FLAGS += -txscale
 
 DEFINES += -DCPU=XSCALE
 DEFINES += -DTOOL_FAMILY=gnu
-DEFINES += -DTOOL=gnu 
+DEFINES += -DTOOL=gnu
 DEFINES += -D_WRS_KERNEL
 
 ##==============================================================================

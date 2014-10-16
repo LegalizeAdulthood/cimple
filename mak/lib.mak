@@ -22,7 +22,7 @@ $(TARGET): $(OBJECTS)
 
 CLEAN += $(OBJECTS)
 
-clean: 
+clean:
 ##	TODO get rid of these two lines. echo lib.mak.clean $(OBJECTS)
 ##	echo lib.mak.clean CLEAN = $(CLEAN)
 	$(call rm,$(CLEAN))
