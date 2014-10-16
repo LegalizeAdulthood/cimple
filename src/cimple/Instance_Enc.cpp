@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -51,7 +51,7 @@ CIMPLE_NAMESPACE_BEGIN
 //==============================================================================
 
 static void _pack_value(
-    Buffer& out, 
+    Buffer& out,
     const Instance* inst,
     const Meta_Property* mp)
 {
@@ -200,7 +200,7 @@ static void _pack_value(
 }
 
 static void _pack_value_local(
-    Buffer& out, 
+    Buffer& out,
     const Instance* inst,
     const Meta_Property* mp)
 {
@@ -278,7 +278,7 @@ static void _pack_value_local(
 }
 
 static void _unpack_value(
-    const Buffer& in, 
+    const Buffer& in,
     size_t& pos,
     Instance* inst,
     const Meta_Property* mp)
@@ -427,7 +427,7 @@ static void _unpack_value(
 }
 
 static void _unpack_value_local(
-    const Buffer& in, 
+    const Buffer& in,
     size_t& pos,
     Instance* inst,
     const Meta_Property* mp)
@@ -640,8 +640,8 @@ void pack_instance_local(Buffer& out, const Instance* inst)
 }
 
 Instance* unpack_instance(
-    const Buffer& in, 
-    size_t& pos, 
+    const Buffer& in,
+    size_t& pos,
     const Meta_Class* (*lookup)(const char* class_name, void* client_data),
     void* client_data)
 {
@@ -692,7 +692,7 @@ Instance* unpack_instance(
 #if 0
     const Meta_Feature* mf;
 
-    if (index < mc->num_meta_features && 
+    if (index < mc->num_meta_features &&
         eqi(name, mc->meta_features[index]->name))
     {
         mf = mc->meta_features[index];
@@ -768,8 +768,8 @@ Instance* unpack_instance(
 }
 
 Instance* unpack_instance_local(
-    const Buffer& in, 
-    size_t& pos, 
+    const Buffer& in,
+    size_t& pos,
     const Meta_Class* (*lookup)(const char* class_name, void* client_data),
     void* client_data)
 {

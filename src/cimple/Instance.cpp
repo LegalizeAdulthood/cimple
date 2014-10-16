@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -111,7 +111,7 @@ void __default_construct(
                         {
                             __Array_Base* local_base = (__Array_Base*)prop;
 
-                            Meta_Value_Array<void>* mv = 
+                            Meta_Value_Array<void>* mv =
                                 (Meta_Value_Array<void>*)(mp->value);
 
                             __append(local_base->rep, mv->elements,
@@ -123,7 +123,7 @@ void __default_construct(
                         {
                             Array<String>* local_base = (Array<String>*)prop;
 
-                            Meta_Value_Array<char*>* mv = 
+                            Meta_Value_Array<char*>* mv =
                                 (Meta_Value_Array<char*>*)(mp->value);
 
                             for (size_t j = 0; j < mv->num_elements; j++)
@@ -137,7 +137,7 @@ void __default_construct(
                             Array<Datetime>* local_base =
                                 (Array<Datetime>*)prop;
 
-                            Meta_Value_Array<char*>* mv = 
+                            Meta_Value_Array<char*>* mv =
                                 (Meta_Value_Array<char*>*)(mp->value);
 
                             for (size_t j = 0; j < mv->num_elements; j++)
@@ -206,7 +206,7 @@ void __default_construct(
 
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = 
+            const Meta_Reference* mr =
                 (const Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
@@ -425,16 +425,16 @@ bool identical(const Instance* i1, const Instance* i2)
         // Check that features are identical.
         if (mf->flags & CIMPLE_FLAG_PROPERTY)
         {
-            const Meta_Property* mp = 
+            const Meta_Property* mp =
                 (const Meta_Property*)mc->meta_features[index];
 
-            if (!property_eq((const Meta_Property*)mp, 
+            if (!property_eq((const Meta_Property*)mp,
                 __property_of(i1, mp), __property_of(i2, mp)))
                 return false;
         }
         else if (mf->flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = 
+            const Meta_Reference* mr =
                 (const Meta_Reference*)mc->meta_features[index];
 
             if (mr->subscript)
@@ -513,7 +513,7 @@ bool key_eq(const Instance* i1, const Instance* i2)
             if (mp1->type != mp2->type || mp1->subscript != mp2->subscript)
                 return false;
 
-            if (!property_eq((const Meta_Property*)mp1, 
+            if (!property_eq((const Meta_Property*)mp1,
                 __property_of(i1, mp1), __property_of(i2, mp2)))
                 return false;
         }
@@ -559,7 +559,7 @@ bool key_eq(const Instance* i1, const Instance* i2)
     modulated by the inputs keys_only and model.
     The meta_class for the source and destination MUST be the same or
     the copy is not executed. Today this causes a CIMPLE_ASSERT.
- 
+
     @param dest - Destination instance for the copy
     @param src Instance source for the copy
     @param keys_only bool. If true only the key properties are copied.
@@ -567,8 +567,8 @@ bool key_eq(const Instance* i1, const Instance* i2)
     exists only properties in the model are copied.
 */
 static void __copy(
-    Instance* dest, 
-    const Instance* src, 
+    Instance* dest,
+    const Instance* src,
     bool keys_only,
     const Instance* model)
 {
@@ -813,7 +813,7 @@ ssize_t get_associators(
 
             const Instance* tmp = __ref_of(assoc_inst, mr);
 
-            if (is_subclass(mr->meta_class, inst->meta_class) && 
+            if (is_subclass(mr->meta_class, inst->meta_class) &&
                 key_eq(inst, tmp))
             {
                 // Check role.
@@ -834,8 +834,8 @@ ssize_t get_associators(
                 {
                     bool found = false;
 
-                    for (const Meta_Class* p = tmp->meta_class; 
-                        p; 
+                    for (const Meta_Class* p = tmp->meta_class;
+                        p;
                         p = p->super_meta_class)
                     {
                         if (eqi(result_class, p->name))
@@ -958,7 +958,7 @@ bool keys_non_null(const Instance* inst)
     }
 
     // If reached, all keys are defined.
-    return true; 
+    return true;
 }
 
 int filter_properties(Instance* instance, const char* const* properties,
@@ -1041,8 +1041,8 @@ int filter_properties(Instance* instance, const char* const* properties,
 
 void destroyer(Instance* p)
 {
-    if (p) 
-        destroy(p); 
+    if (p)
+        destroy(p);
 }
 
 void ref(const Instance* instance)
@@ -1163,7 +1163,7 @@ static bool _str_to_sint64(const char*& str, sint64& x)
 }
 
 Instance* model_path_to_instance(
-    const Meta_Class* source_meta_class, 
+    const Meta_Class* source_meta_class,
     const char* path)
 {
     // ATTN: handle null values here!
@@ -1224,7 +1224,7 @@ Instance* model_path_to_instance(
 
         // Skip equal sign.
 
-        if (*p++ != '=') 
+        if (*p++ != '=')
             return 0;
 
         // Get value.
@@ -1459,8 +1459,8 @@ static int _append_key(const Meta_Property* mp, const void* prop, String& str)
 
 static void _escape_quotes_and_append(String& out, const String& str)
 {
-    const char* p = str.c_str(); 
-    
+    const char* p = str.c_str();
+
     while (*p)
     {
         char c = *p++;
@@ -1494,7 +1494,7 @@ int instance_to_model_path(const Instance* inst, String& model_path)
     // Process keys:
 
     size_t num_keys_found = 0;
-    
+
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
         uint32 flags = mc->meta_features[i]->flags;
@@ -1690,8 +1690,8 @@ void __print_array(FILE* os, uint32 type, const void* ptr, size_t /* depth */)
 
 static void _print_property(
     FILE* os,
-    const Meta_Property* mp, 
-    const void* prop, 
+    const Meta_Property* mp,
+    const void* prop,
     size_t level)
 {
     ifprintf(os, level, "%s %s", type_name[mp->type], mp->name);
@@ -1713,9 +1713,9 @@ static void _print_property(
 
 void __print_aux(
     FILE* os,
-    const Instance* inst, 
-    const char* name, 
-    size_t level, 
+    const Instance* inst,
+    const char* name,
+    size_t level,
     bool keys_only)
 {
     CIMPLE_ASSERT(inst != 0);
@@ -1732,7 +1732,7 @@ void __print_aux(
 
     if (inst->__name_space.size())
     {
-        ifprintf(os, level, 
+        ifprintf(os, level,
             "    string __name_space = \"%s\";\n", inst->__name_space.c_str());
     }
 
@@ -1745,8 +1745,8 @@ void __print_aux(
 
         // Skip non-keys if we are not at the top level.
 
-        if (!(level == 0 || 
-            (flags & CIMPLE_FLAG_KEY) || 
+        if (!(level == 0 ||
+            (flags & CIMPLE_FLAG_KEY) ||
             (flags & CIMPLE_FLAG_EMBEDDED_OBJECT) ||
             (flags & CIMPLE_FLAG_EMBEDDED_INSTANCE)))
         {
@@ -1763,7 +1763,7 @@ void __print_aux(
         }
         else if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = 
+            const Meta_Reference* mr =
                 (Meta_Reference*)mc->meta_features[i];
 
             if (mr->subscript)
@@ -1804,7 +1804,7 @@ void __print_aux(
                 if (tmp)
                     __print_aux(os, tmp, mr->name, level, keys_only);
                 else
-                    ifprintf(os, level, "%s %s = NULL;\n", 
+                    ifprintf(os, level, "%s %s = NULL;\n",
                         mr->meta_class->name, mr->name);
             }
         }
@@ -1838,7 +1838,7 @@ void __create_refs(Instance* inst)
 
         if (flags & CIMPLE_FLAG_REFERENCE)
         {
-            const Meta_Reference* mr = 
+            const Meta_Reference* mr =
                 (const Meta_Reference*)mc->meta_features[i];
 
             if (mr->subscript == 0)
@@ -1966,7 +1966,7 @@ struct __Set_Name_Space_Recursive_Data
 
 static void _set_namespace_callback(Instance* inst, void* data_)
 {
-    __Set_Name_Space_Recursive_Data* data = 
+    __Set_Name_Space_Recursive_Data* data =
         (__Set_Name_Space_Recursive_Data*)data_;
 
     if (inst->__name_space.size() == 0 || data->force)
@@ -1974,8 +1974,8 @@ static void _set_namespace_callback(Instance* inst, void* data_)
 }
 
 void __set_name_space_recursive(
-    Instance* inst, 
-    const char* name_space, 
+    Instance* inst,
+    const char* name_space,
     bool force)
 {
     __Set_Name_Space_Recursive_Data data = { force, name_space };
@@ -1984,7 +1984,7 @@ void __set_name_space_recursive(
 
 int __put_property_from_str(
     Instance* inst,
-    const Meta_Property* mp, 
+    const Meta_Property* mp,
     const char* str)
 {
     CIMPLE_ASSERT(inst != 0);

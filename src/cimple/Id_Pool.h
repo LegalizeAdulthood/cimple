@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,7 +42,7 @@ CIMPLE_NAMESPACE_BEGIN
 *   Note that get() never returns zero, so zero can be used to
 *   represent the "null" id. Both get() and put() are O(1)
 *   operations.
-*  
+*
 *   The pool is of unlimited size and will use all uint32
 *   integers except zero.
 */
@@ -61,8 +61,8 @@ public:
     ~Id_Pool();
 
     /**
-     * get an Id from the pool 
-     * @return uint32 Id that is guaranteed to be unique among the 
+     * get an Id from the pool
+     * @return uint32 Id that is guaranteed to be unique among the
      *         gotten Ids from this pool.  Zero is never returned
      */
     uint32 get();
@@ -77,7 +77,7 @@ private:
     Array<uint32> _pool;
     uint32 _next;
     Mutex _mutex;
-}; 
+};
 
 CIMPLE_NAMESPACE_END
 

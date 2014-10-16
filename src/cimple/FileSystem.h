@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,7 +42,7 @@ struct CIMPLE_CIMPLE_LINKAGE FileSystem
 {
 public:
     static bool exists(const char* path);
-    
+
     static bool get_size(const char * path, uint32& size);
 
     static bool get_line(std::istream& is, Buffer& line);
@@ -68,14 +68,14 @@ public:
     static bool compare_files(const char* path1, const char* path2);
 
     /**
-     * Truncate a file to the length defined by the parameter 
-     * length. 
-     * If the file is larger than length, it is truncated to that 
-     * length.  If it is shorter, it is extended and zero filled 
-     * @param path char* to path of file to be truncated 
-     * @param length size of file after truncation 
-     * @return bool true if successful 
-     *  
+     * Truncate a file to the length defined by the parameter
+     * length.
+     * If the file is larger than length, it is truncated to that
+     * length.  If it is shorter, it is extended and zero filled
+     * @param path char* to path of file to be truncated
+     * @param length size of file after truncation
+     * @return bool true if successful
+     *
      */
     static bool truncate_file(const char* path, size_t length);
 };

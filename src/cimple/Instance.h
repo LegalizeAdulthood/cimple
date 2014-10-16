@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,29 +25,29 @@
 */
 
 /**
- * Instance is the core of CIMPLE. For the users, instances are 
- * created and manipulated through the templates defined below. 
- * Many of the functions in this file are support functions for 
- * the templates. 
- * Generally, to create an instance of a Class defined in mof 
- * and instantiated through CIMPLE genclass, the user uses the 
- * create method of the CIMPLE_CLASS template. 
+ * Instance is the core of CIMPLE. For the users, instances are
+ * created and manipulated through the templates defined below.
+ * Many of the functions in this file are support functions for
+ * the templates.
+ * Generally, to create an instance of a Class defined in mof
+ * and instantiated through CIMPLE genclass, the user uses the
+ * create method of the CIMPLE_CLASS template.
  *     #include myClass.h
  *     myClass* myclass = myClass.create(true);
- *  
- * This template includes corresponding methods for clone and 
- * destroy. 
- *  
- * The CIMPLE_METHOD template provides the basis for create, 
- * clone, and destroy for methods. 
- *  
- * Note that many functions are public despite the fact that the 
- * provider writer will probably never neeed them since they are 
- * part of the generation mechanism and support for those parts 
- * of CIMPLE that dynamically manage instances (ex. the 
- * interface adapters). 
- *  
- * Some of the functions that should be used include: 
+ *
+ * This template includes corresponding methods for clone and
+ * destroy.
+ *
+ * The CIMPLE_METHOD template provides the basis for create,
+ * clone, and destroy for methods.
+ *
+ * Note that many functions are public despite the fact that the
+ * provider writer will probably never neeed them since they are
+ * part of the generation mechanism and support for those parts
+ * of CIMPLE that dynamically manage instances (ex. the
+ * interface adapters).
+ *
+ * Some of the functions that should be used include:
  *     \li \c key_eq - test for key equality between instances
  *     \li \c identical - compare two instances for equality
  *     \li \c copy - copy non-null properties from one instance
@@ -72,7 +72,7 @@
     the creation, destruction, and clone of instances.  This template class
     is instantiated for the target class in the header file <Classname>.h
     with genprov. genprov creates the CIMPLE Class for the provider defined.
-    This defines the create, destroy and clone methods for the CIMPLE class.  
+    This defines the create, destroy and clone methods for the CIMPLE class.
 */
 #define CIMPLE_CLASS(CLASS) \
     public: \
@@ -136,8 +136,8 @@ struct CIMPLE_CIMPLE_LINKAGE Instance
     static const Meta_Class static_meta_class;
 };
 
-/** Creates an instance from the given meta class. For each property, the 
-    null flag is set to false. The caller must eventually pass the new object 
+/** Creates an instance from the given meta class. For each property, the
+    null flag is set to false. The caller must eventually pass the new object
 *   to destroy(). Normally this is not called by the user but
 *   through the CIMPLE_CLASS template defined above.
 *   @param meta_class Meta_Class* pointer to the CIMPLE meta
@@ -147,8 +147,8 @@ struct CIMPLE_CIMPLE_LINKAGE Instance
 *                   instance or only the key properties are
 *                   included. If true complete instance is
 *                   included.  If false, only key properties are
-*                   provided.  
-*   @return Instance* The created instance. 
+*                   provided.
+*   @return Instance* The created instance.
 */
 CIMPLE_CIMPLE_LINKAGE
 Instance* create(const Meta_Class* meta_class, bool defaults = false);
@@ -159,7 +159,7 @@ Instance* create(const Meta_Class* meta_class, bool defaults = false);
 *                     meta_method from which this instance will
 *                     be created
 *   @return Instance* the created instance
-*  
+*
 *   EXAMPLE:
 *   \code
 *       SomeClass* inst = SomeClass::create(mc);
@@ -179,7 +179,7 @@ void destroy(Instance* instance);
 *   @param instance Instance* defining the instance to be
 *                   cloned.
 *   @return Instance* The exact copy of the input instance.
-*  
+*
 *   EXAMPLE
 *   \code
 *       Instance* new = clone(oldInstance);
@@ -221,9 +221,9 @@ inline const char* class_name_of(const Instance* instance)
 CIMPLE_CIMPLE_LINKAGE
 void print(const Instance* instance, bool keys_only = false);
 
-/** 
+/**
    Print this instance to the defined file output. Only keys are
-   printed if the keys_only flag is true. 
+   printed if the keys_only flag is true.
  */
 CIMPLE_CIMPLE_LINKAGE
 void fprint(FILE* os, const Instance* instance, bool keys_only = false);
@@ -257,7 +257,7 @@ inline void de_nullify_keys(const Instance* inst)
     __set_null_flags(inst, true, false, 0);
 }
 
-/** Returns true if the keys in instance1 match the keys in instance2 
+/** Returns true if the keys in instance1 match the keys in instance2
 *   (i.e., have the same names, types, values, and null
 *   fields). The instances can be of different classes.
 *   @param instance1
@@ -276,7 +276,7 @@ void copy(Instance* dest, const Instance* src);
  *  non-null in the  model instance. This copy is designed
  *  specifically to support the paradigm for instance updating
  *  of the DMTF CIM modify_instance operation.
- *  
+ *
  *  @param dest Instance* that is the destination instance for
  *              non-null properties.
  *  @param src  Instance* that is the source for the copy
@@ -332,7 +332,7 @@ typedef Array<Instance*> __Reference_Array;
 
 /** Const version of __ref_of().
 */
-inline const Instance*& __ref_of( 
+inline const Instance*& __ref_of(
     const Instance* inst, const Meta_Reference* mr)
 {
     return (const Instance*&)__ref_of((Instance*)inst, mr);
@@ -347,7 +347,7 @@ inline const Instance*& __ref_of(
 CIMPLE_CIMPLE_LINKAGE
 bool identical(const Instance* i1, const Instance* i2);
 
-/** Finds associators of the instance with respect to the given association 
+/** Finds associators of the instance with respect to the given association
     instance. Returns the number of associators or negative one
     (-1) if this association instance does not refer to the
     instance at all.
@@ -396,17 +396,17 @@ struct is_a
 {
     explicit is_a(const Instance* inst) : _meta_class(inst->meta_class) { }
 
-    operator bool() 
-    { 
-        return is_subclass(&CLASS::static_meta_class, _meta_class); 
+    operator bool()
+    {
+        return is_subclass(&CLASS::static_meta_class, _meta_class);
     }
 
 private:
     const Meta_Class* _meta_class;
 };
 
-/** The cast operator performs a dynamic cast from one pointer type to 
-    another. It returns non-zero if the instance was in fact an instance of 
+/** The cast operator performs a dynamic cast from one pointer type to
+    another. It returns non-zero if the instance was in fact an instance of
     that class.
 
     For example:
@@ -422,7 +422,7 @@ private:
     }
     \endcode
 
-    The cast operator returns null if the instance is not in fact an 
+    The cast operator returns null if the instance is not in fact an
     instance of the given class.
 */
 template<class CLASS_PTR>
@@ -452,36 +452,36 @@ void ref(const Instance* instance);
 CIMPLE_CIMPLE_LINKAGE
 void unref(const Instance* instance);
 
-/** 
- * Filter the property and reference features of a CIMPLE 
- * instance nullifying those that are not in the propertylist. 
- * If the propertylist is null, all the features are 
- * keptnon-null. If the property list is empty, no properties 
- * are kept non-null. The keepKeys parameter determines if the 
- * key properties may be nullified as part of the operation. 
- * The purpose of this function is normally to filter out 
- * properties that are not part of the CIM operation for those 
- * operations that include a propertylist. 
- * Generally this operation is for the use of the adapters and 
- * the provider writer would not use it. Property filtering for 
- * CIM Operations is the responsibility of each CIMPLE adapter. 
- * For the provider writer to determine the properties that are 
- * required for the response to an operation, the model 
- * parameter can be used.  Those properties that are listed in 
- * an input property list (and all key properties) and set 
- * non-null in the model property. 
- * 
- * @param instance - Instance for which properties are to be 
+/**
+ * Filter the property and reference features of a CIMPLE
+ * instance nullifying those that are not in the propertylist.
+ * If the propertylist is null, all the features are
+ * keptnon-null. If the property list is empty, no properties
+ * are kept non-null. The keepKeys parameter determines if the
+ * key properties may be nullified as part of the operation.
+ * The purpose of this function is normally to filter out
+ * properties that are not part of the CIM operation for those
+ * operations that include a propertylist.
+ * Generally this operation is for the use of the adapters and
+ * the provider writer would not use it. Property filtering for
+ * CIM Operations is the responsibility of each CIMPLE adapter.
+ * For the provider writer to determine the properties that are
+ * required for the response to an operation, the model
+ * parameter can be used.  Those properties that are listed in
+ * an input property list (and all key properties) and set
+ * non-null in the model property.
+ *
+ * @param instance - Instance for which properties are to be
  *                 filtered
- * @param properties - list of properties to be kept in the 
+ * @param properties - list of properties to be kept in the
  *                   instance. All other properties are set NULL
- * @param keepKeys - boolean that determines whether the key 
+ * @param keepKeys - boolean that determines whether the key
  *                 properties are to be set in accord with the
  *                 property list or forced to non-null.  If
  *                 true, the key properties are forced to
  *                 non-null.
- * 
- * @return CIMPLE_CIMPLE_LINKAGE int - If zero, 
+ *
+ * @return CIMPLE_CIMPLE_LINKAGE int - If zero,
  */
 CIMPLE_CIMPLE_LINKAGE
 int filter_properties(Instance* instance, const char* const* properties,
@@ -492,7 +492,7 @@ int filter_properties(Instance* instance, const char* const* properties,
 //     MyClass.key1=value1,key2=value2
 //
 // It returns a pointer to the newly formed instance. The class that appears
-// in the model path must be obtainable (directly or indirectly) from the 
+// in the model path must be obtainable (directly or indirectly) from the
 // source_meta_class. Note that all classes within a repository are reachable
 // from any given class in that repository since each class has a back pointer
 // to an array of all other classes, which is only true if the -r option was
@@ -500,7 +500,7 @@ int filter_properties(Instance* instance, const char* const* properties,
 //
 CIMPLE_CIMPLE_LINKAGE
 Instance* model_path_to_instance(
-    const Meta_Class* source_meta_class, 
+    const Meta_Class* source_meta_class,
     const char* path);
 
 // This function converts an instance to a CIM model path of the following
@@ -512,7 +512,7 @@ Instance* model_path_to_instance(
 //
 CIMPLE_CIMPLE_LINKAGE
 int instance_to_model_path(
-    const Instance* instance, 
+    const Instance* instance,
     String& model_path);
 
 // Create non-null refs for all ref properties of this instance.
@@ -528,29 +528,29 @@ void __print_array(FILE* os, uint32 type, const void* ptr, size_t depth);
 CIMPLE_CIMPLE_LINKAGE
 void __print_aux(
     FILE* os,
-    const Instance* inst, 
-    const char* name, 
-    size_t level, 
+    const Instance* inst,
+    const char* name,
+    size_t level,
     bool keys_only);
 
-/** 
- * sets default information into a CIMPLE instance.  Depending 
- * on the clear and defaults parameters this function sets 
- * information into the instance, clears the whole instance and 
- * moves default feature information from the meta-class to the 
- * instnace. 
- * 
+/**
+ * sets default information into a CIMPLE instance.  Depending
+ * on the clear and defaults parameters this function sets
+ * information into the instance, clears the whole instance and
+ * moves default feature information from the meta-class to the
+ * instnace.
+ *
  * @param mc - pointer ot the meta-class
  * @param inst - instance to be cleaned
- * @param clear - bool variable that determines if the function 
+ * @param clear - bool variable that determines if the function
  *              clears the instance to zero.  If true, the
  *              instance is memset to zero. This also clears the
- *              __name_space variable and sets refs to 1. 
- * @param defaults - bool. If true, default values from the meta 
+ *              __name_space variable and sets refs to 1.
+ * @param defaults - bool. If true, default values from the meta
  *                 class are set into the instance if they are
  *                 non-null. If false, the values are set to
  *                 NULL.
- * 
+ *
  * @return CIMPLE_CIMPLE_LINKAGE void
  */
 CIMPLE_CIMPLE_LINKAGE
@@ -575,14 +575,14 @@ void __visit(Instance* inst, void (*func)(Instance*, void*), void* data);
 // unless #force# is true.
 CIMPLE_CIMPLE_LINKAGE
 void __set_name_space_recursive(
-    Instance* inst, 
-    const char* name_space, 
+    Instance* inst,
+    const char* name_space,
     bool force);
 
 CIMPLE_CIMPLE_LINKAGE
 int __put_property_from_str(
     Instance* inst,
-    const Meta_Property* mp, 
+    const Meta_Property* mp,
     const char* str);
 
 

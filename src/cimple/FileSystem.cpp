@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -63,7 +63,7 @@ bool FileSystem::exists(const char* path)
  * Return the size in bytes of the file
  * @param path - Path to the file
  * @param size - Size in bytes of the file
- * 
+ *
  * @return bool true if the operation succeeded
  */
 bool FileSystem::get_size(const char * path, uint32& size)
@@ -123,8 +123,8 @@ bool FileSystem::rename_file(const char* old_path, const char* new_path)
     {
         delete_file(new_path);
     }
-#endif 
-//  Remember to comment out the above endif   
+#endif
+//  Remember to comment out the above endif
 ////// Temp replacement to above shows what is happening because having
 //  problems with rename on log file rollover
 //  bool rtn = (rename(old_path, new_path) == 0);
@@ -148,7 +148,7 @@ bool FileSystem::rename_file(const char* old_path, const char* new_path)
 //#else
     return(rename(old_path, new_path) == 0);
 // remember to uncoment the following
-//#endif        
+//#endif
 }
 
 bool FileSystem::copy_file(const char* from_path, const char* to_path)

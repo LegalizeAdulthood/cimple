@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,12 +38,12 @@
 *   additional functions are defined so that the user can define
 *   access to the map for create, modify, delete, get and
     enumerate instances with a single line of code.
- 
+
     The implementation of this function is a CIMPLE array and
     the lookup/find methods do a linear search of the array.
     Therefore, while this implmenentation produces minimal code
     the lookup can take considerable time on very large arrays.
-* 
+*
 *   EXAMPLE:
 *   The following example manages the operations against a
 *   map created during the load operation for the class
@@ -59,19 +59,19 @@
          Load_Status CMPL_Base_Provider::load()
         {
             CMPL_Base* instance;
-            
+
             instance = CMPL_Base::create();
             instance->Key.value = 1;
             instance->info.value = "First Instance";
             _map.insert(instance);
-        
+
             instance = CMPL_Base::create();
             instance->Key.value = 2;
             instance->info.value = "Second Instance";
             _map.insert(instance);
             return LOAD_OK;
         }
-* 
+*
 *       The following implements the get, enum, modify, delete,
 *       and create functions for the map defined above
 *       Get_Instance_Status CMPL_Base_Provider::get_instance(
@@ -88,21 +88,21 @@
             return _map.enum_instances(model, handler);
             return ENUM_INSTANCES_OK;
         }
-        
+
         Create_Instance_Status CMPL_Base_Provider::create_instance(
             CMPL_Base* instance)
         {
             TRACE;
             return _map.create_instance(instance);
         }
-        
+
         Delete_Instance_Status CMPL_Base_Provider::delete_instance(
             const CMPL_Base* instance)
         {
             TRACE;
             return _map.delete_instance(instance);
         }
-        
+
         Modify_Instance_Status CMPL_Base_Provider::modify_instance(
             const CMPL_Base* model,
             const CMPL_Base* instance)
@@ -147,7 +147,7 @@ protected:
     Array<Instance*> _instances;
 
     Get_Instance_Status _get_instance(
-        const Instance* model, 
+        const Instance* model,
         Instance*& instance);
 
     Enum_Instances_Status _enum_instances(
@@ -178,100 +178,100 @@ public:
 
     ~Instance_Map();
 
-    /** 
-     * Inserts an instance into the map. If an instances is already 
-     * in the map (as determined by the map find command), returns 
+    /**
+     * Inserts an instance into the map. If an instances is already
+     * in the map (as determined by the map find command), returns
      * -1
-     * 
+     *
      * @param instance Instance to be inserted
-     * 
-     * @return size_t Location where the instance was 
-     * inserted. Returns -1 if an instance with the key properties 
-     * of the input instance is already in the map. 
+     *
+     * @return size_t Location where the instance was
+     * inserted. Returns -1 if an instance with the key properties
+     * of the input instance is already in the map.
      */
     size_t insert(CLASS* instance);
 
     /**
      * Finds the instance defined by the input parameter in the map.
-     * key properties in the input equal to the instance in the map, 
-     * constitues equality.   Note that this test does not test 
-     * other properties than the key properties. 
-     *  
+     * key properties in the input equal to the instance in the map,
+     * constitues equality.   Note that this test does not test
+     * other properties than the key properties.
+     *
      * @param instance Instance to be compared
-     * 
-     * @return size_t Location where the instance was 
+     *
+     * @return size_t Location where the instance was
      * inserted. If no equal instance is found, -1 is returned.
-     */ 
+     */
 
     size_t find(const CLASS* instance);
 
-    /** 
-     * Returns the instance found if an instance in the map matches 
-     * the keys on the input instance 
-     * 
+    /**
+     * Returns the instance found if an instance in the map matches
+     * the keys on the input instance
+     *
      * @param instance Instance to lookup.
-     * 
-     * @return CLASS* containing the instance if keys match. 
+     *
+     * @return CLASS* containing the instance if keys match.
      *         Returns 0 if matching instance not found in the map.
      */
     CLASS* lookup(const CLASS* instance);
 
-    /** 
-     * Removes a single instance from the map based on the input 
-     * position parameter. If the parameter is out of the range of 
-     * the instances in the map, returns without removing any 
-     * instance 
-     * 
+    /**
+     * Removes a single instance from the map based on the input
+     * position parameter. If the parameter is out of the range of
+     * the instances in the map, returns without removing any
+     * instance
+     *
      * @param pos size_t position of instance to remove from the map
      */
     void remove(size_t pos);
 
-    /** 
+    /**
      * size returns the number of instances in the map
-     * 
-     * 
+     *
+     *
      * @return size_t Number of instances in the map
      */
     size_t size() const;
 
-    /** 
-     * Return the instance at the position determined by the input 
-     * parameter 
-     * 
+    /**
+     * Return the instance at the position determined by the input
+     * parameter
+     *
      * @param pos
-     * 
+     *
      * @return CLASS*
      */
     CLASS* operator[](size_t pos);
 
     const CLASS* operator[](size_t pos) const;
 
-    /** 
-     * Get instance from the map that matches the instance and 
-     * model.  This function allows the CIMPLE get_instance(...) 
-     * function to directly call a map of instances of the defined 
-     * class to get instances. 
-     * 
-     * @param model - 
-     * @param instance - Instance containing the key properties to 
+    /**
+     * Get instance from the map that matches the instance and
+     * model.  This function allows the CIMPLE get_instance(...)
+     * function to directly call a map of instances of the defined
+     * class to get instances.
+     *
+     * @param model -
+     * @param instance - Instance containing the key properties to
      *        be used to find an instance in the map.
-     * 
+     *
      * @return Get_Instance_Status
      */
     Get_Instance_Status get_instance(
-        const CLASS* model, 
+        const CLASS* model,
         CLASS*& instance);
 
-    /** 
-     * Returns all instances from the map.  This function can be 
+    /**
+     * Returns all instances from the map.  This function can be
      * used directly by the CIMPLE enum_instances functions to get
-     * predefined instances from a map. 
-     *  
-     * 
+     * predefined instances from a map.
+     *
+     *
      * @param model
      * @param handler
-     * 
-     * @return Enum_Instances_Status. This function returns the same 
+     *
+     * @return Enum_Instances_Status. This function returns the same
      *         status that the a CIMPLE provider writer would
      *         deliver to the server.
      */
@@ -280,45 +280,45 @@ public:
         Enum_Instances_Handler<CLASS>* handler);
 
     /**
-     * Attempts to create the instance in the Instance Map. If the 
-     * instance already exists, the correct Create_Instance_Status 
-     * is returned indicating that the instance already exists. 
-     * 
+     * Attempts to create the instance in the Instance Map. If the
+     * instance already exists, the correct Create_Instance_Status
+     * is returned indicating that the instance already exists.
+     *
      * @param instance Instance to be created
-     * 
-     * @return Create_Instance_Status.  This function returns the same 
+     *
+     * @return Create_Instance_Status.  This function returns the same
      *         status that the a CIMPLE provider writer would
-     *         deliver to the server. 
+     *         deliver to the server.
      */
     Create_Instance_Status create_instance(
         const CLASS* instance);
 
     /**
-     * Attempts to delete an instance defined by key properties in 
-     * the input parameter in the instance map 
-     * 
-     * @param instance 
-     * 
-     * @return Delete_Instance_Status reflecting the results of the 
+     * Attempts to delete an instance defined by key properties in
+     * the input parameter in the instance map
+     *
+     * @param instance
+     *
+     * @return Delete_Instance_Status reflecting the results of the
      *         delete.  If the instance could not be found, returns
-     *         the status indication NOT_FOUND 
+     *         the status indication NOT_FOUND
      */
     Delete_Instance_Status delete_instance(
         const CLASS* instance);
 
     /**
-     * Attempts to modify an instance in the instance map using the 
-     * model parameter to locate the instance and the instance 
-     * parameter as the basis for the modification.  This method 
-     * uses the instance copy function to modify the instance in the 
-     * map based on the DMTF instance modification rules. 
-     * 
-     * @param model  - Instance* defining the keys for the instance 
+     * Attempts to modify an instance in the instance map using the
+     * model parameter to locate the instance and the instance
+     * parameter as the basis for the modification.  This method
+     * uses the instance copy function to modify the instance in the
+     * map based on the DMTF instance modification rules.
+     *
+     * @param model  - Instance* defining the keys for the instance
      *               to be modified
-     * @param instance  Instance* containing the properties to be 
+     * @param instance  Instance* containing the properties to be
      *                  modified.
-     * 
-     * @return Modify_Instance_Status  Indicating whether the 
+     *
+     * @return Modify_Instance_Status  Indicating whether the
      *         modification was successful or not.
      */
     Modify_Instance_Status modify_instance(
@@ -328,10 +328,10 @@ public:
 
 /**
  * Template defines the constructor for an instance map
- * 
+ *
  */
 template<class CLASS>
-inline Instance_Map<CLASS>::Instance_Map() 
+inline Instance_Map<CLASS>::Instance_Map()
     : Instance_Map_Base(&CLASS::static_meta_class)
 {
 }
@@ -385,7 +385,7 @@ const CLASS* Instance_Map<CLASS>::operator[](size_t pos) const
 
 template<class CLASS>
 Get_Instance_Status Instance_Map<CLASS>::get_instance(
-    const CLASS* model, 
+    const CLASS* model,
     CLASS*& instance)
 {
     return _get_instance((const Instance*)model, (Instance*&)instance);

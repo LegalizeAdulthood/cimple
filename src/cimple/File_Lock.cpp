@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,7 +33,7 @@
     places lock(), unlock() around all modifications to that file.
     However a that does not use this lock mechanism could access "locked"
     file at any time.
-    
+
 */
 #include <cassert>
 #include "File_Lock.h"
@@ -146,7 +146,7 @@ File_Lock::File_Lock(const char* path)
 
     do
     {
-        _rep->handle = CreateFile(path, GENERIC_READ | GENERIC_WRITE, 0, NULL, 
+        _rep->handle = CreateFile(path, GENERIC_READ | GENERIC_WRITE, 0, NULL,
             OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     }
     while ((GetLastError() == ERROR_SHARING_VIOLATION));
@@ -169,7 +169,7 @@ int File_Lock::lock()
 {
     if (_rep->handle == INVALID_HANDLE_VALUE)
         return -1;
- 
+
 
     if (LockFileEx(
         _rep->handle, LOCKFILE_EXCLUSIVE_LOCK, 0, 0, 0, &_rep->lock) == 0)
