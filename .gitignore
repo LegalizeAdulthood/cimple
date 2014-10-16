@@ -156,6 +156,12 @@ src/providers/Embedded/CMPL_Embedded3.cpp
 src/providers/Embedded/CMPL_Embedded3.h
 src/providers/Embedded/repository.cpp
 src/providers/Embedded/repository.h
+src/providers/EmbeddedArray/EA_Class1.cpp
+src/providers/EmbeddedArray/EA_Class1.h
+src/providers/EmbeddedArray/EA_Class2.cpp
+src/providers/EmbeddedArray/EA_Class2.h
+src/providers/EmbeddedArray/repository.cpp
+src/providers/EmbeddedArray/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
