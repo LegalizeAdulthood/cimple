@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -210,7 +210,7 @@ enum Provider_Operation
 
 struct Instance;
 
-// This function is called repeatedly by an indication provider to deliver 
+// This function is called repeatedly by an indication provider to deliver
 // indications. It is called one final time with instance equal to zero,
 // allowing a chance to perform clean up. Some adapters make use of this
 // return but it should not be used by the provider
@@ -224,8 +224,8 @@ class Indication_Handler
 public:
 
     Indication_Handler(Indication_Proc proc, void* client_data) :
-        _proc(proc), _client_data(client_data) 
-    { 
+        _proc(proc), _client_data(client_data)
+    {
     }
 
     ~Indication_Handler()
@@ -256,7 +256,7 @@ private:
 
 // If instance is null, then status is set:
 typedef bool (*Enum_Instances_Proc)(
-    Instance* instance, 
+    Instance* instance,
     Enum_Instances_Status status,
     void* client_data);
 
@@ -267,7 +267,7 @@ public:
 
     Enum_Instances_Handler(Enum_Instances_Proc proc, void* client_data) :
         _proc(proc), _client_data(client_data)
-    { 
+    {
     }
 
     bool handle(CLASS* instance)
@@ -286,14 +286,14 @@ public:
 //==============================================================================
 
 // Called each time a qualifying associator name is found. A null value for
-// associator_name indicates the final call (in which status is set). This 
-// callback must NOT pass associator_name to destroy(). Also, associator_name 
+// associator_name indicates the final call (in which status is set). This
+// callback must NOT pass associator_name to destroy(). Also, associator_name
 // is not valid beyond the scope of this function (it is destroyed immediately
 // after this callback is invoked).
 typedef bool (*Enum_Associator_Names_Proc)(
     const Instance* associator_name,
     Enum_Associator_Names_Status status,
-    void* client_data); 
+    void* client_data);
 
 template<class CLASS>
 class Enum_Associator_Names_Handler
@@ -322,14 +322,14 @@ public:
 //==============================================================================
 
 // Called each time a qualifying associator is found. A null value for
-// associator indicates the final call (in which status is set). This 
-// callback must NOT pass associator to destroy(). Also, associator 
+// associator indicates the final call (in which status is set). This
+// callback must NOT pass associator to destroy(). Also, associator
 // is not valid beyond the scope of this function (it is destroyed immediately
 // after this callback is invoked).
 typedef bool (*Enum_Associators_Proc)(
     const Instance* associator,
     Enum_Associators_Status status,
-    void* client_data); 
+    void* client_data);
 
 template<class CLASS>
 class Enum_Associators_Handler
@@ -394,10 +394,10 @@ struct Registration;
 
 typedef int (*Provider_Proc)(
     const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
+    int operation,
+    void* arg0,
+    void* arg1,
+    void* arg2,
     void* arg3,
     void* arg4,
     void* arg5,
@@ -415,14 +415,14 @@ public:
 
     static int proc(
         const Registration* /*registration*/,
-        int operation, 
-        void* arg0, 
-        void* /*arg1*/, 
-        void* /*arg2*/, 
-        void* /*arg3*/, 
-        void* /*arg4*/, 
-        void* /*arg5*/, 
-        void* /*arg6*/, 
+        int operation,
+        void* arg0,
+        void* /*arg1*/,
+        void* /*arg2*/,
+        void* /*arg3*/,
+        void* /*arg4*/,
+        void* /*arg5*/,
+        void* /*arg6*/,
         void* /*arg7*/)
     {
         switch (operation)
@@ -459,7 +459,7 @@ public:
 
             case OPERATION_GET_REPOSITORY:
             {
-                const Meta_Repository*& meta_repository = 
+                const Meta_Repository*& meta_repository =
                     *((const Meta_Repository**)arg0);
 
                 const Meta_Class* mc = (Meta_Class*)&CLASS::static_meta_class;
@@ -489,14 +489,14 @@ public:
 
     static int proc(
         const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3, 
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
+        int operation,
+        void* arg0,
+        void* arg1,
+        void* arg2,
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
         void* arg7)
     {
         switch (operation)
@@ -525,7 +525,7 @@ public:
 
                 Enum_Instances_Handler<CLASS> handler(
                     (Enum_Instances_Proc)arg2, (void*)arg3);
-                        
+
                 Enum_Instances_Status status = provider->enum_instances(
                     (const CLASS*)arg1, &handler);
 
@@ -573,17 +573,17 @@ public:
 
     static int proc(
         const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3, 
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
+        int operation,
+        void* arg0,
+        void* arg1,
+        void* arg2,
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
         void* arg7)
     {
-        return Provider_Proc_T<PROVIDER>::proc(registration, operation, 
+        return Provider_Proc_T<PROVIDER>::proc(registration, operation,
             arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
     }
 };
@@ -598,14 +598,14 @@ public:
 
     static int proc(
         const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3, 
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
+        int operation,
+        void* arg0,
+        void* arg1,
+        void* arg2,
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
         void* arg7)
     {
         switch (operation)
@@ -656,14 +656,14 @@ public:
 
     static int proc(
         const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3, 
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
+        int operation,
+        void* arg0,
+        void* arg1,
+        void* arg2,
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
         void* arg7)
     {
         switch (operation)
@@ -699,7 +699,7 @@ public:
                 Enum_Associator_Names_Handler<Instance> handler(
                     (Enum_Associator_Names_Proc)arg5, (void*)arg6);
 
-                Enum_Associator_Names_Status status = 
+                Enum_Associator_Names_Status status =
                     provider->enum_associator_names(
                         (const Instance*)arg1, /* instance */
                         *((const String*)arg2), /* result_class */
@@ -731,7 +731,7 @@ public:
                 Enum_Associators_Handler<Instance> handler(
                     (Enum_Associators_Proc)arg5, (void*)arg6);
 
-                Enum_Associators_Status status = 
+                Enum_Associators_Status status =
                     provider->enum_associators(
                         (const Instance*)arg1, /* instance */
                         *((const String*)arg2), /* result_class */
@@ -762,7 +762,7 @@ public:
                 Enum_References_Handler<CLASS> handler(
                     (Enum_References_Proc)arg4, (void*)arg5);
 
-                Enum_References_Status status = 
+                Enum_References_Status status =
                     provider->enum_references(
                         (const Instance*)arg1, /* instance */
                         (const CLASS*)arg2, /* model */

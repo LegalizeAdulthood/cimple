@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,11 +34,11 @@ CIMPLE_NAMESPACE_BEGIN
 /**
     The Ref class is a smart pointer template that uses
     reference counting to manage the lifetime of instances.
-    
+
     A Ref object is created with:
-   
+
         Ref<Class>
-  
+
     \verbatim
     Example:
        // Create a ref of an an instance, a smart pointer form of the
@@ -80,10 +80,10 @@ public:
         ref(_ptr = x._ptr);
     }
 
-    /** 
-     * Construct a reference for the class and cast the 
-     * pointer to this class 
-     * 
+    /**
+     * Construct a reference for the class and cast the
+     * pointer to this class
+     *
      * @tparam U
      * @param ptr
      */
@@ -99,12 +99,12 @@ public:
     /// Assign a Ref
     Ref& operator=(const Ref& x);
 
-    /** 
+    /**
      * unreference instance; set pointer to zero
      */
     void reset();
 
-    /** 
+    /**
      * unreference instance and set pointer to ptr argument
      * @param ptr
      */
@@ -116,26 +116,26 @@ public:
     ///
     T *operator->();
 
-    /** 
+    /**
      * return pointer to the Ref'd entity
-     * @return T* 
+     * @return T*
      *      * \verbatim
      * Example:
      *     Ref<Instance> x(X::create(true));
      *     Instance* y = x.ptr();
-     * \endverbatim  
+     * \endverbatim
      */
     T* ptr();
 
-    /** 
+    /**
      * Return const pointer to the Ref'd entity
-     * 
-     * @return const T* 
+     *
+     * @return const T*
      * \verbatim
      * Example:
      *     Ref<Instance> x(X::create(true));
      *     const Instance* y = x.ptr();
-     * \endverbatim  
+     * \endverbatim
      */
     const T* ptr() const;
 
@@ -145,15 +145,15 @@ public:
     ///
     const T& operator*() const;
 
-    /** 
-     * return pointer to instance; set pointer to zero. Once you 
-     * steal a Ref, it is your problem to destroy it. 
-     * @return T* 
+    /**
+     * return pointer to instance; set pointer to zero. Once you
+     * steal a Ref, it is your problem to destroy it.
+     * @return T*
      * \verbatim
      * Example:
      *     Ref<Instance> x(X::create(true));
      *     Instance* x.steal();
-     * \endverbatim 
+     * \endverbatim
      */
     T* steal();
 
@@ -163,9 +163,9 @@ public:
     ///
     bool operator!() const;
 
-    /** 
+    /**
      * return current reference count
-     * @return size_t Current reference count 
+     * @return size_t Current reference count
      * \verbatim
      * Example:
      *     Ref<Instance> x(X::create(true));

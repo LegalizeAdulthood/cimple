@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -61,14 +61,14 @@ public:
 
     static int proc(
         const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3, 
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
+        int operation,
+        void* arg0,
+        void* arg1,
+        void* arg2,
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
         void* arg7)
     {
         switch (operation)
@@ -105,7 +105,7 @@ public:
 
             case OPERATION_GET_REPOSITORY:
             {
-                const Meta_Repository*& meta_repository = 
+                const Meta_Repository*& meta_repository =
                     *((const Meta_Repository**)arg0);
 
                 const Meta_Class* mc = (Meta_Class*)&Class::static_meta_class;
@@ -150,14 +150,14 @@ public:
 
     static int proc(
         const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
-        void* arg3, 
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
+        int operation,
+        void* arg0,
+        void* arg1,
+        void* arg2,
+        void* arg3,
+        void* arg4,
+        void* arg5,
+        void* arg6,
         void* arg7)
     {
         switch (operation)
@@ -180,7 +180,7 @@ public:
                 ref(inst);
                 REFERENCE reference((Class*)inst);
                 HANDLE instance;
-                Get_Instance_Status status = 
+                Get_Instance_Status status =
                     provider->get_instance(reference, instance);
 
                 ref(*((Class**)arg2) = (Class*)instance.instance());
@@ -194,7 +194,7 @@ public:
 
                 Enum_Instances_Handler<Class> handler(
                     (Enum_Instances_Proc)arg2, (void*)arg3);
-                        
+
                 Enum_Instances_Status status = provider->enum_instances(
                     (const Class*)arg1, &handler);
 

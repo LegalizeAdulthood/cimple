@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -52,7 +52,7 @@ public:
         Instance*& instance);
 
     Enum_Instances_Status enum_instances(
-        const Instance* model, 
+        const Instance* model,
         Enum_Instances_Proc enum_instances_proc,
         void* client_data);
 
@@ -71,7 +71,7 @@ public:
         const Instance* method);
 
     Enable_Indications_Status enable_indications(
-        Indication_Proc indication_proc, 
+        Indication_Proc indication_proc,
         void* client_data);
 
     Disable_Indications_Status disable_indications();
@@ -112,8 +112,8 @@ protected:
 };
 
 inline Provider_Handle::Provider_Handle(const Registration* registration) :
-    _registration(registration), 
-    _proc(_registration->provider_proc), 
+    _registration(registration),
+    _proc(_registration->provider_proc),
     _provider(0)
 {
     (Create_Provider_Status)_proc(_registration,
@@ -129,8 +129,8 @@ inline Provider_Handle::~Provider_Handle()
 inline Get_Meta_Class_Status Provider_Handle::get_meta_class(
     const Meta_Class*& meta_class)
 {
-    return (Get_Meta_Class_Status)_proc(_registration, 
-        OPERATION_GET_META_CLASS, 
+    return (Get_Meta_Class_Status)_proc(_registration,
+        OPERATION_GET_META_CLASS,
         (Meta_Class**)&meta_class, 0, 0, 0, 0, 0, 0, 0);
 }
 
@@ -159,16 +159,16 @@ inline Enum_Instances_Status Provider_Handle::enum_instances(
 inline Create_Instance_Status Provider_Handle::create_instance(
     Instance* instance)
 {
-    return (Create_Instance_Status)_proc(_registration, 
-        OPERATION_CREATE_INSTANCE, 
+    return (Create_Instance_Status)_proc(_registration,
+        OPERATION_CREATE_INSTANCE,
         _provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
 inline Delete_Instance_Status Provider_Handle::delete_instance(
     const Instance* instance)
 {
-    return (Delete_Instance_Status)_proc(_registration, 
-    OPERATION_DELETE_INSTANCE, 
+    return (Delete_Instance_Status)_proc(_registration,
+    OPERATION_DELETE_INSTANCE,
         (void*)_provider, (void*)instance, 0, 0, 0, 0, 0, 0);
 }
 
@@ -176,8 +176,8 @@ inline Modify_Instance_Status Provider_Handle::modify_instance(
     const Instance* model,
     const Instance* instance)
 {
-    return (Modify_Instance_Status)_proc(_registration, 
-        OPERATION_MODIFY_INSTANCE, 
+    return (Modify_Instance_Status)_proc(_registration,
+        OPERATION_MODIFY_INSTANCE,
         (void*)_provider, (void*)model, (void*)instance, 0, 0, 0, 0, 0);
 }
 
@@ -185,7 +185,7 @@ inline Invoke_Method_Status Provider_Handle::invoke_method(
     const Instance* instance,
     const Instance* method)
 {
-    return (Invoke_Method_Status)_proc(_registration, OPERATION_INVOKE_METHOD, 
+    return (Invoke_Method_Status)_proc(_registration, OPERATION_INVOKE_METHOD,
         (void*)_provider, (void*)instance, (void*)method, 0, 0, 0, 0, 0);
 }
 
@@ -194,7 +194,7 @@ inline Enable_Indications_Status Provider_Handle::enable_indications(
     void* client_data)
 {
     return (Enable_Indications_Status)_proc(_registration,
-        OPERATION_ENABLE_INDICATIONS, (void*)_provider, 
+        OPERATION_ENABLE_INDICATIONS, (void*)_provider,
         (void*)indication_proc, client_data, 0, 0, 0, 0, 0);
 }
 
@@ -208,7 +208,7 @@ inline Get_Repository_Status Provider_Handle::get_repository(
     const Meta_Repository*& meta_repository)
 {
     return (Get_Repository_Status)_proc(_registration,
-        OPERATION_GET_REPOSITORY, 
+        OPERATION_GET_REPOSITORY,
         (void*)&meta_repository, 0, 0, 0, 0, 0, 0, 0);
 }
 
@@ -223,12 +223,12 @@ inline Enum_Associators_Status Provider_Handle::enum_associators(
     return (Enum_Associators_Status)_proc(
         _registration,
         OPERATION_ENUM_ASSOCIATORS,
-        _provider, 
-        (void*)instance, 
-        (void*)&result_class, 
-        (void*)&role, 
+        _provider,
+        (void*)instance,
+        (void*)&result_class,
+        (void*)&role,
         (void*)&result_role,
-        (void*)proc, 
+        (void*)proc,
         (void*)client_data,
         0);
 }

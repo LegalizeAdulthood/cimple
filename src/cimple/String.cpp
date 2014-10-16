@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -43,7 +43,7 @@ inline void _ref(const __String_Rep* rep)
 
 inline void _unref(const __String_Rep* rep)
 {
-    if (rep != &String::_empty && 
+    if (rep != &String::_empty &&
         Atomic_dec_and_test(&((__String_Rep*)rep)->refs))
         ::operator delete((__String_Rep*)rep);
 }
@@ -64,10 +64,10 @@ static uint32 _next_pow_2(uint32 x)
     return x;
 }
 
-static inline __String_Rep* _new(size_t cap) 
+static inline __String_Rep* _new(size_t cap)
 {
     cap = _next_pow_2(cap);
-    __String_Rep* rep = 
+    __String_Rep* rep =
         (__String_Rep*)::operator new(sizeof(__String_Rep) + cap);
 
     rep->cap = cap;

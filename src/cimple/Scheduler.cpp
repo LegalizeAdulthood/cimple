@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -113,7 +113,7 @@ bool Scheduler::remove_timer(size_t timer_id)
     for (List_Elem* p = _list.head; p; p = p->next)
     {
         Timer* timer = (Timer*)p;
-    
+
         if (timer->id == timer_id)
         {
             // Found!
@@ -159,18 +159,18 @@ void Scheduler::dispatch()
     if (now < closest_deadline)
     {
         uint64 diff = closest_deadline - now;
-    
+
         if (diff > MAX_TIME_INSIDE_DISPATCH_USEC)
         {
             _lock.unlock();
             Time::sleep(MAX_TIME_INSIDE_DISPATCH_USEC);
             return;
         }
-    
+
         _lock.unlock();
         Time::sleep(diff);
         _lock.lock();
-    
+
         now = closest_deadline;
     }
 
@@ -184,7 +184,7 @@ void Scheduler::dispatch()
 
         if (!timer || now < timer->deadline)
             break;
-    
+
         _list.remove(timer);
 
         // Call the function to be executed for this timer.
@@ -195,7 +195,7 @@ void Scheduler::dispatch()
 
         // if the function returns zero, delete this timer
         // else reinsert the timer with the returned timeout.
-        // 
+        //
         if (new_timeout == 0)
             delete timer;
         else

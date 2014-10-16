@@ -3,17 +3,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,7 +33,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-const uint8 __lower[256] = 
+const uint8 __lower[256] =
 {
     0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
     0x08,0x09,0x0A,0x0B,0x0C,0x0D,0x0E,0x0F,
@@ -69,7 +69,7 @@ const uint8 __lower[256] =
     0xF8,0xF9,0xFA,0xFB,0xFC,0xFD,0xFE,0xFF,
 };
 
-static const uint8 __lower1[256] = 
+static const uint8 __lower1[256] =
 {
     // The only difference between __lower1 and __lower2 is the first element.
     0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
@@ -106,7 +106,7 @@ static const uint8 __lower1[256] =
     0xF8,0xF9,0xFA,0xFB,0xFC,0xFD,0xFE,0xFF,
 };
 
-static const uint8 __lower2[256] = 
+static const uint8 __lower2[256] =
 {
     // The only difference between __lower1 and __lower2 is the first element.
     0xFF,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
@@ -194,8 +194,8 @@ size_t strlcat(char* dest, const char* src, size_t size)
 }
 
 int find_token(
-    const char* str, 
-    const char* delimiters, 
+    const char* str,
+    const char* delimiters,
     const char*& start,
     const char*& end)
 {

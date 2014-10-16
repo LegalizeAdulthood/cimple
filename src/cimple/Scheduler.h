@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -56,17 +56,17 @@ typedef uint64 (*Timer_Proc)(void* arg);
  *  functions timeout. The called functions can define whether
  *  the timers are repetitive or terminate by the return value
  *  from the procedure.
- *  
+ *
  *  There are three modes of scheduler operation:
  *  \li \c Manual dispatcher usage.  The user executes the
  *      dispatcher in a loop to execute timed functions
- *  
+ *
  *  \li \c Manual control of a dispatcher thread.  By creating a
  *  scheduler without parameter (Scheduler x;) a scheduler is
  *  created that uses start_dispatcher to start the dispatcher
  *  thread. This thread runs until either the Scheduler is
  *  destructed or the stop_dispatcher() function is called
- *  
+ *
  *  \li \c Auto Dispatching (create with Scheduler sched(true);)
  *  creates a scheduler that starts the dispatcher thread when
  *  there is a timer added to the queue and terminates the
@@ -76,12 +76,12 @@ typedef uint64 (*Timer_Proc)(void* arg);
  *  interval.   This can be useful when the creation of
  *  scheduled function is sporadic so that the dispatcher thread
  *  is not enabled when there is nothing to dispatch.
- *  
+ *
  *  Within a single scheduler object, all timed functions run in
  *  a single thread. When a timer expires the scheduler calls
  *  the defined function and when this function terminates it
  *  attempts to evaluate the next function in the timer queue.
- *  
+ *
  *  EXAMPLE:
  *  \code
  *  Scheduler sched;
@@ -93,7 +93,7 @@ typedef uint64 (*Timer_Proc)(void* arg);
  *     printf("_timer(%s)\n", str);
  *     return(0);
  *  }
- *  
+ *
  *  // function to stop the scheduler
  *  static uint64 _stopScheduler(void* arg)
  *  {
@@ -103,29 +103,29 @@ typedef uint64 (*Timer_Proc)(void* arg);
  *  // Scheduler call function
  *  sched.add_timer(3 * SEC, _timer, (void*)"3");
  *  sched.add_timer(30 * SEC, _stop_scheduler, value);
- *  
+ *
  *  sched.start_dispatcher();
- *  Thread::join(sched.thread_id(), value); 
+ *  Thread::join(sched.thread_id(), value);
  *  \endcode
 */
 class CIMPLE_CIMPLE_LINKAGE Scheduler
 {
 public:
 
-    /** 
+    /**
      * Construct a new scheduler
-     * 
+     *
      */
     Scheduler();
 
-    /** 
-     * Construct a new scheduler that automatically starts and 
-     * stops a scheduling thread when schedule items exist in the 
-     * schedule.  If the  parameter is true, the dispatcher is 
-     * run automatically when there are timers in queue. It is 
-     * stopped when the queue is empty and restarted when a timer 
-     * is added. 
-     * @param auto_dispatch bool 
+    /**
+     * Construct a new scheduler that automatically starts and
+     * stops a scheduling thread when schedule items exist in the
+     * schedule.  If the  parameter is true, the dispatcher is
+     * run automatically when there are timers in queue. It is
+     * stopped when the queue is empty and restarted when a timer
+     * is added.
+     * @param auto_dispatch bool
      */
     Scheduler(bool auto_dispatch);
 
@@ -164,19 +164,19 @@ public:
     */
     int stop_dispatcher();
 
-    /** 
+    /**
      * If the scheduler is stopped, clean out any remaining queued
      * items.  Note that the stop_dispatcher function does not do
      * this.
-     * 
+     *
      */
     int clean();
 
     /** Return the thread id for this scheduler.
-     *  
+     *
      *  The primary use today is to be able to join the
      *  dispatcher thread
-     *  
+     *
      *  @return Thread& id of the scheduler thread
      */
     Thread& thread_id();
@@ -196,8 +196,8 @@ private:
     // Thread routine:
     static void* _thread_proc(void* arg);
 
-    // If true, the scheduler starts threads when items are to be 
-    // scheduled and stops the thread when there is nothing to 
+    // If true, the scheduler starts threads when items are to be
+    // scheduled and stops the thread when there is nothing to
     // schedule
     bool _auto_dispatch;
 };

@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -41,9 +41,9 @@ CIMPLE_NAMESPACE_BEGIN
     to return only those instances that should be returned for the specific
     operation.
 
-    They use callbacks in this module for the the filtering operation and 
+    They use callbacks in this module for the the filtering operation and
     define each callback function in its own namespace.  The callback functions
-    provide the filtering and pass the objects that pass the filters back 
+    provide the filtering and pass the objects that pass the filters back
     to the callback defined for the adapter.
 
     Thus, get_instance reverts to enumerate_instance when get_instance returns
@@ -64,7 +64,7 @@ CIMPLE_NAMESPACE_BEGIN
 /*
     Callback used by ProviderHandler::enum_associator_names
     This namespace contains a data structure and one function that
-    serves as a callback generic filter for associator_names given the input 
+    serves as a callback generic filter for associator_names given the input
     parameters for an associator_names call. The purpose is to call the adapter
     proc defined in the Args structure for every valid associator in the
     assoc_instance. An associator is a reference that passes all of the
@@ -86,16 +86,16 @@ namespace _enum_associator_names
     };
 
     //
-    // This function is called for each instance of the given association 
+    // This function is called for each instance of the given association
     // provider. It gets the associator names (associated references) and
     // calls the proc defined in the Args structure for each associator.
     // That proc is expected to "filter" based on operation parameters
     // i.e. ReferenceClass, AssociatorClass, and roles.
     // It returns true as long as there are more association names to be
     // processed.
-    // 
+    //
     static bool _proc(
-        Instance* assoc_instance, 
+        Instance* assoc_instance,
         Enum_Instances_Status /* status */,
         void* client_data)
     {
@@ -118,11 +118,11 @@ namespace _enum_associator_names
         // to the instance.
 
         ssize_t r = get_associators(
-            args->instance, 
+            args->instance,
             assoc_instance,
-            args->result_class.c_str(), 
-            args->role.c_str(), 
-            args->result_role.c_str(), 
+            args->result_class.c_str(),
+            args->role.c_str(),
+            args->result_role.c_str(),
             associator_names);
 
         // Call user's callback for each associator name found (if any).
@@ -143,7 +143,7 @@ namespace _enum_associator_names
 
             // Call the adapter proc function with the associator name
 
-            args->proc(associator_names[i], 
+            args->proc(associator_names[i],
                 ENUM_ASSOCIATOR_NAMES_OK, args->client_data);
         }
 
@@ -183,16 +183,16 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
 
     //////printf("cimple enum_associator_names\n");
 
-    Enum_Associator_Names_Status enum_associator_names_status = 
+    Enum_Associator_Names_Status enum_associator_names_status =
         (Enum_Associator_Names_Status)_proc(
             _registration,
             OPERATION_ENUM_ASSOCIATOR_NAMES,
-            _provider, 
-            (void*)instance, 
-            (void*)&result_class, 
-            (void*)&role, 
+            _provider,
+            (void*)instance,
+            (void*)&result_class,
+            (void*)&role,
             (void*)&result_role,
-            (void*)proc, 
+            (void*)proc,
             (void*)client_data,
             0);
 
@@ -289,7 +289,7 @@ Enum_Associator_Names_Status Provider_Handle::enum_associator_names(
 // for every valid reference entity in the reference instance. This callback
 // provides the filtering of references in accord with the operation request
 // parameters
-// 
+//
 namespace enum_references
 {
     struct Args
@@ -301,12 +301,12 @@ namespace enum_references
     };
 
     static bool _proc(
-        Instance* reference, 
-        Enum_Instances_Status /* status */, 
+        Instance* reference,
+        Enum_Instances_Status /* status */,
         void* client_data)
     {
         PENTRY("enum_references::_proc");
-        // This function is called for each instance of the given association 
+        // This function is called for each instance of the given association
         // provider.
 
         Args* args = (Args*)client_data;
@@ -356,15 +356,15 @@ Enum_References_Status Provider_Handle::enum_references(
 
     // First see if the provider supports enum_references().
 
-    Enum_References_Status enum_references_status = 
+    Enum_References_Status enum_references_status =
         (Enum_References_Status)_proc(
             _registration,
             OPERATION_ENUM_REFERENCES,
-            _provider, 
-            (void*)instance, 
-            (void*)model, 
-            (void*)&role, 
-            (void*)proc, 
+            _provider,
+            (void*)instance,
+            (void*)model,
+            (void*)&role,
+            (void*)proc,
             (void*)client_data,
             0,
             0);
@@ -401,7 +401,7 @@ Enum_References_Status Provider_Handle::enum_references(
     args.proc = proc;
     args.client_data = client_data;
 
-    // Enumerate instances of this association provider while looking for an 
+    // Enumerate instances of this association provider while looking for an
     // association instance that involves the instance parameter.
 
     Enum_Instances_Status status = enum_instances(
@@ -446,7 +446,7 @@ Enum_References_Status Provider_Handle::enum_references(
 // Callback function that provides filtering of instances to find a particular
 // instance.  If a matching instance is found, it is set into the
 // Data structure.
-// 
+//
 namespace get_instance
 {
     struct Data
@@ -456,7 +456,7 @@ namespace get_instance
     };
 
     static bool _proc(
-        Instance* instance, 
+        Instance* instance,
         Enum_Instances_Status /* status */,
         void* client_data)
     {
@@ -494,7 +494,7 @@ Get_Instance_Status Provider_Handle::get_instance(
 
     Get_Instance_Status get_instance_status = (Get_Instance_Status)_proc(
         _registration,
-        OPERATION_GET_INSTANCE, 
+        OPERATION_GET_INSTANCE,
         _provider, (void*)model, &instance, 0, 0, 0, 0, 0);
 
     if (get_instance_status != GET_INSTANCE_UNSUPPORTED)
