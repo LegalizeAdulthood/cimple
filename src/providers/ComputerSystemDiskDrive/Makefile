@@ -5,7 +5,7 @@ MODULE=1
 
 SHARED_LIBRARY = cimplecsdd
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_Component.cpp \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
@@ -17,15 +17,18 @@ SOURCES = \
     CIM_ManagedElement.cpp \
     CIM_ManagedSystemElement.cpp \
     CIM_MediaAccessDevice.cpp \
-    CIM_SystemComponent.cpp \
     CIM_System.cpp \
+    CIM_SystemComponent.cpp \
     CIM_SystemDevice.cpp \
     ComputerSystem.cpp \
     ComputerSystemDiskDrive.cpp \
-    ComputerSystemDiskDrive_Provider.cpp \
     DiskDrive.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    ComputerSystemDiskDrive_Provider.cpp \
+    module.cpp \
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -36,7 +39,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r ComputerSystemDiskDrive
 
 genprov:
