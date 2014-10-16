@@ -7,11 +7,11 @@ module will solve this problem.
 SYNOPSIS:
 =========
 
-This directory contains the experimental CIM-CGI provider, which allows one 
-to write simple read-only instance providers using a scripting language (such 
-as Perl, Python, Bash, etc.) or using any other programming language. Like 
-CGI, familiar to WEB developers, CIM-CGI programs pass their responses to the 
-server strictly through standard output. 
+This directory contains the experimental CIM-CGI provider, which allows one
+to write simple read-only instance providers using a scripting language (such
+as Perl, Python, Bash, etc.) or using any other programming language. Like
+CGI, familiar to WEB developers, CIM-CGI programs pass their responses to the
+server strictly through standard output.
 
 EXAMPLES:
 =========
@@ -88,7 +88,7 @@ Next, run the regmod utility on the CIM-CGI provider library as follows.
 
     regmod /home/jdoe/cimple/lib/libcmplcimcgi.so
 
-This scans the $CIMCGI directory and registers each provider (cgi-program) it 
+This scans the $CIMCGI directory and registers each provider (cgi-program) it
 finds.
 
 LIMITATIONS:

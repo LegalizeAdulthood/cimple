@@ -21,7 +21,7 @@ struct CIMCGI_Registration : public Registration
         Provider_Proc provider_proc,
         const Meta_Class* meta_class,
         Registration*& next,
-        const String& path_) 
+        const String& path_)
         :
         Registration(
             module_name, provider_name, provider_proc, meta_class, next),
@@ -197,17 +197,17 @@ static Enum_Instances_Status _enum_instances(
 
 static int _provider_proc(
     const Registration* registration_,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3, 
-    void* arg4, 
-    void* arg5, 
-    void* arg6, 
+    int operation,
+    void* arg0,
+    void* arg1,
+    void* arg2,
+    void* arg3,
+    void* arg4,
+    void* arg5,
+    void* arg6,
     void* arg7)
 {
-    const CIMCGI_Registration* registration 
+    const CIMCGI_Registration* registration
         = (CIMCGI_Registration*)registration_;
 
     switch (operation)
@@ -232,7 +232,7 @@ static int _provider_proc(
 
         case OPERATION_GET_REPOSITORY:
         {
-            const Meta_Class* const** meta_classes = 
+            const Meta_Class* const** meta_classes =
                 (const Meta_Class* const**)arg0;
 
             size_t* num_meta_classes = (size_t*)arg1;
@@ -251,7 +251,7 @@ static int _provider_proc(
             Enum_Instances_Proc proc = (Enum_Instances_Proc)arg2;
             void* client_data = (void*)arg3;
 
-            Enum_Instances_Status status = 
+            Enum_Instances_Status status =
                 _enum_instances(registration, model, proc, client_data);
             proc((Instance*)0, status, client_data);
 

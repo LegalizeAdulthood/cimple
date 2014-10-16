@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = cmplcimcgi
 
-SOURCES = module.cpp 
+SOURCES = module.cpp
 
 LIBRARIES = cimple cmplrep
 

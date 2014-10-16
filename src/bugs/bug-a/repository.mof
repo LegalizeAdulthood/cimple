@@ -1,14 +1,14 @@
 
-class ZZZ_ControllerSystem : CIM_ComputerSystem 
+class ZZZ_ControllerSystem : CIM_ComputerSystem
 {
 };
 
-class ZZZ_StorageConfigurationService 
+class ZZZ_StorageConfigurationService
     : CIM_StorageConfigurationService
 {
 };
 
-class ZZZ_StorageConfigurationServiceCapabilities 
+class ZZZ_StorageConfigurationServiceCapabilities
     : CIM_StorageConfigurationCapabilities
 {
 };
@@ -18,7 +18,7 @@ class ZZZ_StorageConfigurationServiceToCapabilities : CIM_ElementCapabilities
 {
    [Override ( "ManagedElement" )]
    ZZZ_StorageConfigurationService REF ManagedElement;
- 
+
    [Override ( "Capabilities" )]
    ZZZ_StorageConfigurationServiceCapabilities REF Capabilities;
 };
