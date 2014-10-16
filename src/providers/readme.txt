@@ -23,10 +23,10 @@ tools so there are variations in the generated provider files.  These tests
 also include typicaly the targets for genclass, genprov, genmod and sometimes
 genproj to make them easy to regenerate.
 
-Most of the providers also define a client test tool which is either the 
+Most of the providers also define a client test tool which is either the
 Pegasus client (cimcli) in the provider Makefile or a subdirectory with a
 compiled test definition.  The Makefile in this directory defines the set of
-providers to be automatically compiled and the set of test clients to be 
+providers to be automatically compiled and the set of test clients to be
 compiled and executed as part of the end-end (live:) tests.
 
 Working with these Providers
@@ -42,7 +42,7 @@ the provider.
 
 3. If you modify the class, you must re-register the provider which is normally
 a call to the regmod target (make regmod). This may involve actually removing
-the previous class and under pegasus the easy way to do this is to use cimcli 
+the previous class and under pegasus the easy way to do this is to use cimcli
 (cimcli dc <className>
 
 4. Most of the providers default to the Pegasus root/cimv2 Namespace with a few
@@ -53,7 +53,7 @@ normally included in the CVS repository and CIMPLE distribution so that once
 make and make insmod are run either for the whole system and/or the particular
 provider, you have a working provider.
 
-Remember that these are both test and demonstration tools so that they will 
+Remember that these are both test and demonstration tools so that they will
 contain things that normal providers do not contain and may not always be the
 best simple examples.
 

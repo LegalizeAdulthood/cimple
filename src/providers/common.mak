@@ -1,16 +1,16 @@
-## 
+##
 ## Common Functionality for Provider compiling.  The following
 ## simplifies the definition of provider types for CIMPLE providers and
 ## provides a way to override the type definition for CIMPLE test providers.
 ## For CIMPLE Test providers the CIMPLE_PROVIDER_TYPE Makefile
 ## variable can be used to set providers
 ##
-## The following test allows building providers for either CMPI or 
+## The following test allows building providers for either CMPI or
 ## Pegasus C++ provider interface.
 ##
 ## set CIMPLE_PROVIDER_TEST_TYPE = CMPI | PEGASUS
 ##
-## If CIMPLE_PROVIDER_TYPE not set as shown below, The provider will default 
+## If CIMPLE_PROVIDER_TYPE not set as shown below, The provider will default
 ## to what is set in the Provider Makefile if the following form is used
 ##   ifndef CIMPLE_PROVIDER_TYPE
 ##       CIMPLE_PEGASUS_MODULE=1

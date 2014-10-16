@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -60,12 +60,12 @@ void test02(CIMClient& client)
 {
     try
     {
-        // Create an instance       
-        CIMInstance inst("CIMPLE_Widget");       
+        // Create an instance
+        CIMInstance inst("CIMPLE_Widget");
         inst.addProperty(CIMProperty("Key", Uint32(5678)));
         inst.addProperty(CIMProperty("Color", String("Cyan")));
         inst.addProperty(CIMProperty("Flag", Boolean(true)));
-        
+
         CIMObjectPath cop = client.createInstance(NAMESPACE, inst);
         assert(cop.toString() == "CIMPLE_Widget.Key=1234");
 
@@ -80,21 +80,21 @@ void test02(CIMClient& client)
         CIMValue v = pkey.getValue();
         v.get(key);
         assert(key == 1234);
-        
+
         assert(pos = inst2.findProperty("Color") != PEG_NOT_FOUND);
         CIMProperty pcolor = inst2.getProperty(pos);
         String color;
         v = pcolor.getValue();
         v.get(color);
-        assert(color == "Cyan");       
+        assert(color == "Cyan");
 
-        assert(pos = inst2.findProperty("Flag") != PEG_NOT_FOUND);        
+        assert(pos = inst2.findProperty("Flag") != PEG_NOT_FOUND);
         CIMProperty pflag = inst2.getProperty(pos);
         Boolean flag;
         v = pflag.getValue();
         v.get(flag);
-        assert(flag == true);        
-        
+        assert(flag == true);
+
         // Modify the created instance:
 
         CIMInstance instModify("CIMPLE_Widget");
@@ -104,7 +104,7 @@ void test02(CIMClient& client)
 
         client.modifyInstance(NAMESPACE, instModify);
 
-        
+
         client.deleteInstance(NAMESPACE,cop);
     }
     catch(Exception& e)

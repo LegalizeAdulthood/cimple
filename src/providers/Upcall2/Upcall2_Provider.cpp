@@ -2,7 +2,7 @@
 
 #define D(X) /* empty */
 
-CIMPLE_NAMESPACE_BEGIN 
+CIMPLE_NAMESPACE_BEGIN
 
 Upcall2_Provider::Upcall2_Provider()
 {
@@ -80,9 +80,9 @@ Modify_Instance_Status Upcall2_Provider::modify_instance(
 }
 
 Enum_Associator_Names_Status Upcall2_Provider::enum_associator_names(
-    const Instance* instance, 
+    const Instance* instance,
     const String& result_class,
-    const String& role, 
+    const String& role,
     const String& result_role,
     Enum_Associator_Names_Handler<Instance>* handler)
 {
@@ -105,12 +105,12 @@ int Upcall2_Provider::proc(
     void *arg1,
     void *arg2,
     void *arg3,
-    void *arg4, 
-    void *arg5, 
-    void *arg6, 
+    void *arg4,
+    void *arg5,
+    void *arg6,
     void *arg7)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Upcall2 Class;
@@ -118,14 +118,14 @@ int Upcall2_Provider::proc(
 
     return Association_Provider_Proc_T < Provider >::proc(
         registration,
-        operation, 
-        arg0, 
+        operation,
+        arg0,
         arg1,
-        arg2, 
-        arg3, 
+        arg2,
+        arg3,
         arg4,
-        arg5, 
-        arg6, 
+        arg5,
+        arg6,
         arg7);
 }
 

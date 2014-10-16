@@ -2,7 +2,7 @@
 // return instances in the cast class removing the need for the user
 // to do the case.  NOTE: This is not in the code today.
 // This would be an expansion to the template mechanism
-// 
+//
 typedef Ref<CIM_ComputerSystem> Ref_ComputerSystem;
 
 static int _enum_CIM_ComputerSystem(Array<Ref_ComputerSystem>& computer_systems)

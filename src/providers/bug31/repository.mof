@@ -13,6 +13,6 @@ class BUG31_C
 {
     [Key] uint32 key;
     uint32 meth(
-        [In] BUG31_A REF r, 
+        [In] BUG31_A REF r,
         [In(false), Out] BUG31_A REF s);
 };
