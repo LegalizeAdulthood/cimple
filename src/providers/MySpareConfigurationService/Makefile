@@ -7,7 +7,7 @@ SHARED_LIBRARY = MySpareConfigurationService
 
 INCLUDES += $(CMPI_INCLUDES)
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_Collection.cpp \
     CIM_ConcreteJob.cpp \
     CIM_EnabledLogicalElement.cpp \
@@ -24,10 +24,17 @@ SOURCES = \
     CIM_StorageRedundancySet.cpp \
     CIM_StorageSetting.cpp \
     CIM_SystemSpecificCollection.cpp \
-    MyStorageExtent.cpp \
-    repository.cpp \
-    SNIA_SpareConfigurationService.cpp \
     MySpareConfigurationService.cpp \
+    MyStorageExtent.cpp \
+    SNIA_SpareConfigurationService.cpp \
+    repository.cpp
+
+MOF_SOURCES = \
+    SNIA_SparingSubprofile.mof \
+    repository.mof
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     MySpareConfigurationService_Provider.cpp \
     module.cpp
 
@@ -40,7 +47,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): $(MOF_SOURCES)
 	$(BINDIR)/genclass -r MySpareConfigurationService MyStorageExtent
 
 genprov:
