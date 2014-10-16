@@ -5,12 +5,15 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleDelegate
 
-SOURCES = \
+GENCLASS_SOURCES = \
     Delegate.cpp \
-    Delegate_Provider.cpp \
     Delegator.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Delegate_Provider.cpp \
     Delegator_Provider.cpp \
-    repository.cpp \
     module.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
@@ -28,7 +31,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Delegate Delegator
 
 genprov:

@@ -116,6 +116,12 @@ src/providers/Cross/Right.cpp
 src/providers/Cross/Right.h
 src/providers/Cross/repository.cpp
 src/providers/Cross/repository.h
+src/providers/Delegate/Delegate.cpp
+src/providers/Delegate/Delegate.h
+src/providers/Delegate/Delegator.cpp
+src/providers/Delegate/Delegator.h
+src/providers/Delegate/repository.cpp
+src/providers/Delegate/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
