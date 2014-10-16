@@ -62,7 +62,7 @@ SFCB_REGSDIR=/usr/local/var/lib/sfcb/stage/regs
 register-sfcb:
 	cp $(TARGET) /usr/lib64/
 	cp All_Class.mof $(SFCB_MOFSDIR)/All_Class.mof
-	cp All_Part.mof $(SFCB_MOFSDIR)/All_Part.mof 
+	cp All_Part.mof $(SFCB_MOFSDIR)/All_Part.mof
 	cp All_Class.reg $(SFCB_REGSDIR)/All_Class.reg
 	sfcbrepos
 
@@ -100,12 +100,12 @@ gi:
 cmpi:
 	$(MAKE) clean
 	-cimserver -s
-	export CIMPLE_PROVIDER_BUILD_CMPI=1 
+	export CIMPLE_PROVIDER_BUILD_CMPI=1
 	$(MAKE)
 	$(MAKE) insmod
 	cimserver
 	$(MAKE) register
-    
-    
+
+
 	
 

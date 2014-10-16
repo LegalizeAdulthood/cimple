@@ -36,17 +36,17 @@ Enum_Instances_Status Cross_Provider::enum_instances(
     // to right namespace
     // TODO: Get namespaces from input parameters rather than
     // fixing them in the code.
-    // 
+    //
     {
         Cross* cross = Cross::create();
         cross->left = Left::create();
         cross->left->__name_space = "root/PG_Interop";
         cross->left->key.value = 1;
-    
+
         cross->right = Right::create();
         cross->right->__name_space = "root/cimv2";
         cross->right->key.value = 1;
-    
+
         handler->handle(cross);
     }
 
@@ -56,10 +56,10 @@ Enum_Instances_Status Cross_Provider::enum_instances(
         Cross* cross = Cross::create();
         cross->left = Left::create();
         cross->left->key.value = 2;
-    
+
         cross->right = Right::create();
         cross->right->key.value = 2;
-    
+
         handler->handle(cross);
     }
 

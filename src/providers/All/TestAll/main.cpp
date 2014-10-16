@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -127,100 +127,100 @@ inline bool _equal(const CIMObject& x, const CIMObject& y)
 
 /* Sca template defines a simple structure that provides
    the funtions for scalar get and null for each cimtype.  It is
-   to be used with the instance tests below. 
+   to be used with the instance tests below.
 */
 template<class T>
 struct Sca
 {
 };
 
-template<> struct Sca<Boolean> 
-{ 
-    static Boolean get() { return true; } 
+template<> struct Sca<Boolean>
+{
+    static Boolean get() { return true; }
     static CIMValue null() { return CIMValue(CIMTYPE_BOOLEAN, false); }
 };
 
-template<> struct Sca<Uint8> 
-{ 
-    static Uint8 get() { return 8; } 
+template<> struct Sca<Uint8>
+{
+    static Uint8 get() { return 8; }
     static CIMValue null() { return CIMValue(CIMTYPE_UINT8, false); }
 };
 
-template<> struct Sca<Sint8> 
-{ 
-    static Sint8 get() { return -8; } 
+template<> struct Sca<Sint8>
+{
+    static Sint8 get() { return -8; }
     static CIMValue null() { return CIMValue(CIMTYPE_SINT8, false); }
 };
 
-template<> struct Sca<Uint16> 
-{ 
-    static Uint16 get() { return 16; } 
+template<> struct Sca<Uint16>
+{
+    static Uint16 get() { return 16; }
     static CIMValue null() { return CIMValue(CIMTYPE_UINT16, false); }
 };
 
-template<> struct Sca<Sint16> 
-{ 
-    static Sint16 get() { return -16; } 
+template<> struct Sca<Sint16>
+{
+    static Sint16 get() { return -16; }
     static CIMValue null() { return CIMValue(CIMTYPE_SINT16, false); }
 };
 
-template<> struct Sca<Uint32> 
-{ 
-    static Uint32 get() { return 32; } 
+template<> struct Sca<Uint32>
+{
+    static Uint32 get() { return 32; }
     static CIMValue null() { return CIMValue(CIMTYPE_UINT32, false); }
 };
 
-template<> struct Sca<Sint32> 
-{ 
-    static Sint32 get() { return -32; } 
+template<> struct Sca<Sint32>
+{
+    static Sint32 get() { return -32; }
     static CIMValue null() { return CIMValue(CIMTYPE_SINT32, false); }
 };
 
-template<> struct Sca<Uint64> 
-{ 
-    static Uint64 get() { return 64; } 
+template<> struct Sca<Uint64>
+{
+    static Uint64 get() { return 64; }
     static CIMValue null() { return CIMValue(CIMTYPE_UINT64, false); }
 };
 
-template<> struct Sca<Sint64> 
-{ 
-    static Sint64 get() { return -64; } 
+template<> struct Sca<Sint64>
+{
+    static Sint64 get() { return -64; }
     static CIMValue null() { return CIMValue(CIMTYPE_SINT64, false); }
 };
 
-template<> struct Sca<Real32> 
-{ 
-    static Real32 get() { return 32.32; } 
+template<> struct Sca<Real32>
+{
+    static Real32 get() { return 32.32; }
     static CIMValue null() { return CIMValue(CIMTYPE_REAL32, false); }
 };
 
-template<> struct Sca<Real64> 
-{ 
+template<> struct Sca<Real64>
+{
     static Real64 get() { return 64.64; }
     static CIMValue null() { return CIMValue(CIMTYPE_REAL64, false); }
 };
 
-template<> struct Sca<Char16> 
-{ 
-    static Char16 get() { return 'A'; } 
+template<> struct Sca<Char16>
+{
+    static Char16 get() { return 'A'; }
     static CIMValue null() { return CIMValue(CIMTYPE_CHAR16, false); }
 };
 
-template<> struct Sca<String> 
-{ 
-    static String get() { return String("String"); } 
+template<> struct Sca<String>
+{
+    static String get() { return String("String"); }
     static CIMValue null() { return CIMValue(CIMTYPE_STRING, false); }
 };
 
-template<> struct Sca<CIMDateTime> 
+template<> struct Sca<CIMDateTime>
 {
-    static CIMDateTime get() {return CIMDateTime("20070101120000.000000-360");} 
+    static CIMDateTime get() {return CIMDateTime("20070101120000.000000-360");}
     static CIMValue null() { return CIMValue(CIMTYPE_DATETIME, false); }
 };
 
-template<> struct Sca<CIMInstance> 
+template<> struct Sca<CIMInstance>
 {
-    static CIMInstance get() 
+    static CIMInstance get()
     {
         CIMInstance part("All_Part");
         part.addProperty(CIMProperty("Key", Uint32(8888)));
@@ -230,9 +230,9 @@ template<> struct Sca<CIMInstance>
     static CIMValue null() { return CIMValue(CIMTYPE_INSTANCE, false); }
 };
 
-template<> struct Sca<CIMObject> 
+template<> struct Sca<CIMObject>
 {
-    static CIMObject get() 
+    static CIMObject get()
     {
         CIMInstance part("All_Part");
         part.addProperty(CIMProperty("Key", Uint32(7777)));
@@ -242,9 +242,9 @@ template<> struct Sca<CIMObject>
     static CIMValue null() { return CIMValue(CIMTYPE_OBJECT, false); }
 };
 
-template<> struct Sca<CIMObjectPath> 
+template<> struct Sca<CIMObjectPath>
 {
-    static CIMObjectPath get() 
+    static CIMObjectPath get()
     {
         CIMObjectPath cop("root/cimv2:All_Part.Key=7777");
         cop.setNameSpace("root/cimv2");
@@ -254,10 +254,10 @@ template<> struct Sca<CIMObjectPath>
     static CIMValue null() { return CIMValue(CIMTYPE_REFERENCE, false); }
 };
 
-template<class T> 
+template<class T>
 struct Arr
 {
-    static Array<T> get(Uint32 size) 
+    static Array<T> get(Uint32 size)
     {
         Array<T> a;
 
@@ -382,7 +382,7 @@ bool check_prop_null(CIMInstance& c1, const String& name)
     CIMProperty p = c1.getProperty(pos);
 
     CIMValue v = p.getValue();
-    
+
     return(v.isNull());
 }
 
@@ -549,7 +549,7 @@ void test_All_Class_instance(CIMClient& client, CIMObjectPath& cop,
 **  enumerateInstances()
 **
 *******************************************************************************/
-/* 
+/*
     get the instance based on the provided property list and
     confirm that we get the correct properties and
     the correct value for each property.
@@ -570,7 +570,7 @@ void test_getInstance_propertyList(CIMClient& client,
     }
 }
 
-/* 
+/*
     get the instance based on the provided property list and
     confirm that we get the correct properties and
     the correct value for each property.
@@ -693,8 +693,8 @@ private:
     Uint32 _pos;                  // pos in list to start next group
     Uint32 _length;               // length of propertyList group
     Uint32 _spacing;              // number to skip between properties
-    Boolean _done;                // test done indicator  
-    CIMPropertyList _pl;          // last property list generated  
+    Boolean _done;                // test done indicator
+    CIMPropertyList _pl;          // last property list generated
 };
 
 // Test for varying sizes of property list on getInstance requests with
@@ -742,7 +742,7 @@ void test_getInstance_propertyLists(CIMClient& client, CIMObjectPath& cop)
     };
 
     // Test to determine if CIMPLE ignores a property name that is not
-    // a valid property for this class.  The CIM Operations spec is that 
+    // a valid property for this class.  The CIM Operations spec is that
     // the bad property name should be ignored.
     {
         Array<CIMName> pla;
@@ -801,7 +801,7 @@ void test_enumerateInstance_propertyLists(CIMClient& client,
     };
 
     // Test to determine if we ignore a property name that is not
-    // a valid property for this class.  The CIM Operations spec is that 
+    // a valid property for this class.  The CIM Operations spec is that
     // the bad property name should be ignored.
     {
         Array<CIMName> pla;
@@ -882,13 +882,13 @@ Real64 stringCIMValueToReal64(
 
 /*
     do the CIM Operation getProperty() and test the results against
-    the properties in the original instance.  This is done for all 
+    the properties in the original instance.  This is done for all
     properties in the original instance.
 */
 void test_get_property(CIMClient& client, CIMObjectPath& cop)
 {
     CIMInstance origInst = client.getInstance(NAMESPACE, cop);
-    
+
     for (Uint32 i = 0; i < origInst.getPropertyCount(); i++)
     {
         CIMProperty p = origInst.getProperty(i);
@@ -904,7 +904,7 @@ void test_get_property(CIMClient& client, CIMObjectPath& cop)
         {
             // Real values may not be equal after the conversion
             // so we have to reconvert to compare
-            if (vOrig.getType() == CIMTYPE_REAL32 
+            if (vOrig.getType() == CIMTYPE_REAL32
                 || vOrig.getType() == CIMTYPE_REAL64)
             {
                 // Bypass array test for now
@@ -930,17 +930,17 @@ void test_get_property(CIMClient& client, CIMObjectPath& cop)
                     errFound = !_equalReal(rOrig, r);
                 }
             }
-            else    // not realxx type. 
+            else    // not realxx type.
             {
                 errFound=true;
             }
             if (errFound)
             {
-                cout << "Error in GetProperty " 
+                cout << "Error in GetProperty "
                     << p.getName().getString()
                     << " Types = " << cimTypeToString(v.getType())
                     << ", " << cimTypeToString(vOrig.getType())
-                    << "\n Values " << v.toString() 
+                    << "\n Values " << v.toString()
                     << ", " << vOrig.toString()
                     << endl;
                 assert(false);
@@ -1087,7 +1087,7 @@ void test_enumerate_instances(CIMClient& client)
     //assert(check_prop_value(ci, "instanceScalar"CIMValue(name));
     //assert(check_prop_value(ci, "objectScalar"));
 #endif
-    assert(check_prop_value(ci, "booleanArray", 
+    assert(check_prop_value(ci, "booleanArray",
         CIMValue(Arr<Boolean>::bld(true, false, true) )));
     assert(check_prop_value(ci, "uint8Array",
         CIMValue(Arr<Uint8>::bld(0, 8, 254) )));
@@ -1100,9 +1100,9 @@ void test_enumerate_instances(CIMClient& client)
     assert(check_prop_value(ci, "uint32Array",
         CIMValue(Arr<Uint32>::bld(8192, 0, 16, 9999) )));
     assert(check_prop_value(ci, "sint32Array",
-        CIMValue(Arr<Sint32>::bld(-8192, 0, 16, 15000) ))); 
+        CIMValue(Arr<Sint32>::bld(-8192, 0, 16, 15000) )));
     assert(check_prop_value(ci, "uint64Array",
-        CIMValue(Arr<Uint64>::bld(8192, 0, 16, 9999) ))); 
+        CIMValue(Arr<Uint64>::bld(8192, 0, 16, 9999) )));
     assert(check_prop_value(ci, "sint64Array",
         CIMValue(Arr<Sint64>::bld(-8192, 0, 16, 9999) )));
     assert(check_prop_value(ci, "real32Array",
@@ -1110,7 +1110,7 @@ void test_enumerate_instances(CIMClient& client)
     assert(check_prop_value(ci, "real64Array",
         CIMValue(Arr<Real64>::bld(64, 64, 64 ) )));
     assert(check_prop_value(ci, "char16Array",
-        CIMValue(Arr<Char16>::bld('A', 'B', 'C') ))); 
+        CIMValue(Arr<Char16>::bld('A', 'B', 'C') )));
     assert(check_prop_value(ci, "stringArray",
         CIMValue(Arr<String>::bld("Red", "Green", "Blue", "") )));
     assert(check_prop_value(ci, "datetimeArray",
@@ -1182,7 +1182,7 @@ struct Tst_Ret
         Array<CIMParamValue> in;
         Array<CIMParamValue> out;
 
-        CIMValue value = client.invokeMethod(NAMESPACE, 
+        CIMValue value = client.invokeMethod(NAMESPACE,
             CIMObjectPath("All_Class.Key=9999"), name, in, out);
 
         T x;
@@ -1208,7 +1208,7 @@ struct Tst_Sca_Parms
 
         in.append(CIMParamValue("p1", Sca<T>::get()));
 
-        CIMValue value = client.invokeMethod(NAMESPACE, 
+        CIMValue value = client.invokeMethod(NAMESPACE,
             CIMObjectPath("All_Class.Key=9999"), name, in, out);
 
         Uint32 rv;
@@ -1251,7 +1251,7 @@ struct Tst_Arr_Parms
 
         in.append(CIMParamValue("p1", Arr<T>::get(3)));
 
-        CIMValue value = client.invokeMethod(NAMESPACE, 
+        CIMValue value = client.invokeMethod(NAMESPACE,
             CIMObjectPath("All_Class.Key=9999"), name, in, out);
 
         Uint32 rv;
@@ -1294,7 +1294,7 @@ struct Tst_Arr_Parms<CIMObjectPath>
 
         in.append(CIMParamValue("p1", Arr<CIMObjectPath>::get(3)));
 
-        CIMValue value = client.invokeMethod(NAMESPACE, 
+        CIMValue value = client.invokeMethod(NAMESPACE,
             CIMObjectPath("All_Class.Key=9999"), name, in, out);
 
         Uint32 rv;
@@ -1466,7 +1466,7 @@ int main(int argc, char** argv)
         CIMClient client;
         client.connect("localhost", 5988, "", "");
 
-        // The following functions create an instance 
+        // The following functions create an instance
         // with all cim types, and test retrieving it in a number
         // of different forms.
         CIMInstance origInstance;

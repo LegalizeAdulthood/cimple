@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -99,15 +99,15 @@ POSIX_LINKAGE int pthread_mutexattr_settype(
 
 enum pthread_once_init_t { PTHREAD_ONCE_INIT };
 
-struct POSIX_LINKAGE pthread_once_t 
+struct POSIX_LINKAGE pthread_once_t
 {
     char opaque[64];
     pthread_once_t(pthread_once_init_t);
 };
 
 POSIX_LINKAGE int pthread_once(
-    pthread_once_t* once_control, 
-    void (*init_routine)(void)); 
+    pthread_once_t* once_control,
+    void (*init_routine)(void));
 
 //==============================================================================
 //
@@ -121,14 +121,14 @@ struct pthread_key_t
 };
 
 POSIX_LINKAGE int pthread_key_create(
-    pthread_key_t* key, 
+    pthread_key_t* key,
     void (*destructor)(void*));
 
 POSIX_LINKAGE int pthread_key_delete(
     pthread_key_t key);
 
 POSIX_LINKAGE int pthread_setspecific(
-    pthread_key_t key, 
+    pthread_key_t key,
     const void* value);
 
 POSIX_LINKAGE void* pthread_getspecific(
@@ -151,9 +151,9 @@ struct pthread_attr_t
 };
 
 POSIX_LINKAGE int pthread_create(
-    pthread_t* thread, 
+    pthread_t* thread,
     const pthread_attr_t* attr,
-    void* (*start_routine)(void*), 
+    void* (*start_routine)(void*),
     void* arg);
 
 POSIX_LINKAGE pthread_t pthread_self();

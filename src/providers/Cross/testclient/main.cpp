@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -103,46 +103,46 @@ int main(int argc, char** argv)
             assert(rnR[0].getClassName() == rtnClassName);
             assert(rnR[0].getNameSpace() == NamespaceRight);
 
-            // get associator names cross namespace from left to right   
-            
+            // get associator names cross namespace from left to right
+
             Array<CIMObjectPath> anL= client.associatorNames(NamespaceLeft,
                                                               copLeft);
-        
+
             assert(anL.size() == 1);
             assert(anL[0].getNameSpace() == NamespaceRight);
             assert(anL[0].getClassName() == RClass);
-        
+
             // get associatorNames cross namespace from right to left.
-        
+
             Array<CIMObjectPath> anR= client.associatorNames(NamespaceRight,
                                                               copRight);
-        
+
             assert(anR.size() == 1);
             assert(anR[0].getNameSpace() == NamespaceLeft);
             assert(anR[0].getClassName() == LClass);
             //
             // get associators cross namespace from left to right
             // Key = 1.  This key returns a cross namespace association.
-            // 
-        
+            //
+
             Array<CIMObject> aL= client.associators(NamespaceLeft, copLeft);
-        
+
             assert(aL.size() == 1);
             assert(aL[0].getPath().getNameSpace() == NamespaceRight);
             assert(aL[0].getPath().getClassName() == RClass);
             //
             // get associatorNames cross namespace from right to left.
             // Key = 1. This key returns cross namespace association
-            // 
-        
+            //
+
             Array<CIMObject> aR= client.associators(NamespaceRight, copRight);
-        
+
             assert(aR.size() == 1);
             assert(aR[0].getPath().getNameSpace() == NamespaceLeft);
             assert(aR[0].getPath().getClassName() == LClass);
         }
 
-        // 
+        //
         // Above tests with Key 2 which is non-cross namespace association
         // That is returned from Cross Association.
 
@@ -150,29 +150,29 @@ int main(int argc, char** argv)
 
            CIMObjectPath copLeft("Left.Key=2");
            CIMObjectPath copRight("Right.Key=2");
-        
+
             Array<CIMObjectPath> anL= client.associatorNames(NamespaceLeft,
                                                               copLeft);
-        
+
             assert(anL.size() == 1);
             assert(anL[0].getNameSpace() == NamespaceLeft);
-        
-        
+
+
             Array<CIMObjectPath> anR= client.associatorNames(NamespaceRight,
                                                               copRight);
-        
+
             assert(anR.size() == 1);
             assert(anR[0].getNameSpace() == NamespaceRight);
 
-        
+
             Array<CIMObject> aL= client.associators(NamespaceLeft, copLeft);
-        
+
             assert(aL.size() == 1);
             assert(aL[0].getPath().getNameSpace() == NamespaceLeft);
 
-         
+
             Array<CIMObject> aR= client.associators(NamespaceRight, copRight);
-        
+
             assert(aR.size() == 1);
             assert(aR[0].getPath().getNameSpace() == NamespaceRight);
         }
@@ -198,41 +198,41 @@ int main(int argc, char** argv)
             assert(rnR[0].getClassName() == rtnClassName);
             assert(rnR[0].getNameSpace() == NamespaceRight);
 
-            // get associator names cross namespace from left to right   
-            
+            // get associator names cross namespace from left to right
+
             Array<CIMObjectPath> anL= client.associatorNames(NamespaceLeft,
                                                               copLeft);
-        
+
             assert(anL.size() == 1);
 
             assert(anL[0].getClassName() == "Right");
             assert(anL[0].getNameSpace() == NamespaceRight);
-        
+
             // get associatorNames cross namespace from right to left.
-        
+
             Array<CIMObjectPath> anR= client.associatorNames(NamespaceRight,
                                                               copRight);
-        
+
             assert(anR.size() == 1);
             assert(anR[0].getNameSpace() == NamespaceLeft);
 
             //
             // get associators cross namespace from left to right
             // Key = 1.  This key returns a cross namespace association.
-            // 
-        
+            //
+
             Array<CIMObject> aL= client.associators(NamespaceLeft, copLeft);
-        
+
             assert(aL.size() == 1);
             assert(aL[0].getPath().getNameSpace() == NamespaceRight);
 
             //
             // get associatorNames cross namespace from right to left.
             // Key = 1. This key returns cross namespace association
-            // 
-        
+            //
+
             Array<CIMObject> aR= client.associators(NamespaceRight, copRight);
-        
+
             assert(aR.size() == 1);
             assert(aR[0].getPath().getNameSpace() == NamespaceLeft);
         }
@@ -240,14 +240,14 @@ int main(int argc, char** argv)
     }
     catch(CIMException& e)
     {
-        PEGASUS_STD(cerr) << "Error: CIMException " << e.getMessage() 
+        PEGASUS_STD(cerr) << "Error: CIMException " << e.getMessage()
             << " StatusCode = " << e.getCode()
             << PEGASUS_STD(endl);
         exit(1);
     }
     catch(Exception& e)
     {
-        PEGASUS_STD(cerr) << "Error: Exception " << e.getMessage() 
+        PEGASUS_STD(cerr) << "Error: Exception " << e.getMessage()
             << PEGASUS_STD(endl);
         exit(1);
     }

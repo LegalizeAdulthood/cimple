@@ -35,7 +35,7 @@ Enum_Instances_Status Delegator_Provider::enum_instances(
     Delegate* delegate = Delegate::create();
 
     Instance_Enumerator e;
-    
+
     if (cimom::enum_instances( "root/cimv2", delegate, e) != 0)
     {
         return ENUM_INSTANCES_FAILED;

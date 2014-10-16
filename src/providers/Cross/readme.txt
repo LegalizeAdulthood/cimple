@@ -5,8 +5,8 @@ This test implements 4 providers:
 
     * Left   Simple class with one property
     * Right - Simple class with one property
-    * Cross -instance with Left in the Left Namespace and Right in the 
-      Right Namespace and other instances with the instances in the 
+    * Cross -instance with Left in the Left Namespace and Right in the
+      Right Namespace and other instances with the instances in the
       same namespace.
     * CrossSubclass - This is a subclass of Cross to assure that the
       characteristics apply to the subclass of the associations

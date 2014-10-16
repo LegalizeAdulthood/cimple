@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -64,7 +64,7 @@ int pthread_mutexattr_settype(
     pthread_mutexattr_t* attr,
     int kind)
 {
-    // Set kind into attribute (PTHREAD_MUTEX_FAST_NP or 
+    // Set kind into attribute (PTHREAD_MUTEX_FAST_NP or
     // PTHREAD_MUTEX_RECURSIVE_NP.
 
     if (attr)
@@ -239,7 +239,7 @@ int pthread_mutex_unlock(
 //
 //==============================================================================
 
-struct pthread_once_rep_t 
+struct pthread_once_rep_t
 {
     int initialized;
     pthread_mutex_t mutex;
@@ -255,7 +255,7 @@ pthread_once_t::pthread_once_t(pthread_once_init_t)
 }
 
 int pthread_once(
-    pthread_once_t* once_control, 
+    pthread_once_t* once_control,
     void (*init_routine)(void))
 {
     assert(sizeof(pthread_once_t) >= sizeof(pthread_once_rep_t));
@@ -289,7 +289,7 @@ struct pthread_key_rep_t
 };
 
 int pthread_key_create(
-    pthread_key_t* key, 
+    pthread_key_t* key,
     void (*destructor)(void*))
 {
     assert(sizeof(pthread_key_t) >= sizeof(pthread_key_rep_t));
@@ -322,7 +322,7 @@ int pthread_key_delete(
 }
 
 int pthread_setspecific(
-    pthread_key_t key, 
+    pthread_key_t key,
     const void* value)
 {
     pthread_key_rep_t* rep = (pthread_key_rep_t*)&key;
@@ -406,7 +406,7 @@ static void _create_self_key()
     pthread_key_create(&_self_key, NULL);
 }
 
-static DWORD WINAPI _proc(LPVOID arg) 
+static DWORD WINAPI _proc(LPVOID arg)
 {
     pthread_rep_t* rep = (pthread_rep_t*)arg;
 
@@ -457,9 +457,9 @@ static void _destroy_thread_rep(pthread_rep_t* rep)
 }
 
 int pthread_create(
-    pthread_t* thread, 
+    pthread_t* thread,
     const pthread_attr_t* attr,
-    void* (*start_routine)(void*), 
+    void* (*start_routine)(void*),
     void* arg)
 {
     pthread_attr_rep_t* attr_rep = (pthread_attr_rep_t*)attr;
