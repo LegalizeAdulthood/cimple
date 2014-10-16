@@ -31,7 +31,7 @@ DIRS = \
 ## TODO - Fix This issue
 ifdef CIMPLE_UNIX
     DIRS += io
-endif 
+endif
 
 ifdef ENABLE_SCHEDULER_OPT
     DIRS += lists scheduler

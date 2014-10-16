@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -183,7 +183,7 @@ int main(int /* argc */, char** argv)
         print(b);
     }
 
-    // Test Embedded object. Employee embedded in 
+    // Test Embedded object. Employee embedded in
     {
         Employee* e = Employee::create(true);
         e->Id.set(1001);
@@ -239,7 +239,7 @@ int main(int /* argc */, char** argv)
         Datetime dt_interval;
         dt_interval.usec(
             1 * Datetime::DAY +
-            2 * Datetime::HOUR + 
+            2 * Datetime::HOUR +
             3 * Datetime::MIN +
             4 * Datetime::SEC +
             5 * Datetime::USEC);
@@ -273,7 +273,7 @@ int main(int /* argc */, char** argv)
                                                   1000,
                                                   CIMPLE_UINT16_MAX));
         assert(!e->dd.null);
-        assert(e->dd.value ==  Array<uint32>::make(CIMPLE_UINT32_MIN, 
+        assert(e->dd.value ==  Array<uint32>::make(CIMPLE_UINT32_MIN,
                                                    8192,
                                                    CIMPLE_UINT32_MAX));
         assert(!e->es.null);
@@ -281,7 +281,7 @@ int main(int /* argc */, char** argv)
                                                CIMPLE_SINT64_LITERAL(9999999),
                                                CIMPLE_SINT64_MAX));
         // switch to use the following. Note we substitute numeric for
-        // symbolic max until we fix problem in compiler.  Problem in 
+        // symbolic max until we fix problem in compiler.  Problem in
         // compiler is use of strtoll function for integer conversion that
         // causes max defined in numeric below as maximum allowable
         // in a class default uint64 integer.  This also affects the
@@ -300,7 +300,7 @@ int main(int /* argc */, char** argv)
         assert(e->hh.value == Array<char16>::make('A', 'a'));
         assert(!e->ii.null);
         assert(e->ii.value == Array<String>::make("",
-                               "abcdefghijklmnopqurstuvwxyz0123456789", 
+                               "abcdefghijklmnopqurstuvwxyz0123456789",
                                "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                                "!\"#$%\'()*+`-,/:;<=>?@[\\]^_{|}~"));
 

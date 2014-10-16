@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,8 +26,8 @@
 
 /*
     Test of the Buffer class
-    Executes both a functional test and multithread test of the methods of this 
-    class 
+    Executes both a functional test and multithread test of the methods of this
+    class
 */
 #include <cassert>
 #include <cimple/config.h>
@@ -59,10 +59,10 @@ void _capacity(const Buffer& b)
     printf("capacity = %zu\n", b.capacity());
 }
 
-/* 
+/*
     Function created to test the vformat function that is part of
-    buffer. 
-*/ 
+    buffer.
+*/
 size_t vformat_test(Buffer& b, const char* fmt, ...)
 {
     size_t size;
@@ -89,7 +89,7 @@ static void* test01(void* arg)
 
     // standard char* strings for test
 
-    const char testconst[] = "abcdefghijklmnopqrstuvwxyz";    
+    const char testconst[] = "abcdefghijklmnopqrstuvwxyz";
     char test[] = "abcdefghijklmnopqrstuvwxyz";
 
     size_t min_capacity = 0;
@@ -150,7 +150,7 @@ static void* test01(void* arg)
         b.append_uint64(uint64(3456789));
         b.append_uint32(uint32(123456));
         b.append_uint16(uint16(1234));
-        assert(_equal(b,"abcd34567891234561234")); 
+        assert(_equal(b,"abcd34567891234561234"));
         if (verbose)
         {
             printf("step 3\n");
@@ -170,7 +170,7 @@ static void* test01(void* arg)
         }
     }
 
-    // Test capacity and reserve() 
+    // Test capacity and reserve()
     {
         Buffer b;
         ////_capacity()
@@ -370,7 +370,7 @@ static void* test01(void* arg)
         //// _capacity(b);
         assert(b.capacity() == 8192);
 
-        // remove the '*' characters. to see if the insert was 
+        // remove the '*' characters. to see if the insert was
         // placed at the proper point
         b.remove(26, 4094);
         assert(b.size() == 26);
@@ -398,7 +398,7 @@ static void* test01(void* arg)
             assert(b[i+25] == 'z');
         }
 
-        do 
+        do
         {
             b.remove(26, 26);
             ////printf("size = %zu\n", b.size());
@@ -432,7 +432,7 @@ static void* test01(void* arg)
             assert(b[i+25] == 'z');
         }
 
-        do 
+        do
         {
             b.remove(26, 26);
             ////printf("size = %zu\n", b.size());
@@ -495,7 +495,7 @@ static void* test01(void* arg)
             printf("step 21\n");
         }
     }
-    
+
     // Test the vformat crossing capacity limit
     {
         Buffer b;
