@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -59,8 +59,8 @@ void ref(const Meta_Class* mc)
 void unref(const Meta_Class* mc)
 {
     // Never destroy static instances (where refs == 0).
-    if (mc && 
-        Atomic_get(&mc->refs) && 
+    if (mc &&
+        Atomic_get(&mc->refs) &&
         Atomic_dec_and_test(&((Meta_Class*)mc)->refs))
     {
         destroy((Meta_Class*)mc);
@@ -144,8 +144,8 @@ const Meta_Class* find_meta_class(
 
     // Check superclass chain.
 
-    for (const Meta_Class* p = source_meta_class; 
-        p; 
+    for (const Meta_Class* p = source_meta_class;
+        p;
         p = p->super_meta_class)
     {
         if (eqi(p->name, class_name))
@@ -378,7 +378,7 @@ void destroy(Meta_Class* mc)
 //==============================================================================
 
 Meta_Class* create_meta_class(
-    const char* name, 
+    const char* name,
     const Meta_Class* smc,
     uint32 flags)
 {
@@ -542,7 +542,7 @@ void filter_qualifiers(
 
     for (size_t i = 0; i < mc->num_meta_features; i++)
     {
-        Meta_Qualified_Object* mqo = 
+        Meta_Qualified_Object* mqo =
             (Meta_Qualified_Object*)mc->meta_features[i];
 
         // Filter property, reference, and method qualifiers:

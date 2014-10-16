@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,8 +33,8 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-// This structure defines meta-data for a CIM class feature. It is a 
-// pseudo-base type of Meta_Property, Meta_Reference, and Meta_Method. 
+// This structure defines meta-data for a CIM class feature. It is a
+// pseudo-base type of Meta_Property, Meta_Reference, and Meta_Method.
 // These structures share the same two fields with this structure.
 struct Meta_Feature
 {
@@ -46,7 +46,7 @@ struct Meta_Feature
 };
 
 // This structure defines feature-related attributes that are specific to
-// one class. This is necessary since Meta_Features may be shared by two or 
+// one class. This is necessary since Meta_Features may be shared by two or
 // more classes in the class hierarchy.
 struct Meta_Feature_Local
 {

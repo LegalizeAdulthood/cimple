@@ -23,7 +23,7 @@ void print(const Meta_Feature* mf, bool print_qualifiers, size_t level)
 {
     if (print_qualifiers)
     {
-        print(mf->meta_qualifiers, mf->num_meta_qualifiers, mf->flags, 
+        print(mf->meta_qualifiers, mf->num_meta_qualifiers, mf->flags,
             false, level);
     }
 
@@ -62,8 +62,8 @@ void append(
     const Meta_Feature* meta_feature)
 {
     append_ptr_array(
-        *((void***)&meta_features), 
-        num_meta_features, 
+        *((void***)&meta_features),
+        num_meta_features,
         (void*)meta_feature);
 }
 

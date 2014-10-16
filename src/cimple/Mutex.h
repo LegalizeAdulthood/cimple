@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -39,20 +39,20 @@ CIMPLE_NAMESPACE_BEGIN
 
 /**
  * Class defining Mutex with lock and unlock similar to Posix
- * Mutex. There is a a parameter option for recursive mutex 
- * capability. 
- */ 
+ * Mutex. There is a a parameter option for recursive mutex
+ * capability.
+ */
 class CIMPLE_CIMPLE_LINKAGE Mutex
 {
 public:
-    /** 
-     * Mutex constructor. Create a new mutex in the unlocked state. 
-     * The input parameter determines whether the mutex will be 
-     * recursive. 
-     * @param recursive bool Optional parameter that determines if 
+    /**
+     * Mutex constructor. Create a new mutex in the unlocked state.
+     * The input parameter determines whether the mutex will be
+     * recursive.
+     * @param recursive bool Optional parameter that determines if
      * the mutex will be recursive.  If true the mutex will be
-     * recursive. The default is true (recursive). If false a 
-     * non-recursive mutex is created. 
+     * recursive. The default is true (recursive). If false a
+     * non-recursive mutex is created.
      */
     Mutex(bool recursive = true);
 
@@ -62,35 +62,35 @@ public:
     ~Mutex();
 
     /**
-     * Lock the mutex. If the mutex is locked wait for it to be 
-     * unlocked. If the mutex is recursive this may be applied 
-     * repeatedly by the thread owner and the mutex does not become 
-     * unlocked until an unlock() call has been executed for each 
-     * lock() call. 
-     * Any error to a lock will cause an assert error in the code. 
+     * Lock the mutex. If the mutex is locked wait for it to be
+     * unlocked. If the mutex is recursive this may be applied
+     * repeatedly by the thread owner and the mutex does not become
+     * unlocked until an unlock() call has been executed for each
+     * lock() call.
+     * Any error to a lock will cause an assert error in the code.
      */
     void lock();
 
     /**
-     * Try to lock the mutex without wait, this function returns an 
+     * Try to lock the mutex without wait, this function returns an
      * error code if the thread is locked. If the mutex is recursive
-     * this may be applied repeatedly and the mutex does not become 
-     * unlocked until an unlock() call has been executed for each 
-     * lock() call. 
-     *  
-     * @return If the mutex is already locked , the try_lock() 
+     * this may be applied repeatedly and the mutex does not become
+     * unlocked until an unlock() call has been executed for each
+     * lock() call.
+     *
+     * @return If the mutex is already locked , the try_lock()
      *         returns non-zero. Note that any error except busy
      *         causes an assert so that a non=zero return means
      *         that the mutex is locked.
-     */ 
+     */
     int try_lock();
 
     /**
-     * Unlock the mutex.  If the mutex is recursive the mutex does 
-     * not unlock until the number of unlock() calls matches the 
-     * number of lock() calls. Note that the unlock() not check for 
-     * errors so that unlock() to a Mutex that is not locked will 
-     * not be detected. 
+     * Unlock the mutex.  If the mutex is recursive the mutex does
+     * not unlock until the number of unlock() calls matches the
+     * number of lock() calls. Note that the unlock() not check for
+     * errors so that unlock() to a Mutex that is not locked will
+     * not be detected.
      */
     void unlock();
 

@@ -102,11 +102,11 @@ CIMPLE_DOXYGEN_FILES = \
 
 CIMPLE_DOXYGEN_FILES += Enc.h Instance_Enc.h
 
-## Obsolete 
+## Obsolete
  ifdef ENABLE_SCHEDULER_OPT
     CIMPLE_DOXYGEN_FILES += List.h Id_Pool.h Scheduler.h
 endif
-   
+
 DEFINES += -DCIMPLE_BUILDING_LIBCIMPLE
 
 INSTALL_HEADERS_DIR = cimple
@@ -116,7 +116,7 @@ INSTALL_HEADERS = $(wildcard *.h)
 include $(TOP)/mak/rules.mak
 
 doc: docclean
-        
+
 	doxygen
 
 docclean:

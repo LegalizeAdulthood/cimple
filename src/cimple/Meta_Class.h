@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -52,7 +52,7 @@ struct Meta_Class
     const char* name;
     const Meta_Qualifier* const* meta_qualifiers;
     size_t num_meta_qualifiers;
-    const Meta_Feature* const* meta_features; 
+    const Meta_Feature* const* meta_features;
     size_t num_meta_features;
     uint32 size;
 
@@ -71,26 +71,26 @@ void unref(const Meta_Class* mc);
 
 CIMPLE_CIMPLE_LINKAGE
 const Meta_Feature* find_feature(
-    const Meta_Class* mc, 
-    const char* name, 
+    const Meta_Class* mc,
+    const char* name,
     uint32 type = CIMPLE_FLAG_ANY_FEATURE);
 
 inline const Meta_Property* find_property(
-    const Meta_Class* mc, 
+    const Meta_Class* mc,
     const char* name)
 {
     return (const Meta_Property*)find_feature(mc, name, CIMPLE_FLAG_PROPERTY);
 }
 
 inline const Meta_Reference* find_reference(
-    const Meta_Class* mc, 
+    const Meta_Class* mc,
     const char* name)
 {
     return (const Meta_Reference*)find_feature(mc, name, CIMPLE_FLAG_REFERENCE);
 }
 
 inline const Meta_Method* find_method(
-    const Meta_Class* mc, 
+    const Meta_Class* mc,
     const char* name)
 {
     return (const Meta_Method*)find_feature(mc, name, CIMPLE_FLAG_METHOD);
@@ -111,7 +111,7 @@ inline bool has_references(const Meta_Class* mc)
 
 CIMPLE_CIMPLE_LINKAGE
 bool is_subclass(
-    const Meta_Class* super_class, 
+    const Meta_Class* super_class,
     const Meta_Class* sub_class);
 
 CIMPLE_CIMPLE_LINKAGE
@@ -128,7 +128,7 @@ const Meta_Class* find_meta_class(
 */
 CIMPLE_CIMPLE_LINKAGE
 Meta_Class* create_meta_class(
-    const char* name, 
+    const char* name,
     const Meta_Class* super_meta_class,
     uint32 flags);
 
