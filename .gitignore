@@ -140,6 +140,12 @@ src/providers/DerivedIndication/MyIndication.cpp
 src/providers/DerivedIndication/MyIndication.h
 src/providers/DerivedIndication/repository.cpp
 src/providers/DerivedIndication/repository.h
+src/providers/DualNamespace/DualNamespace1.cpp
+src/providers/DualNamespace/DualNamespace1.h
+src/providers/DualNamespace/DualNamespace2.cpp
+src/providers/DualNamespace/DualNamespace2.h
+src/providers/DualNamespace/repository.cpp
+src/providers/DualNamespace/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

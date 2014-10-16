@@ -5,13 +5,20 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleDualNamespace
 
-SOURCES = \
+GENCLASS_SOURCES = \
     DualNamespace1.cpp \
-    DualNamespace1_Provider.cpp \
     DualNamespace2.cpp \
-    DualNamespace2_Provider.cpp \
-    module.cpp \
     repository.cpp
+
+GENCLASS_HEADERS = \
+    DualNamespace1.h \
+    DualNamespace2.h
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    DualNamespace1_Provider.cpp \
+    DualNamespace2_Provider.cpp \
+    module.cpp
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -22,7 +29,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES) $(GENCLASS_HEADERS): repository.mof
 	$(BINDIR)/genclass -r DualNamespace1 DualNamespace2
 
 genprov:
@@ -37,3 +44,7 @@ regmod1:
 regmod2:
 	$(BINDIR)/regmod -d -n ns2 -v -c $(TARGET) DualNamespace2
 
+DualNamespace1_Provider.cpp: DualNamespace1_Provider.h
+DualNamespace2_Provider.cpp: DualNamespace2_Provider.h
+DualNamespace1_Provider.h: DualNamespace1.h
+DualNamespace2_Provider.h: DualNamespace2.h
