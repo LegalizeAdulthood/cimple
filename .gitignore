@@ -236,6 +236,14 @@ src/providers/Methods/Methods.cpp
 src/providers/Methods/Methods.h
 src/providers/Methods/repository.cpp
 src/providers/Methods/repository.h
+src/providers/MyIndication/CIM_Indication.cpp
+src/providers/MyIndication/CIM_Indication.h
+src/providers/MyIndication/MyEmbeddedClass.cpp
+src/providers/MyIndication/MyEmbeddedClass.h
+src/providers/MyIndication/MyIndication.cpp
+src/providers/MyIndication/MyIndication.h
+src/providers/MyIndication/repository.cpp
+src/providers/MyIndication/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

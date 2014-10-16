@@ -5,13 +5,16 @@ MODULE=1
 
 SHARED_LIBRARY = cimplemyindic
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_Indication.cpp \
-    module.cpp \
     MyEmbeddedClass.cpp \
     MyIndication.cpp \
-    MyIndication_Provider.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    module.cpp \
+    MyIndication_Provider.cpp
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -28,7 +31,7 @@ endif
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r MyIndication MyEmbeddedClass
 
 genprov:
