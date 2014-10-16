@@ -4,7 +4,7 @@
     1.  The CIMDatetime default constructor now constructs a zero-interval
         ("00000000000000.000000:000") rather than the 1970 POSIX epoch
         ("19700101000000.000000:000").
-    
+
     2.  Fixed "free memory write" in CMPI provider during provider unload.
 
     3.  Eliminated use of faulty CMGetCharPtr() macro in CMPI adapter.
@@ -16,11 +16,11 @@
         repository.
 
     6.  Improved Pegasus repository validation logic in regmod. Eliminated
-        mandatory checks for "repository/root#cimv2" since some installations 
+        mandatory checks for "repository/root#cimv2" since some installations
         have no such directory. Also added validation of repository namespace
         directories (to be sure they have the property subdirectories).
 
-    7.  Improved support for static linking of provider dependent libraries 
+    7.  Improved support for static linking of provider dependent libraries
         on Windows (added cimple/src/providers/Static example to illustrate
         this).
 

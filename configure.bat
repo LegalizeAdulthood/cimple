@@ -19,7 +19,7 @@ set prev=
   set found=
 
   ::
-  :: Get option argument based on prev variable set 
+  :: Get option argument based on prev variable set
   :: when option found
   ::
 
@@ -251,7 +251,7 @@ set prev=
       echo %arg0%: unknown option: %1
       goto done
   )
-  
+
   shift
 
 if not "%1" == "" goto loop
@@ -361,7 +361,7 @@ if NOT defined PROCESSOR_ARCHITECTURE (
     goto done
 )
 
-if "%PROCESSOR_ARCHITECTURE%" == "x86" ( 
+if "%PROCESSOR_ARCHITECTURE%" == "x86" (
   set __host=WIN32_IX86_MSVC
   goto HOSTFOUND
 )

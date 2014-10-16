@@ -20,7 +20,7 @@
     7.  Reworked logic in regmod that validates the Pegasus directory
         structure so that regmod works better in production environment.
 
-    8.  Improved support for static linking of provider dependent libraries 
+    8.  Improved support for static linking of provider dependent libraries
         on Windows (added cimple/src/providers/Static example to illustrate
         this).
 

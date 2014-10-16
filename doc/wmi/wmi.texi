@@ -36,7 +36,7 @@ Version 1.1, 15 December 2008
 @chapter Introduction
 
 This document explains how to use the WMI adapter for CIMPLE. The WMI Adapter
-enables CIMPLE providers to work with the Windows Management Instrumentation 
+enables CIMPLE providers to work with the Windows Management Instrumentation
 (WMI) server. The following chapters explain how to:
 
 @itemize @bullet
@@ -74,10 +74,10 @@ adapter depend on the SDK for a few functions.
 
 @noindent
 To build CIMPLE and the WMI adapter, open a Windows terminal session
-(@code{cmd.exe}). Run the Visual Studio setup scripts. Verify that the Visual 
-Studio C++ compiler is on your path (@code{cl.exe}). Obtain GNU make 
-(@code{make.exe}) and add it to your path. GNU make for Windows is available 
-from the "tools" link on the OpenPegasus home page 
+(@code{cmd.exe}). Run the Visual Studio setup scripts. Verify that the Visual
+Studio C++ compiler is on your path (@code{cl.exe}). Obtain GNU make
+(@code{make.exe}) and add it to your path. GNU make for Windows is available
+from the "tools" link on the OpenPegasus home page
 (see @uref{http://openpegasus.org}). Note that the make provided by
 Micrososft is not compatible with the cimple make files. You must use
 GNU make.
@@ -303,12 +303,12 @@ installed including:
 
 @itemize @bullet
 @item @code{cimbrowser.exe} - Part of a wmi toolset available from Micrososft under the name CIMTest.  This is a complete graphic wmi cim browser.
-@item @code{wbemtest.exe} - Client program that executes wmi cim operations from a  set of check boxes. 
+@item @code{wbemtest.exe} - Client program that executes wmi cim operations from a  set of check boxes.
 @end itemize
 
 @noindent
 Either of these tools is helpful to  verify the providers you write with CIMPLE.
-You may also use many other WMI client tools. 
+You may also use many other WMI client tools.
 
 @noindent
 In any case, to verify this first provider you should confirm that the

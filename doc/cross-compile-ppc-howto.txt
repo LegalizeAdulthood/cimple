@@ -6,7 +6,7 @@ proceeding. If none of the Pegasus environment variables are defined, then
 you can build a standalone CIMPLE environment with these instructions as
 well.
 
-This document explains how to cross-compile CIMPLE for the PowerPC, with 
+This document explains how to cross-compile CIMPLE for the PowerPC, with
 HardHat Linux (from MonteVista).
 
 First, define three environment variables as shown:

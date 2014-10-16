@@ -1,12 +1,12 @@
                         HOW TO WRITE A CIMPLE PROVIDER
-                        v 0.9 
+                        v 0.9
 
 INTRODUCTION:
 
     Note: if all you want is a quick overview of the exact steps, jump right
     to the SUMMARY section at the end of this document.
 
-    This document shows how to develop CIMPLE providers and how to use them in 
+    This document shows how to develop CIMPLE providers and how to use them in
     the Pegasus environement. The diagram below illustrates the key software
     components you will work with while writing providers.
 
@@ -26,8 +26,8 @@ INTRODUCTION:
     are routed to the CIMPLE provider manager, which in turn delegates them
     to the relevant provider to be handled. The CIMPLE provider manager is
     a shared library that is linked by the Pegasus CIMOM.
-    
-    Providers are organized into modules. Each module may contain one or 
+
+    Providers are organized into modules. Each module may contain one or
     more providers. The diagram above shows two moduldes: Module-A (containing
     Provider-X and Provider-Y) and Module-B (containing Provider-Z).
 
@@ -50,7 +50,7 @@ INTRODUCTION:
     If you are not sure, run the checkpeg utility like this.
 
         % checkpeg
-        
+
 DEFINING AND GENERATING THE FAN CLASS:
 
     The first step is to define and generate the class. Create a file called
@@ -61,14 +61,14 @@ DEFINING AND GENERATING THE FAN CLASS:
             [key] string DeviceID;
             uint64 Speed;
             uint64 DesiredSpeed;
-            uint32 SetSpeed([in] uint64 DesiredSpeed); 
+            uint32 SetSpeed([in] uint64 DesiredSpeed);
         };
 
     Note: you can organize classes into several files using the MOF include
     pragma.
 
-    Next, generate the class with the following command (be sure that 
-    CIMPLE_MOF_PATH contains the schema directory under the root of the CIMPLE 
+    Next, generate the class with the following command (be sure that
+    CIMPLE_MOF_PATH contains the schema directory under the root of the CIMPLE
     distribution). Do this from the directory that contains repository.mof.
 
         % genclass Fan
@@ -179,16 +179,16 @@ IMPLEMENTING THE PROVIDER BEHAVIOR:
             return ENUM_INSTANCE_MORE;
         }
 
-    This stub is called repeatedly for each instance, until all of the 
-    instances have been exhausted. For each call, we must fill in the non-null 
-    fields of the inst parmaeter. We use the state parameter to maintain state 
+    This stub is called repeatedly for each instance, until all of the
+    instances have been exhausted. For each call, we must fill in the non-null
+    fields of the inst parmaeter. We use the state parameter to maintain state
     between calls. It has two fields:
 
         state.client_data
         state.delete_proc
 
-    On the first call of an enumeration, client_data and delete_proc are both 
-    zero. The enum_instance() method modifies client_data to keep track of its 
+    On the first call of an enumeration, client_data and delete_proc are both
+    zero. The enum_instance() method modifies client_data to keep track of its
     place in the enumeration. Client_data is an integer but is large enough
     to hold a pointer. The state is passed back in on subsequent calls to
     enum_instance(). The delete_proc is a function pointer used to dispose
@@ -206,7 +206,7 @@ IMPLEMENTING THE PROVIDER BEHAVIOR:
     initialized and returned. It calls ENUM_INSTANCE_DONE to indicate that there
     are not more instances to be enumerated. It returns ENUM_INSTANCE_FAILED
     if the enumeration fails for whatever reason.
-    
+
         Enum_Instance_Status Fan_Provider::enum_instance(
             Fan* inst, State& state)
         {
@@ -360,7 +360,7 @@ SUMMARY:
                 [key] string DeviceID;
                 uint64 Speed;
                 uint64 DesiredSpeed;
-                uint32 SetSpeed([in] uint64 DesiredSpeed); 
+                uint32 SetSpeed([in] uint64 DesiredSpeed);
             };
 
         % genclass Fan

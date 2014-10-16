@@ -1,7 +1,7 @@
                         Version 0.99.20 Release Notes
                         =============================
 
-    1.  Added provider examples showing how to create persistent instances in 
+    1.  Added provider examples showing how to create persistent instances in
         the OpenPegasus repository.
 
     2.  Added CIMPLE_CLASS_DEPENDENCY() macro so providers can declare MOF

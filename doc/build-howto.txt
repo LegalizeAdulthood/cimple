@@ -44,8 +44,8 @@ To force a 32-bit build on a Linux 64-bit platform, do this instead:
 BUILDING FOR PEGASUS:
 =====================
 
-To build CIMPLE for Pegasus, sure that the following environment variables 
-are defined (as required by Pegasus) and that Pegasus has already been 
+To build CIMPLE for Pegasus, sure that the following environment variables
+are defined (as required by Pegasus) and that Pegasus has already been
 built.
 
     PEGASUS_PLATFORM
@@ -104,7 +104,7 @@ proceeding. If none of the Pegasus environment variables are defined, then
 you can build a standalone CIMPLE environment with these instructions as
 well.
 
-This section explains how to cross-compile CIMPLE for the PowerPC, with 
+This section explains how to cross-compile CIMPLE for the PowerPC, with
 HardHat Linux (from MonteVista).
 
 First, define three environment variables as shown:

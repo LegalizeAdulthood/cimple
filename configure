@@ -31,11 +31,11 @@ do
       ;;
 
     --host=*)
-      host=$optarg 
+      host=$optarg
       ;;
 
     --prefix=*)
-      prefix=$optarg 
+      prefix=$optarg
       ;;
 
     --bindir=*)
@@ -79,7 +79,7 @@ do
       ;;
 
     --with-schema=*)
-      with_schema=$optarg 
+      with_schema=$optarg
       ;;
 
     --enable-debug)
@@ -91,7 +91,7 @@ do
       ;;
 
     --with-namespace=*)
-      with_namespace=$optarg 
+      with_namespace=$optarg
       ;;
 
     --enable-adapter-trace)
@@ -406,7 +406,7 @@ do
   eval v=$`echo $i`
 
   case $v in
-    /* | "") 
+    /* | "")
       ;;
 
     *)

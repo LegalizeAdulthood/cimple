@@ -63,7 +63,7 @@ CIMPLE Tutorial #1:
                     Property<boolean> flag;
                     Property<real32> ratio;
                     Property<Array_String> array;
-    
+
                     static Self* create();
                     static void destroy(Self*);
                     Self* clone() const;
@@ -82,5 +82,5 @@ CIMPLE Tutorial #1:
            Now you have a C++ header and a library containing its metadata.
 
 
-           The next lesson will explain how to create and use instance of 
+           The next lesson will explain how to create and use instance of
          the new class.

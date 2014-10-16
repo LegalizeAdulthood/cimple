@@ -13,7 +13,7 @@ This change log was started effective with version 2.00
 
 2.02  Never generated.
     NOTE: Odd number releases are considered private (ex. beta) releases
-    for selected users, test, etc.  Even number releases are offical 
+    for selected users, test, etc.  Even number releases are offical
     updates for public distribution.
 
 2.03  24 January 2009 (beta private release)
@@ -42,11 +42,11 @@ This change log was started effective with version 2.00
     * Correct wmi.pdf documentation.
     * Add platform definitions for SOLARIS_IX86_CC,
       SOLARIS_IX86_CC  SOLARIS_SPARC_CC and SOLARIS_SPARC_64_CC
-    * Added code to regmod.cpp to output NOCHKSRC line in 
+    * Added code to regmod.cpp to output NOCHKSRC line in
       module.cpp files.  Would not pass pegasus chksrc without
       this.
 
-    NOTE: Work started with tag cimple_2_0_1-start (equal to 
+    NOTE: Work started with tag cimple_2_0_1-start (equal to
     final_mbrasher_tag). It ended with cimple-2_0_3-end tag.
 2.04 Not Generated
 
@@ -70,7 +70,7 @@ This change log was started effective with version 2.00
       the username from the CIMServer.  This works with CMPI and Pegasus
       for this release.  Note that the interface may change.
     * Rebuild the Hello provider. It had not been build for a long time
-      and the module.cpp was not compatible with the current common 
+      and the module.cpp was not compatible with the current common
       functions. Added calls for allow_unload and get_username() to this
       provider although they only demo the action, not test the result.
         Release tag cimple_2_0_5
@@ -127,7 +127,7 @@ This change log was started effective with version 2.00
       in which the configfile (.cimplerc) is located and the log subdirectory
       located (.cimple). If the environment variable CIMPLE_HOME does not
       exist, no log is created and the config file is not accessed
-      To use this, set CIMPLE_HOME=directory name. 
+      To use this, set CIMPLE_HOME=directory name.
       NOTE: This is a behavior change in that earlier versions used HOME
       as the environment variable to locate a directory for the config file
       and log files.
@@ -138,13 +138,13 @@ This change log was started effective with version 2.00
       was not correctly processing Property Lists.  Note that this uncovered
       a bug in Pegasus with property list processing in CMPI (8493) in that all
       key properties are required in the returned Instance if the object
-      path is not set.  This no longer creates a problem in CIMPLE 
+      path is not set.  This no longer creates a problem in CIMPLE
       CMPI providers but was filed as a Pegasus bug (8493).
     * Fix compile error with mutex trylock and windows. Added trylock function
       to src/posix/pthread.h
     * Added initial files for persistence in src/cimple (Enc*, Instance_Enc*
       tests/Enc/* tests/instance_enc/* tests/serialize/*. NOTE: persistence
-      not complete for this temporary release and is NOT usable. In this 
+      not complete for this temporary release and is NOT usable. In this
       version the new components are normally not compiled.
     * Added several readme files for tests providers and tools.
     * Add regview tool that displays info on registered providers for PEGASUS.
@@ -222,7 +222,7 @@ This change log was started effective with version 2.00
 2.0.15 29 March 2009(cvs cimple_2_0_12-branch)
     * Modified Buffer.h and Buffer.cpp to improve capacity management
       algorithm.  Added unit test of Buffer class (cimple/tests/buffer.
-      Note that modifies the Buffer.h header file. 
+      Note that modifies the Buffer.h header file.
     * Modify several files (ex. Instance.cpp) to reduce the number of warning
       messages produced by the Windows Development Kit prefast tool.
     * Correct deadlock error between indication generation and subscription
@@ -255,11 +255,11 @@ This change log was started effective with version 2.00
       CMGetKeyCount function changed drastically.  The problem occurs with
       CMPI providers that have static methods.  It returns CIM_ERR_FAILED
       with the latest versions of Pegasus.  The test is not in the CMPI
-      adapter any more because we do not have enough information to 
+      adapter any more because we do not have enough information to
       execute the test for zero keys in a CMPIObjectPath effeciently since
       the CMgetKeyCount now returns the number of keys in the class not
       in the input.  Note that the only effect is on [static] methods. The
-      CMPI provider no longer returns an error if the request includes 
+      CMPI provider no longer returns an error if the request includes
       keys.
     * Add text to a logging of a number of error returns from the CMPI Provider
       adapter to supplement the error code.
@@ -284,7 +284,7 @@ This change log was started effective with version 2.00
     * Add a number of manual tests to providers and expand live tests.
       NOTE: many of the new tests use Pegasus cimcli and depend on at least
       Pegasus version 2.10 for correct version of cimcli.
-    * Add CMRelease to cmpiAdapter to remove cmpi instances when we pass them 
+    * Add CMRelease to cmpiAdapter to remove cmpi instances when we pass them
       to the server.  For Enumerations this reduces memory very temporarily
       since the server removes them at the end of the enumeration.  For
       indications this avoids indication instances being caught in the
@@ -303,7 +303,7 @@ This change log was started effective with version 2.00
     * Added files Adapter_Tracer.h and .cpp that consolidate macros for tracing
       the adapters. Note that only some of the common functions and the
       Pegasus adapter use this today. These trace tools are for the adapters,
-      not the user code. Adpater trace compiled with configuration option 
+      not the user code. Adpater trace compiled with configuration option
       --enable-adapter-trace. Note that this is used only for Pegasus
       adapter at the moment since for the other adapters trace was hard
       defined and not considered an option. We are trying to keep default
@@ -315,7 +315,7 @@ This change log was started effective with version 2.00
       (i.e. MAX_LOG_FILE_SIZE=100000  and MAX_LOG_BACKUP_FILES=5.
       This limits the maximum size of the log file to 100, bytes
       and will close and rename the log file each time that limit is reached.
-      The backup files are numbered in sequence from 1 (the 
+      The backup files are numbered in sequence from 1 (the
       most recent to n (where n = MAX_LOG_BACKUP_FILES) is the oldest.
       Older files will be deleted.  The maximum number of backup files
       allowed is 9 and the default is 0 which means that we simply delete
@@ -325,21 +325,21 @@ This change log was started effective with version 2.00
       previous CIMPLE releases.
     * Added  compile configuration parameter to allow disabling log macros
       (--disable_log_macros).
-      When set by configure this renders the compile of the macros in log.h 
+      When set by configure this renders the compile of the macros in log.h
       (CIMPLE_FATAL, etc.) to generate log entires null. The macro calls
       generate no code. This can be used to completely remove these macro
-      calls without removing the source code. 
-      This can also be done on a provider by provider basis by setting 
+      calls without removing the source code.
+      This can also be done on a provider by provider basis by setting
       #define DISABLE_LOG_MACROS_OPT in the source code where the macros
       are to be disabled which overrides the global setting for the file
       being compiled.
     * Added runtime parameter ENABLE_LOGGING in .cimplerc to configure
-      runtime so at to completely disable completely logging.  
+      runtime so at to completely disable completely logging.
       The value is either TRUE or FALSE.
       The default state of ENABLE_LOGGING is true so that without specifically
       setting this parameter in .cimplrc logging is enabled as it was in
       previous versions of CIMPLE.
-      ENABLE_LOGGING=false completely disables logging.  
+      ENABLE_LOGGING=false completely disables logging.
       To disable logging completely the user sets this parameter as follows in
       .cimplerc (ENABLE_LOGGING=FALSE). Note that there is also a function
       in CimpleConfig that enables and disables logging dynamically.
@@ -359,7 +359,7 @@ This change log was started effective with version 2.00
     * Added logPegasusInstance function to src/Pegasus/utils/Print.cpp so that
       pegasus instances can be displayed to the log file within the pegasus
       adapter. There are 3 functions, print to stdout, log, create a String
-      with formattted output. 
+      with formattted output.
     * Extended genprov and genmod to include option to get the class list
       from a file. This existed in genclass but was not carried forward to
       the other utilities.  This is the -F option.  Originally it was the -f
@@ -368,7 +368,7 @@ This change log was started effective with version 2.00
       some of the utilities.  Thus we keep compatibility with the past option
       definitions but for the future -F defines a classlist file. This was added
       as result of an issue with big provider modules containing many classes where
-      the command line for these utilities overruns windows shell (cmd.exe).   
+      the command line for these utilities overruns windows shell (cmd.exe).
     * Add log error calls to a couple of errors in Pegasus adapter so that the
       errors are not silent.  In particular this logs error when the CIMPLE
       default association function trys to do a getInstance and fails. This
@@ -433,7 +433,7 @@ This change log was started effective with version 2.00
     * Correct error in Pegasus Adapter where it was ingoring error response
       from function in Associators operation.  This caused crash in
       cimple where invalid Class was provided with input Object path.
-    * Correct issue with associator, associatorNames, references, and 
+    * Correct issue with associator, associatorNames, references, and
       referenceNames operation in that they were returning
       CIM_ERR_INVALID_CLASS when the class in the objectpath parameter was
       not found in the provider meta_repository.  This error propagates
@@ -454,7 +454,7 @@ This change log was started effective with version 2.00
      * add test for -F option on genclass, genprov, genmod, genproj
      * add -v (verbose display) option to genmod.
      * Editorial changes
-     
+
 
 ====================================================================
 
@@ -474,4 +474,4 @@ This change log was started effective with version 2.00
     * Extend --enable-adapter-trace to other adapters so we have conditional
       compile trace code in all adapters. Currently only impacts Pegasus C++
       adapter.
-    
+

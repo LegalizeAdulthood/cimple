@@ -1,7 +1,7 @@
 
     1.  Can references be null?
 
-    2.  Is it necessary to implement 
+    2.  Is it necessary to implement
         CIMPLE_Provider_Manager::_handleModifySubscription(). Can it enable
         or disable indications. What if the type changes in the subscription.
 

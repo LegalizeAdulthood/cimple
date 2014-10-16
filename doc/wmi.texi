@@ -33,14 +33,14 @@ Copyright @copyright{} 2008 by Michael Brasher
 
 @chapter Introduction
 
-This document introduces CIMPLE 1.2.0 and explains what has changed since 
+This document introduces CIMPLE 1.2.0 and explains what has changed since
 the last public release (CIMPLE 1.1.0). If you are unfamiliar with the
 major changes introduced by CIMPLE 1.1.0, you might want to review them
 by clicking here: @uref{http://www.cimple.org/downloads.html}.
 
 @noindent
-Chapter 1 describes what is new in this release. Chapter 2 discusses bugs fixed 
-by this release. Chapter 3 explains how to migrate providers developed with 
+Chapter 1 describes what is new in this release. Chapter 2 discusses bugs fixed
+by this release. Chapter 3 explains how to migrate providers developed with
 earlier versions.
 
 @c =============================================================================
@@ -58,7 +58,7 @@ This chapter covers new capabilities introduced by CIMPLE 1.2.0.
 
 BREVITY is a new client interface that employs concrete CIM elements (classes
 and methods). BREVITY is described in a presentation presented at the 2007
-Management Developers Conference. For more information, please see 
+Management Developers Conference. For more information, please see
 @uref{http://www.cimple.org/CIMPLE-2007-MDC.pdf}.
 
 @c -----------------------------------------------------------------------------
@@ -179,7 +179,7 @@ CIMPLE_DBG(("my name is %s; my age is %d", "John", 12));
 
 @noindent
 In addition to provider generated log entries, the CIMPLE adapters themselves
-make log entries for warnings and errors during the normal operation of 
+make log entries for warnings and errors during the normal operation of
 CIMPLE. We recommend configuring with debug and watching for log messages
 during provider development.
 
@@ -187,16 +187,16 @@ during provider development.
 @c
 @c Chapter: Bug Fixes
 @c
-@c ============================================================================= 
+@c =============================================================================
 @chapter Bug Fixes
 
-This release fixes the bugs described below (all critical bugs were addressed 
+This release fixes the bugs described below (all critical bugs were addressed
 by earlier maintenance releases).
 
 @c -----------------------------------------------------------------------------
 @section CMPI Header Compliation Errors
 
-This release works around errors in the the CMPI headers released last year on 
+This release works around errors in the the CMPI headers released last year on
 the OpenGroup site. CIMPLE now compiles with all known CMPI headers.
 
 @c =============================================================================

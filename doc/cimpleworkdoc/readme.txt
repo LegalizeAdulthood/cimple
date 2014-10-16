@@ -1,4 +1,4 @@
-This directory is simply a collection of working documents that 
+This directory is simply a collection of working documents that
 represent working material for the CIMPLE documentations. This
 documentation is written from the user point-of-view.
 

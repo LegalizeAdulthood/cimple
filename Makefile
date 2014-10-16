@@ -95,7 +95,7 @@ regress:
 ##         make world is good test of changes and primarily
 ##         for cimple developers.  Requires Pegasus setup and runable
 ##         Requires PEGASUS_ROOT defined.
-##            
+##
 ##
 ##==============================================================================
 
@@ -107,7 +107,7 @@ world: clean all regress
 ##         with an environment variable set to create CMPI providers for
 ##         those test providers that can be rebuilt for both C++ and cmpi
 ##         This is primarily a test target for the developers of CIMPLE
-##            
+##
 ##
 ##==============================================================================
 
@@ -122,7 +122,7 @@ cmpiworld:
 ##==============================================================================
 
 server_vg:
-	$(VALGRIND) --tool=memcheck --leak-check=full $(CIMSERVER) daemon=false 
+	$(VALGRIND) --tool=memcheck --leak-check=full $(CIMSERVER) daemon=false
 
 ##==============================================================================
 ##
@@ -156,7 +156,7 @@ stabletag:
 ##==============================================================================
 ##
 ## distclean: Clean the source tree for a distribution
-##            Invoked by the dist target. 
+##            Invoked by the dist target.
 ##            Cleans out number of things that are not part of distribution
 ##
 ##==============================================================================
@@ -174,7 +174,7 @@ distclean: clean
 ##
 ## dist: create tar and zip distribution in a tmp directory
 ## Developer functions. Designed for us with *nix OS
-## 
+##
 ##
 ##==============================================================================
 

@@ -1,7 +1,7 @@
 CIMPLE Tutorial #2:
 
 
-    The last tutorial showed how to add a class to the CIMPLE 
+    The last tutorial showed how to add a class to the CIMPLE
     repository which, among other things, involved reading a
     MOF class definition and generating the following C++ class
     definition (contained in MyClass.h).
@@ -16,7 +16,7 @@ CIMPLE Tutorial #2:
             Property<boolean> flag;
             Property<real32> ratio;
             Property<Array_String> array;
-     
+
             static Self* create();
             static void destroy(Self*);
             Self* clone() const;
@@ -42,9 +42,9 @@ CIMPLE Tutorial #2:
         i1->message.null = false;
 
 
-    Properties are structures with two fields: 'value' and 'null'. 
+    Properties are structures with two fields: 'value' and 'null'.
     The 'value' field obviously contains the property value. The
-    'null' indicates whether the property is null. C++ has no concept 
+    'null' indicates whether the property is null. C++ has no concept
     of null values so the 'null' flag is necessary.
 
 
@@ -60,7 +60,7 @@ CIMPLE Tutorial #2:
         MyClass* i2 = i1->clone();
 
 
-    Finally, the following snippet tests whether two instances have 
+    Finally, the following snippet tests whether two instances have
     identical key fields.
 
 

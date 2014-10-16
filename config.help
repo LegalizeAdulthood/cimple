@@ -49,7 +49,7 @@ Configure examples.
 Options:
     --help                      Print this help message.
     --host=HOST                 Build package for this HOST, where HOST is of
-                                the form "<cpu>-<manufacturer>-<os>-<kernel>". 
+                                the form "<cpu>-<manufacturer>-<os>-<kernel>".
                                 HOST must be one of these.
                                     i686-unknown-linux-gnu
                                     x86_64-unknown-linux-gnu
@@ -76,7 +76,7 @@ Options:
     --with-pegasus-includes=DIR Find pegasus header files here.
     --with-pegasus-env          Build with Pegasus support, deducing many
                                 configure options from the standard Pegasus
-                                environment variables (PEGASUS_PLATFORM, 
+                                environment variables (PEGASUS_PLATFORM,
                                 PEGASUS_HOME, PEGASUS_ROOT, and PEGASUS_DEBUG).
                                 Options deduced from environment variables
                                 override command line configure options.
@@ -88,7 +88,7 @@ Options:
                                 defaults to $datadir/cimple/schema/cim214.
     --enable-debug              Build for debug.
     --enable-static             Build static libraries.
-    --with-namespace=NAMESPACE  Change the name of the CIMPLE namespace (the 
+    --with-namespace=NAMESPACE  Change the name of the CIMPLE namespace (the
                                 default is "cimple").
     --cimplehome-envvar         Set the name of the environment variable that
                                 is used to define the home directory

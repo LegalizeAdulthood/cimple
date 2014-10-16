@@ -4,7 +4,7 @@ Did you know?
     1.  If a provider returns GET_INSTANCE_UNSUPPORTED from get_instance(), the
         CIMOM uses enum_instances() to find a matching instance.
 
-    2.  If a provider returns ENUM_ASSOCIATOR_NAMES_UNSUPPORTED from 
+    2.  If a provider returns ENUM_ASSOCIATOR_NAMES_UNSUPPORTED from
         enum_assoication_names(), the CIMOM uses enum_instances() satisfy
         the request.
 
