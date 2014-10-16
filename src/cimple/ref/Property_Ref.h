@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,39 +57,39 @@ private:
 };
 
 template<class T>
-inline Property_Ref<T>::Property_Ref(P* ptr) : _ptr(ptr) 
-{ 
-}
-
-template<class T>
-inline Property_Ref<T>::Property_Ref() 
-{ 
-}
-
-template<class T>
-void Property_Ref<T>::set(const T& x) 
+inline Property_Ref<T>::Property_Ref(P* ptr) : _ptr(ptr)
 {
-    _ptr->value = x; 
-    _ptr->null = false; 
+}
+
+template<class T>
+inline Property_Ref<T>::Property_Ref()
+{
+}
+
+template<class T>
+void Property_Ref<T>::set(const T& x)
+{
+    _ptr->value = x;
+    _ptr->null = false;
 }
 
 template<class T>
 void Property_Ref<T>::clear()
 {
-    _ptr->null = true;  
-    cimple::clear(_ptr->value); 
+    _ptr->null = true;
+    cimple::clear(_ptr->value);
 }
 
 template<class T>
-inline const T& Property_Ref<T>::get() const 
-{ 
-    return _ptr->value; 
+inline const T& Property_Ref<T>::get() const
+{
+    return _ptr->value;
 }
 
 template<class T>
-inline bool Property_Ref<T>::null() const 
-{ 
-    return _ptr->null; 
+inline bool Property_Ref<T>::null() const
+{
+    return _ptr->null;
 }
 
 CIMPLE_NAMESPACE_END

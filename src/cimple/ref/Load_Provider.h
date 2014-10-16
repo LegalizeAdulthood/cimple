@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDER "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -67,7 +67,7 @@ private:
 };
 
 /** This class implements the 'Load Provider' pattern. A load provider only
-    needs to implement the load() operation. All of the other operations are 
+    needs to implement the load() operation. All of the other operations are
     implemented by this base class. This class helps develop a read-only
     provider.
 */
@@ -94,7 +94,7 @@ public:
 };
 
 template<class PROVIDER, class CLASS>
-Create_Provider_Status 
+Create_Provider_Status
     Load_Provider<PROVIDER, CLASS>::create_provider(
     PROVIDER** provider)
 {
@@ -103,7 +103,7 @@ Create_Provider_Status
 }
 
 template<class PROVIDER, class CLASS>
-Destroy_Provider_Status 
+Destroy_Provider_Status
     Load_Provider<PROVIDER, CLASS>::destroy_provider(
     PROVIDER* provider)
 {
