@@ -106,6 +106,16 @@ src/providers/ComputerSystemDiskDrive/DiskDrive.cpp
 src/providers/ComputerSystemDiskDrive/DiskDrive.h
 src/providers/ComputerSystemDiskDrive/repository.cpp
 src/providers/ComputerSystemDiskDrive/repository.h
+src/providers/Cross/Cross.cpp
+src/providers/Cross/Cross.h
+src/providers/Cross/CrossSubClass.cpp
+src/providers/Cross/CrossSubClass.h
+src/providers/Cross/Left.cpp
+src/providers/Cross/Left.h
+src/providers/Cross/Right.cpp
+src/providers/Cross/Right.h
+src/providers/Cross/repository.cpp
+src/providers/Cross/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

@@ -5,17 +5,27 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleCross
 
-SOURCES = \
+MOF_SOURCES = \
+    Cross.mof \
+    CrossSubClass.mof \
+    Left.mof \
+    Right.mof \
+    repository.mof
+
+GENCLASS_SOURCES = \
     Cross.cpp \
-    Cross_Provider.cpp \
     CrossSubClass.cpp \
-    CrossSubClass_Provider.cpp \
     Left.cpp \
-    Left_Provider.cpp \
     Right.cpp \
-    Right_Provider.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Cross_Provider.cpp \
+    CrossSubClass_Provider.cpp \
+    Left_Provider.cpp \
+    Right_Provider.cpp \
+    module.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
 ## Changing Provider interfaces requires reregistering the provider. Default Pegasus
@@ -36,8 +46,8 @@ NS_RIGHT=root/cimv2
 genproj:
 	$(BINDIR)/genproj Cross Cross CrossSubClass Left Right
 
-genclass:
-	$(BINDIR)/genclass -r Cross
+genclass $(GENCLASS_SOURCES): $(MOF_SOURCES)
+	$(BINDIR)/genclass -r Cross CrossSubClass
 
 genprov:
 	$(BINDIR)/genprov Cross
@@ -85,7 +95,3 @@ manual-test:
 	cimcli  an Right.key=1 -n $(NS_RIGHT)
 	cimcli  a Left.key=1 -n $(NS_LEFT)
 	cimcli  a Right.key=1 -n $(NS_RIGHT)
-
-
-
-
