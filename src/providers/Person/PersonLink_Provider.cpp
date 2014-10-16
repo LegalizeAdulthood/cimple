@@ -2,10 +2,10 @@
     This provider is based completely on the Instance_Map.
     Objects are built at initialization and the one line MAP
     operation calls used to retrieve them for the various operations.
- 
+
     This provider can process all of the CIM Intrinsic operations for
     instanceand assocation provider types
- 
+
     All of the Association operations default to use the enumerate
     and internal CIMPLE association/reference filtering.
 */
@@ -56,7 +56,7 @@ Unload_Status PersonLink_Provider::unload()
 }
 
 Get_Instance_Status PersonLink_Provider::get_instance(
-    const PersonLink* model, 
+    const PersonLink* model,
     PersonLink*& instance)
 {
     // This is more efficient than using NOT_SUPPORTED
@@ -64,7 +64,7 @@ Get_Instance_Status PersonLink_Provider::get_instance(
 }
 
 Enum_Instances_Status PersonLink_Provider::enum_instances(
-    const PersonLink* model, 
+    const PersonLink* model,
     Enum_Instances_Handler<PersonLink>* handler)
 {
     return _map.enum_instances(model, handler);
@@ -96,7 +96,7 @@ Enum_Associator_Names_Status PersonLink_Provider::enum_associator_names(
     const String& result_role,
     Enum_Associator_Names_Handler<Instance>* handler)
 {
-    // Return unsupported, causing the caller will use enum_instances() 
+    // Return unsupported, causing the caller will use enum_instances()
     // to implement this operation.
     return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
 }
@@ -110,7 +110,7 @@ Enum_References_Status PersonLink_Provider::enum_references(
     assert(instance && instance->__magic == CIMPLE_INSTANCE_MAGIC);
     assert(model && model->__magic == CIMPLE_INSTANCE_MAGIC);
 
-    // Return unsupported, causing the caller will use enum_instances() 
+    // Return unsupported, causing the caller will use enum_instances()
     // to implement this operation.
     return ENUM_REFERENCES_UNSUPPORTED;
 }

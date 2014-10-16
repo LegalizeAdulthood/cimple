@@ -97,7 +97,7 @@ hello:
 hello2:
 	cimcli im Person.ssn=2 hello message="hi again"
 
-## The following target tests the modifyInstance function with 
+## The following target tests the modifyInstance function with
 ## propertylist.  However, since Pegasus only added some of the
 ## functionality used in this test as part of Pegasus 2.10 it is set
 ## as a completely separate test. Specifically the ci and mi were incomplete
@@ -115,7 +115,7 @@ live_testmi:
 ##  modify both properties in instance bur server modifies only last
 	$(CIMCLI) mi Person ssn=21 first=modify3 last=blah -pl last
 	$(CIMCLI) ti Person ssn=21 first=modify2 last=blah
-	$(CIMCLI) di Person ssn=21          
+	$(CIMCLI) di Person ssn=21
 
 ## cimcli based test of the provider.  Tests for existence and quantities
 ## on a number of operations
@@ -123,7 +123,7 @@ live:
 	$(CIMCLI) gi Person.ssn=1
 	$(CIMCLI) ni Person  --sum -count 7
 	$(CIMCLI) ni PersonLink
-	$(CIMCLI) ni PersonLink --sum -count 7 
+	$(CIMCLI) ni PersonLink --sum -count 7
 	$(CIMCLI) ni Salesman --sum -count 2
 	$(CIMCLI) ni SalesmanLink --sum -count 1
 	

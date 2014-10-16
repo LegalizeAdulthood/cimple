@@ -5,7 +5,7 @@ static void _test_upcalls()
     Instance_Enumerator e;
 
     printf("===== cimom::enum_instances()\n");
-    
+
     if (cimom::enum_instances("root/cimv2", fan.ptr(), e) == 0)
     {
         for (; e; e++)

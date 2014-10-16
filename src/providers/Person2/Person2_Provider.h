@@ -21,11 +21,11 @@ public:
     Unload_Status unload();
 
     Get_Instance_Status get_instance(
-        const Person2* model, 
+        const Person2* model,
         Person2*& instance);
 
     Enum_Instances_Status enum_instances(
-        const Person2* model, 
+        const Person2* model,
         Enum_Instances_Handler<Person2>* handler);
 
     Create_Instance_Status create_instance(
@@ -39,14 +39,14 @@ public:
 
     static int proc(
         const Registration* registration,
-        int operation, 
-        void* arg0, 
-        void* arg1, 
-        void* arg2, 
+        int operation,
+        void* arg0,
+        void* arg1,
+        void* arg2,
         void* arg3,
-        void* arg4, 
-        void* arg5, 
-        void* arg6, 
+        void* arg4,
+        void* arg5,
+        void* arg6,
         void* arg7);
 
 private:

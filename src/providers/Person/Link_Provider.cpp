@@ -41,7 +41,7 @@ Unload_Status Link_Provider::unload()
 }
 
 Get_Instance_Status Link_Provider::get_instance(
-    const Link* model, 
+    const Link* model,
     Link*& instance)
 {
     Link* link = _map.lookup(model);
@@ -56,7 +56,7 @@ Get_Instance_Status Link_Provider::get_instance(
 }
 
 Enum_Instances_Status Link_Provider::enum_instances(
-    const Link* model, 
+    const Link* model,
     Enum_Instances_Handler<Link>* handler)
 {
     for (size_t i = 0; i < _map.size(); i++)
@@ -109,7 +109,7 @@ Enum_Associator_Names_Status Link_Provider::enum_associator_names(
     const String& result_role,
     Enum_Associator_Names_Handler<Instance>* handler)
 {
-    // Return unsupported, causing the caller will use enum_instances() 
+    // Return unsupported, causing the caller will use enum_instances()
     // to implement this operation.
     return ENUM_ASSOCIATOR_NAMES_UNSUPPORTED;
 }
@@ -120,24 +120,24 @@ Enum_References_Status Link_Provider::enum_references(
     const String& role,
     Enum_References_Handler<Link>* handler)
 {
-    // Return unsupported, causing the caller will use enum_instances() 
+    // Return unsupported, causing the caller will use enum_instances()
     // to implement this operation.
     return ENUM_REFERENCES_UNSUPPORTED;
 }
 
 int Link_Provider::proc(
     const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
+    int operation,
+    void* arg0,
+    void* arg1,
+    void* arg2,
     void* arg3,
     void* arg4,
     void* arg5,
     void* arg6,
     void* arg7)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Link Class;

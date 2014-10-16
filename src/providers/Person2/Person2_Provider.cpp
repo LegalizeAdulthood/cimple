@@ -54,7 +54,7 @@ Unload_Status Person2_Provider::unload()
 }
 
 Get_Instance_Status Person2_Provider::get_instance(
-    const Person2* model, 
+    const Person2* model,
     Person2*& instance)
 {
     switch (model->ssn.value)
@@ -77,7 +77,7 @@ Get_Instance_Status Person2_Provider::get_instance(
 }
 
 Enum_Instances_Status Person2_Provider::enum_instances(
-    const Person2* model, 
+    const Person2* model,
     Enum_Instances_Handler<Person2>* handler)
 {
     handler->handle(_person1->clone());
@@ -108,17 +108,17 @@ Modify_Instance_Status Person2_Provider::modify_instance(
 
 int Person2_Provider::proc(
     const Registration* registration,
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
+    int operation,
+    void* arg0,
+    void* arg1,
+    void* arg2,
     void* arg3,
     void* arg4,
     void* arg5,
     void* arg6,
     void* arg7)
 {
-    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY 
+    // CAUTION: PLEASE DO NOT MODIFY THIS FUNCTION; IT WAS AUTOMATICALLY
     // GENERATED.
 
     typedef Person2 Class;

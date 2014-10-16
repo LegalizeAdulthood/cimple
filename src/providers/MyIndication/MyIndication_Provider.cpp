@@ -74,7 +74,7 @@ Invoke_Method_Status MyIndication_Provider::DeliverIndications(
 
     // The existence of _indication_handler is used to determine of
     // indications are enabled.
-    
+
     if (_indication_handler)
     {
         MyIndication* indic = MyIndication_create("777", "seven");

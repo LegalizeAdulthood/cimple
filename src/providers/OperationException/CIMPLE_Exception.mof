@@ -11,7 +11,7 @@ class CIMPLE_Exception
     [Key] uint32 Key;
     Uint32 exception;
     boolean Flag;
-    
+
     uint32 setException(Uint32 Exception,
         Boolean getInstanceDefault,
         Boolean associatorsDefault);

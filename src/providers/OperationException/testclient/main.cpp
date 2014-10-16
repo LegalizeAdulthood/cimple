@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -30,7 +30,7 @@
 
     It first tells the provider what  cimple return code to use for the next
     operation with the setException method and then executes that
-    operation expecting a certain pegasus error code. 
+    operation expecting a certain pegasus error code.
 
     It tests both the case where the "optional" provider functions such as
     get_instance actually return codes and the case where they use the
@@ -222,7 +222,7 @@ void test_op(CIMClient& client,
     {
         if (verbose)
         {
-            PEGASUS_STD(cerr) << "Passed " 
+            PEGASUS_STD(cerr) << "Passed "
                 << e.getMessage()
                 << " for Code " << e.getCode()
                 << " CIMPLE status " << CimpleStatusCode
@@ -241,7 +241,7 @@ void test_op(CIMClient& client,
 //temp support for the CIMPLE internal error codes.
 //Copied here in lieu of include simple because of issue with C++ namespaces
 // for the moment.  Copied from cimple/Provider.h
-// 
+//
 enum Get_Instance_Status
 {
     GET_INSTANCE_OK = 0,
@@ -385,21 +385,21 @@ int main(int argc, char** argv)
         // Test responses when the get_instance provider function is using
         // the default reponse (UNSUPPORTED) so that the provider uses
         // enumerate_instance to find the instance.
-        // 
+        //
 
         test_op(client,GETINST, Pegasus::CIM_ERR_NOT_FOUND, 60, true, false);
 
         // This test not supported if the getInstance function
         // function is set to default (i.e. use enum_instances). First,
-        //  the not_supported is the get_instance provider response that 
-        // results in trying the enumerate_instances option.  Second, it is 
+        //  the not_supported is the get_instance provider response that
+        // results in trying the enumerate_instances option.  Second, it is
         // illogical for enumerate to be supported and not get_instance.
         //test_op(client, Pegasus::CIM_ERR_NOT_SUPPORTED, 61);
 
         // Following not supported with default since it must come from enuminst
         // and there is no invalid_Param for invalid inst.
         //test_op(client,GETINST, Pegasus::CIM_ERR_INVALID_PARAMETER, 62, true, false);
-  
+
         // The following are an impossible conditions.  We are trying to tell
         // the provider to always generate unsupported for get_instance and
         // expecting access_denied, etc..   If the enum mechanism generates the
@@ -423,10 +423,10 @@ int main(int argc, char** argv)
         test_op(client,DELINST, Pegasus::CIM_ERR_FAILED, 93, true, false);
 
         //    ASSOCIATOR TESTS
-        // 
+        //
         // Test for default associator definition in provider and real
         // get_instance
-        // 
+        //
 
         //TODO: Finish these tests
         //test_op(client,REFS, Pegasus::CIM_ERR_FAILED, ENUM_REFERENCES_FAILED, false, false);
@@ -441,7 +441,7 @@ int main(int argc, char** argv)
         // Tests for exceptions to association requests that do not make
         // it to the provider.  Specifically, returning if there is an
         // error in the associator or reference classnames.  Should return OK.
-        // 
+        //
         /*
         CIMObjectPath cop("CIMPLE_Exception.Key=9999");
         CIMName assocClass = "CIMPLE_ExceptionLink";
@@ -454,7 +454,7 @@ int main(int argc, char** argv)
             objects = client.associators(NAMESPACE,
                                           cop,
                                           assocClass);
-    
+
             objects = client.references(NAMESPACE,
                                           cop,
                                           assocClass);
@@ -464,14 +464,14 @@ int main(int argc, char** argv)
         {
             if (verbose)
             {
-                PEGASUS_STD(cerr) << "Failed Association Class Error Test " 
+                PEGASUS_STD(cerr) << "Failed Association Class Error Test "
                     << e.getMessage()
                     << " for Code " << e.getCode()
                     << PEGASUS_STD(endl);
             }
             assert(false);
         }
-    
+
         catch(Exception& e)
         {
             PEGASUS_STD(cerr) << "Error: " << e.getMessage() << PEGASUS_STD(endl);
