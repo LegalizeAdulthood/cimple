@@ -2,6 +2,7 @@ TOP = ../..
 include $(TOP)/mak/config.mak
 
 DIRS = \
+    file2c \
     csleep \
     gencommon \
     genclass \
@@ -12,8 +13,7 @@ DIRS = \
     genmod \
     genproj \
     genmak \
-    genprov/tests \
-    file2c
+    genprov/tests
 
 XDIRS = \
     dlopen \

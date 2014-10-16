@@ -11,5 +11,6 @@ LIBRARIES = cimpleutil cimplegencommon cimplemof cimple
 
 include $(TOP)/mak/rules.mak
 
-usage:
+main.cpp: usage.h
+usage.h: usage.txt
 	$(BINDIR)/file2c usage.txt -n USAGE > usage.h

@@ -29,5 +29,6 @@ gen:
 	$(call file2c, association_source)
 	$(call file2c, module_source)
 
-usage:
+main.cpp: usage.h
+usage.h: usage.txt
 	$(BINDIR)/file2c usage.txt -n USAGE > usage.h

@@ -16,5 +16,6 @@ live:
 manualtest:
 	$(TARGET) -c 1000 -s 10000 -t 1  -v
 
-usage:
+main.cpp: usage.h
+usage.h: usage.txt
 	$(BINDIR)/file2c usage.txt -n USAGE > usage.h
