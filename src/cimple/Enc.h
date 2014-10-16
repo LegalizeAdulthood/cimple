@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -122,7 +122,7 @@ sint64 swap_sint64(sint64 x);
 // pack_<type>
 //
 //==============================================================================
-  
+
 inline void pack_boolean(Buffer& out, const boolean& x)
 {
     out.append(x ? 1 : 0);
@@ -322,9 +322,9 @@ void unpack_string(const Buffer& in, size_t& pos, String& x);
 
 CIMPLE_CIMPLE_LINKAGE
 void unpack_c_str(
-    const Buffer& in, 
-    size_t& pos, 
-    const char*& str, 
+    const Buffer& in,
+    size_t& pos,
+    const char*& str,
     size_t& size);
 
 CIMPLE_CIMPLE_LINKAGE

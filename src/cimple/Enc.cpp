@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -48,8 +48,8 @@ uint64 swap_uint64(uint64 x)
 #ifdef _GNU_SOURCE
 
     return
-     (((x) & 0xff00000000000000ull) >> 56) | 
-     (((x) & 0x00ff000000000000ull) >> 40) | 
+     (((x) & 0xff00000000000000ull) >> 56) |
+     (((x) & 0x00ff000000000000ull) >> 40) |
      (((x) & 0x0000ff0000000000ull) >> 24) |
      (((x) & 0x000000ff00000000ull) >>  8) |
      (((x) & 0x00000000ff000000ull) <<  8) |
@@ -82,8 +82,8 @@ sint64 swap_sint64(sint64 x)
 #ifdef _GNU_SOURCE
 
     return (uint64)
-     (((uint64)(x) & 0xff00000000000000ull) >> 56) | 
-     (((uint64)(x) & 0x00ff000000000000ull) >> 40) | 
+     (((uint64)(x) & 0xff00000000000000ull) >> 56) |
+     (((uint64)(x) & 0x00ff000000000000ull) >> 40) |
      (((uint64)(x) & 0x0000ff0000000000ull) >> 24) |
      (((uint64)(x) & 0x000000ff00000000ull) >>  8) |
      (((uint64)(x) & 0x00000000ff000000ull) <<  8) |

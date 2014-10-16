@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,7 +38,7 @@ CIMPLE_NAMESPACE_BEGIN
 *   thread continuation. The condition variable mechanism allows
 *   threads to suspend execution and relinquish the processor
 *   until some condition is true.
-*  
+*
 *   A condition variable must always be associated with a mutex
 *   to avoid a race condition created by one thread preparing to
 *   wait and another thread which may signal the condition
@@ -47,10 +47,10 @@ CIMPLE_NAMESPACE_BEGIN
 *   signal that is never sent. Any mutex can be used, there is
 *   no explicit link between the mutex and the condition
 *   variable.
-*  
+*
 *   The standard waiter and signaler patterns for conditional
 *   variables and their associated mutexes are:
-*  
+*
 *   # standard "waiter" idiom:
 *   \code
 *   mutex.lock();
@@ -59,7 +59,7 @@ CIMPLE_NAMESPACE_BEGIN
 *   do_something();
 *   mutex.unlock();
 *   \endcode
-* 
+*
 *    # standard "signaler" idiom:
 *    \code
 *    mutex.lock();
@@ -67,17 +67,17 @@ CIMPLE_NAMESPACE_BEGIN
 *    mutex.unlock();
 *    cond.signal();
 *    \endcode
-*  
+*
 *   Conditions may be as simple or complex as the user requires.
 *   They need not be single variable or simple comparisons.
 *   Thus, for example a condiition could be something like
 *   ( queue_size > 10) && (!stop)
-*  
+*
 *   Signals are not remembered, which means that threads must
 *   already be waiting for a signal to receive it. Spurious
 *   wakups are allowed by the pthread standard and the signal is
 *   simply dropped if there is not waiting thread.
-*  
+*
 *   Example:
 *   \code
 *   Cond cond1;
@@ -85,22 +85,22 @@ CIMPLE_NAMESPACE_BEGIN
     int count = Some Initial value;
     // The take_action is executed when the counter() is called enough times
     // so that count decrements to zero.
-    
+
     action()
     { ...
         mutex1.lock();
 *       // action gives up control until condition variable == 0
         while (count <> 0)
             cond1.wait(mutex1);
-        
+
         mutex1.unlock();
         take_action();
     }
- 
+
     counter()
     {
         ...
-*       // lock the mutex decrement and test counter 
+*       // lock the mutex decrement and test counter
 *       // the lock is used to avoid race conditions
         mutex1.lock();
         count--;
@@ -109,14 +109,14 @@ CIMPLE_NAMESPACE_BEGIN
         mutex1.unlock();
 *   }
 *   \endcode
-*  
+*
 *   Cond implements all of the current POSIX conditional
 *   variable operations execpt timed wait.
 */
 class CIMPLE_CIMPLE_LINKAGE Cond
 {
 public:
-    
+
     /** Constructor.
     */
     Cond();

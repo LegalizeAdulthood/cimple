@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -75,7 +75,7 @@ struct Datetime_Rep
     // Reference count.
     Atomic refs;
 
-    // Microseconds since the epoch if timestamp. Otherwise, microseconds 
+    // Microseconds since the epoch if timestamp. Otherwise, microseconds
     // elapsed since an arbitrary time (interval)..
     uint64 usec;
 
@@ -191,24 +191,24 @@ bool Datetime::is_timestamp() const
     return _rep->is_timestamp == 1;
 }
 
-uint64 Datetime::usec() const 
-{ 
-    return _rep->usec; 
+uint64 Datetime::usec() const
+{
+    return _rep->usec;
 }
 
-void Datetime::usec(uint64 usec) 
-{ 
-    _rep->usec = usec; 
+void Datetime::usec(uint64 usec)
+{
+    _rep->usec = usec;
 }
 
-sint32 Datetime::offset() const 
-{ 
-    return _rep->offset; 
+sint32 Datetime::offset() const
+{
+    return _rep->offset;
 }
 
-void Datetime::offset(sint32 offset) 
-{ 
-    _rep->offset = offset; 
+void Datetime::offset(sint32 offset)
+{
+    _rep->offset = offset;
 }
 
 void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
@@ -224,7 +224,7 @@ void Datetime::ascii(char buffer[Datetime::BUFFER_SIZE], bool prettify) const
         uint32 days = uint32(_rep->usec / DAY);
 
         sprintf(
-            buffer, 
+            buffer,
             prettify ? PRETTY_FORMAT : STANDARD_FORMAT,
             days,
             hours,
@@ -272,10 +272,10 @@ String Datetime::ascii(bool prettify) const
 }
 
 void Datetime::get_interval(
-    uint32& days, 
-    uint32& hours, 
-    uint32& minutes, 
-    uint32& seconds, 
+    uint32& days,
+    uint32& hours,
+    uint32& minutes,
+    uint32& seconds,
     uint32& microseconds)
 {
     seconds = uint32((_rep->usec / SEC) % 60);
@@ -286,15 +286,15 @@ void Datetime::get_interval(
 }
 
 void Datetime::set_interval(
-    uint32 days, 
-    uint32 hours, 
-    uint32 minutes, 
-    uint32 seconds, 
+    uint32 days,
+    uint32 hours,
+    uint32 minutes,
+    uint32 seconds,
     uint32 microseconds)
 {
     _cow();
 
-    _rep->usec = 
+    _rep->usec =
         days * DAY +
         hours * HOUR +
         minutes * MIN +
@@ -305,10 +305,10 @@ void Datetime::set_interval(
 }
 
 void Datetime::get_timestamp(
-    uint32& year, 
-    uint32& month, 
-    uint32& day, 
-    uint32& hours, 
+    uint32& year,
+    uint32& month,
+    uint32& day,
+    uint32& hours,
     uint32& minutes,
     uint32& seconds,
     uint32& microseconds,
@@ -336,10 +336,10 @@ void Datetime::get_timestamp(
 }
 
 void Datetime::set_timestamp(
-    uint32 year, 
-    uint32 month, 
-    uint32 day, 
-    uint32 hours, 
+    uint32 year,
+    uint32 month,
+    uint32 day,
+    uint32 hours,
     uint32 minutes,
     uint32 seconds,
     uint32 microseconds,

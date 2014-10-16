@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -88,8 +88,8 @@ static const Detail _details[] =
         "instances of this class exist"
     },
     {
-        "INVALID_SUPERCLASS", 
-        Exception::INVALID_SUPERCLASS, 
+        "INVALID_SUPERCLASS",
+        Exception::INVALID_SUPERCLASS,
         "The operation cannot be invoked because the specified superclass "
         "does not exist"
     },
@@ -104,8 +104,8 @@ static const Detail _details[] =
         "The specified property does not exist"
     },
     {
-        "TYPE_MISMATCH", 
-        Exception::TYPE_MISMATCH, 
+        "TYPE_MISMATCH",
+        Exception::TYPE_MISMATCH,
         "The value supplied is not compatible with the type"
     },
     {

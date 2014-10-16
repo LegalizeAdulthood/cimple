@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005 Michael E. Brasher
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -53,8 +53,8 @@ static size_t _round_up_pow_2(size_t x)
     return x;
 }
 
-Buffer::Buffer() : _data(0), _size(0), _cap(0) 
-{ 
+Buffer::Buffer() : _data(0), _size(0), _cap(0)
+{
 }
 
 Buffer::Buffer(const Buffer& x)
@@ -65,9 +65,9 @@ Buffer::Buffer(const Buffer& x)
     memcpy(_data, x._data, _size);
 }
 
-Buffer::~Buffer() 
-{ 
-    free(_data); 
+Buffer::~Buffer()
+{
+    free(_data);
 }
 
 Buffer& Buffer::operator=(const Buffer& x)
@@ -88,7 +88,7 @@ Buffer& Buffer::operator=(const Buffer& x)
 // buffer.  realloc covers issues of freeing old allocated memory and
 // moving existing data in the buffer. Allocates an extra byte to allow
 // for addition of \0 to be inserted by the data() method.
-// 
+//
 void Buffer::reserve(size_t capacity)
 {
     if (capacity > _cap)
@@ -121,7 +121,7 @@ void Buffer::_append_aux()
 }
 
 // Sets capacity to next power of 2 of the input capacity parameter.
-// Used internally to expand the buffer capacity for all append 
+// Used internally to expand the buffer capacity for all append
 // functions.
 void Buffer::_reserve_aux(size_t capacity)
 {
@@ -132,7 +132,7 @@ void Buffer::insert(size_t i, const char* data, size_t size)
 {
     CIMPLE_ASSERT(i <= _size);
 
-    size_t new_size = _size + size;     
+    size_t new_size = _size + size;
     size_t rem = _size - i;
 
     if (new_size > _cap)
@@ -171,7 +171,7 @@ size_t Buffer::format(const char* format, ...)
     size_t size = 128;
     va_list ap;
 
-    // loop to insure the reserve is greater than size of 
+    // loop to insure the reserve is greater than size of
     // result generated from the format string and input parameters
     // If the vsnprintf return indicates that the capacity is too small
     // buffer capacity is increased and another conversion attempt executed.
@@ -324,37 +324,37 @@ void Buffer::dump()
 
         if (out_len > 16)
           out_len = 16;
-        
+
         // create a 64-character formatted output line:
         sprintf(sp_buffer, " >                            "
                      "                      "
                      "    %08lX", (unsigned long int)(p_tmp - p_addr));
         out_len2 = out_len;
-        
+
         for(index = 1 + indent, index2 = 53 - 15 + indent, rel_pos = 0;
             out_len2;
             out_len2--, index += 2, index2++)
         {
             uc_tmp = *p_tmp++;
-            
+
             sprintf(sp_buffer + index, "%02X ", (unsigned short)uc_tmp);
             if(!isprint(uc_tmp))  uc_tmp = '.'; // nonprintable char
             sp_buffer[index2] = uc_tmp;
-            
+
             if (!(++rel_pos & 3))     // extra blank after 4 bytes
             {
-                index++; 
+                index++;
                 sp_buffer[index+2] = ' ';
             }
         }
-        
+
         if (!(rel_pos & 3)) index--;
-        
+
         sp_buffer[index  ]   = '<';
         sp_buffer[index+1]   = ' ';
-        
+
         printf("%s\n", sp_buffer);
-        
+
         buf.data   += out_len;
         buf.size   -= out_len;
     }
