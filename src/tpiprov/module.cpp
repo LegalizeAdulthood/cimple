@@ -1,13 +1,13 @@
 
 extern "C" int cimple_provider(
-    int operation, 
-    void* arg0, 
-    void* arg1, 
-    void* arg2, 
-    void* arg3, 
-    void* arg4, 
-    void* arg5, 
-    void* arg6, 
+    int operation,
+    void* arg0,
+    void* arg1,
+    void* arg2,
+    void* arg3,
+    void* arg4,
+    void* arg5,
+    void* arg6,
     void* arg7)
 {
     switch (operation)
@@ -35,7 +35,7 @@ extern "C" int cimple_provider(
 
         case OPERATION_GET_REPOSITORY:
         {
-            const Meta_Class* const** meta_classes = 
+            const Meta_Class* const** meta_classes =
                 (const Meta_Class* const**)arg0;
 
             size_t* num_meta_classes = (size_t*)arg1;
@@ -53,7 +53,7 @@ extern "C" int cimple_provider(
 
             Enum_Instances_Handler<CLASS> handler(
                 (Enum_Instances_Proc)arg2, (void*)arg3);
-                    
+
             Enum_Instances_Status status = provider->enum_instances(
                 (const CLASS*)arg1, &handler);
 

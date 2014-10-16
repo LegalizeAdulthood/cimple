@@ -1,6 +1,6 @@
 Usage: %s [OPTIONS] [CLASSNAME]...
 
-This utility generates the skeleton code for one or more providers. It 
+This utility generates the skeleton code for one or more providers. It
 generates two files (<CLASSNAME>_Provider.h and <CLASSNAME>_Provider.cpp)
 for each CLASSNAME argument provided on the command line or with the -F
 option. If these files already exist, then genprov patches them, by updating

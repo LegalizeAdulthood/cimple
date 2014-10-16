@@ -52,10 +52,10 @@ static inline const char* _to_string(int data_type)
 
 void write_file(
     FILE* os,
-    const char* class_name, 
+    const char* class_name,
     const unsigned char* template_file)
 {
-    string tmp = (char*)template_file; 
+    string tmp = (char*)template_file;
     size_t pos;
 
     while ((pos = tmp.find("<CLASS>")) != size_t(-1))
@@ -71,8 +71,8 @@ void write_file(
 const char* get_embedded_class_name(
     const MOF_Qualified_Element* mqe)
 {
-    for (const MOF_Qualifier_Info* p = mqe->all_qualifiers; 
-        p; 
+    for (const MOF_Qualifier_Info* p = mqe->all_qualifiers;
+        p;
         p = (const MOF_Qualifier_Info*)p->next)
     {
         const MOF_Qualifier* mq = p->qualifier;
@@ -99,8 +99,8 @@ const char* get_embedded_class_name(
 
 void format_method_signature(
     cimple::Buffer& out,
-    const MOF_Class_Decl* cd, 
-    const MOF_Method_Decl* md, 
+    const MOF_Class_Decl* cd,
+    const MOF_Method_Decl* md,
     bool def)
 {
     const char* cn = cd->name;
@@ -134,7 +134,7 @@ void format_method_signature(
             cn = p->ref_name;
         else if (p->qual_mask & MOF_QT_EMBEDDEDOBJECT)
             cn = "Instance";
-        else 
+        else
             cn = get_embedded_class_name(p);
 
         if (cn)
@@ -166,7 +166,7 @@ void format_method_signature(
 
     {
         const char* cn = 0;
-        
+
         if (md->qual_mask & MOF_QT_EMBEDDEDOBJECT)
             cn = "Instance";
         else
@@ -214,7 +214,7 @@ void write_method(
 
 void write_methods(
     FILE* os,
-    const char* /* class_name */, 
+    const char* /* class_name */,
     const MOF_Class_Decl* class_decl,
     bool do_definition)
 {
@@ -237,7 +237,7 @@ void write_methods(
 }
 
 void write_provider_header(
-    const char* class_name, 
+    const char* class_name,
     const string& path,
     const MOF_Class_Decl* class_decl)
 {
@@ -261,7 +261,7 @@ void write_provider_header(
 }
 
 void write_indication_provider_header(
-    const char* class_name, 
+    const char* class_name,
     const string& path,
     const MOF_Class_Decl* class_decl)
 {
@@ -281,7 +281,7 @@ void write_indication_provider_header(
 }
 
 void write_provider_source(
-    const char* class_name, 
+    const char* class_name,
     const string& path,
     const MOF_Class_Decl* class_decl)
 {
@@ -305,7 +305,7 @@ void write_provider_source(
 }
 
 void write_indication_provider_source(
-    const char* class_name, 
+    const char* class_name,
     const string& path,
     const MOF_Class_Decl* class_decl)
 {
@@ -489,9 +489,9 @@ void expand(string& text, const string& pattern, const string& replacement)
 
     while ((pos = text.find(pattern)) != string::npos)
     {
-        text = 
-            text.substr(0, pos) + 
-            string(replacement) + 
+        text =
+            text.substr(0, pos) +
+            string(replacement) +
             text.substr(pos + pattern.size());
     }
 }
@@ -633,24 +633,24 @@ int patch(string& data, const char* cn, const Patch& patch, bool /* def */)
 }
 
 void patch_err(
-    const char* path, 
-    string& data, 
-    const char* cn, 
-    const Patch& pt, 
+    const char* path,
+    string& data,
+    const char* cn,
+    const Patch& pt,
     bool def)
 {
     if (patch(data, cn, pt, def) != 0)
     {
         err("%s: patch failed: please add end-marker (\"%s\") "
-            "so genprov will know where to insert new extrinsic methods", 
+            "so genprov will know where to insert new extrinsic methods",
             path, END);
     }
 }
 
 void patch_method(
-    const char* path, 
-    const MOF_Class_Decl* cd, 
-    const MOF_Method_Decl* md, 
+    const char* path,
+    const MOF_Class_Decl* cd,
+    const MOF_Method_Decl* md,
     string& data,
     bool def)
 {
@@ -694,7 +694,7 @@ void patch_method(
 
         if (def)
         {
-            pt.body = 
+            pt.body =
                 "\n"
                 "{\n"
                 "    return INVOKE_METHOD_UNSUPPORTED;\n"
@@ -857,7 +857,7 @@ int main(int argc, char** argv)
 
                 mof_files.push_back(optarg);
                 break;
-            } 
+            }
 
             case 'F':
             {
@@ -907,7 +907,7 @@ int main(int argc, char** argv)
     }
 
     //  Build class list from file and command line input
- 
+
     vector<string> classes;
 
     // append classes to class list file if -F option
@@ -925,7 +925,7 @@ int main(int argc, char** argv)
     load_repository(mof_files);
 
     // Create providers.
-    
+
     for (int j = 0; j < int(classes.size()); j++)
         genprov(classes[j]);
 

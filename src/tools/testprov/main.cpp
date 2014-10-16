@@ -37,7 +37,7 @@ void draw_box(const char* message)
 }
 
 static bool _enum_instances_proc(
-    Instance* instance, 
+    Instance* instance,
     Enum_Instances_Status status,
     void* client_data)
 {
@@ -226,7 +226,7 @@ void process(const char* path, const char* class_name)
 
     if (disp->num_modules() == 0)
     {
-        fprintf(stderr, "%s: no modules found in this directory: %s\n", 
+        fprintf(stderr, "%s: no modules found in this directory: %s\n",
             arg0, path);
         exit(1);
     }
@@ -237,7 +237,7 @@ void process(const char* path, const char* class_name)
 
     if (!meta_class)
     {
-        fprintf(stderr, "%s: failed to find provider for class: %s\n", 
+        fprintf(stderr, "%s: failed to find provider for class: %s\n",
             arg0, class_name);
         exit(1);
     }

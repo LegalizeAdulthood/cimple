@@ -29,27 +29,27 @@ void echo_command(int argc, char** argv)
 
                 switch (*p)
                 {
-                    case 'a': 
-                        putchar('\a'); 
+                    case 'a':
+                        putchar('\a');
                         break;
-                    case 'b': 
-                        putchar('\b'); 
+                    case 'b':
+                        putchar('\b');
                         break;
-                    case 'n': 
-                        putchar('\n'); 
+                    case 'n':
+                        putchar('\n');
                         break;
-                    case 'r': 
-                        putchar('\r'); 
+                    case 'r':
+                        putchar('\r');
                         break;
-                    case 't': 
-                        putchar('\t'); 
+                    case 't':
+                        putchar('\t');
                         break;
-                    case 'c': 
+                    case 'c':
                         // Circumvent newline below.
                         return;
-                    case '\0': 
+                    case '\0':
                         return;
-                    default: 
+                    default:
                         putchar('\\');
                         putchar(*p);
                         break;
@@ -196,7 +196,7 @@ void touch_command(int argc, char** argv)
 
         if (is_dir(path))
         {
-            fprintf(stderr, "%s %s: attempt to touch directory: %s", 
+            fprintf(stderr, "%s %s: attempt to touch directory: %s",
                 arg0, argv[0], path);
             exit(1);
         }
@@ -211,7 +211,7 @@ void touch_command(int argc, char** argv)
 
             if (fd < 0)
             {
-                fprintf(stderr, "%s %s: failed to create %s", 
+                fprintf(stderr, "%s %s: failed to create %s",
                     arg0, argv[0], path);
                 exit(1);
             }
@@ -224,7 +224,7 @@ void touch_command(int argc, char** argv)
 
         if (_utime(path, NULL) != 0)
         {
-            fprintf(stderr, "%s %s: failed to set time on %s", 
+            fprintf(stderr, "%s %s: failed to set time on %s",
                 arg0, argv[0], path);
             exit(1);
         }
