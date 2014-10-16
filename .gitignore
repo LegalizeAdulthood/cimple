@@ -1,0 +1,12 @@
+bin
+lib
+lib64
+config.options
+*.o
+src/cimple/tests/log/result
+src/tools/genclass/usage.h
+src/tools/genhnd/usage.h
+src/tools/genmak/usage.h
+src/tools/genmod/usage.h
+src/tools/genproj/usage.h
+src/tools/genprov/usage.h
