@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -76,7 +76,7 @@ static void _check_subscript(
 {
     if (subscript == 0)
     {
-        throw Exception(Exception::BAD_SUBSCRIPT, 
+        throw Exception(Exception::BAD_SUBSCRIPT,
             "%s.%s: encountered zero subscript", mc->name, name);
     }
 }
@@ -88,7 +88,7 @@ static void _throw_type_mismatch(const char* class_name, const char* name)
 
 static void _throw_null_access(const char* class_name, const char* name)
 {
-    throw Exception(Exception::NULL_ACCESS, 
+    throw Exception(Exception::NULL_ACCESS,
         "%s.%s: attempt to read value of a null property",
         class_name, name);
 }
@@ -143,9 +143,9 @@ static void _append_feature(Meta_Class* mc, Meta_Feature* mf)
 
 static size_t _add_property(
     Meta_Class* mc,
-    const char* name, 
-    Type type, 
-    sint32 subscript, 
+    const char* name,
+    Type type,
+    sint32 subscript,
     bool key)
 {
     // ATTN-C: check whether adding this property modifies the key structure
@@ -173,7 +173,7 @@ static size_t _add_property(
         if (mc->locals[pos].local)
         {
             throw Exception(
-                Exception::ALREADY_EXISTS, "%s.%s: property already exists", 
+                Exception::ALREADY_EXISTS, "%s.%s: property already exists",
                 mc->name, name);
         }
 
@@ -185,7 +185,7 @@ static size_t _add_property(
             ((const Meta_Property*)mf)->type != type ||
             ((const Meta_Property*)mf)->subscript != subscript)
         {
-            throw Exception(Exception::INCOMPATIBLE_OVERRIDE, 
+            throw Exception(Exception::INCOMPATIBLE_OVERRIDE,
                 "%s.%s: attempted to override a superclass feature "
                 "with an incompatible feature", mc->name, name);
         }
@@ -702,7 +702,7 @@ size_t CIM_Class::add_vla_property(const char* name, Type type, Key_Tag)
 }
 
 size_t CIM_Class::add_fla_property(
-    const char* name, 
+    const char* name,
     Type type,
     uint32 subscript)
 {
@@ -712,9 +712,9 @@ size_t CIM_Class::add_fla_property(
 }
 
 size_t CIM_Class::add_fla_property(
-    const char* name, 
-    Type type, 
-    uint32 subscript, 
+    const char* name,
+    Type type,
+    uint32 subscript,
     Key_Tag)
 {
     _cow(_mc);
