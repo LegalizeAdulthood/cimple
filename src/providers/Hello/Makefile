@@ -5,9 +5,12 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleHello
 
-SOURCES = \
-    repository.cpp \
+GENCLASS_SOURCES = \
     Hello.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     Hello_Provider.cpp \
     module.cpp
 
@@ -26,7 +29,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Hello
 
 genprov:
@@ -42,7 +45,7 @@ live:
 	cimcli ei -l localhost Hello
 	cimcli ni -l localhost Hello
 
-## live manual tests using Pegasus cimcli	
+## live manual tests using Pegasus cimcli
 manual-test:
 	cimcli ns -l localhost
 	cimcli gc -l localhost Hello
