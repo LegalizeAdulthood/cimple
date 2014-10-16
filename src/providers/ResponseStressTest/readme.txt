@@ -6,7 +6,7 @@ It was defined to allow testing with large responses both for functionality
 and to measure response times.
 
 There is a client that supports this testing and specifically testing with
-a corresponsing Pegasus C++ provider TST_ResponseStressTest if that 
+a corresponsing Pegasus C++ provider TST_ResponseStressTest if that
 provider is installed in Pegasus.
 
 Normally to use this provider, the client should:
@@ -16,7 +16,7 @@ to be returned in each enumerate response
 2. Execute the enumerateInstances operation.
 
 The provider will return the defined number of instances with the defined
-size (approximately). 
+size (approximately).
 
 In addition the provider calculates information about the time between each
 instance issued to help the user understand delays encountered in the server

@@ -70,27 +70,27 @@ Enum_Instances_Status UnixUser_Provider::enum_instances(
         if (model->password.null)
             instance->password.null = true;
         else
-            instance->password.value = pw.pw_passwd;    
+            instance->password.value = pw.pw_passwd;
 
         if (model->uid.null)
             instance->uid.null = true;
         else
-            instance->uid.value = pw.pw_uid;    
+            instance->uid.value = pw.pw_uid;
 
         if (model->gid.null)
             instance->gid.null = true;
         else
-            instance->gid.value = pw.pw_gid;    
+            instance->gid.value = pw.pw_gid;
 
         if (model->fullName.null)
             instance->fullName.null = true;
         else
-            instance->fullName.value = pw.pw_gecos;    
+            instance->fullName.value = pw.pw_gecos;
 
         if (model->homeDir.null)
             instance->homeDir.null = true;
         else
-            instance->homeDir.value = pw.pw_dir;    
+            instance->homeDir.value = pw.pw_dir;
 
         if (model->shellProgram.null)
             instance->shellProgram.null = true;

@@ -3,7 +3,7 @@
 class MyStorageExtent : CIM_StorageExtent
 {
     [Override ( "SystemCreationClassName" ),
-     Propagated ( "CIM_System.CreationClassName" ), 
+     Propagated ( "CIM_System.CreationClassName" ),
      Description (
           "The CreationClassName of the scoping system."
           " "
@@ -46,8 +46,8 @@ class MyStorageExtent : CIM_StorageExtent
           "If variable block size, then the maximum block size in "
           "bytes should be specified. If the block size is unknown or "
           "if a block concept is not valid (for example, for "
-          "AggregateExtents, Memory or LogicalDisks), enter a 1."), 
-     Units ( "Bytes" ), 
+          "AggregateExtents, Memory or LogicalDisks), enter a 1."),
+     Units ( "Bytes" ),
      MappingStrings { "MIF.DMTF|Host Storage|001.4",
           "MIB.IETF|HOST-RESOURCES-MIB.hrStorageAllocationUnits",
           "MIF.DMTF|Storage Devices|001.5" }
@@ -60,7 +60,7 @@ class MyStorageExtent : CIM_StorageExtent
           "Size, which form this Extent. The total size of the Extent "
           "can be calculated by multiplying BlockSize by "
           "NumberOfBlocks. If the BlockSize is 1, this property is the "
-          "total size of the Extent."), 
+          "total size of the Extent."),
      MappingStrings { "MIF.DMTF|Host Storage|001.5",
           "MIB.IETF|HOST-RESOURCES-MIB.hrStorageSize" }
     ]
@@ -83,13 +83,13 @@ class MyStorageExtent : CIM_StorageExtent
   uint64 ConsumableBlocks;
 
 
-    [Override ( "Name" ), 
+    [Override ( "Name" ),
      Description (
           "A unique identifier for the Extent."
           " "
-          " device ID "), 
+          " device ID "),
      MappingStrings { "SPC.INCITS-T10| VPD 83, Association 0 | "
-           "Identifier" }, 
+           "Identifier" },
      ModelCorrespondence { "CIM_StorageExtent.NameFormat",
           "CIM_StorageExtent.NameNamespace" }
     ]
@@ -175,17 +175,17 @@ class MyStorageExtent : CIM_StorageExtent
           "single-valued) should also provide the primary status of "
           "the element."
           " "
-          " OK "), 
+          " OK "),
      ValueMap { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
           "10", "11", "12", "13", "14", "15", "16", "17", "18", "..",
-          "0x8000.." }, 
+          "0x8000.." },
      Values { "Unknown", "Other", "OK", "Degraded", "Stressed",
           "Predictive Failure", "Error", "Non-Recoverable Error",
           "Starting", "Stopping", "Stopped", "In Service",
           "No Contact", "Lost Communication", "Aborted", "Dormant",
           "Supporting Entity in Error", "Completed", "Power Mode",
-          "DMTF Reserved", "Vendor Reserved" }, ArrayType ( "Indexed" ), 
-     ModelCorrespondence { 
+          "DMTF Reserved", "Vendor Reserved" }, ArrayType ( "Indexed" ),
+     ModelCorrespondence {
           "CIM_ManagedSystemElement.StatusDescriptions" }
     ]
   uint16 OperationalStatus[];
@@ -219,23 +219,23 @@ class MyStorageExtent : CIM_StorageExtent
           "\"Unknown\" (0) - The implementation cannot report on "
           "HealthState at this time. \n"
           "DMTF has reserved the unused portion of the continuum for "
-          "additional HealthStates in the future."), 
-     ValueMap { "0", "5", "10", "15", "20", "25", "30", ".." }, 
+          "additional HealthStates in the future."),
+     ValueMap { "0", "5", "10", "15", "20", "25", "30", ".." },
      Values { "Unknown", "OK", "Degraded/Warning", "Minor failure",
           "Major failure", "Critical failure", "Non-recoverable error",
           "DMTF Reserved" }
     ]
   uint16 HealthState;
 
-    [Experimental, 
+    [Experimental,
      Override ("LocationIndicator"),
      Write, Description (
           "An integer that reflects the state of an indicator (e.g., "
           "LED) that is part of a device. Reading the value gives the "
           "current state. Writing the value with 'On'/'Off' turns the "
-          "indicator on/off, other values may not be written."), 
-     ValueMap { "0", "2", "3", "4" }, 
-     Values { "Unknown", "On", "Off", "Not Supported" }, 
+          "indicator on/off, other values may not be written."),
+     ValueMap { "0", "2", "3", "4" },
+     Values { "Unknown", "On", "Off", "Not Supported" },
      ModelCorrespondence { "CIM_AlarmDevice.AlarmState",
           "CIM_AlarmDevice.AudioIndicatorIsDisabled",
           "CIM_AlarmDevice.VisualIndicatorIsDisabled",
@@ -267,7 +267,7 @@ class MyStorageExtent : CIM_StorageExtent
           "The Caption property is a short textual description (one- "
           "line string) of the object."
           " "
-          " Disk Drive Extent "), 
+          " Disk Drive Extent "),
      MaxLen ( 64 )
     ]
   string Caption;

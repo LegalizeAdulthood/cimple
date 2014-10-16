@@ -122,7 +122,7 @@ public:
     // set up and array with the list of classes and namespaces for the various
     // tests.  NOTE: The first one should be one that is guaranteed to be in
     // the environment since it is used for the live test.
-    
+
     void setClassListArray()
     {
         classList.append("CMPL_ResponseStressTest");
@@ -150,7 +150,7 @@ public:
 
         // Register for Client statistics.
         ClientStatistics statistics = ClientStatistics();
-    
+
         client.registerClientOpPerformanceDataHandler(statistics);
         try
         {
@@ -219,7 +219,7 @@ public:
     CIMName testClass;
     CIMNamespaceName testNamespaceName;
     Array<CIMName> classList;
-    Array<CIMNamespaceName> namespaceList;    
+    Array<CIMNamespaceName> namespaceList;
 };
 
 
@@ -275,7 +275,7 @@ void tests::enumerateInstances(Uint32 responseSize, Uint64 responseCount)
 
         Uint64 providerTime = 0;
         CIMInstance lastInstance = instances[instances.size() - 1];
-        if (Uint32 pos = lastInstance.findProperty("totalTime") != 
+        if (Uint32 pos = lastInstance.findProperty("totalTime") !=
             PEG_NOT_FOUND)
         {
             CIMProperty p = lastInstance.getProperty(pos);
@@ -297,7 +297,7 @@ void tests::enumerateInstances(Uint32 responseSize, Uint64 responseCount)
                       returnedPerformanceData);
 
         CIMPLE_TEST_ASSERT(instances.size() == responseCount);
-        
+
         // Confirm that the sequence numbers are monolithic increasing
         //
         Uint64 prevSequenceNumber = 0;
@@ -311,7 +311,7 @@ void tests::enumerateInstances(Uint32 responseSize, Uint64 responseCount)
                 CIMValue v = p.getValue();
                 Uint64 sequenceNumber;
                 v.get(sequenceNumber);
-                //cout << "SequenceNumber = " << sequenceNumber 
+                //cout << "SequenceNumber = " << sequenceNumber
                 //    << " prevSequenceNumber " << prevSequenceNumber << endl;
 
                 CIMPLE_TEST_ASSERT(sequenceNumber == (prevSequenceNumber));
@@ -377,7 +377,7 @@ void tests::set(Uint64 instanceSize, Uint64 responseCount)
     Uint32 rc;
     returnValue.get(rc);
 
-    CIMPLE_TEST_ASSERT(rc == 0); 
+    CIMPLE_TEST_ASSERT(rc == 0);
 }
 
 // get the current provider test parameters.
@@ -463,17 +463,17 @@ int main(int argc, char** argv)
         {
             // get the first class in the list
             assert(t.moreClasses());
-        
+
             t.testSetAndGetMethods();
-    
+
             // set test parameters to 150 = size, 20 = response count
             Uint64 responseCount = 20;
             Uint64 instanceSize = 150;
-    
+
             t.set(instanceSize, responseCount);
-        
+
             t.enumerateInstanceNames(instanceSize, responseCount);
-        
+
             t.enumerateInstances(instanceSize, responseCount);
         }
         else if(strcmp(argv[1], "one") == 0)

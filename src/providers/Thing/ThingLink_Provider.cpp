@@ -13,7 +13,7 @@ ThingLink_Provider::~ThingLink_Provider()
 Load_Status ThingLink_Provider::load()
 {
     ThingLink* link;
-    
+
     link = ThingLink::create();
     link->left = Thing::create();
     link->left->key.value = 100;

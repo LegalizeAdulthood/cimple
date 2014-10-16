@@ -9,7 +9,7 @@ class RefArray
 
     uint32 SendRefArray(
         [In(true), Out(false)]
-        RefArrayParam REF arr1[], 
+        RefArrayParam REF arr1[],
         [In(false), Out(true)]
         RefArrayParam REF arr2[]);
 };

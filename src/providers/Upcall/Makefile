@@ -74,7 +74,7 @@ stoptest:
 ##
 ## Live tests that are executed as part of the CIMPLE regression tests
 ##             These tests use Pegasus cimcli
-## 
+##
 ##===========================================================================	
 live:
 	cimcli ni Upcall

@@ -40,4 +40,4 @@ genproj:
 manual-test:
 	ciminvoke CMPL_Time SetTime Time=20070101120000.123456-360
 	ciminvoke CMPL_Time GetTime
-    
+
