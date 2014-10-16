@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,7 +26,7 @@
 
 /*
     Test the functionality of the Scheduler Class. Runs a number of tests
-    that create schedules and execute them.  
+    that create schedules and execute them.
 
     We test to be sure that the timing is correct (completes in the correct
     time) and that the calls return the proper information.
@@ -91,7 +91,7 @@ public:
                t, min, max);
         return false;
     }
-    // 
+    //
     bool test_range_sec(uint32 min, uint32 max)
     {
         uint32 t = get_interval_ms();
@@ -130,7 +130,7 @@ static uint64 _RepeatingTimer(void* arg)
     return (x * SECOND);
 }
 
-// Scheduled function that restarts a new timer with the time 
+// Scheduled function that restarts a new timer with the time
 // in arg
 static uint64 _RestartingTimer(void* arg)
 {
@@ -293,7 +293,7 @@ void test03()
     sched_auto.add_timer(3 * SECOND, _SimpleOneShotTimer, (void*)"3");
     sched_auto.add_timer(1 * SECOND, _SimpleOneShotTimer, (void*)"1");
 
-    // wait for the dispatcher thread to rejoin 
+    // wait for the dispatcher thread to rejoin
 
     void * value;
     assert(Thread::join(sched_auto.thread_id(), value) == 0);
@@ -313,7 +313,7 @@ void test03()
     printf("+++++ passed test03\n");
 }
 
-// test to assure that stopDispatcher does stop the dispatcher 
+// test to assure that stopDispatcher does stop the dispatcher
 // immediatly and that the timed functions are not run.
 void test04()
 {
@@ -344,7 +344,7 @@ void test04()
     printf("+++++ passed test04\n");
 }
 
-// Repeat test 4 but with autodispatch.  
+// Repeat test 4 but with autodispatch.
 void test05()
 {
     printf("Start test05\n");
@@ -363,7 +363,7 @@ void test05()
 
     assert(!ran_OriginalTimer);
 
-    // assert that this all happend in < 1200 ms. 
+    // assert that this all happend in < 1200 ms.
     assert(x.test_range_ms(0,1200));
 
     printf("+++++ passed test05\n");
@@ -416,7 +416,7 @@ void test07()
     size_t t4 = sched_auto.add_timer(4 * SECOND, _RestartingTimer, (void*)"4");
 
     // calls the stop thread function after 30 seconds.
-    size_t t5 = sched_auto.add_timer(30 * SECOND, 
+    size_t t5 = sched_auto.add_timer(30 * SECOND,
                    _stopsched_autoDispatcherThread, (void*)"Nothing");
 
     // wait for the dispatcher thread to rejoin when the _stopDispatcher

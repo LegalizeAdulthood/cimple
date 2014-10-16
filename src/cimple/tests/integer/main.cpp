@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -88,7 +88,7 @@ int main(int argc, char** argv)
         testList.append(CIMPLE_UINT32_MAX /2);
         testList.append(CIMPLE_UINT32_MAX - 1);
         testList.append(CIMPLE_UINT32_MAX);
-    
+
         for (uint64 i = 0 ; i < testList.size(); i++ )
         {
             char buf[22];
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
         testList.append(CIMPLE_SINT32_MAX /4);
         testList.append(CIMPLE_SINT32_MAX - 1);
         testList.append(CIMPLE_SINT32_MAX);
-    
+
         for (uint64 i = 0 ; i < testList.size(); i++ )
         {
             char buf[22];
@@ -134,7 +134,7 @@ int main(int argc, char** argv)
         testList.append(CIMPLE_UINT64_MAX /2);
         testList.append(CIMPLE_UINT64_MAX - 1);
         testList.append(CIMPLE_UINT64_MAX);
-    
+
         for (uint64 i = 0 ; i < testList.size(); i++ )
         {
             char buf[22];
@@ -159,7 +159,7 @@ int main(int argc, char** argv)
         testList.append(CIMPLE_SINT64_MAX /4);
         testList.append(CIMPLE_SINT64_MAX - 1);
         testList.append(CIMPLE_SINT64_MAX);
-    
+
         for (uint64 i = 0 ; i < testList.size(); i++ )
         {
             char buf[22];

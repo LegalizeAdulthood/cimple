@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -47,17 +47,17 @@ class test_timer
 {
 public:
 
-    /** 
+    /**
      * Create a new test timer and set the time to NOW
-     * 
+     *
      */
     test_timer(){_starttime = Time::now();}
 
     ~test_timer(){}
 
-    /** 
+    /**
      * restart an existing timer and set time to now
-     * 
+     *
      */
     void restart(){ _starttime = Time::now();}
 
@@ -97,7 +97,7 @@ private:
     uint64 _starttime;
 };
 
-/** 
+/**
  * Gather and present statistics in as a histogram.  The
  * constructor defines the dimensions for the statistics to be
  * gathered.  The inc function increments a specific value slot
@@ -115,12 +115,12 @@ class histogram
 {
 public:
     /**
-     * Constructor.  Creates a histogram object with a defined 
-     * number of slots and a range for each slot. 
-     * @param resolution for each slot 
-     * @param max maximum value that will be counted in the 
+     * Constructor.  Creates a histogram object with a defined
+     * number of slots and a range for each slot.
+     * @param resolution for each slot
+     * @param max maximum value that will be counted in the
      *            histogram
-     * @param min minimum value that will be counted in the 
+     * @param min minimum value that will be counted in the
      *            histogram
      */
     histogram(uint32 resolution, uint32 max, uint32 min)
@@ -141,9 +141,9 @@ public:
 
     ~histogram(){};
 
-    /** 
+    /**
      * Increment the count for the defined value.
-     * 
+     *
      * @param value
      */
     void inc(sint64 value)
@@ -224,7 +224,7 @@ private:
 };
 
 //---test01---------------------------------------------------------------------
-// 
+//
 // simple mutex tests in a single thread.
 void test01()
 {
@@ -393,7 +393,7 @@ void test02()
 
 
 //----Test03--------------------------------------------------------------------
-// 
+//
 
 // thread proc that simply waits and returns.
 
@@ -409,14 +409,14 @@ static void* _nonblock_proc(void* arg)
 
 
 //----Test03--------------------------------------------------------------------
-// 
+//
 // run a test consisting of creating a joinable thread that does a sleep
 // and return N times.  A recursivemutex is set before the thread is called and
 // reset after it joins. With a nonrecursive thread, the whole proces
 // is run in parallel for each thread.
 // Success is if the whole process finishes in very little more than the
 // time for one sleep in the thread proc.
-// 
+//
 void test03()
 {
 
@@ -495,9 +495,9 @@ void doWork(uint32 count)
         }
 }
 
-// define the histogram that gathers statistics on the percentage of 
+// define the histogram that gathers statistics on the percentage of
 // bursts that were calculated locally in the function vs a thread.
-// The idea is that if try_lock is really working, some work should be 
+// The idea is that if try_lock is really working, some work should be
 // processed in each.
 static histogram h(20, 100, 0);
 
@@ -535,7 +535,7 @@ static void *threadfunc(void* /* parm */)
         // do some work
 
         doWork(processingCompletedThisBurst);
-       
+
         workLock.unlock();
     }
     /* If any local processing remains, merge it with the global*/
@@ -546,7 +546,7 @@ static void *threadfunc(void* /* parm */)
 
         // do some work
         doWork(localProcessingCompleted);
-        
+
         workLock.unlock();
     }
 

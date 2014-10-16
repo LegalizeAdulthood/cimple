@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -59,7 +59,7 @@ int main(int /* argc */, char** argv)
 
         char buffer2[Datetime::BUFFER_SIZE];
         sprintf(buffer2, "%04d%02d%02d%02d%02d%02d.%06d%s%03d",
-            year, month, day, hours, minutes, seconds, microseconds, 
+            year, month, day, hours, minutes, seconds, microseconds,
             utc < 0 ? "" : "+", utc);
 
         assert(strcmp(buffer1, buffer2) == 0);
@@ -109,7 +109,7 @@ int main(int /* argc */, char** argv)
         Datetime in1;
         in1.usec(
             1 * Datetime::DAY +
-            2 * Datetime::HOUR + 
+            2 * Datetime::HOUR +
             3 * Datetime::MIN +
             4 * Datetime::SEC +
             5 * Datetime::USEC);

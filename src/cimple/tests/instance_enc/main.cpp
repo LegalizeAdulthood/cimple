@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -64,160 +64,160 @@ struct pack
 template<>
 struct pack<boolean>
 {
-    pack(Buffer& out, const boolean& x) 
-    { 
+    pack(Buffer& out, const boolean& x)
+    {
         pack_tag(out, x);
-        pack_boolean(out, x); 
+        pack_boolean(out, x);
     }
 
-    pack(Buffer& out, const Array<boolean>& x) 
-    { 
+    pack(Buffer& out, const Array<boolean>& x)
+    {
         pack_tag(out, x[0]);
-        pack_boolean_array(out, x); 
+        pack_boolean_array(out, x);
     }
 };
 
 template<>
 struct pack<uint8>
 {
-    pack(Buffer& out, const uint8& x) 
-    { 
+    pack(Buffer& out, const uint8& x)
+    {
         pack_tag(out, x);
-        pack_uint8(out, x); 
+        pack_uint8(out, x);
     }
 
-    pack(Buffer& out, const Array<uint8>& x) 
-    { 
+    pack(Buffer& out, const Array<uint8>& x)
+    {
         pack_tag(out, x[0]);
-        pack_uint8_array(out, x); 
+        pack_uint8_array(out, x);
     }
 };
 
 template<>
 struct pack<uint16>
 {
-    pack(Buffer& out, const uint16& x) 
-    { 
+    pack(Buffer& out, const uint16& x)
+    {
         pack_tag(out, x);
-        pack_uint16(out, x); 
+        pack_uint16(out, x);
     }
 
-    pack(Buffer& out, const Array<uint16>& x) 
-    { 
+    pack(Buffer& out, const Array<uint16>& x)
+    {
         pack_tag(out, x[0]);
-        pack_uint16_array(out, x); 
+        pack_uint16_array(out, x);
     }
 };
 
 template<>
 struct pack<char16>
 {
-    pack(Buffer& out, const char16& x) 
-    { 
+    pack(Buffer& out, const char16& x)
+    {
         pack_tag(out, x);
-        pack_char16(out, x); 
+        pack_char16(out, x);
     }
 
-    pack(Buffer& out, const Array<char16>& x) 
-    { 
+    pack(Buffer& out, const Array<char16>& x)
+    {
         pack_tag(out, x[0]);
-        pack_char16_array(out, x); 
+        pack_char16_array(out, x);
     }
 };
 
 template<>
 struct pack<uint32>
 {
-    pack(Buffer& out, const uint32& x) 
-    { 
+    pack(Buffer& out, const uint32& x)
+    {
         pack_tag(out, x);
-        pack_uint32(out, x); 
+        pack_uint32(out, x);
     }
 
-    pack(Buffer& out, const Array<uint32>& x) 
-    { 
+    pack(Buffer& out, const Array<uint32>& x)
+    {
         pack_tag(out, x[0]);
-        pack_uint32_array(out, x); 
+        pack_uint32_array(out, x);
     }
 };
 
 template<>
 struct pack<uint64>
 {
-    pack(Buffer& out, const uint64& x) 
-    { 
+    pack(Buffer& out, const uint64& x)
+    {
         pack_tag(out, x);
-        pack_uint64(out, x); 
+        pack_uint64(out, x);
     }
 
-    pack(Buffer& out, const Array<uint64>& x) 
-    { 
+    pack(Buffer& out, const Array<uint64>& x)
+    {
         pack_tag(out, x[0]);
-        pack_uint64_array(out, x); 
+        pack_uint64_array(out, x);
     }
 };
 
 template<>
 struct pack<real32>
 {
-    pack(Buffer& out, const real32& x) 
-    { 
+    pack(Buffer& out, const real32& x)
+    {
         pack_tag(out, x);
-        pack_real32(out, x); 
+        pack_real32(out, x);
     }
 
-    pack(Buffer& out, const Array<real32>& x) 
-    { 
+    pack(Buffer& out, const Array<real32>& x)
+    {
         pack_tag(out, x[0]);
-        pack_real32_array(out, x); 
+        pack_real32_array(out, x);
     }
 };
 
 template<>
 struct pack<real64>
 {
-    pack(Buffer& out, const real64& x) 
-    { 
+    pack(Buffer& out, const real64& x)
+    {
         pack_tag(out, x);
-        pack_real64(out, x); 
+        pack_real64(out, x);
     }
 
-    pack(Buffer& out, const Array<real64>& x) 
-    { 
+    pack(Buffer& out, const Array<real64>& x)
+    {
         pack_tag(out, x[0]);
-        pack_real64_array(out, x); 
+        pack_real64_array(out, x);
     }
 };
 
 template<>
 struct pack<String>
 {
-    pack(Buffer& out, const String& x) 
-    { 
+    pack(Buffer& out, const String& x)
+    {
         pack_tag(out, x);
-        pack_string(out, x); 
+        pack_string(out, x);
     }
 
-    pack(Buffer& out, const Array<String>& x) 
-    { 
+    pack(Buffer& out, const Array<String>& x)
+    {
         pack_tag(out, x[0]);
-        pack_string_array(out, x); 
+        pack_string_array(out, x);
     }
 };
 
 template<>
 struct pack<Datetime>
 {
-    pack(Buffer& out, const Datetime& x) 
-    { 
+    pack(Buffer& out, const Datetime& x)
+    {
         pack_tag(out, x);
-        pack_datetime(out, x); 
+        pack_datetime(out, x);
     }
 
-    pack(Buffer& out, const Array<Datetime>& x) 
-    { 
+    pack(Buffer& out, const Array<Datetime>& x)
+    {
         pack_tag(out, x[0]);
-        pack_datetime_array(out, x); 
+        pack_datetime_array(out, x);
     }
 };
 
@@ -229,160 +229,160 @@ struct unpack
 template<>
 struct unpack<boolean>
 {
-    unpack(const Buffer& in, size_t& pos, boolean& x) 
+    unpack(const Buffer& in, size_t& pos, boolean& x)
     {
         unpack_tag(in, pos, x);
-        unpack_boolean(in, pos, x); 
+        unpack_boolean(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<boolean>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<boolean>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_boolean_array(in, pos, x); 
+        unpack_boolean_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<uint8>
 {
-    unpack(const Buffer& in, size_t& pos, uint8& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, uint8& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_uint8(in, pos, x); 
+        unpack_uint8(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<uint8>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<uint8>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_uint8_array(in, pos, x); 
+        unpack_uint8_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<uint16>
 {
-    unpack(const Buffer& in, size_t& pos, uint16& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, uint16& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_uint16(in, pos, x); 
+        unpack_uint16(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<uint16>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<uint16>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_uint16_array(in, pos, x); 
+        unpack_uint16_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<char16>
 {
-    unpack(const Buffer& in, size_t& pos, char16& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, char16& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_char16(in, pos, x); 
+        unpack_char16(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<char16>& x) 
+    unpack(const Buffer& in, size_t& pos, Array<char16>& x)
     {
         unpack_tag(in, pos, x[0]);
-        unpack_char16_array(in, pos, x); 
+        unpack_char16_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<uint32>
 {
-    unpack(const Buffer& in, size_t& pos, uint32& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, uint32& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_uint32(in, pos, x); 
+        unpack_uint32(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<uint32>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<uint32>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_uint32_array(in, pos, x); 
+        unpack_uint32_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<uint64>
 {
-    unpack(const Buffer& in, size_t& pos, uint64& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, uint64& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_uint64(in, pos, x); 
+        unpack_uint64(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<uint64>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<uint64>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_uint64_array(in, pos, x); 
+        unpack_uint64_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<real32>
 {
-    unpack(const Buffer& in, size_t& pos, real32& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, real32& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_real32(in, pos, x); 
+        unpack_real32(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<real32>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<real32>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_real32_array(in, pos, x); 
+        unpack_real32_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<real64>
 {
-    unpack(const Buffer& in, size_t& pos, real64& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, real64& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_real64(in, pos, x); 
+        unpack_real64(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<real64>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<real64>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_real64_array(in, pos, x); 
+        unpack_real64_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<String>
 {
-    unpack(const Buffer& in, size_t& pos, String& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, String& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_string(in, pos, x); 
+        unpack_string(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<String>& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Array<String>& x)
+    {
         unpack_tag(in, pos, x[0]);
-        unpack_string_array(in, pos, x); 
+        unpack_string_array(in, pos, x);
     }
 };
 
 template<>
 struct unpack<Datetime>
 {
-    unpack(const Buffer& in, size_t& pos, Datetime& x) 
-    { 
+    unpack(const Buffer& in, size_t& pos, Datetime& x)
+    {
         unpack_tag(in, pos, x);
-        unpack_datetime(in, pos, x); 
+        unpack_datetime(in, pos, x);
     }
 
-    unpack(const Buffer& in, size_t& pos, Array<Datetime>& x) 
+    unpack(const Buffer& in, size_t& pos, Array<Datetime>& x)
     {
         unpack_tag(in, pos, x[0]);
-        unpack_datetime_array(in, pos, x); 
+        unpack_datetime_array(in, pos, x);
     }
 };
 

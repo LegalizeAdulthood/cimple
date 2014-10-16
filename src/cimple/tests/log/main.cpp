@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -130,7 +130,7 @@ void set_cimplerc(const char* contents)
         fclose(fp);
     }
 }
-                          
+
 
 //Test setting the directory location via setting the env var. This test
 // does not use the readconfig function to set configuration.  It is set
@@ -262,7 +262,7 @@ void test03()
     assert(CimpleConfig::getLogLevel() == LL_DBG);
     assert(CimpleConfig::getLogFileMaxSize() == 500);
     assert(CimpleConfig::getLogMaxBackupFiles() == 5);
-  
+
     // generate  log entries
     for(uint32 i = 0; i < 10000 ; i++)
     {
@@ -352,7 +352,7 @@ void test05()
     assert(fileLineCountRange(".cimple/messages",5,5));
 }
 
-// test ENABLE_LOGGING turned on with api call. Start with no 
+// test ENABLE_LOGGING turned on with api call. Start with no
 // logs and disabled and then turn on
 void test06()
 {
@@ -428,7 +428,7 @@ void test07()
     assert(CimpleConfig::getLogLevel() == LL_DBG);
     assert(CimpleConfig::getLogFileMaxSize() == 500);
     assert(CimpleConfig::getLogMaxBackupFiles() == 0);
-  
+
     // generate  bunch of log entries
     for(uint32 i = 0; i < 10000 ; i++)
     {
@@ -533,7 +533,7 @@ int main(int /* argc */, char** argv)
     // test the enable_logging function to see if we completely turn
     // off logging and then turn it back on
     test05();
-    
+
     // test the enable log config param
     test06();
 
@@ -544,7 +544,7 @@ int main(int /* argc */, char** argv)
 #ifdef CIMPLE_ENABLE_ADAPTER_TRACE
     test08();
 #endif
-    
+
 
     printf("+++++ passed all tests (%s)\n", argv[0]);
 

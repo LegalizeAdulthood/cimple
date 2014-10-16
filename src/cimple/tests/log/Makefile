@@ -20,7 +20,7 @@ export CIMPLE_HOME_TEST=$(CURDIR)
 ## This test tests for exact log output information.
 tests:
 ##  remove any temporary files
-	@ $(RM) -rf .cimple 
+	@ $(RM) -rf .cimple
 	@ $(RM) -rf .cimplerc
 
 	echo CIMPLE_HOME_TEST = $(CIMPLE_HOME_TEST)
