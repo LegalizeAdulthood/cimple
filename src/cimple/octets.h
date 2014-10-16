@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,7 +44,7 @@ CIMPLE_NAMESPACE_BEGIN
 
 /** This function converts an octet string to a String object. The #data#
     parameter is a pointer to an octet string with #size# octets.
-    This function returns a string that conforms to the following 
+    This function returns a string that conforms to the following
     grammar.
 
         "0x"4*(<hexDigit><hexDigit>)
@@ -57,7 +57,7 @@ CIMPLE_NAMESPACE_BEGIN
 
         0x0000000801020304
 
-    The leading "0x00000008" gives the total number of hex digits in the 
+    The leading "0x00000008" gives the total number of hex digits in the
     encoding.
 
     The empty octet string is encoded as follows.
@@ -67,24 +67,24 @@ CIMPLE_NAMESPACE_BEGIN
     Note that there are a total 4 hex digits in this encoding.
 */
 CIMPLE_CIMPLE_LINKAGE String octets_to_string(
-    const unsigned char* data, 
+    const unsigned char* data,
     uint32 size);
 
 /** This function converts a String object to an octet string. Note that
     the string must conform to the standard encoding described in
-    octets_to_string(). The #str# parameter contains the text string to be 
+    octets_to_string(). The #str# parameter contains the text string to be
     converted. Up to #size# octets are written to the #data# parameter.
 
     This function returns -1 if the string encoding is invalid. Otherwise
     it returns the size of the encoded string.  A return value larger than
-    #size# indicates that #data# was too small to receive the resulting 
-    octet string. In that case, string_to_octets() will succeed if called 
+    #size# indicates that #data# was too small to receive the resulting
+    octet string. In that case, string_to_octets() will succeed if called
     again with a #size# parameter that is at least as large as the initial
     return value.
 */
 CIMPLE_CIMPLE_LINKAGE ssize_t string_to_octets(
-    const String& str, 
-    unsigned char* data, 
+    const String& str,
+    unsigned char* data,
     uint32 size);
 
 /** This function is a simpler form of string_to_octets(), which leaves
@@ -94,7 +94,7 @@ CIMPLE_CIMPLE_LINKAGE ssize_t string_to_octets(
     simpler interface.
 */
 CIMPLE_CIMPLE_LINKAGE int string_to_octets(
-    const String& str, 
+    const String& str,
     Array<unsigned char>& octets);
 
 CIMPLE_NAMESPACE_END

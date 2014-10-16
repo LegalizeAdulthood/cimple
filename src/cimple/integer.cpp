@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -31,7 +31,7 @@
 
 CIMPLE_NAMESPACE_BEGIN
 
-static int _digit[256] = 
+static int _digit[256] =
 {
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
@@ -51,7 +51,7 @@ static int _digit[256] =
     -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 };
 
-static int _isdigit[256] = 
+static int _isdigit[256] =
 {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,
@@ -229,7 +229,7 @@ int str_to_uint64(const char* str, uint64& self)
             y = _digit[(unsigned char)str[2]];
 
             if (y >= 0)
-            { 
+            {
                 int z;
 
                 if (str[3] == '\0')
@@ -354,7 +354,7 @@ int str_to_sint8(const char* str, sint8& self)
 {
     sint64 x;
 
-    if (str_to_sint64(str, x) != 0 || 
+    if (str_to_sint64(str, x) != 0 ||
         x < CIMPLE_SINT8_MIN || x > CIMPLE_SINT8_MAX)
     {
         return -1;
@@ -369,7 +369,7 @@ int str_to_sint16(const char* str, sint16& self)
 {
     sint64 x;
 
-    if (str_to_sint64(str, x) != 0 || 
+    if (str_to_sint64(str, x) != 0 ||
         x < CIMPLE_SINT16_MIN || x > CIMPLE_SINT16_MAX)
     {
         return -1;
@@ -384,7 +384,7 @@ int str_to_sint32(const char* str, sint32& self)
 {
     sint64 x;
 
-    if (str_to_sint64(str, x) != 0 || 
+    if (str_to_sint64(str, x) != 0 ||
         x < CIMPLE_SINT32_MIN || x > CIMPLE_SINT32_MAX)
     {
         return -1;

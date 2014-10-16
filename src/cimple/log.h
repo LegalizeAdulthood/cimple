@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,7 +24,7 @@
 **==============================================================================
 */
 
-/** 
+/**
 *  This file defines APIs for creating calls to log information
 *  from CIMPLE providers.  The goal is to provide a standard
 *  means to include log call definitions within the user code
@@ -35,37 +35,37 @@
 *  each log to allow generation of log entries based on log
 *  level settings for CIMPLE. Each call includes its log level
 *  definition.
-* 
+*
 *  Generally, the user should use only the macros defined in
 *  this file to create log calls; they provide the most control
 *  including:  Automatic fast-path bypass, automatic inclusion
 *  of file and line information, etc.  The macros use the same
 *  general format as C++ printf calls with a format string and
 *  list of variables.
-*  
+*
 *  The macros defined are:
 *  \li \c CIMPLE_FATAL
 *  \li \c CIMPLE_ERR
 *  \li \c CIMPLE_WARN
 *  \li \c CIMPLE_INFO
 *  \li \c CIMPLE_DBG
-*  
+*
 *  Setting the log level either through the cimple configuration
 *  file or the cimple_configure class to a specific level causes
 *  that level and all higher levels of log to be output.
-*  
+*
 *  The macros can be disabled completely by setting the configure flag
 *  --disable_log_macros.
-*  
+*
 *   \code Example:
-       CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str())); 
+       CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str()));
 *   \endcode
-*  
+*
 *   Any c++ printf definitions can be used within the formatting
 *   string.
 *   NOTE: Be sure to put double parens around the parameters of
 *   the calls. This is required by the macros.
-*  
+*
 */
 #ifndef _cimple_log_h
 #define _cimple_log_h
@@ -95,56 +95,56 @@ enum Log_Level
 
 /* INTERNAL ONLY
  * Create a log entry with the defined parameters formatting the
- * the output from input parameters. This call creates a single 
- * log entry with information about the file and line number 
- * from which the log entry occurred, and information from a 
- * format string and additional parameters. 
- * @param level Log_Level representing one of the 5 defined 
- * log levels. See the Log_level enum and the string literals 
- * defined in log.h 
- * @param file const char* current file normally defined with __FILE__ 
- * @Param line size_t defines the line number of the log entry. 
+ * the output from input parameters. This call creates a single
+ * log entry with information about the file and line number
+ * from which the log entry occurred, and information from a
+ * format string and additional parameters.
+ * @param level Log_Level representing one of the 5 defined
+ * log levels. See the Log_level enum and the string literals
+ * defined in log.h
+ * @param file const char* current file normally defined with __FILE__
+ * @Param line size_t defines the line number of the log entry.
  *       Normally this is simply __LINE__.
- * @Param fmt char* defines the format of the output using the printf 
+ * @Param fmt char* defines the format of the output using the printf
  * formated output definitions.
  * Any other arguments are arguments for processing of the fmt.
- *  
- * Example 
+ *
+ * Example
  *     log(LL_DBG, __FILE__, __LINE__,
  *         "my name is %s; my age is %d", "John", 12);
  */
 CIMPLE_PRINTF_ATTR(4, 5)
 CIMPLE_CIMPLE_LINKAGE
 void log(
-    Log_Level level, 
-    const char* file, 
-    size_t line, 
+    Log_Level level,
+    const char* file,
+    size_t line,
     const char* fmt, ...);
 
-/** 
+/**
  * Create a log entry with the parameters defined by a va_list
- * 
- * @param level Log_Level representing one of the 5 defined 
- * log levels. See the Log_level enum and the string literals 
- * defined in log.h. The alternative to this function is to use 
- * the macros defined below (ex. CIMPLE_FATAL) that simplify the 
- * generation of logs 
+ *
+ * @param level Log_Level representing one of the 5 defined
+ * log levels. See the Log_level enum and the string literals
+ * defined in log.h. The alternative to this function is to use
+ * the macros defined below (ex. CIMPLE_FATAL) that simplify the
+ * generation of logs
  * @param file const char* current file normally defined with __FILE__
- * @param line size_t defines the line number of the log entry. 
+ * @param line size_t defines the line number of the log entry.
  * Normally this is simply __LINE__.
- * @param fmt char* defines the format of the output using the printf 
+ * @param fmt char* defines the format of the output using the printf
  * formated output definitions.
  * @param ap va_list
- * \code 
- * Example: 
+ * \code
+ * Example:
  *     vlog(LL_DBG, __FILE__, __LINE__, "variable x = %u", x);
  * \endcode
  */
 CIMPLE_CIMPLE_LINKAGE
 void vlog(
-    Log_Level level, 
-    const char* file, 
-    size_t line, 
+    Log_Level level,
+    const char* file,
+    size_t line,
     const char* fmt,
     va_list ap);
 
@@ -172,12 +172,12 @@ struct Log_Call_Frame
     Log_Level level;
     const char* file;
     size_t line;
-    
-    Log_Call_Frame(Log_Level level_, const char* file_, size_t line_) : 
+
+    Log_Call_Frame(Log_Level level_, const char* file_, size_t line_) :
         level(level_), file(file_), line(line_) { }
-    
+
     CIMPLE_PRINTF_ATTR(2, 3)
-    inline void invoke(const char* format, ...) 
+    inline void invoke(const char* format, ...)
     {
         va_list ap;
         va_start(ap, format);
@@ -186,8 +186,8 @@ struct Log_Call_Frame
     }
 };
 
-/*************************************************************************** 
-** 
+/***************************************************************************
+**
 ** Macros for generating log entries.  The following macros should be used
 ** to generate log entries. Each macro defines a specific log level and
 ** provides for variable arguments for defining the log text.
@@ -196,9 +196,9 @@ struct Log_Call_Frame
 ** WARNING: For all of these macros the ARGS MUST BE enclosed in double
 **        quotes
 ** Example:
-**     CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str())); 
+**     CIMPLE_FATAL(("Invalid input Option %s", optionName.c_str()));
 **
-****************************************************************************/ 
+****************************************************************************/
 
 #ifdef DISABLE_LOG_MACROS_OPT
 
@@ -216,7 +216,7 @@ struct Log_Call_Frame
     and __LINE__ parameters WARNING: Invocations of this macro
     MUST USE double quotes for the ARGS.
     \code Example:
-       CIMPLE_FATAL(("Invalid input Option %s", 
+       CIMPLE_FATAL(("Invalid input Option %s",
            optionName.c_str()));
     \endcode
 */
@@ -241,7 +241,7 @@ struct Log_Call_Frame
     \code
     Example:
         CIMPLE_ERR(("no such method: %s", methodName.c_str()));
-    \endcode  
+    \endcode
 */
 #define CIMPLE_ERR(ARGS) \
     do \
@@ -263,7 +263,7 @@ struct Log_Call_Frame
     \code
     Example:
         CIMPLE_WARN(("no such method: %s", methodName.c_str()));
-    \endcode  
+    \endcode
 */
 #define CIMPLE_WARN(ARGS) \
     do \
@@ -285,7 +285,7 @@ struct Log_Call_Frame
     \code
     Example:
        CIMPLE_INFO(("ignored null CMPI string"));
-    \endcode  
+    \endcode
 */
 #define CIMPLE_INFO(ARGS) \
     do \
@@ -306,7 +306,7 @@ struct Log_Call_Frame
     \code
     Example:
        CIMPLE_DBG(("Enter Function"));
-    \endcode  
+    \endcode
 */
 #define CIMPLE_DBG(ARGS) \
     do \
@@ -351,20 +351,20 @@ Log_Level log_get_level();
 CIMPLE_CIMPLE_LINKAGE
 const char * log_get_level_string();
 
-/** 
- * DEPRECATEDSet the variable that contains the environment variable that 
- * controls location of the directory definition for CIMPLE. 
- * There is no check executed for the validity or existence of 
- * the variable.  That occurs on the first use of the 
- * environment variable. 
- * 
- * @param env_var The environment variable that will be used to 
+/**
+ * DEPRECATEDSet the variable that contains the environment variable that
+ * controls location of the directory definition for CIMPLE.
+ * There is no check executed for the validity or existence of
+ * the variable.  That occurs on the first use of the
+ * environment variable.
+ *
+ * @param env_var The environment variable that will be used to
  *                locate the directory.  The system default is
  *                CIMPLE_HOME. Note that this variable can also
  *                be set during configuration with the
  *                --cimple_home_envvar parameter.  Calling this
  *                function overrides that setting
- * 
+ *
  * @return 0
  */
 //DEPRECATED
