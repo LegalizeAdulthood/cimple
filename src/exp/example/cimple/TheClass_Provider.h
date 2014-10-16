@@ -24,7 +24,7 @@ public:
         TheClass* instance);
 
     CIMPLE_HIDE Enum_Instance_Status enum_instance(
-        TheClass* instance, 
+        TheClass* instance,
         State& state);
 
     CIMPLE_HIDE Create_Instance_Status create_instance(

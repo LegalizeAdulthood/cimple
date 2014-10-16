@@ -50,7 +50,7 @@ DT_SINT16 [sS][iI][nN][tT]16
 DT_SINT32 [sS][iI][nN][tT]32
 DT_SINT64 [sS][iI][nN][tT]64
 DT_SINT8 [sS][iI][nN][tT]8
-DT_STR [sS][tT][rR][iI][nN][gG] 
+DT_STR [sS][tT][rR][iI][nN][gG]
 DT_UINT16 [uU][iI][nN][tT]16
 DT_UINT32 [uU][iI][nN][tT]32
 DT_UINT64 [uU][iI][nN][tT]64
@@ -117,7 +117,7 @@ IDENT_CHAR [A-Za-z_]
     int prev_ch = '\0';
     int ch;
 
-    /* 
+    /*
      * Skip remainder of comment.
      */
 
@@ -127,12 +127,12 @@ IDENT_CHAR [A-Za-z_]
             MOF_line_num++;
         else if (ch == '/' && prev_ch == '*')
             break;
-        
+
         prev_ch = ch;
     }
 
-    /* 
-     * Replace comment with space in case a comment 
+    /*
+     * Replace comment with space in case a comment
      * was used as a separator.
      */
 
@@ -154,165 +154,165 @@ IDENT_CHAR [A-Za-z_]
 }
 
 {ANY} {
-     return TOK_ANY; 
+     return TOK_ANY;
 }
 
 {AS} {
-     return TOK_AS; 
+     return TOK_AS;
 }
 
 {ASSOCIATION} {
-     MOF_lval.string_value = yytext; 
-     return TOK_ASSOCIATION; 
+     MOF_lval.string_value = yytext;
+     return TOK_ASSOCIATION;
 }
 
 {CLASS} {
-     return TOK_CLASS; 
+     return TOK_CLASS;
 }
 
 {DISABLEOVERRIDE} {
-     return TOK_DISABLEOVERRIDE; 
+     return TOK_DISABLEOVERRIDE;
 }
 
 {DT_BOOL} {
-     return TOK_BOOLEAN; 
+     return TOK_BOOLEAN;
 }
 
 {DT_CHAR16} {
-     return TOK_CHAR16; 
+     return TOK_CHAR16;
 }
 
 {DT_DATETIME} {
-     return TOK_DATETIME; 
+     return TOK_DATETIME;
 }
 
 {DT_REAL32} {
-     return TOK_REAL32; 
+     return TOK_REAL32;
 }
 
 {DT_REAL64} {
-     return TOK_REAL64; 
+     return TOK_REAL64;
 }
 
 {DT_SINT16} {
-     return TOK_SINT16; 
+     return TOK_SINT16;
 }
 
 {DT_SINT32} {
-     return TOK_SINT32; 
+     return TOK_SINT32;
 }
 
 {DT_SINT64} {
-     return TOK_SINT64; 
+     return TOK_SINT64;
 }
 
 {DT_SINT8} {
-     return TOK_SINT8; 
+     return TOK_SINT8;
 }
 
 {DT_STR} {
-     return TOK_STRING; 
+     return TOK_STRING;
 }
 
 {DT_UINT16} {
-     return TOK_UINT16; 
+     return TOK_UINT16;
 }
 
 {DT_UINT32} {
-     return TOK_UINT32; 
+     return TOK_UINT32;
 }
 
 {DT_UINT64} {
-     return TOK_UINT64; 
+     return TOK_UINT64;
 }
 
 {DT_UINT8} {
-     return TOK_UINT8; 
+     return TOK_UINT8;
 }
 
 {ENABLEOVERRIDE} {
-     return TOK_ENABLEOVERRIDE; 
+     return TOK_ENABLEOVERRIDE;
 }
 
 {FALSE} {
-     MOF_lval.bool_value = 0; 
-     return TOK_BOOL_VALUE; 
+     MOF_lval.bool_value = 0;
+     return TOK_BOOL_VALUE;
 }
 
 {FLAVOR} {
-     return TOK_FLAVOR; 
+     return TOK_FLAVOR;
 }
 
 {INDICATION} {
-     MOF_lval.string_value = yytext; 
-     return TOK_INDICATION; 
+     MOF_lval.string_value = yytext;
+     return TOK_INDICATION;
 }
 
 {INSTANCE} {
-     return TOK_INSTANCE; 
+     return TOK_INSTANCE;
 }
 
 {METHOD} {
-     return TOK_METHOD; 
+     return TOK_METHOD;
 }
 
 {NULL} {
-     return TOK_NULL_VALUE; 
+     return TOK_NULL_VALUE;
 }
 
 {OF} {
-     return TOK_OF; 
+     return TOK_OF;
 }
 
 {PARAMETER} {
-     return TOK_PARAMETER; 
+     return TOK_PARAMETER;
 }
 
 {PRAGMA}{BLANK} {
-     return TOK_PRAGMA; 
+     return TOK_PRAGMA;
 }
 
 {PROPERTY} {
-     return TOK_PROPERTY; 
+     return TOK_PROPERTY;
 }
 
 {QUALIFIER} {
-     return TOK_QUALIFIER; 
+     return TOK_QUALIFIER;
 }
 
 {REFERENCE} {
-     MOF_lval.string_value = yytext; 
-     return TOK_REFERENCE; 
+     MOF_lval.string_value = yytext;
+     return TOK_REFERENCE;
 }
 
 {REF} {
-     return TOK_REF; 
+     return TOK_REF;
 }
 
 {RESTRICTED} {
-     return TOK_RESTRICTED; 
+     return TOK_RESTRICTED;
 }
 
 {SCHEMA} {
-     MOF_lval.string_value = yytext; 
-     return TOK_SCHEMA; 
+     MOF_lval.string_value = yytext;
+     return TOK_SCHEMA;
 }
 
 {SCOPE} {
-     return TOK_SCOPE; 
+     return TOK_SCOPE;
 }
 
 {TOSUBCLASS} {
-     return TOK_TOSUBCLASS; 
+     return TOK_TOSUBCLASS;
 }
 
 {TRANSLATABLE} {
-     return TOK_TRANSLATABLE; 
+     return TOK_TRANSLATABLE;
 }
 
 {TRUE} {
-     MOF_lval.bool_value = 1; 
-     return TOK_BOOL_VALUE; 
+     MOF_lval.bool_value = 1;
+     return TOK_BOOL_VALUE;
 }
 
 {BINARY_VALUE} {
@@ -379,8 +379,8 @@ IDENT_CHAR [A-Za-z_]
 \" {
 
     MOF_read_string(
-        yyinput, 
-        MOF_error, 
+        yyinput,
+        MOF_error,
         &MOF_lval.string_literal.raw,
         &MOF_lval.string_literal.escaped);
 
@@ -604,7 +604,7 @@ void push_include_file(const char* file_name_)
             MAX_STATE_STACK_SIZE);
     }
 
-    MOF_State current_state = 
+    MOF_State current_state =
         { MOF_file_name, MOF_line_num, MOF_current_dir, YY_CURRENT_BUFFER };
 
     state_stack[state_stack_size++] = current_state;
@@ -620,7 +620,7 @@ void push_include_file(const char* file_name_)
     // Create the new state:
 
     yy_switch_to_buffer(yy_create_buffer(stream, YY_BUF_SIZE));
-    MOF_file_name = strdup(file_name);  
+    MOF_file_name = strdup(file_name);
     MOF_line_num = 1;
     MOF_current_dir = current_dir;
 }
@@ -650,7 +650,7 @@ int pop_include_file()
         return 0;
     }
 
-    /* 
+    /*
      * Stack is empty:
      */
 
