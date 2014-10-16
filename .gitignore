@@ -178,6 +178,10 @@ src/providers/Example/House.cpp
 src/providers/Example/House.h
 src/providers/Example/repository.cpp
 src/providers/Example/repository.h
+src/providers/Fan/Fan.cpp
+src/providers/Fan/Fan.h
+src/providers/Fan/repository.cpp
+src/providers/Fan/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

@@ -5,9 +5,12 @@ MODULE=1
 
 SHARED_LIBRARY = cimplefan
 
-SOURCES = \
-    repository.cpp \
+GENCLASS_SOURCES = \
     Fan.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     Fan_Provider.cpp \
     module.cpp
 
@@ -23,7 +26,7 @@ include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Fan
 
 regmod:
