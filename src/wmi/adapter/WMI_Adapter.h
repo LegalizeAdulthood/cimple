@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,7 +44,7 @@ CIMPLE_NAMESPACE_BEGIN
 #define __RPC__out
 #endif
 
-class __declspec(dllexport) WMI_Adapter : 
+class __declspec(dllexport) WMI_Adapter :
     public IWbemServices,
     public IWbemProviderInit,
     public IWbemEventProvider,
@@ -76,33 +76,33 @@ public:
         IWbemContext* context,
         IWbemProviderInitSink* initSink);
 
-    HRESULT STDMETHODCALLTYPE OpenNamespace( 
+    HRESULT STDMETHODCALLTYPE OpenNamespace(
         const BSTR name_spaceName,
         long flags,
         IWbemContext __RPC_FAR* context,
         IWbemServices __RPC_FAR* __RPC_FAR* services,
-        IWbemCallResult __RPC_FAR* __RPC_FAR* result) 
+        IWbemCallResult __RPC_FAR* __RPC_FAR* result)
     {
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE CancelAsyncCall( 
+
+    HRESULT STDMETHODCALLTYPE CancelAsyncCall(
         IWbemObjectSink __RPC_FAR* objectSink)
     {
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE QueryObjectSink( 
+
+    HRESULT STDMETHODCALLTYPE QueryObjectSink(
         long flags,
         IWbemObjectSink __RPC_FAR* __RPC_FAR* objectSink)
     {
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE GetObject( 
+
+    HRESULT STDMETHODCALLTYPE GetObject(
         const BSTR objectPath,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -112,24 +112,24 @@ public:
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE GetObjectAsync( 
+
+    HRESULT STDMETHODCALLTYPE GetObjectAsync(
         const BSTR objectPath,
         long flags,
         IWbemContext __RPC_FAR* context,
         IWbemObjectSink __RPC_FAR* objectSink);
-        
-    HRESULT STDMETHODCALLTYPE PutClass( 
+
+    HRESULT STDMETHODCALLTYPE PutClass(
         IWbemClassObject __RPC_FAR* classObject,
         long flags,
         IWbemContext __RPC_FAR* context,
-        IWbemCallResult __RPC_FAR* __RPC_FAR* callResult) 
+        IWbemCallResult __RPC_FAR* __RPC_FAR* callResult)
     {
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE PutClassAsync( 
+
+    HRESULT STDMETHODCALLTYPE PutClassAsync(
         IWbemClassObject __RPC_FAR* classObject,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -138,8 +138,8 @@ public:
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE DeleteClass( 
+
+    HRESULT STDMETHODCALLTYPE DeleteClass(
         const BSTR className,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -147,8 +147,8 @@ public:
     {
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE DeleteClassAsync( 
+
+    HRESULT STDMETHODCALLTYPE DeleteClassAsync(
         const BSTR className,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -156,8 +156,8 @@ public:
     {
         return WBEM_E_NOT_SUPPORTED;
     }
-        
-    HRESULT STDMETHODCALLTYPE CreateClassEnum( 
+
+    HRESULT STDMETHODCALLTYPE CreateClassEnum(
         const BSTR Superclass,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -165,8 +165,8 @@ public:
     {
         return WBEM_E_NOT_SUPPORTED;
     }
-    
-    HRESULT STDMETHODCALLTYPE CreateClassEnumAsync( 
+
+    HRESULT STDMETHODCALLTYPE CreateClassEnumAsync(
         const BSTR Superclass,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -174,8 +174,8 @@ public:
     {
         return WBEM_E_NOT_SUPPORTED;
     }
-    
-    HRESULT STDMETHODCALLTYPE PutInstance( 
+
+    HRESULT STDMETHODCALLTYPE PutInstance(
         IWbemClassObject __RPC_FAR* instance,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -183,14 +183,14 @@ public:
     {
         return WBEM_E_NOT_SUPPORTED;
     }
-    
-    HRESULT STDMETHODCALLTYPE PutInstanceAsync( 
+
+    HRESULT STDMETHODCALLTYPE PutInstanceAsync(
         IWbemClassObject __RPC_FAR* instance,
         long flags,
         IWbemContext __RPC_FAR* context,
         IWbemObjectSink __RPC_FAR* objectSink);
-    
-    HRESULT STDMETHODCALLTYPE DeleteInstance( 
+
+    HRESULT STDMETHODCALLTYPE DeleteInstance(
         const BSTR ObjectPath,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -198,14 +198,14 @@ public:
     {
         return WBEM_E_NOT_SUPPORTED;
     }
-    
-    HRESULT STDMETHODCALLTYPE DeleteInstanceAsync( 
+
+    HRESULT STDMETHODCALLTYPE DeleteInstanceAsync(
         const BSTR objectPath,
         long flags,
         IWbemContext __RPC_FAR* context,
         IWbemObjectSink __RPC_FAR* objectSink);
-    
-    HRESULT STDMETHODCALLTYPE CreateInstanceEnum( 
+
+    HRESULT STDMETHODCALLTYPE CreateInstanceEnum(
         const BSTR className,
         long flags,
         IWbemContext __RPC_FAR* context,
@@ -214,7 +214,7 @@ public:
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-    
+
 #if 0
     HRESULT STDMETHODCALLTYPE CreateInstanceEnumAsync(
         const BSTR className,
@@ -228,7 +228,7 @@ public:
         IWbemContext* context,
         IWbemObjectSink* objectSink);
 #endif
-    
+
     HRESULT STDMETHODCALLTYPE ExecQuery(
         const BSTR queryLanguage,
         const BSTR query,
@@ -239,15 +239,15 @@ public:
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-    
+
     HRESULT STDMETHODCALLTYPE ExecQueryAsync(
         const BSTR queryLanguage,
         const BSTR query,
         long flags,
         IWbemContext __RPC_FAR* context,
         IWbemObjectSink __RPC_FAR* objectSink);
-    
-    HRESULT STDMETHODCALLTYPE ExecNotificationQuery( 
+
+    HRESULT STDMETHODCALLTYPE ExecNotificationQuery(
         const BSTR queryLanguage,
         const BSTR query,
         long flags,
@@ -257,8 +257,8 @@ public:
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-    
-    HRESULT STDMETHODCALLTYPE ExecNotificationQueryAsync( 
+
+    HRESULT STDMETHODCALLTYPE ExecNotificationQueryAsync(
         const BSTR queryLanguage,
         const BSTR query,
         long flags,
@@ -268,8 +268,8 @@ public:
         LOG_ENTER;
         return WBEM_E_NOT_SUPPORTED;
     }
-    
-    HRESULT STDMETHODCALLTYPE ExecMethod( 
+
+    HRESULT STDMETHODCALLTYPE ExecMethod(
         const BSTR,
         const BSTR,
         long,
@@ -281,10 +281,10 @@ public:
         return WBEM_E_NOT_SUPPORTED;
     }
 
-    HRESULT STDMETHODCALLTYPE ExecMethodAsync( 
+    HRESULT STDMETHODCALLTYPE ExecMethodAsync(
         const BSTR,
         const BSTR,
-        long, 
+        long,
         IWbemContext*,
         IWbemClassObject*,
         IWbemObjectSink*);

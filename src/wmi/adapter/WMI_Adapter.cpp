@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -164,7 +164,7 @@ static HRESULT _registerServer(
     }
 
     // Create "Software\\classes\\CLSID\{GUID}\InprocServer32\ThreadingModel"
-    
+
     r = RegSetValueEx(key2, "ThreadingModel", 0, REG_SZ, (BYTE*)threadingModel,
         strlen(threadingModel)+1);
 
@@ -435,7 +435,7 @@ STDMETHODIMP WMI_Adapter::QueryInterface(REFIID riid, LPVOID* ptr)
        LOG_EXIT;
        return NOERROR;
     }
-    
+
     {
         char buf[1024];
         _print_guid(riid, buf);
@@ -467,11 +467,11 @@ STDMETHODIMP_(ULONG) WMI_Adapter::Release()
 }
 
 STDMETHODIMP WMI_Adapter::Initialize(
-    LPWSTR user, 
+    LPWSTR user,
     LONG flags,
     LPWSTR nameSpace,
     LPWSTR locale,
-    IWbemServices* services, 
+    IWbemServices* services,
     IWbemContext* context,
     IWbemProviderInitSink* initSink)
 {
@@ -516,7 +516,7 @@ static bool _enum_instances_proc(
 
     IWbemClassObject* wi = 0;
     WMI_Ref<IWbemClassObject> wi_(wi);
-    
+
     wi = WMI_Converter::to_wmi_instance(data->services, data->context, inst);
 
     if (wi)
@@ -557,7 +557,7 @@ HRESULT WMI_Adapter::_create_instance(
 
     // Get meta-repository from provider registration.
 
-    const Meta_Repository* mr = 
+    const Meta_Repository* mr =
         handle->registration()->meta_class->meta_repository;
 
     if (!mr)
@@ -646,7 +646,7 @@ HRESULT WMI_Adapter::_modify_instance(
 
     // Get meta-repository from provider registration.
 
-    const Meta_Repository* mr = 
+    const Meta_Repository* mr =
         handle->registration()->meta_class->meta_repository;
 
     if (!mr)
@@ -705,7 +705,7 @@ HRESULT WMI_Adapter::_modify_instance(
     RETURN_CODE(handler, WBEM_E_FAILED);
 }
 
-HRESULT STDMETHODCALLTYPE WMI_Adapter::PutInstanceAsync( 
+HRESULT STDMETHODCALLTYPE WMI_Adapter::PutInstanceAsync(
     IWbemClassObject __RPC_FAR* instance,
     long flags,
     IWbemContext __RPC_FAR* context,
@@ -885,7 +885,7 @@ SCODE WMI_Adapter::GetObjectAsync(
     RETURN_CODE(handler, S_OK);
 }
 
-HRESULT WMI_Adapter::DeleteInstanceAsync( 
+HRESULT WMI_Adapter::DeleteInstanceAsync(
     const BSTR objectPath,
     long flags,
     IWbemContext __RPC_FAR* context,
@@ -1096,10 +1096,10 @@ HRESULT WMI_Adapter::ExecQueryAsync(
     return S_OK;
 }
 
-HRESULT WMI_Adapter::ExecMethodAsync( 
+HRESULT WMI_Adapter::ExecMethodAsync(
     const BSTR objectPath,
     const BSTR methodName,
-    long flags, 
+    long flags,
     IWbemContext* context,
     IWbemClassObject* inParams,
     IWbemObjectSink* handler)
@@ -1129,7 +1129,7 @@ HRESULT WMI_Adapter::ExecMethodAsync(
 
     // Get meta-repository from handle:
 
-    const Meta_Repository* mr = 
+    const Meta_Repository* mr =
         handle->registration()->meta_class->meta_repository;
 
     if (!mr)
@@ -1456,7 +1456,7 @@ static void _DllCanUnloadNow(WMI_DllCanUnloadNow_Args* args)
 static void _DllRegisterServer(WMI_DllRegisterServer_Args* args)
 {
     LOG_ENTER;
-    args->result = 
+    args->result =
         _registerServer(args->guid, *args->module, args->module_name, "Both");
     LOG_EXIT;
 }
@@ -1468,9 +1468,9 @@ static void _DllUnregisterServer(WMI_DllUnregisterServer_Args* args)
     LOG_EXIT;
 }
 
-extern "C" 
+extern "C"
 __declspec(dllexport)
-int cimple_wmi_adapter( 
+int cimple_wmi_adapter(
     void* arg0, /* 'W' */
     void* arg1, /* function */
     void* arg2, /* WMI_Static_Data */

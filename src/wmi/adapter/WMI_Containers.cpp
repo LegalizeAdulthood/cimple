@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -51,7 +51,7 @@ static size_t _get_size(IWbemClassObject* _instance)
     size_t size = 0;
 
 
-    while(_instance->Next(0, NULL, NULL, NULL, NULL) == WBEM_S_NO_ERROR) 
+    while(_instance->Next(0, NULL, NULL, NULL, NULL) == WBEM_S_NO_ERROR)
         size++;
 
     _instance->EndEnumeration();
@@ -60,8 +60,8 @@ static size_t _get_size(IWbemClassObject* _instance)
 }
 
 static int _get_name(
-    IWbemClassObject* _instance, 
-    size_t pos, 
+    IWbemClassObject* _instance,
+    size_t pos,
     String& name_out)
 {
     BSTR name = 0;
@@ -73,7 +73,7 @@ static int _get_name(
 
     size_t index = 0;
 
-    while(_instance->Next(0, &name, NULL, NULL, NULL) == WBEM_S_NO_ERROR) 
+    while(_instance->Next(0, &name, NULL, NULL, NULL) == WBEM_S_NO_ERROR)
     {
         BString name_(name, BSTR_TAG);
 
@@ -96,8 +96,8 @@ static int _get_name(
 static int _get_value(
     const Meta_Repository* _mr,
     IWbemClassObject* _instance,
-    size_t pos, 
-    Value::Type type, 
+    size_t pos,
+    Value::Type type,
     Value& value)
 {
     VARIANT var;
@@ -112,7 +112,7 @@ static int _get_value(
 
     size_t index = 0;
 
-    while(_instance->Next(0, NULL, &var, &ct, NULL) == WBEM_S_NO_ERROR) 
+    while(_instance->Next(0, NULL, &var, &ct, NULL) == WBEM_S_NO_ERROR)
     {
         if (index == pos)
         {
@@ -137,8 +137,8 @@ static int _get_value(
 static int _set_value(
     const Meta_Repository* _mr,
     IWbemClassObject* _instance,
-    const char* name, 
-    const Value& value, 
+    const char* name,
+    const Value& value,
     uint32 flags)
 {
     Variant v;
@@ -172,7 +172,7 @@ static int _set_value(
 //==============================================================================
 
 WMI_Instance_Container::WMI_Instance_Container(
-    const Meta_Repository* mr, 
+    const Meta_Repository* mr,
     IWbemClassObject* instance) : Container(mr), _instance(instance)
 {
 }
@@ -187,23 +187,23 @@ size_t WMI_Instance_Container::get_size()
 }
 
 int WMI_Instance_Container::get_name(
-    size_t pos, 
+    size_t pos,
     String& name_out)
 {
     return _get_name(_instance, pos, name_out);
 }
 
 int WMI_Instance_Container::get_value(
-    size_t pos, 
-    Value::Type type, 
+    size_t pos,
+    Value::Type type,
     Value& value)
 {
     return _get_value(_mr, _instance, pos, type, value);
 }
 
 int WMI_Instance_Container::set_value(
-    const char* name, 
-    const Value& value, 
+    const char* name,
+    const Value& value,
     uint32 flags)
 {
     return _set_value(_mr, _instance, name, value, flags);
@@ -224,7 +224,7 @@ int WMI_Instance_Container::set_value(
 //==============================================================================
 
 WMI_Args_Container::WMI_Args_Container(
-    const Meta_Repository* mr, 
+    const Meta_Repository* mr,
     IWbemClassObject* instance) : Container(mr), _instance(instance)
 {
 }
@@ -239,23 +239,23 @@ size_t WMI_Args_Container::get_size()
 }
 
 int WMI_Args_Container::get_name(
-    size_t pos, 
+    size_t pos,
     String& name_out)
 {
     return _get_name(_instance, pos, name_out);
 }
 
 int WMI_Args_Container::get_value(
-    size_t pos, 
-    Value::Type type, 
+    size_t pos,
+    Value::Type type,
     Value& value)
 {
     return _get_value(_mr, _instance, pos, type, value);
 }
 
 int WMI_Args_Container::set_value(
-    const char* name, 
-    const Value& value, 
+    const char* name,
+    const Value& value,
     uint32 flags)
 {
     return _set_value(_mr, _instance, name, value, flags);

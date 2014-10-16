@@ -1,8 +1,8 @@
 
 static SCODE _makeGadget(
-    IWbemServices* name_space, 
-    LPWSTR key, 
-    long value, 
+    IWbemServices* name_space,
+    LPWSTR key,
+    long value,
     IWbemClassObject** newInstance,
     WCHAR* className,
     IWbemContext* context)
