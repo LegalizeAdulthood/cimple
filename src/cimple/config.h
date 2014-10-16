@@ -3,17 +3,17 @@
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, 2007, 2008, 2009
 **               Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -145,8 +145,8 @@
 //==============================================================================
 //
 // CIMPLE_FUNCTION
-// 
-// Name of current function 
+//
+// Name of current function
 //
 //==============================================================================
 
@@ -165,9 +165,9 @@
 //==============================================================================
 //
 // CIMPLE_TRACE
-// 
+//
 // Simple trace function to present file name, location and a char * string
-// 
+//
 //
 //==============================================================================
 
@@ -177,7 +177,7 @@
 CIMPLE_NAMESPACE_BEGIN
 
 CIMPLE_EXPORT void __cimple_trace(
-    const char* file, 
+    const char* file,
     size_t line,
     const char* function);
 
@@ -201,7 +201,7 @@ CIMPLE_NAMESPACE_END
 # define CIMPLE_ASSERT(COND) /* */
 #endif
 
-// assert define primarily for CIMPLE tests.  Should act the same as 
+// assert define primarily for CIMPLE tests.  Should act the same as
 // standard assert except generate different message
 #define CIMPLE_TEST_ASSERT(COND)                                         \
     do                                                                    \
@@ -232,9 +232,9 @@ CIMPLE_NAMESPACE_END
 CIMPLE_NAMESPACE_BEGIN
 
 CIMPLE_EXPORT void __cimple_assert(
-    const char* file, 
+    const char* file,
     size_t line,
-    const char* function, 
+    const char* function,
     const char* cond);
 
 CIMPLE_NAMESPACE_END
@@ -242,12 +242,12 @@ CIMPLE_NAMESPACE_END
 //==============================================================================
 //
 // CIMPLE_PRINTF_ATTR
-// 
+//
 // Macro to define special characteristics to CIMPLE function declarations
 // Used by GNU compiler to assign printf like characteristics to the
 // declared function. A1 is the number of the "format string" parameter and
 // A2 is the number of the first varadic parameter.
-// 
+//
 // Ignored for other compilers
 //
 //==============================================================================
@@ -491,7 +491,7 @@ static CIMPLE_UNUSED const char __cimple_version_tag[] = \
 
 //==============================================================================
 //
-// Default Literal definition for Sint64/32 and Uint64/32 Literals. Avoids 
+// Default Literal definition for Sint64/32 and Uint64/32 Literals. Avoids
 // issues with use of the suffixes unless defined otherwise in platform files
 //
 //==============================================================================
