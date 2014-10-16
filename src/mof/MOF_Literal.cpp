@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,29 +49,29 @@ static bool _test_value(
 
             switch (data_type)
             {
-                case TOK_UINT8: 
+                case TOK_UINT8:
                     return int_value == ((MOF_uint8)int_value);
 
-                case TOK_SINT8: 
+                case TOK_SINT8:
                     return int_value == ((MOF_sint8)int_value);
 
-                case TOK_UINT16: 
+                case TOK_UINT16:
                     return int_value == ((MOF_uint16)int_value);
 
-                case TOK_SINT16: 
+                case TOK_SINT16:
                     return int_value == ((MOF_sint16)int_value);
 
-                case TOK_UINT32: 
+                case TOK_UINT32:
                     return int_value == ((MOF_uint32)int_value);
 
-                case TOK_SINT32: 
+                case TOK_SINT32:
                     return int_value == ((MOF_sint32)int_value);
 
-                case TOK_UINT64: 
-                    return 
+                case TOK_UINT64:
+                    return
                         (MOF_uint64)int_value == ((MOF_uint64)int_value);
 
-                case TOK_SINT64: 
+                case TOK_SINT64:
                     return int_value == ((MOF_sint64)int_value);
 
                 default:
@@ -83,10 +83,10 @@ static bool _test_value(
         {
             switch (data_type)
             {
-                case TOK_REAL32: 
+                case TOK_REAL32:
                     return true;
 
-                case TOK_REAL64: 
+                case TOK_REAL64:
                     return true;
 
                 default:
@@ -104,10 +104,10 @@ static bool _test_value(
         {
             switch (data_type)
             {
-                case TOK_STRING: 
+                case TOK_STRING:
                     return true;
 
-                case TOK_DATETIME: 
+                case TOK_DATETIME:
                     return true;
 
                 default:
@@ -308,35 +308,35 @@ static void _print_char(
 
     switch (ch)
     {
-        case '\b': 
+        case '\b':
             fprintf(stream, "\b");
             break;
 
-        case '\t': 
+        case '\t':
             fprintf(stream, "\\t");
             break;
 
-        case '\n': 
+        case '\n':
             fprintf(stream, "\\n");
             break;
 
-        case '\f': 
+        case '\f':
             fprintf(stream, "\\f");
             break;
 
-        case '\r': 
+        case '\r':
             fprintf(stream, "\\r");
             break;
 
-        case '\"': 
+        case '\"':
             fprintf(stream, "\\\"");
             break;
 
-        case '\'': 
+        case '\'':
             fprintf(stream, "\\'");
             break;
 
-        case '\\': 
+        case '\\':
             fprintf(stream, "\\");
             break;
 

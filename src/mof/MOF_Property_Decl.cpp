@@ -2,17 +2,17 @@
 **==============================================================================
 **
 ** Copyright (c) 2003, 2004, 2005, 2006, Michael Brasher, Karl Schopmeyer
-** 
+**
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and associated documentation files (the "Software"),
 ** to deal in the Software without restriction, including without limitation
 ** the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ** and/or sell copies of the Software, and to permit persons to whom the
 ** Software is furnished to do so, subject to the following conditions:
-** 
+**
 ** The above copyright notice and this permission notice shall be included in
 ** all copies or substantial portions of the Software.
-** 
+**
 ** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,9 +32,9 @@
 #include "MOF_Data_Type.h"
 #include "MOF_Yacc.h"
 
-MOF_Property_Decl::MOF_Property_Decl() 
-    : data_type(0), array_index(0), initializer(0) 
-{ 
+MOF_Property_Decl::MOF_Property_Decl()
+    : data_type(0), array_index(0), initializer(0)
+{
 }
 
 void MOF_Property_Decl::print() const
@@ -58,7 +58,7 @@ void MOF_Property_Decl::validate()
 
     if (qual_mask | MOF_QT_KEY)
     {
-        printf("KEY PROPERTY: %s[%d] %s\n", 
+        printf("KEY PROPERTY: %s[%d] %s\n",
             MOF_Data_Type::to_string(data_type),
             array_index,
             name);
@@ -69,7 +69,7 @@ void MOF_Property_Decl::validate()
 MOF_Element* MOF_Property_Decl::clone() const
 {
     MOF_Property_Decl* tmp;
-    
+
     if ((tmp = new MOF_Property_Decl()) == 0)
         return 0;
 
