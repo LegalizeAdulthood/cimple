@@ -5,7 +5,7 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleupcall
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
     CIM_EnabledLogicalElement.cpp \
@@ -14,10 +14,13 @@ SOURCES = \
     CIM_ManagedElement.cpp \
     CIM_ManagedSystemElement.cpp \
     CIM_System.cpp \
-    module.cpp \
-    repository.cpp \
     Upcall.cpp \
-    Upcall_Provider.cpp
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Upcall_Provider.cpp \
+    module.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
 ## Changing Provider interfaces requires reregistering the provider. Default Pegasus
@@ -31,7 +34,8 @@ include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-genclass:
+repository.mof: Upcall.mof
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Upcall CIM_ComputerSystem
 
 genprov:
