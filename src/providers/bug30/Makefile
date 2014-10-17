@@ -7,12 +7,14 @@ INCLUDES += $(CMPI_INCLUDES)
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
 
-SOURCES = \
-    BUG30_X_Provider.cpp \
+GENCLASS_SOURCES = \
     BUG30_R.cpp \
     BUG30_S.cpp \
     BUG30_X.cpp \
-    repository.cpp \
+    repository.cpp
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    BUG30_X_Provider.cpp \
     module.cpp
 
 LIBRARIES = cimple
@@ -28,12 +30,12 @@ endif
 include $(TOP)/mak/rules.mak
 
 reg:
-	regmod -c $(SHARED_LIBRARY_TARGET)
+	$(BINDIR)/regmod -c $(SHARED_LIBRARY_TARGET)
 
 tests:
 
-genclass:
-	genclass -r BUG30_X BUG30_S
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r BUG30_X BUG30_S
 
 genprov:
-	genprov -f BUG30_X
+	$(BINDIR)/genprov -f BUG30_X

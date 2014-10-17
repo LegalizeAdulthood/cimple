@@ -472,6 +472,14 @@ src/providers/XYZ_Lamp/XYZ_LampLink.cpp
 src/providers/XYZ_Lamp/XYZ_LampLink.h
 src/providers/XYZ_Lamp/repository.cpp
 src/providers/XYZ_Lamp/repository.h
+src/providers/bug30/BUG30_R.cpp
+src/providers/bug30/BUG30_R.h
+src/providers/bug30/BUG30_S.cpp
+src/providers/bug30/BUG30_S.h
+src/providers/bug30/BUG30_X.cpp
+src/providers/bug30/BUG30_X.h
+src/providers/bug30/repository.cpp
+src/providers/bug30/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
