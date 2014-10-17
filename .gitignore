@@ -360,6 +360,10 @@ src/providers/Static/Static.cpp
 src/providers/Static/Static.h
 src/providers/Static/repository.cpp
 src/providers/Static/repository.h
+src/providers/StringArray/StringArrayClass.cpp
+src/providers/StringArray/StringArrayClass.h
+src/providers/StringArray/repository.cpp
+src/providers/StringArray/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

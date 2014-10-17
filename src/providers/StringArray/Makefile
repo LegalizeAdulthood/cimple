@@ -6,10 +6,12 @@ MODULE=1
 SHARED_LIBRARY = StringArrayProvider
 TEST_CLASS = StringArrayClass
 
-SOURCES = \
-    module.cpp \
-    repository.cpp \
+GENCLASS_SOURCES = \
     StringArrayClass.cpp \
+    repository.cpp
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    module.cpp \
     StringArrayClass_Provider.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
@@ -25,7 +27,7 @@ include ../common.mak
 include $(TOP)/mak/rules.mak
 
 ## Generate the class. First step in writing the provider once mof exists in repository.mof
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r $(TEST_CLASS)
 
 ## Generate the Provider.  Run this after genclass target
