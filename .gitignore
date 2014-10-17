@@ -304,6 +304,12 @@ src/providers/President/President.cpp
 src/providers/President/President.h
 src/providers/President/repository.cpp
 src/providers/President/repository.h
+src/providers/RefArray/RefArray.cpp
+src/providers/RefArray/RefArray.h
+src/providers/RefArray/RefArrayParam.cpp
+src/providers/RefArray/RefArrayParam.h
+src/providers/RefArray/repository.cpp
+src/providers/RefArray/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
