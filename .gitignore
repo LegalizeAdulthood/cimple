@@ -364,6 +364,14 @@ src/providers/StringArray/StringArrayClass.cpp
 src/providers/StringArray/StringArrayClass.h
 src/providers/StringArray/repository.cpp
 src/providers/StringArray/repository.h
+src/providers/Super/Sub1.cpp
+src/providers/Super/Sub1.h
+src/providers/Super/Sub2.cpp
+src/providers/Super/Sub2.h
+src/providers/Super/Super.cpp
+src/providers/Super/Super.h
+src/providers/Super/repository.cpp
+src/providers/Super/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

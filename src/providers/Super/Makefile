@@ -5,8 +5,16 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleSuper
 
+GENCLASS_SOURCES = \
+	Super.cpp \
+	Sub1.cpp \
+	Sub2.cpp \
+	repository.cpp
+
 SOURCES = \
-    module.cpp repository.cpp Super.cpp Sub1.cpp Sub2.cpp Super_Provider.cpp
+    $(GENCLASS_SOURCES) \
+    module.cpp \
+	Super_Provider.cpp
 
 CIMPLE_PEGASUS_MODULE=1
 
@@ -14,7 +22,7 @@ include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Super Sub1 Sub2
 
 genprov:
