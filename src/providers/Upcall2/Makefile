@@ -3,22 +3,25 @@ include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = cmplupcall2
 
-SOURCES = \
-    Upcall2_Provider.cpp \
-    module.cpp \
-    CIM_ManagedElement.cpp \
-    CIM_RegisteredProfile.cpp \
-    CIM_ElementConformsToProfile.cpp \
-    Upcall2Part.cpp \
-    CIM_ManagedSystemElement.cpp \
-    CIM_LogicalElement.cpp \
-    CIM_Job.cpp \
-    CIM_ConcreteJob.cpp \
-    CIM_EnabledLogicalElement.cpp \
-    CIM_System.cpp \
+GENCLASS_SOURCES = \
     CIM_ComputerSystem.cpp \
+    CIM_ConcreteJob.cpp \
+    CIM_ElementConformsToProfile.cpp \
+    CIM_EnabledLogicalElement.cpp \
+    CIM_Job.cpp \
+    CIM_LogicalElement.cpp \
+    CIM_ManagedElement.cpp \
+    CIM_ManagedSystemElement.cpp \
+    CIM_RegisteredProfile.cpp \
+    CIM_System.cpp \
     Upcall2.cpp \
+    Upcall2Part.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Upcall2_Provider.cpp \
+    module.cpp
 
 LIBRARIES += cimplepegadap cimple
 
@@ -34,5 +37,5 @@ reg:
 tests:
 	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
 
-genclass:
-	genclass -r Upcall2 CIM_ComputerSystem
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r Upcall2 CIM_ComputerSystem
