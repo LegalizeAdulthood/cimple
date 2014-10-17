@@ -3,6 +3,10 @@ lib
 lib64
 config.options
 *.o
+samples/President/President.cpp
+samples/President/President.h
+samples/President/repository.cpp
+samples/President/repository.h
 src/cimple/tests/log/result
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h

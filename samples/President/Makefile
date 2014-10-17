@@ -2,18 +2,26 @@
 PH=$(HOME)/dev/pegasus/home
 PR=$(HOME)/dev/pegasus
 
-SOURCES = President.cpp President_Provider.cpp module.cpp repository.cpp
+GENCLASS_SOURCES = \
+    President.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    President_Provider.cpp \
+    module.cpp
+
 LDPATH = -L/opt/cimple/lib -L$(PH)/lib
 LIBRARIES = -lcimplepegadap -lcimple -lpegprovider -lpegcommon
 INCLUDES = -I/opt/cimple/include -I$(PR)/src
 FLAGS = -fPIC
 RPATH = -Wl,-rpath=$(PH)/lib -Wl,-rpath=/opt/cimple/lib
 
-all:
+all: $(SOURCES)
 	gcc $(INCLUDES) $(FLAGS) $(LDPATH) $(RPATH) -shared -o libPresident.so $(SOURCES) $(LIBRARIES)
 
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	genclass -r President
 
 genprov:
