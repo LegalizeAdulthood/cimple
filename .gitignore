@@ -188,6 +188,8 @@ src/disp/tests/facade/Base.cpp
 src/disp/tests/facade/Base.h
 src/disp/tests/facade/Thing.cpp
 src/disp/tests/facade/Thing.h
+src/exp/example/cimple/TheClass.cpp
+src/exp/example/cimple/TheClass.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp
