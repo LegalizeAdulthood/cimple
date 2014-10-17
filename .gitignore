@@ -372,6 +372,12 @@ src/providers/Super/Super.cpp
 src/providers/Super/Super.h
 src/providers/Super/repository.cpp
 src/providers/Super/repository.h
+src/providers/Thing/Thing.cpp
+src/providers/Thing/Thing.h
+src/providers/Thing/ThingLink.cpp
+src/providers/Thing/ThingLink.h
+src/providers/Thing/repository.cpp
+src/providers/Thing/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

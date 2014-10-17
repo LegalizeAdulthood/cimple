@@ -5,11 +5,14 @@ MODULE=1
 
 SHARED_LIBRARY = cimplething
 
-SOURCES = \
-    module.cpp \
-    repository.cpp \
+GENCLASS_SOURCES = \
     Thing.cpp \
     ThingLink.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    module.cpp \
     ThingLink_Provider.cpp \
     Thing_Provider.cpp
 
@@ -28,7 +31,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r ThingLink
 
 genprov:
