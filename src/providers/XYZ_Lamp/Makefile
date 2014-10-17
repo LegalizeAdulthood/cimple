@@ -5,16 +5,19 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleXYZ_Lamp
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_Indication.cpp \
-    module.cpp \
-    repository.cpp \
     XYZ_Lamp.cpp \
     XYZ_LampIndic.cpp \
-    XYZ_LampIndic_Provider.cpp \
     XYZ_LampLink.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    XYZ_LampIndic_Provider.cpp \
     XYZ_LampLink_Provider.cpp \
-    XYZ_Lamp_Provider.cpp
+    XYZ_Lamp_Provider.cpp \
+    module.cpp
 
 CIMPLE_CMPI_MODULE=1
 
@@ -25,7 +28,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r XYZ_Lamp XYZ_LampLink XYZ_LampIndic
 
 genprov:

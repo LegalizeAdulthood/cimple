@@ -462,6 +462,16 @@ src/providers/Widget/CIMPLE_Widget.cpp
 src/providers/Widget/CIMPLE_Widget.h
 src/providers/Widget/repository.cpp
 src/providers/Widget/repository.h
+src/providers/XYZ_Lamp/CIM_Indication.cpp
+src/providers/XYZ_Lamp/CIM_Indication.h
+src/providers/XYZ_Lamp/XYZ_Lamp.cpp
+src/providers/XYZ_Lamp/XYZ_Lamp.h
+src/providers/XYZ_Lamp/XYZ_LampIndic.cpp
+src/providers/XYZ_Lamp/XYZ_LampIndic.h
+src/providers/XYZ_Lamp/XYZ_LampLink.cpp
+src/providers/XYZ_Lamp/XYZ_LampLink.h
+src/providers/XYZ_Lamp/repository.cpp
+src/providers/XYZ_Lamp/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
