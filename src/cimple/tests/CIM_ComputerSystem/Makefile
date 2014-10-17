@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_CIM_ComputerSystem
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
     CIM_EnabledLogicalElement.cpp \
@@ -12,7 +12,10 @@ SOURCES = \
     CIM_ManagedElement.cpp \
     CIM_ManagedSystemElement.cpp \
     CIM_System.cpp \
-    repository.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     main.cpp
 
 LIBRARIES = cimple
@@ -22,5 +25,5 @@ include $(TOP)/mak/rules.mak
 tests:
 	$(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES):
 	$(BINDIR)/genclass -r -e CIM_ComputerSystem
