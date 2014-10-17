@@ -170,6 +170,12 @@ src/cimple/tests/print/OtherClass.cpp
 src/cimple/tests/print/OtherClass.h
 src/cimple/tests/print/SomeClass.cpp
 src/cimple/tests/print/SomeClass.h
+src/cimple/tests/ref/X.cpp
+src/cimple/tests/ref/X.h
+src/cimple/tests/ref/Y.cpp
+src/cimple/tests/ref/Y.h
+src/cimple/tests/ref/repository.cpp
+src/cimple/tests/ref/repository.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp
