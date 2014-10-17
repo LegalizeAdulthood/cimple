@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = cmplupcall3
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
     CIM_ElementConformsToProfile.cpp \
@@ -16,9 +16,12 @@ SOURCES = \
     CIM_System.cpp \
     Upcall3.cpp \
     Upcall3Part.cpp \
-    Upcall3_Provider.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Upcall3_Provider.cpp \
+    module.cpp
 
 LIBRARIES += cimplepegadap
 
@@ -39,7 +42,7 @@ reg:
 	regmod -c $(SHARED_LIBRARY_TARGET)
 
 tests:
-	@ $(BIN_DIR)/dlopen $(SHARED_LIBRARY_TARGET)
+	@ $(BINDIR)/dlopen $(SHARED_LIBRARY_TARGET)
 
-genclass:
-	genclass -r Upcall3
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r Upcall3
