@@ -3,14 +3,16 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_print
 
-SOURCES = main.cpp SomeClass.cpp OtherClass.cpp
+GENCLASS_SOURCES = SomeClass.cpp OtherClass.cpp
+
+SOURCES = $(GENCLASS_SOURCES) main.cpp
 
 LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
 
-genclass:
-	genclass SomeClass OtherClass
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass SomeClass OtherClass
 
 tests:
 	$(BINDIR)/test_print

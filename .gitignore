@@ -166,6 +166,10 @@ src/cimple/tests/model_path/Part.cpp
 src/cimple/tests/model_path/Part.h
 src/cimple/tests/model_path/repository.cpp
 src/cimple/tests/model_path/repository.h
+src/cimple/tests/print/OtherClass.cpp
+src/cimple/tests/print/OtherClass.h
+src/cimple/tests/print/SomeClass.cpp
+src/cimple/tests/print/SomeClass.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp
