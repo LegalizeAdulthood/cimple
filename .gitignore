@@ -107,6 +107,8 @@ src/cimple/tests/clone/MyClass.cpp
 src/cimple/tests/clone/MyClass.h
 src/cimple/tests/clone/repository.cpp
 src/cimple/tests/clone/repository.h
+src/cimple/tests/encoding/Everything.cpp
+src/cimple/tests/encoding/Everything.h
 src/cimple/tests/log/result
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
