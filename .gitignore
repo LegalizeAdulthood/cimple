@@ -57,6 +57,16 @@ src/cimple/tests/CIM_ComputerSystem/CIM_System.cpp
 src/cimple/tests/CIM_ComputerSystem/CIM_System.h
 src/cimple/tests/CIM_ComputerSystem/repository.cpp
 src/cimple/tests/CIM_ComputerSystem/repository.h
+src/cimple/tests/cast/A.cpp
+src/cimple/tests/cast/A.h
+src/cimple/tests/cast/B.cpp
+src/cimple/tests/cast/B.h
+src/cimple/tests/cast/C.cpp
+src/cimple/tests/cast/C.h
+src/cimple/tests/cast/D.cpp
+src/cimple/tests/cast/D.h
+src/cimple/tests/cast/E.cpp
+src/cimple/tests/cast/E.h
 src/cimple/tests/log/result
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h

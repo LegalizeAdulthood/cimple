@@ -3,7 +3,14 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_cast
 
-SOURCES = D.cpp C.cpp B.cpp A.cpp E.cpp main.cpp
+GENCLASS_SOURCES = \
+    A.cpp \
+    B.cpp \
+    C.cpp \
+    E.cpp \
+    D.cpp
+
+SOURCES = $(GENCLASS_SOURCES) main.cpp
 
 LIBRARIES = cimple
 
@@ -12,5 +19,5 @@ include $(TOP)/mak/rules.mak
 tests:
 	$(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass A B C D E
