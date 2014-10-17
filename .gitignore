@@ -7,6 +7,10 @@ samples/President/President.cpp
 samples/President/President.h
 samples/President/repository.cpp
 samples/President/repository.h
+src/CMPI/providers/Model/Model.cpp
+src/CMPI/providers/Model/Model.h
+src/CMPI/providers/Model/Part.cpp
+src/CMPI/providers/Model/Part.h
 src/cimple/tests/log/result
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h

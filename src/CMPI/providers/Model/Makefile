@@ -1,9 +1,16 @@
 TOP = ../../../..
 include $(TOP)/mak/config.mak
 
-SH_LIBRARY = ModelProvider
+SHARED_LIBRARY = ModelProvider
 
-SOURCES = Model.cpp Part.cpp Model_Provider.cpp module.cpp
+GENCLASS_SOURCES = \
+    Model.cpp \
+    Part.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Model_Provider.cpp \
+    module.cpp
 
 LIBRARIES = cimplecmpi cmplrep cimple
 
@@ -23,5 +30,6 @@ include $(TOP)/mak/rules.mak
 reg:
 	regmod -c -m $(TARGET)
 
-genclass:
-	$(BIN)/genclass Model Part
+repository.mof: Model.mof
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass Model Part
