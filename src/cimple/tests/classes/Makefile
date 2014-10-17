@@ -3,20 +3,23 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_classes
 
-SOURCES = \
-    Employee.cpp \
-    Link.cpp \
-    main.cpp \
-    Manager.cpp \
+GENCLASS_SOURCES = \
     A.cpp \
-    B.cpp \
-    C.cpp \
     AA.cpp \
+    B.cpp \
     BB.cpp \
-    repository.cpp \
-    OutOfOfficeNotice.cpp \
+    C.cpp \
+    Employee.cpp \
     Everything.cpp \
-    EverythingDefaults.cpp
+    EverythingDefaults.cpp \
+    Link.cpp \
+    Manager.cpp \
+    OutOfOfficeNotice.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    main.cpp
 
 LIBRARIES = cimple
 
@@ -25,6 +28,6 @@ include $(TOP)/mak/rules.mak
 tests:
 	$(TARGET)
 
-genclass:
-	$(BINDIR) genclass Employee Manager Link A B C AA BB OutOfOfficeNotice Everything \
-	EverythingDefaults
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r A AA B BB C Employee Everything \
+		EverythingDefaults Link Manager OutOfOfficeNotice
