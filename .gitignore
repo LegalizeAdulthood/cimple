@@ -785,6 +785,16 @@ src/tools/genclass/tests/test10/Methods2.cpp
 src/tools/genclass/tests/test10/Methods2.h
 src/tools/genclass/tests/test10/repository.cpp
 src/tools/genclass/tests/test10/repository.h
+src/tools/genclass/tests/test11/A.cpp
+src/tools/genclass/tests/test11/A.h
+src/tools/genclass/tests/test11/B.cpp
+src/tools/genclass/tests/test11/B.h
+src/tools/genclass/tests/test11/C.cpp
+src/tools/genclass/tests/test11/C.h
+src/tools/genclass/tests/test11/X.cpp
+src/tools/genclass/tests/test11/X.h
+src/tools/genclass/tests/test11/repository.cpp
+src/tools/genclass/tests/test11/repository.h
 src/tools/genclass/usage.h
 src/tools/genhnd/usage.h
 src/tools/genmak/usage.h
