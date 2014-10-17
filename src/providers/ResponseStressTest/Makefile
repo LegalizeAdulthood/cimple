@@ -13,9 +13,12 @@ SHARED_LIBRARY = cimpleResponseStressTest
 CLASSES = CMPL_ResponseStressTest
 PROVIDER_MODULE = CMPL_ResponseStressTest
 
-SOURCES = \
-    repository.cpp \
+GENCLASS_SOURCES = \
     CMPL_ResponseStressTest.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     CMPL_ResponseStressTest_Provider.cpp \
     module.cpp
 
@@ -38,7 +41,7 @@ include $(TOP)/mak/rules.mak
 ##
 ###############################################################################
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r $(CLASSES)
 
 genprov:

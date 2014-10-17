@@ -310,6 +310,10 @@ src/providers/RefArray/RefArrayParam.cpp
 src/providers/RefArray/RefArrayParam.h
 src/providers/RefArray/repository.cpp
 src/providers/RefArray/repository.h
+src/providers/ResponseStressTest/CMPL_ResponseStressTest.cpp
+src/providers/ResponseStressTest/CMPL_ResponseStressTest.h
+src/providers/ResponseStressTest/repository.cpp
+src/providers/ResponseStressTest/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
