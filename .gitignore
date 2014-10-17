@@ -176,6 +176,10 @@ src/cimple/tests/ref/Y.cpp
 src/cimple/tests/ref/Y.h
 src/cimple/tests/ref/repository.cpp
 src/cimple/tests/ref/repository.h
+src/cimple/tests/serialize/All_Embedded.cpp
+src/cimple/tests/serialize/All_Embedded.h
+src/cimple/tests/serialize/All_Properties.cpp
+src/cimple/tests/serialize/All_Properties.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp
