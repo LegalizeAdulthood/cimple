@@ -3,7 +3,14 @@ include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY = Standalone
 
-SOURCES = module.cpp repository.cpp Standalone.cpp Standalone_Provider.cpp
+GENCLASS_SOURCES = \
+    Standalone.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    module.cpp \
+    Standalone_Provider.cpp
 
 LIBRARIES = cimple cimplecmpiadap
 
@@ -20,5 +27,5 @@ include $(TOP)/mak/rules.mak
 reg:
 	regmod -n root/cimv2 -c $(SHARED_LIBRARY_TARGET)
 
-genclass:
-	genclass -r Standalone
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r Standalone

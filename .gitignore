@@ -352,6 +352,10 @@ src/providers/SNIA_SpareConfigurationService/SNIA_SpareConfigurationService.cpp
 src/providers/SNIA_SpareConfigurationService/SNIA_SpareConfigurationService.h
 src/providers/SNIA_SpareConfigurationService/repository.cpp
 src/providers/SNIA_SpareConfigurationService/repository.h
+src/providers/Standalone/Standalone.cpp
+src/providers/Standalone/Standalone.h
+src/providers/Standalone/repository.cpp
+src/providers/Standalone/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
