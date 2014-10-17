@@ -5,11 +5,14 @@ MODULE=1
 
 SHARED_LIBRARY = cimpletime
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CMPL_Time.cpp \
-    CMPL_Time_Provider.cpp \
-    module.cpp \
     repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    CMPL_Time_Provider.cpp \
+    module.cpp
 
 # Allow building providers for either CMPI or Pegasus C++ provider interface
 # Changing Provider interfaces requires reregistering the provider. Default is PEGASUS
@@ -22,7 +25,7 @@ include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r CMPL_Time
 
 regmod:

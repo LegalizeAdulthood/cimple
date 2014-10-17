@@ -378,6 +378,10 @@ src/providers/Thing/ThingLink.cpp
 src/providers/Thing/ThingLink.h
 src/providers/Thing/repository.cpp
 src/providers/Thing/repository.h
+src/providers/Time/CMPL_Time.cpp
+src/providers/Time/CMPL_Time.h
+src/providers/Time/repository.cpp
+src/providers/Time/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
