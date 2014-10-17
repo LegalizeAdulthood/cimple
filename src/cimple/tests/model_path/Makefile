@@ -3,7 +3,8 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_model_path
 
-SOURCES = main.cpp Part.cpp Glue.cpp repository.cpp
+GENCLASS_SOURCES = Part.cpp Glue.cpp repository.cpp
+SOURCES = $(GENCLASS_SOURCES) main.cpp
 
 LIBRARIES = cimple
 
@@ -15,5 +16,5 @@ tests:
 vg:
 	$(VALGRIND) --tool=memcheck --leak-check=full $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r Part Glue

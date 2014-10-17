@@ -160,6 +160,12 @@ src/cimple/tests/meta_class/Foo.cpp
 src/cimple/tests/meta_class/Foo.h
 src/cimple/tests/meta_class/repository.cpp
 src/cimple/tests/meta_class/repository.h
+src/cimple/tests/model_path/Glue.cpp
+src/cimple/tests/model_path/Glue.h
+src/cimple/tests/model_path/Part.cpp
+src/cimple/tests/model_path/Part.h
+src/cimple/tests/model_path/repository.cpp
+src/cimple/tests/model_path/repository.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp
