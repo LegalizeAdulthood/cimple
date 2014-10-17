@@ -5,7 +5,14 @@ SHARED_LIBRARY = Static
 
 DEFINES += -DCIMPLE_CIMPLE_LINKAGE=""
 
-SOURCES = module.cpp repository.cpp Static.cpp Static_Provider.cpp
+GENCLASS_SOURCES = \
+    Static.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    module.cpp \
+    Static_Provider.cpp
 
 LIBRARIES = cimplecmpiadap_s cimple_s
 
@@ -22,5 +29,5 @@ include $(TOP)/mak/rules.mak
 reg:
 	regmod -n root/cimv2 -c $(SHARED_LIBRARY_TARGET)
 
-genclass:
-	genclass -r Static
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r Static

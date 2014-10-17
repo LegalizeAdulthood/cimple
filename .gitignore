@@ -356,6 +356,10 @@ src/providers/Standalone/Standalone.cpp
 src/providers/Standalone/Standalone.h
 src/providers/Standalone/repository.cpp
 src/providers/Standalone/repository.h
+src/providers/Static/Static.cpp
+src/providers/Static/Static.h
+src/providers/Static/repository.cpp
+src/providers/Static/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
