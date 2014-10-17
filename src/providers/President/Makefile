@@ -5,7 +5,9 @@ MODULE=1
 
 SHARED_LIBRARY = cimplePresident
 
-SOURCES = repository.cpp President.cpp module.cpp President_Provider.cpp
+GENCLASS_SOURCES = repository.cpp President.cpp
+SOURCES = $(GENCLASS_SOURCES) \
+    module.cpp President_Provider.cpp
 
 CIMPLE_CMPI_MODULE=1
 #CIMPLE_PEGASUS_MODULE=1
@@ -16,7 +18,7 @@ include $(TOP)/mak/rules.mak
 regmod:
 	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r President
 
 genprov:

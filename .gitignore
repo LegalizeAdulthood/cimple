@@ -300,6 +300,10 @@ src/providers/Person/SalesmanLink.cpp
 src/providers/Person/SalesmanLink.h
 src/providers/Person/repository.cpp
 src/providers/Person/repository.h
+src/providers/President/President.cpp
+src/providers/President/President.h
+src/providers/President/repository.cpp
+src/providers/President/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
