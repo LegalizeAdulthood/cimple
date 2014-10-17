@@ -290,6 +290,16 @@ src/providers/OperationException/CIMPLE_ExceptionLink.cpp
 src/providers/OperationException/CIMPLE_ExceptionLink.h
 src/providers/OperationException/repository.cpp
 src/providers/OperationException/repository.h
+src/providers/Person/Person.cpp
+src/providers/Person/Person.h
+src/providers/Person/PersonLink.cpp
+src/providers/Person/PersonLink.h
+src/providers/Person/Salesman.cpp
+src/providers/Person/Salesman.h
+src/providers/Person/SalesmanLink.cpp
+src/providers/Person/SalesmanLink.h
+src/providers/Person/repository.cpp
+src/providers/Person/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

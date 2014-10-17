@@ -10,12 +10,15 @@ SHARED_LIBRARY = cimplePerson
 ## List of classes for this provider is in a file classlist in the provider
 ## directory
 
-SOURCES = \
-    repository.cpp \
+GENCLASS_SOURCES = \
     Person.cpp \
-    Salesman.cpp \
     PersonLink.cpp \
+    Salesman.cpp \
     SalesmanLink.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     Person_Provider.cpp \
     PersonLink_Provider.cpp \
     Salesman_Provider.cpp \
@@ -40,11 +43,11 @@ include $(TOP)/mak/rules.mak
 ##
 ###############################################################################
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r -F classlist
 
 genprov:
-	$(BINDIR)/genprov -F classlist	
+	$(BINDIR)/genprov -F classlist
 
 genmod:
 	$(BINDIR)/genmod Person -F classlist
@@ -126,7 +129,7 @@ live:
 	$(CIMCLI) ni PersonLink --sum -count 7
 	$(CIMCLI) ni Salesman --sum -count 2
 	$(CIMCLI) ni SalesmanLink --sum -count 1
-	
+
 	$(CIMCLI) ei Person
 	$(CIMCLI) ei Person --sum -count 7
 	$(CIMCLI) ei PersonLink
