@@ -182,6 +182,12 @@ src/cimple/tests/serialize/All_Properties.cpp
 src/cimple/tests/serialize/All_Properties.h
 src/cimple/tests/value/MyClass.cpp
 src/cimple/tests/value/MyClass.h
+src/disp/tests/facade/Assoc.cpp
+src/disp/tests/facade/Assoc.h
+src/disp/tests/facade/Base.cpp
+src/disp/tests/facade/Base.h
+src/disp/tests/facade/Thing.cpp
+src/disp/tests/facade/Thing.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp
