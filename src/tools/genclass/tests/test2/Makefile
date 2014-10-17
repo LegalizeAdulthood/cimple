@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_genclass2
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_CommonDatabase.cpp \
     CIM_ConcreteJob.cpp \
     CIM_DatabaseAdministrator.cpp \
@@ -14,7 +14,10 @@ SOURCES = \
     CIM_ManagedElement.cpp \
     CIM_ManagedSystemElement.cpp \
     CIM_OrganizationalEntity.cpp \
-    CIM_UserEntity.cpp \
+    CIM_UserEntity.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     main.cpp
 
 LIBRARIES = cimple
@@ -22,7 +25,9 @@ INCLUDES += -I.
 
 include $(TOP)/mak/rules.mak
 
-genclass:
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+
+genclass $(GENCLASS_SOURCES):
 	$(BINDIR)/genclass CIM_DatabaseAdministrator
 
 tests:
