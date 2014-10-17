@@ -5,9 +5,12 @@ include $(TOP)/mak/config.mak
 
 SHARED_LIBRARY=cimplewidget
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIMPLE_Widget.cpp \
-    repository.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     CIMPLE_Widget_Provider.cpp \
     module.cpp
 
@@ -22,7 +25,8 @@ include $(TOP)/mak/rules.mak
 ##regmod:
 ##	$(BINDIR)/regmod -c $(TARGET)
 
-genclass:
+repository.mof: CIMPLE_Widget.mof
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r CIMPLE_Widget
 
 genprov:

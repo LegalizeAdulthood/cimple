@@ -458,6 +458,10 @@ src/providers/Upcall3/Upcall3Part.cpp
 src/providers/Upcall3/Upcall3Part.h
 src/providers/Upcall3/repository.cpp
 src/providers/Upcall3/repository.h
+src/providers/Widget/CIMPLE_Widget.cpp
+src/providers/Widget/CIMPLE_Widget.h
+src/providers/Widget/repository.cpp
+src/providers/Widget/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp
