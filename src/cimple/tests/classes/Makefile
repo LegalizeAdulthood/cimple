@@ -28,6 +28,8 @@ include $(TOP)/mak/rules.mak
 tests:
 	$(TARGET)
 
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+
 genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r A AA B BB C Employee Everything \
 		EverythingDefaults Link Manager OutOfOfficeNotice
