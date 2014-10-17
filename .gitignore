@@ -382,6 +382,10 @@ src/providers/Time/CMPL_Time.cpp
 src/providers/Time/CMPL_Time.h
 src/providers/Time/repository.cpp
 src/providers/Time/repository.h
+src/providers/UnixUser/UnixUser.cpp
+src/providers/UnixUser/UnixUser.h
+src/providers/UnixUser/repository.cpp
+src/providers/UnixUser/repository.h
 src/providers/bug31/BUG31_A.cpp
 src/providers/bug31/BUG31_A.h
 src/providers/bug31/BUG31_B.cpp

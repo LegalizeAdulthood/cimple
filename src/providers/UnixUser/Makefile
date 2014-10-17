@@ -5,10 +5,13 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleunixusrprov
 
-SOURCES = \
-    module.cpp \
-    repository.cpp \
+GENCLASS_SOURCES = \
     UnixUser.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    module.cpp \
     UnixUser_Provider.cpp
 
 CIMPLE_PEGASUS_MODULE=1
@@ -17,7 +20,7 @@ include ../common.mak
 
 include $(TOP)/mak/rules.mak
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r UnixUser
 
 genprov:
