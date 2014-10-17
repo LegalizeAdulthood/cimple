@@ -135,6 +135,8 @@ src/cimple/tests/hnd/Y.cpp
 src/cimple/tests/hnd/Y.h
 src/cimple/tests/hnd/repository.cpp
 src/cimple/tests/hnd/repository.h
+src/cimple/tests/instance_enc/Everything.cpp
+src/cimple/tests/instance_enc/Everything.h
 src/cimple/tests/log/result
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
