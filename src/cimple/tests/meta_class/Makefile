@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_meta_class
 
-SOURCES =  \
+GENCLASS_SOURCES = \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
     CIM_EnabledLogicalElement.cpp \
@@ -12,9 +12,12 @@ SOURCES =  \
     CIM_ManagedElement.cpp \
     CIM_ManagedSystemElement.cpp \
     CIM_System.cpp \
-    Foo.cpp \
     Everything.cpp \
-    repository.cpp \
+    Foo.cpp \
+    repository.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     main.cpp
 
 LIBRARIES = cimple
@@ -25,8 +28,8 @@ include $(TOP)/mak/rules.mak
 tests:
 	@ $(BINARY_TARGET)
 
-genclass:
-	$(BIN_DIR)/genclass -r Everything CIM_ComputerSystem Foo
+genclass $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r Everything CIM_ComputerSystem Foo
 
 val:
 	valgrind --tool=memcheck test_meta_class
