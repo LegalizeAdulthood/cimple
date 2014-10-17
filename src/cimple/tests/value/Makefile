@@ -3,7 +3,9 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_value
 
-SOURCES = main.cpp MyClass.cpp
+GENCLASS_SOURCES = MyClass.cpp
+
+SOURCES = $(GENCLASS_SOURCES) main.cpp
 
 LIBRARIES = cimple
 
@@ -22,5 +24,5 @@ runtest:
 vg:
 	$(VALGRIND) --tool=memcheck --leak-check=full  $(TARGET)
 
-genclass:
+genclass $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass MyClass

@@ -180,6 +180,8 @@ src/cimple/tests/serialize/All_Embedded.cpp
 src/cimple/tests/serialize/All_Embedded.h
 src/cimple/tests/serialize/All_Properties.cpp
 src/cimple/tests/serialize/All_Properties.h
+src/cimple/tests/value/MyClass.cpp
+src/cimple/tests/value/MyClass.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp
