@@ -35,6 +35,10 @@ src/brevity/tests/client14/CIM_RegisteredProfile.cpp
 src/brevity/tests/client14/CIM_RegisteredProfile.h
 src/brevity/tests/client14/repository.cpp
 src/brevity/tests/client14/repository.h
+src/brevity/tests/client15/CIM_ManagedElement.cpp
+src/brevity/tests/client15/CIM_ManagedElement.h
+src/brevity/tests/client15/repository.cpp
+src/brevity/tests/client15/repository.h
 src/cimple/tests/log/result
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h

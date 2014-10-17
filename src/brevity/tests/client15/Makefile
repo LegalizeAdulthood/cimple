@@ -3,7 +3,8 @@ include $(TOP)/mak/config.mak
 
 BINARY = brevity_client15
 
-SOURCES = main.cpp CIM_ManagedElement.cpp repository.cpp
+GENCLASS_SOURCES = CIM_ManagedElement.cpp repository.cpp
+SOURCES = $(GENCLASS_SOURCES) main.cpp
 
 include ../libraries.mak
 
@@ -18,8 +19,10 @@ MOF=$(CIMPLE_ROOT)/src/providers/Employee/repository.mof
 
 CLASSES = CIM_ManagedElement
 
-gen:
+genclass $(GENCLASS_SOURCES): $(MOF)
 	$(BINDIR)/genclass -r -M $(MOF) $(CLASSES)
+
+gen: genclass
 	$(BINDIR)/genhnd -M $(MOF) $(CLASSES)
 
 publish:
