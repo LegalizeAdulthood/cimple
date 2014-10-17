@@ -103,6 +103,10 @@ src/cimple/tests/classes/OutOfOfficeNotice.cpp
 src/cimple/tests/classes/OutOfOfficeNotice.h
 src/cimple/tests/classes/repository.cpp
 src/cimple/tests/classes/repository.h
+src/cimple/tests/clone/MyClass.cpp
+src/cimple/tests/clone/MyClass.h
+src/cimple/tests/clone/repository.cpp
+src/cimple/tests/clone/repository.h
 src/cimple/tests/log/result
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
