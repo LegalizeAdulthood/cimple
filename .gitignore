@@ -4655,3 +4655,9 @@ src/tools/genprov/tests/Test2/Test2.h
 src/tools/genprov/tests/Test2/Test2Link.cpp
 src/tools/genprov/tests/Test2/Test2Link.h
 src/tools/genprov/usage.h
+src/wmi/ThingsProvider/Thing1.cpp
+src/wmi/ThingsProvider/Thing1.h
+src/wmi/ThingsProvider/Thing2.cpp
+src/wmi/ThingsProvider/Thing2.h
+src/wmi/ThingsProvider/repository.cpp
+src/wmi/ThingsProvider/repository.h

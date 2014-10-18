@@ -3,14 +3,18 @@ include $(TOP)/mak/config.mak
 PROVIDER_MODULE = ThingsProvider
 Classes = Thing1 Thing2
 LIBRARY = ThingsProvider
+GENCLASS_SOURCES = \
+    $(Classes:=.cpp) \
+	repository.cpp
+GENCLASS_HEADERS = \
+    $(GENCLASS_SOURCES:.cpp=.h)
 SOURCES = \
-    Thing1.cpp \
+    $(GENCLASS_SOURCES) \
     Thing1_Provider.cpp \
-    Thing2.cpp \
     Thing2_Provider.cpp \
-    module.cpp \
-    repository.cpp
+    module.cpp
 LIBRARIES = cimplewmiadap cimple
+CLEAN += $(GENCLASS_HEADERS) $(GENCLASS_SOURCES)
 
 ## Extra link flag required by wmi
 EXTRA_LINK_FLAGS = /def:link.def
@@ -21,18 +25,22 @@ DEFINES += -DCIMPLE_WMI_MODULE
 
 include $(TOP)/mak/rules.mak
 
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+
 ## provider generation targets
-genclass:
-	genclass -r $(Classes)
+
+repository.mof: wmiqualifiers.mof providerclasses.mof
+genclass $(GENCLASS_HEADERS) $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r $(Classes)
 
 genprov:
-	genprov $(Classes)
+	$(BINDIR)/genprov $(Classes)
 
 genmod:
-	genmod $(PROVIDER_MODULE) $(Classes)
+	$(BINDIR)/genmod $(PROVIDER_MODULE) $(Classes)
 
 genproj:
-	genproj Things Thing1 Thing2
+	$(BINDIR)/genproj Things Thing1 Thing2
 
 ## provider registration, installation and removal targets
 ## normally user should only need to call register
