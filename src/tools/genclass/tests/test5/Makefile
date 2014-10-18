@@ -3,7 +3,7 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_genclass5
 
-SOURCES = \
+GENCLASS_SOURCES = \
     CIM_ComputerSystem.cpp \
     CIM_ConcreteJob.cpp \
     CIM_EnabledLogicalElement.cpp \
@@ -11,7 +11,10 @@ SOURCES = \
     CIM_LogicalElement.cpp \
     CIM_ManagedElement.cpp \
     CIM_ManagedSystemElement.cpp \
-    CIM_System.cpp \
+    CIM_System.cpp
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     main.cpp
 
 LIBRARIES = cimple
@@ -22,10 +25,12 @@ include $(TOP)/mak/rules.mak
 Erp2.cpp:
 	$(BINDIR)/genclass Erp2
 
-CLEAN += Erp2.h Erp2.cpp
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_SOURCES:.cpp=.h)
 
 tests:
 	$(TARGET)
 
-genclass:
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+
+genclass $(GENCLASS_SOURCES):
 	$(BINDIR)/genclass CIM_ComputerSystem
