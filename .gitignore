@@ -851,6 +851,8 @@ src/tools/genclass/tests/test2/CIM_UserEntity.cpp
 src/tools/genclass/tests/test2/CIM_UserEntity.h
 src/tools/genclass/tests/test3/Erp.cpp
 src/tools/genclass/tests/test3/Erp.h
+src/tools/genclass/tests/test4/Erp2.cpp
+src/tools/genclass/tests/test4/Erp2.h
 src/tools/genclass/usage.h
 src/tools/genhnd/usage.h
 src/tools/genmak/usage.h
