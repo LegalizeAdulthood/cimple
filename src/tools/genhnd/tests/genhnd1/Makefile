@@ -3,33 +3,47 @@ include $(TOP)/mak/config.mak
 
 BINARY = test_genhnd1
 
-SOURCES = \
-    Assoc1.cpp \
-    Assoc2.cpp \
-    Class1.cpp \
-    Class2.cpp \
-    Class3.cpp \
-    main.cpp \
-    Part.cpp \
-    President.cpp \
+CLASSES = \
+    Assoc1 \
+    Assoc2 \
+    Class1 \
+    Class2 \
+    Class3 \
+    Part \
+    President \
+    SubClass \
+    Successor \
+    SuperClass \
+    Whole
+
+GENCLASS_SOURCES = \
+    $(CLASSES:=.cpp) \
     repository.cpp \
-    Successor.cpp \
-    Whole.cpp \
-    SuperClass.cpp \
-    SubClass.cpp
+
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    main.cpp
 
 LIBRARIES = cimple
+
+CLEAN += $(GENCLASS_HEADERS) $(GENCLASS_SOURCES)
 
 include $(TOP)/mak/rules.mak
 
 tests:
 	$(TARGET)
 
-CLASSES = Class1 Class2 Class3 Assoc1 Assoc2 President Successor Whole SubClass SuperClass
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
-gen:
+genclass $(GENCLASS_HEADERS) $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass -r $(CLASSES)
+
+genhnd:
 	$(BINDIR)/genhnd $(CLASSES)
+
+gen: genclass genhnd
 
 vg:
 	$(VALGRIND) $(TARGET)
