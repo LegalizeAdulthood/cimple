@@ -16,10 +16,10 @@ int main(int argc, char** argv)
 
     Person::destroy(p);
 
+#if 0
     Person_Ref r;
     Person_Ref r2 = r;
 
-#if 0
     r.set_Id(444556666);
     r.set_LastName("Brasher");
     r.set_MiddleInitial('E');
