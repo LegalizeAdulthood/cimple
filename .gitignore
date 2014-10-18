@@ -897,6 +897,8 @@ src/tools/genclass/tests/test8/CIM_PhysicalElement.cpp
 src/tools/genclass/tests/test8/CIM_PhysicalElement.h
 src/tools/genclass/tests/test8/CIM_PhysicalPackage.cpp
 src/tools/genclass/tests/test8/CIM_PhysicalPackage.h
+src/tools/genclass/tests/test9/Thing.cpp
+src/tools/genclass/tests/test9/Thing.h
 src/tools/genclass/usage.h
 src/tools/genhnd/usage.h
 src/tools/genmak/usage.h
