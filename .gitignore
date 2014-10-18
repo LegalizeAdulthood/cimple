@@ -869,6 +869,16 @@ src/tools/genclass/tests/test5/CIM_ManagedSystemElement.cpp
 src/tools/genclass/tests/test5/CIM_ManagedSystemElement.h
 src/tools/genclass/tests/test5/CIM_System.cpp
 src/tools/genclass/tests/test5/CIM_System.h
+src/tools/genclass/tests/test6/AAA.cpp
+src/tools/genclass/tests/test6/AAA.h
+src/tools/genclass/tests/test6/AAA2.cpp
+src/tools/genclass/tests/test6/AAA2.h
+src/tools/genclass/tests/test6/BBB.cpp
+src/tools/genclass/tests/test6/BBB.h
+src/tools/genclass/tests/test6/CCC.cpp
+src/tools/genclass/tests/test6/CCC.h
+src/tools/genclass/tests/test6/DDD.cpp
+src/tools/genclass/tests/test6/DDD.h
 src/tools/genclass/usage.h
 src/tools/genhnd/usage.h
 src/tools/genmak/usage.h
