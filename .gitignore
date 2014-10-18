@@ -4650,4 +4650,8 @@ src/tools/genmod/usage.h
 src/tools/genproj/usage.h
 src/tools/genprov/tests/Test1/Test1.cpp
 src/tools/genprov/tests/Test1/Test1.h
+src/tools/genprov/tests/Test2/Test2.cpp
+src/tools/genprov/tests/Test2/Test2.h
+src/tools/genprov/tests/Test2/Test2Link.cpp
+src/tools/genprov/tests/Test2/Test2Link.h
 src/tools/genprov/usage.h
