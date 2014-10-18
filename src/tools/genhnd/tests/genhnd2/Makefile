@@ -5,14 +5,14 @@ BINARY = test_genhnd1
 
 SOURCES = main.cpp
 
-# $(wildcard *.cpp)
-
 LIBRARIES = cimple
 
 include $(TOP)/mak/rules.mak
 
 tests:
 	$(TARGET)
+
+$(BINARY): gen
 
 gen: genclass genhnd
 
