@@ -3,12 +3,16 @@ include $(TOP)/mak/config.mak
 PROVIDER_MODULE = Person
 Classes = Person
 LIBRARY = Person
-SOURCES = \
-    Person.cpp \
-    Person_Provider.cpp \
-    module.cpp \
+GENCLASS_SOURCES = \
+    $(Classes:=.cpp) \
     repository.cpp
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    Person_Provider.cpp \
+    module.cpp
 LIBRARIES = cimplewmiadap cimple
+CLEAN += $(GENCLASS_HEADERS) $(GENCLASS_SOURCES)
 
 ## Extra link flag required by wmi
 EXTRA_LINK_FLAGS = /def:link.def
@@ -19,18 +23,22 @@ DEFINES += -DCIMPLE_WMI_MODULE
 
 include $(TOP)/mak/rules.mak
 
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+
 ## provider generation targets
-genclass:
-	genclass -r $(Classes)
+repository.mof: wmiqualifiers.mof providerclasses.mof
+
+genclass $(GENCLASS_HEADERS) $(GENCLASS_SOURCES): repository.mof
+	$(BINDIR)/genclass -r $(Classes)
 
 genprov:
-	genprov $(Classes)
+	$(BINDIR)/genprov $(Classes)
 
 genmod:
-	genmod $(PROVIDER_MODULE) $(Classes)
+	$(BINDIR)/genmod $(PROVIDER_MODULE) $(Classes)
 
 genproj:
-	genproj Person Person
+	$(BINDIR)/genproj Person Person
 
 ## provider registration, installation and removal targets
 ## normally user should only need to call register

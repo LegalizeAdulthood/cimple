@@ -4665,3 +4665,7 @@ src/wmi/cmpl_test/cmpl_test.cpp
 src/wmi/cmpl_test/cmpl_test.h
 src/wmi/cmpl_test/repository.cpp
 src/wmi/cmpl_test/repository.h
+src/wmi/person/Person.cpp
+src/wmi/person/Person.h
+src/wmi/person/repository.cpp
+src/wmi/person/repository.h
