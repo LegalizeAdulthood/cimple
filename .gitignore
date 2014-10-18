@@ -4661,3 +4661,7 @@ src/wmi/ThingsProvider/Thing2.cpp
 src/wmi/ThingsProvider/Thing2.h
 src/wmi/ThingsProvider/repository.cpp
 src/wmi/ThingsProvider/repository.h
+src/wmi/cmpl_test/cmpl_test.cpp
+src/wmi/cmpl_test/cmpl_test.h
+src/wmi/cmpl_test/repository.cpp
+src/wmi/cmpl_test/repository.h
