@@ -1,18 +1,27 @@
 TOP=../../..
+
 include $(TOP)/mak/config.mak
+
 PROVIDER_MODULE = Person
+
 Classes = Person
+
 LIBRARY = Person
+
 GENCLASS_SOURCES = \
     $(Classes:=.cpp) \
     repository.cpp
+
 GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     Person_Provider.cpp \
     module.cpp
+
 LIBRARIES = cimplewmiadap cimple
-CLEAN += $(GENCLASS_HEADERS) $(GENCLASS_SOURCES)
 
 ## Extra link flag required by wmi
 EXTRA_LINK_FLAGS = /def:link.def
@@ -21,9 +30,9 @@ EXTRA_SYS_LIBS = ole32.lib oleaut32.lib
 ## set to use wmi adpater
 DEFINES += -DCIMPLE_WMI_MODULE
 
-include $(TOP)/mak/rules.mak
-
 export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+
+include $(TOP)/mak/rules.mak
 
 ## provider generation targets
 repository.mof: wmiqualifiers.mof providerclasses.mof
