@@ -22,6 +22,8 @@ else
     CIMPLE_PEGASUS_MODULE=1
 endif
 
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak
 
