@@ -20,12 +20,17 @@ GENCLASS_SOURCES = \
     CMPL_Other.cpp \
     repository.cpp
 
-SOURCES += $(GENCLASS_SOURCES)
-SOURCES += CMPL_Base_Provider.cpp
-SOURCES += CMPL_Derived_Provider.cpp
-SOURCES += CMPL_Other_Provider.cpp
-SOURCES += CMPL_Assoc_Provider.cpp
-SOURCES += module.cpp
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    CMPL_Base_Provider.cpp \
+    CMPL_Derived_Provider.cpp \
+    CMPL_Other_Provider.cpp \
+    CMPL_Assoc_Provider.cpp \
+    module.cpp
 
 ##
 ## Module defined as Pegasus C++ interface
@@ -35,6 +40,8 @@ DEFINES += -DCIMPLE_PEGASUS_MODULE
 
 LIBRARIES += cimplepegadap
 LIBRARIES += cimple
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include $(TOP)/mak/rules.mak
 

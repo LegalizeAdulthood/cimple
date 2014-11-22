@@ -17,17 +17,9 @@ GENCLASS_SOURCES = \
     Persistent.cpp \
     repository.cpp
 
-GENCLASS_HEADERS = \
-    CIM_Indication.h \
-    Lamp.h \
-    LampIndicA.h \
-    LampIndicB.h \
-    LampIndicC.h \
-    LampIndic.h \
-    LampLink.h \
-    ModernLamp.h \
-    Persistent.h \
-    repository.h
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
 
 SOURCES = \
     $(GENCLASS_SOURCES) \
@@ -44,6 +36,8 @@ ifndef CIMPLE_PROVIDER_TYPE
 endif
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include ../common.mak
 

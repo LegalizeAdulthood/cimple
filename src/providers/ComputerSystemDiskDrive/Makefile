@@ -25,12 +25,18 @@ GENCLASS_SOURCES = \
     DiskDrive.cpp \
     repository.cpp
 
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     ComputerSystemDiskDrive_Provider.cpp \
     module.cpp \
 
 CIMPLE_PEGASUS_MODULE=1
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include ../common.mak
 

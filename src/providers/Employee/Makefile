@@ -10,8 +10,11 @@ GENCLASS_SOURCES = \
     Link.cpp \
     Manager.cpp \
     OutOfOfficeNotice.cpp \
-    Resource.cpp \
     repository.cpp
+
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
 
 SOURCES = \
     $(GENCLASS_SOURCES) \
@@ -19,6 +22,7 @@ SOURCES = \
     Link_Provider.cpp \
     Manager_Provider.cpp \
     OutOfOfficeNotice_Provider.cpp \
+    Resource.cpp \
     module.cpp
 
 # Allow building providers for either CMPI or Pegasus C++ provider interface
@@ -27,6 +31,8 @@ SOURCES = \
 ifndef CIMPLE_PROVIDER_TYPE
    CIMPLE_CMPI_MODULE = 1
 endif
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak

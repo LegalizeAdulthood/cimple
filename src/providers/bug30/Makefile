@@ -12,6 +12,11 @@ GENCLASS_SOURCES = \
     BUG30_S.cpp \
     BUG30_X.cpp \
     repository.cpp
+
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     BUG30_X_Provider.cpp \
@@ -26,6 +31,8 @@ ifdef BUILD_CMPI_PROVIDER
 else
   LIBRARIES += cimplepegadap
 endif
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include $(TOP)/mak/rules.mak
 

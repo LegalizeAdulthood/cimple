@@ -5,12 +5,17 @@ MODULE=1
 
 SHARED_LIBRARY = cimpleea
 
-SOURCES = \
+GENCLASS_SOURCES = \
     All_Class.cpp \
+	All_Part.cpp \
+	repository.cpp
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     All_Class_Provider.cpp \
-    All_Part.cpp \
-    module.cpp \
-    repository.cpp
+    module.cpp
 
 TEST_NAMESPACE=root/cimv2
 
@@ -35,7 +40,7 @@ regmod:
 register:
 	$(BINDIR)/regmod -c $(TARGET)
 
-All_Class.cpp All_Part.cpp repository.cpp: All_Class.mof All_Part.mof
+$(GENCLASS_SOURCES): All_Class.mof All_Part.mof
 	$(BINDIR)/genclass -r All_Class
 
 genclass:

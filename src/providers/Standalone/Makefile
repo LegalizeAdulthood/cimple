@@ -7,6 +7,10 @@ GENCLASS_SOURCES = \
     Standalone.cpp \
     repository.cpp
 
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     module.cpp \
@@ -15,6 +19,8 @@ SOURCES = \
 LIBRARIES = cimple cimplecmpiadap
 
 FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include $(TOP)/mak/rules.mak
 

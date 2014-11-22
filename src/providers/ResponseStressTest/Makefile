@@ -17,6 +17,10 @@ GENCLASS_SOURCES = \
     CMPL_ResponseStressTest.cpp \
     repository.cpp
 
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     CMPL_ResponseStressTest_Provider.cpp \
@@ -29,6 +33,8 @@ SOURCES = \
 ifndef CIMPLE_PROVIDER_TYPE
    CIMPLE_PEGASUS_MODULE = 1
 endif
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak

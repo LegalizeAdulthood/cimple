@@ -18,6 +18,10 @@ GENCLASS_SOURCES = \
     Upcall2Part.cpp \
     repository.cpp
 
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     Upcall2_Provider.cpp \
@@ -26,6 +30,8 @@ SOURCES = \
 LIBRARIES += cimplepegadap cimple
 
 #FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include $(TOP)/mak/rules.mak
 

@@ -14,6 +14,8 @@ GENCLASS_HEADERS = \
     DualNamespace1.h \
     DualNamespace2.h
 
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     DualNamespace1_Provider.cpp \
@@ -21,6 +23,8 @@ SOURCES = \
     module.cpp
 
 CIMPLE_PEGASUS_MODULE=1
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include ../common.mak
 

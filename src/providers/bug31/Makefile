@@ -7,15 +7,24 @@ SHARED_LIBRARY = cimplebug31
 
 INCLUDES += $(CMPI_INCLUDES)
 
-SOURCES = \
+GENCLASS_SOURCES = \
     BUG31_A.cpp \
     BUG31_B.cpp \
     BUG31_C.cpp \
-    repository.cpp \
+    repository.cpp
+
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
     BUG31_C_Provider.cpp \
     module.cpp
 
 CIMPLE_CMPI_MODULE=1
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include ../common.mak
 

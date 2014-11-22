@@ -29,6 +29,10 @@ GENCLASS_SOURCES = \
     SNIA_SpareConfigurationService.cpp \
     repository.cpp
 
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 MOF_SOURCES = \
     SNIA_SparingSubprofile.mof \
     repository.mof
@@ -39,6 +43,8 @@ SOURCES = \
     module.cpp
 
 CIMPLE_CMPI_MODULE=1
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include ../common.mak
 

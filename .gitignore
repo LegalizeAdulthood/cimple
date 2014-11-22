@@ -222,6 +222,8 @@ src/disp/tests/facade/Thing.cpp
 src/disp/tests/facade/Thing.h
 src/exp/example/cimple/TheClass.cpp
 src/exp/example/cimple/TheClass.h
+src/pegasus/regmod/usage.h
+src/pegasus/regview/usage.h
 src/providers/All/All_Class.cpp
 src/providers/All/All_Class.h
 src/providers/All/All_Part.cpp

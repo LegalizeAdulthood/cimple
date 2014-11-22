@@ -18,6 +18,10 @@ GENCLASS_SOURCES = \
     Upcall3Part.cpp \
     repository.cpp
 
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     Upcall3_Provider.cpp \
@@ -33,6 +37,8 @@ DEFINES += -DPEGASUS_PLATFORM_$(CIMPLE_PLATFORM)
 
 # NOTE2: remove this for pegasus.
 #FLAGS += $(SIZE_OPTIMIZATION_FLAGS)
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include $(TOP)/mak/rules.mak
 

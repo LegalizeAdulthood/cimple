@@ -18,10 +18,15 @@ GENCLASS_SOURCES = \
     CIMPLE_ExceptionLink.cpp \
     repository.cpp
 
-SOURCES += $(GENCLASS_SOURCES) 
-SOURCES += CIMPLE_Exception_Provider.cpp
-SOURCES += CIMPLE_ExceptionLink_Provider.cpp
-SOURCES += module.cpp
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
+SOURCES = \
+    $(GENCLASS_SOURCES) \
+    CIMPLE_Exception_Provider.cpp \
+    CIMPLE_ExceptionLink_Provider.cpp \
+    module.cpp
 
 ## Allow building providers for either CMPI or Pegasus C++ provider interface
 ## Changing Provider interfaces requires reregistering the provider. Default Pegasus
@@ -29,6 +34,8 @@ SOURCES += module.cpp
 ifndef CIMPLE_PROVIDER_TYPE
    CIMPLE_PEGASUS_MODULE = 1
 endif
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 ## Expand CIMPLE_***_MODULE definitions and CIMPLE_PROVIDER_TYPE
 include ../common.mak

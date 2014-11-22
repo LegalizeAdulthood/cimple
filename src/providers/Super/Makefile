@@ -11,12 +11,18 @@ GENCLASS_SOURCES = \
 	Sub2.cpp \
 	repository.cpp
 
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     module.cpp \
 	Super_Provider.cpp
 
 CIMPLE_PEGASUS_MODULE=1
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include ../common.mak
 
