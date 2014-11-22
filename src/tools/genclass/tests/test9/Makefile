@@ -7,9 +7,7 @@ CLASSES = Thing
 
 GENCLASS_SOURCES = $(CLASSES:=.cpp)
 
-GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
-
-CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+GENCLASS_HEADERS = $(CLASSES:=.h)
 
 SOURCES = \
     $(GENCLASS_SOURCES) \
@@ -19,11 +17,13 @@ LIBRARIES = cimple
 
 INCLUDES += -I.
 
-export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+CLEAN += $(GENCLASS_HEADERS) $(GENCLASS_SOURCES)
 
 include $(TOP)/mak/rules.mak
 
 $(GENCLASS_HEADERS) $(GENCLASS_SOURCES): genclass
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 genclass: repository.mof
 	$(BINDIR)/genclass -q -d Thing

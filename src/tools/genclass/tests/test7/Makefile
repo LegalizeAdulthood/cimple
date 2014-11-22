@@ -7,20 +7,20 @@ CLASSES = YourClass MyClass EmbeddedClass
 
 GENCLASS_SOURCES = $(CLASSES:=.cpp)
 
-GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
-
-CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+GENCLASS_HEADERS = $(CLASSES:=.h)
 
 SOURCES = $(GENCLASS_SOURCES) main.cpp
 
 LIBRARIES = cimple
 
-export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
 
 include $(TOP)/mak/rules.mak
 
 tests:
 	$(TARGET)
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 $(GENCLASS_SOURCES) $(GENCLASS_HEADERS): genclass
 

@@ -7,20 +7,20 @@ CLASSES = Test1
 
 GENCLASS_HEADERS = $(CLASSES:=.h)
 
-GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
-
-CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+GENCLASS_SOURCES = $(CLASSES:=.cpp)
 
 SOURCES = $(GENCLASS_SOURCES) main.cpp Test1_Provider.cpp
 
 LIBRARIES = cimple
 
-export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
+CLEAN += $(GENCLASS_HEADERS) $(GENCLASS_SOURCES)
 
 include $(TOP)/mak/rules.mak
 
 tests:
 	@ $(BINDIR)/test_genprov1
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 genclass $(GENCLASS_HEADERS) $(GENCLASS_SOURCES): repository.mof
 	$(BINDIR)/genclass $(CLASSES)
