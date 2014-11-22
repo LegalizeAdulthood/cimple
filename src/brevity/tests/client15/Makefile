@@ -4,7 +4,14 @@ include $(TOP)/mak/config.mak
 BINARY = brevity_client15
 
 GENCLASS_SOURCES = CIM_ManagedElement.cpp repository.cpp
+
+GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = $(GENCLASS_SOURCES) main.cpp
+
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include ../libraries.mak
 

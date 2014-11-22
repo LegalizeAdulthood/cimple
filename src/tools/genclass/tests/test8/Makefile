@@ -13,6 +13,8 @@ GENCLASS_SOURCES = \
 
 GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
 
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+
 SOURCES = \
     $(GENCLASS_SOURCES) \
     main.cpp
@@ -21,7 +23,7 @@ LIBRARIES = cimple
 
 INCLUDES += -I.
 
-CLEAN += $(GENCLASS_HEADERS) $(GENCLASS_SOURCES)
+export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 include $(TOP)/mak/rules.mak
 
@@ -29,8 +31,6 @@ tests:
 	$(TARGET)
 
 $(GENCLASS_HEADERS) $(GENCLASS_SOURCES): genclass
-
-export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
 genclass:
 	$(BINDIR)/genclass -q -d CIM_Card
