@@ -1,4 +1,4 @@
-TOP = $(CIMPLE_ROOT)
+TOP = ../../../..
 include $(TOP)/mak/config.mak
 
 BINARY = brevity_client13
@@ -19,9 +19,11 @@ GENCLASS_SOURCES = \
 
 GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
 
-CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+GENHND_HEADERS = $(GENCLASS_SOURCES:.cpp=_Hnd.h)
 
-SOURCES = $(GENCLASS_SOURCES) $(wildcard *.cpp)
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS) $(GENHND_HEADERS)
+
+SOURCES = $(GENCLASS_SOURCES) main.cpp
 
 export CIMPLE_MOF_PATH=$(TOP)/schema/cim214
 
@@ -36,7 +38,7 @@ tests:
 
 CLASSES = CIM_RegisteredProfile CIM_Fan CIM_ElementConformsToProfile
 
-gen $(GENCLASS_SOURCES):
+gen $(GENCLASS_SOURCES) $(GENHND_HEADERS):
 	$(BINDIR)/genclass -r $(CLASSES)
 	$(BINDIR)/genhnd $(CLASSES)
 

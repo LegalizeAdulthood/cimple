@@ -1,13 +1,19 @@
-TOP = $(CIMPLE_ROOT)
+TOP = ../../../..
 include $(TOP)/mak/config.mak
 
 BINARY = brevity_client15
 
-GENCLASS_SOURCES = CIM_ManagedElement.cpp repository.cpp
+CLASSES = CIM_ManagedElement
+
+MOF = $(TOP)/src/providers/Employee/repository.mof
+
+GENCLASS_SOURCES = $(CLASSES:=.cpp) repository.cpp
 
 GENCLASS_HEADERS = $(GENCLASS_SOURCES:.cpp=.h)
 
-CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS)
+GENHND_HEADERS = $(CLASSES:=_Hnd.h)
+
+CLEAN += $(GENCLASS_SOURCES) $(GENCLASS_HEADERS) $(GENHND_HEADERS)
 
 SOURCES = $(GENCLASS_SOURCES) main.cpp
 
@@ -22,14 +28,10 @@ include $(TOP)/mak/rules.mak
 tests:
 	@ $(TARGET)
 
-MOF=$(CIMPLE_ROOT)/src/providers/Employee/repository.mof
-
-CLASSES = CIM_ManagedElement
-
 genclass $(GENCLASS_SOURCES): $(MOF)
 	$(BINDIR)/genclass -r -M $(MOF) $(CLASSES)
 
-gen: genclass
+gen $(GENHND_HEADERS): genclass
 	$(BINDIR)/genhnd -M $(MOF) $(CLASSES)
 
 publish:
@@ -37,3 +39,5 @@ publish:
 
 deb:
 	xgdb $(TARGET)
+
+main.cpp: $(GENHND_HEADERS)
