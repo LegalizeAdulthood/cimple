@@ -176,6 +176,10 @@ if [ "$with_pegasus_env" = "1" ]; then
         host=x86_64-unknown-linux-gnu
         ;;
 
+      LINUX_X86_64_CLANG)
+        host=x86_64-unknown-linux-gnu
+        ;;
+
       LINUX_IA64_GNU)
         host=ia64-unknown-linux-gnu
         ;;

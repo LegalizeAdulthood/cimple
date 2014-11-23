@@ -4,7 +4,17 @@ compiler:
   - gcc
   - clang
 
+before_install:
+  - cd ..
+  - wget https://collaboration.opengroup.org/pegasus/documents/29160/pegasus-2.13.0.tar.gz
+  - tar zxf pegasus-2.13.0.tar.gz
+  - export PEGASUS_ROOT=`pwd`/pegasus
+  - export PEGASUS_HOME=$PEGASUS_ROOT
+  - if [ "$CC" = "clang" ]; then export PEGASUS_PLATFORM=LINUX_X86_64_CLANG; (cd pegasus; patch -p1 < ../cimple/pegasus-patches/clang); else export PEGASUS_PLATFORM=LINUX_X86_64_GNU; fi
+  - (cd pegasus; make build)
+  - cd cimple
+
 script:
-  - ./configure
+  - ./configure --with-pegasus-env
   - make
   - make tests

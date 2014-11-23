@@ -1,0 +1,205 @@
+# HG changeset patch
+# Parent f5020dd2d8c7f3270925406faea7417384ac8631
+
+diff -r f5020dd2d8c7 src/Clients/cimcli/CIMCLIOperations.cpp
+--- a/src/Clients/cimcli/CIMCLIOperations.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Clients/cimcli/CIMCLIOperations.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -527,9 +527,6 @@
+     "    No options Required"},
+ };
+ 
+-const Uint32 NUM_EXAMPLES = sizeof(OperationExamples) /
+-                            sizeof(OperationExamples[0]);
+-
+ 
+ /*
+    Operations Class implements the operations on the OperationTable and
+diff -r f5020dd2d8c7 src/Clients/cimsub/CIMSubCommand.cpp
+--- a/src/Clients/cimsub/CIMSubCommand.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Clients/cimsub/CIMSubCommand.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -370,7 +370,6 @@
+ const Uint32 _HANDLER_LIST_DESTINATION_COLUMN = 1;
+ const Uint32 _FILTER_LIST_NAME_COLUMN = 0;
+ const Uint32 _FILTER_LIST_QUERY_COLUMN = 1;
+-const Uint32 _FILTER_LIST_QUERYLANGUAGE_COLUMN = 2;
+ const Uint32 _SUBSCRIPTION_LIST_NS_COLUMN = 0;
+ const Uint32 _SUBSCRIPTION_LIST_FILTER_COLUMN = 1;
+ const Uint32 _SUBSCRIPTION_LIST_HANDLER_COLUMN = 2;
+diff -r f5020dd2d8c7 src/Clients/cimuser/CIMUserCommand.cpp
+--- a/src/Clients/cimuser/CIMUserCommand.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Clients/cimuser/CIMUserCommand.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -270,27 +270,15 @@
+ static const char   PASSWORD_PROMPT []  =
+                         "Please enter your password: ";
+ 
+-static const char   PASSWORD_PROMPT_KEY [] =
+-    "Clients.cimuser.CIMUserCommand.PASSWORD_PROMPT";
+-
+ static const char   OLD_PASSWORD_PROMPT []  =
+     "Please enter your old password: ";
+ 
+-static const char   OLD_PASSWORD_PROMPT_KEY []  =
+-    "Clients.cimuser.CIMUserCommand.OLD_PASSWORD_PROMPT";
+-
+ static const char   RE_ENTER_PROMPT []  =
+     "Please re-enter your password: ";
+ 
+-static const char   RE_ENTER_PROMPT_KEY []  =
+-    "Clients.cimuser.CIMUserCommand.RE_ENTER_PROMPT";
+-
+ static const char   NEW_PASSWORD_PROMPT []  =
+     "Please enter your new password: ";
+ 
+-static const char   NEW_PASSWORD_PROMPT_KEY []  =
+-    "Clients.cimuser.CIMUserCommand.NEW_PASSWORD_PROMPT";
+-
+ static const char   PASSWORD_DOES_NOT_MATCH []  =
+     "Passwords do not match. Please Re-enter.";
+ 
+diff -r f5020dd2d8c7 src/Clients/osinfo/OSInfo.cpp
+--- a/src/Clients/osinfo/OSInfo.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Clients/osinfo/OSInfo.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -128,11 +128,6 @@
+ 
+ static const char LONG_VERSION [] = "version";
+ 
+-static const char REQUIRED_ARGS_MISSING [] = "Required arguments missing.";
+-
+-static const char REQUIRED_ARGS_MISSING_KEY [] =
+-    "Clients.cimuser.CIMUserCommand.REQUIRED_ARGS_MISSING";
+-
+ static const char ERR_USAGE [] =
+     "Use '--help' to obtain command syntax.";
+ 
+diff -r f5020dd2d8c7 src/Clients/repupgrade/RepositoryUpgrade.cpp
+--- a/src/Clients/repupgrade/RepositoryUpgrade.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Clients/repupgrade/RepositoryUpgrade.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -223,17 +223,21 @@
+ static const char NEW_CLASS_RETRIEVAL_ERROR_KEY [] =
+            "Clients.repupgrade.RepositoryUpgrade.NEW_CLASS_RETRIEVAL_ERROR";
+ 
++#if defined (PEGASUS_OS_TYPE_WINDOWS)
+ static const char LIBRARY_LOAD_ERROR [] =
+                 "Error loading special handling library $0.";
+ 
+ static const char LIBRARY_LOAD_ERROR_KEY [] =
+                 "Clients.repupgrade.RepositoryUpgrade.LIBRARY_LOAD_ERROR";
++#endif
+ 
++#ifdef ENABLE_MODULE_PROCESSING
+ static const char LIBRARY_ENTRY_POINT_ERROR [] =
+                 "Error trying to get entry point symbol in library $0.";
+ 
+ static const char LIBRARY_ENTRY_POINT_ERROR_KEY [] =
+     "Clients.repupgrade.RepositoryUpgrade.LIBRARY_ENTRY_POINT_ERROR";
++#endif
+ 
+ static const char CLASS_XML_OUTPUT_FILE [] =
+               "CIM/XML request for this class has been logged to file $0 ";
+diff -r f5020dd2d8c7 src/Clients/wbemexec/WbemExecCommand.cpp
+--- a/src/Clients/wbemexec/WbemExecCommand.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Clients/wbemexec/WbemExecCommand.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -149,10 +149,12 @@
+ static const char   LONG_VERSION []  = "version";
+ 
+ static const char MSG_PATH []               = "pegasus/pegasusCLI";
++/*
+ static const char REQUIRED_ARGS_MISSING [] = "Required arguments missing.";
+ 
+ static const char REQUIRED_ARGS_MISSING_KEY [] =
+     "Clients.cimuser.CIMUserCommand.REQUIRED_ARGS_MISSING";
++*/
+ 
+ static const char ERR_USAGE [] =
+     "Use '--help' to obtain command syntax.";
+diff -r f5020dd2d8c7 src/Pegasus/Common/BinaryCodec.cpp
+--- a/src/Pegasus/Common/BinaryCodec.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Pegasus/Common/BinaryCodec.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -61,7 +61,6 @@
+ static const Uint32 _MAGIC = 0xF00DFACE;
+ static const Uint32 _REVERSE_MAGIC = 0xCEFA0DF0;
+ static const Uint32 _VERSION = 1;
+-static const size_t _DEFAULT_CIM_BUFFER_SIZE = 16*1024;
+ 
+ enum Operation
+ {
+diff -r f5020dd2d8c7 src/Pegasus/Common/CIMType.cpp
+--- a/src/Pegasus/Common/CIMType.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Pegasus/Common/CIMType.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -40,7 +40,6 @@
+     "reference", "object", "instance"
+ };
+ 
+-static const Uint32 _NUM_TYPES = sizeof(_typeStrings) / sizeof(_typeStrings[0]);
+ 
+ const char* cimTypeToString(const CIMType type)
+ {
+diff -r f5020dd2d8c7 src/Pegasus/ControlProviders/InteropProvider/tests/interop.cpp
+--- a/src/Pegasus/ControlProviders/InteropProvider/tests/interop.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Pegasus/ControlProviders/InteropProvider/tests/interop.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -77,8 +77,6 @@
+ 
+ static const CIMNamespaceName __NAMESPACE_NAMESPACE = CIMNamespaceName ("root");
+ 
+-static const char programVersion[] =  "1.0";
+-
+ // Property Names for __Namespace Class
+ static const CIMName NAMESPACE_PROPERTYNAME  = CIMName ("Name");
+ static const CIMNamespaceName ROOTNS  = CIMNamespaceName ("root");
+diff -r f5020dd2d8c7 src/Pegasus/DynListener/Service/cimlistener.cpp
+--- a/src/Pegasus/DynListener/Service/cimlistener.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Pegasus/DynListener/Service/cimlistener.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -216,10 +216,6 @@
+ 
+ static const char OPTION_NO_DAEMON [] = "--nodaemon";
+ 
+-static const char   LONG_HELP []  = "help";
+-
+-static const char   LONG_VERSION []  = "version";
+-
+ static const char OPTION_DEBUGOUTPUT = 'X';
+ 
+ static const String PROPERTY_TIMEOUT = "shutdownTimeout";
+diff -r f5020dd2d8c7 src/Pegasus/IndicationService/IndicationService.cpp
+--- a/src/Pegasus/IndicationService/IndicationService.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Pegasus/IndicationService/IndicationService.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -128,12 +128,6 @@
+ static const char _MSG_NO_PROVIDER[] =
+     "Subscription ($0) in namespace $1 has no provider";
+ 
+-static const char _MSG_STATE_CHANGE_FAILED_KEY[] =
+-    "IndicationService.IndicationService.STATE_CHANGE_FAILED";
+-static const char _MSG_STATE_CHANGE_FAILED[] =
+-    "The requested state change failed : $0. Current IndicationService"
+-        " EnabledState : $1, HealthState : $2.";
+-
+ static const char _MSG_NOT_CREATOR_KEY[] =
+     "IndicationService.IndicationService._MSG_NOT_CREATOR";
+ static const char _MSG_NOT_CREATOR[] =
+diff -r f5020dd2d8c7 src/Pegasus/Server/ProviderRegistrationManager/ProviderRegistrationManager.cpp
+--- a/src/Pegasus/Server/ProviderRegistrationManager/ProviderRegistrationManager.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Pegasus/Server/ProviderRegistrationManager/ProviderRegistrationManager.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -188,9 +188,6 @@
+     Exception messages and corresponding Keys
+ */
+ static const char MODULE_NOT_FOUND [] = " Can not find the provider module.";
+-static const char MODULE_NOT_FOUND_KEY [] =
+-    "Server.ProviderRegistrationManager."
+-        "ProviderRegistrationManager.MODULE_NOT_FOUND";
+ 
+ static const char PROVIDER_NOT_FOUND [] = " Can not find the provider.";
+ static const char PROVIDER_NOT_FOUND_KEY [] =
+diff -r f5020dd2d8c7 src/Server/cimserver.cpp
+--- a/src/Server/cimserver.cpp	Sun Nov 23 17:16:01 2014 -0700
++++ b/src/Server/cimserver.cpp	Mon Nov 24 09:46:49 2014 -0700
+@@ -238,10 +238,6 @@
+ 
+ static const char OPTION_SHUTDOWN    = 's';
+ 
+-static const char LONG_HELP[]        = "help";
+-
+-static const char LONG_VERSION[]     = "version";
+-
+ static const char OPTION_DEBUGOUTPUT = 'X';
+ 
+ /** GetOptions function - This function defines the Options Table
